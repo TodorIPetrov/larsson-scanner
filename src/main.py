@@ -273,7 +273,7 @@ def main():
     bot_token = os.getenv("TELEGRAM_BOT_TOKEN") or tg_config.get("bot_token")
     chat_id = str(os.getenv("TELEGRAM_CHAT_ID") or tg_config.get("chat_id") or "")
 
-    db = Database()
+    db = Database(auto_restore=True)
     notifier = TelegramNotifier(
         bot_token=bot_token,
         chat_id=chat_id,

@@ -1,0 +1,67 @@
+name: 24/7 Cloud Market Scanner
+run-name: 🌐 24/7 Cloud Market Scan
+
+on:
+  schedule:
+    # Every 4 hours at :05 UTC (00:05, 04:05, 08:05, 12:05, 16:05, 20:05) for 4H and 1D crypto
+    - cron: '5 0,4,8,12,16,20 * * *'
+    # Monday to Friday at 21:05 UTC (after NYSE/NASDAQ market close)
+    - cron: '5 21 * * 1-5'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  scan-and-alert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute Crypto Scan (1D & 4H)
+        run: |
+          python src/main.py --scan --asset-class crypto --timeframe 1D --limit 50
+          python src/main.py --scan --asset-class crypto --timeframe 4H --limit 50
+
+      - name: Execute Stocks, Commodities & Indices Scan (1D)
+        run: |
+          python src/main.py --scan --asset-class us_stocks --timeframe 1D
+          python src/main.py --scan --asset-class intl_stocks --timeframe 1D
+          python src/main.py --scan --asset-class commodities --timeframe 1D
+          python src/main.py --scan --asset-class indices --timeframe 1D
+
+      - name: Export Updated Dashboard JSON
+        run: |
+          python src/main.py --export-dashboard
+
+      - name: Commit & Push Market Data to GitHub Pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard/data.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(cloud): auto-update market scan data [skip ci]"
+            git push origin master
+          else
+            echo "No market state changes detected; skipping commit."
+          fi

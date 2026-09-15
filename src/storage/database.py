@@ -15,9 +15,11 @@ DEFAULT_DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(_
 
 
 class Database:
-    def __init__(self, db_path: str = DEFAULT_DB_PATH):
+    def __init__(self, db_path: str = DEFAULT_DB_PATH, auto_restore: bool = False):
         self.db_path = db_path
         self._init_db()
+        if auto_restore:
+            self.restore_from_json_if_empty()
 
     @contextmanager
     def _get_connection(self):
@@ -86,6 +88,63 @@ class Database:
                 added_at TEXT NOT NULL
             );
             """)
+
+    def restore_from_json_if_empty(self, json_path: Optional[str] = None) -> int:
+        """
+        If the database is fresh/empty (e.g., in a stateless CI/cloud runner),
+        restores last known states from dashboard/data.json.
+        """
+        if json_path is None:
+            json_path = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+                "dashboard",
+                "data.json",
+            )
+        if not os.path.exists(json_path):
+            return 0
+
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM symbol_states")
+            count = cur.fetchone()[0]
+            if count > 0:
+                return count
+
+            import json
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                symbols = []
+                states = []
+                for s in data.get("symbols", []):
+                    symbols.append((s["ticker"], s["asset_class"], s["tv_symbol"]))
+                    states.append((
+                        s["ticker"],
+                        s["timeframe"],
+                        s.get("v1", 0.0),
+                        s.get("m1", 0.0),
+                        s.get("m2", 0.0),
+                        s.get("v2", 0.0),
+                        s["state"],
+                        s.get("price", 0.0),
+                        s.get("last_change", ""),
+                        s.get("updated_at", ""),
+                    ))
+
+                if symbols:
+                    cur.executemany("""
+                    INSERT OR IGNORE INTO symbols (ticker, asset_class, tv_symbol, is_active)
+                    VALUES (?, ?, ?, 1)
+                    """, symbols)
+                if states:
+                    cur.executemany("""
+                    INSERT OR REPLACE INTO symbol_states
+                    (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, states)
+                return len(states)
+            except Exception:
+                return 0
 
     def upsert_symbols(self, symbols: List[Tuple[str, str, str]]):
         """Insert or update symbols (ticker, asset_class, tv_symbol)."""
