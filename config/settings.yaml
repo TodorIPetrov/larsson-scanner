@@ -1,0 +1,12 @@
+telegram:
+  bot_token: ""  # Your Telegram Bot Token from @BotFather
+  chat_id: ""    # Your Telegram Chat ID or Channel/Group ID
+  batch_threshold: 5
+
+scanner:
+  crypto_top_n: 100       # Automatically scan top N USDT pairs by 24h volume
+  min_warmup_candles: 160 # Candles to fetch for SMMA stabilization
+  rate_limit_delay_s: 0.05
+
+storage:
+  db_path: "state.db"

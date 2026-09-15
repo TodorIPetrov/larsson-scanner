@@ -1,0 +1,1 @@
+"""Larsson Line Scanner package."""

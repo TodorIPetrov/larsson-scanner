@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Larsson Line Market Scanner</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="logo-icon">LL</div>
+        <div>
+          <h1>Larsson Line Scanner</h1>
+          <p class="subtitle">Multi-Asset Ribbon Trend & State Tracker (Crypto, Stocks, Commodities)</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="last-updated" id="lastUpdated">Updated: Just now</div>
+        <button class="btn btn-refresh" id="refreshBtn" title="Reload data">↻ Refresh</button>
+      </div>
+    </header>
+
+    <!-- Market Overview / Health Bar -->
+    <section class="overview-section">
+      <div class="meter-card">
+        <div class="meter-header">
+          <span class="meter-title">Market Sentiment Ratio</span>
+          <div class="meter-legend">
+            <span class="badge badge-gold"><span class="dot"></span> Gold <strong id="goldPct">0%</strong></span>
+            <span class="badge badge-blue"><span class="dot"></span> Blue <strong id="bluePct">0%</strong></span>
+            <span class="badge badge-neutral"><span class="dot"></span> Neutral <strong id="neutralPct">0%</strong></span>
+          </div>
+        </div>
+        <div class="meter-bar">
+          <div class="meter-fill fill-gold" id="barGold" style="width: 0%"></div>
+          <div class="meter-fill fill-blue" id="barBlue" style="width: 0%"></div>
+          <div class="meter-fill fill-neutral" id="barNeutral" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Monitored</div>
+          <div class="stat-value" id="totalCount">0</div>
+        </div>
+        <div class="stat-card stat-gold">
+          <div class="stat-label">🟡 Gold State (Bullish)</div>
+          <div class="stat-value" id="goldCount">0</div>
+        </div>
+        <div class="stat-card stat-blue">
+          <div class="stat-label">🔵 Blue State (Bearish)</div>
+          <div class="stat-value" id="blueCount">0</div>
+        </div>
+        <div class="stat-card stat-neutral">
+          <div class="stat-label">⚪ Neutral (Consolidation)</div>
+          <div class="stat-value" id="neutralCount">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls / Filters -->
+    <section class="controls-section">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Filter by symbol (e.g. BTC, AAPL, GC=F)...">
+      </div>
+
+      <div class="filter-row">
+        <div class="filter-group" id="classFilters">
+          <button class="filter-btn active" data-class="ALL">All Markets</button>
+          <button class="filter-btn" data-class="crypto">🪙 Crypto</button>
+          <button class="filter-btn" data-class="us_stocks">🏛️ US Stocks</button>
+          <button class="filter-btn" data-class="intl_stocks">🌍 Global</button>
+          <button class="filter-btn" data-class="commodities">⛏️ Commodities</button>
+          <button class="filter-btn" data-class="indices">📈 Indices</button>
+        </div>
+
+        <div class="filter-group" id="stateFilters">
+          <button class="filter-btn active" data-filter="ALL">All States</button>
+          <button class="filter-btn filter-gold" data-filter="GOLD">🟡 Gold</button>
+          <button class="filter-btn filter-blue" data-filter="BLUE">🔵 Blue</button>
+          <button class="filter-btn filter-neutral" data-filter="NEUTRAL">⚪ Neutral</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assets Table -->
+    <section class="table-container">
+      <table class="assets-table">
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Class</th>
+            <th>TF</th>
+            <th>State</th>
+            <th>Price</th>
+            <th>SMMA 15 (v1)</th>
+            <th>SMMA 19 (m1)</th>
+            <th>SMMA 25 (m2)</th>
+            <th>SMMA 29 (v2)</th>
+            <th>Last State Change</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="assetsTableBody">
+          <tr>
+            <td colspan="10" class="loading-state">Loading latest market data...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="footer">
+      <p>Larsson Line Scanner • 100% Free & Open Source Stack • <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
