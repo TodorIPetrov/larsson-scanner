@@ -79,6 +79,14 @@ class Database:
             );
             """)
 
+            # Table for user personal watchlist
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS watchlist (
+                ticker TEXT PRIMARY KEY,
+                added_at TEXT NOT NULL
+            );
+            """)
+
     def upsert_symbols(self, symbols: List[Tuple[str, str, str]]):
         """Insert or update symbols (ticker, asset_class, tv_symbol)."""
         with self._get_connection() as conn:
@@ -190,3 +198,41 @@ class Database:
             INSERT INTO alert_logs (ticker, timeframe, old_state, new_state, price, tv_symbol, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (ticker, timeframe, old_state.value, new_state.value, price, tv_symbol, now_iso))
+
+    def add_to_watchlist(self, ticker: str) -> bool:
+        """Adds a ticker to personal watchlist."""
+        now_iso = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT OR IGNORE INTO watchlist (ticker, added_at) VALUES (?, ?)
+            """, (ticker.upper(), now_iso))
+            return cur.rowcount > 0
+
+    def remove_from_watchlist(self, ticker: str) -> bool:
+        """Removes a ticker from personal watchlist."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("DELETE FROM watchlist WHERE ticker = ?", (ticker.upper(),))
+            return cur.rowcount > 0
+
+    def get_watchlist(self) -> List[str]:
+        """Returns list of all watched tickers."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT ticker FROM watchlist ORDER BY ticker")
+            return [row["ticker"] for row in cur.fetchall()]
+
+    def get_watchlist_states(self) -> List[sqlite3.Row]:
+        """Returns all states for symbols in the personal watchlist."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT s.ticker, s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
+                   st.current_state, st.last_price, st.last_state_change, st.updated_at
+            FROM watchlist w
+            JOIN symbols s ON w.ticker = s.ticker
+            JOIN symbol_states st ON s.ticker = st.ticker
+            ORDER BY w.ticker, st.timeframe
+            """)
+            return cur.fetchall()

@@ -1,129 +1,502 @@
-# Larsson Line Multi-Asset Configuration
-
 crypto:
-  - ticker: "BTCUSDT"
-    tv_symbol: "BINANCE:BTCUSDT"
-  - ticker: "ETHUSDT"
-    tv_symbol: "BINANCE:ETHUSDT"
-  - ticker: "SOLUSDT"
-    tv_symbol: "BINANCE:SOLUSDT"
-  - ticker: "BNBUSDT"
-    tv_symbol: "BINANCE:BNBUSDT"
-  - ticker: "XRPUSDT"
-    tv_symbol: "BINANCE:XRPUSDT"
-  - ticker: "DOGEUSDT"
-    tv_symbol: "BINANCE:DOGEUSDT"
-  - ticker: "ADAUSDT"
-    tv_symbol: "BINANCE:ADAUSDT"
-  - ticker: "AVAXUSDT"
-    tv_symbol: "BINANCE:AVAXUSDT"
-  - ticker: "SUIUSDT"
-    tv_symbol: "BINANCE:SUIUSDT"
-  - ticker: "LINKUSDT"
-    tv_symbol: "BINANCE:LINKUSDT"
-  - ticker: "PAXGUSDT"
-    tv_symbol: "BINANCE:PAXGUSDT"
-
+- ticker: BTCUSDT
+  tv_symbol: BINANCE:BTCUSDT
+- ticker: ETHUSDT
+  tv_symbol: BINANCE:ETHUSDT
+- ticker: SOLUSDT
+  tv_symbol: BINANCE:SOLUSDT
+- ticker: BNBUSDT
+  tv_symbol: BINANCE:BNBUSDT
+- ticker: XRPUSDT
+  tv_symbol: BINANCE:XRPUSDT
+- ticker: DOGEUSDT
+  tv_symbol: BINANCE:DOGEUSDT
+- ticker: ADAUSDT
+  tv_symbol: BINANCE:ADAUSDT
+- ticker: AVAXUSDT
+  tv_symbol: BINANCE:AVAXUSDT
+- ticker: SUIUSDT
+  tv_symbol: BINANCE:SUIUSDT
+- ticker: LINKUSDT
+  tv_symbol: BINANCE:LINKUSDT
+- ticker: PAXGUSDT
+  tv_symbol: BINANCE:PAXGUSDT
 us_stocks:
-  - ticker: "AAPL"
-    tv_symbol: "NASDAQ:AAPL"
-  - ticker: "MSFT"
-    tv_symbol: "NASDAQ:MSFT"
-  - ticker: "NVDA"
-    tv_symbol: "NASDAQ:NVDA"
-  - ticker: "AMZN"
-    tv_symbol: "NASDAQ:AMZN"
-  - ticker: "GOOGL"
-    tv_symbol: "NASDAQ:GOOGL"
-  - ticker: "META"
-    tv_symbol: "NASDAQ:META"
-  - ticker: "TSLA"
-    tv_symbol: "NASDAQ:TSLA"
-  - ticker: "JPM"
-    tv_symbol: "NYSE:JPM"
-  - ticker: "V"
-    tv_symbol: "NYSE:V"
-  - ticker: "LLY"
-    tv_symbol: "NYSE:LLY"
-  - ticker: "WMT"
-    tv_symbol: "NYSE:WMT"
-  - ticker: "XOM"
-    tv_symbol: "NYSE:XOM"
-  - ticker: "AMD"
-    tv_symbol: "NASDAQ:AMD"
-  - ticker: "NFLX"
-    tv_symbol: "NASDAQ:NFLX"
-  - ticker: "PLTR"
-    tv_symbol: "NYSE:PLTR"
-
+- ticker: AAPL
+  tv_symbol: NASDAQ:AAPL
+- ticker: MSFT
+  tv_symbol: NASDAQ:MSFT
+- ticker: NVDA
+  tv_symbol: NASDAQ:NVDA
+- ticker: AMZN
+  tv_symbol: NASDAQ:AMZN
+- ticker: GOOGL
+  tv_symbol: NASDAQ:GOOGL
+- ticker: META
+  tv_symbol: NASDAQ:META
+- ticker: TSLA
+  tv_symbol: NASDAQ:TSLA
+- ticker: JPM
+  tv_symbol: NYSE:JPM
+- ticker: V
+  tv_symbol: NYSE:V
+- ticker: LLY
+  tv_symbol: NYSE:LLY
+- ticker: WMT
+  tv_symbol: NYSE:WMT
+- ticker: XOM
+  tv_symbol: NYSE:XOM
+- ticker: AMD
+  tv_symbol: NASDAQ:AMD
+- ticker: NFLX
+  tv_symbol: NASDAQ:NFLX
+- ticker: PLTR
+  tv_symbol: NYSE:PLTR
+- ticker: CRM
+  tv_symbol: NYSE:CRM
+- ticker: INTU
+  tv_symbol: NASDAQ:INTU
+- ticker: DECK
+  tv_symbol: NYSE:DECK
+- ticker: ADBE
+  tv_symbol: NASDAQ:ADBE
+- ticker: NU
+  tv_symbol: NYSE:NU
+- ticker: NDAQ
+  tv_symbol: NASDAQ:NDAQ
+- ticker: EFX
+  tv_symbol: NYSE:EFX
+- ticker: MELI
+  tv_symbol: NASDAQ:MELI
 intl_stocks:
-  - ticker: "VOD.L"
-    tv_symbol: "LSE:VOD"
-  - ticker: "SHEL.L"
-    tv_symbol: "LSE:SHEL"
-  - ticker: "AZN.L"
-    tv_symbol: "LSE:AZN"
-  - ticker: "SAP.DE"
-    tv_symbol: "XETR:SAP"
-  - ticker: "SIE.DE"
-    tv_symbol: "XETR:SIE"
-  - ticker: "7203.T"
-    tv_symbol: "TSE:7203"
-  - ticker: "0700.HK"
-    tv_symbol: "HKEX:700"
-  - ticker: "BHP.AX"
-    tv_symbol: "ASX:BHP"
-  - ticker: "OR.PA"
-    tv_symbol: "EURONEXT:OR"
-  - ticker: "TSM"
-    tv_symbol: "NYSE:TSM"
-  - ticker: "ASML"
-    tv_symbol: "NASDAQ:ASML"
-  - ticker: "BABA"
-    tv_symbol: "NYSE:BABA"
-
+- ticker: VOD.L
+  tv_symbol: LSE:VOD
+- ticker: SHEL.L
+  tv_symbol: LSE:SHEL
+- ticker: AZN.L
+  tv_symbol: LSE:AZN
+- ticker: SAP.DE
+  tv_symbol: XETR:SAP
+- ticker: SIE.DE
+  tv_symbol: XETR:SIE
+- ticker: 7203.T
+  tv_symbol: TSE:7203
+- ticker: 0700.HK
+  tv_symbol: HKEX:700
+- ticker: BHP.AX
+  tv_symbol: ASX:BHP
+- ticker: OR.PA
+  tv_symbol: EURONEXT:OR
+- ticker: TSM
+  tv_symbol: NYSE:TSM
+- ticker: ASML
+  tv_symbol: NASDAQ:ASML
+- ticker: BABA
+  tv_symbol: NYSE:BABA
 commodities:
-  - ticker: "GC=F"
-    tv_symbol: "COMEX:GC1!"
-  - ticker: "SI=F"
-    tv_symbol: "COMEX:SI1!"
-  - ticker: "CL=F"
-    tv_symbol: "NYMEX:CL1!"
-  - ticker: "BZ=F"
-    tv_symbol: "NYMEX:BZ1!"
-  - ticker: "NG=F"
-    tv_symbol: "NYMEX:NG1!"
-  - ticker: "HG=F"
-    tv_symbol: "COMEX:HG1!"
-  - ticker: "PL=F"
-    tv_symbol: "NYMEX:PL1!"
-  - ticker: "URA"
-    tv_symbol: "AMEX:URA"
-  - ticker: "URNM"
-    tv_symbol: "AMEX:URNM"
-
+- ticker: GC=F
+  tv_symbol: COMEX:GC1!
+- ticker: SI=F
+  tv_symbol: COMEX:SI1!
+- ticker: CL=F
+  tv_symbol: NYMEX:CL1!
+- ticker: BZ=F
+  tv_symbol: NYMEX:BZ1!
+- ticker: NG=F
+  tv_symbol: NYMEX:NG1!
+- ticker: HG=F
+  tv_symbol: COMEX:HG1!
+- ticker: PL=F
+  tv_symbol: NYMEX:PL1!
+- ticker: URA
+  tv_symbol: AMEX:URA
+- ticker: URNM
+  tv_symbol: AMEX:URNM
 indices:
-  - ticker: "^GSPC"
-    tv_symbol: "SP:SPX"
-  - ticker: "^IXIC"
-    tv_symbol: "NASDAQ:IXIC"
-  - ticker: "^DJI"
-    tv_symbol: "TVC:DJI"
-  - ticker: "^RUT"
-    tv_symbol: "TVC:RUT"
-  - ticker: "^FTSE"
-    tv_symbol: "TVC:UKX"
-  - ticker: "^GDAXI"
-    tv_symbol: "XETR:DAX"
-  - ticker: "^FCHI"
-    tv_symbol: "EURONEXT:PX1"
-  - ticker: "^N225"
-    tv_symbol: "TVC:NI225"
-  - ticker: "^HSI"
-    tv_symbol: "HSI:HSI"
-  - ticker: "^AXJO"
-    tv_symbol: "ASX:XJO"
-  - ticker: "^VIX"
-    tv_symbol: "TVC:VIX"
-  - ticker: "DX-Y.NYB"
-    tv_symbol: "TVC:DXY"
+- ticker: ^GSPC
+  tv_symbol: SP:SPX
+- ticker: ^IXIC
+  tv_symbol: NASDAQ:IXIC
+- ticker: ^DJI
+  tv_symbol: TVC:DJI
+- ticker: ^RUT
+  tv_symbol: TVC:RUT
+- ticker: ^FTSE
+  tv_symbol: TVC:UKX
+- ticker: ^GDAXI
+  tv_symbol: XETR:DAX
+- ticker: ^FCHI
+  tv_symbol: EURONEXT:PX1
+- ticker: ^N225
+  tv_symbol: TVC:NI225
+- ticker: ^HSI
+  tv_symbol: HSI:HSI
+- ticker: ^AXJO
+  tv_symbol: ASX:XJO
+- ticker: ^VIX
+  tv_symbol: TVC:VIX
+- ticker: DX-Y.NYB
+  tv_symbol: TVC:DXY
+ai_stocks:
+- ticker: CEG
+  tv_symbol: NASDAQ:CEG
+- ticker: VST
+  tv_symbol: NYSE:VST
+- ticker: TLN
+  tv_symbol: NASDAQ:TLN
+- ticker: NEE
+  tv_symbol: NYSE:NEE
+- ticker: SO
+  tv_symbol: NYSE:SO
+- ticker: DUK
+  tv_symbol: NYSE:DUK
+- ticker: ETR
+  tv_symbol: NYSE:ETR
+- ticker: NRG
+  tv_symbol: NYSE:NRG
+- ticker: GEV
+  tv_symbol: NYSE:GEV
+- ticker: ETN
+  tv_symbol: NYSE:ETN
+- ticker: VRT
+  tv_symbol: NYSE:VRT
+- ticker: MOD
+  tv_symbol: NYSE:MOD
+- ticker: NVT
+  tv_symbol: NYSE:NVT
+- ticker: CARR
+  tv_symbol: NYSE:CARR
+- ticker: TT
+  tv_symbol: NYSE:TT
+- ticker: JCI
+  tv_symbol: NYSE:JCI
+- ticker: EQIX
+  tv_symbol: NASDAQ:EQIX
+- ticker: DLR
+  tv_symbol: NYSE:DLR
+- ticker: AMT
+  tv_symbol: NYSE:AMT
+- ticker: IRM
+  tv_symbol: NYSE:IRM
+- ticker: ANET
+  tv_symbol: NYSE:ANET
+- ticker: CSCO
+  tv_symbol: NASDAQ:CSCO
+- ticker: AVGO
+  tv_symbol: NASDAQ:AVGO
+- ticker: MRVL
+  tv_symbol: NASDAQ:MRVL
+- ticker: COHR
+  tv_symbol: NYSE:COHR
+- ticker: LITE
+  tv_symbol: NASDAQ:LITE
+- ticker: APH
+  tv_symbol: NYSE:APH
+- ticker: CRDO
+  tv_symbol: NASDAQ:CRDO
+- ticker: FN
+  tv_symbol: NYSE:FN
+- ticker: GLW
+  tv_symbol: NYSE:GLW
+- ticker: TEL
+  tv_symbol: NYSE:TEL
+- ticker: SU.PA
+  tv_symbol: EURONEXT:SU
+- ticker: SIE.DE
+  tv_symbol: XETR:SIE
+- ticker: ENR.DE
+  tv_symbol: XETR:ENR
+- ticker: ABBN.SW
+  tv_symbol: SIX:ABBN
+- ticker: LR.PA
+  tv_symbol: EURONEXT:LR
+- ticker: MTRS.ST
+  tv_symbol: OMX:MTRS
+- ticker: 6501.T
+  tv_symbol: TSE:6501
+- ticker: 7011.T
+  tv_symbol: TSE:7011
+- ticker: 267260.KS
+  tv_symbol: KRX:267260
+- ticker: 298040.KS
+  tv_symbol: KRX:298040
+- ticker: 034020.KS
+  tv_symbol: KRX:034020
+- ticker: 1513.TW
+  tv_symbol: TWSE:1513
+- ticker: 1519.TW
+  tv_symbol: TWSE:1519
+- ticker: 3017.TW
+  tv_symbol: TWSE:3017
+- ticker: 3324.TWO
+  tv_symbol: TPEX:3324
+- ticker: 8996.TW
+  tv_symbol: TWSE:8996
+- ticker: 6230.TW
+  tv_symbol: TWSE:6230
+- ticker: GMG.AX
+  tv_symbol: ASX:GMG
+- ticker: AJBU.SI
+  tv_symbol: SGX:AJBU
+- ticker: ME8U.SI
+  tv_symbol: SGX:ME8U
+- ticker: 2345.TW
+  tv_symbol: TWSE:2345
+- ticker: 5803.T
+  tv_symbol: TSE:5803
+- ticker: 5801.T
+  tv_symbol: TSE:5801
+- ticker: 5802.T
+  tv_symbol: TSE:5802
+- ticker: NVDA
+  tv_symbol: NASDAQ:NVDA
+- ticker: AMD
+  tv_symbol: NASDAQ:AMD
+- ticker: INTC
+  tv_symbol: NASDAQ:INTC
+- ticker: QCOM
+  tv_symbol: NASDAQ:QCOM
+- ticker: ARM
+  tv_symbol: NASDAQ:ARM
+- ticker: TSM
+  tv_symbol: NYSE:TSM
+- ticker: 2330.TW
+  tv_symbol: TWSE:2330
+- ticker: GFS
+  tv_symbol: NASDAQ:GFS
+- ticker: UMC
+  tv_symbol: NYSE:UMC
+- ticker: ASML
+  tv_symbol: NASDAQ:ASML
+- ticker: AMAT
+  tv_symbol: NASDAQ:AMAT
+- ticker: LRCX
+  tv_symbol: NASDAQ:LRCX
+- ticker: KLAC
+  tv_symbol: NASDAQ:KLAC
+- ticker: TER
+  tv_symbol: NASDAQ:TER
+- ticker: MU
+  tv_symbol: NASDAQ:MU
+- ticker: WDC
+  tv_symbol: NASDAQ:WDC
+- ticker: STX
+  tv_symbol: NASDAQ:STX
+- ticker: SNPS
+  tv_symbol: NASDAQ:SNPS
+- ticker: CDNS
+  tv_symbol: NASDAQ:CDNS
+- ticker: RMBS
+  tv_symbol: NASDAQ:RMBS
+- ticker: CEVA
+  tv_symbol: NASDAQ:CEVA
+- ticker: AMKR
+  tv_symbol: NASDAQ:AMKR
+- ticker: 005930.KS
+  tv_symbol: KRX:005930
+- ticker: 8035.T
+  tv_symbol: TSE:8035
+- ticker: 6857.T
+  tv_symbol: TSE:6857
+- ticker: ASM.AS
+  tv_symbol: EURONEXT:ASM
+- ticker: BESI.AS
+  tv_symbol: EURONEXT:BESI
+- ticker: 6920.T
+  tv_symbol: TSE:6920
+- ticker: 6146.T
+  tv_symbol: TSE:6146
+- ticker: 7735.T
+  tv_symbol: TSE:7735
+- ticker: 000660.KS
+  tv_symbol: KRX:000660
+- ticker: 8299.TWO
+  tv_symbol: TPEX:8299
+- ticker: 2408.TW
+  tv_symbol: TWSE:2408
+- ticker: 3661.TW
+  tv_symbol: TWSE:3661
+- ticker: 3443.TW
+  tv_symbol: TWSE:3443
+- ticker: 3711.TW
+  tv_symbol: TWSE:3711
+- ticker: 2449.TW
+  tv_symbol: TWSE:2449
+- ticker: 3037.TW
+  tv_symbol: TWSE:3037
+- ticker: 4062.T
+  tv_symbol: TSE:4062
+- ticker: 042700.KS
+  tv_symbol: KRX:042700
+- ticker: 0981.HK
+  tv_symbol: HKEX:981
+- ticker: MSFT
+  tv_symbol: NASDAQ:MSFT
+- ticker: GOOGL
+  tv_symbol: NASDAQ:GOOGL
+- ticker: AMZN
+  tv_symbol: NASDAQ:AMZN
+- ticker: ORCL
+  tv_symbol: NYSE:ORCL
+- ticker: BABA
+  tv_symbol: NYSE:BABA
+- ticker: BIDU
+  tv_symbol: NASDAQ:BIDU
+- ticker: NBIS
+  tv_symbol: NASDAQ:NBIS
+- ticker: APLD
+  tv_symbol: NASDAQ:APLD
+- ticker: IREN
+  tv_symbol: NASDAQ:IREN
+- ticker: HUT
+  tv_symbol: NASDAQ:HUT
+- ticker: SMCI
+  tv_symbol: NASDAQ:SMCI
+- ticker: DELL
+  tv_symbol: NYSE:DELL
+- ticker: HPE
+  tv_symbol: NYSE:HPE
+- ticker: 0700.HK
+  tv_symbol: HKEX:700
+- ticker: 2317.TW
+  tv_symbol: TWSE:2317
+- ticker: 2382.TW
+  tv_symbol: TWSE:2382
+- ticker: 3231.TW
+  tv_symbol: TWSE:3231
+- ticker: 6669.TW
+  tv_symbol: TWSE:6669
+- ticker: 2356.TW
+  tv_symbol: TWSE:2356
+- ticker: 0992.HK
+  tv_symbol: HKEX:992
+- ticker: 2357.TW
+  tv_symbol: TWSE:2357
+- ticker: 4938.TW
+  tv_symbol: TWSE:4938
+- ticker: SNOW
+  tv_symbol: NYSE:SNOW
+- ticker: MDB
+  tv_symbol: NASDAQ:MDB
+- ticker: ESTC
+  tv_symbol: NYSE:ESTC
+- ticker: TDC
+  tv_symbol: NYSE:TDC
+- ticker: DDOG
+  tv_symbol: NASDAQ:DDOG
+- ticker: DT
+  tv_symbol: NYSE:DT
+- ticker: GTLB
+  tv_symbol: NASDAQ:GTLB
+- ticker: AI
+  tv_symbol: NYSE:AI
+- ticker: VERI
+  tv_symbol: NASDAQ:VERI
+- ticker: META
+  tv_symbol: NASDAQ:META
+- ticker: APX.AX
+  tv_symbol: ASX:APX
+- ticker: 9984.T
+  tv_symbol: TSE:9984
+- ticker: 035420.KS
+  tv_symbol: KRX:035420
+- ticker: 017670.KS
+  tv_symbol: KRX:017670
+- ticker: CRM
+  tv_symbol: NYSE:CRM
+- ticker: NOW
+  tv_symbol: NYSE:NOW
+- ticker: SAP.DE
+  tv_symbol: XETR:SAP
+- ticker: WDAY
+  tv_symbol: NASDAQ:WDAY
+- ticker: INTU
+  tv_symbol: NASDAQ:INTU
+- ticker: HUBS
+  tv_symbol: NYSE:HUBS
+- ticker: CRWD
+  tv_symbol: NASDAQ:CRWD
+- ticker: PANW
+  tv_symbol: NASDAQ:PANW
+- ticker: FTNT
+  tv_symbol: NASDAQ:FTNT
+- ticker: S
+  tv_symbol: NYSE:S
+- ticker: NET
+  tv_symbol: NYSE:NET
+- ticker: CHKP
+  tv_symbol: NASDAQ:CHKP
+- ticker: 4704.T
+  tv_symbol: TSE:4704
+- ticker: PLTR
+  tv_symbol: NYSE:PLTR
+- ticker: RXRX
+  tv_symbol: NASDAQ:RXRX
+- ticker: SDGR
+  tv_symbol: NASDAQ:SDGR
+- ticker: RLAY
+  tv_symbol: NASDAQ:RLAY
+- ticker: REL.L
+  tv_symbol: LSE:REL
+- ticker: TRI
+  tv_symbol: NYSE:TRI
+- ticker: WKL.AS
+  tv_symbol: EURONEXT:WKL
+- ticker: KTOS
+  tv_symbol: NASDAQ:KTOS
+- ticker: AVAV
+  tv_symbol: NASDAQ:AVAV
+- ticker: UPST
+  tv_symbol: NASDAQ:UPST
+- ticker: ADBE
+  tv_symbol: NASDAQ:ADBE
+- ticker: ADSK
+  tv_symbol: NASDAQ:ADSK
+- ticker: U
+  tv_symbol: NYSE:U
+- ticker: DSY.PA
+  tv_symbol: EURONEXT:DSY
+- ticker: PTC
+  tv_symbol: NASDAQ:PTC
+- ticker: SSTK
+  tv_symbol: NYSE:SSTK
+- ticker: TSLA
+  tv_symbol: NASDAQ:TSLA
+- ticker: MBLY
+  tv_symbol: NASDAQ:MBLY
+- ticker: AUR
+  tv_symbol: NASDAQ:AUR
+- ticker: SYM
+  tv_symbol: NASDAQ:SYM
+- ticker: CGNX
+  tv_symbol: NASDAQ:CGNX
+- ticker: 6861.T
+  tv_symbol: TSE:6861
+- ticker: 6954.T
+  tv_symbol: TSE:6954
+- ticker: 6506.T
+  tv_symbol: TSE:6506
+- ticker: 6324.T
+  tv_symbol: TSE:6324
+- ticker: 6268.T
+  tv_symbol: TSE:6268
+- ticker: 6383.T
+  tv_symbol: TSE:6383
+- ticker: AAPL
+  tv_symbol: NASDAQ:AAPL
+- ticker: 2454.TW
+  tv_symbol: TWSE:2454
+- ticker: 6758.T
+  tv_symbol: TSE:6758
+- ticker: STMPA.PA
+  tv_symbol: EURONEXT:STMPA
+- ticker: NXPI
+  tv_symbol: NASDAQ:NXPI
+- ticker: TXN
+  tv_symbol: NASDAQ:TXN
+- ticker: 6723.T
+  tv_symbol: TSE:6723
+- ticker: HPQ
+  tv_symbol: NYSE:HPQ
+- ticker: 2353.TW
+  tv_symbol: TWSE:2353

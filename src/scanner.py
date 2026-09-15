@@ -13,6 +13,7 @@ import yaml
 
 from src.alerts.telegram import TelegramNotifier
 from src.data.binance_fetch import BinanceFetcher
+from src.data.sp500_loader import load_sp500_tickers
 from src.data.yfinance_fetch import YFinanceFetcher
 from src.engine.smma import compute_larsson_series, LarssonState
 from src.storage.database import Database
@@ -40,12 +41,25 @@ class LarssonScanner:
         self.tv_mapping = self._load_json(tv_mapping_path)
 
     def _load_yaml(self, path: str) -> dict:
+        data = {}
         try:
-            with open(path, "r", encoding="utf-8") as f:
-                return yaml.safe_load(f) or {}
+            if os.path.exists(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    data = yaml.safe_load(f) or {}
+            # Check for settings.local.yaml override
+            if "settings.yaml" in path:
+                local_path = path.replace("settings.yaml", "settings.local.yaml")
+                if os.path.exists(local_path):
+                    with open(local_path, "r", encoding="utf-8") as f:
+                        local_data = yaml.safe_load(f) or {}
+                        for k, v in local_data.items():
+                            if isinstance(v, dict) and isinstance(data.get(k), dict):
+                                data[k].update(v)
+                            else:
+                                data[k] = v
         except Exception as e:
             logger.warning(f"Could not load YAML config from {path}: {e}")
-            return {}
+        return data
 
     def _load_json(self, path: str) -> dict:
         try:
@@ -61,7 +75,7 @@ class LarssonScanner:
             return self.tv_mapping[ticker]
         if asset_class == "crypto":
             return f"BINANCE:{ticker}"
-        elif asset_class in ["us_stocks", "intl_stocks"]:
+        elif asset_class in ["us_stocks", "intl_stocks", "ai_stocks"]:
             return f"NASDAQ:{ticker}"
         return ticker
 
@@ -232,6 +246,11 @@ class LarssonScanner:
 
         return results
 
+    def scan_sp500(self, limit: Optional[int] = None, timeframe: str = "1D") -> Dict:
+        """Loads all S&P 500 constituents and scans them using batch download."""
+        tickers = load_sp500_tickers(limit=limit)
+        return self.scan_yfinance_assets(asset_class="us_stocks", tickers=tickers, timeframe=timeframe)
+
     def scan_all_assets(self, timeframe: str = "1D", crypto_limit: int = 50) -> Dict:
         """
         Runs comprehensive scan across all asset classes for a given timeframe.
@@ -254,7 +273,7 @@ class LarssonScanner:
 
         # 2. Stocks, Commodities, Indices (only on 1D and 1W)
         if timeframe in ["1D", "1W"]:
-            for a_class in ["us_stocks", "intl_stocks", "commodities", "indices"]:
+            for a_class in ["us_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]:
                 res = self.scan_yfinance_assets(asset_class=a_class, timeframe=timeframe)
                 combined["classes"][a_class] = res
                 self._aggregate_stats(combined, res)
@@ -274,3 +293,29 @@ class LarssonScanner:
         combined["neutral_count"] += part["neutral_count"]
         combined["failed_count"] += part["failed_count"]
         combined["state_changes"].extend(part["state_changes"])
+
+    def handle_candle_close_event(
+        self,
+        symbol: str,
+        timeframe: str,
+        high: float,
+        low: float,
+        close: float,
+    ) -> Optional[Dict]:
+        """
+        Handles an instant candle close event from Binance WebSocket.
+        Recalculates SMMA ribbon and triggers alerts/dashboard sync if state transitioned.
+        """
+        logger.info(f"⚡ [WebSocket Trigger] Processing candle close for {symbol} [{timeframe}] @ ${close:,.2f}")
+        res = self.scan_crypto_symbols([symbol], timeframe=timeframe, delay_s=0.0)
+        if res.get("state_changes"):
+            try:
+                from src.dashboard.generator import export_dashboard_data
+                from src.dashboard.git_sync import sync_dashboard_to_git
+
+                export_dashboard_data(self.db)
+                sync_dashboard_to_git()
+            except Exception as e:
+                logger.warning(f"Failed to sync dashboard after WS candle close: {e}")
+        return res
+

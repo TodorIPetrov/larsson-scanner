@@ -79,3 +79,20 @@ class TelegramNotifier:
         else:
             batch_msg = format_batch_alert(alerts)
             self.send_raw_message(batch_msg)
+
+    def send_test_alert(self) -> bool:
+        """Sends a mock alert to verify Telegram integration."""
+        if not self.is_configured:
+            return False
+
+        test_item = {
+            "ticker": "BTCUSDT",
+            "timeframe": "1D",
+            "old_state": LarssonState.NEUTRAL,
+            "new_state": LarssonState.GOLD,
+            "price": 77102.50,
+            "tv_symbol": "BINANCE:BTCUSDT",
+        }
+        self.dispatch_alerts([test_item])
+        return True
+

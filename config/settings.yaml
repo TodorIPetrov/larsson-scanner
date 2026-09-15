@@ -1,6 +1,6 @@
 telegram:
-  bot_token: ""  # Your Telegram Bot Token from @BotFather
-  chat_id: ""    # Your Telegram Chat ID or Channel/Group ID
+  bot_token: ""  # Set here or in config/settings.local.yaml
+  chat_id: ""    # Set here or in config/settings.local.yaml
   batch_threshold: 5
 
 scanner:

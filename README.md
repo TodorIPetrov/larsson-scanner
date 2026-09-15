@@ -69,6 +69,7 @@ telegram:
 python src/main.py --scan --asset-class all --timeframe 1D
 
 # Сканиране само на определен клас актив:
+python src/main.py --scan --asset-class ai_stocks --timeframe 1D
 python src/main.py --scan --asset-class crypto --limit 50 --timeframe 1D
 python src/main.py --scan --asset-class us_stocks --timeframe 1D
 python src/main.py --scan --asset-class intl_stocks --timeframe 1D
@@ -88,6 +89,7 @@ python src/main.py --scan --asset-class crypto --timeframe 4H
 python src/main.py --status
 
 # Филтриране само по клас:
+python src/main.py --status --asset-class ai_stocks
 python src/main.py --status --asset-class commodities
 python src/main.py --status --asset-class us_stocks
 ```
