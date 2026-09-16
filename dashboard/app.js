@@ -36,10 +36,13 @@ async function loadDashboardData() {
 }
 
 function getFilteredSymbols() {
+  const q = currentSearch.toLowerCase().trim();
   return allSymbols.filter(item => {
     const matchesFilter = (currentFilter === 'ALL') || (item.state === currentFilter);
     const matchesClass = (currentClass === 'ALL') || (item.asset_class === currentClass);
-    const matchesSearch = !currentSearch || item.ticker.toLowerCase().includes(currentSearch.toLowerCase());
+    const matchesSearch = !q ||
+      item.ticker.toLowerCase().includes(q) ||
+      (item.name && item.name.toLowerCase().includes(q));
     return matchesFilter && matchesClass && matchesSearch;
   });
 }
@@ -125,7 +128,8 @@ function renderTable() {
       <tr>
         <td>
           <div class="symbol-cell">
-            <span>${item.ticker}</span>
+            <span class="ticker-text">${item.ticker}</span>
+            <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
           </div>
         </td>
         <td>

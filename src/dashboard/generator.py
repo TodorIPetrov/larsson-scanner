@@ -17,6 +17,23 @@ DEFAULT_OUTPUT_PATH = os.path.join(
 )
 
 
+NAMES_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "config",
+    "names_mapping.json",
+)
+
+
+def _load_names_map() -> Dict[str, str]:
+    try:
+        if os.path.exists(NAMES_PATH):
+            with open(NAMES_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+
 def export_dashboard_data(
     db: Optional[Database] = None,
     output_path: str = DEFAULT_OUTPUT_PATH,
@@ -27,6 +44,7 @@ def export_dashboard_data(
     if db is None:
         db = Database()
 
+    names_map = _load_names_map()
     rows = db.get_all_states()
 
     items = []
@@ -43,8 +61,17 @@ def export_dashboard_data(
         else:
             neutral_count += 1
 
+        ticker = r["ticker"]
+        name = names_map.get(ticker)
+        if not name:
+            if ticker.endswith("USDT"):
+                name = f"{ticker[:-4]} / USDT"
+            else:
+                name = ticker
+
         items.append({
-            "ticker": r["ticker"],
+            "ticker": ticker,
+            "name": name,
             "asset_class": r["asset_class"],
             "tv_symbol": r["tv_symbol"],
             "timeframe": r["timeframe"],

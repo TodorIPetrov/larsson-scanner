@@ -351,10 +351,25 @@ h1 {
 
 .symbol-cell {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ticker-text {
+  font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+
+.name-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+  font-weight: 400;
 }
 
 .tf-badge {
