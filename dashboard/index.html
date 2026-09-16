@@ -105,6 +105,7 @@
           <button class="filter-btn filter-gold" data-setup="TAKE_PROFIT">💰 Take Profit</button>
           <button class="filter-btn filter-blue" data-setup="EXIT_PROTECT">🛡️ Exit / Protect</button>
           <button class="filter-btn" data-setup="TIER_A">⭐ Tier A / A+</button>
+          <button class="filter-btn filter-neutral" data-setup="VALUE_TRAP">⏳ Value Traps</button>
         </div>
 
         <div class="view-toggle" id="viewToggle">
@@ -119,14 +120,14 @@
       <table class="assets-table">
         <thead>
           <tr>
-            <th>Symbol</th>
-            <th>Class</th>
+            <th class="th-sortable" data-sort="ticker">Symbol <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="asset_class">Class <span class="sort-icon">⇅</span></th>
             <th>TF</th>
-            <th>State</th>
-            <th>Price</th>
-            <th>Trend Strength</th>
-            <th>🎯 Trade Setup</th>
-            <th>Key S/R Levels</th>
+            <th class="th-sortable" data-sort="state">State <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="price">Price <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="spread_pct">Trend Strength <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="tier">🎯 Trade Setup <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="s1_dist">Key S/R Levels <span class="sort-icon">⇅</span></th>
             <th>SMMA 15 (v1)</th>
             <th>SMMA 19 (m1)</th>
             <th>SMMA 25 (m2)</th>
@@ -257,6 +258,45 @@
         </div>
         <div class="setup-reason-box" id="modalSetupReason">
           Pullback to major support S1 in bullish trend.
+        </div>
+      </div>
+
+      <!-- Position Sizing & Staggered DCA Calculator HUD -->
+      <div class="chart-pos-calc-strip" id="modalPosCalcStrip">
+        <div class="pos-calc-header">
+          <span>🧮 <b>Position Sizing & Risk Management Calculator</b></span>
+          <span class="pos-dca-pill" id="modalDcaPill" style="display: none;">🧱 50% Market + 50% Limit S1</span>
+        </div>
+        <div class="pos-calc-body">
+          <div class="pos-input-group">
+            <label>Portfolio Equity ($):</label>
+            <input type="number" id="calcAccountSize" value="10000" min="100" step="500">
+          </div>
+          <div class="pos-input-group">
+            <label>Risk Per Trade (%):</label>
+            <div class="risk-presets" id="riskPresets">
+              <button class="risk-btn" data-risk="0.5">0.5%</button>
+              <button class="risk-btn active" data-risk="1.0">1.0%</button>
+              <button class="risk-btn" data-risk="2.0">2.0%</button>
+            </div>
+            <input type="number" id="calcRiskPct" value="1.0" min="0.1" max="10.0" step="0.1" style="width: 65px;">
+          </div>
+          <div class="pos-result-box">
+            <span class="lbl">Shares / Coins to Buy</span>
+            <strong id="calcUnits">0</strong>
+          </div>
+          <div class="pos-result-box">
+            <span class="lbl">Total Position Value</span>
+            <strong id="calcPosValue">$0.00</strong>
+          </div>
+          <div class="pos-result-box">
+            <span class="lbl">Max Risk (SL Loss)</span>
+            <strong class="text-danger" id="calcRiskUsd">-$0.00</strong>
+          </div>
+          <div class="pos-result-box">
+            <span class="lbl">Target Profit (TP1)</span>
+            <strong class="text-success" id="calcTp1Usd">+$0.00</strong>
+          </div>
         </div>
       </div>
 

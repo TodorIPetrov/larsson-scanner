@@ -6,6 +6,10 @@ let currentSetupFilter = 'ALL';
 let currentSearch = '';
 let currentView = localStorage.getItem('larsson_view_mode') || 'table';
 
+let currentSortColumn = null;
+let currentSortDir = 'asc';
+let currentModalItem = null;
+
 // Active chart state
 let activeChart = null;
 let activeTicker = '';
@@ -134,6 +138,8 @@ function getFilteredSymbols() {
                      (fund && (fund.verdict?.includes('STRONG BUY') || fund.verdict === 'BUY'));
     } else if (currentSetupFilter === 'WIDE_MOAT') {
       matchesSetup = fund && fund.moat === 'Wide';
+    } else if (currentSetupFilter === 'VALUE_TRAP') {
+      matchesSetup = ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK');
     }
 
     const matchesSearch = !q ||
@@ -141,6 +147,47 @@ function getFilteredSymbols() {
       (item.name && item.name.toLowerCase().includes(q));
     return matchesFilter && matchesClass && matchesTf && matchesSetup && matchesSearch;
   });
+
+  if (currentSortColumn) {
+    const tierRanks = { 'A+': 4, 'A': 3, 'B': 2, 'NONE': 1 };
+    const stateRanks = { 'GOLD': 3, 'NEUTRAL': 2, 'BLUE': 1 };
+
+    filtered.sort((a, b) => {
+      let valA, valB;
+      if (currentSortColumn === 'ticker') {
+        valA = a.ticker || '';
+        valB = b.ticker || '';
+        return currentSortDir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      } else if (currentSortColumn === 'asset_class') {
+        valA = a.asset_class || '';
+        valB = b.asset_class || '';
+        return currentSortDir === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      } else if (currentSortColumn === 'state') {
+        valA = stateRanks[a.state] || 0;
+        valB = stateRanks[b.state] || 0;
+      } else if (currentSortColumn === 'price') {
+        valA = a.price || 0;
+        valB = b.price || 0;
+      } else if (currentSortColumn === 'spread_pct') {
+        valA = a.spread_pct !== undefined ? a.spread_pct : -999;
+        valB = b.spread_pct !== undefined ? b.spread_pct : -999;
+      } else if (currentSortColumn === 'tier') {
+        valA = (a.trade_suggestion && tierRanks[a.trade_suggestion.tier]) || 0;
+        valB = (b.trade_suggestion && tierRanks[b.trade_suggestion.tier]) || 0;
+      } else if (currentSortColumn === 's1_dist') {
+        valA = (a.s1_dist_pct !== null && a.s1_dist_pct !== undefined) ? a.s1_dist_pct : 9999;
+        valB = (b.s1_dist_pct !== null && b.s1_dist_pct !== undefined) ? b.s1_dist_pct : 9999;
+      } else {
+        return 0;
+      }
+
+      if (valA < valB) return currentSortDir === 'asc' ? -1 : 1;
+      if (valA > valB) return currentSortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  return filtered;
 }
 
 function renderOverview(data) {
@@ -902,6 +949,7 @@ function updateModalTradeSuggestionStrip(ts, item) {
     reasonElem.textContent = ts && (ts.reason_bg || ts.reason_en) 
       ? (ts.reason_bg || ts.reason_en) 
       : 'Цената е в междинна зона без ясен институционален сетап. Изчакай тест на ключово ниво.';
+    updateModalPositionCalculator(ts, item);
     return;
   }
 
@@ -937,6 +985,7 @@ function updateModalTradeSuggestionStrip(ts, item) {
   tp2Elem.textContent = ts.tp2 ? '$' + ts.tp2.toLocaleString('en-US', { minimumFractionDigits: 2 }) : 'N/A';
   rrElem.textContent = ts.rr ? `1 : ${ts.rr}` : 'N/A';
   reasonElem.textContent = ts.reason_bg || ts.reason_en || '';
+  updateModalPositionCalculator(ts, item);
 }
 
 function renderTradingViewWidget(container, tvSymbol, tfCode, item) {
@@ -1022,6 +1071,86 @@ window.addEventListener('resize', () => {
 });
 
 // =============================================================================
+// POSITION SIZING & STAGGERED DCA CALCULATOR
+// =============================================================================
+
+function updateModalPositionCalculator(ts, item) {
+  currentModalItem = item;
+  const calcStrip = document.getElementById('modalPosCalcStrip');
+  if (!calcStrip) return;
+
+  const dcaPill = document.getElementById('modalDcaPill');
+  const entry = (ts && ts.entry) || (item && item.price) || 0;
+  const s1 = item && item.s1;
+
+  if (dcaPill) {
+    if (ts && ts.dca_plan) {
+      dcaPill.textContent = `🧱 ${ts.dca_plan}`;
+      dcaPill.style.display = 'inline-block';
+    } else if (s1 && s1 < entry && item && item.fundamental && (item.fundamental.moat === 'Wide' || item.fundamental.moat === 'Narrow')) {
+      dcaPill.textContent = `🧱 50% Market ($${formatShortPrice(entry)}) + 50% Limit S1 ($${formatShortPrice(s1)})`;
+      dcaPill.style.display = 'inline-block';
+    } else {
+      dcaPill.style.display = 'none';
+    }
+  }
+
+  recalculatePositionSize();
+}
+
+function recalculatePositionSize() {
+  if (!currentModalItem) return;
+  const ts = currentModalItem.trade_suggestion;
+  const price = currentModalItem.price || 1.0;
+  const entry = (ts && ts.entry) || price;
+  let sl = (ts && ts.sl);
+  const tp1 = (ts && ts.tp1);
+
+  if (!sl || sl >= entry) {
+    sl = entry * 0.95; // default 5% risk floor for calculation
+  }
+
+  const accountSizeInput = document.getElementById('calcAccountSize');
+  const riskPctInput = document.getElementById('calcRiskPct');
+  if (!accountSizeInput || !riskPctInput) return;
+
+  const accountSize = parseFloat(accountSizeInput.value) || 10000;
+  const riskPct = parseFloat(riskPctInput.value) || 1.0;
+
+  const riskUsd = accountSize * (riskPct / 100);
+  const riskPerUnit = Math.abs(entry - sl);
+
+  if (riskPerUnit > 0 && entry > 0) {
+    const units = riskUsd / riskPerUnit;
+    const unitsFormatted = entry < 1 ? units.toFixed(4) : (entry < 50 ? units.toFixed(2) : (entry < 1000 ? units.toFixed(1) : units.toFixed(3)));
+    const posValue = units * entry;
+    const tp1Profit = tp1 ? units * Math.abs(tp1 - entry) : null;
+
+    const unitsEl = document.getElementById('calcUnits');
+    const posValEl = document.getElementById('calcPosValue');
+    const riskUsdEl = document.getElementById('calcRiskUsd');
+    const tp1UsdEl = document.getElementById('calcTp1Usd');
+
+    if (unitsEl) unitsEl.textContent = `${unitsFormatted} ${currentModalItem.asset_class === 'crypto' ? 'tokens' : 'shares'}`;
+    if (posValEl) posValEl.textContent = `$${posValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (riskUsdEl) riskUsdEl.textContent = `-$${riskUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (tp1UsdEl) tp1UsdEl.textContent = tp1Profit ? `+$${tp1Profit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'N/A';
+  }
+}
+
+function updateSortIndicators() {
+  document.querySelectorAll('.th-sortable').forEach(th => {
+    th.classList.remove('th-sort-asc', 'th-sort-desc');
+    const icon = th.querySelector('.sort-icon');
+    if (icon) icon.textContent = '⇅';
+    if (th.dataset.sort === currentSortColumn) {
+      th.classList.add(currentSortDir === 'asc' ? 'th-sort-asc' : 'th-sort-desc');
+      if (icon) icon.textContent = currentSortDir === 'asc' ? '▲' : '▼';
+    }
+  });
+}
+
+// =============================================================================
 // GLOBAL EVENT LISTENERS & FILTERS
 // =============================================================================
 
@@ -1074,6 +1203,38 @@ document.querySelectorAll('#classFilters .filter-btn').forEach(btn => {
 document.getElementById('searchInput').addEventListener('input', (e) => {
   currentSearch = e.target.value.trim();
   renderAllViews();
+});
+
+// Table Column Sorting Click Listener
+document.querySelectorAll('.th-sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.sort;
+    if (currentSortColumn === col) {
+      currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSortColumn = col;
+      currentSortDir = (col === 'spread_pct' || col === 'tier') ? 'desc' : 'asc';
+    }
+    updateSortIndicators();
+    renderAllViews();
+  });
+});
+
+// Position Calculator Inputs Event Listeners
+const accInput = document.getElementById('calcAccountSize');
+if (accInput) accInput.addEventListener('input', recalculatePositionSize);
+
+const riskInput = document.getElementById('calcRiskPct');
+if (riskInput) riskInput.addEventListener('input', recalculatePositionSize);
+
+document.querySelectorAll('#riskPresets .risk-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#riskPresets .risk-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    const val = parseFloat(e.target.dataset.risk);
+    if (riskInput) riskInput.value = val;
+    recalculatePositionSize();
+  });
 });
 
 document.getElementById('refreshBtn').addEventListener('click', () => {

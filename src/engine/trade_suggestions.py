@@ -32,9 +32,68 @@ class TradeSuggestion:
     moat: Optional[str] = None
     z_score: Optional[float] = None
     quantamental_tag: Optional[str] = None
+    dca_plan: Optional[str] = None
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+def calculate_position_size(
+    entry_price: float,
+    stop_loss: float,
+    account_size: float = 10000.0,
+    risk_pct: float = 1.0,
+    tp1: Optional[float] = None,
+    tp2: Optional[float] = None,
+) -> dict:
+    """
+    Calculates institutional position sizing based on risk-per-trade.
+    Formula: Risk USD = account_size * (risk_pct / 100)
+             Risk Per Unit = abs(entry_price - stop_loss)
+             Position Units = Risk USD / Risk Per Unit
+    """
+    if entry_price <= 0 or stop_loss <= 0 or account_size <= 0 or risk_pct <= 0:
+        return {
+            "units": 0.0,
+            "position_value": 0.0,
+            "risk_usd": 0.0,
+            "risk_per_unit": 0.0,
+            "risk_pct_price": 0.0,
+            "profit_tp1_usd": 0.0,
+            "profit_tp2_usd": 0.0,
+        }
+
+    risk_per_unit = abs(entry_price - stop_loss)
+    if risk_per_unit <= 1e-8:
+        return {
+            "units": 0.0,
+            "position_value": 0.0,
+            "risk_usd": 0.0,
+            "risk_per_unit": 0.0,
+            "risk_pct_price": 0.0,
+            "profit_tp1_usd": 0.0,
+            "profit_tp2_usd": 0.0,
+        }
+
+    risk_usd = round(account_size * (risk_pct / 100.0), 2)
+    units_raw = risk_usd / risk_per_unit
+
+    units = round(units_raw, 4 if entry_price < 100 else 2)
+    position_value = round(units * entry_price, 2)
+    risk_pct_price = round((risk_per_unit / entry_price) * 100.0, 2)
+
+    profit_tp1_usd = round(units * abs(tp1 - entry_price), 2) if tp1 else None
+    profit_tp2_usd = round(units * abs(tp2 - entry_price), 2) if tp2 else None
+
+    return {
+        "units": units,
+        "position_value": position_value,
+        "risk_usd": risk_usd,
+        "risk_per_unit": round(risk_per_unit, 4),
+        "risk_pct_price": risk_pct_price,
+        "profit_tp1_usd": profit_tp1_usd,
+        "profit_tp2_usd": profit_tp2_usd,
+    }
 
 
 def calculate_confluence_score(
@@ -351,6 +410,8 @@ def generate_trade_suggestion(
                     reason_bg = f"Корекция до подкрепа S1 ({s1_desc}) в бичи тренд. Отличен Risk/Reward (1:{rr:.1f}) с таван до R1 ({r1_desc})."
                     reason_en = f"Pullback to support S1 ({s1_desc}) in bullish trend. Solid R:R (1:{rr:.1f}) targeting R1 ({r1_desc})."
 
+                dca = f"50% Market (${current_price:,.2f}) + 50% Limit S1 (${s1:,.2f})" if (s1 and s1 < current_price) else None
+
                 return TradeSuggestion(
                     action="SPOT_BUY",
                     direction="LONG",
@@ -370,6 +431,7 @@ def generate_trade_suggestion(
                     moat=moat,
                     z_score=z_score,
                     quantamental_tag=quant_tag,
+                    dca_plan=dca,
                 )
 
     # -------------------------------------------------------------------------
