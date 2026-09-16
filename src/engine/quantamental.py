@@ -6,11 +6,25 @@ with technical trade signals.
 
 import json
 import logging
+import math
 import os
 from dataclasses import asdict, dataclass
 from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
+
+
+def _clean_float(val: Optional[float]) -> Optional[float]:
+    """Ensures floats are JSON compliant (converts NaN/Inf to None)."""
+    if val is None:
+        return None
+    try:
+        f = float(val)
+        if math.isnan(f) or math.isinf(f):
+            return None
+        return f
+    except (ValueError, TypeError):
+        return None
 
 
 @dataclass
@@ -381,27 +395,40 @@ class QuantamentalRegistry:
                         continue
 
                     # Upside calculation fallback
-                    price = item.get("price")
-                    target = item.get("target_price") or item.get("fair_value_base")
-                    upside = item.get("upside_pct")
+                    price = _clean_float(item.get("price"))
+                    target = _clean_float(item.get("target_price") or item.get("fair_value_base"))
+                    upside = _clean_float(item.get("upside_pct"))
                     if upside is None and price and target and price > 0:
                         upside = round(((target - price) / price) * 100, 1)
 
                     verdict_val = item.get("verdict", "HOLD").upper()
+                    target_val = target
+                    fair_val = _clean_float(item.get("fair_value_base")) or target
+                    mos_val = _clean_float(item.get("mos_pct"))
+                    roic_val = _clean_float(item.get("roic_pct"))
+                    wacc_val = _clean_float(item.get("wacc_pct"))
+                    z_val = _clean_float(item.get("z_score"))
+                    m_val = _clean_float(item.get("m_score"))
+
+                    target_str = f"${target_val:,.2f}" if target_val is not None else "N/A"
+                    upside_str = f"{upside:+.1f}%" if upside is not None else "N/A"
+                    roic_str = f"{roic_val:.1f}%" if roic_val is not None else "N/A"
+                    z_str = f"{z_val:.2f}" if z_val is not None else "N/A"
+
                     profile = FundamentalProfile(
                         ticker=ticker,
                         name=item.get("name", ticker),
                         verdict=verdict_val,
-                        target_price=target,
-                        fair_value=item.get("fair_value_base") or target,
-                        mos_pct=item.get("mos_pct"),
+                        target_price=target_val,
+                        fair_value=fair_val,
+                        mos_pct=mos_val,
                         moat=item.get("moat", "None"),
-                        roic_pct=item.get("roic_pct"),
-                        wacc_pct=item.get("wacc_pct"),
-                        z_score=item.get("z_score"),
-                        m_score=item.get("m_score"),
+                        roic_pct=roic_val,
+                        wacc_pct=wacc_val,
+                        z_score=z_val,
+                        m_score=m_val,
                         upside_pct=upside,
-                        thesis=f"Справедлива стойност ${target:,.2f} ({upside:+.1f}%). Ров: {item.get('moat', 'None')}, ROIC: {item.get('roic_pct', 0):.1f}%, Z-Score: {item.get('z_score', 0):.2f}.",
+                        thesis=f"Справедлива стойност {target_str} ({upside_str}). Ров: {item.get('moat', 'None')}, ROIC: {roic_str}, Z-Score: {z_str}.",
                     )
                     self.profiles[ticker.upper()] = profile
                     count += 1
