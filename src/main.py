@@ -30,6 +30,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from src.alerts.bot_listener import TelegramCommandListener
+from src.alerts.digest import send_daily_digest
 from src.alerts.healthcheck import send_heartbeat_ping
 from src.alerts.telegram import TelegramNotifier
 from src.dashboard.generator import export_dashboard_data
@@ -178,12 +179,21 @@ def start_scheduler(scanner: LarssonScanner):
         name="Traditional & Crypto Stocks Weekly Scan (Fri 21:10 UTC)",
     )
 
+    # Daily Morning Digest: 08:00 UTC (11:00 Bulgarian time)
+    sched.add_job(
+        func=lambda: send_daily_digest(scanner.notifier, scanner.db),
+        trigger=CronTrigger(hour=8, minute=0, timezone="UTC"),
+        id="daily_digest",
+        name="Daily Morning Digest (08:00 UTC)",
+    )
+
     logger.info("Scheduler started with cron jobs:")
     logger.info("  - Crypto 1D: Daily at 00:02 UTC")
     logger.info("  - Crypto 4H: Every 4 hours at :02 UTC")
     logger.info("  - Crypto 1W: Mondays at 00:05 UTC")
     logger.info("  - Stocks/Commodities 1D: Mon-Fri at 21:05 UTC")
     logger.info("  - Stocks/Commodities 1W: Fridays at 21:10 UTC")
+    logger.info("  - Daily Digest: Daily at 08:00 UTC (11:00 EEST)")
 
     # Start Binance WebSocket listener for sub-second real-time crypto candle close alerts
     try:
@@ -246,6 +256,8 @@ def main():
     parser.add_argument("--status", action="store_true", help="Print table of currently recorded states")
     parser.add_argument("--export-dashboard", action="store_true", help="Export latest data.json for dashboard")
     parser.add_argument("--test-telegram", action="store_true", help="Send a test notification to Telegram")
+    parser.add_argument("--digest", action="store_true", help="Dispatch daily market digest to Telegram")
+    parser.add_argument("--force", action="store_true", help="Force sending digest even if already sent today")
     parser.add_argument("--websocket", action="store_true", help="Run standalone Binance WebSocket listener")
 
     args = parser.parse_args()
@@ -310,6 +322,16 @@ def main():
     elif args.export_dashboard:
         data = export_dashboard_data(db)
         print(f"Exported dashboard data: {data['summary']['total']} symbols to dashboard/data.json")
+    elif args.digest:
+        if not notifier.is_configured:
+            print("\n❌ Telegram все още НЕ е конфигуриран!")
+        else:
+            print("\n🚀 Изпращане на сутрешен бюлетин (Daily Digest) към Telegram...")
+            ok = send_daily_digest(notifier, db, force=args.force)
+            if ok:
+                print("✅ Бюлетинът беше изпратен успешно към Telegram!\n")
+            else:
+                print("ℹ️ Бюлетинът не беше изпратен (вече е изпратен днес или възникна грешка). Използвай --force за принудително изпращане.\n")
     elif args.scheduler:
         start_scheduler(scanner)
     elif args.websocket:

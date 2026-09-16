@@ -69,6 +69,12 @@ def export_dashboard_data(
             else:
                 name = ticker
 
+        v1_val = round(float(r["v1"]), 4)
+        m1_val = round(float(r["m1"]), 4)
+        m2_val = round(float(r["m2"]), 4)
+        v2_val = round(float(r["v2"]), 4)
+        spread_pct = round(((v1_val - v2_val) / v2_val) * 100, 2) if v2_val > 0 else 0.0
+
         items.append({
             "ticker": ticker,
             "name": name,
@@ -77,10 +83,11 @@ def export_dashboard_data(
             "timeframe": r["timeframe"],
             "state": state,
             "price": r["last_price"],
-            "v1": round(r["v1"], 4),
-            "m1": round(r["m1"], 4),
-            "m2": round(r["m2"], 4),
-            "v2": round(r["v2"], 4),
+            "v1": v1_val,
+            "m1": m1_val,
+            "m2": m2_val,
+            "v2": v2_val,
+            "spread_pct": spread_pct,
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
         })

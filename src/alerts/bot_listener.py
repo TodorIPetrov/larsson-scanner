@@ -130,10 +130,17 @@ class TelegramCommandListener:
 
         return header + "\n".join(lines)
 
+    def handle_digest(self) -> str:
+        """Generates the full daily market digest."""
+        from src.alerts.digest import generate_digest_data
+        digest = generate_digest_data(self.db)
+        return digest["message"]
+
     def handle_help(self) -> str:
         return (
             "🤖 <b>Larsson Line Бот Команди:</b>\n\n"
             "/status - Общ пазарен баланс и брой активи по цвят\n"
+            "/digest - Изпраща подробен бюлетин (топ трендове, Ribbon Spread, 24ч промени)\n"
             "/gold - Списък на всички бичи активи (Gold 🟡)\n"
             "/blue - Списък на всички мечи активи (Blue 🔵)\n"
             "/watchlist - Показва активите в твоя личен списък ⭐\n"
@@ -166,6 +173,8 @@ class TelegramCommandListener:
 
         if cmd == "/status":
             reply = self.handle_status()
+        elif cmd == "/digest":
+            reply = self.handle_digest()
         elif cmd == "/gold":
             reply = self.handle_state_list("GOLD", "🟡")
         elif cmd == "/blue":

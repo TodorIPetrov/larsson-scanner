@@ -89,6 +89,15 @@ class Database:
             );
             """)
 
+            # Table for internal key-value system metadata (e.g. last digest date)
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS system_metadata (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+            """)
+
     def restore_from_json_if_empty(self, json_path: Optional[str] = None) -> int:
         """
         If the database is fresh/empty (e.g., in a stateless CI/cloud runner),
@@ -294,4 +303,41 @@ class Database:
             JOIN symbol_states st ON s.ticker = st.ticker
             ORDER BY w.ticker, st.timeframe
             """)
+            return cur.fetchall()
+
+    def get_metadata(self, key: str) -> Optional[str]:
+        """Retrieves a system metadata value by key."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT value FROM system_metadata WHERE key = ?", (key,))
+            row = cur.fetchone()
+            return row["value"] if row else None
+
+    def set_metadata(self, key: str, value: str):
+        """Sets or updates a system metadata key-value pair."""
+        now_iso = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO system_metadata (key, value, updated_at)
+            VALUES (?, ?, ?)
+            ON CONFLICT(key) DO UPDATE SET
+                value = excluded.value,
+                updated_at = excluded.updated_at
+            """, (key, value, now_iso))
+
+    def get_recent_alerts(self, hours: int = 24) -> List[sqlite3.Row]:
+        """
+        Retrieves alert logs recorded within the last N hours.
+        """
+        from datetime import timedelta
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT ticker, timeframe, old_state, new_state, price, tv_symbol, created_at
+            FROM alert_logs
+            WHERE created_at >= ?
+            ORDER BY created_at DESC
+            """, (cutoff,))
             return cur.fetchall()

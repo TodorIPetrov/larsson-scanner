@@ -88,11 +88,16 @@
           <button class="filter-btn filter-blue" data-filter="BLUE">🔵 Blue</button>
           <button class="filter-btn filter-neutral" data-filter="NEUTRAL">⚪ Neutral</button>
         </div>
+
+        <div class="view-toggle" id="viewToggle">
+          <button class="toggle-btn active" data-view="table">💻 Table</button>
+          <button class="toggle-btn" data-view="cards">📱 Cards</button>
+        </div>
       </div>
     </section>
 
-    <!-- Assets Table -->
-    <section class="table-container">
+    <!-- Assets Table View -->
+    <section class="table-container" id="tableContainer">
       <table class="assets-table">
         <thead>
           <tr>
@@ -101,6 +106,7 @@
             <th>TF</th>
             <th>State</th>
             <th>Price</th>
+            <th>Trend Strength</th>
             <th>SMMA 15 (v1)</th>
             <th>SMMA 19 (m1)</th>
             <th>SMMA 25 (m2)</th>
@@ -111,10 +117,17 @@
         </thead>
         <tbody id="assetsTableBody">
           <tr>
-            <td colspan="10" class="loading-state">Loading latest market data...</td>
+            <td colspan="12" class="loading-state">Loading latest market data...</td>
           </tr>
         </tbody>
       </table>
+    </section>
+
+    <!-- Assets Cards View (Mobile / Alternative View) -->
+    <section class="cards-container" id="cardsContainer" style="display: none;">
+      <div class="cards-grid" id="cardsGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
     </section>
 
     <footer class="footer">

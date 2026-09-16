@@ -2,6 +2,7 @@ let allSymbols = [];
 let currentFilter = 'ALL';
 let currentClass = 'ALL';
 let currentSearch = '';
+let currentView = localStorage.getItem('larsson_view_mode') || 'table';
 
 const CLASS_LABELS = {
   crypto_stocks: 'Crypto Stock',
@@ -22,12 +23,12 @@ async function loadDashboardData() {
     const data = await res.json();
     allSymbols = data.symbols || [];
     renderOverview(data);
-    renderTable();
+    renderAllViews();
   } catch (err) {
     console.error('Error loading dashboard:', err);
     document.getElementById('assetsTableBody').innerHTML = `
       <tr>
-        <td colspan="11" class="loading-state" style="color: #ef4444;">
+        <td colspan="12" class="loading-state" style="color: #ef4444;">
           ⚠️ Failed to load <code>data.json</code>. Run a scan first: <code>python src/main.py --scan</code>
         </td>
       </tr>
@@ -48,7 +49,6 @@ function getFilteredSymbols() {
 }
 
 function renderOverview(data) {
-  // Compute sentiment on the currently active class subset
   const activeSet = currentClass === 'ALL' 
     ? allSymbols 
     : allSymbols.filter(s => s.asset_class === currentClass);
@@ -87,6 +87,12 @@ function renderOverview(data) {
   }
 }
 
+function renderAllViews() {
+  renderTable();
+  renderCards();
+  applyViewMode();
+}
+
 function renderTable() {
   const tbody = document.getElementById('assetsTableBody');
   const filtered = getFilteredSymbols();
@@ -94,7 +100,7 @@ function renderTable() {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="11" class="loading-state">No matching assets found.</td>
+        <td colspan="12" class="loading-state">No matching assets found.</td>
       </tr>
     `;
     return;
@@ -124,6 +130,11 @@ function renderTable() {
 
     const classLabel = CLASS_LABELS[item.asset_class] || item.asset_class;
 
+    const spreadVal = item.spread_pct !== undefined ? item.spread_pct : 0.0;
+    const spreadSign = spreadVal > 0 ? '+' : '';
+    const spreadClass = spreadVal > 0 ? 'spread-pos' : (spreadVal < 0 ? 'spread-neg' : 'spread-neu');
+    const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
+
     return `
       <tr>
         <td>
@@ -145,6 +156,9 @@ function renderTable() {
           </span>
         </td>
         <td class="price-cell">${priceFormatted}</td>
+        <td class="spread-cell ${spreadClass}">
+          <span class="spread-pill ${spreadClass}">${spreadLabel}</span>
+        </td>
         <td class="num-cell">${item.v1}</td>
         <td class="num-cell">${item.m1}</td>
         <td class="num-cell">${item.m2}</td>
@@ -160,13 +174,126 @@ function renderTable() {
   }).join('');
 }
 
+function renderCards() {
+  const container = document.getElementById('cardsGrid');
+  const filtered = getFilteredSymbols();
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">No matching assets found.</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(item => {
+    const tfCode = item.timeframe === '4H' ? '240' : item.timeframe;
+    const tvUrl = `https://www.tradingview.com/chart/?symbol=${item.tv_symbol}&interval=${tfCode}`;
+    
+    let badgeClass = 'badge-neutral';
+    let stateEmoji = '⚪';
+    let cardClass = 'card-neutral';
+    if (item.state === 'GOLD') {
+      badgeClass = 'badge-gold';
+      stateEmoji = '🟡';
+      cardClass = 'card-gold';
+    } else if (item.state === 'BLUE') {
+      badgeClass = 'badge-blue';
+      stateEmoji = '🔵';
+      cardClass = 'card-blue';
+    }
+
+    const priceFormatted = item.price >= 1000 
+      ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+      : `$${item.price.toFixed(item.price >= 1 ? 2 : 5)}`;
+
+    const classLabel = CLASS_LABELS[item.asset_class] || item.asset_class;
+
+    const spreadVal = item.spread_pct !== undefined ? item.spread_pct : 0.0;
+    const spreadSign = spreadVal > 0 ? '+' : '';
+    const spreadClass = spreadVal > 0 ? 'spread-pos' : (spreadVal < 0 ? 'spread-neg' : 'spread-neu');
+    const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
+
+    return `
+      <div class="asset-card ${cardClass}">
+        <div class="card-top">
+          <div class="card-identity">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" title="Open TradingView Chart">
+              <span class="card-ticker">${item.ticker}</span>
+              <span class="tv-badge">TV ↗</span>
+            </a>
+            <div class="card-name" title="${item.name || ''}">${item.name || ''}</div>
+          </div>
+          <div class="card-badges">
+            <span class="class-badge class-${item.asset_class}">${classLabel}</span>
+            <span class="tf-badge">${item.timeframe}</span>
+          </div>
+        </div>
+
+        <div class="card-middle">
+          <div>
+            <div class="card-price">${priceFormatted}</div>
+            <div class="card-spread ${spreadClass}">
+              <span class="spread-label">Ribbon Spread:</span>
+              <span class="spread-pill ${spreadClass}">${spreadLabel}</span>
+            </div>
+          </div>
+          <span class="badge ${badgeClass}">
+            <span class="dot"></span> ${stateEmoji} ${item.state}
+          </span>
+        </div>
+
+        <div class="card-ribbon-metrics">
+          <div class="ribbon-box"><span>v1 (15)</span><strong>${item.v1}</strong></div>
+          <div class="ribbon-box"><span>m1 (19)</span><strong>${item.m1}</strong></div>
+          <div class="ribbon-box"><span>m2 (25)</span><strong>${item.m2}</strong></div>
+          <div class="ribbon-box"><span>v2 (29)</span><strong>${item.v2}</strong></div>
+        </div>
+
+        <div class="card-footer">
+          <span class="card-change">Changed: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'N/A'}</span>
+          <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn">Chart ↗</a>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function applyViewMode() {
+  const tableSec = document.getElementById('tableContainer');
+  const cardsSec = document.getElementById('cardsContainer');
+  const buttons = document.querySelectorAll('#viewToggle .toggle-btn');
+
+  buttons.forEach(b => {
+    if (b.dataset.view === currentView) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+
+  if (currentView === 'cards') {
+    tableSec.style.display = 'none';
+    cardsSec.style.display = 'block';
+  } else {
+    tableSec.style.display = 'block';
+    cardsSec.style.display = 'none';
+  }
+}
+
+// Event Listeners for View Toggle
+document.querySelectorAll('#viewToggle .toggle-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    currentView = e.target.dataset.view;
+    localStorage.setItem('larsson_view_mode', currentView);
+    applyViewMode();
+  });
+});
+
 // Event Listeners for State Filter
 document.querySelectorAll('#stateFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#stateFilters .filter-btn').forEach(b => b.classList.remove('active'));
     e.target.classList.add('active');
     currentFilter = e.target.dataset.filter;
-    renderTable();
+    renderAllViews();
   });
 });
 
@@ -177,18 +304,21 @@ document.querySelectorAll('#classFilters .filter-btn').forEach(btn => {
     e.target.classList.add('active');
     currentClass = e.target.dataset.class;
     renderOverview();
-    renderTable();
+    renderAllViews();
   });
 });
 
 document.getElementById('searchInput').addEventListener('input', (e) => {
   currentSearch = e.target.value.trim();
-  renderTable();
+  renderAllViews();
 });
 
 document.getElementById('refreshBtn').addEventListener('click', () => {
   loadDashboardData();
 });
 
-// Initial Load
+// Auto-refresh every 60 seconds
+setInterval(loadDashboardData, 60000);
+
+// Initialize
 loadDashboardData();

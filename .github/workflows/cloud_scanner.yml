@@ -55,6 +55,16 @@ jobs:
         run: |
           python src/main.py --export-dashboard
 
+      - name: Send Daily Morning Digest (Morning Schedule)
+        run: |
+          HOUR=$(date -u +%H)
+          if [ "$HOUR" -ge 7 ] && [ "$HOUR" -le 10 ]; then
+            echo "Morning window detected ($HOUR:00 UTC). Checking daily digest dispatch..."
+            python src/main.py --digest
+          else
+            echo "Outside morning window ($HOUR:00 UTC). Skipping daily digest."
+          fi
+
       - name: Commit & Push Market Data to GitHub Pages
         run: |
           git config --global user.name "github-actions[bot]"
