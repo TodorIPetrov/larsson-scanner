@@ -30,3 +30,12 @@ def test_command_listener_replies(tmp_path):
     # Test /blue reply
     blue_text = listener.handle_state_list("BLUE", "🔵")
     assert "AAPL" in blue_text
+
+    # Test timeframe filter
+    db.update_state("BTCUSDT", "4H", 10.0, 9.0, 8.0, 7.0, LarssonState.GOLD, 70500.0)
+    status_4h = listener.handle_status("4h")
+    assert "[4H]" in status_4h
+
+    gold_4h = listener.handle_state_list("GOLD", "🟡", "4h")
+    assert "[4H]" in gold_4h
+    assert "BTCUSDT" in gold_4h

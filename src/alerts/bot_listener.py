@@ -18,6 +18,19 @@ from src.storage.database import Database
 logger = logging.getLogger(__name__)
 
 
+def normalize_timeframe(tf: Optional[str]) -> Optional[str]:
+    if not tf:
+        return None
+    cleaned = tf.upper().strip()
+    if cleaned in ["1D", "D", "DAILY"]:
+        return "1D"
+    elif cleaned in ["4H", "4"]:
+        return "4H"
+    elif cleaned in ["1W", "W", "WEEKLY"]:
+        return "1W"
+    return None
+
+
 class TelegramCommandListener:
     def __init__(
         self,
@@ -30,23 +43,33 @@ class TelegramCommandListener:
         self.session = requests.Session()
         self.running = False
 
-    def handle_status(self) -> str:
-        """Generates overview summary message."""
+    def handle_status(self, timeframe: Optional[str] = None) -> str:
+        """Generates overview summary message, optionally filtered by timeframe."""
         states = self.db.get_all_states()
         if not states:
             return "📊 Няма записани активи в базата данни."
+
+        norm_tf = normalize_timeframe(timeframe)
+        if norm_tf:
+            states = [s for s in states if s["timeframe"] == norm_tf]
+            tf_badge = f" [{norm_tf}]"
+        else:
+            tf_badge = ""
+
+        if not states:
+            return f"📊 Няма намерени активи за таймфрейм <b>{timeframe}</b>."
 
         total = len(states)
         gold = [s for s in states if s["current_state"] == "GOLD"]
         blue = [s for s in states if s["current_state"] == "BLUE"]
         neutral = [s for s in states if s["current_state"] == "NEUTRAL"]
 
-        gold_pct = round(len(gold) / total * 100, 1)
-        blue_pct = round(len(blue) / total * 100, 1)
-        neutral_pct = round(len(neutral) / total * 100, 1)
+        gold_pct = round(len(gold) / total * 100, 1) if total > 0 else 0.0
+        blue_pct = round(len(blue) / total * 100, 1) if total > 0 else 0.0
+        neutral_pct = round(len(neutral) / total * 100, 1) if total > 0 else 0.0
 
         msg = (
-            f"📊 <b>Larsson Line Пазарен Баланс</b>\n\n"
+            f"📊 <b>Larsson Line Пазарен Баланс{tf_badge}</b>\n\n"
             f"• Общо наблюдавани: <b>{total}</b>\n"
             f"• 🟡 <b>Gold (Бичи):</b> {len(gold)} ({gold_pct}%)\n"
             f"• 🔵 <b>Blue (Мечи):</b> {len(blue)} ({blue_pct}%)\n"
@@ -55,15 +78,21 @@ class TelegramCommandListener:
         )
         return msg
 
-    def handle_state_list(self, target_state: str, emoji: str) -> str:
-        """Generates list of symbols in a given state."""
+    def handle_state_list(self, target_state: str, emoji: str, timeframe: Optional[str] = None) -> str:
+        """Generates list of symbols in a given state, optionally filtered by timeframe."""
         states = self.db.get_all_states()
-        matches = [s for s in states if s["current_state"] == target_state]
+        norm_tf = normalize_timeframe(timeframe)
+        if norm_tf:
+            matches = [s for s in states if s["current_state"] == target_state and s["timeframe"] == norm_tf]
+            tf_badge = f" [{norm_tf}]"
+        else:
+            matches = [s for s in states if s["current_state"] == target_state]
+            tf_badge = ""
 
         if not matches:
-            return f"{emoji} В момента няма активи в състояние <b>{target_state}</b>."
+            return f"{emoji} В момента няма активи в състояние <b>{target_state}</b>{tf_badge}."
 
-        header = f"{emoji} <b>Активи в състояние {target_state} ({len(matches)}):</b>\n\n"
+        header = f"{emoji} <b>Активи в състояние {target_state}{tf_badge} ({len(matches)}):</b>\n\n"
         lines = []
         # Group or list top 25
         for s in matches[:25]:
@@ -139,10 +168,10 @@ class TelegramCommandListener:
     def handle_help(self) -> str:
         return (
             "🤖 <b>Larsson Line Бот Команди:</b>\n\n"
-            "/status - Общ пазарен баланс и брой активи по цвят\n"
+            "/status [4h|1d|1w] - Общ пазарен баланс (с опция за филтър по таймфрейм)\n"
             "/digest - Изпраща подробен бюлетин (топ трендове, Ribbon Spread, 24ч промени)\n"
-            "/gold - Списък на всички бичи активи (Gold 🟡)\n"
-            "/blue - Списък на всички мечи активи (Blue 🔵)\n"
+            "/gold [4h|1d|1w] - Списък на всички бичи активи (Gold 🟡)\n"
+            "/blue [4h|1d|1w] - Списък на всички мечи активи (Blue 🔵)\n"
             "/watchlist - Показва активите в твоя личен списък ⭐\n"
             "/watch [символ] - Добавя актив в Watchlist (напр. /watch NVDA)\n"
             "/unwatch [символ] - Премахва актив от Watchlist\n"
@@ -172,13 +201,13 @@ class TelegramCommandListener:
         arg = parts[1] if len(parts) > 1 else ""
 
         if cmd == "/status":
-            reply = self.handle_status()
+            reply = self.handle_status(arg)
         elif cmd == "/digest":
             reply = self.handle_digest()
         elif cmd == "/gold":
-            reply = self.handle_state_list("GOLD", "🟡")
+            reply = self.handle_state_list("GOLD", "🟡", arg)
         elif cmd == "/blue":
-            reply = self.handle_state_list("BLUE", "🔵")
+            reply = self.handle_state_list("BLUE", "🔵", arg)
         elif cmd == "/watchlist":
             reply = self.handle_watchlist()
         elif cmd == "/watch":

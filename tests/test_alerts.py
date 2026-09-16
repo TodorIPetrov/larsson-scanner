@@ -51,3 +51,29 @@ def test_telegram_dry_run():
     assert notifier.is_configured is False
     res = notifier.send_raw_message("<b>Test message</b>")
     assert res is True
+
+
+def test_single_alert_formatting_with_sr():
+    sr_data = {
+        "s1": 64000.0,
+        "s1_touches": 3,
+        "s1_dist_pct": 5.88,
+        "r1": 70000.0,
+        "r1_touches": 4,
+        "r1_dist_pct": 2.94,
+        "context_flag": "IN_VALUE_RANGE",
+        "context_desc": "В диапазон",
+    }
+    msg = format_single_alert(
+        ticker="BTCUSDT",
+        timeframe="1D",
+        old_state=LarssonState.NEUTRAL,
+        new_state=LarssonState.GOLD,
+        price=68000.0,
+        tv_symbol="BINANCE:BTCUSDT",
+        sr_data=sr_data,
+    )
+    assert "S/R Нива (1D Macro):" in msg
+    assert "🔴 Съпротива (R1): <code>$70,000.00</code> (+2.9% | 4 теста)" in msg
+    assert "🟢 Подкрепа (S1): <code>$64,000.00</code> (-5.9% | 3 теста)" in msg
+

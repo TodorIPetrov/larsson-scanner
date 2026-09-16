@@ -98,6 +98,73 @@ class Database:
             );
             """)
 
+            # Table for Support & Resistance (S/R) levels and zone clustering
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS symbol_sr_levels (
+                ticker TEXT NOT NULL,
+                timeframe TEXT NOT NULL,
+                current_price REAL NOT NULL,
+                atr REAL NOT NULL,
+                s1 REAL,
+                s1_touches INTEGER DEFAULT 0,
+                s1_dist_pct REAL,
+                s2 REAL,
+                s2_touches INTEGER DEFAULT 0,
+                r1 REAL,
+                r1_touches INTEGER DEFAULT 0,
+                r1_dist_pct REAL,
+                r2 REAL,
+                r2_touches INTEGER DEFAULT 0,
+                context_flag TEXT,
+                context_desc TEXT,
+                all_zones_json TEXT,
+                updated_at TEXT NOT NULL,
+                PRIMARY KEY (ticker, timeframe)
+            );
+            """)
+
+            # Table for rule-based Trade Suggestions
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS symbol_trade_suggestions (
+                ticker TEXT NOT NULL,
+                timeframe TEXT NOT NULL,
+                action TEXT NOT NULL,
+                direction TEXT NOT NULL,
+                setup_type TEXT NOT NULL,
+                entry_price REAL,
+                stop_loss REAL,
+                tp1 REAL,
+                tp2 REAL,
+                rr_ratio REAL,
+                score INTEGER DEFAULT 0,
+                tier TEXT DEFAULT 'NONE',
+                reason_bg TEXT,
+                reason_en TEXT,
+                fund_verdict TEXT,
+                fair_value REAL,
+                mos_pct REAL,
+                moat TEXT,
+                z_score REAL,
+                quantamental_tag TEXT,
+                updated_at TEXT NOT NULL,
+                PRIMARY KEY (ticker, timeframe)
+            );
+            """)
+
+            # Automatic column migrations for existing symbol_trade_suggestions table
+            cur.execute("PRAGMA table_info(symbol_trade_suggestions)")
+            existing_cols = {col[1] for col in cur.fetchall()}
+            for col_name, col_type in [
+                ("fund_verdict", "TEXT"),
+                ("fair_value", "REAL"),
+                ("mos_pct", "REAL"),
+                ("moat", "TEXT"),
+                ("z_score", "REAL"),
+                ("quantamental_tag", "TEXT"),
+            ]:
+                if col_name not in existing_cols:
+                    cur.execute(f"ALTER TABLE symbol_trade_suggestions ADD COLUMN {col_name} {col_type}")
+
     def restore_from_json_if_empty(self, json_path: Optional[str] = None) -> int:
         """
         If the database is fresh/empty (e.g., in a stateless CI/cloud runner),
@@ -186,14 +253,26 @@ class Database:
             return cur.fetchone()
 
     def get_all_states(self) -> List[sqlite3.Row]:
-        """Fetch all states across all symbols and timeframes."""
+        """Fetch all states across all symbols and timeframes, enriched with macro S/R levels and trade suggestions."""
         with self._get_connection() as conn:
             cur = conn.cursor()
             cur.execute("""
             SELECT s.ticker, s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
-                   st.current_state, st.last_price, st.last_state_change, st.updated_at
+                   st.current_state, st.last_price, st.last_state_change, st.updated_at,
+                   sr.s1, sr.s1_touches, sr.s1_dist_pct, sr.r1, sr.r1_touches, sr.r1_dist_pct,
+                   sr.context_flag, sr.context_desc,
+                   ts.action AS ts_action, ts.direction AS ts_direction, ts.setup_type AS ts_setup_type,
+                   ts.entry_price AS ts_entry, ts.stop_loss AS ts_sl, ts.tp1 AS ts_tp1, ts.tp2 AS ts_tp2,
+                   ts.rr_ratio AS ts_rr, ts.score AS ts_score, ts.tier AS ts_tier,
+                   ts.reason_bg AS ts_reason_bg, ts.reason_en AS ts_reason_en,
+                   ts.fund_verdict AS ts_fund_verdict, ts.fair_value AS ts_fair_value,
+                   ts.mos_pct AS ts_mos_pct, ts.moat AS ts_moat, ts.z_score AS ts_z_score,
+                   ts.quantamental_tag AS ts_quantamental_tag
             FROM symbols s
             JOIN symbol_states st ON s.ticker = st.ticker
+            LEFT JOIN symbol_sr_levels sr ON s.ticker = sr.ticker 
+                 AND sr.timeframe = COALESCE((SELECT timeframe FROM symbol_sr_levels WHERE ticker = s.ticker AND timeframe = '1D'), st.timeframe)
+            LEFT JOIN symbol_trade_suggestions ts ON s.ticker = ts.ticker AND st.timeframe = ts.timeframe
             WHERE s.is_active = 1
             ORDER BY st.last_state_change DESC
             """)
@@ -341,3 +420,135 @@ class Database:
             ORDER BY created_at DESC
             """, (cutoff,))
             return cur.fetchall()
+
+    def upsert_sr_levels(
+        self,
+        ticker: str,
+        timeframe: str,
+        current_price: float,
+        atr: float,
+        s1: Optional[float] = None,
+        s1_touches: int = 0,
+        s1_dist_pct: Optional[float] = None,
+        s2: Optional[float] = None,
+        s2_touches: int = 0,
+        r1: Optional[float] = None,
+        r1_touches: int = 0,
+        r1_dist_pct: Optional[float] = None,
+        r2: Optional[float] = None,
+        r2_touches: int = 0,
+        context_flag: str = "IN_VALUE_RANGE",
+        context_desc: str = "",
+        all_zones_json: str = "[]",
+        now_iso: Optional[str] = None,
+    ):
+        """Inserts or updates the computed S/R levels for a symbol and timeframe."""
+        if not now_iso:
+            now_iso = datetime.now(timezone.utc).isoformat()
+
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO symbol_sr_levels
+            (ticker, timeframe, current_price, atr, s1, s1_touches, s1_dist_pct, s2, s2_touches,
+             r1, r1_touches, r1_dist_pct, r2, r2_touches, context_flag, context_desc, all_zones_json, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(ticker, timeframe) DO UPDATE SET
+                current_price = excluded.current_price,
+                atr = excluded.atr,
+                s1 = excluded.s1,
+                s1_touches = excluded.s1_touches,
+                s1_dist_pct = excluded.s1_dist_pct,
+                s2 = excluded.s2,
+                s2_touches = excluded.s2_touches,
+                r1 = excluded.r1,
+                r1_touches = excluded.r1_touches,
+                r1_dist_pct = excluded.r1_dist_pct,
+                r2 = excluded.r2,
+                r2_touches = excluded.r2_touches,
+                context_flag = excluded.context_flag,
+                context_desc = excluded.context_desc,
+                all_zones_json = excluded.all_zones_json,
+                updated_at = excluded.updated_at;
+            """, (
+                ticker, timeframe, current_price, atr, s1, s1_touches, s1_dist_pct, s2, s2_touches,
+                r1, r1_touches, r1_dist_pct, r2, r2_touches, context_flag, context_desc, all_zones_json, now_iso
+            ))
+
+    def get_sr_levels(self, ticker: str, timeframe: str) -> Optional[sqlite3.Row]:
+        """Retrieves S/R levels for a specific ticker and timeframe."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM symbol_sr_levels WHERE ticker = ? AND timeframe = ?", (ticker, timeframe))
+            return cur.fetchone()
+
+    def upsert_trade_suggestion(
+        self,
+        ticker: str,
+        timeframe: str,
+        action: str,
+        direction: str,
+        setup_type: str,
+        entry_price: Optional[float] = None,
+        stop_loss: Optional[float] = None,
+        tp1: Optional[float] = None,
+        tp2: Optional[float] = None,
+        rr_ratio: Optional[float] = None,
+        score: int = 0,
+        tier: str = "NONE",
+        reason_bg: str = "",
+        reason_en: str = "",
+        fund_verdict: Optional[str] = None,
+        fair_value: Optional[float] = None,
+        mos_pct: Optional[float] = None,
+        moat: Optional[str] = None,
+        z_score: Optional[float] = None,
+        quantamental_tag: Optional[str] = None,
+        now_iso: Optional[str] = None,
+    ):
+        """Inserts or updates a trade suggestion for a symbol and timeframe."""
+        if not now_iso:
+            now_iso = datetime.now(timezone.utc).isoformat()
+
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO symbol_trade_suggestions
+            (ticker, timeframe, action, direction, setup_type, entry_price, stop_loss,
+             tp1, tp2, rr_ratio, score, tier, reason_bg, reason_en,
+             fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(ticker, timeframe) DO UPDATE SET
+                action = excluded.action,
+                direction = excluded.direction,
+                setup_type = excluded.setup_type,
+                entry_price = excluded.entry_price,
+                stop_loss = excluded.stop_loss,
+                tp1 = excluded.tp1,
+                tp2 = excluded.tp2,
+                rr_ratio = excluded.rr_ratio,
+                score = excluded.score,
+                tier = excluded.tier,
+                reason_bg = excluded.reason_bg,
+                reason_en = excluded.reason_en,
+                fund_verdict = excluded.fund_verdict,
+                fair_value = excluded.fair_value,
+                mos_pct = excluded.mos_pct,
+                moat = excluded.moat,
+                z_score = excluded.z_score,
+                quantamental_tag = excluded.quantamental_tag,
+                updated_at = excluded.updated_at;
+            """, (
+                ticker, timeframe, action, direction, setup_type, entry_price, stop_loss,
+                tp1, tp2, rr_ratio, score, tier, reason_bg, reason_en,
+                fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag, now_iso
+            ))
+
+    def get_trade_suggestion(self, ticker: str, timeframe: str) -> Optional[sqlite3.Row]:
+        """Retrieves trade suggestion for a specific ticker and timeframe."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM symbol_trade_suggestions WHERE ticker = ? AND timeframe = ?", (ticker, timeframe))
+            return cur.fetchone()
+
+

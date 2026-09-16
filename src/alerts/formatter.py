@@ -32,6 +32,17 @@ def get_tradingview_link(tv_symbol: str, timeframe: str) -> str:
     return f"https://www.tradingview.com/chart/?symbol={tv_symbol}&interval={tf_code}"
 
 
+def _format_price(val: Optional[float]) -> str:
+    if val is None:
+        return "N/A"
+    if val >= 1000:
+        return f"${val:,.2f}"
+    elif val >= 1:
+        return f"${val:.3f}"
+    else:
+        return f"${val:.6f}"
+
+
 def format_single_alert(
     ticker: str,
     timeframe: str,
@@ -39,9 +50,11 @@ def format_single_alert(
     new_state: LarssonState,
     price: float,
     tv_symbol: str,
+    sr_data: Optional[dict] = None,
 ) -> str:
     """
-    Formats a single state transition alert in Telegram HTML format.
+    Formats a single state transition alert in Telegram HTML format,
+    enriched with macro Support & Resistance (S/R) levels and context flags.
     """
     new_emoji = STATE_EMOJI.get(new_state, "⚪")
     old_emoji = STATE_EMOJI.get(old_state, "⚪")
@@ -49,22 +62,59 @@ def format_single_alert(
     old_text = STATE_TITLE.get(old_state, old_state.value)
 
     tv_url = get_tradingview_link(tv_symbol, timeframe)
+    price_str = _format_price(price)
 
-    # Format price cleanly
-    if price >= 1000:
-        price_str = f"${price:,.2f}"
-    elif price >= 1:
-        price_str = f"${price:.3f}"
-    else:
-        price_str = f"${price:.6f}"
+    lines = [
+        f"{new_emoji} <b>{ticker} | {timeframe}</b>",
+        f"🔄 {old_emoji} {old_text} ➡️ <b>{new_emoji} {new_text}</b>",
+        f"💵 Цена: <code>{price_str}</code>",
+    ]
 
-    msg = (
-        f"{new_emoji} <b>{ticker} | {timeframe}</b>\n"
-        f"🔄 {old_emoji} {old_text} ➡️ <b>{new_emoji} {new_text}</b>\n"
-        f"💵 Цена: <code>{price_str}</code>\n"
-        f"📊 <a href=\"{tv_url}\">Отвори в TradingView</a>"
-    )
-    return msg
+    # Support & Resistance Section
+    if sr_data:
+        r1 = sr_data.get("r1")
+        r1_dist = sr_data.get("r1_dist_pct")
+        r1_touches = sr_data.get("r1_touches", 0)
+        s1 = sr_data.get("s1")
+        s1_dist = sr_data.get("s1_dist_pct")
+        s1_touches = sr_data.get("s1_touches", 0)
+        context_flag = sr_data.get("context_flag", "")
+
+        lines.append("\n📍 <b>S/R Нива (1D Macro):</b>")
+        if r1 is not None:
+            r1_str = _format_price(r1)
+            dist_str = f"+{r1_dist:.1f}%" if r1_dist is not None else ""
+            touch_str = f" | {r1_touches} теста" if r1_touches > 1 else ""
+            lines.append(f"• 🔴 Съпротива (R1): <code>{r1_str}</code> ({dist_str}{touch_str})")
+        else:
+            lines.append("• 🔴 Съпротива (R1): <i>Няма установена (Price Discovery)</i>")
+
+        if s1 is not None:
+            s1_str = _format_price(s1)
+            dist_str = f"-{s1_dist:.1f}%" if s1_dist is not None else ""
+            touch_str = f" | {s1_touches} теста" if s1_touches > 1 else ""
+            lines.append(f"• 🟢 Подкрепа (S1): <code>{s1_str}</code> ({dist_str}{touch_str})")
+        else:
+            lines.append("• 🟢 Подкрепа (S1): <i>Няма установена</i>")
+
+        # Tactical contextual flags
+        if new_state == LarssonState.GOLD:
+            if context_flag == "NEAR_RESISTANCE":
+                lines.append(f"⚠️ <b>Внимание:</b> Непосредствено под съпротива R1 (+{r1_dist:.1f}%)! Възможен откат.")
+            elif context_flag == "NEAR_SUPPORT":
+                lines.append(f"🎯 <b>Отлична позиция:</b> Gold обръщане близо до подкрепа S1 (-{s1_dist:.1f}%)!")
+            elif context_flag == "BREAKOUT_ABOVE":
+                lines.append("🚀 <b>Пробив:</b> Търгува се над всички ключови съпротиви!")
+            elif r1_dist is not None and r1_dist >= 5.0:
+                lines.append(f"✅ <b>Чист път:</b> +{r1_dist:.1f}% пространство до първа съпротива.")
+        elif new_state == LarssonState.BLUE:
+            if context_flag == "NEAR_SUPPORT":
+                lines.append(f"⚠️ <b>Внимание:</b> Директно върху силна подкрепа S1 (-{s1_dist:.1f}%)!")
+            elif context_flag == "BREAKDOWN_BELOW":
+                lines.append("🔻 <b>Срив:</b> Пробив под всички ключови нива на подкрепа!")
+
+    lines.append(f"📊 <a href=\"{tv_url}\">Отвори в TradingView</a>")
+    return "\n".join(lines)
 
 
 def format_batch_alert(changes: List[dict]) -> str:
@@ -84,16 +134,20 @@ def format_batch_alert(changes: List[dict]) -> str:
         price = item["price"]
         tv_symbol = item["tv_symbol"]
         tv_url = get_tradingview_link(tv_symbol, tf)
+        sr = item.get("sr_data")
 
         new_emoji = STATE_EMOJI.get(new_state, "⚪")
         old_emoji = STATE_EMOJI.get(old_state, "⚪")
+        p_str = _format_price(price)
 
-        if price >= 1000:
-            p_str = f"${price:,.2f}"
-        else:
-            p_str = f"${price:.2f}"
+        sr_tag = ""
+        if sr and (sr.get("s1") or sr.get("r1")):
+            s_part = f"S1: {_format_price(sr.get('s1'))}" if sr.get("s1") else ""
+            r_part = f"R1: {_format_price(sr.get('r1'))}" if sr.get("r1") else ""
+            parts = [p for p in [s_part, r_part] if p]
+            sr_tag = f" <i>[{' | '.join(parts)}]</i>"
 
-        line = f"• <a href=\"{tv_url}\"><b>{ticker}</b></a> ({tf}): {old_emoji} ➡️ <b>{new_emoji} {new_state.value}</b> @ <code>{p_str}</code>"
+        line = f"• <a href=\"{tv_url}\"><b>{ticker}</b></a> ({tf}): {old_emoji} ➡️ <b>{new_emoji} {new_state.value}</b> @ <code>{p_str}</code>{sr_tag}"
         lines.append(line)
 
     body = "\n".join(lines)

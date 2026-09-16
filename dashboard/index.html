@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
   <div class="container">
@@ -82,11 +83,28 @@
           <button class="filter-btn" data-class="indices">📈 Indices</button>
         </div>
 
+        <div class="filter-group" id="tfFilters">
+          <button class="filter-btn active" data-tf="ALL">All Timeframes</button>
+          <button class="filter-btn" data-tf="1D">📅 Daily (1D)</button>
+          <button class="filter-btn" data-tf="4H">⏱️ 4-Hour (4H)</button>
+          <button class="filter-btn" data-tf="1W">📆 Weekly (1W)</button>
+        </div>
+
         <div class="filter-group" id="stateFilters">
           <button class="filter-btn active" data-filter="ALL">All States</button>
           <button class="filter-btn filter-gold" data-filter="GOLD">🟡 Gold</button>
           <button class="filter-btn filter-blue" data-filter="BLUE">🔵 Blue</button>
           <button class="filter-btn filter-neutral" data-filter="NEUTRAL">⚪ Neutral</button>
+        </div>
+
+        <div class="filter-group" id="setupFilters">
+          <button class="filter-btn active" data-setup="ALL">All Setups</button>
+          <button class="filter-btn filter-purple" data-setup="QUANTAMENTAL_ALPHA">💎 Institutional Alpha</button>
+          <button class="filter-btn" data-setup="WIDE_MOAT">🏰 Wide Moat</button>
+          <button class="filter-btn filter-gold" data-setup="SPOT_BUY">🟢 Spot Buy</button>
+          <button class="filter-btn filter-gold" data-setup="TAKE_PROFIT">💰 Take Profit</button>
+          <button class="filter-btn filter-blue" data-setup="EXIT_PROTECT">🛡️ Exit / Protect</button>
+          <button class="filter-btn" data-setup="TIER_A">⭐ Tier A / A+</button>
         </div>
 
         <div class="view-toggle" id="viewToggle">
@@ -107,6 +125,8 @@
             <th>State</th>
             <th>Price</th>
             <th>Trend Strength</th>
+            <th>🎯 Trade Setup</th>
+            <th>Key S/R Levels</th>
             <th>SMMA 15 (v1)</th>
             <th>SMMA 19 (m1)</th>
             <th>SMMA 25 (m2)</th>
@@ -117,7 +137,7 @@
         </thead>
         <tbody id="assetsTableBody">
           <tr>
-            <td colspan="12" class="loading-state">Loading latest market data...</td>
+            <td colspan="14" class="loading-state">Loading latest market data...</td>
           </tr>
         </tbody>
       </table>
@@ -133,6 +153,140 @@
     <footer class="footer">
       <p>Larsson Line Scanner • 100% Free & Open Source Stack • <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>
     </footer>
+  </div>
+
+  <!-- Interactive S/R & Larsson Chart Modal -->
+  <div class="chart-modal-backdrop" id="chartModal" style="display: none;">
+    <div class="chart-modal-content">
+      <div class="chart-modal-header">
+        <div class="chart-modal-title-area">
+          <span class="chart-ticker" id="modalTicker">BTCUSDT</span>
+          <span class="class-badge" id="modalClass">Crypto</span>
+          <div class="modal-tf-group" id="modalTfGroup">
+            <button class="modal-tf-btn active" data-tf="1D">1D</button>
+            <button class="modal-tf-btn" data-tf="4H">4H</button>
+            <button class="modal-tf-btn" data-tf="1W">1W</button>
+          </div>
+        </div>
+        <div class="chart-modal-price-area">
+          <span class="modal-price" id="modalPrice">$0.00</span>
+          <span class="badge badge-gold" id="modalStateBadge">🟡 GOLD</span>
+        </div>
+        <div class="chart-modal-actions">
+          <a href="#" target="_blank" rel="noopener" class="tv-link-btn" id="modalTvBtn">TV ↗</a>
+          <button class="modal-close-btn" id="closeModalBtn" title="Close chart">&times;</button>
+        </div>
+      </div>
+
+      <!-- S/R Tactical Metrics Strip -->
+      <div class="chart-sr-strip" id="modalSrStrip">
+        <div class="sr-strip-item sr-support">
+          <span class="sr-label">🟢 Support (S1)</span>
+          <strong id="modalS1">$0.00 (-0.0%)</strong>
+          <small id="modalS1Touches">0 touches</small>
+        </div>
+        <div class="sr-strip-item sr-resistance">
+          <span class="sr-label">🔴 Resistance (R1)</span>
+          <strong id="modalR1">$0.00 (+0.0%)</strong>
+          <small id="modalR1Touches">0 touches</small>
+        </div>
+        <div class="sr-strip-item sr-volatility">
+          <span class="sr-label">⚡ Volatility (ATR 14)</span>
+          <strong id="modalAtr">$0.00</strong>
+          <small>Dynamic Buffer</small>
+        </div>
+        <div class="sr-strip-item sr-status">
+          <span class="sr-label">🎯 Market Location</span>
+          <strong id="modalContext">IN VALUE RANGE</strong>
+          <small id="modalContextDesc">Validating range</small>
+        </div>
+      </div>
+
+      <!-- Institutional Valuation & Moat Strip -->
+      <div class="chart-fund-strip" id="modalFundStrip" style="display: none;">
+        <div class="fund-strip-item fund-verdict">
+          <span class="fund-label">🏛️ Institutional Valuation</span>
+          <strong id="modalFundVerdict">STRONG BUY</strong>
+          <small id="modalFundUpside">+0.0% Intrinsic Upside</small>
+        </div>
+        <div class="fund-strip-item fund-dcf">
+          <span class="fund-label">🎯 DCF Fair Value</span>
+          <strong id="modalFundFairValue">$0.00</strong>
+          <small id="modalFundMos">Margin of Safety: 0%</small>
+        </div>
+        <div class="fund-strip-item fund-moat">
+          <span class="fund-label">🛡️ Economic Moat</span>
+          <strong id="modalFundMoat">Wide Moat</strong>
+          <small id="modalFundRoic">ROIC: 0%</small>
+        </div>
+        <div class="fund-strip-item fund-health">
+          <span class="fund-label">📊 Financial Health</span>
+          <strong id="modalFundZScore">Z-Score: 0.00</strong>
+          <small id="modalFundHealthDesc">Safe Balance Sheet</small>
+        </div>
+      </div>
+
+      <!-- Institutional Trade Suggestion HUD Strip -->
+      <div class="chart-setup-strip" id="modalSetupStrip">
+        <div class="setup-badge-area">
+          <span class="setup-action-badge" id="modalSetupAction">🎯 SPOT BUY</span>
+          <span class="setup-tier-badge" id="modalSetupTier">⭐ Tier A+</span>
+          <span class="setup-type-label" id="modalSetupType">Pullback Value Buy</span>
+        </div>
+        <div class="setup-metrics-grid">
+          <div class="setup-metric">
+            <span class="lbl">Entry</span>
+            <strong id="modalSetupEntry">$0.00</strong>
+          </div>
+          <div class="setup-metric">
+            <span class="lbl">Stop-Loss (SL)</span>
+            <strong class="text-danger" id="modalSetupSl">$0.00</strong>
+          </div>
+          <div class="setup-metric">
+            <span class="lbl">Take-Profit 1 (TP1)</span>
+            <strong class="text-success" id="modalSetupTp1">$0.00</strong>
+          </div>
+          <div class="setup-metric">
+            <span class="lbl">Take-Profit 2 (TP2)</span>
+            <strong class="text-success" id="modalSetupTp2">$0.00</strong>
+          </div>
+          <div class="setup-metric">
+            <span class="lbl">Risk/Reward</span>
+            <strong id="modalSetupRr">1 : 2.5</strong>
+          </div>
+        </div>
+        <div class="setup-reason-box" id="modalSetupReason">
+          Pullback to major support S1 in bullish trend.
+        </div>
+      </div>
+
+      <!-- Chart Container -->
+      <div class="chart-canvas-container" id="chartCanvasContainer">
+        <div id="chartCanvas"></div>
+        <div class="chart-loading-overlay" id="chartLoading">
+          <div class="spinner"></div>
+          <span>Loading candles & calculating S/R zones...</span>
+        </div>
+      </div>
+
+      <div class="chart-modal-footer">
+        <div class="ribbon-legend">
+          <span><b>Larsson Ribbon:</b></span>
+          <span class="legend-chip smma-15">SMMA 15</span>
+          <span class="legend-chip smma-19">SMMA 19</span>
+          <span class="legend-chip smma-25">SMMA 25</span>
+          <span class="legend-chip smma-29">SMMA 29</span>
+        </div>
+        <div class="sr-legend">
+          <span class="legend-chip sr-res-chip">🔴 Resistance Zone (R1)</span>
+          <span class="legend-chip sr-sup-chip">🟢 Support Zone (S1)</span>
+          <span class="legend-chip legend-entry">🔹 Entry Line</span>
+          <span class="legend-chip legend-sl">🛑 Stop-Loss</span>
+          <span class="legend-chip legend-tp">🎯 Targets (TP1/TP2)</span>
+          <span class="legend-chip" style="color: #c084fc; border-color: #c084fc; background: rgba(192, 132, 252, 0.15);">🎯 DCF Fair Value</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>

@@ -1,0 +1,342 @@
+//@version=5
+indicator("Institutional Support & Resistance (Quant Clusters)", "Quant S/R Clusters", overlay = true, max_boxes_count = 100, max_lines_count = 100, max_labels_count = 100)
+
+// =============================================================================
+// INPUTS & CONFIGURATION
+// =============================================================================
+grp_pivots     = "Swing Pivot Settings"
+i_leftBars     = input.int(5, "Pivot Lookback Left Bars", minval = 2, maxval = 20, group = grp_pivots, tooltip = "Number of bars to the left required to form a swing peak/trough.")
+i_rightBars    = input.int(5, "Pivot Lookback Right Bars", minval = 2, maxval = 20, group = grp_pivots, tooltip = "Number of bars to the right required to confirm a swing peak/trough.")
+i_lookbackBars = input.int(180, "Lookback Window (Bars)", minval = 50, maxval = 1000, step = 10, group = grp_pivots, tooltip = "Number of recent historical bars to analyze. 180 bars matches the Python scanner (~6 months of Daily structure).")
+i_maxPivots    = input.int(150, "Historical Pivots Memory Cache", minval = 30, maxval = 300, group = grp_pivots, tooltip = "Number of recent historical pivots retained in cache.")
+
+grp_cluster    = "Clustering & Zone Width (ATR Normalized)"
+i_atrPeriod    = input.int(14, "ATR Period", minval = 1, group = grp_cluster)
+i_atrMult      = input.float(0.35, "Zone Width / Cluster Tolerance (x ATR)", minval = 0.1, maxval = 1.5, step = 0.05, group = grp_cluster, tooltip = "Tolerance margin (multiplier of ATR) used to cluster nearby swing points into a single zone.")
+i_minTouches   = input.int(2, "Min Confirmed Touches", minval = 1, maxval = 5, group = grp_cluster, tooltip = "Zones with at least this many touches are marked as confirmed institutional levels.")
+
+grp_visual     = "Visual Appearance"
+i_showZones    = input.bool(true, "Show Shaded Zones (Boxes)", group = grp_visual)
+i_showLines    = input.bool(true, "Show Core Level Lines", group = grp_visual)
+i_showLabels   = input.bool(true, "Show Price & Distance Labels", group = grp_visual)
+i_showSec      = input.bool(true, "Show Secondary (S2 / R2) Lines", group = grp_visual)
+i_showPivots   = input.bool(false, "Show Historical Pivot Dots", group = grp_visual)
+i_showTable    = input.bool(true, "Show Metrics Information Table", group = grp_visual)
+i_tablePos     = input.string("Top Right", "Table Position", options = ["Top Right", "Bottom Right", "Top Left", "Bottom Left"], group = grp_visual)
+
+grp_colors     = "Color Scheme"
+i_colResFill   = input.color(color.new(color.red, 85), "Resistance Zone Fill", group = grp_colors)
+i_colResLine   = input.color(color.new(color.red, 20), "Resistance Border / Line", group = grp_colors)
+i_colSupFill   = input.color(color.new(color.green, 85), "Support Zone Fill", group = grp_colors)
+i_colSupLine   = input.color(color.new(color.green, 20), "Support Border / Line", group = grp_colors)
+
+// =============================================================================
+// HISTORICAL PIVOT DATA STORAGE
+// =============================================================================
+var float[]  p_prices = array.new_float()
+var int[]    p_bars   = array.new_int()
+var string[] p_types  = array.new_string()
+
+// Calculate ATR
+current_atr = ta.atr(i_atrPeriod)
+
+// Detect swing highs and lows
+ph = ta.pivothigh(high, i_leftBars, i_rightBars)
+pl = ta.pivotlow(low, i_leftBars, i_rightBars)
+
+// Store confirmed swing highs
+if not na(ph)
+    array.push(p_prices, ph)
+    array.push(p_bars, bar_index - i_rightBars)
+    array.push(p_types, "HIGH")
+    if array.size(p_prices) > i_maxPivots
+        array.shift(p_prices)
+        array.shift(p_bars)
+        array.shift(p_types)
+
+// Store confirmed swing lows
+if not na(pl)
+    array.push(p_prices, pl)
+    array.push(p_bars, bar_index - i_rightBars)
+    array.push(p_types, "LOW")
+    if array.size(p_prices) > i_maxPivots
+        array.shift(p_prices)
+        array.shift(p_bars)
+        array.shift(p_types)
+
+// Optional visual dots for raw pivot wicks
+plotshape(i_showPivots and not na(ph), title = "Swing High Pivot", style = shape.triangledown, location = location.abovebar, offset = -i_rightBars, color = color.red, size = size.tiny)
+plotshape(i_showPivots and not na(pl), title = "Swing Low Pivot", style = shape.triangleup, location = location.belowbar, offset = -i_rightBars, color = color.green, size = size.tiny)
+
+// =============================================================================
+// DRAWING CACHES
+// =============================================================================
+var box[]   drawn_boxes  = array.new_box()
+var line[]  drawn_lines  = array.new_line()
+var label[] drawn_labels = array.new_label()
+
+f_clear_drawings() =>
+    if array.size(drawn_boxes) > 0
+        for i = 0 to array.size(drawn_boxes) - 1
+            box.delete(array.get(drawn_boxes, i))
+        array.clear(drawn_boxes)
+    if array.size(drawn_lines) > 0
+        for i = 0 to array.size(drawn_lines) - 1
+            line.delete(array.get(drawn_lines, i))
+        array.clear(drawn_lines)
+    if array.size(drawn_labels) > 0
+        for i = 0 to array.size(drawn_labels) - 1
+            label.delete(array.get(drawn_labels, i))
+        array.clear(drawn_labels)
+
+// =============================================================================
+// S/R CLUSTERING & RENDERING (Executed on the Latest Bar)
+// =============================================================================
+if barstate.islast and array.size(p_prices) >= 2
+    f_clear_drawings()
+
+    // 1. Filter pivots to active lookback window (matching the Python 180-bar scan)
+    int min_allowed_bar = last_bar_index - i_lookbackBars
+    float[] window_prices = array.new_float()
+
+    for i = 0 to array.size(p_prices) - 1
+        if array.get(p_bars, i) >= min_allowed_bar
+            array.push(window_prices, array.get(p_prices, i))
+
+    // Fallback to all cached pivots if window is too sparse
+    float[] active_prices = array.size(window_prices) >= 2 ? window_prices : p_prices
+
+    // 2. Sort active pivot prices ascending
+    float[] sorted_prices = array.copy(active_prices)
+    array.sort(sorted_prices, order.ascending)
+
+    float tolerance = current_atr * i_atrMult
+    int total_pivots = array.size(sorted_prices)
+
+    // 3. 1D Density Clustering into Zones
+    float[] c_cores   = array.new_float()
+    float[] c_lowers  = array.new_float()
+    float[] c_uppers  = array.new_float()
+    int[]   c_touches = array.new_int()
+
+    float[] temp_cluster = array.new_float()
+    array.push(temp_cluster, array.get(sorted_prices, 0))
+
+    for i = 1 to total_pivots - 1
+        float p = array.get(sorted_prices, i)
+        float cluster_mean = array.sum(temp_cluster) / array.size(temp_cluster)
+        
+        if math.abs(p - cluster_mean) <= tolerance
+            array.push(temp_cluster, p)
+        else
+            // Finalize current cluster
+            int t_cnt = array.size(temp_cluster)
+            array.push(c_cores, array.median(temp_cluster))
+            array.push(c_lowers, array.min(temp_cluster))
+            array.push(c_uppers, array.max(temp_cluster))
+            array.push(c_touches, t_cnt)
+            // Start new cluster
+            array.clear(temp_cluster)
+            array.push(temp_cluster, p)
+
+    if array.size(temp_cluster) > 0
+        int t_cnt = array.size(temp_cluster)
+        array.push(c_cores, array.median(temp_cluster))
+        array.push(c_lowers, array.min(temp_cluster))
+        array.push(c_uppers, array.max(temp_cluster))
+        array.push(c_touches, t_cnt)
+
+    // 4. Identify S1, S2, R1, R2 relative to current close
+    int num_zones = array.size(c_cores)
+    float r1 = na
+    int   r1_touches = 0
+    float r1_dist = na
+    float r1_lower = na
+    float r1_upper = na
+
+    float r2 = na
+    int   r2_touches = 0
+    float r2_dist = na
+    float r2_lower = na
+    float r2_upper = na
+
+    float s1 = na
+    int   s1_touches = 0
+    float s1_dist = na
+    float s1_lower = na
+    float s1_upper = na
+
+    float s2 = na
+    int   s2_touches = 0
+    float s2_dist = na
+    float s2_lower = na
+    float s2_upper = na
+
+    // First Pass: Confirmed multi-touch zones (touch >= i_minTouches)
+    for i = 0 to num_zones - 1
+        float core  = array.get(c_cores, i)
+        float lower = array.get(c_lowers, i)
+        float upper = array.get(c_uppers, i)
+        int   touch = array.get(c_touches, i)
+
+        if touch >= i_minTouches
+            if core < close
+                // Ascending order: shift previous S1 to S2, set new S1
+                s2 := s1
+                s2_touches := s1_touches
+                s2_lower := s1_lower
+                s2_upper := s1_upper
+                s2_dist := s1_dist
+
+                s1 := core
+                s1_touches := touch
+                s1_lower := lower
+                s1_upper := upper
+                s1_dist := ((close - core) / close) * 100.0
+
+            else if core > close
+                if na(r1)
+                    r1 := core
+                    r1_touches := touch
+                    r1_lower := lower
+                    r1_upper := upper
+                    r1_dist := ((core - close) / close) * 100.0
+                else if na(r2)
+                    r2 := core
+                    r2_touches := touch
+                    r2_lower := lower
+                    r2_upper := upper
+                    r2_dist := ((core - close) / close) * 100.0
+
+    // Fallback: If no multi-touch S1 or R1 found, fall back to nearest single-touch zone
+    if na(s1)
+        for i = 0 to num_zones - 1
+            float core = array.get(c_cores, i)
+            if core < close
+                s1 := core
+                s1_touches := array.get(c_touches, i)
+                s1_lower := array.get(c_lowers, i)
+                s1_upper := array.get(c_uppers, i)
+                s1_dist := ((close - core) / close) * 100.0
+
+    if na(r1)
+        for i = 0 to num_zones - 1
+            float core = array.get(c_cores, i)
+            if core > close
+                r1 := core
+                r1_touches := array.get(c_touches, i)
+                r1_lower := array.get(c_lowers, i)
+                r1_upper := array.get(c_uppers, i)
+                r1_dist := ((core - close) / close) * 100.0
+                break
+
+    // 5. Drawing Positions
+    int left_bar = math.max(0, bar_index - 35)
+    int right_bar = bar_index + 18
+
+    // 6. Render R1 Zone & Line
+    if not na(r1)
+        float b_upper = math.max(r1_upper, r1 + (current_atr * 0.15))
+        float b_lower = math.min(r1_lower, r1 - (current_atr * 0.15))
+
+        if i_showZones
+            box b_r1 = box.new(left_bar, b_upper, right_bar, b_lower, border_color = i_colResLine, border_width = 1, border_style = line.style_solid, bgcolor = i_colResFill, extend = extend.right)
+            array.push(drawn_boxes, b_r1)
+
+        if i_showLines
+            line l_r1 = line.new(left_bar, r1, right_bar, r1, color = color.red, width = 2, style = line.style_dashed, extend = extend.right)
+            array.push(drawn_lines, l_r1)
+
+        if i_showLabels
+            string lbl_text = "🔴 R1: " + str.tostring(r1, "#,###.##") + " (+" + str.tostring(r1_dist, "0.1") + "% | " + str.tostring(r1_touches) + " touches)"
+            label lb_r1 = label.new(bar_index + 5, r1, text = lbl_text, color = color.new(color.red, 15), textcolor = color.white, style = label.style_label_left, size = size.small)
+            array.push(drawn_labels, lb_r1)
+
+    // 7. Render R2 Secondary Line
+    if i_showSec and not na(r2)
+        if i_showLines
+            line l_r2 = line.new(left_bar, r2, right_bar, r2, color = color.new(color.red, 40), width = 1, style = line.style_dotted, extend = extend.right)
+            array.push(drawn_lines, l_r2)
+        if i_showLabels
+            string lbl_r2 = "R2: " + str.tostring(r2, "#,###.##") + " (+" + str.tostring(r2_dist, "0.1") + "% | " + str.tostring(r2_touches) + "t)"
+            label lb_r2 = label.new(bar_index + 5, r2, text = lbl_r2, color = color.new(color.maroon, 30), textcolor = color.white, style = label.style_label_left, size = size.tiny)
+            array.push(drawn_labels, lb_r2)
+
+    // 8. Render S1 Zone & Line
+    if not na(s1)
+        float b_upper = math.max(s1_upper, s1 + (current_atr * 0.15))
+        float b_lower = math.min(s1_lower, s1 - (current_atr * 0.15))
+
+        if i_showZones
+            box b_s1 = box.new(left_bar, b_upper, right_bar, b_lower, border_color = i_colSupLine, border_width = 1, border_style = line.style_solid, bgcolor = i_colSupFill, extend = extend.right)
+            array.push(drawn_boxes, b_s1)
+
+        if i_showLines
+            line l_s1 = line.new(left_bar, s1, right_bar, s1, color = color.green, width = 2, style = line.style_dashed, extend = extend.right)
+            array.push(drawn_lines, l_s1)
+
+        if i_showLabels
+            string lbl_text = "🟢 S1: " + str.tostring(s1, "#,###.##") + " (-" + str.tostring(s1_dist, "0.1") + "% | " + str.tostring(s1_touches) + " touches)"
+            label lb_s1 = label.new(bar_index + 5, s1, text = lbl_text, color = color.new(color.green, 15), textcolor = color.white, style = label.style_label_left, size = size.small)
+            array.push(drawn_labels, lb_s1)
+
+    // 9. Render S2 Secondary Line
+    if i_showSec and not na(s2)
+        if i_showLines
+            line l_s2 = line.new(left_bar, s2, right_bar, s2, color = color.new(color.green, 40), width = 1, style = line.style_dotted, extend = extend.right)
+            array.push(drawn_lines, l_s2)
+        if i_showLabels
+            string lbl_s2 = "S2: " + str.tostring(s2, "#,###.##") + " (-" + str.tostring(s2_dist, "0.1") + "% | " + str.tostring(s2_touches) + "t)"
+            label lb_s2 = label.new(bar_index + 5, s2, text = lbl_s2, color = color.new(color.teal, 30), textcolor = color.white, style = label.style_label_left, size = size.tiny)
+            array.push(drawn_labels, lb_s2)
+
+    // 10. Tactical Info Metrics Table
+    if i_showTable
+        string pos_choice = position.top_right
+        if i_tablePos == "Bottom Right"
+            pos_choice := position.bottom_right
+        else if i_tablePos == "Top Left"
+            pos_choice := position.top_left
+        else if i_tablePos == "Bottom Left"
+            pos_choice := position.bottom_left
+
+        var table tbl = table.new(pos_choice, 2, 7, bgcolor = color.new(color.black, 20), border_color = color.new(color.gray, 60), border_width = 1)
+        
+        // Context Assessment
+        string context_str = "IN VALUE RANGE"
+        color  context_col = color.white
+        if not na(r1_dist) and (r1_dist <= 1.5 or (r1 - close) <= current_atr * 0.75)
+            context_str := "⚠️ NEAR RESISTANCE"
+            context_col := color.red
+        else if not na(s1_dist) and (s1_dist <= 1.5 or (close - s1) <= current_atr * 0.75)
+            context_str := "🎯 NEAR SUPPORT"
+            context_col := color.green
+        else if na(r1)
+            context_str := "🚀 ALL TIME HIGH"
+            context_col := color.yellow
+        else if na(s1)
+            context_str := "🔻 ALL TIME LOW"
+            context_col := color.maroon
+        else
+            context_str := "✅ OPEN AIR"
+            context_col := color.teal
+
+        table.cell(tbl, 0, 0, "Quant S/R Metric", bgcolor = color.new(color.blue, 40), text_color = color.white, text_size = size.small)
+        table.cell(tbl, 1, 0, "Value / Status",   bgcolor = color.new(color.blue, 40), text_color = color.white, text_size = size.small)
+
+        table.cell(tbl, 0, 1, "Price / ATR",      text_color = color.white, text_size = size.small)
+        table.cell(tbl, 1, 1, str.tostring(close, "#,###.##") + " / " + str.tostring(current_atr, "#,###.##"), text_color = color.white, text_size = size.small)
+
+        table.cell(tbl, 0, 2, "🔴 Resistance R1", text_color = color.red, text_size = size.small)
+        string r1_str = not na(r1) ? (str.tostring(r1, "#,###.##") + " (+" + str.tostring(r1_dist, "0.1") + "% | " + str.tostring(r1_touches) + "t)") : "Price Discovery"
+        table.cell(tbl, 1, 2, r1_str, text_color = color.red, text_size = size.small)
+
+        table.cell(tbl, 0, 3, "🟢 Support S1",    text_color = color.green, text_size = size.small)
+        string s1_str = not na(s1) ? (str.tostring(s1, "#,###.##") + " (-" + str.tostring(s1_dist, "0.1") + "% | " + str.tostring(s1_touches) + "t)") : "None"
+        table.cell(tbl, 1, 3, s1_str, text_color = color.green, text_size = size.small)
+
+        table.cell(tbl, 0, 4, "Location State",  text_color = color.white, text_size = size.small)
+        table.cell(tbl, 1, 4, context_str, text_color = context_col, text_size = size.small)
+
+        table.cell(tbl, 0, 5, "Lookback Window", text_color = color.gray, text_size = size.small)
+        table.cell(tbl, 1, 5, str.tostring(i_lookbackBars) + " Bars (" + str.tostring(array.size(active_prices)) + " pivots)", text_color = color.gray, text_size = size.small)

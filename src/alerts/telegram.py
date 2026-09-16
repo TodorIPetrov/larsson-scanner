@@ -73,6 +73,7 @@ class TelegramNotifier:
                     new_state=item["new_state"],
                     price=item["price"],
                     tv_symbol=item["tv_symbol"],
+                    sr_data=item.get("sr_data"),
                 )
                 self.send_raw_message(msg)
                 time.sleep(0.05)  # Small breather between messages

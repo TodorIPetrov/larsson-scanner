@@ -16,6 +16,7 @@ from src.data.binance_fetch import BinanceFetcher
 from src.data.sp500_loader import load_sp500_tickers
 from src.data.yfinance_fetch import YFinanceFetcher
 from src.engine.smma import compute_larsson_series, LarssonState
+from src.engine.sr_levels import analyze_sr_levels
 from src.storage.database import Database
 
 logger = logging.getLogger(__name__)
@@ -79,6 +80,177 @@ class LarssonScanner:
             return f"NASDAQ:{ticker}"
         return ticker
 
+    def _resolve_sr_analysis(
+        self,
+        ticker: str,
+        timeframe: str,
+        highs: np.ndarray,
+        lows: np.ndarray,
+        closes: np.ndarray,
+        latest_price: float,
+        asset_class: str,
+    ) -> Optional[dict]:
+        """
+        Resolves Support and Resistance analysis adhering to the Multi-Timeframe hierarchy.
+        For 1D and 1W: Computes S/R directly on the timeframe candles.
+        For 4H: Prioritizes 1D macro S/R levels. If not yet cached, fetches 1D klines.
+        """
+        try:
+            if timeframe == "4H" and asset_class == "crypto":
+                # Check if 1D S/R already exists in database
+                row = self.db.get_sr_levels(ticker, "1D")
+                if row and row["atr"]:
+                    s1 = row["s1"]
+                    r1 = row["r1"]
+                    atr = row["atr"]
+                    s1_dist = round(((latest_price - s1) / latest_price) * 100.0, 2) if s1 is not None else None
+                    r1_dist = round(((r1 - latest_price) / latest_price) * 100.0, 2) if r1 is not None else None
+
+                    context_flag = "IN_VALUE_RANGE"
+                    if r1 is not None and (r1_dist is not None and r1_dist <= 1.5 or (r1 - latest_price) <= atr * 0.75):
+                        context_flag = "NEAR_RESISTANCE"
+                    elif s1 is not None and (s1_dist is not None and s1_dist <= 1.5 or (latest_price - s1) <= atr * 0.75):
+                        context_flag = "NEAR_SUPPORT"
+                    elif r1 is None:
+                        context_flag = "BREAKOUT_ABOVE"
+                    elif s1 is None:
+                        context_flag = "BREAKDOWN_BELOW"
+
+                    return {
+                        "current_price": float(latest_price),
+                        "atr": atr,
+                        "s1": s1,
+                        "s1_touches": row["s1_touches"],
+                        "s1_dist_pct": s1_dist,
+                        "r1": r1,
+                        "r1_touches": row["r1_touches"],
+                        "r1_dist_pct": r1_dist,
+                        "context_flag": context_flag,
+                    }
+
+                # If not cached, fetch 1D klines to establish macro levels
+                if self.binance_fetcher:
+                    k1d = self.binance_fetcher.fetch_klines(ticker, "1D", limit=160)
+                    if k1d:
+                        h1d, l1d, c1d, _ = k1d
+                        sr_1d = analyze_sr_levels(h1d, l1d, c1d, current_price=float(latest_price))
+                        self._persist_sr_analysis(ticker, "1D", sr_1d)
+                        return sr_1d.to_dict()
+
+            # Default: compute on current timeframe candles
+            sr_analysis = analyze_sr_levels(highs, lows, closes, current_price=float(latest_price))
+            self._persist_sr_analysis(ticker, timeframe, sr_analysis)
+            return sr_analysis.to_dict()
+        except Exception as e:
+            logger.warning(f"Failed to calculate S/R levels for {ticker} [{timeframe}]: {e}")
+            return None
+
+    def _persist_sr_analysis(self, ticker: str, timeframe: str, sr_analysis):
+        self.db.upsert_sr_levels(
+            ticker=ticker,
+            timeframe=timeframe,
+            current_price=sr_analysis.current_price,
+            atr=sr_analysis.atr,
+            s1=sr_analysis.s1,
+            s1_touches=sr_analysis.s1_touches,
+            s1_dist_pct=sr_analysis.s1_dist_pct,
+            s2=sr_analysis.s2,
+            s2_touches=sr_analysis.s2_touches,
+            r1=sr_analysis.r1,
+            r1_touches=sr_analysis.r1_touches,
+            r1_dist_pct=sr_analysis.r1_dist_pct,
+            r2=sr_analysis.r2,
+            r2_touches=sr_analysis.r2_touches,
+            context_flag=sr_analysis.context_flag,
+            context_desc=sr_analysis.context_desc,
+            all_zones_json=json.dumps(sr_analysis.zones),
+        )
+
+    def _evaluate_and_persist_trade_suggestion(
+        self,
+        ticker: str,
+        timeframe: str,
+        current_price: float,
+        state: LarssonState,
+        v1: float,
+        m1: float,
+        m2: float,
+        v2: float,
+        sr_data: Optional[dict],
+    ) -> Optional[dict]:
+        try:
+            from src.engine.trade_suggestions import generate_trade_suggestion
+            from src.engine.quantamental import get_fundamental_profile
+
+            v2_val = v2 if v2 > 0 else 1e-6
+            spread_pct = ((v1 - v2_val) / v2_val) * 100.0
+
+            atr = sr_data.get("atr", current_price * 0.02) if sr_data else (current_price * 0.02)
+            s1 = sr_data.get("s1") if sr_data else None
+            s1_touches = sr_data.get("s1_touches", 0) if sr_data else 0
+            s2 = sr_data.get("s2") if sr_data else None
+            r1 = sr_data.get("r1") if sr_data else None
+            r1_touches = sr_data.get("r1_touches", 0) if sr_data else 0
+            r2 = sr_data.get("r2") if sr_data else None
+            context_flag = sr_data.get("context_flag", "IN_VALUE_RANGE") if sr_data else "IN_VALUE_RANGE"
+
+            # Check macro 1D state if scanning 4H or other lower timeframes
+            macro_1d_state = None
+            if timeframe != "1D":
+                st_1d = self.db.get_current_state(ticker, "1D")
+                if st_1d:
+                    macro_1d_state = st_1d["current_state"]
+
+            fund_profile = get_fundamental_profile(ticker)
+
+            suggestion = generate_trade_suggestion(
+                current_price=current_price,
+                state=state.value,
+                v1=v1,
+                m1=m1,
+                m2=m2,
+                v2=v2,
+                spread_pct=spread_pct,
+                atr=atr,
+                s1=s1,
+                s1_touches=s1_touches,
+                s2=s2,
+                r1=r1,
+                r1_touches=r1_touches,
+                r2=r2,
+                context_flag=context_flag,
+                timeframe=timeframe,
+                macro_1d_state=macro_1d_state,
+                fund_profile=fund_profile,
+            )
+
+            self.db.upsert_trade_suggestion(
+                ticker=ticker,
+                timeframe=timeframe,
+                action=suggestion.action,
+                direction=suggestion.direction,
+                setup_type=suggestion.setup_type,
+                entry_price=suggestion.entry_price,
+                stop_loss=suggestion.stop_loss,
+                tp1=suggestion.tp1,
+                tp2=suggestion.tp2,
+                rr_ratio=suggestion.rr_ratio,
+                score=suggestion.score,
+                tier=suggestion.tier,
+                reason_bg=suggestion.reason_bg,
+                reason_en=suggestion.reason_en,
+                fund_verdict=suggestion.fund_verdict,
+                fair_value=suggestion.fair_value,
+                mos_pct=suggestion.mos_pct,
+                moat=suggestion.moat,
+                z_score=suggestion.z_score,
+                quantamental_tag=suggestion.quantamental_tag,
+            )
+            return suggestion.to_dict()
+        except Exception as e:
+            logger.warning(f"Failed to generate trade suggestion for {ticker} [{timeframe}]: {e}")
+            return None
+
     def scan_crypto_symbols(
         self,
         symbols: List[str],
@@ -112,6 +284,17 @@ class LarssonScanner:
             v1, m1, m2, v2, states = compute_larsson_series(highs, lows)
             current_state = states[-1]
 
+            # Resolve Support and Resistance levels
+            sr_data = self._resolve_sr_analysis(
+                ticker=sym,
+                timeframe=timeframe,
+                highs=highs,
+                lows=lows,
+                closes=closes,
+                latest_price=float(latest_price),
+                asset_class="crypto",
+            )
+
             results["total_scanned"] += 1
             if current_state == LarssonState.GOLD:
                 results["gold_count"] += 1
@@ -132,6 +315,19 @@ class LarssonScanner:
                 price=float(latest_price),
             )
 
+            # Evaluate and record Trade Suggestion
+            trade_suggestion = self._evaluate_and_persist_trade_suggestion(
+                ticker=sym,
+                timeframe=timeframe,
+                current_price=float(latest_price),
+                state=current_state,
+                v1=float(v1[-1]),
+                m1=float(m1[-1]),
+                m2=float(m2[-1]),
+                v2=float(v2[-1]),
+                sr_data=sr_data,
+            )
+
             self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
 
             if state_changed and old_state is not None:
@@ -142,6 +338,8 @@ class LarssonScanner:
                     "new_state": current_state,
                     "price": latest_price,
                     "tv_symbol": tv_symbol,
+                    "sr_data": sr_data,
+                    "trade_suggestion": trade_suggestion,
                 }
                 results["state_changes"].append(change_event)
                 self.db.log_alert(
@@ -157,9 +355,21 @@ class LarssonScanner:
                 time.sleep(delay_s)
 
         if results["state_changes"]:
-            self.notifier.dispatch_alerts(results["state_changes"])
+            self._dispatch_state_changes(results["state_changes"])
 
         return results
+
+    def _dispatch_state_changes(self, state_changes: List[dict]):
+        if not state_changes:
+            return
+        include_sr = self.config.get("telegram", {}).get("include_sr_in_alerts", False)
+        dispatched = []
+        for ev in state_changes:
+            item = dict(ev)
+            if not include_sr:
+                item.pop("sr_data", None)
+            dispatched.append(item)
+        self.notifier.dispatch_alerts(dispatched)
 
     def scan_yfinance_assets(
         self,
@@ -199,6 +409,17 @@ class LarssonScanner:
             v1, m1, m2, v2, states = compute_larsson_series(highs, lows)
             current_state = states[-1]
 
+            # Resolve Support and Resistance levels
+            sr_data = self._resolve_sr_analysis(
+                ticker=sym,
+                timeframe=timeframe,
+                highs=highs,
+                lows=lows,
+                closes=closes,
+                latest_price=float(latest_price),
+                asset_class=asset_class,
+            )
+
             results["total_scanned"] += 1
             if current_state == LarssonState.GOLD:
                 results["gold_count"] += 1
@@ -220,6 +441,19 @@ class LarssonScanner:
                 price=float(latest_price),
             )
 
+            # Evaluate and record Trade Suggestion
+            trade_suggestion = self._evaluate_and_persist_trade_suggestion(
+                ticker=sym,
+                timeframe=timeframe,
+                current_price=float(latest_price),
+                state=current_state,
+                v1=float(v1[-1]),
+                m1=float(m1[-1]),
+                m2=float(m2[-1]),
+                v2=float(v2[-1]),
+                sr_data=sr_data,
+            )
+
             self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
 
             if state_changed and old_state is not None:
@@ -230,6 +464,8 @@ class LarssonScanner:
                     "new_state": current_state,
                     "price": latest_price,
                     "tv_symbol": tv_symbol,
+                    "sr_data": sr_data,
+                    "trade_suggestion": trade_suggestion,
                 }
                 results["state_changes"].append(change_event)
                 self.db.log_alert(
@@ -242,7 +478,7 @@ class LarssonScanner:
                 )
 
         if results["state_changes"]:
-            self.notifier.dispatch_alerts(results["state_changes"])
+            self._dispatch_state_changes(results["state_changes"])
 
         return results
 

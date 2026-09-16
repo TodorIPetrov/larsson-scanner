@@ -2,6 +2,7 @@ telegram:
   bot_token: ""  # Set here or in config/settings.local.yaml
   chat_id: ""    # Set here or in config/settings.local.yaml
   batch_threshold: 5
+  include_sr_in_alerts: false # Set to true when confident in S/R levels to enable in Telegram alerts
 
 scanner:
   crypto_top_n: 100       # Automatically scan top N USDT pairs by 24h volume
