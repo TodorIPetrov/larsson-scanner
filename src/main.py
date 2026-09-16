@@ -253,6 +253,8 @@ def main():
     )
     parser.add_argument("--limit", type=int, default=30, help="Number of top crypto pairs to scan")
     parser.add_argument("--scheduler", action="store_true", help="Start background 24/7 scheduler daemon")
+    parser.add_argument("--bot", action="store_true", help="Start interactive Telegram bot listener daemon")
+    parser.add_argument("--force", action="store_true", help="Force action (e.g. force send daily digest)")
     parser.add_argument("--status", action="store_true", help="Print table of currently recorded states")
     parser.add_argument("--export-dashboard", action="store_true", help="Export latest data.json for dashboard")
     parser.add_argument("--test-telegram", action="store_true", help="Send a test notification to Telegram")
@@ -341,6 +343,18 @@ def main():
                 print("✅ Бюлетинът беше изпратен успешно към Telegram!\n")
             else:
                 print("ℹ️ Бюлетинът не беше изпратен (вече е изпратен днес или възникна грешка). Използвай --force за принудително изпращане.\n")
+    elif args.bot:
+        if not notifier.is_configured:
+            print("\n❌ Telegram все още НЕ е конфигуриран!")
+        else:
+            print("\n🤖 Стартиране на интерактивния Telegram бот (@CTO_larsson_bot)...")
+            print("Слуша за команди (/status, /gold, /blue, /alpha, /a, /calc, /traps, /help)")
+            print("Натисни Ctrl+C за спиране.\n")
+            listener = TelegramCommandListener(notifier=notifier, db=db)
+            try:
+                listener.run_poll_loop()
+            except KeyboardInterrupt:
+                print("\nБотът е спрян.")
     elif args.scheduler:
         start_scheduler(scanner)
     elif args.websocket:
