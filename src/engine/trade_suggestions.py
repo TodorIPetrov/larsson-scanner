@@ -451,43 +451,43 @@ def generate_trade_suggestion(
                 sl = round(sl_anchor + (0.5 * atr), 4)
                 risk = sl - current_price
 
-            if risk > 0:
-                tp1 = round(s1 if s1 is not None else (current_price - 1.8 * risk), 4)
-                tp2 = round(s2 if s2 is not None else (current_price - 3.0 * risk), 4)
-                reward = current_price - tp1
-                rr = round(reward / risk, 2)
+                if risk > 0:
+                    tp1 = round(s1 if s1 is not None else (current_price - 1.8 * risk), 4)
+                    tp2 = round(s2 if s2 is not None else (current_price - 3.0 * risk), 4)
+                    reward = current_price - tp1
+                    rr = round(reward / risk, 2)
 
-                if rr >= min_rr_threshold and current_price > tp1:
-                    score, tier = calculate_confluence_score(
-                        is_mtf_aligned=True,
-                        near_support=False,
-                        s1_touches=r1_touches,
-                        spread_expanding=spread_pct < -0.2,
-                        rr_ratio=rr,
-                        fund_profile=fund_profile,
-                    )
-                    tag = "SHORT_FUNDAMENTAL_ALIGNMENT" if is_bearish else "TECHNICAL_SHORT"
-                    extra_reason = f" Потвърдено от слаб фундаментален рейтинг ({fund_verdict})." if is_bearish else ""
-                    return TradeSuggestion(
-                        action="SHORT_2X_OPTIONAL",
-                        direction="SHORT",
-                        setup_type="HEDGE_SHORT_2X",
-                        entry_price=round(current_price, 4),
-                        stop_loss=sl,
-                        tp1=tp1,
-                        tp2=tp2,
-                        rr_ratio=rr,
-                        score=score,
-                        tier=tier,
-                        reason_bg=f"Отхвърляне от съпротива/меча панделка с потенциал до подкрепа S1 (${tp1:,.2f}).{extra_reason} Лек short с макс 2x левъридж.",
-                        reason_en=f"Rejection at resistance/bearish ribbon with room to S1 (${tp1:,.2f}).{extra_reason} Light hedge short (max 2x leverage).",
-                        fund_verdict=fund_verdict,
-                        fair_value=fair_value,
-                        mos_pct=mos_pct,
-                        moat=moat,
-                        z_score=z_score,
-                        quantamental_tag=tag,
-                    )
+                    if rr >= min_rr_threshold and current_price > tp1:
+                        score, tier = calculate_confluence_score(
+                            is_mtf_aligned=True,
+                            near_support=False,
+                            s1_touches=r1_touches,
+                            spread_expanding=spread_pct < -0.2,
+                            rr_ratio=rr,
+                            fund_profile=fund_profile,
+                        )
+                        tag = "SHORT_FUNDAMENTAL_ALIGNMENT" if is_bearish else "TECHNICAL_SHORT"
+                        extra_reason = f" Потвърдено от слаб фундаментален рейтинг ({fund_verdict})." if is_bearish else ""
+                        return TradeSuggestion(
+                            action="SHORT_2X_OPTIONAL",
+                            direction="SHORT",
+                            setup_type="HEDGE_SHORT_2X",
+                            entry_price=round(current_price, 4),
+                            stop_loss=sl,
+                            tp1=tp1,
+                            tp2=tp2,
+                            rr_ratio=rr,
+                            score=score,
+                            tier=tier,
+                            reason_bg=f"Отхвърляне от съпротива/меча панделка с потенциал до подкрепа S1 (${tp1:,.2f}).{extra_reason} Лек short с макс 2x левъридж.",
+                            reason_en=f"Rejection at resistance/bearish ribbon with room to S1 (${tp1:,.2f}).{extra_reason} Light hedge short (max 2x leverage).",
+                            fund_verdict=fund_verdict,
+                            fair_value=fair_value,
+                            mos_pct=mos_pct,
+                            moat=moat,
+                            z_score=z_score,
+                            quantamental_tag=tag,
+                        )
 
     # -------------------------------------------------------------------------
     # 6. DEFAULT: WAIT FOR HIGH CONVICTION SETUP

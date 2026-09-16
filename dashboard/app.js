@@ -21,7 +21,7 @@ const CLASS_LABELS = {
   ai_stocks: 'AI Stock',
   crypto: 'Crypto',
   us_stocks: 'US Stock',
-  intl_stocks: 'Global',
+  intl_stocks: 'Europe & Global',
   commodities: 'Commodity',
   indices: 'Index',
 };

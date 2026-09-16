@@ -69,30 +69,125 @@ us_stocks:
 - ticker: MELI
   tv_symbol: NASDAQ:MELI
 intl_stocks:
-- ticker: VOD.L
-  tv_symbol: LSE:VOD
-- ticker: SHEL.L
-  tv_symbol: LSE:SHEL
-- ticker: AZN.L
-  tv_symbol: LSE:AZN
-- ticker: SAP.DE
-  tv_symbol: XETR:SAP
-- ticker: SIE.DE
-  tv_symbol: XETR:SIE
-- ticker: 7203.T
-  tv_symbol: TSE:7203
-- ticker: 0700.HK
-  tv_symbol: HKEX:700
-- ticker: BHP.AX
-  tv_symbol: ASX:BHP
+# --- European Luxury & Consumer ---
+- ticker: MC.PA
+  tv_symbol: EURONEXT:MC
+- ticker: RMS.PA
+  tv_symbol: EURONEXT:RMS
 - ticker: OR.PA
   tv_symbol: EURONEXT:OR
+- ticker: ITX.MC
+  tv_symbol: BME:ITX
+- ticker: NESN.SW
+  tv_symbol: SIX:NESN
+- ticker: HEIA.AS
+  tv_symbol: EURONEXT:HEIA
+- ticker: ULVR.L
+  tv_symbol: LSE:ULVR
+- ticker: DGE.L
+  tv_symbol: LSE:DGE
+- ticker: RACE.MI
+  tv_symbol: MIL:RACE
+
+# --- European Tech, Chips & Automation ---
+- ticker: ASML.AS
+  tv_symbol: EURONEXT:ASML
+- ticker: SAP.DE
+  tv_symbol: XETR:SAP
+- ticker: SU.PA
+  tv_symbol: EURONEXT:SU
+- ticker: SIE.DE
+  tv_symbol: XETR:SIE
+- ticker: ABBN.SW
+  tv_symbol: SIX:ABBN
+- ticker: ATCO-A.ST
+  tv_symbol: OMXSTO:ATCO_A
+- ticker: IFX.DE
+  tv_symbol: XETR:IFX
+- ticker: ADYEN.AS
+  tv_symbol: EURONEXT:ADYEN
+- ticker: KNEBV.HE
+  tv_symbol: OMXHEX:KNEBV
+
+# --- European Healthcare & Pharma ---
+- ticker: NOVO-B.CO
+  tv_symbol: OMXCOP:NOVO_B
+- ticker: NOVN.SW
+  tv_symbol: SIX:NOVN
+- ticker: RO.SW
+  tv_symbol: SIX:ROG
+- ticker: AZN.L
+  tv_symbol: LSE:AZN
+- ticker: SAN.PA
+  tv_symbol: EURONEXT:SAN
+- ticker: GSK.L
+  tv_symbol: LSE:GSK
+
+# --- European Aerospace, Defense & Infrastructure ---
+- ticker: AIR.PA
+  tv_symbol: EURONEXT:AIR
+- ticker: AI.PA
+  tv_symbol: EURONEXT:AI
+- ticker: BA.L
+  tv_symbol: LSE:BA.
+- ticker: REL.L
+  tv_symbol: LSE:REL
+- ticker: DHL.DE
+  tv_symbol: XETR:DHL
+- ticker: INVE-B.ST
+  tv_symbol: OMXSTO:INVE_B
+
+# --- European Energy, Utilities & Financials ---
+- ticker: TTE.PA
+  tv_symbol: EURONEXT:TTE
+- ticker: SHEL.L
+  tv_symbol: LSE:SHEL
+- ticker: IBE.MC
+  tv_symbol: BME:IBE
+- ticker: ALV.DE
+  tv_symbol: XETR:ALV
+- ticker: MUV2.DE
+  tv_symbol: XETR:MUV2
+- ticker: BNP.PA
+  tv_symbol: EURONEXT:BNP
+- ticker: ISP.MI
+  tv_symbol: MIL:ISP
+- ticker: HSBA.L
+  tv_symbol: LSE:HSBA
+- ticker: DTE.DE
+  tv_symbol: XETR:DTE
+- ticker: MBG.DE
+  tv_symbol: XETR:MBG
+- ticker: VOD.L
+  tv_symbol: LSE:VOD
+
+# --- Global Asia-Pacific Titans (Japan, Australia, Taiwan, China) ---
+- ticker: 6758.T
+  tv_symbol: TSE:6758
+- ticker: 7203.T
+  tv_symbol: TSE:7203
+- ticker: 6861.T
+  tv_symbol: TSE:6861
+- ticker: 8035.T
+  tv_symbol: TSE:8035
+- ticker: 7974.T
+  tv_symbol: TSE:7974
+- ticker: 8058.T
+  tv_symbol: TSE:8058
 - ticker: TSM
   tv_symbol: NYSE:TSM
-- ticker: ASML
-  tv_symbol: NASDAQ:ASML
+- ticker: 0700.HK
+  tv_symbol: HKEX:700
 - ticker: BABA
   tv_symbol: NYSE:BABA
+- ticker: BHP.AX
+  tv_symbol: ASX:BHP
+- ticker: RIO.L
+  tv_symbol: LSE:RIO
+- ticker: CBA.AX
+  tv_symbol: ASX:CBA
+- ticker: CSL.AX
+  tv_symbol: ASX:CSL
 commodities:
 - ticker: GC=F
   tv_symbol: COMEX:GC1!
