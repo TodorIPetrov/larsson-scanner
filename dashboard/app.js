@@ -128,7 +128,10 @@ function renderTable() {
       <tr>
         <td>
           <div class="symbol-cell">
-            <span class="ticker-text">${item.ticker}</span>
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" title="Open ${item.tv_symbol} on TradingView">
+              <span class="ticker-text">${item.ticker}</span>
+              <span class="tv-badge">TV ↗</span>
+            </a>
             <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
           </div>
         </td>

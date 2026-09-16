@@ -362,6 +362,34 @@ h1 {
   font-size: 0.9375rem;
 }
 
+.ticker-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.ticker-link:hover .ticker-text {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
+.tv-badge {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  font-size: 0.6875rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  transition: all 0.15s ease;
+}
+
+.ticker-link:hover .tv-badge {
+  background: rgba(56, 189, 248, 0.25);
+}
+
 .name-text {
   font-size: 0.75rem;
   color: var(--text-muted);
