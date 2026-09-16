@@ -256,13 +256,16 @@ class TelegramCommandListener:
         rr = selected.get("ts_rr")
         reason_bg = selected.get("ts_reason_bg", "")
 
-        trade_block = f"\n💡 <b>Търговска Препоръка:</b>\n"
+        is_crypto = (selected.get("asset_class") == "crypto") or clean_ticker.endswith("USDT")
+        trade_header = "\n🪙 <b>Крипто Търговска Препоръка [Crypto Spot]:</b>\n" if is_crypto else "\n🏛️ <b>Институционална Препоръка [Equities & Macro]:</b>\n"
+        trade_block = trade_header
         if action == "WAIT":
             if setup_type == "VALUE_TRAP_WARNING":
                 trade_block += f"• Статус: ⏳ <b>ВАЛУАЦИОНЕН КАПАН (Value Trap Risk)</b>\n• Изчакайте обръщане на лентата в GOLD преди спот вход!\n"
             else:
                 trade_block += f"• Статус: ⏳ <b>Изчакай по-добро ниво (WAIT)</b>\n"
         else:
+            action_tag = "🪙" if is_crypto else "🏛️"
             action_emoji = "🟢" if "BUY" in action else ("💰" if "PROFIT" in action else "🔴")
             entry_str = f"${entry:,.2f}" if entry and entry >= 1 else (f"${entry:.5f}" if entry else "N/A")
             sl_str = f"${sl:,.2f}" if sl and sl >= 1 else (f"${sl:.5f}" if sl else "N/A")
@@ -271,7 +274,7 @@ class TelegramCommandListener:
             rr_str = f"1 : {rr}" if rr else "N/A"
 
             trade_block += (
-                f"• Препоръка: {action_emoji} <b>{action}</b> ({setup_type})\n"
+                f"• Препоръка: {action_tag} {action_emoji} <b>{action}</b> ({setup_type})\n"
                 f"• Ранг: <b>⭐ Tier {tier}</b> (Score: {score}/100)\n"
                 f"• Вход: <code>{entry_str}</code> | Стоп (SL): <code>{sl_str}</code>\n"
                 f"• Цел 1 (TP1): <code>{tp1_str}</code> | Цел 2 (TP2): <code>{tp2_str}</code>\n"
@@ -290,7 +293,7 @@ class TelegramCommandListener:
         return header + sub + fund_block + sr_block + trade_block + tv_footer
 
     def handle_alpha(self, timeframe: Optional[str] = None) -> str:
-        """Lists active high-conviction Tier A+ and Tier A institutional setups."""
+        """Lists active high-conviction Tier A+ and Tier A institutional setups separated into Crypto & Equities."""
         states = [dict(r) for r in self.db.get_all_states()]
         norm_tf = normalize_timeframe(timeframe)
         if norm_tf:
@@ -308,26 +311,49 @@ class TelegramCommandListener:
         if not matches:
             return f"💎 В момента няма намерени активни <b>Institutional Alpha (Tier A/A+)</b> входове{tf_badge}."
 
-        header = f"💎 <b>Институционални Alpha Входове (Tier A / A+){tf_badge} ({len(matches)}):</b>\n\n"
-        lines = []
-        for s in matches[:20]:
-            ticker = s["ticker"]
-            tf = s["timeframe"]
-            tier = s.get("ts_tier", "A")
-            entry = s.get("ts_entry", s["last_price"])
-            rr = s.get("ts_rr")
-            moat = s.get("ts_moat", "")
-            moat_tag = f" [💎 {moat} Moat]" if moat and moat != "None" else ""
-            url = get_tradingview_link(s["tv_symbol"], tf)
+        crypto_matches = [
+            s for s in matches
+            if s.get("asset_class") == "crypto" or s.get("ticker", "").endswith("USDT")
+        ]
+        equity_matches = [s for s in matches if s not in crypto_matches]
 
-            rr_txt = f" | R:R 1:{rr}" if rr else ""
-            lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): ⭐ <b>Tier {tier}</b>{moat_tag} @ <code>${entry:,.2f}</code>{rr_txt}")
+        header = f"💎 <b>Институционални Alpha Входове (Tier A / A+){tf_badge} ({len(matches)}):</b>\n"
+        sections = [header]
 
-        body = "\n".join(lines)
-        if len(matches) > 20:
-            body += f"\n\n<i>... и още {len(matches) - 20} инструмента в уеб таблото.</i>"
+        if crypto_matches:
+            crypto_lines = [f"\n🪙 <b>Крипто Сетъпи ({len(crypto_matches)}):</b>"]
+            for s in crypto_matches[:15]:
+                ticker = s["ticker"]
+                tf = s["timeframe"]
+                tier = s.get("ts_tier", "A")
+                score = s.get("ts_score", 0)
+                entry = s.get("ts_entry", s["last_price"])
+                rr = s.get("ts_rr")
+                url = get_tradingview_link(s["tv_symbol"], tf)
+                rr_txt = f" | R:R 1:{rr}" if rr else ""
+                crypto_lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): 🪙 <b>Tier {tier}</b> ({score}/100) @ <code>${entry:,.2f}</code>{rr_txt}")
+            sections.append("\n".join(crypto_lines))
 
-        return header + body
+        if equity_matches:
+            eq_lines = [f"\n🏛️ <b>Акции & Суровини ({len(equity_matches)}):</b>"]
+            for s in equity_matches[:15]:
+                ticker = s["ticker"]
+                tf = s["timeframe"]
+                tier = s.get("ts_tier", "A")
+                score = s.get("ts_score", 0)
+                entry = s.get("ts_entry", s["last_price"])
+                rr = s.get("ts_rr")
+                moat = s.get("ts_moat", "")
+                moat_tag = f" [💎 {moat} Moat]" if moat and moat != "None" else ""
+                url = get_tradingview_link(s["tv_symbol"], tf)
+                rr_txt = f" | R:R 1:{rr}" if rr else ""
+                eq_lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): 🏛️ <b>Tier {tier}</b>{moat_tag} ({score}/100) @ <code>${entry:,.2f}</code>{rr_txt}")
+            sections.append("\n".join(eq_lines))
+
+        if len(matches) > 30:
+            sections.append(f"\n<i>... и още {len(matches) - 30} инструмента в уеб таблото.</i>")
+
+        return "\n".join(sections)
 
     def handle_traps(self) -> str:
         """Lists assets currently flagged as Value Trap Risk."""
@@ -390,18 +416,24 @@ class TelegramCommandListener:
             tp2=tp2,
         )
 
+        is_crypto = (selected.get("asset_class") == "crypto") or ticker.endswith("USDT")
+        type_str = "🪙 Крипто актив" if is_crypto else "🏛️ Акция / Суровина"
+        units_label = "бр. монети" if is_crypto else "бр. акции"
+
         p1_txt = f"\n• Очаквана печалба при TP1: <b>+${calc['profit_tp1_usd']:,.2f}</b>" if calc['profit_tp1_usd'] else ""
         p2_txt = f"\n• Очаквана печалба при TP2: <b>+${calc['profit_tp2_usd']:,.2f}</b>" if calc['profit_tp2_usd'] else ""
 
         msg = (
-            f"🧮 <b>Калкулатор за Размер на Позицията: {ticker}</b>\n\n"
+            f"🧮 <b>Калкулатор за Размер на Позицията: {ticker} [{type_str}]</b>\n\n"
             f"• Капитал: <b>${capital:,.2f}</b> | Риск на сделка: <b>{risk_pct:.1f}%</b> (${calc['risk_usd']:,.2f})\n"
             f"• Вход: <code>${entry:,.2f}</code> | Стоп-лос (SL): <code>${sl:,.2f}</code> (-{calc['risk_pct_price']}%)\n\n"
-            f"👉 <b>Препоръчителен брой: <code>{calc['units']}</code> бр. / акции</b>\n"
-            f"• Обща стойност на позицията: <b>${calc['position_value']:,.2f}</b>\n"
-            f"• Максимална загуба при удряне на SL: <b>-${calc['risk_usd']:,.2f}</b>"
-            f"{p1_txt}{p2_txt}"
+            f"👉 <b>Препоръчителен брой: <code>{calc['units']}</code> {units_label}</b>\n"
+            f"• Стойност на позицията: <b>${calc['position_value']:,.2f}</b> (от общо ${capital:,.2f})\n"
+            f"• Максимална загуба при удряне на SL: <b>-${calc['risk_usd']:,.2f}</b>{p1_txt}{p2_txt}"
         )
+        if selected.get("s1") and entry and selected["s1"] < entry:
+            msg += f"\n\n🧱 <b>DCA Натрупване:</b> 50% пазарно (${entry:,.2f}) + 50% лимит на S1 (${selected['s1']:,.2f})"
+
         return msg
 
     def handle_digest(self) -> str:

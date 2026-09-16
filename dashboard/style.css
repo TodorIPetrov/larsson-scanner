@@ -1200,6 +1200,128 @@ h1 {
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
 }
 
+/* ==========================================================================
+   Crypto Trade Suggestion Badges (Cyber Gold & Amber Glow 🪙)
+   ========================================================================== */
+.ts-crypto-alpha {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.18));
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+}
+
+.ts-crypto-accum {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
+.ts-crypto-buy {
+  background: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+  border: 1px solid rgba(234, 179, 8, 0.5);
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.18);
+}
+
+.ts-crypto-profit {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fef08a;
+  border: 1px solid rgba(251, 191, 36, 0.5);
+}
+
+.ts-crypto-speculative {
+  background: rgba(217, 119, 6, 0.18);
+  color: #fdba74;
+  border: 1px solid rgba(217, 119, 6, 0.4);
+}
+
+.ts-crypto-exit {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.tier-crypto-gold {
+  background: #f59e0b !important;
+  color: #000 !important;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   Equities & Commodities Badges (Institutional Wall Street Purple & Emerald 🏛️)
+   ========================================================================== */
+.ts-equity-alpha {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(16, 185, 129, 0.2));
+  color: #c084fc;
+  border: 1px solid rgba(139, 92, 246, 0.6);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.25);
+}
+
+.ts-equity-accum {
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.48);
+}
+
+.ts-equity-buy {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.18);
+}
+
+.ts-equity-profit {
+  background: rgba(168, 85, 247, 0.2);
+  color: #e9d5ff;
+  border: 1px solid rgba(168, 85, 247, 0.5);
+}
+
+.ts-equity-speculative {
+  background: rgba(100, 116, 139, 0.2);
+  color: #cbd5e1;
+  border: 1px solid rgba(100, 116, 139, 0.4);
+}
+
+.ts-equity-exit {
+  background: rgba(225, 29, 72, 0.2);
+  color: #fda4af;
+  border: 1px solid rgba(225, 29, 72, 0.5);
+}
+
+.tier-equity-amethyst {
+  background: #8b5cf6 !important;
+  color: #fff !important;
+  font-weight: 800;
+}
+
+.tier-equity-emerald {
+  background: #10b981 !important;
+  color: #000 !important;
+  font-weight: 800;
+}
+
+.tier-crypto-badge {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+}
+
+.tier-equity-badge {
+  background: rgba(139, 92, 246, 0.22);
+  color: #c084fc;
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.2);
+}
+
+.strip-crypto {
+  border-left: 4px solid #f59e0b !important;
+}
+
+.strip-equity {
+  border-left: 4px solid #8b5cf6 !important;
+}
+
 .ts-valuetrap {
   background: rgba(249, 115, 22, 0.18);
   color: #fb923c;

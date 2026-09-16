@@ -39,15 +39,50 @@ function formatShortPrice(val) {
   }
 }
 
-function renderTradeSuggestionCell(ts) {
+function getQuantamentalSetupRank(item) {
+  if (!item) return 0;
+  const ts = item.trade_suggestion;
+  const fund = item.fundamental;
+  if (!ts) return 0;
+
+  let base = 0;
+  if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY' || ts.quantamental_tag === 'INSTITUTIONAL_ALPHA') {
+    base = 10000;
+  } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION' || ts.quantamental_tag === 'CORE_QUALITY_HOLD') {
+    base = 8000;
+  } else if (ts.action === 'SPOT_BUY' && (ts.tier === 'A+' || ts.tier === 'A')) {
+    base = 7000;
+  } else if (ts.action === 'SPOT_BUY' && ts.tier === 'B') {
+    base = 5000;
+  } else if (ts.action === 'SPOT_BUY') {
+    base = 4000;
+  } else if (ts.action === 'TAKE_PROFIT') {
+    base = 3000;
+  } else if (ts.action === 'EXIT_PROTECT') {
+    base = 2000;
+  } else if (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK') {
+    base = 1000;
+  } else {
+    base = 0;
+  }
+
+  const scoreBonus = (ts.score || 0) * 10;
+  const rrBonus = (ts.rr || 0) * 5;
+  const upsideBonus = (fund && fund.upside_pct && fund.upside_pct > 0) ? Math.min(fund.upside_pct, 50) : 0;
+  const spreadBonus = (item.spread_pct && item.spread_pct > 0) ? Math.min(item.spread_pct, 20) : 0;
+
+  return base + scoreBonus + rrBonus + upsideBonus + spreadBonus;
+}
+
+function renderTradeSuggestionCell(ts, item) {
   if (!ts || ts.action === 'WAIT') {
-    if (ts && ts.setup_type === 'VALUE_TRAP_WARNING') {
+    if (ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK')) {
       return `<div class="ts-cell"><span class="ts-badge ts-valuetrap" title="${ts.reason_bg || ts.reason_en || ''}">⏳ VALUE TRAP RISK</span></div>`;
     }
     return `<span class="ts-badge ts-wait" title="No immediate high-conviction setup. Wait for key structural level.">⏳ Wait</span>`;
   }
 
-  const tierClass = ts.tier === 'A+' ? 'tier-aplus' : (ts.tier === 'A' ? 'tier-a' : 'tier-b');
+  const isCrypto = item && (item.asset_class === 'crypto' || (item.ticker && item.ticker.endsWith('USDT')));
   const rrTxt = ts.rr ? `1:${ts.rr}` : '';
 
   let tooltip = `${ts.reason_bg || ts.reason_en || ''}\n`;
@@ -58,22 +93,47 @@ function renderTradeSuggestionCell(ts) {
   if (ts.rr) tooltip += `R:R: 1 : ${ts.rr}\n`;
 
   let actionBadge = '';
-  if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
-    actionBadge = `<span class="ts-badge ts-alpha" title="${tooltip}">⭐ ALPHA BUY <span class="ts-tier-pill tier-aplus">A+</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-  } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
-    actionBadge = `<span class="ts-badge ts-hold-accum" title="${tooltip}">🏰 ACCUMULATE <span class="ts-tier-pill ${tierClass}">${ts.tier}</span></span>`;
-  } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
-    actionBadge = `<span class="ts-badge ts-speculative" title="${tooltip}">⚠️ SPECULATIVE <span class="ts-tier-pill tier-b">B</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-  } else if (ts.action === 'SPOT_BUY') {
-    actionBadge = `<span class="ts-badge ts-buy" title="${tooltip}">🟢 BUY <span class="ts-tier-pill ${tierClass}">${ts.tier}</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-  } else if (ts.action === 'TAKE_PROFIT') {
-    actionBadge = `<span class="ts-badge ts-profit" title="${tooltip}">💰 TAKE PROFIT <span class="ts-tier-pill ${tierClass}">${ts.tier}</span></span>`;
-  } else if (ts.action === 'EXIT_PROTECT') {
-    actionBadge = `<span class="ts-badge ts-exit" title="${tooltip}">🛡️ EXIT / STOP</span>`;
-  } else if (ts.action === 'SHORT_2X_OPTIONAL') {
-    actionBadge = `<span class="ts-badge ts-short" title="${tooltip}">🔴 SHORT 2X <span class="ts-tier-pill ${tierClass}">${ts.tier}</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+  if (isCrypto) {
+    // 🪙 Crypto Cyber Amber & Gold Styling
+    const tierPill = `<span class="ts-tier-pill tier-crypto-gold">${ts.tier}</span>`;
+    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
+      actionBadge = `<span class="ts-badge ts-crypto-alpha" title="${tooltip}">🪙 ALPHA BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
+      actionBadge = `<span class="ts-badge ts-crypto-accum" title="${tooltip}">🪙 ACCUMULATE ${tierPill}</span>`;
+    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
+      actionBadge = `<span class="ts-badge ts-crypto-speculative" title="${tooltip}">🪙⚠️ SPECULATIVE <span class="ts-tier-pill tier-b">B</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else if (ts.action === 'SPOT_BUY') {
+      actionBadge = `<span class="ts-badge ts-crypto-buy" title="${tooltip}">🪙 BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else if (ts.action === 'TAKE_PROFIT') {
+      actionBadge = `<span class="ts-badge ts-crypto-profit" title="${tooltip}">🪙💰 TAKE PROFIT ${tierPill}</span>`;
+    } else if (ts.action === 'EXIT_PROTECT') {
+      actionBadge = `<span class="ts-badge ts-crypto-exit" title="${tooltip}">🪙🛡️ EXIT / STOP</span>`;
+    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
+      actionBadge = `<span class="ts-badge ts-short" title="${tooltip}">🔴 SHORT 2X ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else {
+      actionBadge = `<span class="ts-badge ts-wait">⏳ Wait</span>`;
+    }
   } else {
-    actionBadge = `<span class="ts-badge ts-wait">⏳ Wait</span>`;
+    // 🏛️ Equities & Commodities Institutional Amethyst & Emerald Styling
+    const tierClass = ts.tier === 'A+' ? 'tier-equity-amethyst' : (ts.tier === 'A' ? 'tier-equity-emerald' : 'tier-b');
+    const tierPill = `<span class="ts-tier-pill ${tierClass}">${ts.tier}</span>`;
+    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
+      actionBadge = `<span class="ts-badge ts-equity-alpha" title="${tooltip}">🏛️ ALPHA BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
+      actionBadge = `<span class="ts-badge ts-equity-accum" title="${tooltip}">🏛️ ACCUMULATE ${tierPill}</span>`;
+    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
+      actionBadge = `<span class="ts-badge ts-equity-speculative" title="${tooltip}">🏛️⚠️ SPECULATIVE <span class="ts-tier-pill tier-b">B</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else if (ts.action === 'SPOT_BUY') {
+      actionBadge = `<span class="ts-badge ts-equity-buy" title="${tooltip}">🏛️ BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else if (ts.action === 'TAKE_PROFIT') {
+      actionBadge = `<span class="ts-badge ts-equity-profit" title="${tooltip}">🏛️💰 TAKE PROFIT ${tierPill}</span>`;
+    } else if (ts.action === 'EXIT_PROTECT') {
+      actionBadge = `<span class="ts-badge ts-equity-exit" title="${tooltip}">🏛️🛡️ EXIT / STOP</span>`;
+    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
+      actionBadge = `<span class="ts-badge ts-short" title="${tooltip}">🔴 SHORT 2X ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
+    } else {
+      actionBadge = `<span class="ts-badge ts-wait">⏳ Wait</span>`;
+    }
   }
 
   return `<div class="ts-cell">${actionBadge}</div>`;
@@ -117,7 +177,7 @@ async function loadDashboardData() {
 
 function getFilteredSymbols() {
   const q = currentSearch.toLowerCase().trim();
-  return allSymbols.filter(item => {
+  const filtered = allSymbols.filter(item => {
     const matchesFilter = (currentFilter === 'ALL') || (item.state === currentFilter);
     const matchesClass = (currentClass === 'ALL') || (item.asset_class === currentClass);
     const matchesTf = (currentTfFilter === 'ALL') || (item.timeframe === currentTfFilter);
@@ -171,9 +231,9 @@ function getFilteredSymbols() {
       } else if (currentSortColumn === 'spread_pct') {
         valA = a.spread_pct !== undefined ? a.spread_pct : -999;
         valB = b.spread_pct !== undefined ? b.spread_pct : -999;
-      } else if (currentSortColumn === 'tier') {
-        valA = (a.trade_suggestion && tierRanks[a.trade_suggestion.tier]) || 0;
-        valB = (b.trade_suggestion && tierRanks[b.trade_suggestion.tier]) || 0;
+      } else if (currentSortColumn === 'tier' || currentSortColumn === 'trade_setup') {
+        valA = getQuantamentalSetupRank(a);
+        valB = getQuantamentalSetupRank(b);
       } else if (currentSortColumn === 's1_dist') {
         valA = (a.s1_dist_pct !== null && a.s1_dist_pct !== undefined) ? a.s1_dist_pct : 9999;
         valB = (b.s1_dist_pct !== null && b.s1_dist_pct !== undefined) ? b.s1_dist_pct : 9999;
@@ -184,6 +244,20 @@ function getFilteredSymbols() {
       if (valA < valB) return currentSortDir === 'asc' ? -1 : 1;
       if (valA > valB) return currentSortDir === 'asc' ? 1 : -1;
       return 0;
+    });
+  } else {
+    // Default sorting in main view: Rank assets by best trade setups from combined quantamental analysis!
+    filtered.sort((a, b) => {
+      const rankA = getQuantamentalSetupRank(a);
+      const rankB = getQuantamentalSetupRank(b);
+      if (rankB !== rankA) return rankB - rankA;
+      // Secondary sort: state (GOLD > NEUTRAL > BLUE)
+      const stateRanks = { 'GOLD': 3, 'NEUTRAL': 2, 'BLUE': 1 };
+      const sA = stateRanks[a.state] || 0;
+      const sB = stateRanks[b.state] || 0;
+      if (sB !== sA) return sB - sA;
+      // Tertiary sort: spread_pct
+      return (b.spread_pct || 0) - (a.spread_pct || 0);
     });
   }
 
@@ -347,7 +421,7 @@ function renderTable() {
         <td class="spread-cell ${spreadClass}">
           <span class="spread-pill ${spreadClass}">${spreadLabel}</span>
         </td>
-        <td>${renderTradeSuggestionCell(item.trade_suggestion)}</td>
+        <td>${renderTradeSuggestionCell(item.trade_suggestion, item)}</td>
         <td>${srCellHtml}</td>
         <td class="num-cell">${item.v1}</td>
         <td class="num-cell">${item.m1}</td>
@@ -465,7 +539,7 @@ function renderCards() {
 
         ${item.trade_suggestion ? `
           <div style="margin-bottom: 8px;">
-            ${renderTradeSuggestionCell(item.trade_suggestion)}
+            ${renderTradeSuggestionCell(item.trade_suggestion, item)}
           </div>
         ` : ''}
 
@@ -915,6 +989,7 @@ function updateModalTradeSuggestionStrip(ts, item) {
   }
 
   // 2. Update Trade Suggestion Strip in Modal
+  const setupStrip = document.getElementById('modalSetupStrip');
   const actionElem = document.getElementById('modalSetupAction');
   const tierElem = document.getElementById('modalSetupTier');
   const typeElem = document.getElementById('modalSetupType');
@@ -927,12 +1002,24 @@ function updateModalTradeSuggestionStrip(ts, item) {
 
   if (!actionElem) return;
 
+  const isCrypto = item && (item.asset_class === 'crypto' || (item.ticker && item.ticker.endsWith('USDT')));
+  if (setupStrip) {
+    if (isCrypto) {
+      setupStrip.classList.add('strip-crypto');
+      setupStrip.classList.remove('strip-equity');
+    } else {
+      setupStrip.classList.add('strip-equity');
+      setupStrip.classList.remove('strip-crypto');
+    }
+  }
+
   if (!ts || ts.action === 'WAIT') {
-    if (ts && ts.setup_type === 'VALUE_TRAP_WARNING') {
+    if (ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK')) {
       actionElem.className = 'setup-action-badge ts-valuetrap';
       actionElem.textContent = '⏳ VALUE TRAP';
       tierElem.textContent = 'Wait For Pivot';
       tierElem.style.display = 'inline-block';
+      tierElem.className = 'setup-tier-badge';
       typeElem.textContent = 'Downtrend Warning';
     } else {
       actionElem.className = 'setup-action-badge ts-wait';
@@ -954,27 +1041,54 @@ function updateModalTradeSuggestionStrip(ts, item) {
   }
 
   tierElem.style.display = 'inline-block';
-  if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
-    actionElem.className = 'setup-action-badge ts-alpha';
-    actionElem.textContent = '⭐ ALPHA BUY';
-  } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
-    actionElem.className = 'setup-action-badge ts-hold-accum';
-    actionElem.textContent = '🏰 ACCUMULATE';
-  } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
-    actionElem.className = 'setup-action-badge ts-speculative';
-    actionElem.textContent = '⚠️ SPECULATIVE';
-  } else if (ts.action === 'SPOT_BUY') {
-    actionElem.className = 'setup-action-badge ts-buy';
-    actionElem.textContent = '🟢 SPOT BUY';
-  } else if (ts.action === 'TAKE_PROFIT') {
-    actionElem.className = 'setup-action-badge ts-profit';
-    actionElem.textContent = '💰 TAKE PROFIT';
-  } else if (ts.action === 'EXIT_PROTECT') {
-    actionElem.className = 'setup-action-badge ts-exit';
-    actionElem.textContent = '🛡️ EXIT / STOP';
-  } else if (ts.action === 'SHORT_2X_OPTIONAL') {
-    actionElem.className = 'setup-action-badge ts-short';
-    actionElem.textContent = '🔴 SHORT 2X';
+  if (isCrypto) {
+    tierElem.className = 'setup-tier-badge tier-crypto-badge';
+    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
+      actionElem.className = 'setup-action-badge ts-crypto-alpha';
+      actionElem.textContent = '🪙 ALPHA BUY';
+    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
+      actionElem.className = 'setup-action-badge ts-crypto-accum';
+      actionElem.textContent = '🪙 ACCUMULATE';
+    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
+      actionElem.className = 'setup-action-badge ts-crypto-speculative';
+      actionElem.textContent = '🪙⚠️ SPECULATIVE';
+    } else if (ts.action === 'SPOT_BUY') {
+      actionElem.className = 'setup-action-badge ts-crypto-buy';
+      actionElem.textContent = '🪙 CRYPTO BUY';
+    } else if (ts.action === 'TAKE_PROFIT') {
+      actionElem.className = 'setup-action-badge ts-crypto-profit';
+      actionElem.textContent = '🪙💰 TAKE PROFIT';
+    } else if (ts.action === 'EXIT_PROTECT') {
+      actionElem.className = 'setup-action-badge ts-crypto-exit';
+      actionElem.textContent = '🪙🛡️ EXIT / STOP';
+    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
+      actionElem.className = 'setup-action-badge ts-short';
+      actionElem.textContent = '🔴 SHORT 2X';
+    }
+  } else {
+    tierElem.className = 'setup-tier-badge tier-equity-badge';
+    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
+      actionElem.className = 'setup-action-badge ts-equity-alpha';
+      actionElem.textContent = '🏛️ ALPHA BUY';
+    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
+      actionElem.className = 'setup-action-badge ts-equity-accum';
+      actionElem.textContent = '🏛️ ACCUMULATE';
+    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
+      actionElem.className = 'setup-action-badge ts-equity-speculative';
+      actionElem.textContent = '🏛️⚠️ SPECULATIVE';
+    } else if (ts.action === 'SPOT_BUY') {
+      actionElem.className = 'setup-action-badge ts-equity-buy';
+      actionElem.textContent = '🏛️ EQUITY BUY';
+    } else if (ts.action === 'TAKE_PROFIT') {
+      actionElem.className = 'setup-action-badge ts-equity-profit';
+      actionElem.textContent = '🏛️💰 TAKE PROFIT';
+    } else if (ts.action === 'EXIT_PROTECT') {
+      actionElem.className = 'setup-action-badge ts-equity-exit';
+      actionElem.textContent = '🏛️🛡️ EXIT / STOP';
+    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
+      actionElem.className = 'setup-action-badge ts-short';
+      actionElem.textContent = '🔴 SHORT 2X';
+    }
   }
 
   tierElem.textContent = `⭐ Tier ${ts.tier} (${ts.score}/100)`;

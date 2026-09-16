@@ -257,8 +257,17 @@ def main():
     parser.add_argument("--export-dashboard", action="store_true", help="Export latest data.json for dashboard")
     parser.add_argument("--test-telegram", action="store_true", help="Send a test notification to Telegram")
     parser.add_argument("--digest", action="store_true", help="Dispatch daily market digest to Telegram")
-    parser.add_argument("--force", action="store_true", help="Force sending digest even if already sent today")
     parser.add_argument("--websocket", action="store_true", help="Run standalone Binance WebSocket listener")
+    parser.add_argument("--backtest", action="store_true", help="Run institutional 5-year multi-asset backtest")
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default="both",
+        choices=["spot", "hedge", "both"],
+        help="Backtest mode: spot (longs only), hedge (longs + 2x hedge short), both (comparison)",
+    )
+    parser.add_argument("--capital", type=float, default=100000.0, help="Initial capital for backtest simulation")
+    parser.add_argument("--force-refresh", action="store_true", help="Force redownloading historical market data")
 
     args = parser.parse_args()
 
@@ -351,6 +360,13 @@ def main():
         except KeyboardInterrupt:
             ws_listener.stop()
             print("WebSocket listener stopped.")
+    elif args.backtest:
+        from src.backtest.runner import run_full_backtest
+        run_full_backtest(
+            mode=args.mode,
+            capital=args.capital,
+            force_refresh=args.force_refresh,
+        )
     else:
         parser.print_help()
 

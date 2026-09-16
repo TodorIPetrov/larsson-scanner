@@ -437,16 +437,19 @@ def generate_trade_suggestion(
     # -------------------------------------------------------------------------
     # 5. HEDGE SHORT 2X (Optional Light Futures Short on Breakdown)
     # -------------------------------------------------------------------------
-    if state == "BLUE" and r1 is not None and current_price < r1:
-        # Bearish trend retesting overhead resistance/ribbon
-        retesting_overhead = (current_price >= v2 and current_price <= (v1 + 0.3 * atr)) or (
-            abs(current_price - r1) <= 0.8 * atr
-        )
+    if state == "BLUE":
+        overhead_res = r1 if (r1 is not None and r1 > current_price) else v2
+        if current_price < overhead_res:
+            # Bearish trend retesting overhead resistance/ribbon (v1 lower, v2 upper)
+            retesting_overhead = (
+                (current_price >= (v1 - 0.2 * atr) and current_price <= (v2 + 0.3 * atr))
+                or (r1 is not None and abs(current_price - r1) <= 0.8 * atr)
+            )
 
-        if retesting_overhead:
-            sl_anchor = max(r1_upper if r1_upper is not None else r1, v1)
-            sl = round(sl_anchor + (0.5 * atr), 4)
-            risk = sl - current_price
+            if retesting_overhead:
+                sl_anchor = max(r1_upper if r1_upper is not None else overhead_res, v2)
+                sl = round(sl_anchor + (0.5 * atr), 4)
+                risk = sl - current_price
 
             if risk > 0:
                 tp1 = round(s1 if s1 is not None else (current_price - 1.8 * risk), 4)
