@@ -1,15 +1,31 @@
 {
-  "generated_at": "2026-09-16T08:00:03.740655+00:00",
+  "generated_at": "2026-09-16T08:00:10.426188+00:00",
   "summary": {
     "total": 472,
     "gold": 223,
-    "blue": 194,
-    "neutral": 55,
+    "blue": 195,
+    "neutral": 54,
     "bullish_pct": 47.2,
-    "bearish_pct": 41.1,
-    "neutral_pct": 11.7
+    "bearish_pct": 41.3,
+    "neutral_pct": 11.4
   },
   "symbols": [
+    {
+      "ticker": "ETHUSDT",
+      "name": "Ethereum",
+      "asset_class": "crypto",
+      "tv_symbol": "BINANCE:ETHUSDT",
+      "timeframe": "4H",
+      "state": "BLUE",
+      "price": 2396.37,
+      "v1": 2470.6868,
+      "m1": 2474.9687,
+      "m2": 2477.6427,
+      "v2": 2478.141,
+      "spread_pct": -0.3,
+      "last_change": "2026-09-16T08:00:10.262861+00:00",
+      "updated_at": "2026-09-16T08:00:10.262861+00:00"
+    },
     {
       "ticker": "BNBUSDT",
       "name": "BNB Chain",
@@ -2203,36 +2219,20 @@
       "updated_at": "2026-09-15T20:02:02.157129+00:00"
     },
     {
-      "ticker": "ETHUSDT",
-      "name": "Ethereum",
-      "asset_class": "crypto",
-      "tv_symbol": "BINANCE:ETHUSDT",
-      "timeframe": "4H",
-      "state": "NEUTRAL",
-      "price": 2416.56,
-      "v1": 2488.1353,
-      "m1": 2489.0998,
-      "m2": 2488.4085,
-      "v2": 2487.2902,
-      "spread_pct": 0.03,
-      "last_change": "2026-09-15T20:00:09.439784+00:00",
-      "updated_at": "2026-09-15T20:02:01.739978+00:00"
-    },
-    {
       "ticker": "AAVEUSDT",
       "name": "Aave (DeFi)",
       "asset_class": "crypto",
       "tv_symbol": "BINANCE:AAVEUSDT",
       "timeframe": "4H",
       "state": "BLUE",
-      "price": 123.95,
-      "v1": 126.4542,
-      "m1": 126.6215,
-      "m2": 126.8528,
-      "v2": 126.9613,
-      "spread_pct": -0.4,
+      "price": 119.4,
+      "v1": 125.2271,
+      "m1": 125.6142,
+      "m2": 126.0602,
+      "v2": 126.2791,
+      "spread_pct": -0.83,
       "last_change": "2026-09-15T20:00:08.717083+00:00",
-      "updated_at": "2026-09-15T20:02:17.816240+00:00"
+      "updated_at": "2026-09-16T08:00:09.714847+00:00"
     },
     {
       "ticker": "SAGAUSDT",
@@ -2241,14 +2241,14 @@
       "tv_symbol": "BINANCE:SAGAUSDT",
       "timeframe": "4H",
       "state": "GOLD",
-      "price": 0.02381,
-      "v1": 0.0183,
-      "m1": 0.0179,
-      "m2": 0.0174,
-      "v2": 0.0172,
-      "spread_pct": 6.4,
+      "price": 0.02011,
+      "v1": 0.0188,
+      "m1": 0.0183,
+      "m2": 0.0178,
+      "v2": 0.0176,
+      "spread_pct": 6.82,
       "last_change": "2026-09-15T20:00:08.381780+00:00",
-      "updated_at": "2026-09-15T20:02:16.973051+00:00"
+      "updated_at": "2026-09-16T08:00:09.441838+00:00"
     },
     {
       "ticker": "EURUSDT",
@@ -2257,14 +2257,14 @@
       "tv_symbol": "BINANCE:EURUSDT",
       "timeframe": "4H",
       "state": "BLUE",
-      "price": 1.1545,
-      "v1": 1.1576,
-      "m1": 1.1582,
-      "m2": 1.1588,
-      "v2": 1.1591,
+      "price": 1.1556,
+      "v1": 1.1572,
+      "m1": 1.1577,
+      "m2": 1.1584,
+      "v2": 1.1587,
       "spread_pct": -0.13,
       "last_change": "2026-09-15T20:00:07.971237+00:00",
-      "updated_at": "2026-09-15T20:02:13.647449+00:00"
+      "updated_at": "2026-09-16T08:00:09.171005+00:00"
     },
     {
       "ticker": "ARBUSDT",
@@ -6977,14 +6977,14 @@
       "tv_symbol": "BINANCE:ADAUSDT",
       "timeframe": "4H",
       "state": "BLUE",
-      "price": 0.1982,
-      "v1": 0.2071,
-      "m1": 0.2079,
-      "m2": 0.2087,
-      "v2": 0.2091,
-      "spread_pct": -0.96,
+      "price": 0.1941,
+      "v1": 0.2046,
+      "m1": 0.2058,
+      "m2": 0.207,
+      "v2": 0.2076,
+      "spread_pct": -1.45,
       "last_change": "2026-09-15T11:21:53.312622+00:00",
-      "updated_at": "2026-09-15T20:02:08.746500+00:00"
+      "updated_at": "2026-09-16T08:00:08.897323+00:00"
     },
     {
       "ticker": "ENAUSDT",
@@ -7041,14 +7041,14 @@
       "tv_symbol": "BINANCE:UUSDT",
       "timeframe": "4H",
       "state": "GOLD",
-      "price": 1.0002,
-      "v1": 0.9999,
+      "price": 1.0004,
+      "v1": 1.0,
       "m1": 0.9999,
-      "m2": 0.9998,
+      "m2": 0.9999,
       "v2": 0.9998,
-      "spread_pct": 0.01,
+      "spread_pct": 0.02,
       "last_change": "2026-09-15T11:21:52.016911+00:00",
-      "updated_at": "2026-09-15T20:02:05.866933+00:00"
+      "updated_at": "2026-09-16T08:00:07.989228+00:00"
     },
     {
       "ticker": "DOGEUSDT",
@@ -7217,14 +7217,14 @@
       "tv_symbol": "BINANCE:BTCUSDT",
       "timeframe": "4H",
       "state": "BLUE",
-      "price": 76232.65,
-      "v1": 77430.8328,
-      "m1": 77552.8253,
-      "m2": 77706.9089,
-      "v2": 77786.7718,
-      "spread_pct": -0.46,
+      "price": 75737.07,
+      "v1": 77099.4845,
+      "m1": 77268.8264,
+      "m2": 77472.0038,
+      "v2": 77578.2097,
+      "spread_pct": -0.62,
       "last_change": "2026-09-15T11:21:47.492046+00:00",
-      "updated_at": "2026-09-15T20:02:01.331532+00:00"
+      "updated_at": "2026-09-16T08:00:09.990298+00:00"
     },
     {
       "ticker": "USDCUSDT",
