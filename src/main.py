@@ -160,22 +160,22 @@ def start_scheduler(scanner: LarssonScanner):
     sched.add_job(
         func=lambda: [
             run_scan(scanner, asset_class=ac, timeframe="1D")
-            for ac in ["us_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
+            for ac in ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
         ],
         trigger=CronTrigger(day_of_week="mon-fri", hour=21, minute=5, timezone="UTC"),
         id="stocks_daily",
-        name="Traditional & AI Markets Daily Scan (Mon-Fri 21:05 UTC)",
+        name="Traditional & Crypto Stocks Daily Scan (Mon-Fri 21:05 UTC)",
     )
 
     # Weekly Stocks/Commodities/Indices/AI: Friday at 21:10 UTC
     sched.add_job(
         func=lambda: [
             run_scan(scanner, asset_class=ac, timeframe="1W")
-            for ac in ["us_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
+            for ac in ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
         ],
         trigger=CronTrigger(day_of_week="fri", hour=21, minute=10, timezone="UTC"),
         id="stocks_weekly",
-        name="Traditional & AI Markets Weekly Scan (Fri 21:10 UTC)",
+        name="Traditional & Crypto Stocks Weekly Scan (Fri 21:10 UTC)",
     )
 
     logger.info("Scheduler started with cron jobs:")
@@ -231,7 +231,7 @@ def main():
         "--asset-class",
         type=str,
         default="all",
-        choices=["all", "crypto", "us_stocks", "intl_stocks", "commodities", "indices", "sp500"],
+        choices=["all", "crypto", "crypto_stocks", "us_stocks", "intl_stocks", "commodities", "indices", "sp500"],
         help="Asset class to scan",
     )
     parser.add_argument(

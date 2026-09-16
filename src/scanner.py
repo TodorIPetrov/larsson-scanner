@@ -273,7 +273,7 @@ class LarssonScanner:
 
         # 2. Stocks, Commodities, Indices (only on 1D and 1W)
         if timeframe in ["1D", "1W"]:
-            for a_class in ["us_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]:
+            for a_class in ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]:
                 res = self.scan_yfinance_assets(asset_class=a_class, timeframe=timeframe)
                 combined["classes"][a_class] = res
                 self._aggregate_stats(combined, res)

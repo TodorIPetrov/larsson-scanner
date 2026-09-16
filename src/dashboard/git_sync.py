@@ -43,9 +43,17 @@ def sync_dashboard_to_git() -> bool:
             capture_output=True,
         )
 
+        # Pull latest changes from remote to avoid conflicts with GitHub Actions
+        subprocess.run(
+            ["git", "pull", "--rebase", "origin", "master"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+
         # Push to remote
         push = subprocess.run(
-            ["git", "push"],
+            ["git", "push", "origin", "master"],
             capture_output=True,
             text=True,
             timeout=30,

@@ -45,6 +45,7 @@ jobs:
 
       - name: Execute Stocks, Commodities & Indices Scan (1D)
         run: |
+          python src/main.py --scan --asset-class crypto_stocks --timeframe 1D
           python src/main.py --scan --asset-class us_stocks --timeframe 1D
           python src/main.py --scan --asset-class intl_stocks --timeframe 1D
           python src/main.py --scan --asset-class commodities --timeframe 1D

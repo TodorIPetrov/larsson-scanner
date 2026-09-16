@@ -366,6 +366,21 @@ h1 {
   font-weight: 600;
 }
 
+.class-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.class-crypto_stocks {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
 .price-cell, .num-cell {
   font-family: 'JetBrains Mono', monospace;
   color: var(--text-primary);
