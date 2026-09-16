@@ -76,21 +76,35 @@ function renderTradeSuggestionCell(ts) {
 }
 
 async function loadDashboardData() {
+  let data;
   try {
     const res = await fetch('data.json?t=' + new Date().getTime());
     if (!res.ok) {
       throw new Error(`Failed to load data.json: ${res.statusText}`);
     }
-    const data = await res.json();
+    data = await res.json();
     allSymbols = data.symbols || [];
     renderOverview(data);
-    renderAllViews();
   } catch (err) {
-    console.error('Error loading dashboard:', err);
+    console.error('Error loading data.json:', err);
     document.getElementById('assetsTableBody').innerHTML = `
       <tr>
         <td colspan="14" class="loading-state" style="color: #ef4444;">
           ⚠️ Failed to load <code>data.json</code>. Run a scan first: <code>python src/main.py --scan</code>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  try {
+    renderAllViews();
+  } catch (renderErr) {
+    console.error('Error rendering dashboard views:', renderErr);
+    document.getElementById('assetsTableBody').innerHTML = `
+      <tr>
+        <td colspan="14" class="loading-state" style="color: #ef4444;">
+          ⚠️ Rendering error: ${renderErr.message}
         </td>
       </tr>
     `;
@@ -344,6 +358,9 @@ function renderCards() {
     const spreadSign = spreadVal > 0 ? '+' : '';
     const spreadClass = spreadVal > 0 ? 'spread-pos' : (spreadVal < 0 ? 'spread-neg' : 'spread-neu');
     const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
+
+    const hasS1 = item.s1 !== null && item.s1 !== undefined;
+    const hasR1 = item.r1 !== null && item.r1 !== undefined;
 
     // Fundamental Badges
     let fundRow = '';
