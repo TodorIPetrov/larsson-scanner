@@ -43,9 +43,9 @@ def sync_dashboard_to_git() -> bool:
             capture_output=True,
         )
 
-        # Pull latest changes from remote to avoid conflicts with GitHub Actions
+        # Pull and merge remote changes with -X ours to prevent any conflicts
         subprocess.run(
-            ["git", "pull", "--rebase", "origin", "master"],
+            ["git", "pull", "--no-rebase", "-X", "ours", "origin", "master", "-m", "chore: merge remote market data"],
             capture_output=True,
             text=True,
             timeout=30,
