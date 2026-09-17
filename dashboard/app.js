@@ -13,10 +13,35 @@ let currentSortDir = 'asc';
 let currentModalItem = null;
 
 // Active chart state
-let activeChart = null;
+let activeChart = null; // modal chart instance
 let activeTicker = '';
 let activeTf = '1D';
 let activeClass = '';
+
+// Live on-page chart state
+let liveActiveChart = null;
+let liveTicker = 'BTCUSDT';
+let liveTf = '1D';
+let liveClass = 'crypto';
+let liveChartInitialized = false;
+
+function getTvInterval(tf) {
+  if (!tf) return 'D';
+  const upper = tf.toUpperCase();
+  if (upper === '4H') return '240';
+  if (upper === '1H') return '60';
+  if (upper === '1W' || upper === 'W') return 'W';
+  if (upper === '1M' || upper === 'M') return 'M';
+  return 'D';
+}
+
+function getTvSymbol(item, ticker, assetClass) {
+  if (item && item.tv_symbol) return item.tv_symbol;
+  if (assetClass === 'crypto' || (ticker && ticker.endsWith('USDT'))) {
+    return `BINANCE:${ticker}`;
+  }
+  return ticker;
+}
 
 const CLASS_LABELS = {
   crypto_stocks: 'Crypto Stock',
@@ -265,6 +290,7 @@ async function loadDashboardData() {
 
   try {
     renderAllViews();
+    initLiveChart();
   } catch (renderErr) {
     console.error('Error rendering dashboard views:', renderErr);
     document.getElementById('assetsTableBody').innerHTML = `
@@ -461,8 +487,9 @@ function renderTable() {
   }
 
   tbody.innerHTML = filtered.map(item => {
-    const tfCode = item.timeframe === '4H' ? '240' : item.timeframe;
-    const tvUrl = `https://www.tradingview.com/chart/?symbol=${item.tv_symbol}&interval=${tfCode}`;
+    const tfCode = getTvInterval(item.timeframe);
+    const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
+    const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
 
     const priceFormatted = item.price >= 1000 
       ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
@@ -488,10 +515,13 @@ function renderTable() {
     }
 
     return `
-      <tr>
+      <tr class="asset-row ${item.ticker === liveTicker && item.timeframe === liveTf ? 'row-active' : ''}"
+          data-ticker="${item.ticker}"
+          data-tf="${item.timeframe}"
+          onclick="selectLiveAsset('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">
         <td>
           <div class="symbol-cell">
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" title="Отвори ${item.tv_symbol} в TradingView">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" onclick="event.stopPropagation()" title="Отвори ${tvSym} в TradingView">
               <span class="ticker-text">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
             </a>
@@ -509,10 +539,10 @@ function renderTable() {
         <td>${srCellHtml}</td>
         <td>
           <div style="display: flex; gap: 6px; align-items: center;">
-            <button class="btn-view-chart" onclick="openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Интерактивна графика и тристепенен анализ">
+            <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Интерактивна графика и тристепенен анализ">
               📊 S/R
             </button>
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" title="Отвори в TradingView">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" onclick="event.stopPropagation()" title="Отвори в TradingView">
               TV ↗
             </a>
           </div>
@@ -520,6 +550,7 @@ function renderTable() {
       </tr>
     `;
   }).join('');
+  updateActiveRowHighlight();
 }
 
 function renderCards() {
@@ -532,8 +563,9 @@ function renderCards() {
   }
 
   container.innerHTML = filtered.map(item => {
-    const tfCode = item.timeframe === '4H' ? '240' : item.timeframe;
-    const tvUrl = `https://www.tradingview.com/chart/?symbol=${item.tv_symbol}&interval=${tfCode}`;
+    const tfCode = getTvInterval(item.timeframe);
+    const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
+    const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
     
     let cardClass = 'card-neutral';
     if (item.state === 'GOLD') cardClass = 'card-gold';
@@ -549,10 +581,13 @@ function renderCards() {
     const hasR1 = item.r1 !== null && item.r1 !== undefined;
 
     return `
-      <div class="asset-card ${cardClass}">
+      <div class="asset-card ${cardClass} ${item.ticker === liveTicker && item.timeframe === liveTf ? 'card-active' : ''}"
+           data-ticker="${item.ticker}"
+           data-tf="${item.timeframe}"
+           onclick="selectLiveAsset('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">
         <div class="card-top">
           <div class="card-identity">
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" title="Отвори TradingView">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" onclick="event.stopPropagation()" title="Отвори TradingView">
               <span class="card-ticker">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
             </a>
@@ -594,13 +629,14 @@ function renderCards() {
         <div class="card-footer" style="margin-top: 6px;">
           <span class="card-change">Променено: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'N/A'}</span>
           <div style="display: flex; gap: 6px; align-items: center;">
-            <button class="btn-view-chart" onclick="openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">📊 S/R</button>
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn">TV ↗</a>
+            <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">📊 S/R</button>
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn" onclick="event.stopPropagation()">TV ↗</a>
           </div>
         </div>
       </div>
     `;
   }).join('');
+  updateActiveRowHighlight();
 }
 
 function applyViewMode() {
@@ -733,77 +769,31 @@ function computePivotsAndZones(candles, left = 5, right = 5, toleranceAtrMult = 
   return { atr: currentAtr, s1, r1, zones };
 }
 
-async function openChartModal(ticker, timeframe, assetClass) {
-  activeTicker = ticker;
-  activeTf = timeframe || '1D';
-  activeClass = assetClass || 'crypto';
+// =============================================================================
+// UNIFIED CHART ENGINE (LIGHTWEIGHT CHARTS + BULLETPROOF TRADINGVIEW IFRAME)
+// =============================================================================
 
-  const modal = document.getElementById('chartModal');
-  const loading = document.getElementById('chartLoading');
-  modal.style.display = 'flex';
-  loading.style.display = 'flex';
-
-  const item = allSymbols.find(s => s.ticker === ticker) || {};
-  document.getElementById('modalTicker').textContent = ticker;
-  document.getElementById('modalClass').textContent = CLASS_LABELS[assetClass] || assetClass;
-  
-  const tfCode = activeTf === '4H' ? '240' : activeTf;
-  const tvSym = item.tv_symbol || (assetClass === 'crypto' ? `BINANCE:${ticker}` : ticker);
-  document.getElementById('modalTvBtn').href = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
-
-  // Update Active TF Buttons
-  document.querySelectorAll('#modalTfGroup .modal-tf-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tf === activeTf);
-  });
-
-  // Clear previous chart
-  const container = document.getElementById('chartCanvas');
-  container.innerHTML = '';
-  if (activeChart) {
-    try { activeChart.remove(); } catch(e) {}
-    activeChart = null;
-  }
-
-  // Fetch candles
-  let candles = [];
-  const isCrypto = assetClass === 'crypto' || ticker.endsWith('USDT');
-
-  if (isCrypto) {
-    const binanceInterval = activeTf.toLowerCase();
-    try {
-      const url = `https://api.binance.com/api/v3/klines?symbol=${ticker}&interval=${binanceInterval}&limit=180`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const raw = await res.json();
-        candles = raw.map(k => ({
-          time: Math.floor(k[0] / 1000),
-          open: parseFloat(k[1]),
-          high: parseFloat(k[2]),
-          low: parseFloat(k[3]),
-          close: parseFloat(k[4]),
-          volume: parseFloat(k[5]),
-        }));
-      }
-    } catch (e) {
-      console.warn('Binance direct fetch failed:', e);
-    }
-  }
-
-  // If candles fetched successfully, render with Lightweight Charts
-  if (candles.length > 30) {
-    renderLightweightChart(container, candles, item);
-  } else {
-    // Non-crypto fallback: Render embedded TradingView Advanced Widget
-    renderTradingViewWidget(container, tvSym, tfCode, item);
-  }
-
-  loading.style.display = 'none';
+function renderTradingViewIframe(container, tvSymbol, timeframe) {
+  const tvInterval = getTvInterval(timeframe);
+  const iframeSrc = `https://s.tradingview.com/widgetembed/?symbol=${encodeURIComponent(tvSymbol)}&interval=${tvInterval}&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&hide_side_toolbar=0&allow_symbol_change=1&save_image=0`;
+  container.innerHTML = `
+    <iframe 
+      src="${iframeSrc}" 
+      style="width: 100%; height: 100%; min-height: 480px; border: none; border-radius: 8px;" 
+      title="TradingView Chart - ${tvSymbol}"
+      loading="lazy"
+      allowtransparency="true" 
+      scrolling="no" 
+      allowfullscreen>
+    </iframe>
+  `;
 }
 
-function renderLightweightChart(container, candles, item) {
+function renderLightweightChart(container, candles, item, height = 500) {
+  container.innerHTML = '';
   const chart = LightweightCharts.createChart(container, {
-    width: container.clientWidth || 1050,
-    height: 500,
+    width: container.clientWidth || 1000,
+    height: height,
     layout: {
       background: { color: '#0b0e14' },
       textColor: '#94a3b8',
@@ -827,7 +817,6 @@ function renderLightweightChart(container, candles, item) {
       secondsVisible: false,
     },
   });
-  activeChart = chart;
 
   // 1. Candlestick Series
   const candleSeries = chart.addCandlestickSeries({
@@ -868,16 +857,12 @@ function renderLightweightChart(container, candles, item) {
   const sr = computePivotsAndZones(candles);
   const lastPrice = candles[candles.length - 1].close;
 
-  // Use either calculated S1/R1 or item precomputed S1/R1
-  const s1Val = sr.s1 ? sr.s1.core : item.s1;
-  const s1Touches = sr.s1 ? sr.s1.touches : (item.s1_touches || 0);
-  const r1Val = sr.r1 ? sr.r1.core : item.r1;
-  const r1Touches = sr.r1 ? sr.r1.touches : (item.r1_touches || 0);
+  const s1Val = sr.s1 ? sr.s1.core : (item ? item.s1 : null);
+  const r1Val = sr.r1 ? sr.r1.core : (item ? item.r1 : null);
 
   const s1Dist = s1Val ? Math.abs(((lastPrice - s1Val) / lastPrice) * 100).toFixed(1) : null;
   const r1Dist = r1Val ? Math.abs(((r1Val - lastPrice) / lastPrice) * 100).toFixed(1) : null;
 
-  // 4. Draw Horizontal Price Lines
   if (s1Val) {
     candleSeries.createPriceLine({
       price: s1Val,
@@ -900,8 +885,8 @@ function renderLightweightChart(container, candles, item) {
     });
   }
 
-  // 4b. Draw Trade Setup Price Lines (Entry, SL, TP1, TP2)
-  const ts = item.trade_suggestion;
+  // 4. Trade Setup Lines
+  const ts = item ? item.trade_suggestion : null;
   if (ts && ts.action !== 'WAIT') {
     if (ts.entry) {
       candleSeries.createPriceLine({
@@ -945,7 +930,7 @@ function renderLightweightChart(container, candles, item) {
     }
   }
 
-  // 4c. Draw DCF Fair Value Line from institutional valuation
+  // 5. DCF Fair Value Line
   if (item && item.fundamental && item.fundamental.fair_value) {
     const fv = item.fundamental.fair_value;
     candleSeries.createPriceLine({
@@ -958,39 +943,257 @@ function renderLightweightChart(container, candles, item) {
     });
   }
 
-  // Update Trade Suggestion Strip in Modal
-  updateModalTradeSuggestionStrip(ts, item);
+  chart.timeScale().fitContent();
+  return chart;
+}
 
-  // 5. Update S/R Metrics Strip
-  document.getElementById('modalPrice').textContent = `$${lastPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  document.getElementById('modalS1').textContent = s1Val ? `$${s1Val.toLocaleString('en-US', { minimumFractionDigits: 2 })} (-${s1Dist}%)` : 'None';
-  document.getElementById('modalS1Touches').textContent = `${s1Touches} touches`;
-  document.getElementById('modalR1').textContent = r1Val ? `$${r1Val.toLocaleString('en-US', { minimumFractionDigits: 2 })} (+${r1Dist}%)` : 'Price Discovery';
-  document.getElementById('modalR1Touches').textContent = `${r1Touches} touches`;
-  document.getElementById('modalAtr').textContent = `$${(sr.atr || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+async function loadChart(container, ticker, timeframe, assetClass, height = 500) {
+  const item = allSymbols.find(s => s.ticker === ticker && s.timeframe === timeframe) || 
+               allSymbols.find(s => s.ticker === ticker) || {};
+  const tvSym = getTvSymbol(item, ticker, assetClass);
+  const isCrypto = assetClass === 'crypto' || (ticker && ticker.endsWith('USDT'));
 
-  // Context Tag
-  const ctxElem = document.getElementById('modalContext');
-  const ctxDesc = document.getElementById('modalContextDesc');
-  if (r1Dist !== null && parseFloat(r1Dist) <= 1.5) {
-    ctxElem.textContent = '⚠️ NEAR RESISTANCE';
-    ctxElem.style.color = '#ef4444';
-    ctxDesc.textContent = `Right below R1 (+${r1Dist}%)`;
-  } else if (s1Dist !== null && parseFloat(s1Dist) <= 1.5) {
-    ctxElem.textContent = '🎯 NEAR SUPPORT';
-    ctxElem.style.color = '#10b981';
-    ctxDesc.textContent = `Right above S1 (-${s1Dist}%)`;
-  } else if (!r1Val) {
-    ctxElem.textContent = '🚀 ALL TIME HIGH';
-    ctxElem.style.color = '#f59e0b';
-    ctxDesc.textContent = 'Trading above all key resistances';
-  } else {
-    ctxElem.textContent = '✅ IN VALUE RANGE';
-    ctxElem.style.color = '#38bdf8';
-    ctxDesc.textContent = `Room to run to R1 (+${r1Dist}%)`;
+  let chartInstance = null;
+  let candles = [];
+
+  if (isCrypto && window.LightweightCharts) {
+    const binanceInterval = (timeframe || '1D').toLowerCase();
+    try {
+      const url = `https://api.binance.com/api/v3/klines?symbol=${ticker}&interval=${binanceInterval}&limit=180`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const raw = await res.json();
+        candles = raw.map(k => ({
+          time: Math.floor(k[0] / 1000),
+          open: parseFloat(k[1]),
+          high: parseFloat(k[2]),
+          low: parseFloat(k[3]),
+          close: parseFloat(k[4]),
+          volume: parseFloat(k[5]),
+        }));
+      }
+    } catch (e) {
+      console.warn(`Binance klines fetch failed for ${ticker}:`, e);
+    }
   }
 
-  chart.timeScale().fitContent();
+  if (candles.length > 30) {
+    chartInstance = renderLightweightChart(container, candles, item, height);
+  } else {
+    renderTradingViewIframe(container, tvSym, timeframe);
+  }
+
+  return chartInstance;
+}
+
+// =============================================================================
+// LIVE ON-PAGE SHOWCASE ENGINE
+// =============================================================================
+
+function updateActiveRowHighlight() {
+  document.querySelectorAll('#assetsTableBody tr').forEach(tr => {
+    const isAct = tr.dataset.ticker === liveTicker && tr.dataset.tf === liveTf;
+    tr.classList.toggle('row-active', isAct);
+  });
+  document.querySelectorAll('#cardsGrid .asset-card').forEach(card => {
+    const isAct = card.dataset.ticker === liveTicker && card.dataset.tf === liveTf;
+    card.classList.toggle('card-active', isAct);
+  });
+}
+
+function updateLiveChartHud(item, ticker, timeframe, assetClass) {
+  const tvSym = getTvSymbol(item, ticker, assetClass);
+  const tvInterval = getTvInterval(timeframe);
+
+  const liveTickerEl = document.getElementById('liveTicker');
+  if (liveTickerEl) liveTickerEl.textContent = ticker;
+
+  const liveClassEl = document.getElementById('liveClassBadge');
+  if (liveClassEl) {
+    liveClassEl.textContent = CLASS_LABELS[assetClass] || assetClass;
+    liveClassEl.className = `class-badge class-${assetClass}`;
+  }
+
+  const livePriceEl = document.getElementById('livePrice');
+  if (livePriceEl) {
+    const p = item.price || 0;
+    livePriceEl.textContent = p >= 1000 
+      ? `$${p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
+      : `$${p.toFixed(p >= 1 ? 2 : 5)}`;
+  }
+
+  const liveStateEl = document.getElementById('liveStateBadge');
+  if (liveStateEl) {
+    const sEmoji = item.state === 'GOLD' ? '🟡' : (item.state === 'BLUE' ? '🔵' : '⚪');
+    liveStateEl.textContent = `${sEmoji} ${item.state || 'NEUTRAL'}`;
+    liveStateEl.className = `badge ${item.state === 'GOLD' ? 'badge-gold' : (item.state === 'BLUE' ? 'badge-blue' : 'badge-neutral')}`;
+  }
+
+  const tvLinkEl = document.getElementById('liveTvLink');
+  if (tvLinkEl) {
+    tvLinkEl.href = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tvInterval}`;
+  }
+
+  // 3-Pillar Compact Strip
+  const tech = item.technical || {};
+  const fund = item.fundamental || {};
+  const synth = item.synthesis || {};
+  const ts = item.trade_suggestion || {};
+
+  const techActionEl = document.getElementById('liveTechAction');
+  const techSpreadEl = document.getElementById('liveTechSpread');
+  if (techActionEl) techActionEl.textContent = tech.label_bg || (item.state === 'GOLD' ? '🟢 Бичи тренд' : '⚪ Изчакване');
+  if (techSpreadEl) {
+    const spreadVal = item.spread_pct !== undefined ? item.spread_pct : (tech.spread_pct || 0.0);
+    const sign = spreadVal > 0 ? '+' : '';
+    techSpreadEl.textContent = `Spread: ${sign}${spreadVal.toFixed(2)}%`;
+  }
+
+  const fundActionEl = document.getElementById('liveFundAction');
+  const fundMoatEl = document.getElementById('liveFundMoat');
+  if (fundActionEl) fundActionEl.textContent = fund.label_bg || (item.asset_class === 'crypto' ? '⚪ МАКРО / ХАЛВИНГ' : '⚪ Неоценен');
+  if (fundMoatEl) {
+    if (fund.moat) fundMoatEl.textContent = `${fund.moat} Moat (DCF: $${formatShortPrice(fund.fair_value)})`;
+    else if (item.asset_class === 'crypto') fundMoatEl.textContent = '🪙 Network Effect';
+    else fundMoatEl.textContent = 'No Moat';
+  }
+
+  const synthBadgeEl = document.getElementById('liveSynthBadge');
+  const synthLevelsEl = document.getElementById('liveSynthLevels');
+  if (synthBadgeEl) {
+    synthBadgeEl.textContent = synth.badge_bg || (ts.action === 'WAIT' ? '⏳ WAIT' : ts.action || '⏳ WAIT');
+  }
+  if (synthLevelsEl) {
+    const entry = ts.entry ? `$${formatShortPrice(ts.entry)}` : `$${formatShortPrice(item.price || 0)}`;
+    const sl = ts.sl ? `$${formatShortPrice(ts.sl)}` : 'N/A';
+    synthLevelsEl.textContent = `Вход: ${entry} | SL: ${sl} | RR: ${ts.rr ? '1:' + ts.rr : 'N/A'}`;
+  }
+}
+
+async function selectLiveAsset(ticker, timeframe, assetClass) {
+  liveTicker = ticker || 'BTCUSDT';
+  liveTf = timeframe || liveTf || '1D';
+  liveClass = assetClass || liveClass || 'crypto';
+
+  updateActiveRowHighlight();
+
+  // Update quick pills
+  document.querySelectorAll('#liveQuickPills .quick-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.dataset.ticker === liveTicker);
+  });
+
+  // Update timeframe buttons
+  document.querySelectorAll('#liveTfGroup .live-tf-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tf === liveTf);
+  });
+
+  // Find item
+  const item = allSymbols.find(s => s.ticker === liveTicker && s.timeframe === liveTf) ||
+               allSymbols.find(s => s.ticker === liveTicker) || {};
+
+  // Update header and HUD strip
+  updateLiveChartHud(item, liveTicker, liveTf, liveClass);
+
+  // Render chart in #liveChartCanvas
+  const container = document.getElementById('liveChartCanvas');
+  if (container) {
+    if (liveActiveChart) {
+      try { liveActiveChart.remove(); } catch (e) {}
+      liveActiveChart = null;
+    }
+    const h = container.clientHeight || 520;
+    liveActiveChart = await loadChart(container, liveTicker, liveTf, liveClass, h);
+  }
+}
+
+function initLiveChart() {
+  if (allSymbols.length === 0) return;
+  if (!liveChartInitialized) {
+    liveChartInitialized = true;
+    const top = getFilteredSymbols()[0] || allSymbols.find(s => s.ticker === 'BTCUSDT') || allSymbols[0];
+    if (top) {
+      liveTicker = top.ticker;
+      liveTf = top.timeframe || '1D';
+      liveClass = top.asset_class || 'crypto';
+    }
+    selectLiveAsset(liveTicker, liveTf, liveClass);
+  } else {
+    updateActiveRowHighlight();
+  }
+}
+
+// =============================================================================
+// MODAL ENGINE (FULL SCREEN WITH CALCULATOR & DUAL HUD)
+// =============================================================================
+
+async function openChartModal(ticker, timeframe, assetClass) {
+  activeTicker = ticker;
+  activeTf = timeframe || '1D';
+  activeClass = assetClass || 'crypto';
+
+  const modal = document.getElementById('chartModal');
+  const loading = document.getElementById('chartLoading');
+  if (modal) modal.style.display = 'flex';
+  if (loading) loading.style.display = 'flex';
+
+  const item = allSymbols.find(s => s.ticker === ticker && s.timeframe === activeTf) || 
+               allSymbols.find(s => s.ticker === ticker) || {};
+
+  const modalTickerEl = document.getElementById('modalTicker');
+  if (modalTickerEl) modalTickerEl.textContent = ticker;
+  const modalClassEl = document.getElementById('modalClass');
+  if (modalClassEl) modalClassEl.textContent = CLASS_LABELS[assetClass] || assetClass;
+
+  const tvInterval = getTvInterval(activeTf);
+  const tvSym = getTvSymbol(item, ticker, assetClass);
+  const modalTvBtn = document.getElementById('modalTvBtn');
+  if (modalTvBtn) {
+    modalTvBtn.href = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tvInterval}`;
+  }
+
+  // Update Active TF Buttons in Modal
+  document.querySelectorAll('#modalTfGroup .modal-tf-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tf === activeTf);
+  });
+
+  // Clear previous chart
+  const container = document.getElementById('chartCanvas');
+  if (container) {
+    if (activeChart) {
+      try { activeChart.remove(); } catch(e) {}
+      activeChart = null;
+    }
+    container.innerHTML = '';
+  }
+
+  // Update price in modal header
+  const p = item.price || 0;
+  const modalPriceEl = document.getElementById('modalPrice');
+  if (modalPriceEl) {
+    modalPriceEl.textContent = p >= 1000 
+      ? `$${p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
+      : `$${p.toFixed(p >= 1 ? 2 : 5)}`;
+  }
+
+  // Update S/R lines in dual hud if present
+  const modalS1El = document.getElementById('modalS1');
+  if (modalS1El) {
+    modalS1El.textContent = item.s1 ? `$${formatShortPrice(item.s1)} (-${item.s1_dist_pct}%)` : 'None';
+  }
+  const modalR1El = document.getElementById('modalR1');
+  if (modalR1El) {
+    modalR1El.textContent = item.r1 ? `$${formatShortPrice(item.r1)} (+${item.r1_dist_pct}%)` : 'None';
+  }
+
+  // Update Modal strips & calculator
+  updateModalTradeSuggestionStrip(item.trade_suggestion, item);
+
+  // Load chart into modal
+  if (container) {
+    activeChart = await loadChart(container, ticker, activeTf, assetClass, 500);
+  }
+
+  if (loading) loading.style.display = 'none';
 }
 
 function updateModalTradeSuggestionStrip(ts, item) {
@@ -1131,55 +1334,9 @@ function updateModalTradeSuggestionStrip(ts, item) {
   updateModalPositionCalculator(ts, item);
 }
 
-function renderTradingViewWidget(container, tvSymbol, tfCode, item) {
-  // TradingView Advanced Chart Widget for non-crypto
-  container.innerHTML = `
-    <div id="tvWidgetContainer" style="width: 100%; height: 500px;"></div>
-  `;
-
-  if (!window.TradingView) {
-    const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/tv.js';
-    script.onload = () => initTvWidget(tvSymbol, tfCode);
-    document.head.appendChild(script);
-  } else {
-    initTvWidget(tvSymbol, tfCode);
-  }
-
-  // Update strip with precomputed data from data.json
-  const p = item.price || 0;
-  document.getElementById('modalPrice').textContent = `$${p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  document.getElementById('modalS1').textContent = item.s1 ? `$${item.s1.toLocaleString('en-US', { minimumFractionDigits: 2 })} (-${item.s1_dist_pct}%)` : 'None';
-  document.getElementById('modalS1Touches').textContent = `${item.s1_touches || 0} touches`;
-  document.getElementById('modalR1').textContent = item.r1 ? `$${item.r1.toLocaleString('en-US', { minimumFractionDigits: 2 })} (+${item.r1_dist_pct}%)` : 'None';
-  document.getElementById('modalR1Touches').textContent = `${item.r1_touches || 0} touches`;
-  document.getElementById('modalAtr').textContent = 'N/A';
-  document.getElementById('modalContext').textContent = item.context_flag || 'IN VALUE RANGE';
-  document.getElementById('modalContextDesc').textContent = item.context_desc || '';
-
-  // Update trade suggestion strip
-  updateModalTradeSuggestionStrip(item.trade_suggestion, item);
-}
-
-function initTvWidget(tvSymbol, tfCode) {
-  new TradingView.widget({
-    "autosize": true,
-    "symbol": tvSymbol,
-    "interval": tfCode,
-    "timezone": "Etc/UTC",
-    "theme": "dark",
-    "style": "1",
-    "locale": "en",
-    "toolbar_bg": "#0b0e14",
-    "enable_publishing": false,
-    "hide_side_toolbar": false,
-    "allow_symbol_change": true,
-    "container_id": "tvWidgetContainer"
-  });
-}
-
 function closeChartModal() {
-  document.getElementById('chartModal').style.display = 'none';
+  const modal = document.getElementById('chartModal');
+  if (modal) modal.style.display = 'none';
   if (activeChart) {
     try { activeChart.remove(); } catch(e) {}
     activeChart = null;
@@ -1187,10 +1344,16 @@ function closeChartModal() {
 }
 
 // Event Listeners for Modal
-document.getElementById('closeModalBtn').addEventListener('click', closeChartModal);
-document.getElementById('chartModal').addEventListener('click', (e) => {
-  if (e.target.id === 'chartModal') closeChartModal();
-});
+const closeModalBtn = document.getElementById('closeModalBtn');
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeChartModal);
+
+const chartModalBackdrop = document.getElementById('chartModal');
+if (chartModalBackdrop) {
+  chartModalBackdrop.addEventListener('click', (e) => {
+    if (e.target.id === 'chartModal') closeChartModal();
+  });
+}
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeChartModal();
 });
@@ -1205,11 +1368,41 @@ document.querySelectorAll('#modalTfGroup .modal-tf-btn').forEach(btn => {
   });
 });
 
-// Responsive resize for Lightweight Charts
+// Live Chart Quick Switcher and Controls Listeners
+document.querySelectorAll('#liveQuickPills .quick-pill').forEach(pill => {
+  pill.addEventListener('click', (e) => {
+    const t = e.currentTarget.dataset.ticker;
+    const tf = e.currentTarget.dataset.tf || '1D';
+    const ac = e.currentTarget.dataset.class || 'crypto';
+    selectLiveAsset(t, tf, ac);
+  });
+});
+
+document.querySelectorAll('#liveTfGroup .live-tf-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const tf = e.currentTarget.dataset.tf;
+    if (tf && tf !== liveTf) {
+      selectLiveAsset(liveTicker, tf, liveClass);
+    }
+  });
+});
+
+const liveExpBtn = document.getElementById('liveExpandBtn');
+if (liveExpBtn) {
+  liveExpBtn.addEventListener('click', () => {
+    openChartModal(liveTicker, liveTf, liveClass);
+  });
+}
+
+// Responsive resize for Lightweight Charts (both live and modal)
 window.addEventListener('resize', () => {
-  const container = document.getElementById('chartCanvas');
-  if (activeChart && container && container.clientWidth) {
-    activeChart.applyOptions({ width: container.clientWidth });
+  const modalContainer = document.getElementById('chartCanvas');
+  if (activeChart && modalContainer && modalContainer.clientWidth) {
+    activeChart.applyOptions({ width: modalContainer.clientWidth });
+  }
+  const liveContainer = document.getElementById('liveChartCanvas');
+  if (liveActiveChart && liveContainer && liveContainer.clientWidth) {
+    liveActiveChart.applyOptions({ width: liveContainer.clientWidth });
   }
 });
 

@@ -126,6 +126,75 @@
       </div>
     </section>
 
+    <!-- Live Interactive Chart Showcase (Always Visible on Page) -->
+    <section class="live-chart-section" id="liveChartSection">
+      <div class="live-chart-header">
+        <div class="live-chart-title-area">
+          <div class="live-chart-badge-title">
+            <span class="live-pulse-dot"></span>
+            <span class="live-chart-heading">📈 ИНТЕРАКТИВНА ГРАФИКА НА ЖИВО</span>
+          </div>
+          <div class="live-chart-asset-info">
+            <span class="live-ticker" id="liveTicker">BTCUSDT</span>
+            <span class="class-badge" id="liveClassBadge">Crypto</span>
+            <span class="live-price" id="livePrice">$0.00</span>
+            <span class="badge badge-gold" id="liveStateBadge">🟡 GOLD</span>
+          </div>
+        </div>
+
+        <div class="live-chart-controls">
+          <!-- Quick Switcher for Popular Assets -->
+          <div class="live-quick-pills" id="liveQuickPills">
+            <button class="quick-pill active" data-ticker="BTCUSDT" data-tf="1D" data-class="crypto">🪙 BTC</button>
+            <button class="quick-pill" data-ticker="ETHUSDT" data-tf="1D" data-class="crypto">🪙 ETH</button>
+            <button class="quick-pill" data-ticker="SOLUSDT" data-tf="1D" data-class="crypto">🪙 SOL</button>
+            <button class="quick-pill" data-ticker="NVDA" data-tf="1D" data-class="ai_stocks">🤖 NVDA</button>
+            <button class="quick-pill" data-ticker="MSTR" data-tf="1D" data-class="crypto_stocks">⚡ MSTR</button>
+            <button class="quick-pill" data-ticker="GC=F" data-tf="1D" data-class="commodities">⛏️ GOLD</button>
+          </div>
+
+          <div class="live-tf-group" id="liveTfGroup">
+            <button class="live-tf-btn active" data-tf="1D">1D</button>
+            <button class="live-tf-btn" data-tf="4H">4H</button>
+            <button class="live-tf-btn" data-tf="1W">1W</button>
+          </div>
+
+          <button class="btn-expand-modal" id="liveExpandBtn" title="Отвори на цял екран с калкулатор">
+            ⛶ Цял Екран
+          </button>
+          <a href="#" target="_blank" rel="noopener" class="tv-link-btn" id="liveTvLink">TV ↗</a>
+        </div>
+      </div>
+
+      <!-- Compact 3-Pillar Analysis Strip for the Active Chart -->
+      <div class="live-hud-strip">
+        <div class="live-hud-col live-hud-tech">
+          <span class="live-hud-tag">📐 ТЕХНИКА:</span>
+          <strong id="liveTechAction">🟢 BUY</strong>
+          <span class="live-hud-sub" id="liveTechSpread">Spread: +0.0%</span>
+        </div>
+        <div class="live-hud-col live-hud-fund">
+          <span class="live-hud-tag">🏢 ФУНДАМЕНТ:</span>
+          <strong id="liveFundAction">⚪ МАКРО</strong>
+          <span class="live-hud-sub" id="liveFundMoat">Network Effect</span>
+        </div>
+        <div class="live-hud-col live-hud-synth">
+          <span class="live-hud-tag">🎯 СИНТЕЗ:</span>
+          <strong id="liveSynthBadge">⭐ ALPHA BUY</strong>
+          <span class="live-hud-sub" id="liveSynthLevels">Вход: $0.00</span>
+        </div>
+      </div>
+
+      <!-- Live Chart Canvas Container -->
+      <div class="live-chart-canvas-container" id="liveChartContainer">
+        <div id="liveChartCanvas"></div>
+        <div class="chart-loading-overlay" id="liveChartLoading" style="display: none;">
+          <div class="spinner"></div>
+          <span>Зареждане на пазарни данни...</span>
+        </div>
+      </div>
+    </section>
+
     <!-- Assets Table View -->
     <section class="table-container" id="tableContainer">
       <table class="assets-table">
