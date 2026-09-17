@@ -87,20 +87,21 @@ def test_quantamental_alpha_buy_setup():
 
 def test_value_trap_guard_in_downtrend():
     # Fundamentally undervalued (STRONG BUY), but technical state is BLUE
-    apa_profile = get_fundamental_profile("APA")
-    assert apa_profile is not None
+    deck_profile = get_fundamental_profile("DECK")
+    assert deck_profile is not None
+    assert deck_profile.is_bullish is True
 
     suggestion = generate_trade_suggestion(
-        current_price=45.0,
+        current_price=75.0,
         state="BLUE",
-        v1=50.0,
-        m1=52.0,
-        m2=54.0,
-        v2=56.0,
-        spread_pct=-10.0,
+        v1=80.0,
+        m1=82.0,
+        m2=84.0,
+        v2=86.0,
+        spread_pct=-7.0,
         atr=2.0,
-        s1=48.0,
-        fund_profile=apa_profile,
+        s1=78.0,
+        fund_profile=deck_profile,
     )
 
     # Must NOT generate a buy signal!

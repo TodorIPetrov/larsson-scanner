@@ -1,6 +1,6 @@
 # ИНСТИТУЦИОНАЛЕН АНАЛИЗ НА ДИГИТАЛНИТЕ АКТИВИ (CRYPTO)
 **Обхват:** Биткойн, Водещи Layer 1/Layer 2 мрежи, Институционални ETF потоци и Он-чейн метрики  
-**Дата на анализ:** 16 September 2026 г.  
+**Дата на анализ:** 17 September 2026 г.  
 **Аналитичен консорциум:** Quantitative Valuation & Crypto Methodologists (Agents 1 & 4)  
 **Методологични модели:** MVRV Z-Score, NVT Ratio, Metcalfe's Law, Miner Hash Cost, Institutional ETF Flow Tracking.
 

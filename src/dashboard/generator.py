@@ -48,6 +48,12 @@ def _load_names_map() -> Dict[str, str]:
     return {}
 
 
+def _row_val(row, key, default=None):
+    if key in row.keys() and row[key] is not None:
+        return row[key]
+    return default
+
+
 def export_dashboard_data(
     db: Optional[Database] = None,
     output_path: str = DEFAULT_OUTPUT_PATH,
@@ -113,17 +119,221 @@ def export_dashboard_data(
                 "upside_pct": _clean_float(fund.upside_pct),
                 "thesis": fund.thesis,
             }
-        elif "ts_fund_verdict" in r.keys() and r["ts_fund_verdict"]:
+        elif _row_val(r, "ts_fund_verdict"):
             fund_data = {
-                "verdict": r["ts_fund_verdict"],
-                "fair_value": _clean_float(r["ts_fair_value"]),
-                "mos_pct": _clean_float(r["ts_mos_pct"]),
-                "moat": r["ts_moat"] or "None",
+                "verdict": _row_val(r, "ts_fund_verdict"),
+                "fair_value": _clean_float(_row_val(r, "ts_fair_value")),
+                "mos_pct": _clean_float(_row_val(r, "ts_mos_pct")),
+                "moat": _row_val(r, "ts_moat") or "None",
                 "roic_pct": None,
-                "z_score": _clean_float(r["ts_z_score"]),
+                "z_score": _clean_float(_row_val(r, "ts_z_score")),
                 "upside_pct": None,
                 "thesis": "",
             }
+
+        # ---------------------------------------------------------------------
+        # 1. TECHNICAL ANALYSIS BLOCK (Larsson Ribbon & S/R Structure)
+        # ---------------------------------------------------------------------
+        ts_action = _row_val(r, "ts_action", "WAIT")
+        ts_setup = _row_val(r, "ts_setup_type", "WAIT_FOR_SETUP")
+        tech_act = _row_val(r, "ts_tech_action")
+        tech_lbl = _row_val(r, "ts_tech_label_bg")
+        tech_the = _row_val(r, "ts_tech_thesis_bg")
+
+        if not tech_act:
+            if state == "GOLD":
+                if ts_action == "SPOT_BUY":
+                    tech_act = "BUY"
+                    if "PULLBACK" in ts_setup:
+                        tech_lbl = "🟢 BUY (Pullback S1)"
+                        tech_the = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%) с тест на S1 подкрепа."
+                    elif "BREAKOUT" in ts_setup:
+                        tech_lbl = "🟢 BUY (Пробив / Momentum)"
+                        tech_the = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%) с пробив в Price Discovery."
+                    else:
+                        tech_lbl = "🟢 BUY (Бича панделка)"
+                        tech_the = f"Бичи тренд с възходяща подредба на лентата (spread {spread_pct:+.1f}%)."
+                elif ts_action == "TAKE_PROFIT":
+                    tech_act = "TAKE_PROFIT"
+                    tech_lbl = "💰 TAKE PROFIT (Тест на R1)"
+                    tech_the = "Бичи тренд, но цената тества макро съпротива R1. Прибери печалба."
+                else:
+                    tech_act = "HOLD"
+                    tech_lbl = "🟡 HOLD (Възходящ тренд)"
+                    tech_the = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%). Задръж текуща позиция."
+            elif state == "BLUE":
+                if ts_action == "SHORT_2X_OPTIONAL":
+                    tech_act = "SHORT"
+                    tech_lbl = "🔴 SHORT (Меча панделка)"
+                    tech_the = f"Мечи низходящ тренд (Blue, spread {spread_pct:+.1f}%)."
+                else:
+                    tech_act = "EXIT"
+                    tech_lbl = "🔴 EXIT / STOP (Мечи тренд)"
+                    tech_the = f"Мечи низходящ тренд (Blue, spread {spread_pct:+.1f}%) или загуба на S1."
+            else:
+                tech_act = "WAIT"
+                tech_lbl = "⏳ WAIT (Консолидация)"
+                tech_the = "Панделката е преплетена без ясна посока. Изчакайте формиране на тренд."
+
+        s1_val = _clean_float(_row_val(r, "s1"))
+        s1_dist = _clean_float(_row_val(r, "s1_dist_pct"))
+        r1_val = _clean_float(_row_val(r, "r1"))
+        r1_dist = _clean_float(_row_val(r, "r1_dist_pct"))
+
+        technical_block = {
+            "state": state,
+            "spread_pct": spread_pct,
+            "action": tech_act,
+            "label_bg": tech_lbl,
+            "thesis": tech_the,
+            "s1": s1_val,
+            "s1_dist_pct": s1_dist,
+            "s1_touches": _row_val(r, "s1_touches", 0),
+            "r1": r1_val,
+            "r1_dist_pct": r1_dist,
+            "r1_touches": _row_val(r, "r1_touches", 0),
+        }
+
+        # ---------------------------------------------------------------------
+        # 2. FUNDAMENTAL ANALYSIS BLOCK (DCF Valuation & Moat)
+        # ---------------------------------------------------------------------
+        fund_act = _row_val(r, "ts_fund_action")
+        fund_lbl = _row_val(r, "ts_fund_label_bg")
+        fund_the = _row_val(r, "ts_fund_thesis_bg")
+
+        if not fund_act:
+            if fund_data and fund_data.get("verdict"):
+                v = fund_data["verdict"].upper()
+                mos = fund_data.get("mos_pct")
+                mos_txt = f"{mos:+.0f}%" if mos is not None else ""
+                fv = fund_data.get("fair_value")
+                fv_txt = f"${fv:,.2f}" if fv else "N/A"
+                moat_txt = f", {fund_data['moat']} Moat" if fund_data.get("moat") and fund_data["moat"] != "None" else ""
+
+                if "STRONG BUY" in v:
+                    fund_act = "STRONG_BUY"
+                    fund_lbl = f"🟢 СИЛНО ПОДЦЕНЕН ({mos_txt} MoS)"
+                    fund_the = f"DCF Стойност: {fv_txt} (MoS: {mos_txt}{moat_txt}). {fund_data.get('thesis', '')}".strip()
+                elif "BUY" in v or "OVERWEIGHT" in v:
+                    fund_act = "BUY"
+                    fund_lbl = f"🟢 ПОДЦЕНЕН ({mos_txt} MoS)"
+                    fund_the = f"DCF Стойност: {fv_txt} (MoS: {mos_txt}{moat_txt}). {fund_data.get('thesis', '')}".strip()
+                elif "HOLD" in v or "NEUTRAL" in v:
+                    fund_act = "HOLD"
+                    fund_lbl = "🟡 СПРАВЕДЛИВА ЦЕНА (Hold)"
+                    fund_the = f"Търгува се около DCF цена {fv_txt}{moat_txt}.".strip()
+                elif "REDUCE" in v or "AVOID" in v or "UNDERPERFORM" in v:
+                    fund_act = "REDUCE"
+                    fund_lbl = "🔴 НАДЦЕНЕН (Reduce)"
+                    fund_the = f"Надценен спрямо DCF парични потоци ({fv_txt}).".strip()
+                else:
+                    fund_act = "HOLD"
+                    fund_lbl = f"⚪ {fund_data['verdict']}"
+                    fund_the = f"DCF: {fv_txt}{moat_txt}."
+            else:
+                fund_act = "SPECULATIVE_NA"
+                fund_lbl = "⚪ МАКРО / СПЕКУЛАТИВЕН"
+                fund_the = "Крипто/суровинен актив без корпоративен DCF модел. Движи се от ликвидност и моментум."
+
+        if not fund_data:
+            fund_data = {
+                "verdict": "SPECULATIVE_NA",
+                "fair_value": None,
+                "mos_pct": None,
+                "moat": "None",
+                "roic_pct": None,
+                "z_score": None,
+                "upside_pct": None,
+                "thesis": "",
+            }
+
+        fund_data["action"] = fund_act
+        fund_data["label_bg"] = fund_lbl
+        fund_data["thesis_bg"] = fund_the
+
+        # ---------------------------------------------------------------------
+        # 3. SYNTHESIS BLOCK (Quantamental Confluence)
+        # ---------------------------------------------------------------------
+        synth_badge = _row_val(r, "ts_synthesis_badge_bg")
+        synth_label = _row_val(r, "ts_synthesis_label_bg")
+
+        if not synth_badge:
+            if ts_setup == "QUANTAMENTAL_ALPHA_BUY":
+                synth_badge = "⭐ ALPHA BUY"
+                synth_label = "Пълен консенсус (Бича техника + Подценен фундамент)"
+            elif ts_setup == "VALUE_TRAP_WARNING":
+                synth_badge = "⏳ VALUE TRAP RISK"
+                synth_label = "Конфликт: Евтин фундамент, но меча техника (Не купувай преди обръщане!)"
+            elif ts_setup in ["SPECULATIVE_MOMENTUM_BUY", "SPECULATIVE_PULLBACK_BUY"]:
+                synth_badge = "⚠️ СПЕКУЛАТИВЕН ВХОД"
+                synth_label = "Конфликт: Бича техника, но слаб/надценен фундамент (Търгувай само с къс SL)"
+            elif ts_setup == "QUALITY_HOLD_ACCUMULATION":
+                synth_badge = "🧱 QUALITY ACCUMULATE"
+                synth_label = "Качествена компания за дългосрочно натрупване (DCA) на ключови нива"
+            elif ts_action == "SPOT_BUY":
+                synth_badge = "🟢 SPOT BUY"
+                synth_label = "Чист технически вход в бичи тренд"
+            elif ts_action == "TAKE_PROFIT":
+                synth_badge = "💰 TAKE PROFIT"
+                synth_label = "Прибиране на печалби при тест на съпротива"
+            elif ts_action == "EXIT_PROTECT":
+                synth_badge = "🛑 CAPITAL PROTECT"
+                synth_label = "Защита на капитала при пробив на структурата"
+            elif ts_action == "SHORT_2X_OPTIONAL":
+                synth_badge = "🔴 SHORT 2X"
+                synth_label = "Мечи трендов шорт с ограничен левъридж"
+            else:
+                synth_badge = "⏳ WAIT"
+                synth_label = "Изчакване на качествена структура за вход"
+
+        entry_val = _clean_float(_row_val(r, "ts_entry"))
+        sl_val = _clean_float(_row_val(r, "ts_sl"))
+        tp1_val = _clean_float(_row_val(r, "ts_tp1"))
+        tp2_val = _clean_float(_row_val(r, "ts_tp2"))
+        rr_val = _clean_float(_row_val(r, "ts_rr"))
+        score_val = _row_val(r, "ts_score", 0)
+        tier_val = _row_val(r, "ts_tier", "NONE")
+
+        synthesis_block = {
+            "setup_type": ts_setup,
+            "action": ts_action,
+            "badge_bg": synth_badge,
+            "label_bg": synth_label,
+            "entry": entry_val,
+            "sl": sl_val,
+            "tp1": tp1_val,
+            "tp2": tp2_val,
+            "rr": rr_val,
+            "score": score_val,
+            "tier": tier_val,
+        }
+
+        trade_suggestion_dict = {
+            "action": ts_action,
+            "direction": _row_val(r, "ts_direction", "NEUTRAL"),
+            "setup_type": ts_setup,
+            "entry": entry_val,
+            "sl": sl_val,
+            "tp1": tp1_val,
+            "tp2": tp2_val,
+            "rr": rr_val,
+            "score": score_val,
+            "tier": tier_val,
+            "reason_bg": _row_val(r, "ts_reason_bg", ""),
+            "reason_en": _row_val(r, "ts_reason_en", ""),
+            "fund_verdict": fund_data.get("verdict"),
+            "fair_value": fund_data.get("fair_value"),
+            "moat": fund_data.get("moat"),
+            "quantamental_tag": _row_val(r, "ts_quantamental_tag"),
+            "tech_action": tech_act,
+            "tech_label_bg": tech_lbl,
+            "tech_thesis_bg": tech_the,
+            "fund_action": fund_act,
+            "fund_label_bg": fund_lbl,
+            "fund_thesis_bg": fund_the,
+            "synthesis_badge_bg": synth_badge,
+            "synthesis_label_bg": synth_label,
+        }
 
         items.append({
             "ticker": ticker,
@@ -138,33 +348,18 @@ def export_dashboard_data(
             "m2": m2_val,
             "v2": v2_val,
             "spread_pct": spread_pct,
-            "s1": _clean_float(r["s1"]) if "s1" in r.keys() else None,
-            "s1_touches": r["s1_touches"] if "s1_touches" in r.keys() and r["s1_touches"] is not None else 0,
-            "s1_dist_pct": _clean_float(r["s1_dist_pct"]) if "s1_dist_pct" in r.keys() else None,
-            "r1": _clean_float(r["r1"]) if "r1" in r.keys() else None,
-            "r1_touches": r["r1_touches"] if "r1_touches" in r.keys() and r["r1_touches"] is not None else 0,
-            "r1_dist_pct": _clean_float(r["r1_dist_pct"]) if "r1_dist_pct" in r.keys() else None,
-            "context_flag": r["context_flag"] if "context_flag" in r.keys() and r["context_flag"] is not None else "IN_VALUE_RANGE",
-            "context_desc": r["context_desc"] if "context_desc" in r.keys() and r["context_desc"] is not None else "",
+            "s1": s1_val,
+            "s1_touches": _row_val(r, "s1_touches", 0),
+            "s1_dist_pct": s1_dist,
+            "r1": r1_val,
+            "r1_touches": _row_val(r, "r1_touches", 0),
+            "r1_dist_pct": r1_dist,
+            "context_flag": _row_val(r, "context_flag", "IN_VALUE_RANGE"),
+            "context_desc": _row_val(r, "context_desc", ""),
+            "technical": technical_block,
             "fundamental": fund_data,
-            "trade_suggestion": {
-                "action": r["ts_action"] if "ts_action" in r.keys() and r["ts_action"] is not None else "WAIT",
-                "direction": r["ts_direction"] if "ts_direction" in r.keys() and r["ts_direction"] is not None else "NEUTRAL",
-                "setup_type": r["ts_setup_type"] if "ts_setup_type" in r.keys() and r["ts_setup_type"] is not None else "WAIT_FOR_SETUP",
-                "entry": _clean_float(r["ts_entry"]) if "ts_entry" in r.keys() else None,
-                "sl": _clean_float(r["ts_sl"]) if "ts_sl" in r.keys() else None,
-                "tp1": _clean_float(r["ts_tp1"]) if "ts_tp1" in r.keys() else None,
-                "tp2": _clean_float(r["ts_tp2"]) if "ts_tp2" in r.keys() else None,
-                "rr": _clean_float(r["ts_rr"]) if "ts_rr" in r.keys() else None,
-                "score": r["ts_score"] if "ts_score" in r.keys() and r["ts_score"] is not None else 0,
-                "tier": r["ts_tier"] if "ts_tier" in r.keys() and r["ts_tier"] is not None else "NONE",
-                "reason_bg": r["ts_reason_bg"] if "ts_reason_bg" in r.keys() and r["ts_reason_bg"] is not None else "",
-                "reason_en": r["ts_reason_en"] if "ts_reason_en" in r.keys() and r["ts_reason_en"] is not None else "",
-                "fund_verdict": r["ts_fund_verdict"] if "ts_fund_verdict" in r.keys() and r["ts_fund_verdict"] else (fund.verdict if fund else None),
-                "fair_value": _clean_float(r["ts_fair_value"]) if ("ts_fair_value" in r.keys() and r["ts_fair_value"] is not None) else (_clean_float(fund.fair_value) if fund else None),
-                "moat": r["ts_moat"] if "ts_moat" in r.keys() and r["ts_moat"] else (fund.moat if fund else "None"),
-                "quantamental_tag": r["ts_quantamental_tag"] if "ts_quantamental_tag" in r.keys() and r["ts_quantamental_tag"] else None,
-            } if ("ts_action" in r.keys() and r["ts_action"] is not None) else None,
+            "synthesis": synthesis_block,
+            "trade_suggestion": trade_suggestion_dict,
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
         })

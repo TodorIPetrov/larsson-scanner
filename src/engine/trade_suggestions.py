@@ -33,6 +33,15 @@ class TradeSuggestion:
     z_score: Optional[float] = None
     quantamental_tag: Optional[str] = None
     dca_plan: Optional[str] = None
+    # Explicit Technical vs Fundamental separation
+    tech_action: str = "WAIT"  # 'BUY', 'HOLD', 'EXIT', 'TAKE_PROFIT', 'SHORT', 'WAIT'
+    tech_label_bg: str = "⏳ ИЗЧАКАЙ"
+    tech_thesis_bg: str = ""
+    fund_action: str = "SPECULATIVE_NA"  # 'STRONG_BUY', 'BUY', 'HOLD', 'REDUCE', 'SPECULATIVE_NA'
+    fund_label_bg: str = "⚪ МАКРО / СПЕКУЛАТИВЕН"
+    fund_thesis_bg: str = ""
+    synthesis_badge_bg: str = "⏳ WAIT"
+    synthesis_label_bg: str = ""
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -157,7 +166,121 @@ def calculate_confluence_score(
     return score, tier
 
 
-def generate_trade_suggestion(
+def _enrich_trade_suggestion(
+    s: TradeSuggestion,
+    state: str,
+    spread_pct: float,
+    s1: Optional[float],
+    r1: Optional[float],
+    current_price: float,
+    fund_profile: Optional[object],
+) -> TradeSuggestion:
+    """Enriches a TradeSuggestion with clear, distinct technical and fundamental fields."""
+    # 1. Technical Analysis Recommendation & Details
+    if state == "GOLD":
+        if s.action == "SPOT_BUY":
+            s.tech_action = "BUY"
+            if s.setup_type in ["PULLBACK_VALUE_BUY", "QUALITY_HOLD_ACCUMULATION", "SPECULATIVE_PULLBACK_BUY"]:
+                s.tech_label_bg = "🟢 BUY (Pullback S1)"
+                s.tech_thesis_bg = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%) с успешен тест на S1 подкрепа."
+            elif s.setup_type in ["BREAKOUT_BUY", "SPECULATIVE_MOMENTUM_BUY"]:
+                s.tech_label_bg = "🟢 BUY (Пробив / Momentum)"
+                s.tech_thesis_bg = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%) с пробив в Price Discovery над R1."
+            else:
+                s.tech_label_bg = "🟢 BUY (Бича лента)"
+                s.tech_thesis_bg = f"Бичи възходящ тренд на Larsson лентата (spread {spread_pct:+.1f}%)."
+        elif s.action == "TAKE_PROFIT":
+            s.tech_action = "TAKE_PROFIT"
+            s.tech_label_bg = "💰 TAKE PROFIT (Тест на R1)"
+            s.tech_thesis_bg = "Бичи тренд, но цената достига ключова макро съпротива R1. Препоръчва се прибиране на печалба."
+        else:
+            s.tech_action = "HOLD"
+            s.tech_label_bg = "🟡 HOLD (Възходящ тренд)"
+            s.tech_thesis_bg = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%). Задръжте или изчакайте корекция до S1 за нов вход."
+    elif state == "BLUE":
+        if s.action == "SHORT_2X_OPTIONAL":
+            s.tech_action = "SHORT"
+            s.tech_label_bg = "🔴 SHORT (Меча панделка)"
+            s.tech_thesis_bg = f"Мечи низходящ тренд (Blue, spread {spread_pct:+.1f}%) с отхвърляне от съпротива."
+        else:
+            s.tech_action = "EXIT"
+            s.tech_label_bg = "🔴 EXIT / STOP (Мечи тренд)"
+            s.tech_thesis_bg = f"Мечи низходящ тренд (Blue, spread {spread_pct:+.1f}%) и/или загуба на ключова подкрепа S1."
+    else:  # NEUTRAL
+        s.tech_action = "WAIT"
+        s.tech_label_bg = "⏳ WAIT (Консолидация)"
+        s.tech_thesis_bg = "Панделката е преплетена без ясна посока. Изчакайте разширяване и формиране на тренд."
+
+    # 2. Fundamental Analysis Recommendation & Details
+    fund_verdict = getattr(fund_profile, "verdict", None) if fund_profile else s.fund_verdict
+    fair_value = getattr(fund_profile, "fair_value", None) if fund_profile else s.fair_value
+    mos_pct = getattr(fund_profile, "mos_pct", None) if fund_profile else s.mos_pct
+    moat = getattr(fund_profile, "moat", None) if fund_profile else s.moat
+    thesis = getattr(fund_profile, "thesis", "") if fund_profile else ""
+
+    if fund_verdict:
+        fv_txt = f"${fair_value:,.2f}" if fair_value else "N/A"
+        mos_txt = f"{mos_pct:+.0f}%" if mos_pct is not None else "N/A"
+        moat_txt = f", {moat} Moat" if moat and moat != "None" else ""
+
+        if "STRONG BUY" in fund_verdict.upper():
+            s.fund_action = "STRONG_BUY"
+            s.fund_label_bg = f"🟢 СИЛНО ПОДЦЕНЕН ({mos_txt} MoS)"
+            s.fund_thesis_bg = f"DCF Справедлива стойност: {fv_txt} (Margin of Safety: {mos_txt}{moat_txt}). {thesis}".strip()
+        elif "BUY" in fund_verdict.upper() or "OVERWEIGHT" in fund_verdict.upper():
+            s.fund_action = "BUY"
+            s.fund_label_bg = f"🟢 ПОДЦЕНЕН ({mos_txt} MoS)"
+            s.fund_thesis_bg = f"DCF Справедлива стойност: {fv_txt} (Margin of Safety: {mos_txt}{moat_txt}). {thesis}".strip()
+        elif "HOLD" in fund_verdict.upper() or "NEUTRAL" in fund_verdict.upper():
+            s.fund_action = "HOLD"
+            s.fund_label_bg = "🟡 СПРАВЕДЛИВА ЦЕНА (Hold)"
+            s.fund_thesis_bg = f"Търгува се близо до DCF оценка {fv_txt}{moat_txt}. Балансиран риск/доходност.".strip()
+        elif "REDUCE" in fund_verdict.upper() or "AVOID" in fund_verdict.upper() or "UNDERPERFORM" in fund_verdict.upper():
+            s.fund_action = "REDUCE"
+            s.fund_label_bg = "🔴 НАДЦЕНЕН (Reduce)"
+            s.fund_thesis_bg = f"Надценен спрямо паричните потоци или влошаващи се финансови показатели (DCF {fv_txt}). {thesis}".strip()
+        else:
+            s.fund_action = "HOLD"
+            s.fund_label_bg = f"⚪ {fund_verdict}"
+            s.fund_thesis_bg = f"DCF: {fv_txt}{moat_txt}. {thesis}".strip()
+    else:
+        s.fund_action = "SPECULATIVE_NA"
+        s.fund_label_bg = "⚪ МАКРО / СПЕКУЛАТИВЕН"
+        s.fund_thesis_bg = "Крипто/суровинен инструмент без класически корпоративен DCF модел. Движи се от мрежови ефекти, ликвидност и технически моментум."
+
+    # 3. Quantamental Synthesis & Confluence
+    if s.setup_type == "QUANTAMENTAL_ALPHA_BUY":
+        s.synthesis_badge_bg = "⭐ ALPHA BUY"
+        s.synthesis_label_bg = "Пълен консенсус (Бича техника + Подценен фундамент)"
+    elif s.setup_type == "VALUE_TRAP_WARNING":
+        s.synthesis_badge_bg = "⏳ VALUE TRAP RISK"
+        s.synthesis_label_bg = "Конфликт: Евтин фундамент, но меча техника (Не купувай преди обръщане!)"
+    elif s.setup_type in ["SPECULATIVE_MOMENTUM_BUY", "SPECULATIVE_PULLBACK_BUY"]:
+        s.synthesis_badge_bg = "⚠️ СПЕКУЛАТИВЕН ВХОД"
+        s.synthesis_label_bg = "Конфликт: Бича техника, но слаб/надценен фундамент (Търгувай само с къс SL)"
+    elif s.setup_type == "QUALITY_HOLD_ACCUMULATION":
+        s.synthesis_badge_bg = "🧱 QUALITY ACCUMULATE"
+        s.synthesis_label_bg = "Качествена компания за дългосрочно натрупване (DCA) на ключови нива"
+    elif s.action == "SPOT_BUY":
+        s.synthesis_badge_bg = "🟢 SPOT BUY"
+        s.synthesis_label_bg = "Чист технически вход в бичи тренд"
+    elif s.action == "TAKE_PROFIT":
+        s.synthesis_badge_bg = "💰 TAKE PROFIT"
+        s.synthesis_label_bg = "Прибиране на печалби при тест на съпротива"
+    elif s.action == "EXIT_PROTECT":
+        s.synthesis_badge_bg = "🛑 CAPITAL PROTECT"
+        s.synthesis_label_bg = "Защита на капитала при пробив на структурата"
+    elif s.action == "SHORT_2X_OPTIONAL":
+        s.synthesis_badge_bg = "🔴 SHORT 2X"
+        s.synthesis_label_bg = "Мечи трендов шорт с ограничен левъридж"
+    else:
+        s.synthesis_badge_bg = "⏳ WAIT"
+        s.synthesis_label_bg = "Изчакване на качествена структура за вход"
+
+    return s
+
+
+def _raw_generate_trade_suggestion(
     current_price: float,
     state: str,  # 'GOLD', 'BLUE', 'NEUTRAL'
     v1: float,
@@ -518,3 +641,67 @@ def generate_trade_suggestion(
         z_score=z_score,
         quantamental_tag="WAIT_FOR_DIP" if is_bullish else "WAIT_FOR_STRUCTURE",
     )
+
+
+def generate_trade_suggestion(
+    current_price: float,
+    state: str,
+    v1: float,
+    m1: float,
+    m2: float,
+    v2: float,
+    spread_pct: float,
+    atr: float,
+    s1: Optional[float] = None,
+    s1_lower: Optional[float] = None,
+    s1_touches: int = 0,
+    s2: Optional[float] = None,
+    r1: Optional[float] = None,
+    r1_lower: Optional[float] = None,
+    r1_upper: Optional[float] = None,
+    r1_touches: int = 0,
+    r2: Optional[float] = None,
+    context_flag: str = "IN_VALUE_RANGE",
+    timeframe: str = "1D",
+    macro_1d_state: Optional[str] = None,
+    min_rr_threshold: float = 1.8,
+    fund_profile: Optional[object] = None,
+) -> TradeSuggestion:
+    """
+    Evaluates market conditions and returns an institutional TradeSuggestion,
+    enriched with distinct Technical vs Fundamental recommendations and Quantamental synthesis.
+    """
+    raw_s = _raw_generate_trade_suggestion(
+        current_price=current_price,
+        state=state,
+        v1=v1,
+        m1=m1,
+        m2=m2,
+        v2=v2,
+        spread_pct=spread_pct,
+        atr=atr,
+        s1=s1,
+        s1_lower=s1_lower,
+        s1_touches=s1_touches,
+        s2=s2,
+        r1=r1,
+        r1_lower=r1_lower,
+        r1_upper=r1_upper,
+        r1_touches=r1_touches,
+        r2=r2,
+        context_flag=context_flag,
+        timeframe=timeframe,
+        macro_1d_state=macro_1d_state,
+        min_rr_threshold=min_rr_threshold,
+        fund_profile=fund_profile,
+    )
+    return _enrich_trade_suggestion(
+        raw_s,
+        state=state,
+        spread_pct=spread_pct,
+        s1=s1,
+        r1=r1,
+        current_price=current_price,
+        fund_profile=fund_profile,
+    )
+

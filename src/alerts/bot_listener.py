@@ -203,36 +203,12 @@ class TelegramCommandListener:
 
         p_str = f"${price:,.2f}" if price >= 1000 else (f"${price:.2f}" if price >= 1 else f"${price:.5f}")
 
-        # Fundamental Profile lookup
-        try:
-            from src.engine.quantamental import get_fundamental_profile
-            fund = get_fundamental_profile(clean_ticker)
-        except Exception:
-            fund = None
+        # 1. 📐 ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon & S/R)
+        tech_label = selected.get("ts_tech_label_bg")
+        if not tech_label:
+            tech_label = f"🟢 {state} Бичи Тренд" if state == "GOLD" else (f"🔴 {state} Мечи Тренд" if state == "BLUE" else "⚪ Консолидация")
+        tech_thesis = selected.get("ts_tech_thesis_bg") or ("Възходящо разширяване на лентата." if state == "GOLD" else ("Низходящо разширяване на лентата." if state == "BLUE" else "Панделката е сплескана без ясен тренд."))
 
-        fund_block = ""
-        if fund:
-            upside_str = f" (+{round(fund.upside_pct)}%)" if fund.upside_pct is not None else ""
-            fv_str = f"${fund.fair_value:,.2f}" if fund.fair_value is not None else "N/A"
-            mos_str = f"{fund.mos_pct:.0f}%" if fund.mos_pct is not None else "N/A"
-            z_str = f"{fund.z_score:.2f}" if fund.z_score is not None else "N/A"
-            fund_block = (
-                f"\n🏛️ <b>Фундаментален Профил:</b>\n"
-                f"• Присъда: <b>{fund.verdict}</b>{upside_str}\n"
-                f"• DCF Справедлива стойност: <b>{fv_str}</b> (MoS: {mos_str})\n"
-                f"• Икономически ров: <b>{fund.moat}</b> | Z-Score: <b>{z_str}</b>\n"
-            )
-        elif selected.get("ts_fund_verdict"):
-            fv = selected.get("ts_fair_value")
-            fv_str = f"${fv:,.2f}" if fv else "N/A"
-            fund_block = (
-                f"\n🏛️ <b>Фундаментален Профил:</b>\n"
-                f"• Присъда: <b>{selected['ts_fund_verdict']}</b>\n"
-                f"• DCF Справедлива стойност: <b>{fv_str}</b>\n"
-                f"• Икономически ров: <b>{selected.get('ts_moat', 'None')}</b>\n"
-            )
-
-        # S/R Levels
         s1 = selected.get("s1")
         r1 = selected.get("r1")
         s1_touches = selected.get("s1_touches", 0)
@@ -240,19 +216,57 @@ class TelegramCommandListener:
         s1_dist = selected.get("s1_dist_pct")
         r1_dist = selected.get("r1_dist_pct")
 
-        sr_lines = []
+        s1_str = (f"${s1:,.2f}" if s1 >= 1 else f"${s1:.5f}") if s1 is not None else None
+        dist_txt_s1 = f" (-{s1_dist}%)" if s1_dist is not None else ""
+        r1_str = (f"${r1:,.2f}" if r1 >= 1 else f"${r1:.5f}") if r1 is not None else None
+        dist_txt_r1 = f" (+{r1_dist}%)" if r1_dist is not None else ""
+
+        tech_block = (
+            f"\n📐 <b>ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon):</b>\n"
+            f"• Сигнал: <b>{tech_label}</b>\n"
+            f"• Лента: {emoji} <b>{state}</b> (Spread: <code>{spread_sign}{spread_pct}%</code>)\n"
+        )
         if s1 is not None:
-            s1_str = f"${s1:,.2f}" if s1 >= 1 else f"${s1:.5f}"
-            dist_txt = f" (-{s1_dist}%)" if s1_dist is not None else ""
-            sr_lines.append(f"• 🟢 Подкрепа S1: <b>{s1_str}</b>{dist_txt} [{s1_touches} теста]")
+            tech_block += f"• 🟢 Подкрепа S1: <b>{s1_str}</b>{dist_txt_s1} [{s1_touches} теста]\n"
         if r1 is not None:
-            r1_str = f"${r1:,.2f}" if r1 >= 1 else f"${r1:.5f}"
-            dist_txt = f" (+{r1_dist}%)" if r1_dist is not None else ""
-            sr_lines.append(f"• 🔴 Съпротива R1: <b>{r1_str}</b>{dist_txt} [{r1_touches} теста]")
+            tech_block += f"• 🔴 Съпротива R1: <b>{r1_str}</b>{dist_txt_r1} [{r1_touches} теста]\n"
+        tech_block += f"• Теза: <i>{tech_thesis}</i>\n"
 
-        sr_block = f"\n🎯 <b>Нива на Подкрепа & Съпротива:</b>\n" + ("\n".join(sr_lines) if sr_lines else "• Няма открити близки нива.") + "\n"
+        # 2. 🏢 ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF & Valuation)
+        is_crypto = (selected.get("asset_class") == "crypto") or clean_ticker.endswith("USDT")
+        try:
+            from src.engine.quantamental import get_fundamental_profile
+            fund = get_fundamental_profile(clean_ticker)
+        except Exception:
+            fund = None
 
-        # Trade Suggestion
+        fund_label = selected.get("ts_fund_label_bg")
+        fund_thesis = selected.get("ts_fund_thesis_bg")
+        if not fund_label:
+            if fund:
+                fund_label = f"🟢 {fund.verdict}"
+                fund_thesis = fund.thesis
+            elif is_crypto:
+                fund_label = "⚪ МАКРО / СПЕКУЛАТИВЕН"
+                fund_thesis = "Крипто актив без DCF модел. Движи се от ликвидност и мрежови ефекти."
+            else:
+                fund_label = "⚪ Неоценен"
+                fund_thesis = "Няма наличен фундаментален DCF модел."
+
+        fund_block = f"\n🏢 <b>ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF & Valuation):</b>\n• Оценка: <b>{fund_label}</b>\n"
+        if fund and fund.fair_value is not None:
+            upside_str = f" (+{round(fund.upside_pct)}%)" if fund.upside_pct is not None else ""
+            fund_block += f"• DCF Справедлива стойност: <b>${fund.fair_value:,.2f}</b>{upside_str} (MoS: {fund.mos_pct:.0f}%)\n"
+            if fund.moat:
+                fund_block += f"• Икономически ров: <b>{fund.moat}</b> | Z-Score: <b>{fund.z_score:.2f}</b>\n"
+        elif selected.get("ts_fair_value") or (selected.get("ts_fund_verdict") and selected.get("ts_fund_verdict") != "SPECULATIVE_NA"):
+            fv = selected.get("ts_fair_value")
+            fv_str = f"${fv:,.2f}" if fv else "N/A"
+            fund_block += f"• DCF Справедлива стойност: <b>{fv_str}</b> | Ров: <b>{selected.get('ts_moat', 'None')}</b>\n"
+        if fund_thesis:
+            fund_block += f"• Теза: <i>{fund_thesis}</i>\n"
+
+        # 3. 🎯 СИНТЕЗИРАНА СТРАТЕГИЯ (Quantamental Confluence)
         action = selected.get("ts_action", "WAIT")
         tier = selected.get("ts_tier", "NONE")
         score = selected.get("ts_score", 0)
@@ -264,41 +278,38 @@ class TelegramCommandListener:
         rr = selected.get("ts_rr")
         reason_bg = selected.get("ts_reason_bg", "")
 
-        is_crypto = (selected.get("asset_class") == "crypto") or clean_ticker.endswith("USDT")
-        trade_header = "\n🪙 <b>Крипто Търговска Препоръка [Crypto Spot]:</b>\n" if is_crypto else "\n🏛️ <b>Институционална Препоръка [Equities & Macro]:</b>\n"
-        trade_block = trade_header
-        if action == "WAIT":
-            if setup_type == "VALUE_TRAP_WARNING":
-                trade_block += f"• Статус: ⏳ <b>ВАЛУАЦИОНЕН КАПАН (Value Trap Risk)</b>\n• Изчакайте обръщане на лентата в GOLD преди спот вход!\n"
-            else:
-                trade_block += f"• Статус: ⏳ <b>Изчакай по-добро ниво (WAIT)</b>\n"
-        else:
-            action_tag = "🪙" if is_crypto else "🏛️"
-            action_emoji = "🟢" if "BUY" in action else ("💰" if "PROFIT" in action else "🔴")
+        synth_badge = selected.get("ts_synthesis_badge_bg")
+        if not synth_badge:
+            synth_badge = f"⭐ {action}" if action != "WAIT" else "⏳ WAIT"
+
+        synth_block = f"\n🎯 <b>СИНТЕЗИРАНА СТРАТЕГИЯ (Quantamental):</b>\n• Статус: <b>{synth_badge}</b>\n"
+        if action != "WAIT":
             entry_str = f"${entry:,.2f}" if entry and entry >= 1 else (f"${entry:.5f}" if entry else "N/A")
             sl_str = f"${sl:,.2f}" if sl and sl >= 1 else (f"${sl:.5f}" if sl else "N/A")
             tp1_str = f"${tp1:,.2f}" if tp1 and tp1 >= 1 else (f"${tp1:.5f}" if tp1 else "N/A")
             tp2_str = f"${tp2:,.2f}" if tp2 and tp2 >= 1 else (f"${tp2:.5f}" if tp2 else "N/A")
             rr_str = f"1 : {rr}" if rr else "N/A"
-
-            trade_block += (
-                f"• Препоръка: {action_tag} {action_emoji} <b>{action}</b> ({setup_type})\n"
-                f"• Ранг: <b>⭐ Tier {tier}</b> (Score: {score}/100)\n"
-                f"• Вход: <code>{entry_str}</code> | Стоп (SL): <code>{sl_str}</code>\n"
-                f"• Цел 1 (TP1): <code>{tp1_str}</code> | Цел 2 (TP2): <code>{tp2_str}</code>\n"
-                f"• Съотношение R:R: <b>{rr_str}</b>\n"
+            synth_block += (
+                f"• Ранг: <b>⭐ Tier {tier}</b> (Score: {score}/100 | R:R: <b>{rr_str}</b>)\n"
+                f"• Вход: <code>{entry_str}</code> | SL: <code>{sl_str}</code>\n"
+                f"• TP1: <code>{tp1_str}</code>" + (f" | TP2: <code>{tp2_str}</code>\n" if tp2 else "\n")
             )
             if s1 and entry and s1 < entry:
-                trade_block += f"• 🧱 <b>DCA Натрупване:</b> 50% пазарен вход + 50% лимит на S1 (${s1:,.2f})\n"
+                synth_block += f"• 🧱 <b>DCA Натрупване:</b> 50% пазарен вход + 50% лимит на S1 (${s1:,.2f})\n"
+        else:
+            if setup_type == "VALUE_TRAP_WARNING":
+                synth_block += "• Предупреждение: ⏳ <b>VALUE TRAP RISK</b> (Подценен фундамент, но мечи тренд. Изчакай GOLD!)\n"
+            else:
+                synth_block += "• Препоръка: ⏳ <b>Изчакай</b> по-благоприятна консолидация или тест на ключова подкрепа.\n"
 
         if reason_bg:
-            trade_block += f"\n📝 <i>{reason_bg}</i>\n"
+            synth_block += f"• Обосновка: <i>{reason_bg}</i>\n"
 
         header = f"📊 <b>Анализ на {clean_ticker} [{tf}]</b>\n"
-        sub = f"💵 Цена: <code>{p_str}</code> | Състояние: {emoji} <b>{state}</b> (Spread: <code>{spread_sign}{spread_pct}%</code>)\n"
-        tv_footer = f"\n🔗 <a href=\"{url}\">Отвори интерактивната графика в TradingView ↗</a>"
+        header += f"💵 Цена: <code>{p_str}</code>\n━━━━━━━━━━━━━━━━━━━━\n"
+        tv_footer = f"\n━━━━━━━━━━━━━━━━━━━━\n🔗 <a href=\"{url}\">Отвори интерактивната графика в TradingView ↗</a>"
 
-        return header + sub + fund_block + sr_block + trade_block + tv_footer
+        return header + tech_block + fund_block + synth_block + tv_footer
 
     def handle_alpha(self, timeframe: Optional[str] = None) -> str:
         """Lists active high-conviction Tier A+ and Tier A institutional setups separated into Crypto & Equities."""

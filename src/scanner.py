@@ -248,6 +248,14 @@ class LarssonScanner:
                 moat=suggestion.moat,
                 z_score=suggestion.z_score,
                 quantamental_tag=suggestion.quantamental_tag,
+                tech_action=suggestion.tech_action,
+                tech_label_bg=suggestion.tech_label_bg,
+                tech_thesis_bg=suggestion.tech_thesis_bg,
+                fund_action=suggestion.fund_action,
+                fund_label_bg=suggestion.fund_label_bg,
+                fund_thesis_bg=suggestion.fund_thesis_bg,
+                synthesis_badge_bg=suggestion.synthesis_badge_bg,
+                synthesis_label_bg=suggestion.synthesis_label_bg,
             )
             return suggestion.to_dict()
         except Exception as e:

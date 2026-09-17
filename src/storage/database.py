@@ -161,6 +161,14 @@ class Database:
                 ("moat", "TEXT"),
                 ("z_score", "REAL"),
                 ("quantamental_tag", "TEXT"),
+                ("tech_action", "TEXT"),
+                ("tech_label_bg", "TEXT"),
+                ("tech_thesis_bg", "TEXT"),
+                ("fund_action", "TEXT"),
+                ("fund_label_bg", "TEXT"),
+                ("fund_thesis_bg", "TEXT"),
+                ("synthesis_badge_bg", "TEXT"),
+                ("synthesis_label_bg", "TEXT"),
             ]:
                 if col_name not in existing_cols:
                     cur.execute(f"ALTER TABLE symbol_trade_suggestions ADD COLUMN {col_name} {col_type}")
@@ -328,7 +336,10 @@ class Database:
                    ts.reason_bg AS ts_reason_bg, ts.reason_en AS ts_reason_en,
                    ts.fund_verdict AS ts_fund_verdict, ts.fair_value AS ts_fair_value,
                    ts.mos_pct AS ts_mos_pct, ts.moat AS ts_moat, ts.z_score AS ts_z_score,
-                   ts.quantamental_tag AS ts_quantamental_tag
+                   ts.quantamental_tag AS ts_quantamental_tag,
+                   ts.tech_action AS ts_tech_action, ts.tech_label_bg AS ts_tech_label_bg, ts.tech_thesis_bg AS ts_tech_thesis_bg,
+                   ts.fund_action AS ts_fund_action, ts.fund_label_bg AS ts_fund_label_bg, ts.fund_thesis_bg AS ts_fund_thesis_bg,
+                   ts.synthesis_badge_bg AS ts_synthesis_badge_bg, ts.synthesis_label_bg AS ts_synthesis_label_bg
             FROM symbols s
             JOIN symbol_states st ON s.ticker = st.ticker
             LEFT JOIN symbol_sr_levels sr ON s.ticker = sr.ticker 
@@ -565,6 +576,14 @@ class Database:
         moat: Optional[str] = None,
         z_score: Optional[float] = None,
         quantamental_tag: Optional[str] = None,
+        tech_action: str = "WAIT",
+        tech_label_bg: str = "⏳ ИЗЧАКАЙ",
+        tech_thesis_bg: str = "",
+        fund_action: str = "SPECULATIVE_NA",
+        fund_label_bg: str = "⚪ МАКРО / СПЕКУЛАТИВЕН",
+        fund_thesis_bg: str = "",
+        synthesis_badge_bg: str = "⏳ WAIT",
+        synthesis_label_bg: str = "",
         now_iso: Optional[str] = None,
     ):
         """Inserts or updates a trade suggestion for a symbol and timeframe."""
@@ -577,8 +596,11 @@ class Database:
             INSERT INTO symbol_trade_suggestions
             (ticker, timeframe, action, direction, setup_type, entry_price, stop_loss,
              tp1, tp2, rr_ratio, score, tier, reason_bg, reason_en,
-             fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag,
+             tech_action, tech_label_bg, tech_thesis_bg,
+             fund_action, fund_label_bg, fund_thesis_bg,
+             synthesis_badge_bg, synthesis_label_bg, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(ticker, timeframe) DO UPDATE SET
                 action = excluded.action,
                 direction = excluded.direction,
@@ -598,11 +620,22 @@ class Database:
                 moat = excluded.moat,
                 z_score = excluded.z_score,
                 quantamental_tag = excluded.quantamental_tag,
+                tech_action = excluded.tech_action,
+                tech_label_bg = excluded.tech_label_bg,
+                tech_thesis_bg = excluded.tech_thesis_bg,
+                fund_action = excluded.fund_action,
+                fund_label_bg = excluded.fund_label_bg,
+                fund_thesis_bg = excluded.fund_thesis_bg,
+                synthesis_badge_bg = excluded.synthesis_badge_bg,
+                synthesis_label_bg = excluded.synthesis_label_bg,
                 updated_at = excluded.updated_at;
             """, (
                 ticker, timeframe, action, direction, setup_type, entry_price, stop_loss,
                 tp1, tp2, rr_ratio, score, tier, reason_bg, reason_en,
-                fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag, now_iso
+                fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag,
+                tech_action, tech_label_bg, tech_thesis_bg,
+                fund_action, fund_label_bg, fund_thesis_bg,
+                synthesis_badge_bg, synthesis_label_bg, now_iso
             ))
 
     def get_trade_suggestion(self, ticker: str, timeframe: str) -> Optional[sqlite3.Row]:

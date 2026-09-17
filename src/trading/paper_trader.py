@@ -170,6 +170,7 @@ class PaperTrader:
             reason=reason,
             expires_minutes=self.proposal_ttl_minutes,
             tv_symbol=tv_symbol,
+            trade_suggestion=trade_suggestion,
         )
 
         message_id = self.notifier.send_message_with_markup(msg_text, reply_markup=reply_markup)
@@ -200,8 +201,9 @@ class PaperTrader:
         reason: str,
         expires_minutes: int,
         tv_symbol: Optional[str] = None,
+        trade_suggestion: Optional[dict] = None,
     ) -> Tuple[str, dict]:
-        """Generates HTML text and inline keyboard markup for a proposal."""
+        """Generates HTML text and inline keyboard markup for a proposal with 3 distinct pillars."""
         tv_sym = tv_symbol or f"BINANCE:{ticker}"
         tv_url = get_tradingview_link(tv_sym, timeframe)
 
@@ -222,12 +224,30 @@ class PaperTrader:
         asset_emoji = "🪙" if is_crypto else "🏛️"
         units_label = ticker.replace('USDT', '').replace('USDC', '') if is_crypto else "бр."
 
+        ts = trade_suggestion or {}
+        tech_label = ts.get("tech_label_bg") or "🟢 Технически Вход при S1"
+        tech_thesis = ts.get("tech_thesis_bg") or "Бичи възходящ тренд на панделката с тест на динамична подкрепа."
+
+        fund_label = ts.get("fund_label_bg") or ("⚪ МАКРО / СПЕКУЛАТИВЕН" if is_crypto else "🟢 СИЛЕН ФУНДАМЕНТ")
+        fund_thesis = ts.get("fund_thesis_bg") or ("Крипто/суровинен актив без DCF модел; движи се от ликвидност и моментум." if is_crypto else "Компания с икономически ров и висок свободен паричен поток.")
+
+        synth_badge = ts.get("synthesis_badge_bg") or f"⭐ {tier_badge}"
+        rr_val = ts.get("rr") or (round(abs(tp1 - entry_price) / abs(entry_price - stop_loss), 1) if tp1 and stop_loss and entry_price != stop_loss else None)
+        rr_txt = f" | R:R: <b>1:{rr_val}</b>" if rr_val else ""
+
         text = (
-            f"🚨 <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА ПОКУПКА ({asset_label})</b>\n\n"
-            f"• Актив: <a href=\"{tv_url}\"><b>{ticker}</b></a> [{timeframe}]\n"
-            f"• Ранг / Скор: <b>{tier_badge}</b> | Confluence: <b>{score}/100</b>\n"
+            f"🚨 <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА ПОКУПКА ({asset_label}): {ticker} [{timeframe}]</b>\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"📐 <b>ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon):</b>\n"
+            f"• Препоръка: <b>{tech_label}</b>\n"
+            f"• Теза: <i>{tech_thesis}</i>\n\n"
+            f"🏢 <b>ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF & Valuation):</b>\n"
+            f"• Оценка: <b>{fund_label}</b>\n"
+            f"• Теза: <i>{fund_thesis}</i>\n\n"
+            f"🎯 <b>СИНТЕЗИРАНА СТРАТЕГИЯ (Quantamental):</b>\n"
+            f"• Статус: <b>{synth_badge}</b> (Скор: <b>{score}/100</b>{rr_txt})\n"
             f"• Входна цена: <code>{p_str}</code>\n"
-            f"• Размер на сделката: <b>${position_size_usd:.2f}</b> (~{units} {units_label})\n"
+            f"• Размер на позицията: <b>${position_size_usd:.2f}</b> (~{units} {units_label})\n"
             f"• 🛑 Stop-Loss: <code>{sl_str}</code>\n"
             f"• 🎯 Take-Profit 1: <code>{tp1_str}</code>\n"
         )
@@ -235,9 +255,9 @@ class PaperTrader:
             text += f"• 🎯 Take-Profit 2: <code>{tp2_str}</code>\n"
 
         text += (
-            f"\n💡 <i>Логика: {reason}</i>\n\n"
-            f"⏳ <i>Валидност на предложението: {expires_minutes} минути.</i>\n"
-            f"<i>Натиснете бутон за изпълнение в симулатора:</i>"
+            f"\n💡 <i>Логика: {reason}</i>\n"
+            f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"⏳ <i>Валидност: {expires_minutes} мин. Изберете изпълнение:</i>"
         )
 
         reply_markup = {

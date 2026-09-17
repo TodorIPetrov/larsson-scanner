@@ -1,6 +1,6 @@
 # ИНСТИТУЦИОНАЛЕН АНАЛИЗ НА СУРОВИНИТЕ И СУПЕРЦИКЛИТЕ
 **Обхват:** Благородни метали, Енергетика, Индустриални метали и Ядрен ренесанс  
-**Дата на анализ:** 16 September 2026 г.  
+**Дата на анализ:** 17 September 2026 г.  
 **Аналитичен консорциум:** Macro & Market Regime Strategists (Agent 4) & CIO Synthesis (Agent 5)  
 **Източници:** NYMEX, COMEX, US Geological Survey, IEA (International Energy Agency), WGC (World Gold Council).
 
