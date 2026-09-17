@@ -36,9 +36,17 @@ class TelegramCommandListener:
         self,
         notifier: Optional[TelegramNotifier] = None,
         db: Optional[Database] = None,
+        paper_trader=None,
+        config: Optional[dict] = None,
     ):
         self.notifier = notifier or TelegramNotifier()
         self.db = db or Database()
+        self.config = config or {}
+        if paper_trader is not None:
+            self.paper_trader = paper_trader
+        else:
+            from src.trading.paper_trader import PaperTrader
+            self.paper_trader = PaperTrader(db=self.db, notifier=self.notifier, config=self.config)
         self.last_update_id = 0
         self.session = requests.Session()
         self.running = False
@@ -458,12 +466,76 @@ class TelegramCommandListener:
             "<b>Личен Watchlist:</b>\n"
             "/watchlist - Показва активите в твоя личен списък ⭐\n"
             "/watch [символ] - Добавя актив в Watchlist (напр. /watch NVDA)\n"
-            "/unwatch [символ] - Премахва актив от Watchlist\n"
+            "/unwatch [символ] - Премахва актив от Watchlist\n\n"
+            "<b>📈 Симулирана Spot Търговия (Paper Trading):</b>\n"
+            "/portfolio (или /positions) - Виртуален баланс, активни позиции и PnL\n"
+            "/trades (или /history) - История на приключилите сделки и Win Rate\n"
+            "/close [тикер] - Ръчно затваряне на активна позиция (напр. /close SOLUSDT)\n\n"
             "/help - Показва това съобщение"
         )
 
+    def process_callback_query(self, cq: dict):
+        """Handles inline keyboard button callbacks for trade proposals."""
+        cq_id = cq.get("id")
+        from_user = cq.get("from", {})
+        user_id = str(from_user.get("id", ""))
+        message = cq.get("message", {})
+        chat = message.get("chat", {})
+        chat_id = str(chat.get("id", ""))
+
+        authorized_chat = str(self.notifier.chat_id)
+        if user_id != authorized_chat and chat_id != authorized_chat:
+            logger.warning(f"Unauthorized callback query from user {user_id} (expected {authorized_chat})")
+            self.notifier.answer_callback_query(
+                cq_id,
+                text="⚠️ Нямате права за потвърждаване на сделки!",
+                show_alert=True,
+            )
+            return
+
+        data = cq.get("data", "")
+        logger.info(f"Received Telegram callback_query: {data} from {user_id}")
+
+        if data.startswith("trade:approve:"):
+            proposal_id = data[len("trade:approve:"):]
+            res = self.paper_trader.approve_proposal(proposal_id, chat_id=chat_id)
+            if res.get("success"):
+                self.notifier.answer_callback_query(
+                    cq_id,
+                    text=f"✅ Покупката на {res.get('ticker')} е потвърдена в симулатора!",
+                    show_alert=False,
+                )
+            else:
+                self.notifier.answer_callback_query(
+                    cq_id,
+                    text=f"⚠️ {res.get('error', 'Грешка при одобрение')}",
+                    show_alert=True,
+                )
+        elif data.startswith("trade:reject:"):
+            proposal_id = data[len("trade:reject:"):]
+            res = self.paper_trader.reject_proposal(proposal_id, chat_id=chat_id)
+            if res.get("success"):
+                self.notifier.answer_callback_query(
+                    cq_id,
+                    text=f"❌ Предложението за {res.get('ticker')} е отхвърлено.",
+                    show_alert=False,
+                )
+            else:
+                self.notifier.answer_callback_query(
+                    cq_id,
+                    text=f"⚠️ {res.get('error', 'Грешка при отказ')}",
+                    show_alert=True,
+                )
+        else:
+            self.notifier.answer_callback_query(cq_id, text="Неизвестно действие.")
+
     def process_update(self, update: dict):
-        """Processes a single incoming message from Telegram."""
+        """Processes a single incoming message or callback query from Telegram."""
+        callback_query = update.get("callback_query")
+        if callback_query:
+            self.process_callback_query(callback_query)
+            return
+
         message = update.get("message")
         if not message:
             return
@@ -500,6 +572,16 @@ class TelegramCommandListener:
             reply = self.handle_traps()
         elif cmd == "/calc":
             reply = self.handle_calc(parts[1:])
+        elif cmd in ["/portfolio", "/positions"]:
+            reply = self.paper_trader.get_portfolio_summary()
+        elif cmd in ["/trades", "/history"]:
+            reply = self.paper_trader.get_trade_history_summary()
+        elif cmd == "/close":
+            if not arg:
+                reply = "⚠️ Моля посочи тикер за затваряне. Пример: <code>/close SOLUSDT</code>"
+            else:
+                ok, msg = self.paper_trader.close_manually(arg)
+                reply = msg
         elif cmd == "/watchlist":
             reply = self.handle_watchlist()
         elif cmd == "/watch":

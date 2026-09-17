@@ -11,3 +11,15 @@ scanner:
 
 storage:
   db_path: "state.db"
+
+trading:
+  enabled: true
+  mode: "paper" # paper / testnet / live
+  initial_balance_usd: 10000.0
+  default_position_size_usd: 100.0
+  max_active_positions: 5
+  proposal_ttl_minutes: 15
+  fee_pct: 0.1 # 0.1% standard Binance Spot taker/maker fee
+  btc_safety_filter: true
+  min_confluence_score: 60
+  allowed_tiers: ["A+", "A", "B"]

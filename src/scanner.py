@@ -18,6 +18,7 @@ from src.data.yfinance_fetch import YFinanceFetcher
 from src.engine.smma import compute_larsson_series, LarssonState
 from src.engine.sr_levels import analyze_sr_levels
 from src.storage.database import Database
+from src.trading.paper_trader import PaperTrader
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ class LarssonScanner:
         binance_fetcher: Optional[BinanceFetcher] = None,
         yf_fetcher: Optional[YFinanceFetcher] = None,
         notifier: Optional[TelegramNotifier] = None,
+        paper_trader: Optional[PaperTrader] = None,
         config_path: str = "config/settings.yaml",
         assets_path: str = "config/assets.yaml",
         tv_mapping_path: str = "config/tv_mapping.json",
@@ -40,6 +42,7 @@ class LarssonScanner:
         self.config = self._load_yaml(config_path)
         self.assets = self._load_yaml(assets_path)
         self.tv_mapping = self._load_json(tv_mapping_path)
+        self.paper_trader = paper_trader or PaperTrader(db=self.db, notifier=self.notifier, config=self.config)
 
     def _load_yaml(self, path: str) -> dict:
         data = {}
@@ -330,6 +333,15 @@ class LarssonScanner:
 
             self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
 
+            # Evaluate open paper positions for this ticker (SL/TP/Blue exit)
+            try:
+                self.paper_trader.evaluate_open_positions(
+                    prices={sym: float(latest_price)},
+                    states={sym: current_state.value},
+                )
+            except Exception as e:
+                logger.warning(f"Error evaluating paper positions for {sym}: {e}")
+
             if state_changed and old_state is not None:
                 change_event = {
                     "ticker": sym,
@@ -350,6 +362,19 @@ class LarssonScanner:
                     price=latest_price,
                     tv_symbol=tv_symbol,
                 )
+
+                # Trigger interactive trade proposal if transitioning to GOLD
+                if current_state == LarssonState.GOLD and trade_suggestion:
+                    try:
+                        self.paper_trader.handle_new_signal(
+                            ticker=sym,
+                            timeframe=timeframe,
+                            trade_suggestion=trade_suggestion,
+                            current_price=float(latest_price),
+                            tv_symbol=tv_symbol,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
 
             if delay_s > 0:
                 time.sleep(delay_s)
@@ -456,6 +481,15 @@ class LarssonScanner:
 
             self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
 
+            # Evaluate open paper positions for this symbol (SL/TP/Blue exit)
+            try:
+                self.paper_trader.evaluate_open_positions(
+                    prices={sym: float(latest_price)},
+                    states={sym: current_state.value},
+                )
+            except Exception as e:
+                logger.warning(f"Error evaluating paper positions for {sym}: {e}")
+
             if state_changed and old_state is not None:
                 change_event = {
                     "ticker": sym,
@@ -476,6 +510,19 @@ class LarssonScanner:
                     price=latest_price,
                     tv_symbol=tv_symbol,
                 )
+
+                # Trigger interactive trade proposal if transitioning to GOLD
+                if current_state == LarssonState.GOLD and trade_suggestion:
+                    try:
+                        self.paper_trader.handle_new_signal(
+                            ticker=sym,
+                            timeframe=timeframe,
+                            trade_suggestion=trade_suggestion,
+                            current_price=float(latest_price),
+                            tv_symbol=tv_symbol,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
 
         if results["state_changes"]:
             self._dispatch_state_changes(results["state_changes"])

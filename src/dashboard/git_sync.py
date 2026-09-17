@@ -25,8 +25,8 @@ def sync_dashboard_to_git() -> bool:
         if remotes.returncode != 0:
             return False
 
-        # Stage data.json
-        subprocess.run(["git", "add", "dashboard/data.json"], capture_output=True)
+        # Stage dashboard files
+        subprocess.run(["git", "add", "dashboard/"], capture_output=True)
 
         # Check if there are staged differences
         diff = subprocess.run(
@@ -34,12 +34,12 @@ def sync_dashboard_to_git() -> bool:
             capture_output=True,
             text=True,
         )
-        if "dashboard/data.json" not in diff.stdout:
+        if not any(f.startswith("dashboard/") for f in diff.stdout.splitlines()):
             return True
 
         # Commit
         subprocess.run(
-            ["git", "commit", "-m", "chore: update dashboard market data [skip ci]"],
+            ["git", "commit", "-m", "chore: update dashboard market data"],
             capture_output=True,
         )
 

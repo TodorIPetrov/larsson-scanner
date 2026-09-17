@@ -202,7 +202,7 @@ def start_scheduler(scanner: LarssonScanner):
         # Add any user watchlist crypto symbols
         watchlist_items = scanner.db.get_watchlist()
         for item in watchlist_items:
-            t = item["ticker"]
+            t = item["ticker"] if isinstance(item, dict) or hasattr(item, "__getitem__") and not isinstance(item, str) else str(item)
             if t.endswith("USDT") and t not in top_crypto:
                 top_crypto.append(t)
 
@@ -218,10 +218,15 @@ def start_scheduler(scanner: LarssonScanner):
 
     # Start Telegram interactive bot listener in background thread
     if scanner.notifier.is_configured:
-        listener = TelegramCommandListener(notifier=scanner.notifier, db=scanner.db)
+        listener = TelegramCommandListener(
+            notifier=scanner.notifier,
+            db=scanner.db,
+            paper_trader=scanner.paper_trader,
+            config=scanner.config,
+        )
         t = threading.Thread(target=listener.run_poll_loop, daemon=True, name="TelegramListener")
         t.start()
-        logger.info("Telegram interactive bot listener active (/status, /gold, /blue, /help).")
+        logger.info("Telegram interactive bot listener active (/status, /gold, /blue, /portfolio, /trades, /help).")
 
     logger.info("Press Ctrl+C to terminate.")
 
@@ -333,6 +338,7 @@ def main():
     elif args.export_dashboard:
         data = export_dashboard_data(db)
         print(f"Exported dashboard data: {data['summary']['total']} symbols to dashboard/data.json")
+        sync_dashboard_to_git()
     elif args.digest:
         if not notifier.is_configured:
             print("\n❌ Telegram все още НЕ е конфигуриран!")
@@ -348,9 +354,15 @@ def main():
             print("\n❌ Telegram все още НЕ е конфигуриран!")
         else:
             print("\n🤖 Стартиране на интерактивния Telegram бот (@CTO_larsson_bot)...")
-            print("Слуша за команди (/status, /gold, /blue, /alpha, /a, /calc, /traps, /help)")
+            print("Слуша за команди (/status, /gold, /blue, /portfolio, /trades, /close, /alpha, /a, /calc, /help)")
             print("Натисни Ctrl+C за спиране.\n")
-            listener = TelegramCommandListener(notifier=notifier, db=db)
+            bot_scanner = LarssonScanner(db=db, notifier=notifier)
+            listener = TelegramCommandListener(
+                notifier=notifier,
+                db=db,
+                paper_trader=bot_scanner.paper_trader,
+                config=bot_scanner.config,
+            )
             try:
                 listener.run_poll_loop()
             except KeyboardInterrupt:

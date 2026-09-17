@@ -165,6 +165,67 @@ class Database:
                 if col_name not in existing_cols:
                     cur.execute(f"ALTER TABLE symbol_trade_suggestions ADD COLUMN {col_name} {col_type}")
 
+            # Table for Trade Proposals requiring user confirmation
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS trade_proposals (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                proposal_id TEXT UNIQUE NOT NULL,
+                ticker TEXT NOT NULL,
+                timeframe TEXT NOT NULL,
+                action TEXT NOT NULL,
+                status TEXT NOT NULL,
+                entry_price REAL NOT NULL,
+                stop_loss REAL,
+                tp1 REAL,
+                tp2 REAL,
+                position_size_usd REAL NOT NULL,
+                units REAL NOT NULL,
+                risk_usd REAL,
+                tier TEXT,
+                score INTEGER,
+                reason TEXT,
+                created_at TEXT NOT NULL,
+                expires_at TEXT NOT NULL,
+                responded_at TEXT,
+                message_id INTEGER
+            );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_trade_proposals_status ON trade_proposals(status);")
+
+            # Table for Paper Positions (simulated spot portfolio)
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS paper_positions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                position_id TEXT UNIQUE NOT NULL,
+                ticker TEXT NOT NULL,
+                status TEXT NOT NULL,
+                entry_price REAL NOT NULL,
+                units REAL NOT NULL,
+                position_size_usd REAL NOT NULL,
+                stop_loss REAL,
+                tp1 REAL,
+                tp2 REAL,
+                opened_at TEXT NOT NULL,
+                closed_at TEXT,
+                exit_price REAL,
+                realized_pnl_usd REAL,
+                realized_pnl_pct REAL,
+                fee_paid_usd REAL DEFAULT 0.0,
+                exit_reason TEXT,
+                proposal_id TEXT
+            );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_paper_positions_status ON paper_positions(status);")
+
+            # Table for Paper Account balance
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS paper_account (
+                key TEXT PRIMARY KEY,
+                value REAL NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+            """)
+
     def restore_from_json_if_empty(self, json_path: Optional[str] = None) -> int:
         """
         If the database is fresh/empty (e.g., in a stateless CI/cloud runner),
@@ -550,5 +611,211 @@ class Database:
             cur = conn.cursor()
             cur.execute("SELECT * FROM symbol_trade_suggestions WHERE ticker = ? AND timeframe = ?", (ticker, timeframe))
             return cur.fetchone()
+
+    # --- Paper Trading & Trade Proposals ---
+
+    def create_trade_proposal(
+        self,
+        proposal_id: str,
+        ticker: str,
+        timeframe: str,
+        action: str,
+        entry_price: float,
+        stop_loss: Optional[float],
+        tp1: Optional[float],
+        tp2: Optional[float],
+        position_size_usd: float,
+        units: float,
+        risk_usd: Optional[float],
+        tier: str,
+        score: int,
+        reason: str,
+        created_at: str,
+        expires_at: str,
+        status: str = "PENDING",
+    ) -> bool:
+        """Inserts a new trade proposal."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO trade_proposals
+            (proposal_id, ticker, timeframe, action, status, entry_price, stop_loss,
+             tp1, tp2, position_size_usd, units, risk_usd, tier, score, reason,
+             created_at, expires_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                proposal_id, ticker, timeframe, action, status, entry_price, stop_loss,
+                tp1, tp2, position_size_usd, units, risk_usd, tier, score, reason,
+                created_at, expires_at
+            ))
+            return True
+
+    def get_proposal(self, proposal_id: str) -> Optional[sqlite3.Row]:
+        """Retrieves a proposal by its ID."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM trade_proposals WHERE proposal_id = ?", (proposal_id,))
+            return cur.fetchone()
+
+    def get_pending_proposals(self) -> List[sqlite3.Row]:
+        """Returns all currently pending proposals."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM trade_proposals WHERE status = 'PENDING' ORDER BY created_at DESC")
+            return cur.fetchall()
+
+    def update_proposal_status(
+        self,
+        proposal_id: str,
+        status: str,
+        responded_at: Optional[str] = None,
+    ) -> bool:
+        """Updates proposal status (APPROVED, REJECTED, EXPIRED, FILLED)."""
+        if not responded_at and status in ["APPROVED", "REJECTED"]:
+            responded_at = datetime.now(timezone.utc).isoformat()
+
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            UPDATE trade_proposals
+            SET status = ?, responded_at = COALESCE(?, responded_at)
+            WHERE proposal_id = ?
+            """, (status, responded_at, proposal_id))
+            return cur.rowcount > 0
+
+    def update_proposal_message_id(self, proposal_id: str, message_id: int) -> bool:
+        """Saves the Telegram message_id corresponding to this proposal for editing."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("UPDATE trade_proposals SET message_id = ? WHERE proposal_id = ?", (message_id, proposal_id))
+            return cur.rowcount > 0
+
+    def expire_old_proposals(self, now_iso: Optional[str] = None) -> int:
+        """Marks proposals past their expires_at as EXPIRED."""
+        if not now_iso:
+            now_iso = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            UPDATE trade_proposals
+            SET status = 'EXPIRED'
+            WHERE status = 'PENDING' AND expires_at <= ?
+            """, (now_iso,))
+            return cur.rowcount
+
+    def open_paper_position(
+        self,
+        position_id: str,
+        ticker: str,
+        entry_price: float,
+        units: float,
+        position_size_usd: float,
+        stop_loss: Optional[float],
+        tp1: Optional[float],
+        tp2: Optional[float],
+        opened_at: str,
+        proposal_id: Optional[str] = None,
+        fee_paid_usd: float = 0.0,
+    ) -> bool:
+        """Opens a new simulated spot paper position."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO paper_positions
+            (position_id, ticker, status, entry_price, units, position_size_usd,
+             stop_loss, tp1, tp2, opened_at, proposal_id, fee_paid_usd)
+            VALUES (?, ?, 'OPEN', ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                position_id, ticker, entry_price, units, position_size_usd,
+                stop_loss, tp1, tp2, opened_at, proposal_id, fee_paid_usd
+            ))
+            return True
+
+    def get_open_paper_positions(self) -> List[sqlite3.Row]:
+        """Returns all open paper positions."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM paper_positions WHERE status = 'OPEN' ORDER BY opened_at DESC")
+            return cur.fetchall()
+
+    def get_open_paper_position_by_ticker(self, ticker: str) -> Optional[sqlite3.Row]:
+        """Returns the active open position for a given ticker, if any."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM paper_positions WHERE ticker = ? AND status = 'OPEN' LIMIT 1", (ticker,))
+            return cur.fetchone()
+
+    def close_paper_position(
+        self,
+        position_id: str,
+        exit_price: float,
+        realized_pnl_usd: float,
+        realized_pnl_pct: float,
+        fee_paid_usd: float,
+        exit_reason: str,
+        closed_at: Optional[str] = None,
+    ) -> bool:
+        """Closes an open paper position and logs realized PnL."""
+        if not closed_at:
+            closed_at = datetime.now(timezone.utc).isoformat()
+
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            UPDATE paper_positions
+            SET status = 'CLOSED',
+                exit_price = ?,
+                realized_pnl_usd = ?,
+                realized_pnl_pct = ?,
+                fee_paid_usd = fee_paid_usd + ?,
+                exit_reason = ?,
+                closed_at = ?
+            WHERE position_id = ? AND status = 'OPEN'
+            """, (exit_price, realized_pnl_usd, realized_pnl_pct, fee_paid_usd, exit_reason, closed_at, position_id))
+            return cur.rowcount > 0
+
+    def get_closed_paper_positions(self, limit: int = 50) -> List[sqlite3.Row]:
+        """Returns closed paper positions ordered by close time."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM paper_positions WHERE status = 'CLOSED' ORDER BY closed_at DESC LIMIT ?", (limit,))
+            return cur.fetchall()
+
+    def get_paper_balance(self, initial_balance: float = 10000.0) -> Dict[str, float]:
+        """Returns paper account balance (available cash and initial balance)."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT value FROM paper_account WHERE key = 'available_cash'")
+            row = cur.fetchone()
+            if row is None:
+                # Initialize
+                now_iso = datetime.now(timezone.utc).isoformat()
+                cur.execute(
+                    "INSERT INTO paper_account (key, value, updated_at) VALUES ('available_cash', ?, ?)",
+                    (initial_balance, now_iso),
+                )
+                cur.execute(
+                    "INSERT INTO paper_account (key, value, updated_at) VALUES ('initial_balance', ?, ?)",
+                    (initial_balance, now_iso),
+                )
+                return {"available_cash": initial_balance, "initial_balance": initial_balance}
+
+            cur.execute("SELECT value FROM paper_account WHERE key = 'initial_balance'")
+            init_row = cur.fetchone()
+            init_val = init_row["value"] if init_row else initial_balance
+            return {"available_cash": row["value"], "initial_balance": init_val}
+
+    def update_paper_balance(self, cash_delta: float, initial_balance: float = 10000.0) -> float:
+        """Modifies available paper cash by cash_delta (positive or negative)."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            bal = self.get_paper_balance(initial_balance=initial_balance)
+            new_cash = bal["available_cash"] + cash_delta
+            now_iso = datetime.now(timezone.utc).isoformat()
+            cur.execute(
+                "UPDATE paper_account SET value = ?, updated_at = ? WHERE key = 'available_cash'",
+                (new_cash, now_iso),
+            )
+            return new_cash
 
 

@@ -151,13 +151,33 @@ async function loadDashboardData() {
     renderOverview(data);
   } catch (err) {
     console.error('Error loading data.json:', err);
+    const isFileProtocol = window.location.protocol === 'file:';
+    const errorHtml = isFileProtocol ? `
+      <div style="padding: 24px; text-align: center; line-height: 1.6;">
+        <h3 style="color: #f59e0b; margin-bottom: 8px;">⚠️ Браузърът блокира зареждането през file:// протокол (CORS)</h3>
+        <p style="color: var(--text-muted); margin-bottom: 16px;">
+          За сигурност уеб браузърите не позволяват четене на JSON данни при директно отваряне с двоен клик на файла.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="http://localhost:8080" class="btn btn-refresh" style="text-decoration: none; padding: 10px 18px; font-weight: 600;">
+            🚀 Отвори през Localhost:8080
+          </a>
+          <a href="https://todoripetrov.github.io/larsson-scanner/" target="_blank" rel="noopener" class="btn btn-refresh" style="text-decoration: none; padding: 10px 18px; font-weight: 600; background: rgba(234, 179, 8, 0.15); border-color: #eab308; color: #facc15;">
+            🌐 Отвори в GitHub Pages
+          </a>
+        </div>
+      </div>
+    ` : `⚠️ Failed to load <code>data.json</code>. Run a scan first: <code>python src/main.py --scan</code>`;
+
     document.getElementById('assetsTableBody').innerHTML = `
       <tr>
         <td colspan="14" class="loading-state" style="color: #ef4444;">
-          ⚠️ Failed to load <code>data.json</code>. Run a scan first: <code>python src/main.py --scan</code>
+          ${errorHtml}
         </td>
       </tr>
     `;
+    const cards = document.getElementById('cardsGrid');
+    if (cards) cards.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">${errorHtml}</div>`;
     return;
   }
 
