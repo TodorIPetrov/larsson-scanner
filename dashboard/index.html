@@ -73,7 +73,7 @@
 
       <div class="filter-row">
         <div class="filter-group" id="classFilters">
-          <button class="filter-btn active" data-class="ALL">All Markets</button>
+          <button class="filter-btn active" data-class="ALL">Всички Пазари</button>
           <button class="filter-btn" data-class="crypto_stocks">⚡ Crypto Stocks</button>
           <button class="filter-btn" data-class="ai_stocks">🤖 AI Stocks</button>
           <button class="filter-btn" data-class="crypto">🪙 Crypto</button>
@@ -83,34 +83,45 @@
           <button class="filter-btn" data-class="indices">📈 Indices</button>
         </div>
 
-        <div class="filter-group" id="tfFilters">
-          <button class="filter-btn active" data-tf="ALL">All Timeframes</button>
-          <button class="filter-btn" data-tf="1D">📅 Daily (1D)</button>
-          <button class="filter-btn" data-tf="4H">⏱️ 4-Hour (4H)</button>
-          <button class="filter-btn" data-tf="1W">📆 Weekly (1W)</button>
-        </div>
+        <div class="filter-toolbar">
+          <div class="filter-group" id="tfFilters">
+            <button class="filter-btn active" data-tf="ALL">Всички ТФ</button>
+            <button class="filter-btn" data-tf="1D">📅 1D</button>
+            <button class="filter-btn" data-tf="4H">⏱️ 4H</button>
+            <button class="filter-btn" data-tf="1W">📆 1W</button>
+          </div>
 
-        <div class="filter-group" id="stateFilters">
-          <button class="filter-btn active" data-filter="ALL">All States</button>
-          <button class="filter-btn filter-gold" data-filter="GOLD">🟡 Gold</button>
-          <button class="filter-btn filter-blue" data-filter="BLUE">🔵 Blue</button>
-          <button class="filter-btn filter-neutral" data-filter="NEUTRAL">⚪ Neutral</button>
-        </div>
+          <div class="filter-group" id="techFilters">
+            <span class="filter-badge-lbl filter-lbl-tech">📐 Техника:</span>
+            <button class="filter-btn active" data-tech="ALL">Всички</button>
+            <button class="filter-btn filter-gold" data-tech="GOLD">🟡 Gold</button>
+            <button class="filter-btn filter-blue" data-tech="BLUE">🔵 Blue</button>
+            <button class="filter-btn filter-cyan" data-tech="BUY">🟢 Tech Buy</button>
+            <button class="filter-btn" data-tech="EXIT">🔴 Tech Exit</button>
+          </div>
 
-        <div class="filter-group" id="setupFilters">
-          <button class="filter-btn active" data-setup="ALL">All Setups</button>
-          <button class="filter-btn filter-purple" data-setup="QUANTAMENTAL_ALPHA">💎 Institutional Alpha</button>
-          <button class="filter-btn" data-setup="WIDE_MOAT">🏰 Wide Moat</button>
-          <button class="filter-btn filter-gold" data-setup="SPOT_BUY">🟢 Spot Buy</button>
-          <button class="filter-btn filter-gold" data-setup="TAKE_PROFIT">💰 Take Profit</button>
-          <button class="filter-btn filter-blue" data-setup="EXIT_PROTECT">🛡️ Exit / Protect</button>
-          <button class="filter-btn" data-setup="TIER_A">⭐ Tier A / A+</button>
-          <button class="filter-btn filter-neutral" data-setup="VALUE_TRAP">⏳ Value Traps</button>
-        </div>
+          <div class="filter-group" id="fundFilters">
+            <span class="filter-badge-lbl filter-lbl-fund">🏢 Фундамент:</span>
+            <button class="filter-btn active" data-fund="ALL">Всички</button>
+            <button class="filter-btn filter-emerald" data-fund="UNDERVALUED">🟢 Подценени (DCF)</button>
+            <button class="filter-btn filter-purple" data-fund="WIDE_MOAT">💎 Wide Moat</button>
+            <button class="filter-btn filter-ruby" data-fund="OVERVALUED">🔴 Надценени</button>
+            <button class="filter-btn" data-fund="SPECULATIVE">⚪ Крипто / Макро</button>
+          </div>
 
-        <div class="view-toggle" id="viewToggle">
-          <button class="toggle-btn active" data-view="table">💻 Table</button>
-          <button class="toggle-btn" data-view="cards">📱 Cards</button>
+          <div class="filter-group" id="setupFilters">
+            <span class="filter-badge-lbl filter-lbl-synth">🎯 Синтез:</span>
+            <button class="filter-btn active" data-setup="ALL">Всички</button>
+            <button class="filter-btn filter-gold-glow" data-setup="QUANTAMENTAL_ALPHA">⭐ Alpha Buy</button>
+            <button class="filter-btn filter-amber" data-setup="VALUE_TRAP">⏳ Value Traps</button>
+            <button class="filter-btn filter-emerald" data-setup="QUALITY_HOLD">🧱 Accumulate</button>
+            <button class="filter-btn" data-setup="SPOT_BUY">🟢 Spot Buy</button>
+          </div>
+
+          <div class="view-toggle" id="viewToggle">
+            <button class="toggle-btn active" data-view="table">💻 Таблица</button>
+            <button class="toggle-btn" data-view="cards">📱 Карти</button>
+          </div>
         </div>
       </div>
     </section>
@@ -120,25 +131,26 @@
       <table class="assets-table">
         <thead>
           <tr>
-            <th class="th-sortable" data-sort="ticker">Symbol <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="asset_class">Class <span class="sort-icon">⇅</span></th>
-            <th>TF</th>
-            <th class="th-sortable" data-sort="state">State <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="price">Price <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="spread_pct">Trend Strength <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="tier">🎯 Trade Setup <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="s1_dist">Key S/R Levels <span class="sort-icon">⇅</span></th>
-            <th>SMMA 15 (v1)</th>
-            <th>SMMA 19 (m1)</th>
-            <th>SMMA 25 (m2)</th>
-            <th>SMMA 29 (v2)</th>
-            <th>Last State Change</th>
-            <th>Action</th>
+            <th class="th-sortable" data-sort="ticker">Актив <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="asset_class">Клас <span class="sort-icon">⇅</span></th>
+            <th>ТФ</th>
+            <th class="th-sortable" data-sort="price">Цена <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable th-tech-header" data-sort="state">
+              <div class="th-title-flex"><span class="pillar-indicator tech-glow"></span>📐 Технически Анализ (Larsson Ribbon) <span class="sort-icon">⇅</span></div>
+            </th>
+            <th class="th-sortable th-fund-header" data-sort="fund_verdict">
+              <div class="th-title-flex"><span class="pillar-indicator fund-glow"></span>🏢 Фундаментален Анализ (DCF & Valuation) <span class="sort-icon">⇅</span></div>
+            </th>
+            <th class="th-sortable th-synth-header" data-sort="tier">
+              <div class="th-title-flex"><span class="pillar-indicator synth-glow"></span>🎯 Синтезирана Стратегия (Quantamental) <span class="sort-icon">⇅</span></div>
+            </th>
+            <th class="th-sortable" data-sort="s1_dist">Нива S/R <span class="sort-icon">⇅</span></th>
+            <th>Действия</th>
           </tr>
         </thead>
         <tbody id="assetsTableBody">
           <tr>
-            <td colspan="14" class="loading-state">Loading latest market data...</td>
+            <td colspan="9" class="loading-state">Зареждане на пазарните данни...</td>
           </tr>
         </tbody>
       </table>
@@ -179,80 +191,76 @@
         </div>
       </div>
 
-      <!-- S/R Tactical Metrics Strip -->
-      <div class="chart-sr-strip" id="modalSrStrip">
-        <div class="sr-strip-item sr-support">
-          <span class="sr-label">🟢 Support (S1)</span>
-          <strong id="modalS1">$0.00 (-0.0%)</strong>
-          <small id="modalS1Touches">0 touches</small>
+      <!-- Dual-Pillar Analysis HUD: Technical vs Fundamental -->
+      <div class="modal-dual-hud">
+        <!-- 📐 Technical Analysis Card -->
+        <div class="hud-card hud-tech-card">
+          <div class="hud-card-header">
+            <span class="hud-tag hud-tag-tech">📐 ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon)</span>
+            <span class="badge badge-gold" id="modalTechStateBadge">🟡 GOLD</span>
+          </div>
+          <div class="hud-body">
+            <div class="hud-main-action" id="modalTechAction">🟢 Вход при тест на S1</div>
+            <div class="hud-details-grid">
+              <div><span class="lbl">Лента Spread:</span> <strong id="modalTechSpread">+0.0%</strong></div>
+              <div><span class="lbl">Подкрепа S1:</span> <strong id="modalS1">$0.00</strong></div>
+              <div><span class="lbl">Съпротива R1:</span> <strong id="modalR1">$0.00</strong></div>
+              <div><span class="lbl">ATR Волатилност:</span> <strong id="modalAtr">$0.00</strong></div>
+            </div>
+            <div class="hud-thesis" id="modalTechThesis">Установен бичи тренд с възходящо подреждане на панделката.</div>
+          </div>
         </div>
-        <div class="sr-strip-item sr-resistance">
-          <span class="sr-label">🔴 Resistance (R1)</span>
-          <strong id="modalR1">$0.00 (+0.0%)</strong>
-          <small id="modalR1Touches">0 touches</small>
-        </div>
-        <div class="sr-strip-item sr-volatility">
-          <span class="sr-label">⚡ Volatility (ATR 14)</span>
-          <strong id="modalAtr">$0.00</strong>
-          <small>Dynamic Buffer</small>
-        </div>
-        <div class="sr-strip-item sr-status">
-          <span class="sr-label">🎯 Market Location</span>
-          <strong id="modalContext">IN VALUE RANGE</strong>
-          <small id="modalContextDesc">Validating range</small>
+
+        <!-- 🏢 Fundamental Analysis Card -->
+        <div class="hud-card hud-fund-card">
+          <div class="hud-card-header">
+            <span class="hud-tag hud-tag-fund">🏢 ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF Valuation)</span>
+            <span class="fund-moat-pill" id="modalFundMoatPill">💎 Wide Moat</span>
+          </div>
+          <div class="hud-body">
+            <div class="hud-main-action" id="modalFundAction">🟢 СИЛНО ПОДЦЕНЕН (+34% MoS)</div>
+            <div class="hud-details-grid">
+              <div><span class="lbl">DCF Стойност:</span> <strong id="modalFundFairValue">$0.00</strong></div>
+              <div><span class="lbl">Margin of Safety:</span> <strong id="modalFundMos">0%</strong></div>
+              <div><span class="lbl">Икономически ров:</span> <strong id="modalFundMoat">Wide Moat</strong></div>
+              <div><span class="lbl">Z-Score здраве:</span> <strong id="modalFundZScore">3.50</strong></div>
+            </div>
+            <div class="hud-thesis" id="modalFundThesis">Лидер с широк ров и висок свободен паричен поток.</div>
+          </div>
         </div>
       </div>
 
-      <!-- Institutional Valuation & Moat Strip -->
-      <div class="chart-fund-strip" id="modalFundStrip" style="display: none;">
-        <div class="fund-strip-item fund-verdict">
-          <span class="fund-label">🏛️ Institutional Valuation</span>
-          <strong id="modalFundVerdict">STRONG BUY</strong>
-          <small id="modalFundUpside">+0.0% Intrinsic Upside</small>
-        </div>
-        <div class="fund-strip-item fund-dcf">
-          <span class="fund-label">🎯 DCF Fair Value</span>
-          <strong id="modalFundFairValue">$0.00</strong>
-          <small id="modalFundMos">Margin of Safety: 0%</small>
-        </div>
-        <div class="fund-strip-item fund-moat">
-          <span class="fund-label">🛡️ Economic Moat</span>
-          <strong id="modalFundMoat">Wide Moat</strong>
-          <small id="modalFundRoic">ROIC: 0%</small>
-        </div>
-        <div class="fund-strip-item fund-health">
-          <span class="fund-label">📊 Financial Health</span>
-          <strong id="modalFundZScore">Z-Score: 0.00</strong>
-          <small id="modalFundHealthDesc">Safe Balance Sheet</small>
-        </div>
-      </div>
-
-      <!-- Institutional Trade Suggestion HUD Strip -->
-      <div class="chart-setup-strip" id="modalSetupStrip">
-        <div class="setup-badge-area">
-          <span class="setup-action-badge" id="modalSetupAction">🎯 SPOT BUY</span>
-          <span class="setup-tier-badge" id="modalSetupTier">⭐ Tier A+</span>
-          <span class="setup-type-label" id="modalSetupType">Pullback Value Buy</span>
+      <!-- 🎯 Quantamental Synthesis Banner -->
+      <div class="modal-synth-banner" id="modalSynthBanner">
+        <div class="synth-banner-top">
+          <div class="synth-badge-group">
+            <span class="synth-badge" id="modalSetupAction">⭐ ALPHA BUY</span>
+            <span class="setup-tier-badge" id="modalSetupTier">🏆 Tier A+</span>
+            <span class="setup-type-label" id="modalSetupType">Pullback Value Buy</span>
+          </div>
+          <div class="synth-confluence-text" id="modalSynthConfluence">
+            Пълен консенсус: Бича техническа панделка в синергия с дълбоко подценен фундамент.
+          </div>
         </div>
         <div class="setup-metrics-grid">
           <div class="setup-metric">
-            <span class="lbl">Entry</span>
+            <span class="lbl">Вход</span>
             <strong id="modalSetupEntry">$0.00</strong>
           </div>
           <div class="setup-metric">
-            <span class="lbl">Stop-Loss (SL)</span>
+            <span class="lbl">🛑 Stop-Loss (SL)</span>
             <strong class="text-danger" id="modalSetupSl">$0.00</strong>
           </div>
           <div class="setup-metric">
-            <span class="lbl">Take-Profit 1 (TP1)</span>
+            <span class="lbl">🎯 Take-Profit 1</span>
             <strong class="text-success" id="modalSetupTp1">$0.00</strong>
           </div>
           <div class="setup-metric">
-            <span class="lbl">Take-Profit 2 (TP2)</span>
+            <span class="lbl">🎯 Take-Profit 2</span>
             <strong class="text-success" id="modalSetupTp2">$0.00</strong>
           </div>
           <div class="setup-metric">
-            <span class="lbl">Risk/Reward</span>
+            <span class="lbl">Съотношение R:R</span>
             <strong id="modalSetupRr">1 : 2.5</strong>
           </div>
         </div>

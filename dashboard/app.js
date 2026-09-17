@@ -2,6 +2,8 @@ let allSymbols = [];
 let currentFilter = 'ALL';
 let currentClass = 'ALL';
 let currentTfFilter = 'ALL';
+let currentTechFilter = 'ALL';
+let currentFundFilter = 'ALL';
 let currentSetupFilter = 'ALL';
 let currentSearch = '';
 let currentView = localStorage.getItem('larsson_view_mode') || 'table';
@@ -74,69 +76,149 @@ function getQuantamentalSetupRank(item) {
   return base + scoreBonus + rrBonus + upsideBonus + spreadBonus;
 }
 
+// =============================================================================
+// THREE-PILLAR CELL RENDERERS (TECHNICAL / FUNDAMENTAL / SYNTHESIS)
+// =============================================================================
+
+function renderTechCell(tech, item) {
+  if (!tech) {
+    return `<div class="tech-cell"><span class="tech-badge tech-badge-wait">⏳ N/A</span></div>`;
+  }
+  const action = tech.action || 'WAIT';
+  let badgeClass = 'tech-badge-wait';
+  if (action === 'BUY') badgeClass = 'tech-badge-buy';
+  else if (action === 'ACCUMULATE') badgeClass = 'tech-badge-hold';
+  else if (action === 'TAKE_PROFIT') badgeClass = 'tech-badge-profit';
+  else if (action === 'EXIT') badgeClass = 'tech-badge-exit';
+
+  const spreadVal = item.spread_pct !== undefined ? item.spread_pct : 0.0;
+  const spreadSign = spreadVal > 0 ? '+' : '';
+  const spreadClass = spreadVal > 0 ? 'spread-pos' : (spreadVal < 0 ? 'spread-neg' : 'spread-neu');
+  const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
+
+  let tagClass = 'tag-neutral';
+  if (item.state === 'GOLD') tagClass = 'tag-gold';
+  else if (item.state === 'BLUE') tagClass = 'tag-blue';
+
+  const hasS1 = item.s1 !== null && item.s1 !== undefined;
+  const s1Txt = hasS1 ? `S1: $${formatShortPrice(item.s1)}` : '';
+
+  return `
+    <div class="tech-cell">
+      <span class="tech-badge ${badgeClass}" title="${tech.thesis || ''}">
+        ${tech.label_bg || action}
+      </span>
+      <div class="tech-sub-info">
+        <span class="tech-ribbon-tag ${tagClass}">${item.state} (${spreadLabel})</span>
+        ${hasS1 ? `<span title="Подкрепа S1: $${item.s1} (-${item.s1_dist_pct}%)">${s1Txt}</span>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderFundCell(fund, item) {
+  if (!fund) {
+    return `<div class="fund-cell"><span class="fund-badge fund-badge-speculative">⚪ N/A</span></div>`;
+  }
+  const action = fund.action || 'SPECULATIVE_NA';
+  let badgeClass = 'fund-badge-speculative';
+  if (action === 'STRONG_BUY') badgeClass = 'fund-badge-strong-buy';
+  else if (action === 'BUY') badgeClass = 'fund-badge-buy';
+  else if (action === 'HOLD') badgeClass = 'fund-badge-hold';
+  else if (action === 'REDUCE') badgeClass = 'fund-badge-reduce';
+  else badgeClass = 'fund-badge-speculative';
+
+  let moatPill = '';
+  if (fund.moat === 'Wide') {
+    moatPill = `<span class="fund-moat-chip moat-wide" title="Wide Economic Moat (Конкурентно предимство)">💎 Wide</span>`;
+  } else if (fund.moat === 'Narrow') {
+    moatPill = `<span class="fund-moat-chip moat-narrow" title="Narrow Economic Moat">🏰 Narrow</span>`;
+  }
+
+  let dcfChip = '';
+  if (fund.fair_value) {
+    const mosTxt = (fund.mos_pct !== null && fund.mos_pct !== undefined) ? ` | MoS: ${fund.mos_pct}%` : '';
+    dcfChip = `<span class="fund-dcf-chip" title="DCF Справедлива стойност: $${formatShortPrice(fund.fair_value)}${mosTxt}">DCF: $${formatShortPrice(fund.fair_value)}</span>`;
+  }
+
+  return `
+    <div class="fund-cell">
+      <span class="fund-badge ${badgeClass}" title="${fund.thesis_bg || fund.thesis || ''}">
+        ${fund.label_bg || '⚪ МАКРО / СПЕКУЛАТИВЕН'}
+      </span>
+      <div class="fund-sub-row">
+        ${dcfChip}
+        ${moatPill}
+      </div>
+    </div>
+  `;
+}
+
+function renderSynthesisCell(synth, ts, item) {
+  const s = synth || (ts ? {
+    setup_type: ts.setup_type,
+    action: ts.action,
+    badge_bg: ts.synthesis_badge_bg,
+    label_bg: ts.synthesis_label_bg,
+    entry: ts.entry,
+    sl: ts.sl,
+    tp1: ts.tp1,
+    tp2: ts.tp2,
+    rr: ts.rr,
+    tier: ts.tier,
+    score: ts.score
+  } : null);
+
+  if (!s || s.action === 'WAIT') {
+    if (s && (s.setup_type === 'VALUE_TRAP_WARNING')) {
+      return `
+        <div class="synth-cell">
+          <span class="synth-badge synth-badge-trap" title="${s.label_bg || 'Предупреждение за капан на стойността'}">
+            ${s.badge_bg || '⏳ VALUE TRAP'}
+          </span>
+          <div class="synth-params-row"><span>Изчакай технически обръщащ сигнал</span></div>
+        </div>
+      `;
+    }
+    return `
+      <div class="synth-cell">
+        <span class="synth-badge synth-badge-wait" title="${s ? s.label_bg : 'Изчакване на структура'}">
+          ${(s && s.badge_bg) || '⏳ WAIT'}
+        </span>
+      </div>
+    `;
+  }
+
+  let badgeClass = 'synth-badge-buy';
+  if (s.setup_type === 'QUANTAMENTAL_ALPHA_BUY') badgeClass = 'synth-badge-alpha';
+  else if (s.setup_type === 'VALUE_TRAP_WARNING') badgeClass = 'synth-badge-trap';
+  else if (s.setup_type === 'QUALITY_HOLD_ACCUMULATION') badgeClass = 'synth-badge-accumulate';
+  else if (s.setup_type && s.setup_type.includes('SPECULATIVE')) badgeClass = 'synth-badge-speculative';
+  else if (s.action === 'SPOT_BUY') badgeClass = 'synth-badge-buy';
+  else if (s.action === 'TAKE_PROFIT') badgeClass = 'synth-badge-profit';
+  else if (s.action === 'EXIT_PROTECT') badgeClass = 'synth-badge-protect';
+
+  const hasEntry = s.entry !== null && s.entry !== undefined;
+  const rrTxt = s.rr ? `1:${s.rr}` : '';
+
+  return `
+    <div class="synth-cell">
+      <span class="synth-badge ${badgeClass}" title="${s.label_bg || (ts && ts.reason_bg) || ''}">
+        ${s.badge_bg || s.action}
+      </span>
+      ${hasEntry ? `
+      <div class="synth-params-row">
+        <span>Вход: <strong>$${formatShortPrice(s.entry)}</strong></span>
+        ${s.sl ? `<span>SL: <strong>$${formatShortPrice(s.sl)}</strong></span>` : ''}
+        ${rrTxt ? `<span class="synth-rr-pill">${rrTxt}</span>` : ''}
+      </div>
+      ` : ''}
+    </div>
+  `;
+}
+
 function renderTradeSuggestionCell(ts, item) {
-  if (!ts || ts.action === 'WAIT') {
-    if (ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK')) {
-      return `<div class="ts-cell"><span class="ts-badge ts-valuetrap" title="${ts.reason_bg || ts.reason_en || ''}">⏳ VALUE TRAP RISK</span></div>`;
-    }
-    return `<span class="ts-badge ts-wait" title="No immediate high-conviction setup. Wait for key structural level.">⏳ Wait</span>`;
-  }
-
-  const isCrypto = item && (item.asset_class === 'crypto' || (item.ticker && item.ticker.endsWith('USDT')));
-  const rrTxt = ts.rr ? `1:${ts.rr}` : '';
-
-  let tooltip = `${ts.reason_bg || ts.reason_en || ''}\n`;
-  if (ts.entry) tooltip += `Entry: $${formatShortPrice(ts.entry)}\n`;
-  if (ts.sl) tooltip += `SL: $${formatShortPrice(ts.sl)}\n`;
-  if (ts.tp1) tooltip += `TP1: $${formatShortPrice(ts.tp1)}\n`;
-  if (ts.tp2) tooltip += `TP2: $${formatShortPrice(ts.tp2)}\n`;
-  if (ts.rr) tooltip += `R:R: 1 : ${ts.rr}\n`;
-
-  let actionBadge = '';
-  if (isCrypto) {
-    // 🪙 Crypto Cyber Amber & Gold Styling
-    const tierPill = `<span class="ts-tier-pill tier-crypto-gold">${ts.tier}</span>`;
-    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
-      actionBadge = `<span class="ts-badge ts-crypto-alpha" title="${tooltip}">🪙 ALPHA BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
-      actionBadge = `<span class="ts-badge ts-crypto-accum" title="${tooltip}">🪙 ACCUMULATE ${tierPill}</span>`;
-    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
-      actionBadge = `<span class="ts-badge ts-crypto-speculative" title="${tooltip}">🪙⚠️ SPECULATIVE <span class="ts-tier-pill tier-b">B</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else if (ts.action === 'SPOT_BUY') {
-      actionBadge = `<span class="ts-badge ts-crypto-buy" title="${tooltip}">🪙 BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else if (ts.action === 'TAKE_PROFIT') {
-      actionBadge = `<span class="ts-badge ts-crypto-profit" title="${tooltip}">🪙💰 TAKE PROFIT ${tierPill}</span>`;
-    } else if (ts.action === 'EXIT_PROTECT') {
-      actionBadge = `<span class="ts-badge ts-crypto-exit" title="${tooltip}">🪙🛡️ EXIT / STOP</span>`;
-    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
-      actionBadge = `<span class="ts-badge ts-short" title="${tooltip}">🔴 SHORT 2X ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else {
-      actionBadge = `<span class="ts-badge ts-wait">⏳ Wait</span>`;
-    }
-  } else {
-    // 🏛️ Equities & Commodities Institutional Amethyst & Emerald Styling
-    const tierClass = ts.tier === 'A+' ? 'tier-equity-amethyst' : (ts.tier === 'A' ? 'tier-equity-emerald' : 'tier-b');
-    const tierPill = `<span class="ts-tier-pill ${tierClass}">${ts.tier}</span>`;
-    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
-      actionBadge = `<span class="ts-badge ts-equity-alpha" title="${tooltip}">🏛️ ALPHA BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
-      actionBadge = `<span class="ts-badge ts-equity-accum" title="${tooltip}">🏛️ ACCUMULATE ${tierPill}</span>`;
-    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
-      actionBadge = `<span class="ts-badge ts-equity-speculative" title="${tooltip}">🏛️⚠️ SPECULATIVE <span class="ts-tier-pill tier-b">B</span> ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else if (ts.action === 'SPOT_BUY') {
-      actionBadge = `<span class="ts-badge ts-equity-buy" title="${tooltip}">🏛️ BUY ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else if (ts.action === 'TAKE_PROFIT') {
-      actionBadge = `<span class="ts-badge ts-equity-profit" title="${tooltip}">🏛️💰 TAKE PROFIT ${tierPill}</span>`;
-    } else if (ts.action === 'EXIT_PROTECT') {
-      actionBadge = `<span class="ts-badge ts-equity-exit" title="${tooltip}">🏛️🛡️ EXIT / STOP</span>`;
-    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
-      actionBadge = `<span class="ts-badge ts-short" title="${tooltip}">🔴 SHORT 2X ${tierPill} ${rrTxt ? `[${rrTxt}]` : ''}</span>`;
-    } else {
-      actionBadge = `<span class="ts-badge ts-wait">⏳ Wait</span>`;
-    }
-  }
-
-  return `<div class="ts-cell">${actionBadge}</div>`;
+  return renderSynthesisCell(item ? item.synthesis : null, ts, item);
 }
 
 async function loadDashboardData() {
@@ -198,39 +280,66 @@ async function loadDashboardData() {
 function getFilteredSymbols() {
   const q = currentSearch.toLowerCase().trim();
   const filtered = allSymbols.filter(item => {
-    const matchesFilter = (currentFilter === 'ALL') || (item.state === currentFilter);
+    // 1. Asset Class Filter
     const matchesClass = (currentClass === 'ALL') || (item.asset_class === currentClass);
+    // 2. Timeframe Filter
     const matchesTf = (currentTfFilter === 'ALL') || (item.timeframe === currentTfFilter);
-    
-    const ts = item.trade_suggestion;
-    const fund = item.fundamental;
-    let matchesSetup = true;
-    if (currentSetupFilter === 'SPOT_BUY') {
-      matchesSetup = ts && (ts.action === 'SPOT_BUY' || (ts.setup_type && ts.setup_type.includes('BUY')));
-    } else if (currentSetupFilter === 'TAKE_PROFIT') {
-      matchesSetup = ts && ts.action === 'TAKE_PROFIT';
-    } else if (currentSetupFilter === 'EXIT_PROTECT') {
-      matchesSetup = ts && ts.action === 'EXIT_PROTECT';
-    } else if (currentSetupFilter === 'TIER_A') {
-      matchesSetup = ts && (ts.tier === 'A+' || ts.tier === 'A');
-    } else if (currentSetupFilter === 'QUANTAMENTAL_ALPHA') {
-      matchesSetup = (ts && (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY' || ts.quantamental_tag === 'INSTITUTIONAL_ALPHA')) ||
-                     (fund && (fund.verdict?.includes('STRONG BUY') || fund.verdict === 'BUY'));
-    } else if (currentSetupFilter === 'WIDE_MOAT') {
-      matchesSetup = fund && fund.moat === 'Wide';
-    } else if (currentSetupFilter === 'VALUE_TRAP') {
-      matchesSetup = ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK');
+
+    // 3. Technical Filter
+    const tech = item.technical;
+    let matchesTech = true;
+    if (currentTechFilter === 'GOLD') {
+      matchesTech = item.state === 'GOLD';
+    } else if (currentTechFilter === 'BLUE') {
+      matchesTech = item.state === 'BLUE';
+    } else if (currentTechFilter === 'BUY') {
+      matchesTech = tech && (tech.action === 'BUY' || tech.action === 'ACCUMULATE');
+    } else if (currentTechFilter === 'EXIT') {
+      matchesTech = tech && (tech.action === 'EXIT' || tech.action === 'TAKE_PROFIT');
     }
 
+    // 4. Fundamental Filter
+    const fund = item.fundamental;
+    let matchesFund = true;
+    if (currentFundFilter === 'UNDERVALUED') {
+      matchesFund = fund && (fund.action === 'STRONG_BUY' || fund.action === 'BUY' || (fund.mos_pct && fund.mos_pct > 0) || (fund.upside_pct && fund.upside_pct > 0));
+    } else if (currentFundFilter === 'WIDE_MOAT') {
+      matchesFund = fund && fund.moat === 'Wide';
+    } else if (currentFundFilter === 'OVERVALUED') {
+      matchesFund = fund && (fund.action === 'REDUCE' || (fund.verdict && fund.verdict.includes('REDUCE')) || (fund.mos_pct && fund.mos_pct < -20));
+    } else if (currentFundFilter === 'SPECULATIVE') {
+      matchesFund = fund && (fund.action === 'SPECULATIVE_NA' || item.asset_class === 'crypto' || item.asset_class === 'commodities');
+    }
+
+    // 5. Quantamental Synthesis Filter
+    const synth = item.synthesis;
+    const ts = item.trade_suggestion;
+    let matchesSetup = true;
+    if (currentSetupFilter === 'QUANTAMENTAL_ALPHA') {
+      matchesSetup = (synth && synth.setup_type === 'QUANTAMENTAL_ALPHA_BUY') ||
+                     (ts && (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY' || ts.quantamental_tag === 'INSTITUTIONAL_ALPHA'));
+    } else if (currentSetupFilter === 'VALUE_TRAP') {
+      matchesSetup = (synth && synth.setup_type === 'VALUE_TRAP_WARNING') ||
+                     (ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK'));
+    } else if (currentSetupFilter === 'QUALITY_HOLD') {
+      matchesSetup = (synth && synth.setup_type === 'QUALITY_HOLD_ACCUMULATION') ||
+                     (ts && (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION' || ts.quantamental_tag === 'CORE_QUALITY_HOLD'));
+    } else if (currentSetupFilter === 'SPOT_BUY') {
+      matchesSetup = (synth && (synth.action === 'SPOT_BUY' || (synth.setup_type && synth.setup_type.includes('BUY')))) ||
+                     (ts && (ts.action === 'SPOT_BUY' || (ts.setup_type && ts.setup_type.includes('BUY'))));
+    }
+
+    // 6. Search Filter
     const matchesSearch = !q ||
       item.ticker.toLowerCase().includes(q) ||
       (item.name && item.name.toLowerCase().includes(q));
-    return matchesFilter && matchesClass && matchesTf && matchesSetup && matchesSearch;
+
+    return matchesClass && matchesTf && matchesTech && matchesFund && matchesSetup && matchesSearch;
   });
 
   if (currentSortColumn) {
-    const tierRanks = { 'A+': 4, 'A': 3, 'B': 2, 'NONE': 1 };
     const stateRanks = { 'GOLD': 3, 'NEUTRAL': 2, 'BLUE': 1 };
+    const fundRanks = { 'STRONG_BUY': 4, 'BUY': 3, 'HOLD': 2, 'REDUCE': 1, 'SPECULATIVE_NA': 0 };
 
     filtered.sort((a, b) => {
       let valA, valB;
@@ -251,6 +360,11 @@ function getFilteredSymbols() {
       } else if (currentSortColumn === 'spread_pct') {
         valA = a.spread_pct !== undefined ? a.spread_pct : -999;
         valB = b.spread_pct !== undefined ? b.spread_pct : -999;
+      } else if (currentSortColumn === 'fund_verdict') {
+        const fA = a.fundamental ? (fundRanks[a.fundamental.action] || 0) : 0;
+        const fB = b.fundamental ? (fundRanks[b.fundamental.action] || 0) : 0;
+        valA = fA * 1000 + ((a.fundamental && a.fundamental.mos_pct) || 0);
+        valB = fB * 1000 + ((b.fundamental && b.fundamental.mos_pct) || 0);
       } else if (currentSortColumn === 'tier' || currentSortColumn === 'trade_setup') {
         valA = getQuantamentalSetupRank(a);
         valB = getQuantamentalSetupRank(b);
@@ -323,7 +437,7 @@ function renderOverview(data) {
 
   if (data && data.generated_at) {
     const d = new Date(data.generated_at);
-    document.getElementById('lastUpdated').textContent = `Updated: ${d.toLocaleTimeString()} (${d.toLocaleDateString()})`;
+    document.getElementById('lastUpdated').textContent = `Обновено: ${d.toLocaleTimeString()} (${d.toLocaleDateString()})`;
   }
 }
 
@@ -340,7 +454,7 @@ function renderTable() {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="13" class="loading-state">No matching assets found.</td>
+        <td colspan="9" class="loading-state">Няма намерени активи по избраните критерии.</td>
       </tr>
     `;
     return;
@@ -349,31 +463,12 @@ function renderTable() {
   tbody.innerHTML = filtered.map(item => {
     const tfCode = item.timeframe === '4H' ? '240' : item.timeframe;
     const tvUrl = `https://www.tradingview.com/chart/?symbol=${item.tv_symbol}&interval=${tfCode}`;
-    
-    let badgeClass = 'badge-neutral';
-    let stateEmoji = '⚪';
-    if (item.state === 'GOLD') {
-      badgeClass = 'badge-gold';
-      stateEmoji = '🟡';
-    } else if (item.state === 'BLUE') {
-      badgeClass = 'badge-blue';
-      stateEmoji = '🔵';
-    }
 
     const priceFormatted = item.price >= 1000 
       ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
       : `$${item.price.toFixed(item.price >= 1 ? 2 : 5)}`;
 
-    const lastChange = item.last_change 
-      ? new Date(item.last_change).toLocaleString()
-      : 'N/A';
-
     const classLabel = CLASS_LABELS[item.asset_class] || item.asset_class;
-
-    const spreadVal = item.spread_pct !== undefined ? item.spread_pct : 0.0;
-    const spreadSign = spreadVal > 0 ? '+' : '';
-    const spreadClass = spreadVal > 0 ? 'spread-pos' : (spreadVal < 0 ? 'spread-neg' : 'spread-neu');
-    const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
 
     // S/R Cell Rendering
     let srCellHtml = '';
@@ -384,76 +479,40 @@ function renderTable() {
       const r1Txt = hasR1 ? `🔴 R1: $${formatShortPrice(item.r1)} (+${item.r1_dist_pct}%)` : '';
       srCellHtml = `
         <div class="sr-cell">
-          ${hasR1 ? `<span class="sr-pill sr-res" title="Resistance R1: $${item.r1} (${item.r1_touches} touches)">${r1Txt}</span>` : ''}
-          ${hasS1 ? `<span class="sr-pill sr-sup" title="Support S1: $${item.s1} (${item.s1_touches} touches)">${s1Txt}</span>` : ''}
+          ${hasR1 ? `<span class="sr-pill sr-res" title="Съпротива R1: $${item.r1} (${item.r1_touches} теста)">${r1Txt}</span>` : ''}
+          ${hasS1 ? `<span class="sr-pill sr-sup" title="Подкрепа S1: $${item.s1} (${item.s1_touches} теста)">${s1Txt}</span>` : ''}
         </div>
       `;
     } else {
-      srCellHtml = `<span class="sr-pill sr-na">No levels</span>`;
-    }
-
-    // Fundamental Badges
-    let fundRow = '';
-    if (item.fundamental) {
-      const f = item.fundamental;
-      let moatPill = '';
-      if (f.moat === 'Wide') moatPill = `<span class="fund-moat-pill fund-moat-wide" title="Wide Economic Moat">💎 Wide Moat</span>`;
-      else if (f.moat === 'Narrow') moatPill = `<span class="fund-moat-pill fund-moat-narrow" title="Narrow Economic Moat">🏰 Narrow Moat</span>`;
-
-      let verdictPill = '';
-      const v = f.verdict || '';
-      const upsideTxt = (f.upside_pct !== null && f.upside_pct !== undefined) ? ` (+${Math.round(f.upside_pct)}%)` : '';
-      if (v.includes('STRONG BUY') || v.includes('BUY') || v.includes('OVERWEIGHT')) {
-        verdictPill = `<span class="fund-verdict-pill fund-pill-buy" title="DCF Fair Value: $${formatShortPrice(f.fair_value)} | MoS: ${f.mos_pct || 0}%\n${f.thesis || ''}">🟢 ${v.split('/')[0].trim()}${upsideTxt}</span>`;
-      } else if (v.includes('HOLD') || v.includes('NEUTRAL')) {
-        verdictPill = `<span class="fund-verdict-pill fund-pill-hold" title="DCF Fair Value: $${formatShortPrice(f.fair_value)}\n${f.thesis || ''}">🟡 Hold</span>`;
-      } else if (v.includes('REDUCE') || v.includes('AVOID') || v.includes('UNDERPERFORM')) {
-        verdictPill = `<span class="fund-verdict-pill fund-pill-reduce" title="Overvalued / Weak Fundamentals\n${f.thesis || ''}">🔴 Reduce</span>`;
-      }
-
-      if (moatPill || verdictPill) {
-        fundRow = `<div class="fund-badges-row">${verdictPill}${moatPill}</div>`;
-      }
+      srCellHtml = `<span class="sr-pill sr-na">Няма нива</span>`;
     }
 
     return `
       <tr>
         <td>
           <div class="symbol-cell">
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" title="Open ${item.tv_symbol} on TradingView">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" title="Отвори ${item.tv_symbol} в TradingView">
               <span class="ticker-text">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
             </a>
             <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
-            ${fundRow}
           </div>
         </td>
         <td>
           <span class="class-badge class-${item.asset_class}">${classLabel}</span>
         </td>
         <td><span class="tf-badge">${item.timeframe}</span></td>
-        <td>
-          <span class="badge ${badgeClass}">
-            <span class="dot"></span> ${stateEmoji} ${item.state}
-          </span>
-        </td>
         <td class="price-cell">${priceFormatted}</td>
-        <td class="spread-cell ${spreadClass}">
-          <span class="spread-pill ${spreadClass}">${spreadLabel}</span>
-        </td>
-        <td>${renderTradeSuggestionCell(item.trade_suggestion, item)}</td>
+        <td>${renderTechCell(item.technical, item)}</td>
+        <td>${renderFundCell(item.fundamental, item)}</td>
+        <td>${renderSynthesisCell(item.synthesis, item.trade_suggestion, item)}</td>
         <td>${srCellHtml}</td>
-        <td class="num-cell">${item.v1}</td>
-        <td class="num-cell">${item.m1}</td>
-        <td class="num-cell">${item.m2}</td>
-        <td class="num-cell">${item.v2}</td>
-        <td style="color: var(--text-muted); font-size: 0.8125rem;">${lastChange}</td>
         <td>
           <div style="display: flex; gap: 6px; align-items: center;">
-            <button class="btn-view-chart" onclick="openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="View interactive chart with S/R levels and trade setups">
+            <button class="btn-view-chart" onclick="openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Интерактивна графика и тристепенен анализ">
               📊 S/R
             </button>
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" title="Open on TradingView">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" title="Отвори в TradingView">
               TV ↗
             </a>
           </div>
@@ -468,7 +527,7 @@ function renderCards() {
   const filtered = getFilteredSymbols();
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">No matching assets found.</div>`;
+    container.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">Няма намерени активи по избраните критерии.</div>`;
     return;
   }
 
@@ -476,18 +535,9 @@ function renderCards() {
     const tfCode = item.timeframe === '4H' ? '240' : item.timeframe;
     const tvUrl = `https://www.tradingview.com/chart/?symbol=${item.tv_symbol}&interval=${tfCode}`;
     
-    let badgeClass = 'badge-neutral';
-    let stateEmoji = '⚪';
     let cardClass = 'card-neutral';
-    if (item.state === 'GOLD') {
-      badgeClass = 'badge-gold';
-      stateEmoji = '🟡';
-      cardClass = 'card-gold';
-    } else if (item.state === 'BLUE') {
-      badgeClass = 'badge-blue';
-      stateEmoji = '🔵';
-      cardClass = 'card-blue';
-    }
+    if (item.state === 'GOLD') cardClass = 'card-gold';
+    else if (item.state === 'BLUE') cardClass = 'card-blue';
 
     const priceFormatted = item.price >= 1000 
       ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
@@ -495,48 +545,18 @@ function renderCards() {
 
     const classLabel = CLASS_LABELS[item.asset_class] || item.asset_class;
 
-    const spreadVal = item.spread_pct !== undefined ? item.spread_pct : 0.0;
-    const spreadSign = spreadVal > 0 ? '+' : '';
-    const spreadClass = spreadVal > 0 ? 'spread-pos' : (spreadVal < 0 ? 'spread-neg' : 'spread-neu');
-    const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
-
     const hasS1 = item.s1 !== null && item.s1 !== undefined;
     const hasR1 = item.r1 !== null && item.r1 !== undefined;
-
-    // Fundamental Badges
-    let fundRow = '';
-    if (item.fundamental) {
-      const f = item.fundamental;
-      let moatPill = '';
-      if (f.moat === 'Wide') moatPill = `<span class="fund-moat-pill fund-moat-wide" title="Wide Economic Moat">💎 Wide Moat</span>`;
-      else if (f.moat === 'Narrow') moatPill = `<span class="fund-moat-pill fund-moat-narrow" title="Narrow Economic Moat">🏰 Narrow Moat</span>`;
-
-      let verdictPill = '';
-      const v = f.verdict || '';
-      const upsideTxt = (f.upside_pct !== null && f.upside_pct !== undefined) ? ` (+${Math.round(f.upside_pct)}%)` : '';
-      if (v.includes('STRONG BUY') || v.includes('BUY') || v.includes('OVERWEIGHT')) {
-        verdictPill = `<span class="fund-verdict-pill fund-pill-buy" title="DCF Fair Value: $${formatShortPrice(f.fair_value)} | MoS: ${f.mos_pct || 0}%\n${f.thesis || ''}">🟢 ${v.split('/')[0].trim()}${upsideTxt}</span>`;
-      } else if (v.includes('HOLD') || v.includes('NEUTRAL')) {
-        verdictPill = `<span class="fund-verdict-pill fund-pill-hold" title="DCF Fair Value: $${formatShortPrice(f.fair_value)}\n${f.thesis || ''}">🟡 Hold</span>`;
-      } else if (v.includes('REDUCE') || v.includes('AVOID') || v.includes('UNDERPERFORM')) {
-        verdictPill = `<span class="fund-verdict-pill fund-pill-reduce" title="Overvalued / Weak Fundamentals\n${f.thesis || ''}">🔴 Reduce</span>`;
-      }
-
-      if (moatPill || verdictPill) {
-        fundRow = `<div class="fund-badges-row">${verdictPill}${moatPill}</div>`;
-      }
-    }
 
     return `
       <div class="asset-card ${cardClass}">
         <div class="card-top">
           <div class="card-identity">
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" title="Open TradingView Chart">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" title="Отвори TradingView">
               <span class="card-ticker">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
             </a>
             <div class="card-name" title="${item.name || ''}">${item.name || ''}</div>
-            ${fundRow}
           </div>
           <div class="card-badges">
             <span class="class-badge class-${item.asset_class}">${classLabel}</span>
@@ -545,40 +565,34 @@ function renderCards() {
         </div>
 
         <div class="card-middle">
-          <div>
-            <div class="card-price">${priceFormatted}</div>
-            <div class="card-spread ${spreadClass}">
-              <span class="spread-label">Ribbon Spread:</span>
-              <span class="spread-pill ${spreadClass}">${spreadLabel}</span>
-            </div>
-          </div>
-          <span class="badge ${badgeClass}">
-            <span class="dot"></span> ${stateEmoji} ${item.state}
-          </span>
+          <div class="card-price">${priceFormatted}</div>
         </div>
 
-        ${item.trade_suggestion ? `
-          <div style="margin-bottom: 8px;">
-            ${renderTradeSuggestionCell(item.trade_suggestion, item)}
+        <!-- 3 Pillars Separation in Card -->
+        <div class="card-pillar-box" style="display: flex; flex-direction: column; gap: 8px;">
+          <div>
+            <div style="font-size: 0.6875rem; color: #38bdf8; font-weight: 700; margin-bottom: 3px;">📐 ТЕХНИЧЕСКИ АНАЛИЗ</div>
+            ${renderTechCell(item.technical, item)}
           </div>
-        ` : ''}
+          <div>
+            <div style="font-size: 0.6875rem; color: #34d399; font-weight: 700; margin-bottom: 3px;">🏢 ФУНДАМЕНТАЛЕН АНАЛИЗ</div>
+            ${renderFundCell(item.fundamental, item)}
+          </div>
+          <div>
+            <div style="font-size: 0.6875rem; color: #fbbf24; font-weight: 700; margin-bottom: 3px;">🎯 СИНТЕЗИРАНА СТРАТЕГИЯ</div>
+            ${renderSynthesisCell(item.synthesis, item.trade_suggestion, item)}
+          </div>
+        </div>
 
         ${hasS1 || hasR1 ? `
-          <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap;">
             ${hasR1 ? `<span class="sr-pill sr-res">🔴 R1: $${formatShortPrice(item.r1)} (+${item.r1_dist_pct}%)</span>` : ''}
             ${hasS1 ? `<span class="sr-pill sr-sup">🟢 S1: $${formatShortPrice(item.s1)} (-${item.s1_dist_pct}%)</span>` : ''}
           </div>
         ` : ''}
 
-        <div class="card-ribbon-metrics">
-          <div class="ribbon-box"><span>v1 (15)</span><strong>${item.v1}</strong></div>
-          <div class="ribbon-box"><span>m1 (19)</span><strong>${item.m1}</strong></div>
-          <div class="ribbon-box"><span>m2 (25)</span><strong>${item.m2}</strong></div>
-          <div class="ribbon-box"><span>v2 (29)</span><strong>${item.v2}</strong></div>
-        </div>
-
-        <div class="card-footer">
-          <span class="card-change">Changed: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'N/A'}</span>
+        <div class="card-footer" style="margin-top: 6px;">
+          <span class="card-change">Променено: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'N/A'}</span>
           <div style="display: flex; gap: 6px; align-items: center;">
             <button class="btn-view-chart" onclick="openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">📊 S/R</button>
             <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn">TV ↗</a>
@@ -980,145 +994,140 @@ function renderLightweightChart(container, candles, item) {
 }
 
 function updateModalTradeSuggestionStrip(ts, item) {
-  // 1. Update Fundamental Valuation Strip in Modal
-  const fundStrip = document.getElementById('modalFundStrip');
-  if (fundStrip) {
-    if (item && item.fundamental) {
-      fundStrip.style.display = 'grid';
-      const f = item.fundamental;
-      const verdictEl = document.getElementById('modalFundVerdict');
-      const upsideEl = document.getElementById('modalFundUpside');
-      const fvEl = document.getElementById('modalFundFairValue');
-      const mosEl = document.getElementById('modalFundMos');
-      const moatEl = document.getElementById('modalFundMoat');
-      const roicEl = document.getElementById('modalFundRoic');
-      const zscoreEl = document.getElementById('modalFundZScore');
-      const healthEl = document.getElementById('modalFundHealthDesc');
+  if (!item) return;
 
-      if (verdictEl) verdictEl.textContent = f.verdict ? f.verdict.split('/')[0].trim() : 'N/A';
-      if (upsideEl) upsideEl.textContent = (f.upside_pct !== null && f.upside_pct !== undefined) ? `${f.upside_pct > 0 ? '+' : ''}${Math.round(f.upside_pct)}% Intrinsic Upside` : 'Target Aligned';
-      if (fvEl) fvEl.textContent = f.fair_value ? '$' + formatShortPrice(f.fair_value) : 'Market Target';
-      if (mosEl) mosEl.textContent = (f.mos_pct !== null && f.mos_pct !== undefined) ? `Margin of Safety: ${Math.round(f.mos_pct)}%` : 'MoS: Standard';
-      if (moatEl) moatEl.textContent = `${f.moat || 'None'} Moat`;
-      if (roicEl) roicEl.textContent = f.roic_pct ? `ROIC: ${f.roic_pct.toFixed(1)}%` : (f.moat === 'Wide' ? 'Monopoly / Network' : 'Standard Quality');
-      if (zscoreEl) zscoreEl.textContent = f.z_score ? `Z-Score: ${f.z_score.toFixed(2)}` : 'Safe Metric';
-      if (healthEl) healthEl.textContent = f.z_score >= 2.99 ? 'Safe Balance Sheet' : (f.z_score >= 1.81 ? 'Grey Zone' : (f.z_score ? 'Distress Risk' : 'Healthy'));
+  const tech = item.technical || {};
+  const fund = item.fundamental || {};
+  const synth = item.synthesis || {};
+
+  // 1. Technical HUD Card
+  const techStateBadge = document.getElementById('modalTechStateBadge');
+  const techActionEl = document.getElementById('modalTechAction');
+  const techSpreadEl = document.getElementById('modalTechSpread');
+  const techThesisEl = document.getElementById('modalTechThesis');
+
+  if (techStateBadge) {
+    const sEmoji = item.state === 'GOLD' ? '🟡' : (item.state === 'BLUE' ? '🔵' : '⚪');
+    techStateBadge.textContent = `${sEmoji} ${item.state}`;
+    techStateBadge.className = `badge ${item.state === 'GOLD' ? 'badge-gold' : (item.state === 'BLUE' ? 'badge-blue' : 'badge-neutral')}`;
+  }
+
+  const modalStateBadge = document.getElementById('modalStateBadge');
+  if (modalStateBadge) {
+    const sEmoji = item.state === 'GOLD' ? '🟡' : (item.state === 'BLUE' ? '🔵' : '⚪');
+    modalStateBadge.textContent = `${sEmoji} ${item.state}`;
+    modalStateBadge.className = `badge ${item.state === 'GOLD' ? 'badge-gold' : (item.state === 'BLUE' ? 'badge-blue' : 'badge-neutral')}`;
+  }
+
+  const spreadVal = item.spread_pct !== undefined ? item.spread_pct : (tech.spread_pct || 0.0);
+  const spreadSign = spreadVal > 0 ? '+' : '';
+  const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
+  if (techSpreadEl) techSpreadEl.textContent = spreadLabel;
+
+  if (techActionEl) {
+    techActionEl.textContent = tech.label_bg || (ts && ts.tech_label_bg) || (item.state === 'GOLD' ? '🟢 Бичи Възходящ Тренд' : '⚪ Изчакване');
+  }
+  if (techThesisEl) {
+    techThesisEl.textContent = tech.thesis || (ts && ts.tech_thesis_bg) || 'Панделката определя макро тренда и динамичните зони на стойност.';
+  }
+
+  // 2. Fundamental HUD Card
+  const fundActionEl = document.getElementById('modalFundAction');
+  const fundFvEl = document.getElementById('modalFundFairValue');
+  const fundMosEl = document.getElementById('modalFundMos');
+  const fundMoatEl = document.getElementById('modalFundMoat');
+  const fundMoatPill = document.getElementById('modalFundMoatPill');
+  const fundZEl = document.getElementById('modalFundZScore');
+  const fundThesisEl = document.getElementById('modalFundThesis');
+
+  const fAction = fund.label_bg || (ts && ts.fund_label_bg) || (item.asset_class === 'crypto' ? '⚪ МАКРО / СПЕКУЛАТИВЕН' : '⚪ Неоценен');
+  if (fundActionEl) fundActionEl.textContent = fAction;
+
+  if (fundFvEl) {
+    fundFvEl.textContent = fund.fair_value ? '$' + formatShortPrice(fund.fair_value) : (item.asset_class === 'crypto' ? 'Пазарна цена (N/A)' : 'Неоценена');
+  }
+  if (fundMosEl) {
+    fundMosEl.textContent = (fund.mos_pct !== null && fund.mos_pct !== undefined) ? `${fund.mos_pct > 0 ? '+' : ''}${Math.round(fund.mos_pct)}%` : 'N/A';
+  }
+  if (fundMoatEl) {
+    fundMoatEl.textContent = fund.moat ? `${fund.moat} Moat` : (item.asset_class === 'crypto' ? 'Мрежов ефект' : 'None');
+  }
+  if (fundMoatPill) {
+    if (fund.moat === 'Wide') {
+      fundMoatPill.textContent = '💎 Wide Moat';
+      fundMoatPill.className = 'fund-moat-pill fund-moat-wide';
+      fundMoatPill.style.display = 'inline-block';
+    } else if (fund.moat === 'Narrow') {
+      fundMoatPill.textContent = '🏰 Narrow Moat';
+      fundMoatPill.className = 'fund-moat-pill fund-moat-narrow';
+      fundMoatPill.style.display = 'inline-block';
+    } else if (item.asset_class === 'crypto') {
+      fundMoatPill.textContent = '🪙 Network Effect';
+      fundMoatPill.className = 'fund-moat-pill';
+      fundMoatPill.style.display = 'inline-block';
     } else {
-      fundStrip.style.display = 'none';
+      fundMoatPill.style.display = 'none';
     }
   }
+  if (fundZEl) {
+    fundZEl.textContent = fund.z_score ? `${fund.z_score.toFixed(2)} (${fund.z_score >= 2.99 ? 'Safe' : 'Grey'})` : 'Safe Metric';
+  }
+  if (fundThesisEl) {
+    fundThesisEl.textContent = fund.thesis_bg || (ts && ts.fund_thesis_bg) || fund.thesis || (item.asset_class === 'crypto' ? 'Крипто актив без DCF модел. Движи се от ликвидност и халвинг цикли.' : 'Фундаментален анализ на паричните потоци.');
+  }
 
-  // 2. Update Trade Suggestion Strip in Modal
-  const setupStrip = document.getElementById('modalSetupStrip');
-  const actionElem = document.getElementById('modalSetupAction');
-  const tierElem = document.getElementById('modalSetupTier');
-  const typeElem = document.getElementById('modalSetupType');
-  const entryElem = document.getElementById('modalSetupEntry');
-  const slElem = document.getElementById('modalSetupSl');
-  const tp1Elem = document.getElementById('modalSetupTp1');
-  const tp2Elem = document.getElementById('modalSetupTp2');
-  const rrElem = document.getElementById('modalSetupRr');
-  const reasonElem = document.getElementById('modalSetupReason');
+  // 3. Quantamental Synthesis Banner
+  const synthBadgeEl = document.getElementById('modalSetupAction');
+  const synthTierEl = document.getElementById('modalSetupTier');
+  const synthTypeEl = document.getElementById('modalSetupType');
+  const synthConfluenceEl = document.getElementById('modalSynthConfluence');
+  const entryEl = document.getElementById('modalSetupEntry');
+  const slEl = document.getElementById('modalSetupSl');
+  const tp1El = document.getElementById('modalSetupTp1');
+  const tp2El = document.getElementById('modalSetupTp2');
+  const rrEl = document.getElementById('modalSetupRr');
+  const reasonEl = document.getElementById('modalSetupReason');
 
-  if (!actionElem) return;
+  const s = synth.action ? synth : (ts || {});
+  const badgeText = synth.badge_bg || (ts && ts.synthesis_badge_bg) || (s.action === 'WAIT' ? '⏳ WAIT' : s.action || '⏳ WAIT');
 
-  const isCrypto = item && (item.asset_class === 'crypto' || (item.ticker && item.ticker.endsWith('USDT')));
-  if (setupStrip) {
-    if (isCrypto) {
-      setupStrip.classList.add('strip-crypto');
-      setupStrip.classList.remove('strip-equity');
+  if (synthBadgeEl) {
+    synthBadgeEl.textContent = badgeText;
+    let bClass = 'synth-badge-wait';
+    if (s.setup_type === 'QUANTAMENTAL_ALPHA_BUY') bClass = 'synth-badge-alpha';
+    else if (s.setup_type === 'VALUE_TRAP_WARNING') bClass = 'synth-badge-trap';
+    else if (s.setup_type === 'QUALITY_HOLD_ACCUMULATION') bClass = 'synth-badge-accumulate';
+    else if (s.setup_type && s.setup_type.includes('SPECULATIVE')) bClass = 'synth-badge-speculative';
+    else if (s.action === 'SPOT_BUY') bClass = 'synth-badge-buy';
+    else if (s.action === 'TAKE_PROFIT') bClass = 'synth-badge-profit';
+    else if (s.action === 'EXIT_PROTECT') bClass = 'synth-badge-protect';
+    synthBadgeEl.className = `synth-badge ${bClass}`;
+  }
+
+  if (synthTierEl) {
+    if (s.tier && s.tier !== 'NONE') {
+      synthTierEl.textContent = `🏆 Tier ${s.tier} (${s.score || 0}/100)`;
+      synthTierEl.style.display = 'inline-block';
     } else {
-      setupStrip.classList.add('strip-equity');
-      setupStrip.classList.remove('strip-crypto');
+      synthTierEl.style.display = 'none';
     }
   }
 
-  if (!ts || ts.action === 'WAIT') {
-    if (ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK')) {
-      actionElem.className = 'setup-action-badge ts-valuetrap';
-      actionElem.textContent = '⏳ VALUE TRAP';
-      tierElem.textContent = 'Wait For Pivot';
-      tierElem.style.display = 'inline-block';
-      tierElem.className = 'setup-tier-badge';
-      typeElem.textContent = 'Downtrend Warning';
-    } else {
-      actionElem.className = 'setup-action-badge ts-wait';
-      actionElem.textContent = '⏳ WAIT';
-      tierElem.textContent = 'No Active Setup';
-      tierElem.style.display = 'none';
-      typeElem.textContent = 'Consolidation / Low R:R';
-    }
-    entryElem.textContent = '$' + formatShortPrice(item.price || 0);
-    slElem.textContent = 'N/A';
-    tp1Elem.textContent = 'N/A';
-    tp2Elem.textContent = 'N/A';
-    rrElem.textContent = 'N/A';
-    reasonElem.textContent = ts && (ts.reason_bg || ts.reason_en) 
-      ? (ts.reason_bg || ts.reason_en) 
-      : 'Цената е в междинна зона без ясен институционален сетап. Изчакай тест на ключово ниво.';
-    updateModalPositionCalculator(ts, item);
-    return;
+  if (synthTypeEl) {
+    synthTypeEl.textContent = (s.setup_type ? s.setup_type.replace(/_/g, ' ') : '');
   }
 
-  tierElem.style.display = 'inline-block';
-  if (isCrypto) {
-    tierElem.className = 'setup-tier-badge tier-crypto-badge';
-    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
-      actionElem.className = 'setup-action-badge ts-crypto-alpha';
-      actionElem.textContent = '🪙 ALPHA BUY';
-    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
-      actionElem.className = 'setup-action-badge ts-crypto-accum';
-      actionElem.textContent = '🪙 ACCUMULATE';
-    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
-      actionElem.className = 'setup-action-badge ts-crypto-speculative';
-      actionElem.textContent = '🪙⚠️ SPECULATIVE';
-    } else if (ts.action === 'SPOT_BUY') {
-      actionElem.className = 'setup-action-badge ts-crypto-buy';
-      actionElem.textContent = '🪙 CRYPTO BUY';
-    } else if (ts.action === 'TAKE_PROFIT') {
-      actionElem.className = 'setup-action-badge ts-crypto-profit';
-      actionElem.textContent = '🪙💰 TAKE PROFIT';
-    } else if (ts.action === 'EXIT_PROTECT') {
-      actionElem.className = 'setup-action-badge ts-crypto-exit';
-      actionElem.textContent = '🪙🛡️ EXIT / STOP';
-    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
-      actionElem.className = 'setup-action-badge ts-short';
-      actionElem.textContent = '🔴 SHORT 2X';
-    }
-  } else {
-    tierElem.className = 'setup-tier-badge tier-equity-badge';
-    if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY') {
-      actionElem.className = 'setup-action-badge ts-equity-alpha';
-      actionElem.textContent = '🏛️ ALPHA BUY';
-    } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION') {
-      actionElem.className = 'setup-action-badge ts-equity-accum';
-      actionElem.textContent = '🏛️ ACCUMULATE';
-    } else if (ts.setup_type === 'SPECULATIVE_MOMENTUM_BUY' || ts.setup_type === 'SPECULATIVE_PULLBACK_BUY') {
-      actionElem.className = 'setup-action-badge ts-equity-speculative';
-      actionElem.textContent = '🏛️⚠️ SPECULATIVE';
-    } else if (ts.action === 'SPOT_BUY') {
-      actionElem.className = 'setup-action-badge ts-equity-buy';
-      actionElem.textContent = '🏛️ EQUITY BUY';
-    } else if (ts.action === 'TAKE_PROFIT') {
-      actionElem.className = 'setup-action-badge ts-equity-profit';
-      actionElem.textContent = '🏛️💰 TAKE PROFIT';
-    } else if (ts.action === 'EXIT_PROTECT') {
-      actionElem.className = 'setup-action-badge ts-equity-exit';
-      actionElem.textContent = '🏛️🛡️ EXIT / STOP';
-    } else if (ts.action === 'SHORT_2X_OPTIONAL') {
-      actionElem.className = 'setup-action-badge ts-short';
-      actionElem.textContent = '🔴 SHORT 2X';
-    }
+  if (synthConfluenceEl) {
+    synthConfluenceEl.textContent = synth.confluence_thesis || (ts && ts.confluence_thesis) || (synth.label_bg || 'Синтезирана квантова оценка.');
   }
 
-  tierElem.textContent = `⭐ Tier ${ts.tier} (${ts.score}/100)`;
-  typeElem.textContent = ts.setup_type ? ts.setup_type.replace(/_/g, ' ') : '';
-  entryElem.textContent = ts.entry ? '$' + ts.entry.toLocaleString('en-US', { minimumFractionDigits: 2 }) : 'Market';
-  slElem.textContent = ts.sl ? '$' + ts.sl.toLocaleString('en-US', { minimumFractionDigits: 2 }) : 'N/A';
-  tp1Elem.textContent = ts.tp1 ? '$' + ts.tp1.toLocaleString('en-US', { minimumFractionDigits: 2 }) : 'N/A';
-  tp2Elem.textContent = ts.tp2 ? '$' + ts.tp2.toLocaleString('en-US', { minimumFractionDigits: 2 }) : 'N/A';
-  rrElem.textContent = ts.rr ? `1 : ${ts.rr}` : 'N/A';
-  reasonElem.textContent = ts.reason_bg || ts.reason_en || '';
+  if (entryEl) entryEl.textContent = s.entry ? '$' + formatShortPrice(s.entry) : '$' + formatShortPrice(item.price || 0);
+  if (slEl) slEl.textContent = s.sl ? '$' + formatShortPrice(s.sl) : 'N/A';
+  if (tp1El) tp1El.textContent = s.tp1 ? '$' + formatShortPrice(s.tp1) : 'N/A';
+  if (tp2El) tp2El.textContent = s.tp2 ? '$' + formatShortPrice(s.tp2) : 'N/A';
+  if (rrEl) rrEl.textContent = s.rr ? `1 : ${s.rr}` : 'N/A';
+  if (reasonEl) reasonEl.textContent = (ts && (ts.reason_bg || ts.reason_en)) || synth.label_bg || 'Няма допълнителни бележки.';
+
   updateModalPositionCalculator(ts, item);
 }
 
@@ -1311,6 +1320,24 @@ document.querySelectorAll('#tfFilters .filter-btn').forEach(btn => {
     e.target.classList.add('active');
     currentTfFilter = e.target.dataset.tf;
     renderOverview();
+    renderAllViews();
+  });
+});
+
+document.querySelectorAll('#techFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#techFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentTechFilter = e.target.dataset.tech;
+    renderAllViews();
+  });
+});
+
+document.querySelectorAll('#fundFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#fundFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFundFilter = e.target.dataset.fund;
     renderAllViews();
   });
 });
