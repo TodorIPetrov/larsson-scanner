@@ -68,8 +68,29 @@ us_stocks:
   tv_symbol: NYSE:EFX
 - ticker: MELI
   tv_symbol: NASDAQ:MELI
+- ticker: AXP
+  tv_symbol: NYSE:AXP
+- ticker: BAC
+  tv_symbol: NYSE:BAC
+- ticker: KO
+  tv_symbol: NYSE:KO
+- ticker: CVX
+  tv_symbol: NYSE:CVX
+- ticker: OXY
+  tv_symbol: NYSE:OXY
+- ticker: MCO
+  tv_symbol: NYSE:MCO
+- ticker: CB
+  tv_symbol: NYSE:CB
+- ticker: KHC
+  tv_symbol: NYSE:KHC
+- ticker: SIRI
+  tv_symbol: NASDAQ:SIRI
+- ticker: RKLB
+  tv_symbol: NASDAQ:RKLB
+- ticker: ASTS
+  tv_symbol: NASDAQ:ASTS
 intl_stocks:
-# --- European Luxury & Consumer ---
 - ticker: MC.PA
   tv_symbol: EURONEXT:MC
 - ticker: RMS.PA
@@ -88,8 +109,6 @@ intl_stocks:
   tv_symbol: LSE:DGE
 - ticker: RACE.MI
   tv_symbol: MIL:RACE
-
-# --- European Tech, Chips & Automation ---
 - ticker: ASML.AS
   tv_symbol: EURONEXT:ASML
 - ticker: SAP.DE
@@ -108,8 +127,6 @@ intl_stocks:
   tv_symbol: EURONEXT:ADYEN
 - ticker: KNEBV.HE
   tv_symbol: OMXHEX:KNEBV
-
-# --- European Healthcare & Pharma ---
 - ticker: NOVO-B.CO
   tv_symbol: OMXCOP:NOVO_B
 - ticker: NOVN.SW
@@ -122,8 +139,6 @@ intl_stocks:
   tv_symbol: EURONEXT:SAN
 - ticker: GSK.L
   tv_symbol: LSE:GSK
-
-# --- European Aerospace, Defense & Infrastructure ---
 - ticker: AIR.PA
   tv_symbol: EURONEXT:AIR
 - ticker: AI.PA
@@ -136,8 +151,6 @@ intl_stocks:
   tv_symbol: XETR:DHL
 - ticker: INVE-B.ST
   tv_symbol: OMXSTO:INVE_B
-
-# --- European Energy, Utilities & Financials ---
 - ticker: TTE.PA
   tv_symbol: EURONEXT:TTE
 - ticker: SHEL.L
@@ -160,8 +173,6 @@ intl_stocks:
   tv_symbol: XETR:MBG
 - ticker: VOD.L
   tv_symbol: LSE:VOD
-
-# --- Global Asia-Pacific Titans (Japan, Australia, Taiwan, China) ---
 - ticker: 6758.T
   tv_symbol: TSE:6758
 - ticker: 7203.T
@@ -207,6 +218,8 @@ commodities:
   tv_symbol: AMEX:URA
 - ticker: URNM
   tv_symbol: AMEX:URNM
+- ticker: CCJ
+  tv_symbol: NYSE:CCJ
 indices:
 - ticker: ^GSPC
   tv_symbol: SP:SPX
@@ -595,6 +608,20 @@ ai_stocks:
   tv_symbol: NYSE:HPQ
 - ticker: 2353.TW
   tv_symbol: TWSE:2353
+- ticker: SOUN
+  tv_symbol: NASDAQ:SOUN
+- ticker: SERV
+  tv_symbol: NASDAQ:SERV
+- ticker: NNOX
+  tv_symbol: NASDAQ:NNOX
+- ticker: NOK
+  tv_symbol: NYSE:NOK
+- ticker: APP
+  tv_symbol: NASDAQ:APP
+- ticker: SMR
+  tv_symbol: NYSE:SMR
+- ticker: OKLO
+  tv_symbol: NYSE:OKLO
 crypto_stocks:
 - ticker: 3350.T
   tv_symbol: TSE:3350
