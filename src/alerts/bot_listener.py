@@ -38,10 +38,12 @@ class TelegramCommandListener:
         db: Optional[Database] = None,
         paper_trader=None,
         config: Optional[dict] = None,
+        scanner=None,
     ):
         self.notifier = notifier or TelegramNotifier()
         self.db = db or Database()
         self.config = config or {}
+        self.scanner = scanner
         if paper_trader is not None:
             self.paper_trader = paper_trader
         else:
@@ -166,6 +168,54 @@ class TelegramCommandListener:
             lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): {emoji} <b>{state}</b> @ <code>{p_str}</code>")
 
         return header + "\n".join(lines)
+
+    def handle_add(self, ticker: str, asset_class: Optional[str] = None) -> str:
+        """Adds asset to scanner and configuration with auto-detection."""
+        if not ticker:
+            return "⚠️ Моля посочи символ. Пример: <code>/add NVDA</code> или <code>/add SUIUSDT</code>"
+        try:
+            from src.data.asset_manager import AssetManager
+            manager = AssetManager(db=self.db)
+            ok, msg, info = manager.add_asset(ticker, asset_class=asset_class, scan_now=True)
+            if not ok or not info:
+                return f"❌ {msg}"
+
+            price = info["price"]
+            p_str = f"${price:,.2f}" if price >= 1000 else (f"${price:.2f}" if price >= 1 else f"${price:.5f}")
+            state = info.get("state", "UNKNOWN")
+            emoji = "🟡" if state == "GOLD" else ("🔵" if state == "BLUE" else "⚪")
+            tv_link = get_tradingview_link(info["tv_symbol"], "1D")
+
+            lines = [
+                f"✅ <b>Активът е добавен успешно!</b>",
+                f"• Актив: <a href=\"{tv_link}\"><b>{info['ticker']}</b></a> ({info['name']})",
+                f"• Клас: <code>{info['asset_class']}</code> | TV: <code>{info['tv_symbol']}</code>",
+                f"• Текущо състояние: {emoji} <b>{state}</b> @ <code>{p_str}</code>",
+            ]
+            if info.get("s1"):
+                lines.append(f"• 🟢 Подкрепа S1: <code>${info['s1']:.2f}</code>")
+            if info.get("r1"):
+                lines.append(f"• 🔴 Съпротива R1: <code>${info['r1']:.2f}</code>")
+            lines.append("<i>Инструментът е включен в 24/7 графика за автоматично сканиране.</i>")
+            return "\n".join(lines)
+        except Exception as e:
+            logger.error(f"Error handling /add {ticker}: {e}")
+            return f"❌ Възникна грешка при добавяне на {ticker}: {e}"
+
+    def handle_remove(self, ticker: str) -> str:
+        """Removes asset from scanner and configuration."""
+        if not ticker:
+            return "⚠️ Моля посочи символ. Пример: <code>/remove NVDA</code>"
+        try:
+            from src.data.asset_manager import AssetManager
+            manager = AssetManager(db=self.db)
+            ok, msg = manager.remove_asset(ticker)
+            if ok:
+                return f"🗑️ <b>{msg}</b>"
+            return f"⚠️ {msg}"
+        except Exception as e:
+            logger.error(f"Error handling /remove {ticker}: {e}")
+            return f"❌ Грешка при премахване: {e}"
 
     def handle_analyze(self, ticker: str, timeframe: Optional[str] = None) -> str:
         """Generates comprehensive Quantamental & Technical analysis card for a ticker."""
@@ -461,10 +511,35 @@ class TelegramCommandListener:
         digest = generate_digest_data(self.db)
         return digest["message"]
 
+    def handle_scan(self, arg: str = "") -> str:
+        """Triggers an on-demand market scan in background and notifies user."""
+        if not self.scanner:
+            return "⚠️ Скенерът не е свързан към този слушател."
+
+        import threading
+        raw_ac = arg.lower().strip() if arg else "all"
+        target_ac = raw_ac if raw_ac in ["crypto", "us_stocks", "ai_stocks", "commodities", "indices", "all"] else "all"
+
+        def _do_scan():
+            try:
+                from src.main import run_scan
+                self.notifier.send_raw_message(f"🔍 <b>Стартирано е сканиране на пазара [{target_ac.upper()}]...</b>")
+                run_scan(self.scanner, asset_class=target_ac, timeframe="1D", limit=50)
+                from src.alerts.digest import generate_digest_data
+                digest = generate_digest_data(self.db)
+                self.notifier.send_raw_message(f"✅ <b>Сканирането на [{target_ac.upper()}] приключи!</b>\n\n" + digest["message"])
+            except Exception as e:
+                logger.error(f"Telegram on-demand scan error: {e}", exc_info=True)
+                self.notifier.send_raw_message(f"❌ Грешка при сканиране: {e}")
+
+        threading.Thread(target=_do_scan, daemon=True, name="TelegramScanThread").start()
+        return f"🚀 Сканирането на <b>{target_ac.upper()}</b> е стартирано на заден план! Резултатите ще пристигнат тук щом завърши."
+
     def handle_help(self) -> str:
         return (
             "🤖 <b>Larsson Line Бот Команди:</b>\n\n"
             "<b>Пазарни Справки:</b>\n"
+            "/scan [all|crypto|us_stocks|ai_stocks] - Незабавно пазарно сканиране на живо ⚡\n"
             "/status [4h|1d|1w] - Общ пазарен баланс (Gold/Blue съотношение)\n"
             "/digest - Изпраща подробен бюлетин (топ трендове, Ribbon Spread, 24ч промени)\n"
             "/gold [4h|1d|1w] - Списък на всички бичи активи (Gold 🟡)\n"
@@ -474,6 +549,9 @@ class TelegramCommandListener:
             "/alpha [4h|1d|1w] (или /setups) - Топ институционални Alpha входове (Tier A / A+)\n"
             "/traps - Предупреждения за валуационни капани (подценени, но в низходящ тренд)\n"
             "/calc [символ] [капитал] [риск_%] - Калкулатор за точен размер на позицията\n\n"
+            "<b>Управление на Активи (Scanner):</b>\n"
+            "/add [символ] - Добавя актив към 24/7 сканирането (напр. /add ARM или /add SUIUSDT)\n"
+            "/remove [символ] - Премахва/деактивира актив от сканирането\n\n"
             "<b>Личен Watchlist:</b>\n"
             "/watchlist - Показва активите в твоя личен списък ⭐\n"
             "/watch [символ] - Добавя актив в Watchlist (напр. /watch NVDA)\n"
@@ -553,9 +631,13 @@ class TelegramCommandListener:
 
         chat = message.get("chat", {})
         chat_id = str(chat.get("id", ""))
-        # Only allow authorized user to interact
-        if chat_id != str(self.notifier.chat_id):
-            logger.warning(f"Ignored message from unauthorized chat_id: {chat_id}")
+        from_user = message.get("from", {})
+        user_id = str(from_user.get("id", ""))
+
+        authorized_id = str(self.notifier.chat_id)
+        # Only allow authorized user/chat to interact (blocks unauthorized group members)
+        if authorized_id and (chat_id != authorized_id and user_id != authorized_id):
+            logger.warning(f"Ignored message from unauthorized sender: user_id={user_id}, chat_id={chat_id}")
             return
 
         text = message.get("text", "").strip()
@@ -567,7 +649,9 @@ class TelegramCommandListener:
         cmd = parts[0].lower()
         arg = parts[1] if len(parts) > 1 else ""
 
-        if cmd == "/status":
+        if cmd == "/scan":
+            reply = self.handle_scan(arg)
+        elif cmd == "/status":
             reply = self.handle_status(arg)
         elif cmd == "/digest":
             reply = self.handle_digest()
@@ -599,6 +683,11 @@ class TelegramCommandListener:
             reply = self.handle_watch(arg)
         elif cmd == "/unwatch":
             reply = self.handle_unwatch(arg)
+        elif cmd == "/add":
+            target_class = parts[2] if len(parts) > 2 else None
+            reply = self.handle_add(arg, asset_class=target_class)
+        elif cmd == "/remove":
+            reply = self.handle_remove(arg)
         elif cmd in ["/start", "/help"]:
             reply = self.handle_help()
         else:

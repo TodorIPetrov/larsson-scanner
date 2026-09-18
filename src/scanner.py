@@ -285,107 +285,124 @@ class LarssonScanner:
         min_warmup = self.config.get("scanner", {}).get("min_warmup_candles", 160)
 
         for sym in symbols:
-            tv_symbol = self.get_tv_symbol(sym, "crypto")
-            kline_data = self.binance_fetcher.fetch_klines(sym, timeframe, limit=min_warmup)
-            if not kline_data:
-                results["failed_count"] += 1
-                continue
-
-            highs, lows, closes, latest_price = kline_data
-            v1, m1, m2, v2, states = compute_larsson_series(highs, lows)
-            current_state = states[-1]
-
-            # Resolve Support and Resistance levels
-            sr_data = self._resolve_sr_analysis(
-                ticker=sym,
-                timeframe=timeframe,
-                highs=highs,
-                lows=lows,
-                closes=closes,
-                latest_price=float(latest_price),
-                asset_class="crypto",
-            )
-
-            results["total_scanned"] += 1
-            if current_state == LarssonState.GOLD:
-                results["gold_count"] += 1
-            elif current_state == LarssonState.BLUE:
-                results["blue_count"] += 1
-            else:
-                results["neutral_count"] += 1
-
-            # Update database and check for transition
-            state_changed, old_state = self.db.update_state(
-                ticker=sym,
-                timeframe=timeframe,
-                v1=float(v1[-1]),
-                m1=float(m1[-1]),
-                m2=float(m2[-1]),
-                v2=float(v2[-1]),
-                new_state=current_state,
-                price=float(latest_price),
-            )
-
-            # Evaluate and record Trade Suggestion
-            trade_suggestion = self._evaluate_and_persist_trade_suggestion(
-                ticker=sym,
-                timeframe=timeframe,
-                current_price=float(latest_price),
-                state=current_state,
-                v1=float(v1[-1]),
-                m1=float(m1[-1]),
-                m2=float(m2[-1]),
-                v2=float(v2[-1]),
-                sr_data=sr_data,
-            )
-
-            self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
-
-            # Evaluate open paper positions for this ticker (SL/TP/Blue exit)
             try:
-                self.paper_trader.evaluate_open_positions(
-                    prices={sym: float(latest_price)},
-                    states={sym: current_state.value},
-                )
-            except Exception as e:
-                logger.warning(f"Error evaluating paper positions for {sym}: {e}")
+                tv_symbol = self.get_tv_symbol(sym, "crypto")
+                kline_data = self.binance_fetcher.fetch_klines(sym, timeframe, limit=min_warmup)
+                if not kline_data:
+                    results["failed_count"] += 1
+                    continue
 
-            if state_changed and old_state is not None:
-                change_event = {
-                    "ticker": sym,
-                    "timeframe": timeframe,
-                    "old_state": old_state,
-                    "new_state": current_state,
-                    "price": latest_price,
-                    "tv_symbol": tv_symbol,
-                    "sr_data": sr_data,
-                    "trade_suggestion": trade_suggestion,
-                }
-                results["state_changes"].append(change_event)
-                self.db.log_alert(
+                highs_raw, lows_raw, closes_raw, latest_price = kline_data
+                if len(highs_raw) < 35:
+                    results["failed_count"] += 1
+                    continue
+
+                # P0.1: Binance returns the currently in-progress candle as the last element.
+                # For indicator calculations, S/R analysis, and confirmed state transitions,
+                # slice off the unclosed candle.
+                highs = highs_raw[:-1]
+                lows = lows_raw[:-1]
+                closes = closes_raw[:-1]
+
+                v1, m1, m2, v2, states = compute_larsson_series(highs, lows)
+                current_state = states[-1]
+
+                # Resolve Support and Resistance levels
+                sr_data = self._resolve_sr_analysis(
                     ticker=sym,
                     timeframe=timeframe,
-                    old_state=old_state,
-                    new_state=current_state,
-                    price=latest_price,
-                    tv_symbol=tv_symbol,
+                    highs=highs,
+                    lows=lows,
+                    closes=closes,
+                    latest_price=float(latest_price),
+                    asset_class="crypto",
                 )
 
-                # Trigger interactive trade proposal if transitioning to GOLD
-                if current_state == LarssonState.GOLD and trade_suggestion:
-                    try:
-                        self.paper_trader.handle_new_signal(
-                            ticker=sym,
-                            timeframe=timeframe,
-                            trade_suggestion=trade_suggestion,
-                            current_price=float(latest_price),
-                            tv_symbol=tv_symbol,
-                        )
-                    except Exception as e:
-                        logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
+                results["total_scanned"] += 1
+                if current_state == LarssonState.GOLD:
+                    results["gold_count"] += 1
+                elif current_state == LarssonState.BLUE:
+                    results["blue_count"] += 1
+                else:
+                    results["neutral_count"] += 1
 
-            if delay_s > 0:
-                time.sleep(delay_s)
+                # Update database and check for transition
+                state_changed, old_state = self.db.update_state(
+                    ticker=sym,
+                    timeframe=timeframe,
+                    v1=float(v1[-1]),
+                    m1=float(m1[-1]),
+                    m2=float(m2[-1]),
+                    v2=float(v2[-1]),
+                    new_state=current_state,
+                    price=float(latest_price),
+                )
+
+                # Evaluate and record Trade Suggestion
+                trade_suggestion = self._evaluate_and_persist_trade_suggestion(
+                    ticker=sym,
+                    timeframe=timeframe,
+                    current_price=float(latest_price),
+                    state=current_state,
+                    v1=float(v1[-1]),
+                    m1=float(m1[-1]),
+                    m2=float(m2[-1]),
+                    v2=float(v2[-1]),
+                    sr_data=sr_data,
+                )
+
+                self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
+
+                # Evaluate open paper positions for this ticker (SL/TP/Blue exit)
+                try:
+                    self.paper_trader.evaluate_open_positions(
+                        prices={sym: float(latest_price)},
+                        states={sym: current_state.value},
+                    )
+                except Exception as e:
+                    logger.warning(f"Error evaluating paper positions for {sym}: {e}")
+
+                if state_changed and old_state is not None:
+                    change_event = {
+                        "ticker": sym,
+                        "timeframe": timeframe,
+                        "old_state": old_state,
+                        "new_state": current_state,
+                        "price": latest_price,
+                        "tv_symbol": tv_symbol,
+                        "sr_data": sr_data,
+                        "trade_suggestion": trade_suggestion,
+                    }
+                    results["state_changes"].append(change_event)
+                    self.db.log_alert(
+                        ticker=sym,
+                        timeframe=timeframe,
+                        old_state=old_state,
+                        new_state=current_state,
+                        price=latest_price,
+                        tv_symbol=tv_symbol,
+                    )
+
+                    # Trigger interactive trade proposal if transitioning to GOLD
+                    if current_state == LarssonState.GOLD and trade_suggestion:
+                        try:
+                            self.paper_trader.handle_new_signal(
+                                ticker=sym,
+                                timeframe=timeframe,
+                                trade_suggestion=trade_suggestion,
+                                current_price=float(latest_price),
+                                tv_symbol=tv_symbol,
+                            )
+                        except Exception as e:
+                            logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
+
+                if delay_s > 0:
+                    time.sleep(delay_s)
+
+            except Exception as e:
+                logger.error(f"Error scanning crypto symbol {sym} [{timeframe}]: {e}", exc_info=True)
+                results["failed_count"] += 1
+                continue
 
         if results["state_changes"]:
             self._dispatch_state_changes(results["state_changes"])
@@ -434,103 +451,113 @@ class LarssonScanner:
         batch_data = self.yf_fetcher.fetch_batch(tickers, timeframe=timeframe)
 
         for sym in tickers:
-            if sym not in batch_data:
-                results["failed_count"] += 1
-                continue
-
-            highs, lows, closes, latest_price = batch_data[sym]
-            v1, m1, m2, v2, states = compute_larsson_series(highs, lows)
-            current_state = states[-1]
-
-            # Resolve Support and Resistance levels
-            sr_data = self._resolve_sr_analysis(
-                ticker=sym,
-                timeframe=timeframe,
-                highs=highs,
-                lows=lows,
-                closes=closes,
-                latest_price=float(latest_price),
-                asset_class=asset_class,
-            )
-
-            results["total_scanned"] += 1
-            if current_state == LarssonState.GOLD:
-                results["gold_count"] += 1
-            elif current_state == LarssonState.BLUE:
-                results["blue_count"] += 1
-            else:
-                results["neutral_count"] += 1
-
-            tv_symbol = self.get_tv_symbol(sym, asset_class)
-
-            state_changed, old_state = self.db.update_state(
-                ticker=sym,
-                timeframe=timeframe,
-                v1=float(v1[-1]),
-                m1=float(m1[-1]),
-                m2=float(m2[-1]),
-                v2=float(v2[-1]),
-                new_state=current_state,
-                price=float(latest_price),
-            )
-
-            # Evaluate and record Trade Suggestion
-            trade_suggestion = self._evaluate_and_persist_trade_suggestion(
-                ticker=sym,
-                timeframe=timeframe,
-                current_price=float(latest_price),
-                state=current_state,
-                v1=float(v1[-1]),
-                m1=float(m1[-1]),
-                m2=float(m2[-1]),
-                v2=float(v2[-1]),
-                sr_data=sr_data,
-            )
-
-            self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
-
-            # Evaluate open paper positions for this symbol (SL/TP/Blue exit)
             try:
-                self.paper_trader.evaluate_open_positions(
-                    prices={sym: float(latest_price)},
-                    states={sym: current_state.value},
-                )
-            except Exception as e:
-                logger.warning(f"Error evaluating paper positions for {sym}: {e}")
+                if sym not in batch_data:
+                    results["failed_count"] += 1
+                    continue
 
-            if state_changed and old_state is not None:
-                change_event = {
-                    "ticker": sym,
-                    "timeframe": timeframe,
-                    "old_state": old_state,
-                    "new_state": current_state,
-                    "price": latest_price,
-                    "tv_symbol": tv_symbol,
-                    "sr_data": sr_data,
-                    "trade_suggestion": trade_suggestion,
-                }
-                results["state_changes"].append(change_event)
-                self.db.log_alert(
+                highs, lows, closes, latest_price = batch_data[sym]
+                if len(highs) < 30:
+                    results["failed_count"] += 1
+                    continue
+
+                v1, m1, m2, v2, states = compute_larsson_series(highs, lows)
+                current_state = states[-1]
+
+                # Resolve Support and Resistance levels
+                sr_data = self._resolve_sr_analysis(
                     ticker=sym,
                     timeframe=timeframe,
-                    old_state=old_state,
-                    new_state=current_state,
-                    price=latest_price,
-                    tv_symbol=tv_symbol,
+                    highs=highs,
+                    lows=lows,
+                    closes=closes,
+                    latest_price=float(latest_price),
+                    asset_class=asset_class,
                 )
 
-                # Trigger interactive trade proposal if transitioning to GOLD
-                if current_state == LarssonState.GOLD and trade_suggestion:
-                    try:
-                        self.paper_trader.handle_new_signal(
-                            ticker=sym,
-                            timeframe=timeframe,
-                            trade_suggestion=trade_suggestion,
-                            current_price=float(latest_price),
-                            tv_symbol=tv_symbol,
-                        )
-                    except Exception as e:
-                        logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
+                results["total_scanned"] += 1
+                if current_state == LarssonState.GOLD:
+                    results["gold_count"] += 1
+                elif current_state == LarssonState.BLUE:
+                    results["blue_count"] += 1
+                else:
+                    results["neutral_count"] += 1
+
+                tv_symbol = self.get_tv_symbol(sym, asset_class)
+
+                state_changed, old_state = self.db.update_state(
+                    ticker=sym,
+                    timeframe=timeframe,
+                    v1=float(v1[-1]),
+                    m1=float(m1[-1]),
+                    m2=float(m2[-1]),
+                    v2=float(v2[-1]),
+                    new_state=current_state,
+                    price=float(latest_price),
+                )
+
+                # Evaluate and record Trade Suggestion
+                trade_suggestion = self._evaluate_and_persist_trade_suggestion(
+                    ticker=sym,
+                    timeframe=timeframe,
+                    current_price=float(latest_price),
+                    state=current_state,
+                    v1=float(v1[-1]),
+                    m1=float(m1[-1]),
+                    m2=float(m2[-1]),
+                    v2=float(v2[-1]),
+                    sr_data=sr_data,
+                )
+
+                self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
+
+                # Evaluate open paper positions for this symbol (SL/TP/Blue exit)
+                try:
+                    self.paper_trader.evaluate_open_positions(
+                        prices={sym: float(latest_price)},
+                        states={sym: current_state.value},
+                    )
+                except Exception as e:
+                    logger.warning(f"Error evaluating paper positions for {sym}: {e}")
+
+                if state_changed and old_state is not None:
+                    change_event = {
+                        "ticker": sym,
+                        "timeframe": timeframe,
+                        "old_state": old_state,
+                        "new_state": current_state,
+                        "price": latest_price,
+                        "tv_symbol": tv_symbol,
+                        "sr_data": sr_data,
+                        "trade_suggestion": trade_suggestion,
+                    }
+                    results["state_changes"].append(change_event)
+                    self.db.log_alert(
+                        ticker=sym,
+                        timeframe=timeframe,
+                        old_state=old_state,
+                        new_state=current_state,
+                        price=latest_price,
+                        tv_symbol=tv_symbol,
+                    )
+
+                    # Trigger interactive trade proposal if transitioning to GOLD
+                    if current_state == LarssonState.GOLD and trade_suggestion:
+                        try:
+                            self.paper_trader.handle_new_signal(
+                                ticker=sym,
+                                timeframe=timeframe,
+                                trade_suggestion=trade_suggestion,
+                                current_price=float(latest_price),
+                                tv_symbol=tv_symbol,
+                            )
+                        except Exception as e:
+                            logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
+
+            except Exception as e:
+                logger.error(f"Error scanning yfinance symbol {sym} [{timeframe}]: {e}", exc_info=True)
+                results["failed_count"] += 1
+                continue
 
         if results["state_changes"]:
             self._dispatch_state_changes(results["state_changes"])

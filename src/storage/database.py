@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 import os
 import sqlite3
+import threading
 from typing import Dict, List, Optional, Tuple
 
 from src.engine.smma import LarssonState
@@ -17,22 +18,52 @@ DEFAULT_DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(_
 class Database:
     def __init__(self, db_path: str = DEFAULT_DB_PATH, auto_restore: bool = False):
         self.db_path = db_path
+        self._local = threading.local()
         self._init_db()
         if auto_restore:
             self.restore_from_json_if_empty()
 
+    def _get_thread_conn(self) -> sqlite3.Connection:
+        """Returns or creates a thread-local SQLite connection with optimized PRAGMAs."""
+        if not hasattr(self._local, "conn") or self._local.conn is None:
+            conn = sqlite3.connect(self.db_path, timeout=30.0)
+            conn.row_factory = sqlite3.Row
+            # Enforce PRAGMAs on every new physical connection
+            conn.execute("PRAGMA journal_mode=WAL;")
+            conn.execute("PRAGMA synchronous=NORMAL;")
+            conn.execute("PRAGMA busy_timeout=30000;")
+            conn.execute("PRAGMA cache_size=-64000;")
+            self._local.conn = conn
+        return self._local.conn
+
     @contextmanager
     def _get_connection(self):
-        conn = sqlite3.connect(self.db_path, timeout=30.0)
-        conn.row_factory = sqlite3.Row
+        """Transactional context manager reusing the thread-local connection."""
+        conn = self._get_thread_conn()
         try:
             yield conn
             conn.commit()
         except Exception:
             conn.rollback()
             raise
-        finally:
-            conn.close()
+
+    def close(self):
+        """Closes the thread-local database connection if active."""
+        if hasattr(self._local, "conn") and self._local.conn is not None:
+            try:
+                self._local.conn.close()
+            except Exception:
+                pass
+            self._local.conn = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def __del__(self):
+        self.close()
 
     def _init_db(self):
         with self._get_connection() as conn:

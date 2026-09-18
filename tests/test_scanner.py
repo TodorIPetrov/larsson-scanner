@@ -19,6 +19,7 @@ def temp_scanner():
     yf_fetcher = YFinanceFetcher(chunk_size=5)
     scanner = LarssonScanner(db=db, binance_fetcher=b_fetcher, yf_fetcher=yf_fetcher, notifier=notifier)
     yield scanner
+    scanner.db.close()
     if os.path.exists(db_path):
         os.remove(db_path)
 

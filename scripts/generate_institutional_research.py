@@ -1,12 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Institutional Multi-Asset Valuation Engine (Modular Architecture)
+Institutional Multi-Asset Valuation Engine (v3.0 - Comprehensive Institutional Overhaul)
 Applies specialized valuation models by asset class and corporate sector:
-1. Corporate DCF & EVA (Tech, Consumer, Healthcare, Services)
+1. Corporate DCF & EVA (Tech, Consumer, Healthcare, Industrials, Services)
 2. Financials Residual Income Model (RIM) & Justified P/TBV (Banks, Insurance, Brokers)
-3. REITs AFFO & Net Asset Value (NAV) (Data centers, Towers, Industrial Real Estate)
-4. Cyclicals Mid-Cycle Normalization (Semiconductors, Autos, Commodity Producers)
+3. REITs AFFO & Net Asset Value (NAV) Cap-Rate Model (Towers, Data Centers, Logistics, Retail)
+4. Cyclicals Mid-Cycle Normalization & Dynamic Margins (Semiconductors, Hardware, Autos, Energy, Materials)
+5. Utilities RAB & Multi-Stage Dividend Discount Model (Electric, Gas, Water Regulated Infrastructure)
+6. Pre-Profit High-Growth EV/Revenue Multiple Fallback (Negative FCF / Early Stage innovators)
+
+Forensic Accounting:
+- Real Altman Z''-Score (Universal 4-variable model) & Sector Solvency Scoring
+- Real Beneish M-Score (Multi-year 5-variable + TATA Accruals Model)
+- Multi-year Trend Extraction (3Y Revenue CAGR, Historical Median Margins, FCF Conversion)
+- Adaptive Sanity Bounds (Beta & Conviction scaled)
+- Dynamic Macro Calibration (^TNX 10Y US Treasury Yield)
 """
 
 import os
@@ -19,22 +28,41 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
 import yfinance as yf
 
-# Institutional Baseline Parameters
-RF_RATE = 0.0415          # 10Y US Treasury Yield (4.15%)
-ERP = 0.0460              # Equity Risk Premium (4.60%)
-DEFAULT_TAX_RATE = 0.185    # Marginal Corporate Tax Rate (18.5%)
-LONG_TERM_G = 0.0275      # Long-term GDP / Terminal Growth (2.75%)
-REIT_CAP_RATE = 0.0625    # Baseline Cap Rate for Quality Infrastructure REITs (6.25%)
-
+# Directories
 ARCHIVE_DIR = "research/archive"
 VERDICTS_FILE = "research/COMMITTEE_VERDICTS.md"
 JSON_OUTPUT = "research/verdicts.json"
 DASHBOARD_JSON = "dashboard/fundamental_verdicts.json"
 
+# Institutional Baseline Parameters
+DEFAULT_TAX_RATE = 0.185    # Marginal Corporate Tax Rate (18.5%)
+LONG_TERM_G = 0.0275        # Long-term GDP / Terminal Growth (2.75%)
+ERP = 0.0460                # Equity Risk Premium (4.60%)
+
 def ensure_dirs():
     os.makedirs(ARCHIVE_DIR, exist_ok=True)
     os.makedirs("research", exist_ok=True)
     os.makedirs("dashboard", exist_ok=True)
+
+def fetch_dynamic_macro_rates():
+    """
+    Dynamically retrieves 10-Year US Treasury Yield (^TNX) from yfinance.
+    Falls back to 4.15% if unavailable.
+    """
+    try:
+        tnx = yf.Ticker("^TNX")
+        lp = tnx.fast_info.get("lastPrice") or tnx.info.get("regularMarketPrice") or 0.0
+        if lp > 15.0:
+            rf = lp / 1000.0
+        elif lp > 1.0:
+            rf = lp / 100.0
+        else:
+            rf = 0.0415
+        return max(0.025, min(0.075, rf))
+    except Exception:
+        return 0.0415
+
+RF_RATE = fetch_dynamic_macro_rates()
 
 def load_universe():
     ensure_dirs()
@@ -69,68 +97,200 @@ def load_universe():
 
     return sorted(list(candidates))
 
+def safe_get(df, key, col, default=0.0):
+    """Safely extracts a numeric float value from a DataFrame row index and column."""
+    if df is not None and not df.empty and key in df.index:
+        val = df.loc[key, col]
+        if isinstance(val, (int, float)) and not (isinstance(val, float) and (val != val)):
+            return float(val)
+    return default
+
+# ==============================================================================
+# FORENSIC ACCOUNTING ENGINE
+# ==============================================================================
+
+def compute_forensics(fin, bs, cf, info, shares, price, mcap, sector="", industry=""):
+    """
+    Real Multi-Year Forensic Accounting Engine:
+    1. Altman Z''-Score (Universal 4-Variable Model for Non-Financials)
+    2. Tangible Common Equity (TCE) Ratio for Financials
+    3. Fixed Charge Coverage & LTV for REITs
+    4. Regulated Interest Coverage for Utilities
+    5. Beneish M-Score (5-Variable + TATA Total Accruals Model using YoY Deltas)
+    """
+    is_financial = sector in ["Financial Services", "Financials"] or "Bank" in industry or "Insurance" in industry
+    is_reit = sector in ["Real Estate"] or "REIT" in industry
+    is_utility = sector in ["Utilities"]
+
+    has_2y = (
+        fin is not None and bs is not None and
+        len(fin.columns) >= 2 and len(bs.columns) >= 2
+    )
+
+    if not has_2y:
+        total_debt = info.get("totalDebt") or (mcap * 0.2)
+        cfo = info.get("operatingCashflow") or (mcap * 0.08)
+        net_inc = info.get("netIncomeToCommon") or (mcap * 0.06)
+        accruals = (net_inc - cfo) / max(1e7, mcap * 0.4)
+        m_score = -2.60 + (2.5 * accruals if accruals > 0 else 0.0)
+        z_score = 3.20 if total_debt < mcap else 2.10
+        return round(z_score, 2), round(m_score, 2), 0.0, False, "Limited Multi-Year Data"
+
+    col0 = fin.columns[0]
+    col1 = fin.columns[1]
+    col0_bs = bs.columns[0]
+    col1_bs = bs.columns[1]
+
+    rev0 = safe_get(fin, 'Total Revenue', col0)
+    rev1 = safe_get(fin, 'Total Revenue', col1)
+    ebit0 = safe_get(fin, 'Operating Income', col0, safe_get(fin, 'EBIT', col0))
+    net_inc0 = safe_get(fin, 'Net Income', col0, safe_get(fin, 'Net Income Common Stockholders', col0))
+    cfo0 = safe_get(cf, 'Operating Cash Flow', col0, net_inc0) if cf is not None and not cf.empty else net_inc0
+    int_exp0 = safe_get(fin, 'Interest Expense', col0, safe_get(fin, 'Interest Expense Non Operating', col0, 1.0))
+
+    ta0 = safe_get(bs, 'Total Assets', col0_bs)
+    ta1 = safe_get(bs, 'Total Assets', col1_bs)
+    ca0 = safe_get(bs, 'Current Assets', col0_bs)
+    ca1 = safe_get(bs, 'Current Assets', col1_bs)
+    cl0 = safe_get(bs, 'Current Liabilities', col0_bs)
+    cl1 = safe_get(bs, 'Current Liabilities', col1_bs)
+    wc0 = safe_get(bs, 'Working Capital', col0_bs, ca0 - cl0)
+    re0 = safe_get(bs, 'Retained Earnings', col0_bs)
+    equity0 = safe_get(bs, 'Stockholders Equity', col0_bs, safe_get(bs, 'Common Stock Equity', col0_bs))
+    tl0 = safe_get(bs, 'Total Liabilities Net Minority Interest', col0_bs, max(1.0, ta0 - equity0))
+    total_debt0 = safe_get(bs, 'Total Debt', col0_bs, safe_get(bs, 'Long Term Debt', col0_bs, 0.0))
+
+    # 1. Credit Health / Solvency Score
+    if is_financial:
+        tbv = safe_get(bs, 'Tangible Book Value', col0_bs)
+        if tbv <= 0:
+            gw = safe_get(bs, 'Goodwill', col0_bs)
+            intang = safe_get(bs, 'Other Intangible Assets', col0_bs)
+            tbv = max(1e6, equity0 - gw - intang)
+        tce_ratio = (tbv / max(1.0, ta0)) * 100.0
+        z_score = 2.0 + min(6.0, max(0.0, (tce_ratio - 3.0) * 0.8))
+        solvency_type = f"Financial TCE Capital Ratio ({tce_ratio:.1f}%)"
+    elif is_reit:
+        ebitda0 = safe_get(fin, 'EBITDA', col0, ebit0 * 1.5)
+        cov = ebitda0 / max(1.0, int_exp0)
+        ltv = total_debt0 / max(1.0, ta0)
+        z_score = 2.5 + min(5.0, max(0.0, (cov - 1.5) * 0.5)) - max(0.0, (ltv - 0.40) * 3.0)
+        solvency_type = f"REIT Coverage & LTV (Cov: {cov:.1f}x, LTV: {ltv*100:.0f}%)"
+    elif is_utility:
+        ebitda0 = safe_get(fin, 'EBITDA', col0, ebit0 * 1.4)
+        cov = ebitda0 / max(1.0, int_exp0)
+        z_score = 2.4 + min(4.5, max(0.0, (cov - 1.5) * 0.6))
+        solvency_type = f"Regulated Interest Coverage ({cov:.1f}x)"
+    else:
+        if ta0 > 0 and tl0 > 0:
+            x1 = max(-1.0, min(1.0, wc0 / ta0))
+            x2 = max(-1.0, min(1.0, re0 / ta0))
+            x3 = max(-0.5, min(0.6, ebit0 / ta0))
+            x4 = max(0.05, min(10.0, equity0 / tl0))
+            z_score = 6.56 * x1 + 3.26 * x2 + 6.72 * x3 + 1.05 * x4
+        else:
+            z_score = 3.20
+        solvency_type = "Altman Z''-Score (Universal Model)"
+
+    # 2. Beneish M-Score Components
+    rec0 = safe_get(bs, 'Receivables', col0_bs, safe_get(bs, 'Accounts Receivable', col0_bs))
+    rec1 = safe_get(bs, 'Receivables', col1_bs, safe_get(bs, 'Accounts Receivable', col1_bs))
+    dsri = (rec0 / max(1.0, rev0)) / max(0.001, (rec1 / max(1.0, rev1))) if rev0 > 0 and rev1 > 0 and rec1 > 0 else 1.0
+    dsri = max(0.5, min(2.5, dsri))
+
+    gp0 = safe_get(fin, 'Gross Profit', col0, rev0 * 0.4)
+    gp1 = safe_get(fin, 'Gross Profit', col1, rev1 * 0.4)
+    gm0 = gp0 / max(1.0, rev0)
+    gm1 = gp1 / max(1.0, rev1)
+    gmi = gm1 / max(0.01, gm0) if gm0 > 0 else 1.0
+    gmi = max(0.5, min(2.5, gmi))
+
+    sgi = rev0 / max(1.0, rev1) if rev1 > 0 else 1.0
+    sgi = max(0.5, min(3.0, sgi))
+
+    ppe0 = safe_get(bs, 'Net PPE', col0_bs)
+    ppe1 = safe_get(bs, 'Net PPE', col1_bs)
+    aq0 = 1.0 - ((ca0 + ppe0) / max(1.0, ta0)) if ta0 > 0 else 0.1
+    aq1 = 1.0 - ((ca1 + ppe1) / max(1.0, ta1)) if ta1 > 0 else 0.1
+    aqi = aq0 / max(0.01, aq1) if aq1 > 0 else 1.0
+    aqi = max(0.5, min(2.5, aqi))
+
+    dep0 = safe_get(fin, 'Reconciled Depreciation', col0)
+    dep1 = safe_get(fin, 'Reconciled Depreciation', col1)
+    dep_rate0 = dep0 / max(1.0, ppe0 + dep0) if (ppe0 + dep0) > 0 else 0.05
+    dep_rate1 = dep1 / max(1.0, ppe1 + dep1) if (ppe1 + dep1) > 0 else 0.05
+    depi = dep_rate1 / max(0.005, dep_rate0) if dep_rate0 > 0 else 1.0
+    depi = max(0.5, min(2.5, depi))
+
+    tata = (net_inc0 - cfo0) / max(1.0, ta0) if ta0 > 0 else 0.0
+    tata = max(-0.3, min(0.3, tata))
+
+    m_score = -6.065 + 0.823 * dsri + 0.906 * gmi + 0.593 * aqi + 0.717 * sgi + 0.107 * depi + 4.037 * tata
+    m_score = max(-4.5, min(1.0, m_score))
+
+    # Rigorous institutional red flag criteria:
+    # 1. Severe credit distress: z_score < 1.10
+    # 2. Aggressive earnings manipulation: M-score > -1.78 AND positive cash-unbacked accruals (tata > 0.05)
+    is_flagged = (m_score > -1.78 and tata > 0.05) or z_score < 1.10
+
+    return round(float(z_score), 2), round(float(m_score), 2), round(float(tata), 3), is_flagged, solvency_type
+
 # ==============================================================================
 # SPECIALIZED VALUATION MODULES
 # ==============================================================================
 
 def evaluate_financials(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info):
     """
-    Financials Valuation Engine: Banks, Insurers, Exchanges, Asset Managers.
-    Uses Residual Income Model (RIM) & Justified P/TBV based on ROE vs Ke.
-    No WACC / No FCFF (debt is operating liability).
+    Financials Valuation Engine: Banks, Insurers, Asset Managers, Brokers.
+    Uses Residual Income Model (RIM) & Justified P/TBV with real Goodwill deduction.
     """
     model_type = "Residual Income (RIM) & Justified P/TBV"
-    
-    # Cost of Equity (Ke)
     ke = RF_RATE + beta * ERP
-    
-    # Financial Statement extraction
+
     net_income = info.get("netIncomeToCommon") or 0.0
     book_equity = (info.get("bookValue") or 1.0) * shares
-    
-    try:
-        if fin is not None and not fin.empty:
-            cols = list(fin.columns)
-            latest = cols[0]
-            if "Net Income" in fin.index:
-                net_income = float(fin.loc["Net Income", latest])
-        if bs is not None and not bs.empty:
-            cols = list(bs.columns)
-            latest = cols[0]
-            if "Common Stock Equity" in bs.index:
-                book_equity = float(bs.loc["Common Stock Equity", latest])
-            elif "Stockholders Equity" in bs.index:
-                book_equity = float(bs.loc["Stockholders Equity", latest])
-    except Exception:
-        pass
+    tbv = 0.0
+
+    if bs is not None and not bs.empty:
+        col = bs.columns[0]
+        if "Tangible Book Value" in bs.index:
+            tbv = safe_get(bs, "Tangible Book Value", col)
+        if "Common Stock Equity" in bs.index:
+            book_equity = safe_get(bs, "Common Stock Equity", col, book_equity)
+        elif "Stockholders Equity" in bs.index:
+            book_equity = safe_get(bs, "Stockholders Equity", col, book_equity)
+
+        if tbv <= 0:
+            gw = safe_get(bs, "Goodwill", col)
+            intang = safe_get(bs, "Other Intangible Assets", col)
+            tbv = book_equity - gw - intang
+
+    if fin is not None and not fin.empty and "Net Income" in fin.index:
+        net_income = safe_get(fin, "Net Income", fin.columns[0], net_income)
 
     if book_equity <= 0:
         book_equity = max(1e8, mcap * 0.5)
+    if tbv <= 0:
+        tbv = book_equity * 0.75
     if net_income <= 0:
         net_income = max(1e7, book_equity * 0.10)
 
-    tbv_per_share = (book_equity * 0.85) / shares if shares > 0 else (price * 0.6) # Approx tangible book
+    tbv_per_share = tbv / shares if shares > 0 else (price * 0.6)
     roe = max(0.04, min(0.35, net_income / max(1e7, book_equity)))
-    
-    # Economic spread
     spread = roe - ke
-    
+
     # Justified P/TBV
-    justified_pb = max(0.60, min(3.50, (roe - LONG_TERM_G) / max(0.015, (ke - LONG_TERM_G))))
+    justified_pb = max(0.50, min(3.50, (roe - LONG_TERM_G) / max(0.015, (ke - LONG_TERM_G))))
     target_price = tbv_per_share * justified_pb
 
     # Moat classification
-    if roe > 0.16 and spread > 0.05:
+    if roe > 0.15 and spread > 0.04:
         moat = "Wide"
-    elif roe > 0.11 and spread > 0.01:
+    elif roe > 0.10 and spread > 0.0:
         moat = "Narrow"
     else:
         moat = "None"
 
-    # Forensic check
-    z_score = 3.50 # Banks have different liquidity structures
-    m_score_val = -2.75
-    
     # Dynamic MoS
     base_mos = 0.15 if moat == "Wide" else (0.20 if moat == "Narrow" else 0.25)
     mos = base_mos + (0.03 if beta > 1.2 else 0.0)
@@ -139,11 +299,9 @@ def evaluate_financials(ticker, name, sector, industry, price, shares, mcap, bet
     return {
         "model_type": model_type,
         "nopat_b": net_income / 1e9,
-        "roic_pct": roe * 100, # Displayed as ROE
-        "wacc_pct": ke * 100,  # Displayed as Ke
+        "roic_pct": roe * 100,  # Displayed as ROE
+        "wacc_pct": ke * 100,   # Displayed as Ke
         "moat": moat,
-        "z_score": z_score,
-        "m_score": m_score_val,
         "fair_value_base": target_price,
         "target_price": target_price,
         "mos_pct": mos * 100,
@@ -152,9 +310,8 @@ def evaluate_financials(ticker, name, sector, industry, price, shares, mcap, bet
 
 def evaluate_reits(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info):
     """
-    REITs Valuation Engine: Data Centers, Cell Towers, Industrial/Logistics.
-    Uses Adjusted Funds From Operations (AFFO) & Net Asset Value (NAV) Cap-Rate model.
-    Eliminates GAAP D&A distortion.
+    REITs Valuation Engine: Property-Specific Cap Rate NAV & AFFO Multiple.
+    Differentiates Towers, Data Centers, Industrial, Healthcare, Retail, and Office.
     """
     model_type = "AFFO Yield & NAV Cap-Rate"
 
@@ -162,60 +319,122 @@ def evaluate_reits(ticker, name, sector, industry, price, shares, mcap, beta, fi
     kd_aftertax = (RF_RATE + 0.0150) * 0.95
     wacc = 0.65 * ke + 0.35 * kd_aftertax
 
+    # Granular Property-Specific Cap Rate Lookup
+    ind_lower = industry.lower()
+    name_lower = name.lower()
+    if "tower" in ind_lower or "tower" in name_lower or ticker in ["AMT", "CCI", "SBAC"]:
+        cap_rate = 0.0400  # Cell Towers (Secular 5G demand, low capex)
+    elif "data" in ind_lower or "data" in name_lower or ticker in ["EQIX", "DLR"]:
+        cap_rate = 0.0500  # Data Centers (AI compute boom)
+    elif "industrial" in ind_lower or "logistics" in ind_lower or ticker in ["PLD", "PSA", "REXR"]:
+        cap_rate = 0.0525  # Industrial / Logistics
+    elif "residential" in ind_lower or "apartment" in ind_lower or ticker in ["EQR", "AVB", "MAA", "INVH"]:
+        cap_rate = 0.0575  # Residential Multi-family
+    elif "healthcare" in ind_lower or ticker in ["WELL", "VTR"]:
+        cap_rate = 0.0650  # Healthcare facilities
+    elif "retail" in ind_lower or "shopping" in ind_lower or ticker in ["SPG", "O", "NNN", "REG"]:
+        cap_rate = 0.0675  # Retail / Triple Net Lease
+    elif "office" in ind_lower or ticker in ["BXP", "VNO", "SLG", "KRC"]:
+        cap_rate = 0.0825  # Office (Work-from-home headwind)
+    else:
+        cap_rate = 0.0625  # Diversified Baseline
+
     net_income = info.get("netIncomeToCommon") or (mcap * 0.04)
     total_debt = info.get("totalDebt") or (mcap * 0.4)
     cash = info.get("totalCash") or 0.0
     ebit = info.get("operatingIncome") or (mcap * 0.07)
-    cfo = info.get("operatingCashflow") or (mcap * 0.06)
-    
-    da = max(1e6, ebit * 0.50) # Real estate depreciation
-    try:
-        if fin is not None and not fin.empty:
-            cols = list(fin.columns)
-            latest = cols[0]
-            if "Reconciled Depreciation" in fin.index:
-                da = float(fin.loc["Reconciled Depreciation", latest])
-            elif "Operating Income" in fin.index:
-                ebit = float(fin.loc["Operating Income", latest])
-        if cf is not None and not cf.empty:
-            cols = list(cf.columns)
-            latest = cols[0]
-            if "Operating Cash Flow" in cf.index:
-                cfo = float(cf.loc["Operating Cash Flow", latest])
-    except Exception:
-        pass
+    da = max(1e6, ebit * 0.50)
 
-    # FFO and AFFO calculation
+    if fin is not None and not fin.empty:
+        col = fin.columns[0]
+        if "Reconciled Depreciation" in fin.index:
+            da = safe_get(fin, "Reconciled Depreciation", col, da)
+        if "Operating Income" in fin.index:
+            ebit = safe_get(fin, "Operating Income", col, ebit)
+        if "Net Income" in fin.index:
+            net_income = safe_get(fin, "Net Income", col, net_income)
+
+    # FFO & AFFO
     ffo = net_income + da
     maint_capex = da * 0.15
     affo = max(1e6, ffo - maint_capex)
     affo_per_share = affo / shares if shares > 0 else (price * 0.05)
 
-    # NOI and NAV
+    # NOI & NAV
     noi = max(1e6, ebit + da)
-    gross_asset_val = noi / REIT_CAP_RATE
+    gross_asset_val = noi / cap_rate
     nav = max(1e6, gross_asset_val - total_debt + cash)
     nav_per_share = nav / shares if shares > 0 else price
 
-    # Synthesize AFFO multiple + NAV
+    # Synthesize AFFO Multiple & NAV
     affo_multiple_target = max(12.0, min(24.0, 1.0 / max(0.04, (wacc - LONG_TERM_G))))
     affo_val = affo_per_share * affo_multiple_target
-    target_price = (0.50 * affo_val) + (0.50 * nav_per_share)
+    target_price = 0.50 * affo_val + 0.50 * nav_per_share
 
-    moat = "Wide" if ("Specialty" in industry or "Tower" in industry or "Data" in industry) else "Narrow"
+    moat = "Wide" if cap_rate <= 0.0500 else ("Narrow" if cap_rate <= 0.0675 else "None")
     mos = 0.16 if moat == "Wide" else 0.22
     entry_price = target_price * (1 - mos)
-
     affo_yield = (affo / mcap) * 100 if mcap > 0 else 5.0
 
     return {
         "model_type": model_type,
         "nopat_b": affo / 1e9,
-        "roic_pct": affo_yield, # Displayed as AFFO Yield
+        "roic_pct": affo_yield,  # Displayed as AFFO Yield
         "wacc_pct": wacc * 100,
         "moat": moat,
-        "z_score": 4.10,
-        "m_score": -2.60,
+        "fair_value_base": target_price,
+        "target_price": target_price,
+        "mos_pct": mos * 100,
+        "entry_price": entry_price
+    }
+
+def evaluate_utilities(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info):
+    """
+    Utilities Valuation Engine: Regulated Asset Base (RAB) & Dividend Discount Model (DDM).
+    Captures essential grid monopolies, AI data center load growth, and authorized ROE.
+    """
+    model_type = "Utilities RAB & Dividend Discount Model"
+    ke = RF_RATE + beta * ERP
+
+    div_rate = info.get("dividendRate") or 0.0
+    book_equity = (info.get("bookValue") or 1.0) * shares
+    net_income = info.get("netIncomeToCommon") or (mcap * 0.05)
+
+    if bs is not None and not bs.empty:
+        col = bs.columns[0]
+        book_equity = safe_get(bs, "Common Stock Equity", col, safe_get(bs, "Stockholders Equity", col, book_equity))
+    if fin is not None and not fin.empty:
+        col = fin.columns[0]
+        net_income = safe_get(fin, "Net Income", col, net_income)
+
+    bv_per_share = book_equity / shares if shares > 0 else price * 0.6
+    allowed_roe = 0.0965  # Standard state PUC benchmark allowed ROE (9.65%)
+    payout_ratio = max(0.55, min(0.85, info.get("payoutRatio") or 0.68))
+    retention_ratio = 1.0 - payout_ratio
+    sustainable_g = max(0.025, min(0.048, retention_ratio * allowed_roe + 0.015))  # Rate base growth
+
+    if div_rate <= 0:
+        div_rate = (net_income * payout_ratio) / max(1.0, shares)
+
+    d1 = div_rate * (1 + sustainable_g)
+    p_ddm = d1 / max(0.015, (ke - sustainable_g))
+
+    justified_pb = max(0.90, min(2.20, (allowed_roe - sustainable_g) / max(0.015, (ke - sustainable_g))))
+    p_rab = bv_per_share * justified_pb
+
+    target_price = 0.55 * p_ddm + 0.45 * p_rab
+    moat = "Wide" if ("Electric" in industry or "Nuclear" in name or ticker in ["NEE", "SO", "CEG"]) else "Narrow"
+    mos = 0.14 if moat == "Wide" else 0.18
+    entry_price = target_price * (1 - mos)
+
+    div_yield = (div_rate / price) * 100 if price > 0 else 3.5
+
+    return {
+        "model_type": model_type,
+        "nopat_b": net_income / 1e9,
+        "roic_pct": div_yield,  # Displayed as Dividend Yield %
+        "wacc_pct": ke * 100,
+        "moat": moat,
         "fair_value_base": target_price,
         "target_price": target_price,
         "mos_pct": mos * 100,
@@ -224,8 +443,8 @@ def evaluate_reits(ticker, name, sector, industry, price, shares, mcap, beta, fi
 
 def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info):
     """
-    Cyclicals Valuation Engine: Semiconductors, Hardware, Autos, Energy E&P, Steel/Chemicals.
-    Mid-Cycle Normalization to eliminate the Peak/Trough Trap.
+    Cyclicals Valuation Engine: Mid-Cycle Normalization with Company-Specific Multi-Year Margins.
+    Eliminates Peak/Trough earnings distortion for Semiconductors, Autos, Energy, and Capital Goods.
     """
     model_type = "Mid-Cycle Normalized DCF"
 
@@ -235,45 +454,92 @@ def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta
     book_equity = (info.get("bookValue") or 1.0) * shares
     fcf = info.get("freeCashflow") or (revenue * 0.08)
 
-    # 10-year historical mid-cycle margin benchmark
-    if "Semiconductor" in industry or "Hardware" in industry:
-        mid_cycle_ebit_margin = 0.22
+    # Multi-Year Median EBIT Margin Extraction (up to 4 years)
+    hist_margins = []
+    hist_revs = []
+    if fin is not None and not fin.empty and "Total Revenue" in fin.index:
+        col0 = fin.columns[0]
+        revenue = safe_get(fin, "Total Revenue", col0, revenue)
+        for col in fin.columns[:4]:
+            r_val = safe_get(fin, "Total Revenue", col)
+            e_val = safe_get(fin, "Operating Income", col, safe_get(fin, "EBIT", col))
+            if r_val > 0:
+                hist_margins.append(e_val / r_val)
+                hist_revs.append(r_val)
+
+    if cf is not None and not cf.empty and "Free Cash Flow" in cf.index:
+        fcf = safe_get(cf, "Free Cash Flow", cf.columns[0], fcf)
+
+    # Industry Benchmarks
+    if "Semiconductor" in industry:
+        bench_margin = 0.28
+    elif "Hardware" in industry:
+        bench_margin = 0.14
     elif "Auto" in industry:
-        mid_cycle_ebit_margin = 0.08
+        bench_margin = 0.08
     elif "Oil" in industry or "Energy" in industry:
-        mid_cycle_ebit_margin = 0.18
+        bench_margin = 0.20
     else:
-        mid_cycle_ebit_margin = 0.14
+        bench_margin = 0.14
+
+    # Company-Specific Multi-Year Median Blend
+    if len(hist_margins) >= 2:
+        med_m = float(np.median(hist_margins))
+        mid_cycle_ebit_margin = 0.65 * max(0.04, min(0.65, med_m)) + 0.35 * bench_margin
+    else:
+        mid_cycle_ebit_margin = bench_margin
 
     normalized_ebit = revenue * mid_cycle_ebit_margin
     normalized_nopat = normalized_ebit * (1 - DEFAULT_TAX_RATE)
     invested_capital = max(1e7, book_equity + total_debt - cash)
-    normalized_roic = max(0.05, min(0.60, normalized_nopat / invested_capital))
+    normalized_roic = normalized_nopat / invested_capital  # Uncapped for reporting
+
+    # 3Y CAGR for Secular vs Commodity Cyclical distinction
+    if len(hist_revs) >= 3:
+        cagr_3y = (hist_revs[0] / hist_revs[min(3, len(hist_revs)-1)]) ** (1.0 / min(3, len(hist_revs)-1)) - 1.0
+    else:
+        cagr_3y = 0.04
 
     # WACC
-    ke = RF_RATE + max(1.10, beta) * ERP
+    ke = RF_RATE + max(1.05, beta) * ERP
     kd_aftertax = (RF_RATE + 0.0180) * (1 - DEFAULT_TAX_RATE)
-    total_val = mcap + total_debt
-    we = mcap / total_val if total_val > 0 else 0.85
-    wd = total_debt / total_val if total_val > 0 else 0.15
+    tot_val = mcap + total_debt
+    we = mcap / tot_val if tot_val > 0 else 0.85
+    wd = total_debt / tot_val if tot_val > 0 else 0.15
     wacc = max(0.085, min(0.125, we * ke + wd * kd_aftertax))
 
-    # Normalized DCF
-    normalized_fcf = max(1e6, normalized_nopat * 0.65)
+    # Real FCF conversion ratio
+    fcf_conv = min(0.95, max(0.40, fcf / max(1.0, normalized_nopat)))
+    normalized_fcf = max(1e6, normalized_nopat * fcf_conv)
+
+    # Sustainable Growth Rate (blends cycle secular trend)
+    cycle_g = max(0.03, min(0.16, 0.40 * max(0.02, cagr_3y) + 0.60 * 0.04))
+
     pv_fcff = 0.0
     fcf_t = normalized_fcf
     for yr in range(1, 11):
-        fcf_t = fcf_t * (1 + 0.04) # Moderate sustainable cycle growth
+        g_yr = cycle_g * (1 - yr / 15.0) + LONG_TERM_G * (yr / 15.0)
+        fcf_t = fcf_t * (1 + g_yr)
         pv_fcff += fcf_t / ((1 + wacc) ** yr)
 
-    tv = (fcf_t * (1 + LONG_TERM_G)) / (wacc - LONG_TERM_G)
-    pv_tv = tv / ((1 + wacc) ** 10)
-    ev = pv_fcff + pv_tv
-    net_debt = total_debt - cash
-    target_price = max(1e6, ev - net_debt) / shares if shares > 0 else price
+    # Dual Terminal Value (Gordon Growth 50% + Moat Exit Multiple 50%)
+    tv_gordon = (fcf_t * (1 + LONG_TERM_G)) / (wacc - LONG_TERM_G)
+    pv_tv_gordon = tv_gordon / ((1 + wacc) ** 10)
 
-    moat = "Narrow" if normalized_roic > 0.14 else "None"
-    mos = 0.25 # Cyclicals require a wider margin of safety
+    moat = "Wide" if normalized_roic > 0.20 else ("Narrow" if normalized_roic > 0.12 else "None")
+    mult = 22.0 if moat == "Wide" else (16.0 if moat == "Narrow" else 12.0)
+    tv_mult = fcf_t * mult
+    pv_tv_mult = tv_mult / ((1 + wacc) ** 10)
+
+    pv_tv = 0.50 * pv_tv_gordon + 0.50 * pv_tv_mult
+    ev = pv_fcff + pv_tv
+
+    # Adjust for captive finance arms in equipment/auto manufacturers (CAT, DE, GM, TM)
+    is_captive_fin = any(w in industry.lower() for w in ["machinery", "auto", "construction"]) and (total_debt > 1.5 * book_equity)
+    effective_net_debt = (total_debt - cash) * 0.50 if is_captive_fin else (total_debt - cash)
+
+    target_price = max(1e6, ev - effective_net_debt) / shares if shares > 0 else price
+    mos = 0.22 if moat == "Wide" else 0.26
     entry_price = target_price * (1 - mos)
 
     return {
@@ -282,8 +548,6 @@ def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta
         "roic_pct": normalized_roic * 100,
         "wacc_pct": wacc * 100,
         "moat": moat,
-        "z_score": 3.20,
-        "m_score": -2.40,
         "fair_value_base": target_price,
         "target_price": target_price,
         "mos_pct": mos * 100,
@@ -293,10 +557,9 @@ def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta
 def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info):
     """
     Standard Corporate Valuation Engine: Software, Tech, Consumer, Healthcare, Industrials.
-    Normalized FCFF DCF with Capitalized R&D + EVA + ROIIC Reinvestment.
+    Normalized FCFF DCF with Capitalized R&D + EVA + Multi-Year CAGR & Fade Reinvestment.
+    Includes High-Growth EV/Revenue Multiple fallback for pre-profit / early-stage innovators.
     """
-    model_type = "Corporate FCFF DCF & EVA"
-
     revenue = info.get("totalRevenue") or 1e9
     ebit = info.get("operatingIncome") or (revenue * 0.20)
     total_debt = info.get("totalDebt") or 0.0
@@ -307,75 +570,107 @@ def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta
     capex = revenue * 0.05
     rnd = 0.0
 
-    try:
-        if fin is not None and not fin.empty:
-            cols = list(fin.columns)
-            latest = cols[0]
-            if "Total Revenue" in fin.index:
-                revenue = float(fin.loc["Total Revenue", latest])
-            if "Operating Income" in fin.index:
-                ebit = float(fin.loc["Operating Income", latest])
-            elif "EBIT" in fin.index:
-                ebit = float(fin.loc["EBIT", latest])
-            if "Research And Development" in fin.index:
-                rnd = float(fin.loc["Research And Development", latest])
-        if cf is not None and not cf.empty:
-            cols = list(cf.columns)
-            latest = cols[0]
-            if "Free Cash Flow" in cf.index:
-                fcf = float(cf.loc["Free Cash Flow", latest])
-            if "Capital Expenditure" in cf.index:
-                capex = abs(float(cf.loc["Capital Expenditure", latest]))
-    except Exception:
-        pass
+    # Multi-year statement extraction
+    hist_revs = []
+    if fin is not None and not fin.empty:
+        col0 = fin.columns[0]
+        revenue = safe_get(fin, "Total Revenue", col0, revenue)
+        ebit = safe_get(fin, "Operating Income", col0, safe_get(fin, "EBIT", col0, ebit))
+        rnd = safe_get(fin, "Research And Development", col0, 0.0)
+        for col in fin.columns:
+            rv = safe_get(fin, "Total Revenue", col)
+            if rv > 0:
+                hist_revs.append(rv)
 
-    # R&D Capitalization
+    if cf is not None and not cf.empty:
+        col0 = cf.columns[0]
+        fcf = safe_get(cf, "Free Cash Flow", col0, fcf)
+        capex = abs(safe_get(cf, "Capital Expenditure", col0, capex))
+
+    # 3Y Revenue CAGR
+    if len(hist_revs) >= 3:
+        rev_cagr_3y = (hist_revs[0] / hist_revs[min(3, len(hist_revs)-1)]) ** (1.0 / min(3, len(hist_revs)-1)) - 1.0
+        rev_cagr_3y = max(-0.10, min(0.35, rev_cagr_3y))
+    else:
+        rev_cagr_3y = 0.06
+
+    # 1. Pre-Profit / Negative FCF Model Fallback
+    if fcf <= 0 or ebit <= 0:
+        model_type = "High-Growth EV/Revenue Multiple Model"
+        gp = safe_get(fin, "Gross Profit", fin.columns[0], revenue * 0.45) if fin is not None and not fin.empty else revenue * 0.45
+        gm = max(0.15, min(0.85, gp / max(1.0, revenue)))
+        ev_sales_target = max(1.2, min(10.0, 1.5 + 4.0 * gm + 8.0 * max(0.0, rev_cagr_3y)))
+        target_ev = revenue * ev_sales_target
+        net_debt = total_debt - cash
+        target_price = max(price * 0.20, (target_ev - net_debt) / shares) if shares > 0 else price
+        wacc = RF_RATE + beta * ERP
+        moat = "Narrow" if (gm > 0.50 and rev_cagr_3y > 0.15) else "None"
+        mos = 0.28
+        entry_price = target_price * (1 - mos)
+        return {
+            "model_type": model_type,
+            "nopat_b": ebit * (1 - DEFAULT_TAX_RATE) / 1e9,
+            "roic_pct": gm * 100,  # Displayed as Gross Margin %
+            "wacc_pct": wacc * 100,
+            "moat": moat,
+            "fair_value_base": target_price,
+            "target_price": target_price,
+            "mos_pct": mos * 100,
+            "entry_price": entry_price
+        }
+
+    # 2. Standard Corporate FCFF DCF & EVA
+    model_type = "Corporate FCFF DCF & EVA"
     adjusted_ebit = ebit + (rnd * 0.25)
     nopat = adjusted_ebit * (1 - DEFAULT_TAX_RATE)
     invested_capital = max(1e7, book_equity + total_debt - cash + (rnd * 2.0))
-    roic = max(0.02, min(1.20, nopat / invested_capital))
+    raw_roic = max(0.02, nopat / invested_capital)  # Uncapped true ROIC
 
     # WACC
     ke = RF_RATE + beta * ERP
     kd_pretax = RF_RATE + 0.0100
     kd_aftertax = kd_pretax * (1 - DEFAULT_TAX_RATE)
-    total_val = mcap + total_debt
-    we = mcap / total_val if total_val > 0 else 0.90
-    wd = total_debt / total_val if total_val > 0 else 0.10
-    wacc = max(0.075, min(0.120, we * ke + wd * kd_aftertax))
+    tot_val = mcap + total_debt
+    we = mcap / tot_val if tot_val > 0 else 0.90
+    wd = total_debt / tot_val if tot_val > 0 else 0.10
+    wacc = max(0.075, min(0.125, we * ke + wd * kd_aftertax))
 
-    # Moat
-    if roic > 0.20 and (ebit / revenue) > 0.20:
+    # Moat classification
+    if raw_roic > 0.18 and (ebit / revenue) > 0.18:
         moat = "Wide"
-    elif roic > 0.11 and (ebit / revenue) > 0.11:
+    elif raw_roic > 0.10 and (ebit / revenue) > 0.10:
         moat = "Narrow"
     else:
         moat = "None"
 
-    # DCF
-    reinvestment_rate = min(0.80, max(0.15, (capex + (revenue * 0.02)) / max(1e6, nopat)))
-    roiic = max(0.05, min(0.50, roic * 0.90))
-    fundamental_g = min(0.16, max(0.03, roiic * reinvestment_rate))
+    # Growth & Fade Projections
+    reinvestment_rate = min(0.75, max(0.15, (capex + (revenue * 0.02)) / max(1e6, nopat)))
+    sustainable_roic = min(0.45, max(0.06, raw_roic * 0.85))
+    fundamental_g = min(0.18, max(0.02, sustainable_roic * reinvestment_rate))
+    blended_g = 0.40 * max(0.02, rev_cagr_3y) + 0.60 * fundamental_g
+    blended_g = max(LONG_TERM_G, min(0.18, blended_g))
 
     current_fcf = max(1e6, fcf)
     pv_fcff = 0.0
     fcf_t = current_fcf
 
     for yr in range(1, 11):
-        growth_yr = fundamental_g * (1 - (yr / 16.0))
-        fcf_t = fcf_t * (1 + max(LONG_TERM_G, growth_yr))
+        g_yr = blended_g * (1 - (yr / 15.0)) + LONG_TERM_G * (yr / 15.0)
+        fcf_t = fcf_t * (1 + g_yr)
         pv_fcff += fcf_t / ((1 + wacc) ** yr)
 
-    tv = (fcf_t * (1 + LONG_TERM_G)) / (wacc - LONG_TERM_G)
-    pv_tv = tv / ((1 + wacc) ** 10)
+    # Dual Terminal Value (Gordon Growth 50% + Moat Exit Multiple 50%)
+    tv_gordon = (fcf_t * (1 + LONG_TERM_G)) / (wacc - LONG_TERM_G)
+    pv_tv_gordon = tv_gordon / ((1 + wacc) ** 10)
+
+    mult = 22.0 if moat == "Wide" else (16.0 if moat == "Narrow" else 12.0)
+    tv_mult = fcf_t * mult
+    pv_tv_mult = tv_mult / ((1 + wacc) ** 10)
+
+    pv_tv = 0.50 * pv_tv_gordon + 0.50 * pv_tv_mult
     ev = pv_fcff + pv_tv
     net_debt = total_debt - cash
     target_price = max(1e6, ev - net_debt) / shares if shares > 0 else price
-
-    # Forensic scores
-    accruals = ((info.get("netIncomeToCommon") or nopat) - cfo) / max(1e7, mcap * 0.4)
-    m_score_val = -2.55 + (2.5 * accruals if accruals > 0 else 0.0)
-    z_score = 5.20
 
     # Margin of Safety
     base_mos = 0.15 if moat == "Wide" else (0.20 if moat == "Narrow" else 0.25)
@@ -385,11 +680,9 @@ def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta
     return {
         "model_type": model_type,
         "nopat_b": nopat / 1e9,
-        "roic_pct": roic * 100,
+        "roic_pct": raw_roic * 100,
         "wacc_pct": wacc * 100,
         "moat": moat,
-        "z_score": z_score,
-        "m_score": m_score_val,
         "fair_value_base": target_price,
         "target_price": target_price,
         "mos_pct": mos * 100,
@@ -427,7 +720,8 @@ def analyze_company_with_proper_model(ticker):
             "entry_price": 378.70,
             "upside_pct": -7.1,
             "verdict": "HOLD / ACCUMULATE ON PULLBACK",
-            "action": "HOLD"
+            "action": "HOLD",
+            "solvency_type": "Altman Z''-Score (Universal Model)"
         }
     elif ticker == "INTU":
         return {
@@ -454,7 +748,8 @@ def analyze_company_with_proper_model(ticker):
             "entry_price": 483.73,
             "upside_pct": 83.6,
             "verdict": "STRONG BUY",
-            "action": "BUY"
+            "action": "BUY",
+            "solvency_type": "Altman Z''-Score (Universal Model)"
         }
 
     try:
@@ -481,36 +776,54 @@ def analyze_company_with_proper_model(ticker):
         # CLASSIFICATION LOGIC
         is_financial = sector in ["Financial Services", "Financials"] or "Bank" in industry or "Insurance" in industry
         is_reit = sector in ["Real Estate"] or "REIT" in industry
+        is_utility = sector in ["Utilities"]
         is_cyclical = (
             "Semiconductor" in industry or
             "Hardware" in industry or
             "Auto" in industry or
-            "Oil & Gas E&P" in industry or
+            "Oil & Gas" in industry or
             "Chemical" in industry or
             "Steel" in industry or
-            "Mining" in industry
+            "Mining" in industry or
+            "Metals" in industry
+        ) and not is_financial and not is_reit and not is_utility
+
+        # Run Real Forensics
+        z_score, m_score, tata, is_flagged, solvency_type = compute_forensics(
+            fin, bs, cf, info, shares, price, mcap, sector, industry
         )
 
+        # Dispatch to specialized valuation engine
         if is_financial:
             eval_res = evaluate_financials(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info)
         elif is_reit:
             eval_res = evaluate_reits(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info)
+        elif is_utility:
+            eval_res = evaluate_utilities(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info)
         elif is_cyclical:
             eval_res = evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info)
         else:
             eval_res = evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta, fin, bs, cf, info)
 
-        target_price = eval_res["target_price"]
-        # Sanity bound: prevent extreme data artifacts
-        target_price = max(price * 0.35, min(price * 2.80, target_price))
-        entry_price = target_price * (1 - (eval_res["mos_pct"] / 100.0))
+        raw_target_price = eval_res["target_price"]
+
+        # Adaptive Sanity Bounds (Beta & Conviction scaled)
+        vol_mult = max(1.8, min(3.8, 1.2 + beta * 1.3))
+        if eval_res["moat"] == "Wide":
+            vol_mult = max(vol_mult, 3.2)
+        min_bound = max(price * 0.15, price / vol_mult)
+        max_bound = min(price * 4.50, price * vol_mult)
+        target_price = max(min_bound, min(max_bound, raw_target_price))
+
+        mos_pct = eval_res["mos_pct"]
+        entry_price = target_price * (1 - (mos_pct / 100.0))
         upside_pct = ((target_price - price) / price) * 100.0 if price > 0 else 0.0
 
-        # Committee Verdict
-        if eval_res["m_score"] > -1.78 or eval_res["z_score"] < 1.80:
+        # Committee Verdict Logic
+        if is_flagged:
             verdict = "AVOID / FORENSIC RED FLAG"
             action = "AVOID"
-        elif eval_res["roic_pct"] < eval_res["wacc_pct"] and not is_reit:
+        elif eval_res["roic_pct"] < eval_res["wacc_pct"] and not is_reit and not is_utility:
             verdict = "UNDERPERFORM / CAPITAL EROSION"
             action = "REDUCE"
         elif price <= entry_price:
@@ -542,11 +855,13 @@ def analyze_company_with_proper_model(ticker):
             "roic_pct": eval_res["roic_pct"],
             "wacc_pct": eval_res["wacc_pct"],
             "moat": eval_res["moat"],
-            "z_score": eval_res["z_score"],
-            "m_score": eval_res["m_score"],
+            "z_score": z_score,
+            "m_score": m_score,
+            "tata": tata,
+            "solvency_type": solvency_type,
             "target_price": target_price,
             "fair_value_base": target_price,
-            "mos_pct": eval_res["mos_pct"],
+            "mos_pct": mos_pct,
             "entry_price": entry_price,
             "upside_pct": upside_pct,
             "verdict": verdict,
@@ -556,7 +871,6 @@ def analyze_company_with_proper_model(ticker):
         return None
 
 def save_memo(data):
-    # Never overwrite MSFT or INTU authoritative custom memos
     if data["ticker"] in ["MSFT", "INTU"]:
         return
 
@@ -568,8 +882,12 @@ def save_memo(data):
         metric_name = "ROE"
     elif "AFFO" in data["model_type"]:
         metric_name = "AFFO Yield"
+    elif "Utilities" in data["model_type"]:
+        metric_name = "Dividend Yield"
+    elif "High-Growth" in data["model_type"]:
+        metric_name = "Gross Margin"
 
-    cost_name = "Ke" if "Residual Income" in data["model_type"] else "WACC"
+    cost_name = "Ke" if ("Residual Income" in data["model_type"] or "Utilities" in data["model_type"]) else "WACC"
 
     content = f"""# ИНСТИТУЦИОНАЛЕН АНАЛИЗ НА ПУБЛИЧНА КОМПАНИЯ
 **Обект на изследване:** {data['name']} ({ticker})  
@@ -578,7 +896,7 @@ def save_memo(data):
 **Дата на анализ:** {datetime.now().strftime('%d %B %Y')} г.  
 **Пазарна цена ($P_0$):** ${data['price']:.2f} USD  
 **Пазарна капитализация:** ${data['mcap_b']:.2f} млрд. USD  
-**Аналитичен консорциум:** Agents 1–5 (Институционална методология)  
+**Аналитичен консорциум:** Agents 1–5 (Институционална методология v3.0)  
 
 ---
 
@@ -587,30 +905,32 @@ def save_memo(data):
 | Параметър | Стойност | Референтен праг / Институционален коментар |
 | :--- | :---: | :--- |
 | **Борсов тикер** | {ticker} | S&P 500 / Watchlist компонент |
-| **Използван метод на оценка** | **{data['model_type']}** | Секторно диференциран модел |
+| **Използван метод на оценка** | **{data['model_type']}** | Секторно диференциран institutional модел |
 | **Текуща пазарна цена ($P_0$)** | **${data['price']:.2f}** | Отклонение: {data['upside_pct']:+.1f}% спрямо справедливата |
-| **Справедлива стойност (Target Price)** | **${data['target_price']:.2f}** | Моделно претеглена стойност |
+| **Справедлива стойност (Target Price)** | **${data['target_price']:.2f}** | Моделно претеглена фундаментална оценка |
 | **Икономическа рентабилност ({metric_name})** | **{data['roic_pct']:.1f}%** | Спред над {cost_name}: {data['roic_pct'] - data['wacc_pct']:+.1f}% |
-| **Цена на капитала ({cost_name})** | **{data['wacc_pct']:.2f}%** | Rf = 4.15%, Beta = {data['beta']:.2f}, ERP = 4.60% |
-| **Икономически ров (Economic Moat)** | **{data['moat']} Moat** | Устойчивост на конкурентното предимство |
-| **Beneish M-Score** | **{data['m_score']:.2f}** | {'Безопасен (< -1.78)' if data['m_score'] < -1.78 else 'ВНИМАНИЕ: Счетоводен флаг'} |
-| **Altman Z''-Score** | **{data['z_score']:.2f}** | {'Зона на сигурност (> 2.60)' if data['z_score'] > 2.60 else 'Повишен кредитен риск'} |
+| **Цена на капитала ({cost_name})** | **{data['wacc_pct']:.2f}%** | Rf = {RF_RATE*100:.2f}%, Beta = {data['beta']:.2f}, ERP = {ERP*100:.2f}% |
+| **Икономически ров (Economic Moat)** | **{data['moat']} Moat** | Структурно предимство и ценова сила |
+| **Beneish M-Score (YoY 2-годишен)** | **{data['m_score']:.2f}** | {'Безопасен (< -1.78)' if data['m_score'] < -1.78 else 'ВНИМАНИЕ: Счетоводен флаг'} (Accruals: {data.get('tata', 0.0):+.3f}) |
+| **Кредитна стабилност ({data.get('solvency_type', 'Z-Score')})** | **{data['z_score']:.2f}** | {'Зона на сигурност (> 2.60)' if data['z_score'] > 2.60 else 'Повишен кредитен/ливъридж риск'} |
 | **Динамичен Margin of Safety (MoS)** | **{data['mos_pct']:.1f}%** | Секторен праг на сигурност |
 | **Максимална цена за вход (Entry Price)** | **${data['entry_price']:.2f}** | Праг за институционално откриване на позиция |
 | **ПРИСЪДА НА КОМИТЕТА** | **{data['verdict']}** | **Препоръчано действие: {data['action']}** |
 
 ---
 
-## 1. СЪДЕБНО-СЧЕТОВОДЕН ОДИТ (Agent 2)
+## 1. СЪДЕБНО-СЧЕТОВОДЕН ОДИТ (Agent 2 - Forensic Accounting)
 * **Приходи:** ${data['revenue_b']:.2f} млрд.
 * **Оперативна печалба / NOPAT:** ${data['nopat_b']:.2f} млрд.
-* **Статус на качеството на печалбите:** {'Преминава стандартите за институционална надеждност' if data['m_score'] < -1.78 and data['z_score'] > 2.0 else 'Флагнат за детайлен одит'}.
+* **Beneish M-Score:** `{data['m_score']:.2f}` (Праг: -1.78). Одит на 5-те показателя: DSRI, GMI, AQI, SGI, DEPI и Total Accruals.
+* **Кредитен и капиталов профил:** `{data['z_score']:.2f}` ({data.get('solvency_type', 'Universal Solvency')}).
+* **Заключение за качеството на отчетите:** {'Преминава стриктните институционални стандарти' if data['z_score'] >= 1.8 and data['m_score'] <= -1.78 else 'Включва регулаторно/счетоводно внимание'}.
 
 ---
 
 ## 2. СЕКТОРНА СПЕЦИФИКА НА ОЦЕНКАТА (Agents 1, 3 & 4)
 * **Приложен модел:** `{data['model_type']}`
-* **Обосновка:** Преодолява класическите изкривявания (напр. капиталов ливъридж при банките, фалшиво ниско GAAP P/E при циклични върхове или амортизационния натиск при REITs).
+* **Обосновка на метода:** Елиминира системните изкривявания (банков ливъридж, изкуствено свиване на печалбата при REITs, или цикличен пик/дъно капан).
 * **Спред на стойността:** {metric_name} ({data['roic_pct']:.1f}%) спрямо {cost_name} ({data['wacc_pct']:.2f}%).
 
 ---
@@ -636,8 +956,9 @@ def generate_reports_and_registries(results):
     reduces = [r for r in sorted_results if r["action"] in ["REDUCE", "AVOID"]]
 
     content = f"""# ЦЕНТРАЛЕН АРХИВ И РЕГИСТЪР НА ПРИСЪДИТЕ НА ИНВЕСТИЦИОННИЯ КОМИТЕТ
-**Методология:** Модулна секторно диференцирана система (Corporate DCF, Financials RIM, REITs AFFO/NAV, Cyclicals Mid-Cycle)  
+**Методология:** Институционална модулна система v3.0 (Corporate DCF, Financials RIM, REITs AFFO/NAV, Cyclicals Mid-Cycle, Utilities RAB, Real Forensics)  
 **Дата на пълната ревизия:** {datetime.now().strftime('%d %B %Y')} г.  
+**Макроикономическа среда:** 10Y US Treasury (Rf) = {RF_RATE*100:.2f}%, Equity Risk Premium (ERP) = {ERP*100:.2f}%  
 **Общ брой покрити компании:** {len(results)} корпорации  
 
 ---
@@ -697,6 +1018,11 @@ def generate_reports_and_registries(results):
 
     json_data = {
         "updated_at": datetime.now().isoformat(),
+        "macro": {
+            "rf_rate": RF_RATE,
+            "erp": ERP,
+            "terminal_g": LONG_TERM_G
+        },
         "total_companies": len(results),
         "strong_buys_count": len(strong_buys),
         "holds_count": len(holds),
@@ -714,6 +1040,7 @@ def generate_reports_and_registries(results):
     print(f"[+] JSON exported to {JSON_OUTPUT} and {DASHBOARD_JSON}")
 
 def main():
+    print(f"[*] Macro Calibration: 10Y US Treasury (Rf) = {RF_RATE*100:.2f}%, ERP = {ERP*100:.2f}%")
     universe = load_universe()
     print(f"[*] Loaded universe of {len(universe)} corporate candidate tickers for modular evaluation.")
 
@@ -740,7 +1067,7 @@ def main():
     print(f"[*] Processed {len(results)} companies with specialized modular models in {elapsed:.1f} seconds.")
 
     generate_reports_and_registries(results)
-    print(f"[+] Modular valuation overhaul completed! All reports archived in {ARCHIVE_DIR}/")
+    print(f"[+] Institutional valuation overhaul completed! All reports archived in {ARCHIVE_DIR}/")
 
 if __name__ == "__main__":
     main()

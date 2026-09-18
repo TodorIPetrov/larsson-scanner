@@ -11,6 +11,7 @@ def temp_db():
         temp_path = f.name
     db = Database(temp_path)
     yield db
+    db.close()
     if os.path.exists(temp_path):
         os.remove(temp_path)
 

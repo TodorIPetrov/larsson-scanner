@@ -129,13 +129,35 @@ def print_status(db: Database, asset_class: str = "all"):
     print(f"Showing up to 60 of {len(states)} tracked symbol states.\n")
 
 
+def _safe_scan(scanner: LarssonScanner, asset_class: str, timeframe: str, limit: int = 50):
+    """Executes run_scan with error isolation so one failing asset class does not abort others."""
+    try:
+        run_scan(scanner, asset_class=asset_class, timeframe=timeframe, limit=limit)
+    except Exception as e:
+        logger.error(f"Scheduled scan failed for asset class '{asset_class}' [{timeframe}]: {e}", exc_info=True)
+
+
+def _scan_traditional_markets(scanner: LarssonScanner, timeframe: str):
+    """Iterates traditional and stock asset classes with individual error boundaries."""
+    classes = ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
+    for ac in classes:
+        _safe_scan(scanner, asset_class=ac, timeframe=timeframe)
+
+
 def start_scheduler(scanner: LarssonScanner):
-    """Starts the 24/7 automated scheduler."""
-    sched = BlockingScheduler(timezone="UTC")
+    """Starts the 24/7 automated scheduler with production-grade resiliency."""
+    sched = BlockingScheduler(
+        timezone="UTC",
+        job_defaults={
+            "misfire_grace_time": 3600,  # Allow jobs up to 1 hour late after wake/pause
+            "coalesce": True,            # Merge multiple missed executions into a single run
+            "max_instances": 1,          # Prevent overlapping concurrent runs of the same job
+        },
+    )
 
     # 1D Crypto candle closes at 00:00 UTC (Run at 00:02 UTC)
     sched.add_job(
-        func=lambda: run_scan(scanner, asset_class="crypto", timeframe="1D", limit=100),
+        func=lambda: _safe_scan(scanner, asset_class="crypto", timeframe="1D", limit=100),
         trigger=CronTrigger(hour=0, minute=2, timezone="UTC"),
         id="crypto_daily",
         name="Crypto Daily Scan (00:02 UTC)",
@@ -143,7 +165,7 @@ def start_scheduler(scanner: LarssonScanner):
 
     # 4H Crypto candles close every 4 hours (00, 04, 08, 12, 16, 20 UTC + 2 min)
     sched.add_job(
-        func=lambda: run_scan(scanner, asset_class="crypto", timeframe="4H", limit=100),
+        func=lambda: _safe_scan(scanner, asset_class="crypto", timeframe="4H", limit=100),
         trigger=CronTrigger(hour="0,4,8,12,16,20", minute=2, timezone="UTC"),
         id="crypto_4h",
         name="Crypto 4H Scan",
@@ -151,7 +173,7 @@ def start_scheduler(scanner: LarssonScanner):
 
     # 1W Crypto candle closes on Monday 00:00 UTC (Run at Mon 00:05 UTC)
     sched.add_job(
-        func=lambda: run_scan(scanner, asset_class="crypto", timeframe="1W", limit=100),
+        func=lambda: _safe_scan(scanner, asset_class="crypto", timeframe="1W", limit=100),
         trigger=CronTrigger(day_of_week="mon", hour=0, minute=5, timezone="UTC"),
         id="crypto_weekly",
         name="Crypto Weekly Scan (Mon 00:05 UTC)",
@@ -159,10 +181,7 @@ def start_scheduler(scanner: LarssonScanner):
 
     # Daily Stocks/Commodities/Indices/AI: Monday-Friday at 21:05 UTC (after NYSE close at 21:00 UTC)
     sched.add_job(
-        func=lambda: [
-            run_scan(scanner, asset_class=ac, timeframe="1D")
-            for ac in ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
-        ],
+        func=lambda: _scan_traditional_markets(scanner, timeframe="1D"),
         trigger=CronTrigger(day_of_week="mon-fri", hour=21, minute=5, timezone="UTC"),
         id="stocks_daily",
         name="Traditional & Crypto Stocks Daily Scan (Mon-Fri 21:05 UTC)",
@@ -170,10 +189,7 @@ def start_scheduler(scanner: LarssonScanner):
 
     # Weekly Stocks/Commodities/Indices/AI: Friday at 21:10 UTC
     sched.add_job(
-        func=lambda: [
-            run_scan(scanner, asset_class=ac, timeframe="1W")
-            for ac in ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]
-        ],
+        func=lambda: _scan_traditional_markets(scanner, timeframe="1W"),
         trigger=CronTrigger(day_of_week="fri", hour=21, minute=10, timezone="UTC"),
         id="stocks_weekly",
         name="Traditional & Crypto Stocks Weekly Scan (Fri 21:10 UTC)",
@@ -223,10 +239,19 @@ def start_scheduler(scanner: LarssonScanner):
             db=scanner.db,
             paper_trader=scanner.paper_trader,
             config=scanner.config,
+            scanner=scanner,
         )
         t = threading.Thread(target=listener.run_poll_loop, daemon=True, name="TelegramListener")
         t.start()
-        logger.info("Telegram interactive bot listener active (/status, /gold, /blue, /portfolio, /trades, /help).")
+        logger.info("Telegram interactive bot listener active (/scan, /status, /gold, /blue, /portfolio, /trades, /help).")
+
+    # Start immediate market scan in background thread on scheduler launch
+    threading.Thread(
+        target=lambda: _safe_scan(scanner, asset_class="all", timeframe="1D", limit=50),
+        daemon=True,
+        name="InitialStartupScan",
+    ).start()
+    logger.info("Initial startup market scan launched in background thread.")
 
     logger.info("Press Ctrl+C to terminate.")
 
@@ -246,11 +271,10 @@ def main():
         "--asset-class",
         type=str,
         default="all",
-        choices=["all", "crypto", "crypto_stocks", "us_stocks", "intl_stocks", "commodities", "indices", "sp500"],
+        choices=["all", "crypto", "crypto_stocks", "us_stocks", "intl_stocks", "commodities", "indices", "ai_stocks", "sp500"],
         help="Asset class to scan",
     )
-    parser.add_argument(
-        "--timeframe",
+    parser.add_argument("--timeframe",
         type=str,
         default="1D",
         choices=["1D", "4H", "1W"],
@@ -259,6 +283,9 @@ def main():
     parser.add_argument("--limit", type=int, default=30, help="Number of top crypto pairs to scan")
     parser.add_argument("--scheduler", action="store_true", help="Start background 24/7 scheduler daemon")
     parser.add_argument("--bot", action="store_true", help="Start interactive Telegram bot listener daemon")
+    parser.add_argument("--add-asset", type=str, help="Add a single new asset by ticker (auto-detects class, exchange & name)")
+    parser.add_argument("--add-assets", type=str, help="Add multiple assets separated by commas (e.g. 'SOUN, SERV, NOK')")
+    parser.add_argument("--remove-asset", type=str, help="Remove/deactivate an asset by ticker")
     parser.add_argument("--force", action="store_true", help="Force action (e.g. force send daily digest)")
     parser.add_argument("--status", action="store_true", help="Print table of currently recorded states")
     parser.add_argument("--export-dashboard", action="store_true", help="Export latest data.json for dashboard")
@@ -316,7 +343,57 @@ def main():
         notifier=notifier,
     )
 
-    if args.test_telegram:
+    if args.add_asset:
+        from src.data.asset_manager import AssetManager
+        manager = AssetManager(db=db, binance_fetcher=b_fetcher, yf_fetcher=yf_fetcher)
+        target_class = args.asset_class if args.asset_class != "all" else None
+        print(f"\n🔍 Проверка и добавяне на актив: {args.add_asset.upper()}...")
+        ok, msg, info = manager.add_asset(args.add_asset, asset_class=target_class, scan_now=True)
+        if ok:
+            print(f"✅ {msg}")
+            print(f"   • Име: {info['name']}")
+            print(f"   • Клас: {info['asset_class']}")
+            print(f"   • TradingView: {info['tv_symbol']}")
+            price = info['price']
+            p_str = f"${price:,.2f}" if price >= 1000 else (f"${price:.2f}" if price >= 1 else f"${price:.5f}")
+            print(f"   • Последна цена: {p_str}")
+            state = info['state']
+            emoji = "🟡" if state == "GOLD" else ("🔵" if state == "BLUE" else "⚪")
+            print(f"   • Текущо състояние: {emoji} {state}")
+            if info.get('s1'):
+                print(f"   • S1 Подкрепа: ${info['s1']:.2f}")
+            if info.get('r1'):
+                print(f"   • R1 Съпротива: ${info['r1']:.2f}")
+            print(f"   • Синхронизирано в базата данни и дашборда!\n")
+        else:
+            print(f"❌ {msg}\n")
+    elif args.add_assets:
+        from src.data.asset_manager import AssetManager
+        manager = AssetManager(db=db, binance_fetcher=b_fetcher, yf_fetcher=yf_fetcher)
+        tickers = [t.strip() for t in args.add_assets.split(",") if t.strip()]
+        target_class = args.asset_class if args.asset_class != "all" else None
+        print(f"\n🔍 Пакетно добавяне на {len(tickers)} актива...")
+        summary = manager.add_multiple(tickers, asset_class=target_class)
+        print(f"\n📊 Резултат:")
+        print(f"   • Добавени успешно: {len(summary['added'])}")
+        for item in summary['added']:
+            st = item.get('state', 'N/A')
+            em = "🟡" if st == "GOLD" else ("🔵" if st == "BLUE" else "⚪")
+            print(f"     - {item['ticker']:<8} | {item['name']:<28} | {item['asset_class']:<12} | {em} {st} @ ${item['price']:.2f}")
+        if summary['failed']:
+            print(f"   • Неуспешни ({len(summary['failed'])}):")
+            for f in summary['failed']:
+                print(f"     - {f['ticker']}: {f['reason']}")
+        print(f"\nДашбордът и базата данни са обновени.\n")
+    elif args.remove_asset:
+        from src.data.asset_manager import AssetManager
+        manager = AssetManager(db=db, binance_fetcher=b_fetcher, yf_fetcher=yf_fetcher)
+        ok, msg = manager.remove_asset(args.remove_asset)
+        if ok:
+            print(f"\n✅ {msg}\n")
+        else:
+            print(f"\n❌ {msg}\n")
+    elif args.test_telegram:
         if not notifier.is_configured:
             print("\n❌ Telegram все още НЕ е конфигуриран!")
             print(f"Моля отвори файла: {settings_path}")
@@ -354,7 +431,7 @@ def main():
             print("\n❌ Telegram все още НЕ е конфигуриран!")
         else:
             print("\n🤖 Стартиране на интерактивния Telegram бот (@CTO_larsson_bot)...")
-            print("Слуша за команди (/status, /gold, /blue, /portfolio, /trades, /close, /alpha, /a, /calc, /help)")
+            print("Слуша за команди (/scan, /status, /gold, /blue, /portfolio, /trades, /close, /alpha, /a, /calc, /help)")
             print("Натисни Ctrl+C за спиране.\n")
             bot_scanner = LarssonScanner(db=db, notifier=notifier)
             listener = TelegramCommandListener(
@@ -362,6 +439,7 @@ def main():
                 db=db,
                 paper_trader=bot_scanner.paper_trader,
                 config=bot_scanner.config,
+                scanner=bot_scanner,
             )
             try:
                 listener.run_poll_loop()

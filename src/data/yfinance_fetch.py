@@ -19,8 +19,16 @@ TIMEFRAME_TO_YF_PARAMS = {
 
 
 class YFinanceFetcher:
-    def __init__(self, chunk_size: int = 50):
+    def __init__(self, chunk_size: int = 50, session=None):
         self.chunk_size = chunk_size
+        if session is not None:
+            self.session = session
+        else:
+            try:
+                from curl_cffi.requests import Session as CurlSession
+                self.session = CurlSession(impersonate="chrome")
+            except Exception:
+                self.session = None
 
     def fetch_batch(
         self,
@@ -46,16 +54,20 @@ class YFinanceFetcher:
             chunk_str = " ".join(chunk)
 
             try:
-                # yf.download with group_by='ticker'
-                df = yf.download(
-                    tickers=chunk_str,
-                    interval=params["interval"],
-                    period=params["period"],
-                    group_by="ticker",
-                    auto_adjust=True,
-                    progress=False,
-                    threads=True,
-                )
+                # yf.download with group_by='ticker' and custom browser session
+                download_kwargs = {
+                    "tickers": chunk_str,
+                    "interval": params["interval"],
+                    "period": params["period"],
+                    "group_by": "ticker",
+                    "auto_adjust": True,
+                    "progress": False,
+                    "threads": True,
+                }
+                if self.session is not None:
+                    download_kwargs["session"] = self.session
+
+                df = yf.download(**download_kwargs)
 
                 if df.empty:
                     logger.warning(f"Empty dataframe returned for batch: {chunk}")
@@ -96,6 +108,51 @@ class YFinanceFetcher:
         ticker: str,
         timeframe: str = "1D",
     ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
-        """Fallback to fetch single ticker candles."""
+        """Fetch single ticker candles with chart API fallback."""
         batch_res = self.fetch_batch([ticker], timeframe=timeframe)
-        return batch_res.get(ticker)
+        res = batch_res.get(ticker)
+        if res is not None:
+            return res
+        return self.fetch_via_chart_api(ticker, timeframe=timeframe)
+
+    def fetch_via_chart_api(
+        self,
+        ticker: str,
+        timeframe: str = "1D",
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Direct Yahoo Finance chart API fetch using browser session."""
+        range_param = "5y" if timeframe == "1W" else "2y"
+        interval_param = "1wk" if timeframe == "1W" else "1d"
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?range={range_param}&interval={interval_param}"
+
+        try:
+            session = self.session
+            if session is None:
+                from curl_cffi.requests import Session as CurlSession
+                session = CurlSession(impersonate="chrome")
+            resp = session.get(url, timeout=10)
+            if resp.status_code != 200:
+                return None
+            data = resp.json()
+            result = data.get("chart", {}).get("result")
+            if not result:
+                return None
+            quotes = result[0].get("indicators", {}).get("quote", [{}])[0]
+            highs_raw = quotes.get("high", [])
+            lows_raw = quotes.get("low", [])
+            closes_raw = quotes.get("close", [])
+
+            # Filter valid points
+            valid = [(h, l, c) for h, l, c in zip(highs_raw, lows_raw, closes_raw) if h is not None and l is not None and c is not None]
+            if len(valid) < 30:
+                return None
+
+            highs = np.array([v[0] for v in valid], dtype=np.float64)
+            lows = np.array([v[1] for v in valid], dtype=np.float64)
+            closes = np.array([v[2] for v in valid], dtype=np.float64)
+            latest_price = float(closes[-1])
+            return highs, lows, closes, latest_price
+        except Exception as e:
+            logger.debug(f"Direct chart API fetch failed for {ticker}: {e}")
+            return None
+
