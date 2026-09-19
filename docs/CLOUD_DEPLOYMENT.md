@@ -1,52 +1,73 @@
 # ☁️ 24/7 Автономна Работа в Облака (Когато Компютърът е Изключен)
 
-Тази документация обяснява как работи **GitHub Actions автономният скенер**, благодарение на който системата сканира пазарите, изпраща сигнали в Telegram и обновява сайта в GitHub Pages **напълно самостоятелно в облака**, без да е необходимо компютърът ти да бъде включен.
+Тази документация описва двете решения за 24/7 работа в облака, така че системата да сканира пазарите, да изпраща известия в Telegram и да обновява сайта, без компютърът ти изобщо да е включен.
 
 ---
 
-## ⚡ Как работи GitHub Actions графикът?
+## 🧭 Двата Подхода — Каква е разликата?
 
-В хранилището е активиран работен поток [`.github/workflows/market-scanner.yml`](../.github/workflows/market-scanner.yml), който се стартира в облачните сървъри на GitHub по следния график:
-
-1. **Всеки 4 часа (00:05, 04:05, 08:05, 12:05, 16:05, 20:05 UTC)**:
-   - Сканира крипто активите и вътрешнодневните трендове.
-   - Изпраща нови търговски предложения и промени на лентата в Telegram.
-2. **В 11:00 Българско Време (08:00 UTC) всеки ден**:
-   - Изпраща сутрешния **Daily Morning Digest** в Telegram.
-3. **В 23:05 Българско Време (21:05 UTC) от понеделник до петък**:
-   - Сканира американските акции (S&P 500, AI, Crypto Stocks), суровините и индексите веднага след затварянето на борсите в Ню Йорк.
-4. **Автоматично обновяване на сайта**:
-   - Всяко сканиране автоматично записва новите резултати в `dashboard/data.json` и ги публикува в [https://todoripetrov.github.io/larsson-scanner/](https://todoripetrov.github.io/larsson-scanner/).
+| Възможност | Подход 1: GitHub Actions (Периодичен график) | Подход 2: Render.com / Koyeb (24/7 Контейнер) |
+| :--- | :--- | :--- |
+| **Цена** | 100% Безплатно (GitHub) | 100% Безплатно (Free Tier) |
+| **Периодични сканирания** | ✅ Да (всеки 4 ч + в 11:00 и 23:05 БГ време) | ✅ Да (непрекъснато по график) |
+| **Обновяване на сайта** | ✅ Да ([GitHub Pages](https://todoripetrov.github.io/larsson-scanner/)) | ✅ Да (GitHub Pages + собствен URL) |
+| **Telegram известия за сигнали** | ✅ Да (при всяко планирано сканиране) | ✅ Да (на секундата при candle close) |
+| **Интерактивен чат с бота** (`/scan`, `/status`, `/alpha`) | ❌ Не (GitHub Actions се изключва след изпълнение) | ✅ **Да! Ботът отговаря мигновено на съобщения 24/7** |
+| **WebSocket на живо (Binance)** | ❌ Не (няма постоянен сокет) | ✅ **Да (постоянна WebSocket връзка)** |
 
 ---
 
-## 🔑 Добавяне на Telegram ключовете в GitHub Secrets (30 секунди)
+## 🛠️ Подход 1: GitHub Actions (Вече настроен и коригиран)
 
-За да може облачният сървър на GitHub да изпраща съобщения към твоя Telegram, трябва да добавиш двата тайни ключа в настройките на хранилището:
-
+### 1. Добавяне на тайните ключове в GitHub Secrets:
 1. Отвори хранилището в браузъра: [**https://github.com/TodorIPetrov/larsson-scanner**](https://github.com/TodorIPetrov/larsson-scanner)
 2. Кликни на таб **Settings** (горе вдясно) ⚙️.
 3. В лявото меню избери **Secrets and variables** ➡️ **Actions**.
 4. Кликни върху зеления бутон **New repository secret**:
    - **Secret 1**:
      - *Name*: `TELEGRAM_BOT_TOKEN`
-     - *Secret*: Твоят бот токен (напр. `8875473177:AAHB3HbEuF764xf7lqzMZwLC7wycsQ8DyxE`)
-     - Натисни **Add secret**.
+     - *Secret*: `8875473177:AAHB3HbEuF764xf7lqzMZwLC7wycsQ8DyxE`
    - **Secret 2**:
      - *Name*: `TELEGRAM_CHAT_ID`
-     - *Secret*: Твоят Chat ID (напр. `8464055753`)
-     - Натисни **Add secret**.
+     - *Secret*: `8464055753`
 
-*Готово! От този момент нататък GitHub Actions автоматично ще използва тези ключове за всички известия.*
+### 2. Активиране на права за запис (Workflow Permissions):
+*Важно за автоматично обновяване на сайта при сканиране:*
+1. В **Settings** ➡️ вляво избери **Actions** ➡️ **General**.
+2. Превърти надолу до секция **Workflow permissions**.
+3. Избери **Read and write permissions**.
+4. Кликни **Save**.
+
+### 3. Ръчно стартиране от телефона:
+1. Отвори `https://github.com/TodorIPetrov/larsson-scanner/actions` през телефона.
+2. Избери **24/7 Autonomous Market Scanner**.
+3. Кликни **Run workflow** ➡️ избери `all` ➡️ кликни **Run workflow**.
+4. След ~35 секунди резултатите ще пристигнат в Telegram!
 
 ---
 
-## 📱 Как да пуснеш сканиране от телефона по всяко време?
+## 🚀 Подход 2: Render.com (Препоръчително за интерактивен Telegram бот 24/7)
 
-Ако си навън или компютърът ти е изключен и искаш свеж скан веднага:
+Ако искаш ботът `@CTO_larsson_bot` да отговаря в Telegram, когато му пишеш `/scan`, `/status`, `/gold`, `/portfolio` от телефона с изключен компютър:
 
-1. Отвори хранилището през телефона или браузъра: `https://github.com/TodorIPetrov/larsson-scanner/actions`.
-2. Вляво избери работния поток **24/7 Autonomous Market Scanner**.
-3. Кликни върху падащото меню **Run workflow** ▾.
-4. Избери клас активи (напр. `all` или `crypto`) и натисни зеления бутон **Run workflow**.
-5. След ~45 секунди резултатите ще пристигнат директно в Telegram чата ти, а сайтът ще се обнови!
+1. Отиди на [**https://render.com**](https://render.com) и се логни с твоя GitHub акаунт.
+2. Кликни на **New +** (горе вдясно) ➡️ избери **Web Service**.
+3. Избери твоето хранилище `TodorIPetrov/larsson-scanner`.
+4. Попълни настройките (отнема 1 минута):
+   - **Name**: `larsson-scanner`
+   - **Region**: `Frankfurt (EU Central)`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python src/main.py --scheduler`
+   - **Instance Type**: `Free` ($0/месец)
+5. В секция **Environment Variables** добави:
+   - `TELEGRAM_BOT_TOKEN`: `8875473177:AAHB3HbEuF764xf7lqzMZwLC7wycsQ8DyxE`
+   - `TELEGRAM_CHAT_ID`: `8464055753`
+   - `PORT`: `10000`
+6. Кликни **Deploy Web Service**!
+
+От този момент:
+- Render поддържа контейнера жив 24/7/365.
+- Ботът слуша за команди денонощно.
+- Binance WebSocket следи пазара в реално време.
+- Сайтът е достъпен и на GitHub Pages, и на Render URL.

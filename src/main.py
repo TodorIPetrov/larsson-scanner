@@ -253,6 +253,23 @@ def start_scheduler(scanner: LarssonScanner):
     ).start()
     logger.info("Initial startup market scan launched in background thread.")
 
+    # Optional HTTP server for cloud platforms (Render, Koyeb, Railway) if PORT is set
+    port_env = os.environ.get("PORT")
+    if port_env:
+        try:
+            port = int(port_env)
+            from http.server import HTTPServer, SimpleHTTPRequestHandler
+            import functools
+
+            dashboard_dir = os.path.join(PROJECT_ROOT, "dashboard")
+            handler_class = functools.partial(SimpleHTTPRequestHandler, directory=dashboard_dir)
+            httpd = HTTPServer(("0.0.0.0", port), handler_class)
+            http_thread = threading.Thread(target=httpd.serve_forever, daemon=True, name="CloudHTTPServer")
+            http_thread.start()
+            logger.info(f"Cloud Dashboard & Healthcheck server listening on 0.0.0.0:{port}")
+        except Exception as e:
+            logger.warning(f"Failed to start cloud HTTP server on port {port_env}: {e}")
+
     logger.info("Press Ctrl+C to terminate.")
 
     try:
@@ -271,7 +288,7 @@ def main():
         "--asset-class",
         type=str,
         default="all",
-        choices=["all", "crypto", "crypto_stocks", "us_stocks", "intl_stocks", "commodities", "indices", "ai_stocks", "sp500"],
+        choices=["all", "crypto", "crypto_stocks", "us_stocks", "intl_stocks", "commodities", "indices", "ai_stocks", "sp500", "true"],
         help="Asset class to scan",
     )
     parser.add_argument("--timeframe",
@@ -304,6 +321,8 @@ def main():
     parser.add_argument("--force-refresh", action="store_true", help="Force redownloading historical market data")
 
     args = parser.parse_args()
+    if args.asset_class == "true" or not args.asset_class:
+        args.asset_class = "all"
 
     # Load settings with optional local overrides
     settings_path = os.path.join(PROJECT_ROOT, "config", "settings.yaml")

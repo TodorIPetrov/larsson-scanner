@@ -66,7 +66,10 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          ASSET_CLASS="${{ github.event.inputs.asset_class || 'all' }}"
+          ASSET_CLASS="${{ github.event.inputs.asset_class }}"
+          if [ -z "$ASSET_CLASS" ] || [ "$ASSET_CLASS" = "true" ]; then
+            ASSET_CLASS="all"
+          fi
           echo "Executing market scan for asset class: $ASSET_CLASS"
           python src/main.py --scan --asset-class "$ASSET_CLASS" --timeframe 1D --limit 50
 
@@ -76,7 +79,8 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           CURRENT_HOUR=$(date -u +%H)
-          if [ "${{ github.event.inputs.send_digest }}" = "true" ] || [ "$CURRENT_HOUR" = "08" ]; then
+          SEND_DIGEST="${{ github.event.inputs.send_digest }}"
+          if [ "$SEND_DIGEST" = "true" ] || [ "$CURRENT_HOUR" = "08" ]; then
             echo "Dispatching daily market digest to Telegram..."
             python src/main.py --digest || echo "Digest already sent or skipped."
           fi
@@ -86,9 +90,10 @@ jobs:
           git add dashboard/data.json
           if ! git diff --cached --quiet; then
             git commit -m "chore(data): auto-update market scanner data [skip ci]"
-            git pull --rebase -X ours origin master || true
-            git push origin master
+            git pull --no-rebase -X ours origin master || true
+            git push origin master || echo "Push warning: unable to push, verify repository Settings -> Actions -> General -> Workflow permissions have Read and write permissions."
             echo "✅ Dashboard data successfully pushed to GitHub Pages!"
           else
             echo "ℹ️ No market state changes to commit."
           fi
+
