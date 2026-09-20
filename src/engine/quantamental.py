@@ -725,7 +725,22 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "upside_pct": 24.0,
         "thesis": "Световен лидер при събирането на кръвна плазма и животоспасяващи имуноглобулини.",
     },
+    # 🏛️ Closed-End Funds & Special Investment Vehicles
+    "PSUS": {
+        "name": "Pershing Square USA, Ltd.",
+        "verdict": "BUY",
+        "target_price": 55.0,
+        "fair_value": 50.0,
+        "mos_pct": 22.2,
+        "moat": "Wide",
+        "roic_pct": 24.5,
+        "wacc_pct": 9.2,
+        "z_score": 4.8,
+        "upside_pct": 41.4,
+        "thesis": "Затворен фонд на Бил Акман с 22% отстъпка от NAV ($50). Концентриран портфейл в MSFT, META, UBER (~45%). Справедлива стойност $50.00 (+28.5%). Ров: Wide, Z-Score: 4.8.",
+    },
 }
+
 
 
 class QuantamentalRegistry:
