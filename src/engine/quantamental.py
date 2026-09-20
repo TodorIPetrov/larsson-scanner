@@ -752,6 +752,20 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "upside_pct": -3.7,
         "thesis": "Мениджърската компания на Бил Акман. Прибира управленски такси и такси за успех от AUM. Forward P/E >50x след 120% рали от дъното. Справедлива стойност $45.00.",
     },
+    # 🎬 Global Entertainment & Streaming Titans
+    "NFLX": {
+        "name": "Netflix, Inc.",
+        "verdict": "STRONG BUY",
+        "target_price": 98.0,
+        "fair_value": 88.0,
+        "mos_pct": 22.6,
+        "moat": "Wide",
+        "roic_pct": 25.5,
+        "wacc_pct": 8.9,
+        "z_score": 4.5,
+        "upside_pct": 36.5,
+        "thesis": "Глобален доминант в стрийминга с над 280 млн. абонати и 33% оперативен марж. Рекламният план (AVOD) и монетизирането на пароли ускоряват FCF. Forward P/E ~18.8x срещу исторически 35x+. Справедлива стойност $88.00 (+22.6% MoS), Таргет $98.00. Ров: Wide, ROIC: 25.5%, Z-Score: 4.5.",
+    },
 }
 
 

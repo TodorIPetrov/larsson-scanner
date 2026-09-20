@@ -5,7 +5,7 @@
     "erp": 0.046,
     "terminal_g": 0.0275
   },
-  "total_companies": 345,
+  "total_companies": 346,
   "strong_buys_count": 80,
   "holds_count": 20,
   "reduces_count": 243,
@@ -9667,6 +9667,34 @@
       "upside_pct": -3.7,
       "verdict": "HOLD",
       "action": "HOLD"
+    },
+    {
+      "ticker": "NFLX",
+      "name": "Netflix, Inc.",
+      "sector": "Communication Services",
+      "industry": "Entertainment",
+      "model_type": "Normalized Free Cash Flow & Multi-Tier DCF",
+      "price": 71.79,
+      "shares": 4160000000,
+      "mcap_b": 298.93,
+      "beta": 1.15,
+      "revenue_b": 42.5,
+      "ebit_b": 14.2,
+      "nopat_b": 11.5,
+      "roic_pct": 25.5,
+      "wacc_pct": 8.9,
+      "moat": "Wide",
+      "z_score": 4.5,
+      "m_score": -2.8,
+      "tata": -0.04,
+      "solvency_type": "Altman Z-Score (Safe Zone)",
+      "target_price": 98.0,
+      "fair_value_base": 88.0,
+      "mos_pct": 22.6,
+      "entry_price": 71.79,
+      "upside_pct": 36.5,
+      "verdict": "STRONG BUY",
+      "action": "STRONG_BUY"
     }
   ]
 }
