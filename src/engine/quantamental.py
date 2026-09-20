@@ -739,6 +739,19 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "upside_pct": 41.4,
         "thesis": "Затворен фонд на Бил Акман с 22% отстъпка от NAV ($50). Концентриран портфейл в MSFT, META, UBER (~45%). Справедлива стойност $50.00 (+28.5%). Ров: Wide, Z-Score: 4.8.",
     },
+    "PS": {
+        "name": "Pershing Square Inc.",
+        "verdict": "HOLD",
+        "target_price": 48.0,
+        "fair_value": 45.0,
+        "mos_pct": -9.7,
+        "moat": "Narrow",
+        "roic_pct": 22.0,
+        "wacc_pct": 9.8,
+        "z_score": 4.2,
+        "upside_pct": -3.7,
+        "thesis": "Мениджърската компания на Бил Акман. Прибира управленски такси и такси за успех от AUM. Forward P/E >50x след 120% рали от дъното. Справедлива стойност $45.00.",
+    },
 }
 
 

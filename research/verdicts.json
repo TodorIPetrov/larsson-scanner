@@ -5,7 +5,7 @@
     "erp": 0.046,
     "terminal_g": 0.0275
   },
-  "total_companies": 344,
+  "total_companies": 345,
   "strong_buys_count": 80,
   "holds_count": 20,
   "reduces_count": 243,
@@ -9639,6 +9639,34 @@
       "upside_pct": 41.4,
       "verdict": "BUY",
       "action": "BUY"
+    },
+    {
+      "ticker": "PS",
+      "name": "Pershing Square Inc.",
+      "sector": "Financial Services",
+      "industry": "Asset Management",
+      "model_type": "Asset Manager Fee Multiple & DCF",
+      "price": 49.83,
+      "shares": 400000000,
+      "mcap_b": 19.93,
+      "beta": 1.35,
+      "revenue_b": 0.85,
+      "ebit_b": 0.55,
+      "nopat_b": 0.42,
+      "roic_pct": 22.0,
+      "wacc_pct": 9.8,
+      "moat": "Narrow",
+      "z_score": 4.2,
+      "m_score": -2.5,
+      "tata": -0.04,
+      "solvency_type": "Altman Z-Score (Safe Zone)",
+      "target_price": 48.0,
+      "fair_value_base": 45.0,
+      "mos_pct": -9.7,
+      "entry_price": 49.83,
+      "upside_pct": -3.7,
+      "verdict": "HOLD",
+      "action": "HOLD"
     }
   ]
 }
