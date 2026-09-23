@@ -4,11 +4,14 @@ Orchestrates data fetching, SMMA indicator calculations, database state updates,
 and alert dispatching across Crypto, US Stocks, International Stocks, Commodities, and Indices.
 """
 
+from __future__ import annotations
+
 import json
 import logging
 import os
 import time
 from typing import Dict, List, Optional
+import numpy as np
 import yaml
 
 from src.alerts.telegram import TelegramNotifier
