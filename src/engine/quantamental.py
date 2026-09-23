@@ -766,6 +766,20 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "upside_pct": 36.5,
         "thesis": "Глобален доминант в стрийминга с над 280 млн. абонати и 33% оперативен марж. Рекламният план (AVOD) и монетизирането на пароли ускоряват FCF. Forward P/E ~18.8x срещу исторически 35x+. Справедлива стойност $88.00 (+22.6% MoS), Таргет $98.00. Ров: Wide, ROIC: 25.5%, Z-Score: 4.5.",
     },
+    # 🪙 Bitcoin-Native Holding & Treasury Companies
+    "NAKA": {
+        "name": "Nakamoto Inc.",
+        "verdict": "STRONG BUY",
+        "target_price": 18.50,
+        "fair_value": 16.00,
+        "mos_pct": 37.5,
+        "moat": "Narrow",
+        "roic_pct": 18.0,
+        "wacc_pct": 10.5,
+        "z_score": 3.5,
+        "upside_pct": 84.1,
+        "thesis": "Bitcoin-native трежъри холдинг на Дейвид Бейли (NASDAQ: NAKA) с 4,467 BTC в баланса. Търгува се с екстремна отстъпка от ~37% под нетната стойност на биткойните си (NAV $16.00). Притежава Bitcoin Magazine, най-голямата глобална Bitcoin конференция и UTXO Management. Справедлива стойност $16.00 (+59% MoS), Таргет $18.50.",
+    },
 }
 
 
