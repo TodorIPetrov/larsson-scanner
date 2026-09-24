@@ -310,10 +310,47 @@ def export_dashboard_data(
         rr_val = _clean_float(_row_val(r, "ts_rr"))
         score_val = _row_val(r, "ts_score", 0)
         tier_val = _row_val(r, "ts_tier", "NONE")
+        ts_direction = _row_val(r, "ts_direction", "NEUTRAL")
+
+        # Smart Leverage calculation for actionable setups
+        max_lev = 1
+        rec_lev = 1
+        lev_matrix = []
+
+        if ts_action in ["SPOT_BUY", "SHORT_2X_OPTIONAL"] and entry_val and entry_val > 0:
+            try:
+                from src.engine.asset_profiles import get_max_allowed_leverage
+                from src.engine.trade_suggestions import calculate_leverage_matrix
+
+                atr_val = _clean_float(_row_val(r, "atr")) or (entry_val * 0.02)
+                atr_pct = (atr_val / entry_val) * 100.0 if entry_val > 0 else 2.0
+
+                max_lev = get_max_allowed_leverage(
+                    ticker=ticker,
+                    asset_class=r["asset_class"],
+                    score=score_val,
+                    tier=tier_val,
+                    atr_pct=atr_pct,
+                    direction=ts_direction,
+                )
+                rec_lev = min(2, max_lev) if max_lev > 1 else 1
+
+                lev_matrix = calculate_leverage_matrix(
+                    entry_price=entry_val,
+                    stop_loss=sl_val,
+                    position_size_usd=100.0,
+                    max_leverage=max_lev,
+                    direction=ts_direction,
+                )
+            except Exception:
+                max_lev = 1
+                rec_lev = 1
+                lev_matrix = []
 
         synthesis_block = {
             "setup_type": ts_setup,
             "action": ts_action,
+            "direction": ts_direction,
             "badge_bg": synth_badge,
             "label_bg": synth_label,
             "entry": entry_val,
@@ -323,11 +360,13 @@ def export_dashboard_data(
             "rr": rr_val,
             "score": score_val,
             "tier": tier_val,
+            "max_leverage": max_lev,
+            "recommended_leverage": rec_lev,
         }
 
         trade_suggestion_dict = {
             "action": ts_action,
-            "direction": _row_val(r, "ts_direction", "NEUTRAL"),
+            "direction": ts_direction,
             "setup_type": ts_setup,
             "entry": entry_val,
             "sl": sl_val,
@@ -350,6 +389,9 @@ def export_dashboard_data(
             "fund_thesis_bg": fund_the,
             "synthesis_badge_bg": synth_badge,
             "synthesis_label_bg": synth_label,
+            "max_leverage": max_lev,
+            "recommended_leverage": rec_lev,
+            "leverage_matrix": _clean_dict_floats(lev_matrix),
         }
 
         # Quality Tier
@@ -469,6 +511,30 @@ def export_dashboard_data(
         except Exception:
             pass
 
+    # Pending Proposals from DB
+    pending_proposals_data = []
+    try:
+        from src.engine.trade_suggestions import calculate_leverage_matrix
+        raw_proposals = db.get_pending_proposals()
+        for p in raw_proposals:
+            p_dict = dict(p)
+            p_entry = _clean_float(p_dict.get("entry_price")) or 0.0
+            p_sl = _clean_float(p_dict.get("stop_loss"))
+            p_size = _clean_float(p_dict.get("position_size_usd")) or 100.0
+            p_dir = p_dict.get("direction", "LONG")
+            p_max_lev = p_dict.get("max_leverage", 1) or 1
+            matrix = calculate_leverage_matrix(
+                entry_price=p_entry,
+                stop_loss=p_sl,
+                position_size_usd=p_size,
+                max_leverage=p_max_lev,
+                direction=p_dir,
+            )
+            p_dict["leverage_matrix"] = matrix
+            pending_proposals_data.append(_clean_dict_floats(p_dict))
+    except Exception:
+        pass
+
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "summary": {
@@ -482,6 +548,7 @@ def export_dashboard_data(
         },
         "symbols": items,
         "pending_setups": pending_setups_data,
+        "pending_proposals": pending_proposals_data,
         "portfolio": portfolio_summary,
         "portfolio_paper": portfolio_paper_data,
         "portfolio_real": portfolio_real_data,
