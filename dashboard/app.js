@@ -2418,8 +2418,23 @@ setInterval(loadDashboardData, 60000);
 // =============================================================================
 // MASTER TAB NAVIGATION & SPECIALIZED VIEWS
 // =============================================================================
+// MASTER TAB NAVIGATION, BROWSER HISTORY & BACK NAVIGATION
+// =============================================================================
 
-function switchTab(tabName) {
+let tabHistory = ['scanner'];
+let isNavigatingHistory = false;
+
+function switchTab(tabName, pushToHistory = true) {
+  if (pushToHistory && !isNavigatingHistory) {
+    if (tabHistory[tabHistory.length - 1] !== tabName) {
+      tabHistory.push(tabName);
+    }
+    try {
+      history.pushState({ tab: tabName }, '', '#' + tabName);
+    } catch(e) {}
+  }
+
+  const prevTab = currentTab;
   currentTab = tabName;
   localStorage.setItem('larsson_active_tab', tabName);
 
@@ -2447,6 +2462,8 @@ function switchTab(tabName) {
     }
   });
 
+  updateNavBackButtons(prevTab);
+
   if (tabName === 'scanner' && liveActiveChart) {
     const liveContainer = document.getElementById('liveChartCanvas');
     if (liveContainer && liveContainer.clientWidth) {
@@ -2454,6 +2471,68 @@ function switchTab(tabName) {
     }
   }
 }
+
+function updateNavBackButtons(fromTab) {
+  const calcTarget = document.getElementById('calcBackTargetText');
+  if (calcTarget) {
+    const names = {
+      'scanner': '(към Скенера)',
+      'queue': '(към Очаквани Сделки)',
+      'portfolio': '(към Портфолиото)',
+      'calculator': '(към Калкулатора)'
+    };
+    calcTarget.textContent = names[fromTab] || '(към Скенера)';
+  }
+}
+
+function navigateBack() {
+  const chartModal = document.getElementById('chartModal');
+  if (chartModal && chartModal.style.display !== 'none') {
+    closeChartModal();
+    return;
+  }
+
+  if (tabHistory.length > 1) {
+    tabHistory.pop(); // Remove current
+    const previous = tabHistory[tabHistory.length - 1] || 'scanner';
+    isNavigatingHistory = true;
+    switchTab(previous, false);
+    isNavigatingHistory = false;
+    try {
+      history.replaceState({ tab: previous }, '', '#' + previous);
+    } catch(e) {}
+  } else {
+    isNavigatingHistory = true;
+    switchTab('scanner', false);
+    isNavigatingHistory = false;
+  }
+}
+
+// Global Browser Back/Forward Popstate listener
+window.addEventListener('popstate', (e) => {
+  const chartModal = document.getElementById('chartModal');
+  if (chartModal && chartModal.style.display !== 'none') {
+    closeChartModal();
+    return;
+  }
+
+  if (e.state && e.state.tab) {
+    isNavigatingHistory = true;
+    switchTab(e.state.tab, false);
+    isNavigatingHistory = false;
+  } else if (location.hash) {
+    const hashTab = location.hash.replace('#', '').split('?')[0];
+    if (['scanner', 'queue', 'portfolio', 'calculator'].includes(hashTab)) {
+      isNavigatingHistory = true;
+      switchTab(hashTab, false);
+      isNavigatingHistory = false;
+    }
+  } else {
+    isNavigatingHistory = true;
+    switchTab('scanner', false);
+    isNavigatingHistory = false;
+  }
+});
 
 document.querySelectorAll('#mainNavTabs .nav-tab-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -2745,6 +2824,9 @@ function renderProposalsBanner(proposals) {
 
   const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
   let activeProposals = (proposals || []).filter(p => !resolved[p.proposal_id]);
+  const rejectedCount = Object.values(resolved).filter(v => v.status === 'REJECTED').length;
+
+  updateProposalUndoUI();
 
   if (activeProposals.length === 0) {
     banner.style.display = 'block';
@@ -2756,9 +2838,16 @@ function renderProposalsBanner(proposals) {
         <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 580px; margin: 0 auto 16px auto; line-height: 1.5;">
           Системата следи непрекъснато пазара за пресни сигнали от <b>Larsson Gold Flip</b>, <b>Quantamental Alpha</b> и <b>BTC Relative Strength</b>. Натиснете бутона по-долу, за да стартирате нов анализ за предложения (1x Spot, 2x или 3x левъридж).
         </p>
-        <button class="btn btn-action-analyze" onclick="runNewTradeAnalysis()" style="display: inline-flex; align-items: center; gap: 8px; margin: 0 auto; cursor: pointer;">
-          <span class="analyze-icon">⚡</span> Стартирай Анализ за Нови Сделки
-        </button>
+        <div style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-action-analyze" onclick="runNewTradeAnalysis()" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+            <span class="analyze-icon">⚡</span> Стартирай Анализ за Нови Сделки
+          </button>
+          ${rejectedCount > 0 ? `
+            <button class="btn btn-secondary" onclick="restoreAllRejectedProposals()" style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 7px 14px; font-weight: 600;">
+              <span>🔄</span> Върни отхвърлените сделки (${rejectedCount})
+            </button>
+          ` : ''}
+        </div>
       </div>
     `;
     return;
@@ -2948,24 +3037,217 @@ function approveProposal(proposalId, leverage) {
     const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
     resolved[proposalId] = { status: 'APPROVED', leverage: leverage, at: new Date().toISOString() };
     localStorage.setItem('larsson_resolved_proposals', JSON.stringify(resolved));
+
+    pushProposalUndoAction({
+      type: 'APPROVE',
+      proposalId: proposalId,
+      positionId: newPos.position_id,
+      proposal: p,
+      leverage: leverage,
+      margin: margin,
+      timestamp: Date.now()
+    });
   } catch(err) {
     console.error(err);
   }
 
   renderProposalsBanner(pendingProposals);
   renderPortfolioView();
-  alert(`✅ Предложението за ${p.ticker} бе одобрено с ${leverage}x левъридж!\nМаржин депозит: $${margin.toFixed(2)}\nПозицията е отворена в симулатора.`);
+  updateProposalUndoUI();
+  showProposalApproveToast(p.ticker, leverage, margin, proposalId);
 }
 
 function rejectProposal(proposalId) {
+  const p = (pendingProposals || []).find(x => x.proposal_id === proposalId);
   try {
     const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
     resolved[proposalId] = { status: 'REJECTED', at: new Date().toISOString() };
     localStorage.setItem('larsson_resolved_proposals', JSON.stringify(resolved));
+
+    pushProposalUndoAction({
+      type: 'REJECT',
+      proposalId: proposalId,
+      proposal: p,
+      timestamp: Date.now()
+    });
   } catch(err) {
     console.error(err);
   }
   renderProposalsBanner(pendingProposals);
+  updateProposalUndoUI();
+  showProposalUndoToast(p ? p.ticker : 'актива', proposalId);
+}
+
+// =============================================================================
+// PROPOSAL UNDO & REVERT ACTIONS
+// =============================================================================
+
+let proposalUndoStack = [];
+
+function pushProposalUndoAction(action) {
+  proposalUndoStack.push(action);
+  updateProposalUndoUI();
+}
+
+function showProposalUndoToast(ticker, proposalId) {
+  const toast = document.getElementById('analysisToast');
+  if (!toast) return;
+
+  if (analysisToastTimeout) {
+    clearTimeout(analysisToastTimeout);
+    analysisToastTimeout = null;
+  }
+
+  toast.className = 'analysis-toast toast-undo';
+  toast.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 14px;">
+      <span class="toast-content" style="display: flex; align-items: center; gap: 8px;">
+        <span>🗑️ Отхвърлено предложение: <b>${ticker}</b></span>
+      </span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-toast-undo" onclick="undoLastProposalAction()">
+          ↩️ Върни назад
+        </button>
+        <span class="toast-close" onclick="this.closest('.analysis-toast').style.display='none'" style="cursor:pointer; opacity:0.7; font-size:1.1rem; padding: 0 4px;">✕</span>
+      </div>
+    </div>
+  `;
+  toast.style.display = 'flex';
+
+  analysisToastTimeout = setTimeout(() => {
+    toast.style.display = 'none';
+    analysisToastTimeout = null;
+  }, 8000);
+}
+
+function showProposalApproveToast(ticker, leverage, margin, proposalId) {
+  const toast = document.getElementById('analysisToast');
+  if (!toast) return;
+
+  if (analysisToastTimeout) {
+    clearTimeout(analysisToastTimeout);
+    analysisToastTimeout = null;
+  }
+
+  toast.className = 'analysis-toast toast-undo';
+  toast.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 14px;">
+      <span class="toast-content" style="display: flex; align-items: center; gap: 8px;">
+        <span>✅ Одобрено: <b>${ticker}</b> (${leverage}x). Маржин: $${margin.toFixed(2)}</span>
+      </span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn-toast-undo" onclick="undoLastProposalAction()">
+          ↩️ Върни назад
+        </button>
+        <span class="toast-close" onclick="this.closest('.analysis-toast').style.display='none'" style="cursor:pointer; opacity:0.7; font-size:1.1rem; padding: 0 4px;">✕</span>
+      </div>
+    </div>
+  `;
+  toast.style.display = 'flex';
+
+  analysisToastTimeout = setTimeout(() => {
+    toast.style.display = 'none';
+    analysisToastTimeout = null;
+  }, 8000);
+}
+
+function undoLastProposalAction() {
+  let resolved = {};
+  try {
+    resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+  } catch(e) { resolved = {}; }
+
+  let targetAction = null;
+  let targetId = null;
+
+  if (proposalUndoStack.length > 0) {
+    targetAction = proposalUndoStack.pop();
+    targetId = targetAction.proposalId;
+  } else {
+    const keys = Object.keys(resolved);
+    if (keys.length === 0) {
+      showAnalysisToast('Няма предходни действия за връщане назад.', 'info', 3000);
+      return;
+    }
+    targetId = keys[keys.length - 1];
+  }
+
+  if (targetId && resolved[targetId]) {
+    delete resolved[targetId];
+    localStorage.setItem('larsson_resolved_proposals', JSON.stringify(resolved));
+  }
+
+  if (targetAction && targetAction.type === 'APPROVE') {
+    if (portfolioPaperData.positions) {
+      portfolioPaperData.positions = portfolioPaperData.positions.filter(p => p.position_id !== targetAction.positionId);
+    }
+    try {
+      const saved = JSON.parse(localStorage.getItem('larsson_custom_paper_positions') || '[]');
+      const filtered = saved.filter(p => p.position_id !== targetAction.positionId);
+      localStorage.setItem('larsson_custom_paper_positions', JSON.stringify(filtered));
+    } catch(e) {}
+
+    if (targetAction.margin && portfolioPaperData.summary) {
+      const curCash = portfolioPaperData.summary.available_cash || 10000;
+      portfolioPaperData.summary.available_cash = curCash + targetAction.margin;
+      localStorage.setItem('larsson_custom_paper_cash', portfolioPaperData.summary.available_cash.toString());
+    }
+    renderPortfolioView();
+  }
+
+  renderProposalsBanner(pendingProposals);
+  updateProposalUndoUI();
+
+  const sym = (targetAction && targetAction.proposal && targetAction.proposal.ticker) ? targetAction.proposal.ticker : (targetId ? targetId.replace('prop_', '') : '');
+  showAnalysisToast(`↩️ Върнато назад: Предложението за <b>${sym}</b> бе успешно възстановено в списъка!`, 'success', 4000);
+}
+
+function restoreAllRejectedProposals() {
+  try {
+    const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+    let restoredCount = 0;
+    Object.keys(resolved).forEach(k => {
+      if (resolved[k].status === 'REJECTED') {
+        delete resolved[k];
+        restoredCount++;
+      }
+    });
+    localStorage.setItem('larsson_resolved_proposals', JSON.stringify(resolved));
+    proposalUndoStack = [];
+    updateProposalUndoUI();
+    renderProposalsBanner(pendingProposals);
+    showAnalysisToast(`✅ Всички ${restoredCount} отхвърлени предложения бяха възстановени в списъка!`, 'success', 4500);
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+function updateProposalUndoUI() {
+  const btnUndo = document.getElementById('btnUndoProposal');
+  const btnRestore = document.getElementById('btnRestoreRejected');
+  const undoCountEl = document.getElementById('undoCount');
+
+  let resolved = {};
+  try {
+    resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+  } catch(e) { resolved = {}; }
+
+  const rejectedCount = Object.values(resolved).filter(v => v.status === 'REJECTED').length;
+  const totalResolved = Object.keys(resolved).length;
+  const stackCount = proposalUndoStack.length;
+
+  const canUndo = stackCount > 0 || totalResolved > 0;
+
+  if (btnUndo) {
+    btnUndo.style.display = canUndo ? 'inline-flex' : 'none';
+    if (undoCountEl) {
+      undoCountEl.textContent = (stackCount > 0 ? stackCount : totalResolved).toString();
+    }
+  }
+
+  if (btnRestore) {
+    btnRestore.style.display = rejectedCount > 0 ? 'inline-flex' : 'none';
+  }
 }
 
 // =============================================================================
@@ -3191,27 +3473,27 @@ async function runNewTradeAnalysis() {
   }
 }
 
-// Attach event listeners to analysis buttons
+// Attach event listeners to analysis, undo & restore buttons
 document.addEventListener('DOMContentLoaded', () => {
   const btnRunNew = document.getElementById('btnRunNewAnalysis');
-  if (btnRunNew) {
-    btnRunNew.addEventListener('click', runNewTradeAnalysis);
-  }
+  if (btnRunNew) btnRunNew.addEventListener('click', runNewTradeAnalysis);
   const btnBanner = document.getElementById('btnBannerAnalyze');
-  if (btnBanner) {
-    btnBanner.addEventListener('click', runNewTradeAnalysis);
-  }
+  if (btnBanner) btnBanner.addEventListener('click', runNewTradeAnalysis);
+  const btnUndo = document.getElementById('btnUndoProposal');
+  if (btnUndo) btnUndo.addEventListener('click', undoLastProposalAction);
+  const btnRestore = document.getElementById('btnRestoreRejected');
+  if (btnRestore) btnRestore.addEventListener('click', restoreAllRejectedProposals);
 });
 
 // Also immediately attach in case DOM is already ready
 const btnRunNewImmediate = document.getElementById('btnRunNewAnalysis');
-if (btnRunNewImmediate) {
-  btnRunNewImmediate.addEventListener('click', runNewTradeAnalysis);
-}
+if (btnRunNewImmediate) btnRunNewImmediate.addEventListener('click', runNewTradeAnalysis);
 const btnBannerImmediate = document.getElementById('btnBannerAnalyze');
-if (btnBannerImmediate) {
-  btnBannerImmediate.addEventListener('click', runNewTradeAnalysis);
-}
+if (btnBannerImmediate) btnBannerImmediate.addEventListener('click', runNewTradeAnalysis);
+const btnUndoImmediate = document.getElementById('btnUndoProposal');
+if (btnUndoImmediate) btnUndoImmediate.addEventListener('click', undoLastProposalAction);
+const btnRestoreImmediate = document.getElementById('btnRestoreRejected');
+if (btnRestoreImmediate) btnRestoreImmediate.addEventListener('click', restoreAllRejectedProposals);
 
 function syncLocalRealStorage() {
   try {

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260924_18">
+  <link rel="stylesheet" href="style.css?v=20260924_19">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -36,7 +36,13 @@
           <span class="live-pulse-dot"></span>
           <h2>⚡ АКТИВНИ ПРЕДЛОЖЕНИЯ С ЛЕВЪРИДЖ (Интерактивно Одобрение)</h2>
         </div>
-        <div class="proposals-header-actions" style="display: flex; gap: 10px; align-items: center;">
+        <div class="proposals-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-undo-action" id="btnUndoProposal" style="display: none;" title="Върни назад последното отхвърлено или одобрено предложение">
+            <span class="undo-icon">↩️</span> Върни назад (<span id="undoCount">0</span>)
+          </button>
+          <button class="btn btn-restore-action" id="btnRestoreRejected" style="display: none;" title="Възстанови всички отхвърлени предложения обратно в списъка">
+            <span>🔄</span> Възстанови отхвърлени
+          </button>
           <button class="btn btn-analyze-banner" id="btnBannerAnalyze" title="Сканирай пазара за нови предложения">
             <span class="analyze-icon">⚡</span> Нов Анализ
           </button>
@@ -476,6 +482,11 @@
 
     <!-- Tab 4: Institutional Trade Calculator -->
     <div class="tab-content-panel" id="tabContentCalculator" style="display: none;">
+      <div class="view-back-bar" id="calcBackBar">
+        <button type="button" class="btn btn-view-back" onclick="navigateBack()" title="Върни се към предходния изглед">
+          <span class="back-arrow">⬅️</span> <span>Върни се назад</span> <span class="back-target" id="calcBackTargetText">(към Скенера)</span>
+        </button>
+      </div>
       <section class="calc-page-layout">
         <div class="calc-input-panel">
           <div class="calc-panel-header">
@@ -703,7 +714,10 @@
           <span class="modal-price" id="modalPrice">$0.00</span>
           <span class="badge badge-gold" id="modalStateBadge">🟡 GOLD</span>
         </div>
-        <div class="chart-modal-actions">
+        <div class="chart-modal-actions" style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-modal-back" id="btnModalBack" title="Върни се назад (Esc)" onclick="closeChartModal()">
+            ⬅️ Назад
+          </button>
           <a href="#" target="_blank" rel="noopener" class="tv-link-btn" id="modalTvBtn">TV ↗</a>
           <button class="modal-close-btn" id="closeModalBtn" title="Close chart">&times;</button>
         </div>
@@ -1069,6 +1083,6 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20260924_18"></script>
+  <script src="app.js?v=20260924_19"></script>
 </body>
 </html>
