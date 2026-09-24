@@ -343,3 +343,210 @@ def test_paper_trader_partial_tp1_scale_out(tmp_path):
 
     # Position is now fully CLOSED
     assert db.get_open_paper_position_by_ticker("SOLUSDT") is None
+
+
+def test_paper_trading_leverage_3x_lifecycle(tmp_path):
+    db_file = str(tmp_path / "leverage_test.db")
+    db = Database(db_file)
+    notifier = MockNotifier()
+
+    trader = PaperTrader(
+        db=db,
+        notifier=notifier,
+        config={
+            "trading": {
+                "enabled": True,
+                "initial_balance_usd": 1000.0,
+                "partial_take_profit": True,
+                "default_position_size_usd": 300.0,
+            }
+        },
+    )
+
+    # 1. Propose BTCUSDT setup with max_leverage=3
+    res = trader.handle_new_signal(
+        ticker="BTCUSDT",
+        timeframe="4H",
+        trade_suggestion={
+            "action": "SPOT_BUY",
+            "direction": "LONG",
+            "entry_price": 60000.0,
+            "stop_loss": 57000.0,
+            "tp1": 66000.0,
+            "tp2": 72000.0,
+            "score": 85,
+            "tier": "A+",
+            "reason_bg": "Конфлуентен пробив",
+            "max_leverage": 3,
+            "recommended_leverage": 2,
+        },
+        current_price=60000.0,
+    )
+    assert res is not None
+    prop_id = res["proposal_id"]
+
+    # Verify Telegram message contains 1x, 2x, 3x interactive buttons
+    assert len(notifier.sent_messages) == 1
+    last_msg = notifier.sent_messages[-1]
+    markup = last_msg["reply_markup"]
+    assert "inline_keyboard" in markup
+    buttons = markup["inline_keyboard"][0]
+    callbacks = [b["callback_data"] for b in buttons]
+    assert f"trade:approve:{prop_id}:1" in callbacks
+    assert f"trade:approve:{prop_id}:2" in callbacks
+    assert f"trade:approve:{prop_id}:3" in callbacks
+
+    # 2. Approve with 3x leverage
+    approve_res = trader.approve_proposal(prop_id, chat_id="12345", leverage=3)
+    assert approve_res["success"] is True
+
+    # Initial cash: $1000. Pos size: $300.
+    # 3x isolated margin required: $300 / 3 = $100.
+    # Entry fee: 300 * 0.001 = $0.30.
+    # Balance should be approx 1000 - 100.30 = $899.70
+    bal = db.get_paper_balance(initial_balance=1000.0)
+    assert round(bal["available_cash"], 2) == 899.70
+
+    # Verify open position DB record
+    pos = db.get_open_paper_position_by_ticker("BTCUSDT")
+    assert pos is not None
+    assert pos["direction"] == "LONG"
+    assert pos["leverage"] == 3
+    assert pos["margin_usd"] == 100.0
+    assert pos["notional_usd"] == 300.0
+    assert pos["liquidation_price"] is not None
+    assert pos["liquidation_price"] < 45000.0
+
+    # 3. Portfolio summary should show 3x LONG tag and correct equity
+    summary_text = trader.get_portfolio_summary()
+    assert "3x LONG" in summary_text
+    assert "BTCUSDT" in summary_text
+    assert "Маржин: <b>$100.00</b>" in summary_text
+
+    # 4. Price moves up from 60,000 to 66,000 (TP1 partial scale-out)
+    events = trader.evaluate_open_positions(prices={"BTCUSDT": 66000.0})
+    assert len(events) == 1
+    assert events[0]["exit_reason"] == "TAKE_PROFIT_1_PARTIAL"
+    # PnL on 50% = (66000 - 60000) * 0.0025 = +$15.00 (gross)
+    assert events[0]["pnl_usd"] > 14.0
+
+
+def test_short_position_lifecycle_and_liquidation(tmp_path):
+    db_file = str(tmp_path / "short_test.db")
+    db = Database(db_file)
+    notifier = MockNotifier()
+
+    trader = PaperTrader(
+        db=db,
+        notifier=notifier,
+        config={
+            "trading": {
+                "enabled": True,
+                "initial_balance_usd": 1000.0,
+                "partial_take_profit": False,
+                "default_position_size_usd": 200.0,
+            }
+        },
+    )
+
+    # 1. Propose SHORT setup with max_leverage=2
+    res = trader.handle_new_signal(
+        ticker="ETHUSDT",
+        timeframe="4H",
+        trade_suggestion={
+            "action": "SHORT_2X_OPTIONAL",
+            "direction": "SHORT",
+            "entry_price": 3000.0,
+            "stop_loss": 3200.0,
+            "tp1": 2700.0,
+            "tp2": 2500.0,
+            "score": 75,
+            "tier": "A",
+            "reason_bg": "Мечи ретест",
+            "max_leverage": 2,
+            "recommended_leverage": 2,
+        },
+        current_price=3000.0,
+    )
+    assert res is not None
+    prop_id = res["proposal_id"]
+
+    # Verify buttons for SHORT: [🟢 Hedge 1x], [⚡ Short 2x]
+    last_msg = notifier.sent_messages[-1]
+    markup = last_msg["reply_markup"]
+    buttons = markup["inline_keyboard"][0]
+    labels = [b["text"] for b in buttons]
+    assert any("1x" in l for l in labels)
+    assert any("Short 2x" in l for l in labels)
+
+    # 2. Approve with 2x leverage
+    approve_res = trader.approve_proposal(prop_id, chat_id="12345", leverage=2)
+    assert approve_res["success"] is True
+
+    pos = db.get_open_paper_position_by_ticker("ETHUSDT")
+    assert pos["direction"] == "SHORT"
+    assert pos["leverage"] == 2
+    assert pos["margin_usd"] == 100.0
+    liq_price = pos["liquidation_price"]
+    assert liq_price is not None
+    assert liq_price > 3200.0  # liquidation price is higher than entry for short
+
+    # 3. Test price rally that triggers liquidation
+    # Liq price for 2x short is 3000 * 1.495 = 4485
+    events = trader.evaluate_open_positions(prices={"ETHUSDT": 4500.0})
+    assert len(events) == 1
+    assert events[0]["exit_reason"] == "LIQUIDATION"
+    # Realized loss on liquidation is 100% of margin
+    assert events[0]["pnl_usd"] == -100.0
+    assert events[0]["pnl_pct"] == -100.0
+
+    # Position is closed
+    assert db.get_open_paper_position_by_ticker("ETHUSDT") is None
+
+
+def test_telegram_listener_parses_leverage_callback(tmp_path):
+    db_file = str(tmp_path / "listener_lev_test.db")
+    db = Database(db_file)
+    notifier = MockNotifier()
+
+    trader = PaperTrader(db=db, notifier=notifier, config={"trading": {"enabled": True, "initial_balance_usd": 1000.0}})
+    listener = TelegramCommandListener(notifier=notifier, db=db, paper_trader=trader)
+
+    # Propose
+    res = trader.handle_new_signal(
+        ticker="BTCUSDT",
+        timeframe="1D",
+        trade_suggestion={
+            "action": "SPOT_BUY",
+            "direction": "LONG",
+            "entry_price": 65000.0,
+            "stop_loss": 62000.0,
+            "tp1": 70000.0,
+            "score": 85,
+            "tier": "A+",
+            "reason_bg": "Breakout",
+            "max_leverage": 3,
+            "recommended_leverage": 2,
+        },
+        current_price=65000.0,
+    )
+    prop_id = res["proposal_id"]
+
+    # Authorized user clicks "trade:approve:{prop_id}:3"
+    auth_update = {
+        "callback_query": {
+            "id": "cb_lev3",
+            "from": {"id": 12345},
+            "message": {"message_id": 1, "chat": {"id": 12345}},
+            "data": f"trade:approve:{prop_id}:3",
+        }
+    }
+    listener.process_update(auth_update)
+    assert len(notifier.answered_callbacks) == 1
+    assert "3x левъридж" in notifier.answered_callbacks[0]["text"]
+    assert "потвърдена" in notifier.answered_callbacks[0]["text"]
+
+    # Verify DB position has leverage 3
+    pos = db.get_open_paper_position_by_ticker("BTCUSDT")
+    assert pos is not None
+    assert pos["leverage"] == 3

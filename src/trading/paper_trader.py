@@ -73,7 +73,7 @@ class PaperTrader:
         if not self.enabled:
             return None
 
-        if not trade_suggestion or trade_suggestion.get("action") != "SPOT_BUY":
+        if not trade_suggestion or trade_suggestion.get("action") not in ["SPOT_BUY", "SHORT_2X_OPTIONAL"]:
             return None
 
         score = trade_suggestion.get("score", 0)
@@ -105,13 +105,15 @@ class PaperTrader:
         # BTC safety check only for crypto assets
         is_crypto = ticker.endswith("USDT") or ticker.endswith("USDC")
         if is_crypto and self.btc_safety_filter and ticker != "BTCUSDT":
-            btc_bullish = self.is_btc_bullish()
-            if direction == "LONG" and not btc_bullish:
-                logger.info(f"[PaperTrader] BTC is in Bearish (BLUE) state on 1D. Skipping altcoin Long proposal {ticker}.")
-                return None
-            elif direction == "SHORT" and btc_bullish:
-                logger.info(f"[PaperTrader] BTC is in Bullish (GOLD) state on 1D. Skipping altcoin Short proposal {ticker}.")
-                return None
+            btc_state_row = self.db.get_current_state("BTCUSDT", "1D")
+            if btc_state_row:
+                btc_state = btc_state_row["current_state"]
+                if direction == "LONG" and btc_state == "BLUE":
+                    logger.info(f"[PaperTrader] BTC is in Bearish (BLUE) state on 1D. Skipping altcoin Long proposal {ticker}.")
+                    return None
+                elif direction == "SHORT" and btc_state == "GOLD":
+                    logger.info(f"[PaperTrader] BTC is in Bullish (GOLD) state on 1D. Skipping altcoin Short proposal {ticker}.")
+                    return None
 
         balance = self.db.get_paper_balance(initial_balance=self.initial_balance)
         pos_size_usd = self.default_position_size

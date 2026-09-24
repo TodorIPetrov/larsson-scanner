@@ -153,3 +153,105 @@ def test_wait_when_rr_too_low():
 
     assert suggestion.action == "WAIT"
     assert suggestion.setup_type == "WAIT_FOR_SETUP"
+
+
+def test_max_allowed_leverage_rules():
+    from src.engine.asset_profiles import get_max_allowed_leverage
+    from src.engine.trade_suggestions import calculate_leverage_matrix
+
+    # Tier S with high score and low ATR% qualifies for 3x
+    lev_btc = get_max_allowed_leverage(
+        ticker="BTCUSDT",
+        asset_class="crypto",
+        score=85,
+        tier="A+",
+        atr_pct=3.0,
+        direction="LONG",
+    )
+    assert lev_btc == 3
+
+    # Tier A stock with solid score qualifies for 3x
+    lev_aapl = get_max_allowed_leverage(
+        ticker="AAPL",
+        asset_class="us_stocks",
+        score=80,
+        tier="A",
+        atr_pct=2.5,
+        direction="LONG",
+    )
+    assert lev_aapl == 3
+
+    # Tier B qualifies for 2x max
+    lev_tier_b = get_max_allowed_leverage(
+        ticker="NEARUSDT",
+        asset_class="crypto",
+        score=70,
+        tier="B",
+        atr_pct=4.0,
+        direction="LONG",
+    )
+    assert lev_tier_b == 2
+
+    # High volatility asset (ATR% >= 6.5%) is restricted to 1x
+    lev_volatile = get_max_allowed_leverage(
+        ticker="MEMEUSDT",
+        asset_class="crypto",
+        score=80,
+        tier="A",
+        atr_pct=7.5,
+        direction="LONG",
+    )
+    assert lev_volatile == 1
+
+    # Tier C is restricted to 1x
+    lev_tier_c = get_max_allowed_leverage(
+        ticker="SHIBUSDT",
+        asset_class="crypto",
+        score=50,
+        tier="NONE",
+        atr_pct=3.0,
+        direction="LONG",
+    )
+    assert lev_tier_c == 1
+
+    # Test leverage matrix calculation
+    matrix_long = calculate_leverage_matrix(
+        entry_price=60000.0,
+        stop_loss=57000.0,
+        position_size_usd=300.0,
+        max_leverage=3,
+        direction="LONG",
+    )
+    lev_map = {m["leverage"]: m for m in matrix_long}
+    assert 1 in lev_map
+    assert 2 in lev_map
+    assert 3 in lev_map
+
+    # 1x Spot
+    assert lev_map[1]["margin_usd"] == 300.0
+    assert lev_map[1]["liquidation_price"] is None
+
+    # 2x Long
+    assert lev_map[2]["margin_usd"] == 150.0
+    assert lev_map[2]["liquidation_price"] < 57000.0  # liquidation far below SL!
+
+    # 3x Long
+    assert lev_map[3]["margin_usd"] == 100.0
+    # Liquidation price for 3x: 60000 * (1 - 1/3 + 0.005) = 60000 * 0.671667 = ~40300
+    assert lev_map[3]["liquidation_price"] < 45000.0
+
+    # Short leverage matrix
+    matrix_short = calculate_leverage_matrix(
+        entry_price=3000.0,
+        stop_loss=3150.0,
+        position_size_usd=200.0,
+        max_leverage=2,
+        direction="SHORT",
+    )
+    short_map = {m["leverage"]: m for m in matrix_short}
+    assert 1 in short_map
+    assert 2 in short_map
+    assert 3 not in short_map
+    assert short_map[2]["margin_usd"] == 100.0
+    # Liquidation price for 2x short: 3000 * (1 + 0.5 - 0.005) = 3000 * 1.495 = 4485
+    assert short_map[2]["liquidation_price"] > 3150.0

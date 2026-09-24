@@ -29,17 +29,17 @@ class PortfolioTracker:
         """
         p_type = portfolio_type.upper()
         if p_type == "REAL":
-            open_positions = self.db.get_open_real_positions()
+            open_positions = [dict(p) for p in self.db.get_open_real_positions()]
             balance = self.db.get_real_balance(initial_balance=0.0)
-            closed_positions = self.db.get_closed_real_positions(limit=10000)
+            closed_positions = [dict(p) for p in self.db.get_closed_real_positions(limit=10000)]
             try:
                 allocation = self.db.get_real_portfolio_allocation()
             except Exception:
                 allocation = {}
         else:
-            open_positions = self.db.get_open_paper_positions()
+            open_positions = [dict(p) for p in self.db.get_open_paper_positions()]
             balance = self.db.get_paper_balance(initial_balance=self.initial_capital)
-            closed_positions = self.db.get_closed_paper_positions(limit=10000)
+            closed_positions = [dict(p) for p in self.db.get_closed_paper_positions(limit=10000)]
             try:
                 allocation = self.db.get_portfolio_allocation()
             except Exception:
@@ -130,9 +130,9 @@ class PortfolioTracker:
         """
         p_type = portfolio_type.upper()
         if p_type == "REAL":
-            open_positions = self.db.get_open_real_positions()
+            open_positions = [dict(p) for p in self.db.get_open_real_positions()]
         else:
-            open_positions = self.db.get_open_paper_positions()
+            open_positions = [dict(p) for p in self.db.get_open_paper_positions()]
 
         details = []
         now = datetime.now(timezone.utc)
@@ -142,13 +142,21 @@ class PortfolioTracker:
             entry = pos["entry_price"]
             units = pos["units"]
             pos_size = pos["position_size_usd"]
+            direction = pos["direction"] if "direction" in pos.keys() and pos["direction"] else "LONG"
+            leverage = pos["leverage"] if "leverage" in pos.keys() and pos["leverage"] else 1
+            margin = pos["margin_usd"] if "margin_usd" in pos.keys() and pos["margin_usd"] else round(pos_size / max(1, leverage), 2)
+            liq_price = pos.get("liquidation_price") if "liquidation_price" in pos.keys() else None
             
             state = self.db.get_current_state(ticker, "4H") or self.db.get_current_state(ticker, "1D")
             current_price = state["last_price"] if state else entry
             
-            val = units * current_price
-            u_pnl = val - pos_size
-            u_pnl_pct = (u_pnl / pos_size * 100.0) if pos_size > 0 else 0.0
+            if direction == "SHORT":
+                u_pnl = (entry - current_price) * units
+            else:
+                u_pnl = (current_price - entry) * units
+                
+            u_pnl_pct = (u_pnl / margin * 100.0) if margin > 0 else 0.0
+            val = max(0.0, margin + u_pnl)
             
             opened_at_str = pos["opened_at"] or now.isoformat()
             try:
@@ -171,7 +179,10 @@ class PortfolioTracker:
             details.append({
                 "position_id": pos["position_id"],
                 "symbol": ticker,
-                "direction": "LONG",
+                "direction": direction,
+                "leverage": leverage,
+                "margin_usd": margin,
+                "liquidation_price": liq_price,
                 "entry_price": entry,
                 "current_price": current_price,
                 "units": units,
@@ -200,9 +211,9 @@ class PortfolioTracker:
         """
         p_type = portfolio_type.upper()
         if p_type == "REAL":
-            closed_positions = self.db.get_closed_real_positions(limit=limit)
+            closed_positions = [dict(p) for p in self.db.get_closed_real_positions(limit=limit)]
         else:
-            closed_positions = self.db.get_closed_paper_positions(limit=limit)
+            closed_positions = [dict(p) for p in self.db.get_closed_paper_positions(limit=limit)]
 
         history = []
         for pos in closed_positions:
@@ -398,10 +409,11 @@ class PortfolioTracker:
             entry = pos["entry_price"]
             sl = pos["stop_loss"]
             units = pos["units"]
+            margin = pos.get("margin_usd", pos.get("position_size_usd", 0.0))
             if sl:
                 risk_usd = abs(entry - sl) * units
             else:
-                risk_usd = 0.0
+                risk_usd = margin
             
             per_position_risk[pos["symbol"]] = risk_usd
             total_risk_usd += risk_usd
@@ -504,7 +516,10 @@ class PortfolioTracker:
             d_sign = "+" if d['unrealized_pnl'] >= 0 else ""
             d_emoji = "🟢" if d['unrealized_pnl'] >= 0 else "🔴"
             broker_str = f" [{d.get('broker_exchange')}]" if d.get('broker_exchange') else ""
-            msg += f"  {d_emoji} {d['symbol']}{broker_str}: {d_sign}${d['unrealized_pnl']:.2f} ({d_sign}{d['unrealized_pnl_pct']:.1f}%)\n"
+            lev = d.get('leverage', 1)
+            dir_str = d.get('direction', 'LONG')
+            mode_tag = f" [{lev}x {dir_str}]" if lev > 1 or dir_str == "SHORT" else ""
+            msg += f"  {d_emoji} {d['symbol']}{mode_tag}{broker_str}: {d_sign}${d['unrealized_pnl']:.2f} ({d_sign}{d['unrealized_pnl_pct']:.1f}%)\n"
             
         if len(details) > 5:
             msg += f"  <i>и още {len(details) - 5} позиции...</i>\n"
