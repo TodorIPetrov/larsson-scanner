@@ -26,8 +26,27 @@
       </div>
     </header>
 
-    <!-- Market Overview / Health Bar -->
-    <section class="overview-section">
+    <!-- Master Navigation Tabs -->
+    <nav class="main-nav-tabs" id="mainNavTabs">
+      <button class="nav-tab-btn active" data-tab="scanner">
+        <span class="tab-icon">📊</span> Скенер на Пазара
+      </button>
+      <button class="nav-tab-btn" data-tab="queue">
+        <span class="tab-icon">🔮</span> Очаквани Сделки (Queue)
+        <span class="tab-badge" id="queueCountBadge">0</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="portfolio">
+        <span class="tab-icon">💼</span> Портфолио &amp; Сделки
+      </button>
+      <button class="nav-tab-btn" data-tab="calculator">
+        <span class="tab-icon">🧮</span> Калкулатор на Сделки
+      </button>
+    </nav>
+
+    <!-- Tab 1: Scanner View (Default) -->
+    <div class="tab-content-panel active" id="tabContentScanner">
+      <!-- Market Overview / Health Bar -->
+      <section class="overview-section">
       <div class="meter-card">
         <div class="meter-header">
           <span class="meter-title">Market Sentiment Ratio</span>
@@ -231,8 +250,311 @@
         <!-- Rendered dynamically by app.js -->
       </div>
     </section>
+    </div> <!-- End Tab 1: tabContentScanner -->
 
-    <footer class="footer">
+    <!-- Tab 2: Pending Setups Queue -->
+    <div class="tab-content-panel" id="tabContentQueue" style="display: none;">
+      <section class="queue-header-section">
+        <div class="queue-intro">
+          <div class="queue-title-badge">
+            <span class="live-pulse-dot"></span>
+            <h2>🔮 Очаквани Сделки и Структури (1-3 Бара Напред)</h2>
+          </div>
+          <p class="queue-subtitle">
+            Проактивно идентифициране на качествени активи (Tier S / A / B), наближаващи потвърждение:
+            <strong>Imminent Gold Transition</strong>, <strong>Quality Dip Buy</strong>, <strong>S/R Тест</strong>, <strong>Акумулация</strong> и <strong>Дивергенции</strong>.
+          </p>
+        </div>
+
+        <div class="queue-filter-bar">
+          <div class="filter-group" id="queuePriorityFilters">
+            <span class="filter-badge-lbl">Приоритет:</span>
+            <button class="filter-btn active" data-queue-prio="ALL">Всички</button>
+            <button class="filter-btn filter-ruby" data-queue-prio="HIGH">🔴 Висок (HIGH)</button>
+            <button class="filter-btn filter-amber" data-queue-prio="MEDIUM">🟡 Среден (MEDIUM)</button>
+            <button class="filter-btn filter-cyan" data-queue-prio="LOW">🟢 Нисък (LOW)</button>
+          </div>
+          <div class="filter-group" id="queueTierFilters">
+            <span class="filter-badge-lbl">Качество:</span>
+            <button class="filter-btn active" data-queue-tier="ALL">Всички Tiers</button>
+            <button class="filter-btn filter-purple" data-queue-tier="S">💎 Tier S (Blue Chip)</button>
+            <button class="filter-btn filter-gold" data-queue-tier="A">⭐ Tier A (Quality Growth)</button>
+            <button class="filter-btn filter-cyan" data-queue-tier="B">🔵 Tier B</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="queue-grid-container" id="queueGridContainer">
+        <div class="queue-cards-grid" id="queueCardsGrid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </section>
+    </div> <!-- End Tab 2: tabContentQueue -->
+
+    <!-- Tab 3: Portfolio & Trade Journal -->
+    <div class="tab-content-panel port-mode-real" id="tabContentPortfolio" style="display: none;">
+      <!-- 1. Portfolio Mode Dual Switcher (Prominent at top) -->
+      <section class="portfolio-mode-header">
+        <div class="port-mode-switch-wrapper">
+          <div class="port-mode-toggle-group">
+            <button class="port-mode-btn port-btn-real active" id="portModeRealBtn" data-port-mode="REAL">
+              <span class="port-mode-indicator dot-real"></span>
+              <span class="port-mode-title">🟢 РЕАЛЕН КАПИТАЛ &amp; СМЕТКИ</span>
+              <span class="port-mode-badge-tag">LIVE TRADING</span>
+            </button>
+            <button class="port-mode-btn port-btn-paper" id="portModePaperBtn" data-port-mode="PAPER">
+              <span class="port-mode-indicator dot-paper"></span>
+              <span class="port-mode-title">🧪 ТЕСТОВ СИМУЛАТОР (PAPER)</span>
+              <span class="port-mode-badge-tag">SIMULATION</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode Descriptive Banner -->
+        <div class="port-active-mode-banner" id="portModeBanner">
+          <div class="port-banner-content">
+            <div class="port-banner-badge" id="portBannerBadge">🟢 РЕАЛНИ СРЕДСТВА &amp; БРОКЕРИ</div>
+            <p class="port-banner-desc" id="portBannerDesc">
+              Управление на реални позиции от брокери и борси (Binance, Interactive Brokers, Revolut и др.). Всички суми са действителен капитал.
+            </p>
+          </div>
+          <div class="port-banner-actions" id="portBannerActions">
+            <button class="btn btn-add-real" id="openAddRealModalBtn">➕ Добави Реална Позиция</button>
+            <button class="btn btn-set-cash" id="openSetCashModalBtn">💵 Задай Кеш Баланс</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Portfolio Metrics Cards -->
+      <section class="portfolio-metrics-section">
+        <div class="portfolio-stats-grid">
+          <div class="portfolio-stat-card card-equity">
+            <span class="stat-lbl">Общ Капитал (Equity)</span>
+            <strong class="stat-val stat-equity-val" id="portTotalEquity">$0.00</strong>
+            <span class="stat-sub" id="portInitialBalance">Базов депозит: $0.00</span>
+          </div>
+          <div class="portfolio-stat-card card-cash">
+            <span class="stat-lbl">Свободен Кеш (USD/USDT)</span>
+            <strong class="stat-val" id="portAvailableCash">$0.00</strong>
+            <span class="stat-sub" id="portCashAlloc">100% ликвиден</span>
+          </div>
+          <div class="portfolio-stat-card card-invested">
+            <span class="stat-lbl">В Позиции (Invested)</span>
+            <strong class="stat-val" id="portInvested">$0.00</strong>
+            <span class="stat-sub" id="portOpenCount">0 активни позиции</span>
+          </div>
+          <div class="portfolio-stat-card stat-card-pnl card-unrealized">
+            <span class="stat-lbl">Нереализиран P&amp;L</span>
+            <strong class="stat-val" id="portUnrealizedPnl">+$0.00</strong>
+            <span class="stat-sub" id="portUnrealizedPct">(+0.00%)</span>
+          </div>
+          <div class="portfolio-stat-card stat-card-realized card-realized">
+            <span class="stat-lbl">Реализиран P&amp;L (Затворени)</span>
+            <strong class="stat-val" id="portRealizedPnl">$0.00</strong>
+            <span class="stat-sub" id="portWinRate">Win Rate: 0.0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Open Positions Section -->
+      <section class="portfolio-positions-section">
+        <div class="section-title-bar">
+          <div class="section-title-left">
+            <span class="title-accent-dot" id="portPositionsAccent"></span>
+            <h3 id="portPositionsHeading">📈 Активни Отворени Позиции (Mark-to-Market)</h3>
+          </div>
+          <span class="badge" id="portActiveBadge">0 Активни</span>
+        </div>
+        <div class="table-container">
+          <table class="assets-table">
+            <thead>
+              <tr>
+                <th>Актив</th>
+                <th>Клас &amp; Tier</th>
+                <th>Брокер / Борса</th>
+                <th>Входна Цена</th>
+                <th>Текуща Цена</th>
+                <th>Количество &amp; Стойност</th>
+                <th>Stop-Loss</th>
+                <th>Take-Profit</th>
+                <th>Нереализиран P&amp;L</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="portPositionsBody">
+              <tr>
+                <td colspan="10" class="loading-state">Няма активни позиции в момента.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. Trade History / Journal Section -->
+      <section class="portfolio-journal-section">
+        <div class="section-title-bar">
+          <div class="section-title-left">
+            <span class="title-accent-dot" id="portJournalAccent"></span>
+            <h3 id="portJournalHeading">📖 Търговски Дневник &amp; История на Сделките</h3>
+          </div>
+          <span class="badge" id="portJournalCountBadge">0 Сделки</span>
+        </div>
+        <div class="table-container">
+          <table class="assets-table">
+            <thead>
+              <tr>
+                <th>Дата / Час</th>
+                <th>Актив</th>
+                <th>Брокер / Тип</th>
+                <th>Действие</th>
+                <th>Входна Цена</th>
+                <th>Изходна Цена</th>
+                <th>Реализиран PnL</th>
+                <th>Време в позиция</th>
+                <th>Бележки / Причина</th>
+              </tr>
+            </thead>
+            <tbody id="portJournalBody">
+              <tr>
+                <td colspan="9" class="loading-state">Няма регистрирани сделки в дневника.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div> <!-- End Tab 3: tabContentPortfolio -->
+
+    <!-- Tab 4: Institutional Trade Calculator -->
+    <div class="tab-content-panel" id="tabContentCalculator" style="display: none;">
+      <section class="calc-page-layout">
+        <div class="calc-input-panel">
+          <div class="calc-panel-header">
+            <h3>🧮 Параметри на Сделката</h3>
+            <span class="calc-badge">Institutional 1% Risk</span>
+          </div>
+
+          <div class="calc-form-grid">
+            <div class="form-group">
+              <label for="pageCalcCapital">Портфолио Капитал ($)</label>
+              <input type="number" id="pageCalcCapital" value="10000" step="500">
+            </div>
+
+            <div class="form-group">
+              <label>Риск на сделка (% от капитал)</label>
+              <div class="risk-presets" id="pageRiskPresets">
+                <button type="button" class="preset-btn" data-risk="0.5">0.5%</button>
+                <button type="button" class="preset-btn active" data-risk="1.0">1.0%</button>
+                <button type="button" class="preset-btn" data-risk="2.0">2.0%</button>
+                <button type="button" class="preset-btn" data-risk="3.0">3.0%</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="pageCalcTicker">Тикер / Символ</label>
+              <input type="text" id="pageCalcTicker" value="NVDA" placeholder="e.g. BTCUSDT, NVDA, AAPL">
+            </div>
+
+            <div class="form-group">
+              <label for="pageCalcTier">Качествен Ранг (Quality Tier)</label>
+              <select id="pageCalcTier">
+                <option value="S">💎 Tier S (Blue Chip — 100% размер)</option>
+                <option value="A" selected>⭐ Tier A (Quality Growth — 85% размер)</option>
+                <option value="B">🔵 Tier B (Promising — 60% размер)</option>
+                <option value="C">⚪ Tier C (Speculative — 30% размер)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pageCalcEntry">Входна Цена ($)</label>
+              <input type="number" id="pageCalcEntry" value="120.00" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="pageCalcSl">Stop-Loss Ниво ($)</label>
+              <input type="number" id="pageCalcSl" value="114.00" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="pageCalcTp1">Take-Profit 1 ($)</label>
+              <input type="number" id="pageCalcTp1" value="132.00" step="0.01">
+            </div>
+
+            <div class="form-group">
+              <label for="pageCalcTp2">Take-Profit 2 ($)</label>
+              <input type="number" id="pageCalcTp2" value="145.00" step="0.01">
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-results-panel">
+          <div class="calc-panel-header">
+            <h3>📊 Резултат и Управление на Риска</h3>
+            <span class="calc-badge-green" id="pageCalcRrBadge">R:R 1:2.00</span>
+          </div>
+
+          <div class="calc-outputs-grid">
+            <div class="calc-out-card">
+              <span class="calc-out-label">Препоръчан Обем:</span>
+              <strong class="calc-out-value highlight-val" id="pageCalcUnits">16.66 бр.</strong>
+              <span class="calc-out-sub" id="pageCalcVal">Стойност: $2,000.00</span>
+            </div>
+
+            <div class="calc-out-card">
+              <span class="calc-out-label">Максимален Риск (SL):</span>
+              <strong class="calc-out-value danger-val" id="pageCalcRiskUsd">-$100.00</strong>
+              <span class="calc-out-sub" id="pageCalcRiskPct">-5.00% от цената</span>
+            </div>
+
+            <div class="calc-out-card">
+              <span class="calc-out-label">Печалба при TP1 (50% scale):</span>
+              <strong class="calc-out-value success-val" id="pageCalcTp1Profit">+$100.00</strong>
+              <span class="calc-out-sub">След TP1: SL към Breakeven</span>
+            </div>
+
+            <div class="calc-out-card">
+              <span class="calc-out-label">Печалба при TP2 (остатък):</span>
+              <strong class="calc-out-value success-val" id="pageCalcTp2Profit">+$208.33</strong>
+              <span class="calc-out-sub">Обща възможна печалба: +$308.33</span>
+            </div>
+          </div>
+
+          <!-- Staggered DCA Plan Card -->
+          <div class="calc-dca-plan-card">
+            <h4>🧱 Институционален DCA План за Вход:</h4>
+            <div class="dca-steps">
+              <div class="dca-step">
+                <span class="dca-step-badge">50%</span>
+                <span class="dca-step-text" id="pageDcaStep1">Пазарен вход на $120.00 (8.33 бр. = $1,000.00)</span>
+              </div>
+              <div class="dca-step">
+                <span class="dca-step-badge">50%</span>
+                <span class="dca-step-text" id="pageDcaStep2">Лимитна поръчка на динамична S1 подкрепа (8.33 бр. = $1,000.00)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Compound Growth Projector -->
+          <div class="compound-growth-card">
+            <h4>📈 Проекция на Капитала (Compound Growth):</h4>
+            <div class="compound-metrics">
+              <div class="compound-col">
+                <span>3 Месеца:</span>
+                <strong id="compound3m">$11,250</strong>
+              </div>
+              <div class="compound-col">
+                <span>6 Месеца:</span>
+                <strong id="compound6m">$12,650</strong>
+              </div>
+              <div class="compound-col">
+                <span>12 Месеца:</span>
+                <strong id="compound12m">$16,000</strong>
+              </div>
+            </div>
+            <p class="compound-note">* Базирано на 1% риск на сделка, 60% win rate и 1:2.0 R:R съотношение при 3 сделки седмично.</p>
+          </div>
+        </div>
+      </section>
+    </div> <!-- End Tab 4: tabContentCalculator -->
       <p>Larsson Line Scanner • 100% Free & Open Source Stack • <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>
     </footer>
   </div>
@@ -250,6 +572,12 @@
             <button class="modal-tf-btn" data-tf="1W">1W</button>
           </div>
         </div>
+        <div class="chart-modal-nav-tabs" id="modalNavTabs">
+          <button class="modal-nav-tab active" data-target="chartCanvasContainer">📊 Графика</button>
+          <button class="modal-nav-tab" data-target="modalSynthBanner">🎯 Синтез</button>
+          <button class="modal-nav-tab" data-target="modalDualHud">🏢 DCF Анализ</button>
+          <button class="modal-nav-tab" data-target="modalPosCalcStrip">🧮 Калкулатор</button>
+        </div>
         <div class="chart-modal-price-area">
           <span class="modal-price" id="modalPrice">$0.00</span>
           <span class="badge badge-gold" id="modalStateBadge">🟡 GOLD</span>
@@ -260,148 +588,299 @@
         </div>
       </div>
 
-      <!-- Dual-Pillar Analysis HUD: Technical vs Fundamental -->
-      <div class="modal-dual-hud">
-        <!-- 📐 Technical Analysis Card -->
-        <div class="hud-card hud-tech-card">
-          <div class="hud-card-header">
-            <span class="hud-tag hud-tag-tech">📐 ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon)</span>
-            <span class="badge badge-gold" id="modalTechStateBadge">🟡 GOLD</span>
+      <!-- Scrollable Modal Body -->
+      <div class="chart-modal-body" id="chartModalBody">
+        <!-- 1. Interactive Chart Canvas Container (Front & Center) -->
+        <div class="chart-canvas-container" id="chartCanvasContainer">
+          <div id="chartCanvas"></div>
+          <div class="chart-loading-overlay" id="chartLoading">
+            <div class="spinner"></div>
+            <span>Loading candles & calculating S/R zones...</span>
           </div>
-          <div class="hud-body">
-            <div class="hud-main-action" id="modalTechAction">🟢 Вход при тест на S1</div>
-            <div class="hud-details-grid">
-              <div><span class="lbl">Лента Spread:</span> <strong id="modalTechSpread">+0.0%</strong></div>
-              <div><span class="lbl">Подкрепа S1:</span> <strong id="modalS1">$0.00</strong></div>
-              <div><span class="lbl">Съпротива R1:</span> <strong id="modalR1">$0.00</strong></div>
-              <div><span class="lbl">ATR Волатилност:</span> <strong id="modalAtr">$0.00</strong></div>
+        </div>
+
+        <!-- 2. Chart Legend -->
+        <div class="chart-modal-footer">
+          <div class="ribbon-legend">
+            <span><b>Larsson Ribbon:</b></span>
+            <span class="legend-chip smma-15">SMMA 15</span>
+            <span class="legend-chip smma-19">SMMA 19</span>
+            <span class="legend-chip smma-25">SMMA 25</span>
+            <span class="legend-chip smma-29">SMMA 29</span>
+          </div>
+          <div class="sr-legend">
+            <span class="legend-chip sr-res-chip">🔴 Resistance Zone (R1)</span>
+            <span class="legend-chip sr-sup-chip">🟢 Support Zone (S1)</span>
+            <span class="legend-chip legend-entry">🔹 Entry Line</span>
+            <span class="legend-chip legend-sl">🛑 Stop-Loss</span>
+            <span class="legend-chip legend-tp">🎯 Targets (TP1/TP2)</span>
+            <span class="legend-chip" style="color: #c084fc; border-color: #c084fc; background: rgba(192, 132, 252, 0.15);">🎯 DCF Fair Value</span>
+          </div>
+        </div>
+
+        <!-- Quick Jump to Analysis Bar -->
+        <div class="chart-scroll-hint-bar" id="chartScrollHintBar">
+          <span>📜 Виж пълен тристепенен анализ, нива и калкулатор за риск</span>
+          <span class="scroll-arrow">↓</span>
+        </div>
+
+        <!-- 3. 🎯 Quantamental Synthesis Banner -->
+        <div class="modal-synth-banner" id="modalSynthBanner">
+          <div class="synth-banner-top">
+            <div class="synth-badge-group">
+              <span class="synth-badge" id="modalSetupAction">⭐ ALPHA BUY</span>
+              <span class="setup-tier-badge" id="modalSetupTier">🏆 Tier A+</span>
+              <span class="setup-type-label" id="modalSetupType">Pullback Value Buy</span>
             </div>
-            <div class="hud-thesis" id="modalTechThesis">Установен бичи тренд с възходящо подреждане на панделката.</div>
-          </div>
-        </div>
-
-        <!-- 🏢 Fundamental Analysis Card -->
-        <div class="hud-card hud-fund-card">
-          <div class="hud-card-header">
-            <span class="hud-tag hud-tag-fund">🏢 ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF Valuation)</span>
-            <span class="fund-moat-pill" id="modalFundMoatPill">💎 Wide Moat</span>
-          </div>
-          <div class="hud-body">
-            <div class="hud-main-action" id="modalFundAction">🟢 СИЛНО ПОДЦЕНЕН (+34% MoS)</div>
-            <div class="hud-details-grid">
-              <div><span class="lbl">DCF Стойност:</span> <strong id="modalFundFairValue">$0.00</strong></div>
-              <div><span class="lbl">Margin of Safety:</span> <strong id="modalFundMos">0%</strong></div>
-              <div><span class="lbl">Икономически ров:</span> <strong id="modalFundMoat">Wide Moat</strong></div>
-              <div><span class="lbl">Z-Score здраве:</span> <strong id="modalFundZScore">3.50</strong></div>
+            <div class="synth-confluence-text" id="modalSynthConfluence">
+              Пълен консенсус: Бича техническа панделка в синергия с дълбоко подценен фундамент.
             </div>
-            <div class="hud-thesis" id="modalFundThesis">Лидер с широк ров и висок свободен паричен поток.</div>
           </div>
-        </div>
-      </div>
-
-      <!-- 🎯 Quantamental Synthesis Banner -->
-      <div class="modal-synth-banner" id="modalSynthBanner">
-        <div class="synth-banner-top">
-          <div class="synth-badge-group">
-            <span class="synth-badge" id="modalSetupAction">⭐ ALPHA BUY</span>
-            <span class="setup-tier-badge" id="modalSetupTier">🏆 Tier A+</span>
-            <span class="setup-type-label" id="modalSetupType">Pullback Value Buy</span>
-          </div>
-          <div class="synth-confluence-text" id="modalSynthConfluence">
-            Пълен консенсус: Бича техническа панделка в синергия с дълбоко подценен фундамент.
-          </div>
-        </div>
-        <div class="setup-metrics-grid">
-          <div class="setup-metric">
-            <span class="lbl">Вход</span>
-            <strong id="modalSetupEntry">$0.00</strong>
-          </div>
-          <div class="setup-metric">
-            <span class="lbl">🛑 Stop-Loss (SL)</span>
-            <strong class="text-danger" id="modalSetupSl">$0.00</strong>
-          </div>
-          <div class="setup-metric">
-            <span class="lbl">🎯 Take-Profit 1</span>
-            <strong class="text-success" id="modalSetupTp1">$0.00</strong>
-          </div>
-          <div class="setup-metric">
-            <span class="lbl">🎯 Take-Profit 2</span>
-            <strong class="text-success" id="modalSetupTp2">$0.00</strong>
-          </div>
-          <div class="setup-metric">
-            <span class="lbl">Съотношение R:R</span>
-            <strong id="modalSetupRr">1 : 2.5</strong>
-          </div>
-        </div>
-        <div class="setup-reason-box" id="modalSetupReason">
-          Pullback to major support S1 in bullish trend.
-        </div>
-      </div>
-
-      <!-- Position Sizing & Staggered DCA Calculator HUD -->
-      <div class="chart-pos-calc-strip" id="modalPosCalcStrip">
-        <div class="pos-calc-header">
-          <span>🧮 <b>Position Sizing & Risk Management Calculator</b></span>
-          <span class="pos-dca-pill" id="modalDcaPill" style="display: none;">🧱 50% Market + 50% Limit S1</span>
-        </div>
-        <div class="pos-calc-body">
-          <div class="pos-input-group">
-            <label>Portfolio Equity ($):</label>
-            <input type="number" id="calcAccountSize" value="10000" min="100" step="500">
-          </div>
-          <div class="pos-input-group">
-            <label>Risk Per Trade (%):</label>
-            <div class="risk-presets" id="riskPresets">
-              <button class="risk-btn" data-risk="0.5">0.5%</button>
-              <button class="risk-btn active" data-risk="1.0">1.0%</button>
-              <button class="risk-btn" data-risk="2.0">2.0%</button>
+          <div class="setup-metrics-grid">
+            <div class="setup-metric">
+              <span class="lbl">Вход</span>
+              <strong id="modalSetupEntry">$0.00</strong>
             </div>
-            <input type="number" id="calcRiskPct" value="1.0" min="0.1" max="10.0" step="0.1" style="width: 65px;">
+            <div class="setup-metric">
+              <span class="lbl">🛑 Stop-Loss (SL)</span>
+              <strong class="text-danger" id="modalSetupSl">$0.00</strong>
+            </div>
+            <div class="setup-metric">
+              <span class="lbl">🎯 Take-Profit 1</span>
+              <strong class="text-success" id="modalSetupTp1">$0.00</strong>
+            </div>
+            <div class="setup-metric">
+              <span class="lbl">🎯 Take-Profit 2</span>
+              <strong class="text-success" id="modalSetupTp2">$0.00</strong>
+            </div>
+            <div class="setup-metric">
+              <span class="lbl">Съотношение R:R</span>
+              <strong id="modalSetupRr">1 : 2.5</strong>
+            </div>
           </div>
-          <div class="pos-result-box">
-            <span class="lbl">Shares / Coins to Buy</span>
-            <strong id="calcUnits">0</strong>
+          <div class="setup-reason-box" id="modalSetupReason">
+            Pullback to major support S1 in bullish trend.
           </div>
-          <div class="pos-result-box">
-            <span class="lbl">Total Position Value</span>
-            <strong id="calcPosValue">$0.00</strong>
+        </div>
+
+        <!-- 4. Dual-Pillar Analysis HUD: Technical vs Fundamental -->
+        <div class="modal-dual-hud" id="modalDualHud">
+          <!-- 📐 Technical Analysis Card -->
+          <div class="hud-card hud-tech-card">
+            <div class="hud-card-header">
+              <span class="hud-tag hud-tag-tech">📐 ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon)</span>
+              <span class="badge badge-gold" id="modalTechStateBadge">🟡 GOLD</span>
+            </div>
+            <div class="hud-body">
+              <div class="hud-main-action" id="modalTechAction">🟢 Вход при тест на S1</div>
+              <div class="hud-details-grid">
+                <div><span class="lbl">Лента Spread:</span> <strong id="modalTechSpread">+0.0%</strong></div>
+                <div><span class="lbl">Подкрепа S1:</span> <strong id="modalS1">$0.00</strong></div>
+                <div><span class="lbl">Съпротива R1:</span> <strong id="modalR1">$0.00</strong></div>
+                <div><span class="lbl">ATR Волатилност:</span> <strong id="modalAtr">$0.00</strong></div>
+              </div>
+              <div class="hud-thesis" id="modalTechThesis">Установен бичи тренд с възходящо подреждане на панделката.</div>
+            </div>
           </div>
-          <div class="pos-result-box">
-            <span class="lbl">Max Risk (SL Loss)</span>
-            <strong class="text-danger" id="calcRiskUsd">-$0.00</strong>
+
+          <!-- 🏢 Fundamental Analysis Card -->
+          <div class="hud-card hud-fund-card">
+            <div class="hud-card-header">
+              <span class="hud-tag hud-tag-fund">🏢 ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF Valuation)</span>
+              <span class="fund-moat-pill" id="modalFundMoatPill">💎 Wide Moat</span>
+            </div>
+            <div class="hud-body">
+              <div class="hud-main-action" id="modalFundAction">🟢 СИЛНО ПОДЦЕНЕН (+34% MoS)</div>
+              <div class="hud-details-grid">
+                <div><span class="lbl">DCF Стойност:</span> <strong id="modalFundFairValue">$0.00</strong></div>
+                <div><span class="lbl">Margin of Safety:</span> <strong id="modalFundMos">0%</strong></div>
+                <div><span class="lbl">Икономически ров:</span> <strong id="modalFundMoat">Wide Moat</strong></div>
+                <div><span class="lbl">Z-Score здраве:</span> <strong id="modalFundZScore">3.50</strong></div>
+              </div>
+              <div class="hud-thesis" id="modalFundThesis">Лидер с широк ров и висок свободен паричен поток.</div>
+            </div>
           </div>
-          <div class="pos-result-box">
-            <span class="lbl">Target Profit (TP1)</span>
-            <strong class="text-success" id="calcTp1Usd">+$0.00</strong>
+        </div>
+
+        <!-- 5. Position Sizing & Staggered DCA Calculator HUD -->
+        <div class="chart-pos-calc-strip" id="modalPosCalcStrip">
+          <div class="pos-calc-header">
+            <span>🧮 <b>Position Sizing & Risk Management Calculator</b></span>
+            <span class="pos-dca-pill" id="modalDcaPill" style="display: none;">🧱 50% Market + 50% Limit S1</span>
           </div>
+          <div class="pos-calc-body">
+            <div class="pos-input-group">
+              <label>Portfolio Equity ($):</label>
+              <input type="number" id="calcAccountSize" value="10000" min="100" step="500">
+            </div>
+            <div class="pos-input-group">
+              <label>Risk Per Trade (%):</label>
+              <div class="risk-presets" id="riskPresets">
+                <button class="risk-btn" data-risk="0.5">0.5%</button>
+                <button class="risk-btn active" data-risk="1.0">1.0%</button>
+                <button class="risk-btn" data-risk="2.0">2.0%</button>
+              </div>
+              <input type="number" id="calcRiskPct" value="1.0" min="0.1" max="10.0" step="0.1" style="width: 65px;">
+            </div>
+            <div class="pos-result-box">
+              <span class="lbl">Shares / Coins to Buy</span>
+              <strong id="calcUnits">0</strong>
+            </div>
+            <div class="pos-result-box">
+              <span class="lbl">Total Position Value</span>
+              <strong id="calcPosValue">$0.00</strong>
+            </div>
+            <div class="pos-result-box">
+              <span class="lbl">Max Risk (SL Loss)</span>
+              <strong class="text-danger" id="calcRiskUsd">-$0.00</strong>
+            </div>
+            <div class="pos-result-box">
+              <span class="lbl">Target Profit (TP1)</span>
+              <strong class="text-success" id="calcTp1Usd">+$0.00</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Back to Chart Bar -->
+        <div class="modal-back-to-top-bar" id="modalBackToTopBar">
+          <span>↑ Към Графиката (Back to Chart)</span>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Chart Container -->
-      <div class="chart-canvas-container" id="chartCanvasContainer">
-        <div id="chartCanvas"></div>
-        <div class="chart-loading-overlay" id="chartLoading">
-          <div class="spinner"></div>
-          <span>Loading candles & calculating S/R zones...</span>
+  <!-- Real Portfolio Modal 1: Add Real Money Position -->
+  <div class="chart-modal-backdrop real-form-modal-backdrop" id="addRealModal" style="display: none;">
+    <div class="chart-modal-content real-modal-box">
+      <div class="chart-modal-header real-modal-header">
+        <div class="real-modal-title">
+          <span class="port-mode-indicator dot-real"></span>
+          <h3>➕ Добави Реална Позиция (Live Execution)</h3>
         </div>
+        <button class="modal-close-btn" id="closeAddRealModalBtn">&times;</button>
       </div>
+      <div class="real-modal-body">
+        <p class="real-modal-intro">
+          Въведете действителна позиция от вашия брокер или крипто борса. Позицията ще се следи с реална стойност и Mark-to-Market P&amp;L.
+        </p>
+        <form id="addRealPositionForm" onsubmit="return false;">
+          <div class="real-form-grid">
+            <div class="form-group">
+              <label for="realTicker">Тикер / Символ *</label>
+              <input type="text" id="realTicker" placeholder="напр. BTCUSDT, NVDA, AAPL" required>
+            </div>
+            <div class="form-group">
+              <label for="realAssetClass">Клас Актив *</label>
+              <select id="realAssetClass">
+                <option value="crypto" selected>🪙 Crypto</option>
+                <option value="us_stocks">🏛️ US Stocks</option>
+                <option value="ai_stocks">🤖 AI Stocks</option>
+                <option value="crypto_stocks">⚡ Crypto Stocks</option>
+                <option value="intl_stocks">🌍 Europe &amp; Global</option>
+                <option value="commodities">⛏️ Commodities</option>
+                <option value="indices">📈 Indices</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="realBroker">Брокер / Борса *</label>
+              <input type="text" id="realBroker" placeholder="Interactive Brokers, Binance, Revolut..." value="Interactive Brokers">
+            </div>
+            <div class="form-group">
+              <label for="realEntryPrice">Входна Цена ($) *</label>
+              <input type="number" id="realEntryPrice" step="any" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+              <label for="realUnits">Количество (Units) *</label>
+              <input type="number" id="realUnits" step="any" placeholder="1.0" required>
+            </div>
+            <div class="form-group">
+              <label for="realFee">Платена Такса / Комисионна ($)</label>
+              <input type="number" id="realFee" step="any" placeholder="0.00" value="0.00">
+            </div>
+            <div class="form-group">
+              <label for="realSl">Stop-Loss Ниво ($)</label>
+              <input type="number" id="realSl" step="any" placeholder="Опционално">
+            </div>
+            <div class="form-group">
+              <label for="realTp1">Take-Profit 1 ($)</label>
+              <input type="number" id="realTp1" step="any" placeholder="Опционално">
+            </div>
+            <div class="form-group full-width">
+              <label for="realNotes">Бележки / Стратегия</label>
+              <input type="text" id="realNotes" placeholder="напр. Вход при Larsson Ribbon Gold breakout">
+            </div>
+          </div>
+          <div class="real-modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelAddRealModalBtn">Отказ</button>
+            <button type="submit" class="btn btn-primary-real" id="submitAddRealBtn">✅ Запиши в Реално Портфолио</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-      <div class="chart-modal-footer">
-        <div class="ribbon-legend">
-          <span><b>Larsson Ribbon:</b></span>
-          <span class="legend-chip smma-15">SMMA 15</span>
-          <span class="legend-chip smma-19">SMMA 19</span>
-          <span class="legend-chip smma-25">SMMA 25</span>
-          <span class="legend-chip smma-29">SMMA 29</span>
+  <!-- Real Portfolio Modal 2: Set Real Cash Balance -->
+  <div class="chart-modal-backdrop real-form-modal-backdrop" id="setCashModal" style="display: none;">
+    <div class="chart-modal-content real-modal-box real-modal-sm">
+      <div class="chart-modal-header real-modal-header">
+        <div class="real-modal-title">
+          <span class="port-mode-indicator dot-real"></span>
+          <h3>💵 Задай Свободен Кеш Баланс</h3>
         </div>
-        <div class="sr-legend">
-          <span class="legend-chip sr-res-chip">🔴 Resistance Zone (R1)</span>
-          <span class="legend-chip sr-sup-chip">🟢 Support Zone (S1)</span>
-          <span class="legend-chip legend-entry">🔹 Entry Line</span>
-          <span class="legend-chip legend-sl">🛑 Stop-Loss</span>
-          <span class="legend-chip legend-tp">🎯 Targets (TP1/TP2)</span>
-          <span class="legend-chip" style="color: #c084fc; border-color: #c084fc; background: rgba(192, 132, 252, 0.15);">🎯 DCF Fair Value</span>
+        <button class="modal-close-btn" id="closeSetCashModalBtn">&times;</button>
+      </div>
+      <div class="real-modal-body">
+        <p class="real-modal-intro">
+          Въведете наличния свободен ликвиден капитал по сметките ви (USD/USDT/EUR).
+        </p>
+        <form id="setRealCashForm" onsubmit="return false;">
+          <div class="form-group">
+            <label for="realCashAmount">Наличен Кеш ($) *</label>
+            <input type="number" id="realCashAmount" step="any" placeholder="10000.00" required>
+          </div>
+          <div class="real-modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelSetCashModalBtn">Отказ</button>
+            <button type="submit" class="btn btn-primary-real" id="submitSetCashBtn">💾 Актуализирай Баланс</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real Portfolio Modal 3: Close Real Position -->
+  <div class="chart-modal-backdrop real-form-modal-backdrop" id="closeRealModal" style="display: none;">
+    <div class="chart-modal-content real-modal-box real-modal-sm">
+      <div class="chart-modal-header real-modal-header">
+        <div class="real-modal-title">
+          <span class="port-mode-indicator dot-real"></span>
+          <h3>🔴 Затваряне на Реална Позиция</h3>
         </div>
+        <button class="modal-close-btn" id="closeCloseRealModalBtn">&times;</button>
+      </div>
+      <div class="real-modal-body">
+        <div class="close-pos-summary" id="closePosSummary">
+          <!-- Filled dynamically -->
+        </div>
+        <form id="closeRealPositionForm" onsubmit="return false;">
+          <input type="hidden" id="closeRealPosId">
+          <input type="hidden" id="closeRealTicker">
+          <div class="form-group">
+            <label for="closeRealExitPrice">Цена на Изход ($) *</label>
+            <input type="number" id="closeRealExitPrice" step="any" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label for="closeRealFee">Изходна Такса / Комисионна ($)</label>
+            <input type="number" id="closeRealFee" step="any" placeholder="0.00" value="0.00">
+          </div>
+          <div class="form-group">
+            <label for="closeRealNotes">Причина / Бележки</label>
+            <input type="text" id="closeRealNotes" placeholder="напр. Достигнат TP1, ръчно затваряне">
+          </div>
+          <div class="real-modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelCloseRealModalBtn">Отказ</button>
+            <button type="submit" class="btn btn-danger-action" id="submitCloseRealBtn">🔴 Финализирай Сделката</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -1,12 +1,20 @@
 let allSymbols = [];
+let pendingSetups = [];
+let portfolioData = {};
+let portfolioPaperData = {};
+let portfolioRealData = {};
+let currentPortfolioMode = localStorage.getItem('larsson_portfolio_mode') || 'REAL';
 let currentFilter = 'ALL';
 let currentClass = 'ALL';
 let currentTfFilter = 'ALL';
 let currentTechFilter = 'ALL';
 let currentFundFilter = 'ALL';
 let currentSetupFilter = 'ALL';
+let currentQueuePriority = 'ALL';
+let currentQueueTier = 'ALL';
 let currentSearch = '';
 let currentView = localStorage.getItem('larsson_view_mode') || 'table';
+let currentTab = localStorage.getItem('larsson_active_tab') || 'scanner';
 
 let currentSortColumn = null;
 let currentSortDir = 'asc';
@@ -255,7 +263,20 @@ async function loadDashboardData() {
     }
     data = await res.json();
     allSymbols = data.symbols || [];
+    pendingSetups = data.pending_setups || [];
+    portfolioData = data.portfolio || {};
+    portfolioPaperData = data.portfolio_paper || { summary: portfolioData, positions: [], history: [], journal: [] };
+    portfolioRealData = data.portfolio_real || { summary: {}, positions: [], history: [], journal: [] };
+
+    // Sync any custom positions or cash saved locally in this browser
+    syncLocalRealStorage();
+
     renderOverview(data);
+    renderQueueView();
+    initPortfolioController();
+    switchPortfolioMode(currentPortfolioMode);
+    initPageCalculator();
+    switchTab(currentTab);
   } catch (err) {
     console.error('Error loading data.json:', err);
     const isFileProtocol = window.location.protocol === 'file:';
@@ -779,7 +800,7 @@ function renderTradingViewIframe(container, tvSymbol, timeframe) {
   container.innerHTML = `
     <iframe 
       src="${iframeSrc}" 
-      style="width: 100%; height: 100%; min-height: 480px; border: none; border-radius: 8px;" 
+      style="width: 100%; height: 100%; min-height: 360px; border: none; border-radius: 8px;" 
       title="TradingView Chart - ${tvSymbol}"
       loading="lazy"
       allowtransparency="true" 
@@ -789,11 +810,12 @@ function renderTradingViewIframe(container, tvSymbol, timeframe) {
   `;
 }
 
-function renderLightweightChart(container, candles, item, height = 500) {
+function renderLightweightChart(container, candles, item, height = 480) {
   container.innerHTML = '';
+  const chartHeight = container.clientHeight || height;
   const chart = LightweightCharts.createChart(container, {
     width: container.clientWidth || 1000,
-    height: height,
+    height: chartHeight,
     layout: {
       background: { color: '#0b0e14' },
       textColor: '#94a3b8',
@@ -1136,6 +1158,15 @@ async function openChartModal(ticker, timeframe, assetClass) {
   if (modal) modal.style.display = 'flex';
   if (loading) loading.style.display = 'flex';
 
+  // Reset scroll position to top so chart is immediately visible
+  const modalBody = document.getElementById('chartModalBody');
+  if (modalBody) modalBody.scrollTop = 0;
+
+  // Reset active nav tab to Chart
+  document.querySelectorAll('#modalNavTabs .modal-nav-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === 0);
+  });
+
   const item = allSymbols.find(s => s.ticker === ticker && s.timeframe === activeTf) || 
                allSymbols.find(s => s.ticker === ticker) || {};
 
@@ -1190,7 +1221,7 @@ async function openChartModal(ticker, timeframe, assetClass) {
 
   // Load chart into modal
   if (container) {
-    activeChart = await loadChart(container, ticker, activeTf, assetClass, 500);
+    activeChart = await loadChart(container, ticker, activeTf, assetClass, container.clientHeight || 480);
   }
 
   if (loading) loading.style.display = 'none';
@@ -1368,6 +1399,63 @@ document.querySelectorAll('#modalTfGroup .modal-tf-btn').forEach(btn => {
   });
 });
 
+// Modal Section Navigation Tabs
+document.querySelectorAll('#modalNavTabs .modal-nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const targetId = tab.dataset.target;
+    const targetEl = document.getElementById(targetId);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('#modalNavTabs .modal-nav-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    }
+  });
+});
+
+// Scroll Hint Bar (Jump to Analysis)
+const scrollHintBar = document.getElementById('chartScrollHintBar');
+if (scrollHintBar) {
+  scrollHintBar.addEventListener('click', () => {
+    const synth = document.getElementById('modalSynthBanner');
+    if (synth) synth.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+// Back to Chart Bar
+const backToTopBar = document.getElementById('modalBackToTopBar');
+if (backToTopBar) {
+  backToTopBar.addEventListener('click', () => {
+    const chartContainer = document.getElementById('chartCanvasContainer');
+    if (chartContainer) chartContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+// Sync Nav Tab Active State with Scroll
+const modalBodyEl = document.getElementById('chartModalBody');
+if (modalBodyEl) {
+  modalBodyEl.addEventListener('scroll', () => {
+    const sections = [
+      { id: 'chartCanvasContainer', tabIdx: 0 },
+      { id: 'modalSynthBanner', tabIdx: 1 },
+      { id: 'modalDualHud', tabIdx: 2 },
+      { id: 'modalPosCalcStrip', tabIdx: 3 }
+    ];
+    const bodyRect = modalBodyEl.getBoundingClientRect();
+    let currentIdx = 0;
+    for (const sec of sections) {
+      const el = document.getElementById(sec.id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= bodyRect.top + 90) {
+          currentIdx = sec.tabIdx;
+        }
+      }
+    }
+    const tabs = document.querySelectorAll('#modalNavTabs .modal-nav-tab');
+    tabs.forEach((tab, i) => tab.classList.toggle('active', i === currentIdx));
+  });
+}
+
 // Live Chart Quick Switcher and Controls Listeners
 document.querySelectorAll('#liveQuickPills .quick-pill').forEach(pill => {
   pill.addEventListener('click', (e) => {
@@ -1398,11 +1486,17 @@ if (liveExpBtn) {
 window.addEventListener('resize', () => {
   const modalContainer = document.getElementById('chartCanvas');
   if (activeChart && modalContainer && modalContainer.clientWidth) {
-    activeChart.applyOptions({ width: modalContainer.clientWidth });
+    activeChart.applyOptions({ 
+      width: modalContainer.clientWidth,
+      height: modalContainer.clientHeight || 480
+    });
   }
   const liveContainer = document.getElementById('liveChartCanvas');
   if (liveActiveChart && liveContainer && liveContainer.clientWidth) {
-    liveActiveChart.applyOptions({ width: liveContainer.clientWidth });
+    liveActiveChart.applyOptions({ 
+      width: liveContainer.clientWidth,
+      height: liveContainer.clientHeight || 480
+    });
   }
 });
 
@@ -1598,5 +1692,875 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
 // Auto-refresh every 60 seconds
 setInterval(loadDashboardData, 60000);
 
+// =============================================================================
+// MASTER TAB NAVIGATION & SPECIALIZED VIEWS
+// =============================================================================
+
+function switchTab(tabName) {
+  currentTab = tabName;
+  localStorage.setItem('larsson_active_tab', tabName);
+
+  document.querySelectorAll('#mainNavTabs .nav-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+
+  const tabMap = {
+    'scanner': 'tabContentScanner',
+    'queue': 'tabContentQueue',
+    'portfolio': 'tabContentPortfolio',
+    'calculator': 'tabContentCalculator'
+  };
+
+  Object.keys(tabMap).forEach(key => {
+    const el = document.getElementById(tabMap[key]);
+    if (el) {
+      if (key === tabName) {
+        el.style.display = 'block';
+        el.classList.add('active');
+      } else {
+        el.style.display = 'none';
+        el.classList.remove('active');
+      }
+    }
+  });
+
+  if (tabName === 'scanner' && liveActiveChart) {
+    const liveContainer = document.getElementById('liveChartCanvas');
+    if (liveContainer && liveContainer.clientWidth) {
+      liveActiveChart.applyOptions({ width: liveContainer.clientWidth });
+    }
+  }
+}
+
+document.querySelectorAll('#mainNavTabs .nav-tab-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const tab = e.currentTarget.dataset.tab;
+    if (tab) switchTab(tab);
+  });
+});
+
+// =============================================================================
+// TAB 2: SETUPS QUEUE RENDERER
+// =============================================================================
+
+function renderQueueView() {
+  const badge = document.getElementById('queueCountBadge');
+  if (badge) badge.textContent = pendingSetups.length;
+
+  const container = document.getElementById('queueCardsGrid');
+  if (!container) return;
+
+  let filtered = pendingSetups.filter(s => {
+    const matchesPrio = (currentQueuePriority === 'ALL') || (s.priority === currentQueuePriority);
+    const matchesTier = (currentQueueTier === 'ALL') || (s.tier === currentQueueTier);
+    return matchesPrio && matchesTier;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-color);">
+        <h3>⏳ Няма намерени очаквани сделки по тези критерии</h3>
+        <p style="margin-top: 8px;">Системата следи непрекъснато пазара за Imminent Gold, Dip Buy, S/R приближаване и Дивергенции.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const typeLabels = {
+    'IMMINENT_GOLD': { emoji: '🔥', title: 'Imminent Gold Ribbon' },
+    'QUALITY_DIP_BUY': { emoji: '💎', title: 'Quality Dip Buy (Weekly Gold)' },
+    'SR_APPROACH': { emoji: '🎯', title: 'S/R Approach (Подкрепа / Съпротива)' },
+    'ACCUMULATION_PATTERN': { emoji: '📦', title: 'Quiet Consolidation Squeeze' },
+    'DIVERGENCE_FORMING': { emoji: '📉', title: 'RSI Divergence Forming' }
+  };
+
+  const tierEmoji = { 'S': '💎 S', 'A': '⭐ A', 'B': '🔵 B', 'C': '⚪ C' };
+
+  container.innerHTML = filtered.map(s => {
+    const prioClass = s.priority === 'HIGH' ? 'queue-card-prio-high' : (s.priority === 'MEDIUM' ? 'queue-card-prio-med' : 'queue-card-prio-low');
+    const prioBadgeClass = s.priority === 'HIGH' ? 'queue-prio-high' : (s.priority === 'MEDIUM' ? 'queue-prio-med' : 'queue-prio-low');
+    const typeInfo = typeLabels[s.setup_type] || { emoji: '⚡', title: s.setup_type };
+    const tEmoji = tierEmoji[s.tier] || s.tier;
+
+    let metTags = [];
+    try {
+      metTags = typeof s.conditions_met === 'string' ? JSON.parse(s.conditions_met) : (s.conditions_met || []);
+    } catch(e) { metTags = []; }
+
+    let pendingTags = [];
+    try {
+      pendingTags = typeof s.conditions_pending === 'string' ? JSON.parse(s.conditions_pending) : (s.conditions_pending || []);
+    } catch(e) { pendingTags = []; }
+
+    const entryStr = s.target_entry ? `$${formatShortPrice(s.target_entry)}` : (s.current_price ? `$${formatShortPrice(s.current_price)}` : 'N/A');
+    const keyLvlStr = s.key_level ? `$${formatShortPrice(s.key_level)}` : 'N/A';
+    const triggerStr = s.estimated_trigger || '1-3 бара';
+
+    return `
+      <div class="queue-card ${prioClass}">
+        <div class="queue-card-header">
+          <div class="queue-card-title-group">
+            <span class="queue-card-ticker">
+              ${s.symbol} <span class="class-badge">${CLASS_LABELS[s.asset_class] || s.asset_class}</span>
+            </span>
+            <div class="queue-card-setup-title">
+              <span>${typeInfo.emoji}</span> ${typeInfo.title}
+            </div>
+          </div>
+          <div class="queue-card-badges">
+            <span class="queue-prio-badge ${prioBadgeClass}">${s.priority}</span>
+            <span class="class-badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3);">${tEmoji}</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="queue-card-trigger-est">⏱️ Очакван тригер: <strong>${triggerStr}</strong></span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #38bdf8; font-weight: 700;">
+            Скор: ${(s.quality_score * 100).toFixed(0)}/100
+          </span>
+        </div>
+
+        <div class="queue-card-desc">
+          ${s.description_bg || s.description_en || 'Предстоящ сетъп за вход.'}
+        </div>
+
+        <div class="queue-checklist-block">
+          <span class="checklist-title">Условия за валидация:</span>
+          <div class="checklist-tags">
+            ${metTags.map(m => `<span class="chk-tag chk-met">✅ ${m}</span>`).join('')}
+            ${pendingTags.map(p => `<span class="chk-tag chk-pending">⏳ ${p}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="queue-card-levels">
+          <div class="queue-lvl-col">
+            <span class="queue-lvl-lbl">Текуща Цена</span>
+            <span class="queue-lvl-val">$${formatShortPrice(s.current_price)}</span>
+          </div>
+          <div class="queue-lvl-col">
+            <span class="queue-lvl-lbl">Входна Зона</span>
+            <span class="queue-lvl-val" style="color: #38bdf8;">${entryStr}</span>
+          </div>
+          <div class="queue-lvl-col">
+            <span class="queue-lvl-lbl">Ключово Ниво</span>
+            <span class="queue-lvl-val" style="color: #fbbf24;">${keyLvlStr}</span>
+          </div>
+        </div>
+
+        <div class="queue-card-actions">
+          <button class="btn-queue-calc" onclick="quickFillCalculator('${s.symbol}', ${s.target_entry || s.current_price || 0}, ${s.target_sl || 0}, ${s.target_tp1 || 0}, 0, '${s.tier}')">
+            🧮 Зареди в Калкулатора
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+document.querySelectorAll('#queuePriorityFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#queuePriorityFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentQueuePriority = e.target.dataset.queuePrio;
+    renderQueueView();
+  });
+});
+
+document.querySelectorAll('#queueTierFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#queueTierFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentQueueTier = e.target.dataset.queueTier;
+    renderQueueView();
+  });
+});
+
+// =============================================================================
+// TAB 3: DUAL PORTFOLIO CONTROLLER (REAL MONEY VS VIRTUAL / PAPER SIMULATION)
+// =============================================================================
+
+function syncLocalRealStorage() {
+  try {
+    const localPositions = JSON.parse(localStorage.getItem('larsson_custom_real_positions') || '[]');
+    const localCash = localStorage.getItem('larsson_custom_real_cash');
+    const localClosed = JSON.parse(localStorage.getItem('larsson_custom_real_closed') || '[]');
+
+    if (!portfolioRealData.positions) portfolioRealData.positions = [];
+    if (!portfolioRealData.journal) portfolioRealData.journal = [];
+    if (!portfolioRealData.summary) portfolioRealData.summary = {};
+
+    // Merge any locally added real positions not already in server list
+    const existingIds = new Set(portfolioRealData.positions.map(p => p.position_id || p.symbol));
+    localPositions.forEach(p => {
+      const id = p.position_id || p.symbol;
+      if (!existingIds.has(id)) {
+        portfolioRealData.positions.push(p);
+        existingIds.add(id);
+      }
+    });
+
+    // Merge any locally closed positions into journal
+    const existingJournals = new Set(portfolioRealData.journal.map(j => (j.position_id || '') + (j.created_at || '')));
+    localClosed.forEach(c => {
+      const key = (c.position_id || '') + (c.created_at || '');
+      if (!existingJournals.has(key)) {
+        portfolioRealData.journal.unshift(c);
+        existingJournals.add(key);
+      }
+    });
+
+    if (localCash !== null && localCash !== undefined) {
+      const cashVal = parseFloat(localCash);
+      if (!isNaN(cashVal)) {
+        portfolioRealData.summary.available_cash = cashVal;
+      }
+    }
+  } catch(e) {
+    console.warn('Error reading local real portfolio storage:', e);
+  }
+}
+
+function initPortfolioController() {
+  const realBtn = document.getElementById('portModeRealBtn');
+  const paperBtn = document.getElementById('portModePaperBtn');
+  if (realBtn) {
+    realBtn.addEventListener('click', () => switchPortfolioMode('REAL'));
+  }
+  if (paperBtn) {
+    paperBtn.addEventListener('click', () => switchPortfolioMode('PAPER'));
+  }
+
+  // Real Modal Open/Close Triggers
+  const openAddBtn = document.getElementById('openAddRealModalBtn');
+  const addModal = document.getElementById('addRealModal');
+  const closeAddBtn = document.getElementById('closeAddRealModalBtn');
+  const cancelAddBtn = document.getElementById('cancelAddRealModalBtn');
+
+  if (openAddBtn && addModal) {
+    openAddBtn.addEventListener('click', () => {
+      addModal.style.display = 'flex';
+      const tickerInput = document.getElementById('realTicker');
+      if (tickerInput) tickerInput.focus();
+    });
+  }
+  const hideAddModal = () => { if (addModal) addModal.style.display = 'none'; };
+  if (closeAddBtn) closeAddBtn.addEventListener('click', hideAddModal);
+  if (cancelAddBtn) cancelAddBtn.addEventListener('click', hideAddModal);
+
+  // Cash Modal Open/Close Triggers
+  const openCashBtn = document.getElementById('openSetCashModalBtn');
+  const cashModal = document.getElementById('setCashModal');
+  const closeCashBtn = document.getElementById('closeSetCashModalBtn');
+  const cancelCashBtn = document.getElementById('cancelSetCashModalBtn');
+
+  if (openCashBtn && cashModal) {
+    openCashBtn.addEventListener('click', () => {
+      cashModal.style.display = 'flex';
+      const cInput = document.getElementById('realCashAmount');
+      if (cInput) {
+        cInput.value = (portfolioRealData.summary && portfolioRealData.summary.available_cash) || 0;
+        cInput.focus();
+      }
+    });
+  }
+  const hideCashModal = () => { if (cashModal) cashModal.style.display = 'none'; };
+  if (closeCashBtn) closeCashBtn.addEventListener('click', hideCashModal);
+  if (cancelCashBtn) cancelCashBtn.addEventListener('click', hideCashModal);
+
+  // Close Position Modal Triggers
+  const closePosModal = document.getElementById('closeRealModal');
+  const closeClosePosBtn = document.getElementById('closeCloseRealModalBtn');
+  const cancelClosePosBtn = document.getElementById('cancelCloseRealModalBtn');
+  const hideClosePosModal = () => { if (closePosModal) closePosModal.style.display = 'none'; };
+  if (closeClosePosBtn) closeClosePosBtn.addEventListener('click', hideClosePosModal);
+  if (cancelClosePosBtn) cancelClosePosBtn.addEventListener('click', hideClosePosModal);
+
+  // Add Real Position Form Submit
+  const addForm = document.getElementById('addRealPositionForm');
+  if (addForm) {
+    addForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const ticker = (document.getElementById('realTicker')?.value || '').trim().toUpperCase();
+      const assetClass = document.getElementById('realAssetClass')?.value || 'crypto';
+      const broker = (document.getElementById('realBroker')?.value || 'Interactive Brokers').trim();
+      const entryPrice = parseFloat(document.getElementById('realEntryPrice')?.value || 0);
+      const units = parseFloat(document.getElementById('realUnits')?.value || 0);
+      const fee = parseFloat(document.getElementById('realFee')?.value || 0) || 0;
+      const sl = parseFloat(document.getElementById('realSl')?.value || 0) || null;
+      const tp1 = parseFloat(document.getElementById('realTp1')?.value || 0) || null;
+      const notes = (document.getElementById('realNotes')?.value || '').trim();
+
+      if (!ticker || entryPrice <= 0 || units <= 0) {
+        alert('Моля въведете валиден тикер, входна цена и количество!');
+        return;
+      }
+
+      const posId = `real_${ticker}_${Date.now()}`;
+      const nowIso = new Date().toISOString();
+      const posSize = entryPrice * units;
+
+      const newPos = {
+        position_id: posId,
+        symbol: ticker,
+        direction: 'LONG',
+        entry_price: entryPrice,
+        current_price: entryPrice,
+        units: units,
+        position_size_usd: posSize,
+        current_value: posSize,
+        unrealized_pnl: 0.0,
+        unrealized_pnl_pct: 0.0,
+        stop_loss: sl,
+        tp1: tp1,
+        tp2: null,
+        duration_days: 0,
+        opened_at: nowIso,
+        tier: 'A',
+        asset_class: assetClass,
+        portfolio_type: 'REAL',
+        broker_exchange: broker,
+        notes: notes,
+        fee_paid_usd: fee
+      };
+
+      if (!portfolioRealData.positions) portfolioRealData.positions = [];
+      portfolioRealData.positions.unshift(newPos);
+
+      // Deduct from cash
+      const curCash = (portfolioRealData.summary && portfolioRealData.summary.available_cash) || 0;
+      portfolioRealData.summary.available_cash = Math.max(0, curCash - (posSize + fee));
+      localStorage.setItem('larsson_custom_real_cash', portfolioRealData.summary.available_cash.toString());
+
+      // Save custom positions to localStorage
+      try {
+        const saved = JSON.parse(localStorage.getItem('larsson_custom_real_positions') || '[]');
+        saved.unshift(newPos);
+        localStorage.setItem('larsson_custom_real_positions', JSON.stringify(saved));
+      } catch(err) {
+        console.error('Failed to save to localStorage:', err);
+      }
+
+      // Add to Journal
+      const journalEntry = {
+        position_id: posId,
+        ticker: ticker,
+        action: 'OPEN',
+        price: entryPrice,
+        units: units,
+        pnl_usd: 0.0,
+        pnl_pct: 0.0,
+        broker_exchange: broker,
+        reason: notes || `Real Buy on ${broker}`,
+        created_at: nowIso,
+        portfolio_type: 'REAL'
+      };
+      if (!portfolioRealData.journal) portfolioRealData.journal = [];
+      portfolioRealData.journal.unshift(journalEntry);
+
+      hideAddModal();
+      addForm.reset();
+      renderPortfolioView();
+    });
+  }
+
+  // Set Cash Form Submit
+  const cashForm = document.getElementById('setRealCashForm');
+  if (cashForm) {
+    cashForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const amount = parseFloat(document.getElementById('realCashAmount')?.value || 0);
+      if (isNaN(amount) || amount < 0) {
+        alert('Моля въведете валидна неотрицателна сума за кеш!');
+        return;
+      }
+      if (!portfolioRealData.summary) portfolioRealData.summary = {};
+      portfolioRealData.summary.available_cash = amount;
+      portfolioRealData.summary.initial_balance = amount;
+      localStorage.setItem('larsson_custom_real_cash', amount.toString());
+      hideCashModal();
+      renderPortfolioView();
+    });
+  }
+
+  // Close Position Form Submit
+  const closeForm = document.getElementById('closeRealPositionForm');
+  if (closeForm) {
+    closeForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const posId = document.getElementById('closeRealPosId')?.value;
+      const exitPrice = parseFloat(document.getElementById('closeRealExitPrice')?.value || 0);
+      const fee = parseFloat(document.getElementById('closeRealFee')?.value || 0) || 0;
+      const notes = (document.getElementById('closeRealNotes')?.value || '').trim();
+
+      if (!posId || exitPrice <= 0) {
+        alert('Моля въведете валидна цена на изход!');
+        return;
+      }
+
+      const idx = (portfolioRealData.positions || []).findIndex(p => p.position_id === posId);
+      if (idx === -1) {
+        alert('Позицията не беше намерена сред активните.');
+        return;
+      }
+
+      const target = portfolioRealData.positions[idx];
+      const entry = target.entry_price;
+      const units = target.units;
+      const grossPnl = (exitPrice - entry) * units;
+      const netPnl = grossPnl - fee;
+      const pnlPct = entry > 0 ? ((exitPrice - entry) / entry * 100) : 0;
+      const nowIso = new Date().toISOString();
+
+      // Add proceeds to cash
+      const curCash = (portfolioRealData.summary && portfolioRealData.summary.available_cash) || 0;
+      portfolioRealData.summary.available_cash = curCash + (units * exitPrice) - fee;
+      localStorage.setItem('larsson_custom_real_cash', portfolioRealData.summary.available_cash.toString());
+
+      // Update realized stats
+      if (!portfolioRealData.summary) portfolioRealData.summary = {};
+      portfolioRealData.summary.total_realized_pnl = (portfolioRealData.summary.total_realized_pnl || 0) + netPnl;
+      if (netPnl > 0) {
+        portfolioRealData.summary.wins = (portfolioRealData.summary.wins || 0) + 1;
+      } else {
+        portfolioRealData.summary.losses = (portfolioRealData.summary.losses || 0) + 1;
+      }
+
+      // Record to journal
+      const journalItem = {
+        position_id: posId,
+        ticker: target.symbol,
+        action: 'CLOSE',
+        entry_price: entry,
+        exit_price: exitPrice,
+        price: exitPrice,
+        units: units,
+        pnl_usd: netPnl,
+        pnl_pct: pnlPct,
+        broker_exchange: target.broker_exchange || 'Real Broker',
+        reason: notes || 'Ръчно затваряне на реална позиция',
+        created_at: nowIso,
+        hold_duration_days: target.duration_days || 0,
+        portfolio_type: 'REAL'
+      };
+
+      if (!portfolioRealData.journal) portfolioRealData.journal = [];
+      portfolioRealData.journal.unshift(journalItem);
+
+      // Remove from open positions
+      portfolioRealData.positions.splice(idx, 1);
+
+      // Update local storage
+      try {
+        let saved = JSON.parse(localStorage.getItem('larsson_custom_real_positions') || '[]');
+        saved = saved.filter(p => p.position_id !== posId);
+        localStorage.setItem('larsson_custom_real_positions', JSON.stringify(saved));
+
+        const savedClosed = JSON.parse(localStorage.getItem('larsson_custom_real_closed') || '[]');
+        savedClosed.unshift(journalItem);
+        localStorage.setItem('larsson_custom_real_closed', JSON.stringify(savedClosed));
+      } catch(err) {
+        console.error('Storage update error:', err);
+      }
+
+      hideClosePosModal();
+      closeForm.reset();
+      renderPortfolioView();
+    });
+  }
+}
+
+function openCloseRealModal(posId, ticker, currentPrice, units) {
+  const modal = document.getElementById('closeRealModal');
+  const summaryBox = document.getElementById('closePosSummary');
+  const idInput = document.getElementById('closeRealPosId');
+  const tickerInput = document.getElementById('closeRealTicker');
+  const priceInput = document.getElementById('closeRealExitPrice');
+
+  if (modal && summaryBox && idInput && tickerInput && priceInput) {
+    idInput.value = posId;
+    tickerInput.value = ticker;
+    priceInput.value = currentPrice || '';
+    summaryBox.innerHTML = `
+      <div><strong>Актив:</strong> ${ticker}</div>
+      <div><strong>Количество:</strong> ${units} бр.</div>
+      <div><strong>Текуща пазарна оценка:</strong> ~$${formatShortPrice(currentPrice * units)}</div>
+    `;
+    modal.style.display = 'flex';
+    priceInput.focus();
+  }
+}
+
+function switchPortfolioMode(mode) {
+  currentPortfolioMode = mode;
+  localStorage.setItem('larsson_portfolio_mode', mode);
+
+  const container = document.getElementById('tabContentPortfolio');
+  const realBtn = document.getElementById('portModeRealBtn');
+  const paperBtn = document.getElementById('portModePaperBtn');
+  const bannerBadge = document.getElementById('portBannerBadge');
+  const bannerDesc = document.getElementById('portBannerDesc');
+  const bannerActions = document.getElementById('portBannerActions');
+  const posHeading = document.getElementById('portPositionsHeading');
+  const journalHeading = document.getElementById('portJournalHeading');
+
+  if (container) {
+    if (mode === 'REAL') {
+      container.classList.remove('port-mode-paper');
+      container.classList.add('port-mode-real');
+    } else {
+      container.classList.remove('port-mode-real');
+      container.classList.add('port-mode-paper');
+    }
+  }
+
+  if (realBtn) realBtn.classList.toggle('active', mode === 'REAL');
+  if (paperBtn) paperBtn.classList.toggle('active', mode === 'PAPER');
+
+  if (mode === 'REAL') {
+    if (bannerBadge) bannerBadge.innerHTML = '🟢 РЕАЛНИ СРЕДСТВА &amp; БРОКЕРИ';
+    if (bannerDesc) bannerDesc.textContent = 'Управление на действителни сделки от брокери (Binance, Interactive Brokers, Revolut). Всички метрики показват реален финансов капитал.';
+    if (bannerActions) bannerActions.style.display = 'flex';
+    if (posHeading) posHeading.textContent = '📈 Отворени Реални Позиции (Live Mark-to-Market)';
+    if (journalHeading) journalHeading.textContent = '📖 Търговски Дневник: Реални Сделки & Изпълнения';
+  } else {
+    if (bannerBadge) bannerBadge.innerHTML = '🧪 ТЕСТОВ СИМУЛАТОР (PAPER TRADING)';
+    if (bannerDesc) bannerDesc.textContent = 'Автономен симулатор на Larsson стратегии. Управлява се без реален финансов риск с автоматичен 50% TP1 и Breakeven Stop-Loss.';
+    if (bannerActions) bannerActions.style.display = 'none';
+    if (posHeading) posHeading.textContent = '📈 Отворени Тестови Позиции (Paper Simulation)';
+    if (journalHeading) journalHeading.textContent = '📖 Търговски Дневник: Тестова Симулация & Бот';
+  }
+
+  renderPortfolioView();
+}
+
+function renderPortfolioView() {
+  const isReal = (currentPortfolioMode === 'REAL');
+  const bundle = isReal ? (portfolioRealData || {}) : (portfolioPaperData || {});
+  const s = bundle.summary || {};
+  let positions = bundle.positions || [];
+  let journal = bundle.journal || bundle.history || [];
+
+  // Update current prices and mark-to-market for positions from allSymbols if available
+  let totalInvested = 0.0;
+  let unrealizedPnl = 0.0;
+  positions.forEach(pos => {
+    const symObj = allSymbols.find(item => item.ticker === pos.symbol || item.ticker === pos.ticker);
+    if (symObj && symObj.price) {
+      pos.current_price = symObj.price;
+    }
+    const curP = pos.current_price || pos.entry_price || 0;
+    const entryP = pos.entry_price || 0;
+    const units = pos.units || 0;
+    const sizeUsd = pos.position_size_usd || (entryP * units);
+    const curVal = curP * units;
+    const uPnl = curVal - sizeUsd;
+    const uPct = sizeUsd > 0 ? (uPnl / sizeUsd * 100) : 0;
+
+    pos.current_value = curVal;
+    pos.unrealized_pnl = uPnl;
+    pos.unrealized_pnl_pct = uPct;
+
+    totalInvested += sizeUsd;
+    unrealizedPnl += uPnl;
+  });
+
+  const availableCash = s.available_cash !== undefined ? s.available_cash : (isReal ? 0.0 : 10000.0);
+  const totalEquity = availableCash + (totalInvested + unrealizedPnl);
+  const initialBalance = s.initial_balance !== undefined ? s.initial_balance : (isReal ? availableCash : 10000.0);
+  const totalRealizedPnl = s.total_realized_pnl || 0.0;
+  const wins = s.wins || 0;
+  const losses = s.losses || 0;
+  const totalTrades = wins + losses;
+  const winRate = totalTrades > 0 ? (wins / totalTrades * 100) : (s.win_rate || 0.0);
+  const unrealizedPct = totalInvested > 0 ? (unrealizedPnl / totalInvested * 100) : 0.0;
+
+  // 1. Metric Cards
+  const totalEquityEl = document.getElementById('portTotalEquity');
+  if (totalEquityEl) totalEquityEl.textContent = `$${totalEquity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const initBalEl = document.getElementById('portInitialBalance');
+  if (initBalEl) initBalEl.textContent = `Базов: $${initialBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const cashEl = document.getElementById('portAvailableCash');
+  if (cashEl) cashEl.textContent = `$${availableCash.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const cashAllocEl = document.getElementById('portCashAlloc');
+  if (cashAllocEl) {
+    const cashPct = totalEquity > 0 ? ((availableCash / totalEquity) * 100).toFixed(0) : 100;
+    cashAllocEl.textContent = `${cashPct}% ликвиден капитал`;
+  }
+
+  const investedEl = document.getElementById('portInvested');
+  if (investedEl) investedEl.textContent = `$${totalInvested.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+  const openCountEl = document.getElementById('portOpenCount');
+  if (openCountEl) openCountEl.textContent = `${positions.length} активни позиции`;
+
+  const unrealizedEl = document.getElementById('portUnrealizedPnl');
+  const unrealizedPctEl = document.getElementById('portUnrealizedPct');
+  if (unrealizedEl) {
+    const sign = unrealizedPnl >= 0 ? '+' : '';
+    unrealizedEl.textContent = `${sign}$${unrealizedPnl.toFixed(2)}`;
+    unrealizedEl.style.color = unrealizedPnl >= 0 ? '#10b981' : '#ef4444';
+  }
+  if (unrealizedPctEl) {
+    const sign = unrealizedPct >= 0 ? '+' : '';
+    unrealizedPctEl.textContent = `(${sign}${unrealizedPct.toFixed(2)}%)`;
+    unrealizedPctEl.style.color = unrealizedPct >= 0 ? '#10b981' : '#ef4444';
+  }
+
+  const realizedEl = document.getElementById('portRealizedPnl');
+  if (realizedEl) {
+    const sign = totalRealizedPnl >= 0 ? '+' : '';
+    realizedEl.textContent = `${sign}$${totalRealizedPnl.toFixed(2)}`;
+    realizedEl.style.color = totalRealizedPnl >= 0 ? '#10b981' : '#ef4444';
+  }
+
+  const winRateEl = document.getElementById('portWinRate');
+  if (winRateEl) winRateEl.textContent = `Win Rate: ${winRate.toFixed(1)}% (${wins}W / ${losses}L)`;
+
+  // 2. Positions Table
+  const activeBadge = document.getElementById('portActiveBadge');
+  if (activeBadge) {
+    activeBadge.textContent = `${positions.length} Активни`;
+    activeBadge.className = `badge ${isReal ? 'badge-gold' : 'badge-blue'}`;
+  }
+
+  const posBody = document.getElementById('portPositionsBody');
+  if (posBody) {
+    if (positions.length === 0) {
+      posBody.innerHTML = `
+        <tr>
+          <td colspan="10" class="loading-state" style="padding: 30px; text-align: center;">
+            ${isReal 
+              ? '🟢 Няма отворени реални позиции. Натиснете <strong>"➕ Добави Реална Позиция"</strong>, за да регистрирате покупка от вашия брокер.'
+              : '🧪 Няма активни тестови позиции. Алгоритъмът изчаква нов A+ Quantamental сигнал за автоматичен симулиран вход.'}
+          </td>
+        </tr>
+      `;
+    } else {
+      posBody.innerHTML = positions.map(p => {
+        const uSign = (p.unrealized_pnl || 0) >= 0 ? '+' : '';
+        const uColor = (p.unrealized_pnl || 0) >= 0 ? '#34d399' : '#f87171';
+        const broker = p.broker_exchange || (isReal ? 'Manual / Broker' : 'Paper Engine');
+        const brokerClass = isReal ? 'broker-pill' : 'broker-pill broker-pill-paper';
+        const unitsFormatted = p.units < 1 ? p.units.toFixed(4) : p.units.toFixed(2);
+        const posValue = p.current_value || (p.current_price * p.units) || p.position_size_usd;
+
+        const slText = p.stop_loss ? `$${formatShortPrice(p.stop_loss)}` : '<span style="color:var(--text-muted)">Няма</span>';
+        const tpText = p.tp1 ? `$${formatShortPrice(p.tp1)}` : '<span style="color:var(--text-muted)">Няма</span>';
+
+        const actionBtns = isReal ? `
+          <div style="display:flex; gap:6px;">
+            <button class="btn-close-real-trade" onclick="openCloseRealModal('${p.position_id}', '${p.symbol}', ${p.current_price || p.entry_price}, ${p.units})">
+              🔴 Затвори
+            </button>
+            <button class="btn-table-action" onclick="openChartModal('${p.symbol}', '1D', '${p.asset_class}')" title="Графика">
+              📊
+            </button>
+          </div>
+        ` : `
+          <button class="btn-table-action" onclick="openChartModal('${p.symbol}', '1D', '${p.asset_class}')">
+            📊 Графика
+          </button>
+        `;
+
+        return `
+          <tr>
+            <td>
+              <div class="ticker-cell" style="cursor: pointer;" onclick="openChartModal('${p.symbol}', '1D', '${p.asset_class}')">
+                <span class="ticker-symbol">${p.symbol}</span>
+                <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class}</span>
+              </div>
+            </td>
+            <td>
+              <span class="tier-badge tier-${p.tier || 'A'}">Tier ${p.tier || 'A'}</span>
+            </td>
+            <td>
+              <span class="${brokerClass}">${broker}</span>
+            </td>
+            <td><strong>$${formatShortPrice(p.entry_price)}</strong></td>
+            <td><strong>$${formatShortPrice(p.current_price)}</strong></td>
+            <td>
+              <div>${unitsFormatted} бр.</div>
+              <small style="color: var(--text-muted);">$${formatShortPrice(posValue)}</small>
+            </td>
+            <td><strong style="color: #f87171;">${slText}</strong></td>
+            <td><strong style="color: #34d399;">${tpText}</strong></td>
+            <td>
+              <strong style="color: ${uColor};">${uSign}$${(p.unrealized_pnl || 0).toFixed(2)}</strong>
+              <div style="font-size: 0.75rem; color: ${uColor};">(${uSign}${(p.unrealized_pnl_pct || 0).toFixed(2)}%)</div>
+            </td>
+            <td>${actionBtns}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+
+  // 3. Trade Journal Table
+  const journalCountBadge = document.getElementById('portJournalCountBadge');
+  if (journalCountBadge) journalCountBadge.textContent = `${journal.length} Сделки`;
+
+  const journalBody = document.getElementById('portJournalBody');
+  if (journalBody) {
+    if (journal.length === 0) {
+      journalBody.innerHTML = `
+        <tr>
+          <td colspan="9" class="loading-state" style="padding: 24px; text-align: center;">
+            ${isReal 
+              ? 'Няма записани сделки в дневника за реално портфолио.'
+              : 'Няма приключени тестови сделки в симулационния дневник.'}
+          </td>
+        </tr>
+      `;
+    } else {
+      journalBody.innerHTML = journal.map(j => {
+        const pnl = j.pnl_usd || 0.0;
+        const pnlPct = j.pnl_pct || 0.0;
+        const sign = pnl >= 0 ? '+' : '';
+        const color = pnl >= 0 ? '#34d399' : '#f87171';
+        const dateStr = (j.created_at || j.exit_date || j.entry_date || '').replace('T', ' ').substring(0, 16);
+        const action = j.action || 'TRADE';
+        const actionClass = (action === 'BUY' || action === 'OPEN') ? 'badge-gold' : (pnl >= 0 ? 'badge-real' : 'badge-ruby');
+        const broker = j.broker_exchange || (isReal ? 'Real Broker' : 'Paper Engine');
+        const brokerClass = isReal ? 'broker-pill' : 'broker-pill broker-pill-paper';
+
+        return `
+          <tr>
+            <td><small style="font-family: 'JetBrains Mono', monospace; color: var(--text-muted);">${dateStr || 'N/A'}</small></td>
+            <td><strong>${j.ticker || j.symbol || 'N/A'}</strong></td>
+            <td><span class="${brokerClass}">${broker}</span></td>
+            <td><span class="badge ${actionClass}">${action}</span></td>
+            <td>$${formatShortPrice(j.entry_price || j.price)}</td>
+            <td>${j.exit_price ? `$${formatShortPrice(j.exit_price)}` : '—'}</td>
+            <td>
+              ${action === 'OPEN' || action === 'BUY' ? '—' : `<strong style="color: ${color};">${sign}$${pnl.toFixed(2)} (${sign}${pnlPct.toFixed(1)}%)</strong>`}
+            </td>
+            <td>${j.hold_duration_days !== undefined ? `${j.hold_duration_days} дни` : '—'}</td>
+            <td><small style="color: var(--text-secondary);">${j.reason || j.notes || j.exit_reason || ''}</small></td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }
+}
+
+// =============================================================================
+// TAB 4: ADVANCED INSTITUTIONAL TRADE CALCULATOR CONTROLLER
+// =============================================================================
+
+function initPageCalculator() {
+  const capInput = document.getElementById('pageCalcCapital');
+  const tickerInput = document.getElementById('pageCalcTicker');
+  const tierSelect = document.getElementById('pageCalcTier');
+  const entryInput = document.getElementById('pageCalcEntry');
+  const slInput = document.getElementById('pageCalcSl');
+  const tp1Input = document.getElementById('pageCalcTp1');
+  const tp2Input = document.getElementById('pageCalcTp2');
+
+  const recalc = () => {
+    const capital = parseFloat(capInput ? capInput.value : 10000) || 10000;
+    const activeRiskBtn = document.querySelector('#pageRiskPresets .preset-btn.active');
+    const riskPct = activeRiskBtn ? parseFloat(activeRiskBtn.dataset.risk) : 1.0;
+    const tier = tierSelect ? tierSelect.value : 'A';
+    const tierMultiplier = { 'S': 1.0, 'A': 0.85, 'B': 0.6, 'C': 0.3 }[tier] || 0.85;
+
+    const entry = parseFloat(entryInput ? entryInput.value : 100) || 100;
+    let sl = parseFloat(slInput ? slInput.value : 95) || (entry * 0.95);
+    const tp1 = parseFloat(tp1Input ? tp1Input.value : 110) || 0;
+    const tp2 = parseFloat(tp2Input ? tp2Input.value : 120) || 0;
+
+    const baseRiskUsd = capital * (riskPct / 100.0);
+    const riskUsd = baseRiskUsd * tierMultiplier;
+    const riskPerUnit = Math.abs(entry - sl);
+
+    if (riskPerUnit > 0 && entry > 0) {
+      const units = riskUsd / riskPerUnit;
+      const posValue = units * entry;
+      const riskPctOfPrice = ((riskPerUnit / entry) * 100.0).toFixed(2);
+
+      const rr1 = tp1 > entry ? ((tp1 - entry) / riskPerUnit).toFixed(2) : '1.0';
+      const rr2 = tp2 > entry ? ((tp2 - entry) / riskPerUnit).toFixed(2) : null;
+
+      const tp1Profit = tp1 > entry ? (units * 0.5 * (tp1 - entry)) : 0;
+      const tp2Profit = tp2 > entry ? (units * 0.5 * (tp2 - entry)) : 0;
+
+      const unitsEl = document.getElementById('pageCalcUnits');
+      if (unitsEl) unitsEl.textContent = `${units < 1 ? units.toFixed(4) : units.toFixed(2)} бр.`;
+
+      const valEl = document.getElementById('pageCalcVal');
+      if (valEl) valEl.textContent = `Стойност: $${posValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      const riskUsdEl = document.getElementById('pageCalcRiskUsd');
+      if (riskUsdEl) riskUsdEl.textContent = `-$${riskUsd.toFixed(2)}`;
+
+      const riskPctEl = document.getElementById('pageCalcRiskPct');
+      if (riskPctEl) riskPctEl.textContent = `-${riskPctOfPrice}% от цената (Риск: ${riskPct}% * Tier ${tier})`;
+
+      const tp1ProfitEl = document.getElementById('pageCalcTp1Profit');
+      if (tp1ProfitEl) tp1ProfitEl.textContent = `+$${tp1Profit.toFixed(2)}`;
+
+      const tp2ProfitEl = document.getElementById('pageCalcTp2Profit');
+      if (tp2ProfitEl) tp2ProfitEl.textContent = `+$${tp2Profit.toFixed(2)}`;
+
+      const rrBadge = document.getElementById('pageCalcRrBadge');
+      if (rrBadge) rrBadge.textContent = `R:R 1:${rr1}${rr2 ? ` (TP2 1:${rr2})` : ''}`;
+
+      const dca1 = document.getElementById('pageDcaStep1');
+      if (dca1) dca1.textContent = `Пазарен вход на $${entry.toFixed(2)} (${(units * 0.5).toFixed(2)} бр. = $${(posValue * 0.5).toFixed(2)})`;
+
+      const dca2 = document.getElementById('pageDcaStep2');
+      if (dca2) dca2.textContent = `Лимитна поръчка на S1 подкрепа (${(units * 0.5).toFixed(2)} бр. = $${(posValue * 0.5).toFixed(2)})`;
+
+      // Compound growth calculations
+      const monthlyReturnPct = 0.04; // conservative ~4% monthly expectancy
+      const m3 = capital * Math.pow(1 + monthlyReturnPct, 3);
+      const m6 = capital * Math.pow(1 + monthlyReturnPct, 6);
+      const m12 = capital * Math.pow(1 + monthlyReturnPct, 12);
+
+      const c3 = document.getElementById('compound3m');
+      if (c3) c3.textContent = `$${Math.round(m3).toLocaleString('en-US')}`;
+      const c6 = document.getElementById('compound6m');
+      if (c6) c6.textContent = `$${Math.round(m6).toLocaleString('en-US')}`;
+      const c12 = document.getElementById('compound12m');
+      if (c12) c12.textContent = `$${Math.round(m12).toLocaleString('en-US')}`;
+    }
+  };
+
+  [capInput, tickerInput, tierSelect, entryInput, slInput, tp1Input, tp2Input].forEach(el => {
+    if (el) el.addEventListener('input', recalc);
+  });
+
+  document.querySelectorAll('#pageRiskPresets .preset-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('#pageRiskPresets .preset-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      recalc();
+    });
+  });
+
+  recalc();
+}
+
+function quickFillCalculator(ticker, entry, sl, tp1, tp2, tier) {
+  switchTab('calculator');
+  const tInput = document.getElementById('pageCalcTicker');
+  if (tInput) tInput.value = ticker;
+  const eInput = document.getElementById('pageCalcEntry');
+  if (eInput && entry) eInput.value = entry;
+  const sInput = document.getElementById('pageCalcSl');
+  if (sInput && sl) sInput.value = sl;
+  const p1Input = document.getElementById('pageCalcTp1');
+  if (p1Input && tp1) p1Input.value = tp1;
+  const p2Input = document.getElementById('pageCalcTp2');
+  if (p2Input && tp2) p2Input.value = tp2;
+  const tierSel = document.getElementById('pageCalcTier');
+  if (tierSel && tier) tierSel.value = tier;
+
+  initPageCalculator();
+}
+
 // Initialize
 loadDashboardData();
+
