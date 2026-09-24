@@ -2185,7 +2185,7 @@ function closePaperPosition(posId, ticker, currentPrice, units) {
 function renderProposalsBanner(proposals) {
   const banner = document.getElementById('proposalsBannerSection');
   const grid = document.getElementById('proposalsCardsGrid');
-  const countBadge = document.getElementById('proposalsCount');
+  const countBadge = document.getElementById('proposalsCountBadge') || document.getElementById('proposalsCount');
   if (!banner || !grid) return;
 
   const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
