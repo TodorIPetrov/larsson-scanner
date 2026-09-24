@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260924_15">
+  <link rel="stylesheet" href="style.css?v=20260924_16">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -149,6 +149,8 @@
             <span class="filter-badge-lbl filter-lbl-synth">🎯 Синтез:</span>
             <button class="filter-btn active" data-setup="ALL">Всички</button>
             <button class="filter-btn filter-gold-glow" data-setup="QUANTAMENTAL_ALPHA">⭐ Alpha Buy</button>
+            <button class="filter-btn filter-btc" data-setup="BTC_ALPHA" title="Активи с положителна алфа и бича панделка спрямо Bitcoin">⚡ ₿ Alpha Лидери</button>
+            <button class="filter-btn filter-btc-bleed" data-setup="BTC_BLEED" title="Активи губещи от Bitcoin (1x Spot ограничение)">⚠️ ₿ Bleeding vs BTC</button>
             <button class="filter-btn filter-amber" data-setup="VALUE_TRAP">⏳ Value Traps</button>
             <button class="filter-btn filter-emerald" data-setup="QUALITY_HOLD">🧱 Accumulate</button>
             <button class="filter-btn" data-setup="SPOT_BUY">🟢 Spot Buy</button>
@@ -196,6 +198,12 @@
             <button class="live-tf-btn" data-tf="1W">1W</button>
           </div>
 
+          <!-- BTC Relative Ratio Toggle (Crypto & Crypto Stocks) -->
+          <div class="live-ratio-group" id="liveRatioGroup" style="display: none;">
+            <button class="live-ratio-btn active" data-ratio="USD" title="Стандартна цена в USD">💵 USD</button>
+            <button class="live-ratio-btn" data-ratio="BTC" title="Съотношение спрямо Bitcoin (Asset/BTC)">₿ vs BTC</button>
+          </div>
+
           <button class="btn-expand-modal" id="liveExpandBtn" title="Отвори на цял екран с калкулатор">
             ⛶ Цял Екран
           </button>
@@ -203,7 +211,7 @@
         </div>
       </div>
 
-      <!-- Compact 3-Pillar Analysis Strip for the Active Chart -->
+      <!-- Compact 3-Pillar & BTC Relative Analysis Strip for the Active Chart -->
       <div class="live-hud-strip">
         <div class="live-hud-col live-hud-tech">
           <span class="live-hud-tag">📐 ТЕХНИКА:</span>
@@ -219,6 +227,11 @@
           <span class="live-hud-tag">🎯 СИНТЕЗ:</span>
           <strong id="liveSynthBadge">⭐ ALPHA BUY</strong>
           <span class="live-hud-sub" id="liveSynthLevels">Вход: $0.00</span>
+        </div>
+        <div class="live-hud-col live-hud-btc" id="liveHudBtc" style="display: none;">
+          <span class="live-hud-tag">₿ VS BITCOIN:</span>
+          <strong id="liveBtcBadge">⚡ ₿ ALPHA LEADER</strong>
+          <span class="live-hud-sub" id="liveBtcAlpha">Alpha 30d: +0.0%</span>
         </div>
       </div>
 
@@ -656,6 +669,11 @@
             <button class="modal-tf-btn" data-tf="4H">4H</button>
             <button class="modal-tf-btn" data-tf="1W">1W</button>
           </div>
+          <!-- Modal Ratio Switcher -->
+          <div class="modal-ratio-group" id="modalRatioGroup" style="display: none;">
+            <button class="modal-ratio-btn active" data-ratio="USD" title="Стандартна цена в USD">💵 USD</button>
+            <button class="modal-ratio-btn" data-ratio="BTC" title="Съотношение спрямо Bitcoin (Asset/BTC)">₿ vs BTC</button>
+          </div>
         </div>
         <div class="chart-modal-nav-tabs" id="modalNavTabs">
           <button class="modal-nav-tab active" data-target="chartCanvasContainer">📊 Графика</button>
@@ -788,6 +806,24 @@
                 <div><span class="lbl">Z-Score здраве:</span> <strong id="modalFundZScore">3.50</strong></div>
               </div>
               <div class="hud-thesis" id="modalFundThesis">Лидер с широк ров и висок свободен паричен поток.</div>
+            </div>
+          </div>
+
+          <!-- ₿ Bitcoin Relative Strength & Alpha Card -->
+          <div class="hud-card hud-btc-card" id="modalBtcHudCard" style="display: none;">
+            <div class="hud-card-header">
+              <span class="hud-tag hud-tag-btc">₿ СЪОТНОШЕНИЕ СПРЯМО BITCOIN (Larsson Ribbon)</span>
+              <span class="badge badge-gold" id="modalBtcStateBadge">🟡 GOLD RATIO</span>
+            </div>
+            <div class="hud-body">
+              <div class="hud-main-action" id="modalBtcAction">⚡ Силна Алфа (+14.2% за 30д)</div>
+              <div class="hud-details-grid">
+                <div><span class="lbl">30д Алфа:</span> <strong id="modalBtcAlpha30d">+0.0%</strong></div>
+                <div><span class="lbl">7д Алфа:</span> <strong id="modalBtcAlpha7d">+0.0%</strong></div>
+                <div><span class="lbl">Ratio Spread:</span> <strong id="modalBtcSpread">+0.0%</strong></div>
+                <div><span class="lbl">Левъридж:</span> <strong id="modalBtcLevStatus">🟢 Разрешен 2x-3x</strong></div>
+              </div>
+              <div class="hud-thesis" id="modalBtcThesis">Активът изпреварва Bitcoin и оправдава поемането на по-висок бета риск.</div>
             </div>
           </div>
         </div>
@@ -1014,6 +1050,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260924_15"></script>
+  <script src="app.js?v=20260924_16"></script>
 </body>
 </html>

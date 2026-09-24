@@ -2131,7 +2131,7 @@ h1 {
    ============================================================================= */
 .modal-dual-hud {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
   margin-bottom: 14px;
 }
@@ -2159,6 +2159,11 @@ h1 {
 .hud-fund-card {
   border: 1px solid rgba(16, 185, 129, 0.35);
   background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(15, 23, 42, 0.6) 100%);
+}
+
+.hud-btc-card {
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
 }
 
 .hud-card-header {
@@ -2508,7 +2513,7 @@ h1 {
 
 .live-hud-strip {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--border-color);
@@ -2539,6 +2544,7 @@ h1 {
 .live-hud-tech .live-hud-tag { color: #38bdf8; }
 .live-hud-fund .live-hud-tag { color: #34d399; }
 .live-hud-synth .live-hud-tag { color: #fbbf24; }
+.live-hud-btc .live-hud-tag { color: #f59e0b; }
 
 .live-hud-col strong {
   font-family: 'JetBrains Mono', monospace;
@@ -4156,6 +4162,126 @@ h1 {
   padding: 6px 12px;
   font-size: 0.75rem;
 }
+
+/* =============================================================================
+   BTC RELATIVE STRENGTH & ALPHA RATIO STYLES
+   ============================================================================= */
+
+/* Setup Filters for BTC Alpha */
+.filter-btn.filter-btc {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+.filter-btn.filter-btc:hover,
+.filter-btn.filter-btc.active {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: #f59e0b;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+  color: #fff;
+}
+
+.filter-btn.filter-btc-bleed {
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+.filter-btn.filter-btc-bleed:hover,
+.filter-btn.filter-btc-bleed.active {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: #ef4444;
+  color: #fff;
+}
+
+/* BTC Alpha Badges in Table, Cards & Proposals */
+.btc-alpha-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  letter-spacing: -0.2px;
+  text-decoration: none;
+  cursor: default;
+  transition: all 0.15s ease;
+}
+
+.btc-badge-gold {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.15);
+}
+
+.btc-badge-blue {
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.btc-badge-neutral {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+/* Ratio Switcher Toggle Buttons (USD vs vs BTC) */
+.live-ratio-group,
+.modal-ratio-group {
+  display: inline-flex;
+  background: rgba(11, 14, 20, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  gap: 2px;
+}
+
+.live-ratio-btn,
+.modal-ratio-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.live-ratio-btn:hover,
+.modal-ratio-btn:hover {
+  color: var(--text-primary);
+}
+
+.live-ratio-btn.active,
+.modal-ratio-btn.active {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+}
+
+.hud-tag-btc {
+  color: #f59e0b;
+}
+
+.ratio-indicator-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: #fbbf24;
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
 
 
 

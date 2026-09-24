@@ -29,12 +29,14 @@ let activeChart = null; // modal chart instance
 let activeTicker = '';
 let activeTf = '1D';
 let activeClass = '';
+let modalRatioMode = 'USD'; // 'USD' or 'BTC'
 
 // Live on-page chart state
 let liveActiveChart = null;
 let liveTicker = 'BTCUSDT';
 let liveTf = '1D';
 let liveClass = 'crypto';
+let liveRatioMode = 'USD'; // 'USD' or 'BTC'
 let liveChartInitialized = false;
 
 function getTvInterval(tf) {
@@ -76,6 +78,17 @@ function formatShortPrice(val) {
   } else {
     return val.toFixed(5);
   }
+}
+
+function renderBtcBadge(btcRel) {
+  if (!btcRel || !btcRel.badge_bg) return '';
+  let cls = 'btc-badge-neutral';
+  if (btcRel.ratio_state === 'GOLD' || (btcRel.alpha_30d_pct > 0 && btcRel.leverage_allowed)) {
+    cls = 'btc-badge-gold';
+  } else if (btcRel.ratio_state === 'BLUE' || !btcRel.leverage_allowed) {
+    cls = 'btc-badge-blue';
+  }
+  return `<span class="btc-alpha-badge ${cls}" title="${btcRel.thesis_bg || ''}">${btcRel.badge_bg}</span>`;
 }
 
 function getQuantamentalSetupRank(item) {
@@ -372,6 +385,10 @@ function getFilteredSymbols() {
     if (currentSetupFilter === 'QUANTAMENTAL_ALPHA') {
       matchesSetup = (synth && synth.setup_type === 'QUANTAMENTAL_ALPHA_BUY') ||
                      (ts && (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY' || ts.quantamental_tag === 'INSTITUTIONAL_ALPHA'));
+    } else if (currentSetupFilter === 'BTC_ALPHA') {
+      matchesSetup = item.btc_relative && (item.btc_relative.ratio_state === 'GOLD' || item.btc_relative.alpha_30d_pct > 0);
+    } else if (currentSetupFilter === 'BTC_BLEED') {
+      matchesSetup = item.btc_relative && (item.btc_relative.ratio_state === 'BLUE' || !item.btc_relative.leverage_allowed);
     } else if (currentSetupFilter === 'VALUE_TRAP') {
       matchesSetup = (synth && synth.setup_type === 'VALUE_TRAP_WARNING') ||
                      (ts && (ts.setup_type === 'VALUE_TRAP_WARNING' || ts.quantamental_tag === 'VALUE_TRAP_RISK'));
@@ -554,6 +571,7 @@ function renderTable() {
               <span class="tv-badge">TV ↗</span>
             </a>
             <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
+            ${renderBtcBadge(item.btc_relative)}
           </div>
         </td>
         <td>
@@ -624,6 +642,7 @@ function renderCards() {
           <div class="card-badges">
             <span class="class-badge class-${item.asset_class}">${classLabel}</span>
             <span class="tf-badge">${item.timeframe}</span>
+            ${renderBtcBadge(item.btc_relative)}
           </div>
         </div>
 
@@ -817,9 +836,16 @@ function renderTradingViewIframe(container, tvSymbol, timeframe) {
   `;
 }
 
-function renderLightweightChart(container, candles, item, height = 480) {
+function renderLightweightChart(container, candles, item, height = 480, isRatio = false) {
   container.innerHTML = '';
-  const chartHeight = container.clientHeight || height;
+  if (isRatio && item) {
+    const banner = document.createElement('div');
+    banner.className = 'ratio-indicator-banner';
+    banner.innerHTML = `<span>₿ Графика на съотношението спрямо Bitcoin: <b>${item.ticker} / BTC</b> (Larsson Ribbon панделката следи дали активът бие BTC)</span>`;
+    container.appendChild(banner);
+  }
+
+  const chartHeight = Math.max(340, (container.clientHeight || height) - (isRatio ? 38 : 0));
   const chart = LightweightCharts.createChart(container, {
     width: container.clientWidth || 1000,
     height: chartHeight,
@@ -828,6 +854,11 @@ function renderLightweightChart(container, candles, item, height = 480) {
       textColor: '#94a3b8',
       fontSize: 12,
       fontFamily: "'JetBrains Mono', monospace",
+    },
+    localization: {
+      priceFormatter: p => isRatio 
+        ? `${p.toFixed(p < 0.0001 ? 8 : (p < 0.01 ? 6 : 5))} ₿` 
+        : `$${p >= 1000 ? p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : p.toFixed(p >= 1 ? 2 : 4)}`,
     },
     grid: {
       vertLines: { color: 'rgba(36, 44, 61, 0.4)' },
@@ -886,8 +917,8 @@ function renderLightweightChart(container, candles, item, height = 480) {
   const sr = computePivotsAndZones(candles);
   const lastPrice = candles[candles.length - 1].close;
 
-  const s1Val = sr.s1 ? sr.s1.core : (item ? item.s1 : null);
-  const r1Val = sr.r1 ? sr.r1.core : (item ? item.r1 : null);
+  const s1Val = sr.s1 ? sr.s1.core : (!isRatio && item ? item.s1 : null);
+  const r1Val = sr.r1 ? sr.r1.core : (!isRatio && item ? item.r1 : null);
 
   const s1Dist = s1Val ? Math.abs(((lastPrice - s1Val) / lastPrice) * 100).toFixed(1) : null;
   const r1Dist = r1Val ? Math.abs(((r1Val - lastPrice) / lastPrice) * 100).toFixed(1) : null;
@@ -899,7 +930,7 @@ function renderLightweightChart(container, candles, item, height = 480) {
       lineWidth: 2,
       lineStyle: LightweightCharts.LineStyle.Dashed,
       axisLabelVisible: true,
-      title: `🟢 S1 (${s1Dist ? '-' + s1Dist + '%' : ''})`,
+      title: isRatio ? `🟢 S1 Ratio` : `🟢 S1 (${s1Dist ? '-' + s1Dist + '%' : ''})`,
     });
   }
 
@@ -910,12 +941,12 @@ function renderLightweightChart(container, candles, item, height = 480) {
       lineWidth: 2,
       lineStyle: LightweightCharts.LineStyle.Dashed,
       axisLabelVisible: true,
-      title: `🔴 R1 (${r1Dist ? '+' + r1Dist + '%' : ''})`,
+      title: isRatio ? `🔴 R1 Ratio` : `🔴 R1 (${r1Dist ? '+' + r1Dist + '%' : ''})`,
     });
   }
 
-  // 4. Trade Setup Lines
-  const ts = item ? item.trade_suggestion : null;
+  // 4. Trade Setup Lines (USD mode only)
+  const ts = (!isRatio && item) ? item.trade_suggestion : null;
   if (ts && ts.action !== 'WAIT') {
     if (ts.entry) {
       candleSeries.createPriceLine({
@@ -959,8 +990,8 @@ function renderLightweightChart(container, candles, item, height = 480) {
     }
   }
 
-  // 5. DCF Fair Value Line
-  if (item && item.fundamental && item.fundamental.fair_value) {
+  // 5. DCF Fair Value Line (USD mode only)
+  if (!isRatio && item && item.fundamental && item.fundamental.fair_value) {
     const fv = item.fundamental.fair_value;
     candleSeries.createPriceLine({
       price: fv,
@@ -976,15 +1007,54 @@ function renderLightweightChart(container, candles, item, height = 480) {
   return chart;
 }
 
-async function loadChart(container, ticker, timeframe, assetClass, height = 500) {
+async function loadChart(container, ticker, timeframe, assetClass, height = 500, ratioMode = 'USD') {
   const item = allSymbols.find(s => s.ticker === ticker && s.timeframe === timeframe) || 
                allSymbols.find(s => s.ticker === ticker) || {};
-  const tvSym = getTvSymbol(item, ticker, assetClass);
   const isCrypto = assetClass === 'crypto' || (ticker && ticker.endsWith('USDT'));
+  const isCryptoStock = assetClass === 'crypto_stocks';
+  const isBtcSelf = ticker === 'BTCUSDT' || ticker === 'BTC-USD' || ticker === 'BTC';
 
   let chartInstance = null;
   let candles = [];
 
+  if (ratioMode === 'BTC' && !isBtcSelf) {
+    if (isCrypto && window.LightweightCharts) {
+      const cleanBase = ticker.endsWith('USDT') ? ticker.slice(0, -4) : ticker;
+      const btcPair = `${cleanBase}BTC`;
+      const binanceInterval = (timeframe || '1D').toLowerCase();
+      try {
+        const url = `https://api.binance.com/api/v3/klines?symbol=${btcPair}&interval=${binanceInterval}&limit=180`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const raw = await res.json();
+          candles = raw.map(k => ({
+            time: Math.floor(k[0] / 1000),
+            open: parseFloat(k[1]),
+            high: parseFloat(k[2]),
+            low: parseFloat(k[3]),
+            close: parseFloat(k[4]),
+            volume: parseFloat(k[5]),
+          }));
+        }
+      } catch (e) {
+        console.warn(`Binance ${btcPair} fetch failed:`, e);
+      }
+
+      if (candles.length > 30) {
+        chartInstance = renderLightweightChart(container, candles, item, height, true);
+        return chartInstance;
+      } else {
+        renderTradingViewIframe(container, `BINANCE:${cleanBase}BTC`, timeframe);
+        return null;
+      }
+    } else if (isCryptoStock) {
+      renderTradingViewIframe(container, `${ticker}/BTCUSD`, timeframe);
+      return null;
+    }
+  }
+
+  // Standard USD Mode:
+  const tvSym = getTvSymbol(item, ticker, assetClass);
   if (isCrypto && window.LightweightCharts) {
     const binanceInterval = (timeframe || '1D').toLowerCase();
     try {
@@ -1007,7 +1077,7 @@ async function loadChart(container, ticker, timeframe, assetClass, height = 500)
   }
 
   if (candles.length > 30) {
-    chartInstance = renderLightweightChart(container, candles, item, height);
+    chartInstance = renderLightweightChart(container, candles, item, height, false);
   } else {
     renderTradingViewIframe(container, tvSym, timeframe);
   }
@@ -1097,6 +1167,33 @@ function updateLiveChartHud(item, ticker, timeframe, assetClass) {
     const sl = ts.sl ? `$${formatShortPrice(ts.sl)}` : 'N/A';
     synthLevelsEl.textContent = `Вход: ${entry} | SL: ${sl} | RR: ${ts.rr ? '1:' + ts.rr : 'N/A'}`;
   }
+
+  // 4. BTC Relative HUD Column & Ratio Switcher in Live Chart
+  const btcCol = document.getElementById('liveHudBtc');
+  const btcBadge = document.getElementById('liveBtcBadge');
+  const btcAlpha = document.getElementById('liveBtcAlpha');
+  const ratioGroup = document.getElementById('liveRatioGroup');
+
+  const isEligibleRatio = (assetClass === 'crypto' || assetClass === 'crypto_stocks') && !ticker.startsWith('BTC');
+
+  if (ratioGroup) {
+    ratioGroup.style.display = isEligibleRatio ? 'inline-flex' : 'none';
+    ratioGroup.querySelectorAll('.live-ratio-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.ratio === liveRatioMode);
+    });
+  }
+
+  const btcRel = item.btc_relative || (ts && ts.btc_relative);
+  if (btcRel && btcCol && btcBadge && btcAlpha) {
+    btcCol.style.display = 'flex';
+    btcBadge.textContent = btcRel.badge_bg;
+    const a30 = btcRel.alpha_30d_pct || 0;
+    const sign = a30 > 0 ? '+' : '';
+    btcAlpha.textContent = `Alpha: ${sign}${a30.toFixed(1)}% (${btcRel.ratio_state})`;
+    btcBadge.title = btcRel.thesis_bg || '';
+  } else if (btcCol) {
+    btcCol.style.display = 'none';
+  }
 }
 
 async function selectLiveAsset(ticker, timeframe, assetClass) {
@@ -1131,7 +1228,7 @@ async function selectLiveAsset(ticker, timeframe, assetClass) {
       liveActiveChart = null;
     }
     const h = container.clientHeight || 520;
-    liveActiveChart = await loadChart(container, liveTicker, liveTf, liveClass, h);
+    liveActiveChart = await loadChart(container, liveTicker, liveTf, liveClass, h, liveRatioMode);
   }
 }
 
@@ -1228,7 +1325,7 @@ async function openChartModal(ticker, timeframe, assetClass) {
 
   // Load chart into modal
   if (container) {
-    activeChart = await loadChart(container, ticker, activeTf, assetClass, container.clientHeight || 480);
+    activeChart = await loadChart(container, ticker, activeTf, assetClass, container.clientHeight || 480, modalRatioMode);
   }
 
   if (loading) loading.style.display = 'none';
@@ -1317,7 +1414,61 @@ function updateModalTradeSuggestionStrip(ts, item) {
     fundThesisEl.textContent = fund.thesis_bg || (ts && ts.fund_thesis_bg) || fund.thesis || (item.asset_class === 'crypto' ? 'Крипто актив без DCF модел. Движи се от ликвидност и халвинг цикли.' : 'Фундаментален анализ на паричните потоци.');
   }
 
-  // 3. Quantamental Synthesis Banner
+  // 3. ₿ Bitcoin Relative Strength HUD Card
+  const btcHudCard = document.getElementById('modalBtcHudCard');
+  const btcStateBadge = document.getElementById('modalBtcStateBadge');
+  const btcActionEl = document.getElementById('modalBtcAction');
+  const btcAlpha30El = document.getElementById('modalBtcAlpha30d');
+  const btcAlpha7El = document.getElementById('modalBtcAlpha7d');
+  const btcSpreadEl = document.getElementById('modalBtcSpread');
+  const btcLevEl = document.getElementById('modalBtcLevStatus');
+  const btcThesisEl = document.getElementById('modalBtcThesis');
+
+  const btcRel = item.btc_relative || (ts && ts.btc_relative);
+  if (btcHudCard) {
+    if (btcRel) {
+      btcHudCard.style.display = 'flex';
+      if (btcStateBadge) {
+        const rEmoji = btcRel.ratio_state === 'GOLD' ? '🟡' : (btcRel.ratio_state === 'BLUE' ? '🔵' : '⚪');
+        btcStateBadge.textContent = `${rEmoji} ${btcRel.ratio_state} RATIO`;
+        btcStateBadge.className = `badge ${btcRel.ratio_state === 'GOLD' ? 'badge-gold' : (btcRel.ratio_state === 'BLUE' ? 'badge-blue' : 'badge-neutral')}`;
+      }
+      if (btcActionEl) btcActionEl.textContent = `${btcRel.badge_bg} - ${btcRel.verdict || ''}`;
+      if (btcAlpha30El) {
+        const a30 = btcRel.alpha_30d_pct || 0;
+        btcAlpha30El.textContent = `${a30 > 0 ? '+' : ''}${a30.toFixed(2)}%`;
+        btcAlpha30El.style.color = a30 > 0 ? '#34d399' : '#f87171';
+      }
+      if (btcAlpha7El) {
+        const a7 = btcRel.alpha_7d_pct || 0;
+        btcAlpha7El.textContent = `${a7 > 0 ? '+' : ''}${a7.toFixed(2)}%`;
+        btcAlpha7El.style.color = a7 > 0 ? '#34d399' : '#f87171';
+      }
+      if (btcSpreadEl) {
+        const sp = btcRel.ratio_spread_pct || 0;
+        btcSpreadEl.textContent = `${sp > 0 ? '+' : ''}${sp.toFixed(2)}%`;
+      }
+      if (btcLevEl) {
+        btcLevEl.textContent = btcRel.leverage_allowed ? '🟢 Разрешен 2x-3x' : '🔴 1x Spot Only';
+        btcLevEl.style.color = btcRel.leverage_allowed ? '#34d399' : '#f87171';
+      }
+      if (btcThesisEl) btcThesisEl.textContent = btcRel.thesis_bg || 'Анализ на относителната сила спрямо BTC.';
+    } else {
+      btcHudCard.style.display = 'none';
+    }
+  }
+
+  // Modal Ratio Switcher Toggle Display
+  const modalRatioGroup = document.getElementById('modalRatioGroup');
+  const isEligibleRatio = (item.asset_class === 'crypto' || item.asset_class === 'crypto_stocks') && !item.ticker.startsWith('BTC');
+  if (modalRatioGroup) {
+    modalRatioGroup.style.display = isEligibleRatio ? 'inline-flex' : 'none';
+    modalRatioGroup.querySelectorAll('.modal-ratio-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.ratio === modalRatioMode);
+    });
+  }
+
+  // 4. Quantamental Synthesis Banner
   const synthBadgeEl = document.getElementById('modalSetupAction');
   const synthTierEl = document.getElementById('modalSetupTier');
   const synthTypeEl = document.getElementById('modalSetupType');
@@ -1446,6 +1597,17 @@ document.querySelectorAll('#modalTfGroup .modal-tf-btn').forEach(btn => {
   });
 });
 
+// Ratio Switcher in Modal (USD vs vs BTC)
+document.querySelectorAll('#modalRatioGroup .modal-ratio-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    modalRatioMode = e.currentTarget.dataset.ratio;
+    document.querySelectorAll('#modalRatioGroup .modal-ratio-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.ratio === modalRatioMode);
+    });
+    openChartModal(activeTicker, activeTf, activeClass);
+  });
+});
+
 // Modal Section Navigation Tabs
 document.querySelectorAll('#modalNavTabs .modal-nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
@@ -1519,6 +1681,17 @@ document.querySelectorAll('#liveTfGroup .live-tf-btn').forEach(btn => {
     if (tf && tf !== liveTf) {
       selectLiveAsset(liveTicker, tf, liveClass);
     }
+  });
+});
+
+// Ratio Switcher in Live Chart (USD vs vs BTC)
+document.querySelectorAll('#liveRatioGroup .live-ratio-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    liveRatioMode = e.currentTarget.dataset.ratio;
+    document.querySelectorAll('#liveRatioGroup .live-ratio-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.ratio === liveRatioMode);
+    });
+    selectLiveAsset(liveTicker, liveTf, liveClass);
   });
 });
 
@@ -2223,16 +2396,21 @@ function renderProposalsBanner(proposals) {
       `;
     }).join('');
 
+    const s = allSymbols.find(x => x.ticker === p.ticker);
+    const btcRel = p.btc_relative || (s && s.btc_relative);
+    const btcBadgeHtml = renderBtcBadge(btcRel);
+    const isBtcBleeding = btcRel && !btcRel.leverage_allowed;
+
     const actionBtns = `
       <button class="btn-approve-1x" onclick="approveProposal('${p.proposal_id}', 1)">
         ${isLong ? '🟢 Spot 1x' : '🟢 Hedge 1x'}
       </button>
-      ${maxLev >= 2 ? `
+      ${(!isBtcBleeding && maxLev >= 2) ? `
         <button class="btn-approve-2x" onclick="approveProposal('${p.proposal_id}', 2)">
           ⚡ ${isLong ? 'Long' : 'Short'} 2x
         </button>
       ` : ''}
-      ${maxLev >= 3 ? `
+      ${(!isBtcBleeding && maxLev >= 3) ? `
         <button class="btn-approve-3x" onclick="approveProposal('${p.proposal_id}', 3)">
           🚀 ${isLong ? 'Long' : 'Short'} 3x
         </button>
@@ -2249,9 +2427,16 @@ function renderProposalsBanner(proposals) {
             <span class="proposal-ticker">${p.ticker}</span>
             <span class="${dirBadgeClass}">${dirText}</span>
             <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class || 'Crypto'}</span>
+            ${btcBadgeHtml}
           </div>
           <span class="setup-tier-badge">🏆 Tier ${p.tier || 'A'} (${p.score || 0}/100)</span>
         </div>
+
+        ${isBtcBleeding ? `
+          <div style="color: #f87171; font-size: 0.75rem; font-weight: 700; margin: 4px 0 8px 0; padding: 4px 8px; background: rgba(239, 68, 68, 0.12); border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.35);">
+            ⚠️ ₿ Bleeding Alert: Активът губи от Bitcoin (${btcRel.alpha_30d_pct ? btcRel.alpha_30d_pct.toFixed(1) : '-'}%). Левъриджът е ограничен строго до 1x Spot.
+          </div>
+        ` : ''}
 
         <div class="proposal-metrics">
           <div class="metric-item">
