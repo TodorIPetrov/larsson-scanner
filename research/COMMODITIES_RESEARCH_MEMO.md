@@ -1,6 +1,6 @@
 # ИНСТИТУЦИОНАЛЕН АНАЛИЗ НА СУРОВИНИТЕ И СУПЕРЦИКЛИТЕ (v2.0)
 **Обхват:** Благородни метали, Енергетика, Индустриални метали и Ядрен сектор  
-**Дата на актуализация:** 17 September 2026 г.  
+**Дата на актуализация:** 22 September 2026 г.  
 **Аналитичен консорциум:** Macro & Commodity Regime Strategists (Agent 4) & CIO Synthesis (Agent 5)  
 **Източници:** NYMEX, COMEX, US Geological Survey, IEA (International Energy Agency), WGC, state.db live sync.
 
@@ -10,15 +10,15 @@
 
 | Суровина / Актив | Тикер | Текуща цена | Режим 1D | Режим 1W | Маргинална себестойност | Марж над себестойност | Институционална присъда |
 | :--- | :--- | :---: | :---: | :---: | :--- | :---: | :--- |
-| **Злато (Gold)** | `GC=F` | **$4,345.70** | 🟢 GOLD | 🟢 GOLD | $1,350 - $1,450/oz (AISC) | +67.8% | 🟢 **STRONG OVERWEIGHT** |
-| **Сребро (Silver)** | `SI=F` | **$64.22** | 🟡 NEUTRAL | 🟢 GOLD | $22.00 - $25.00/oz | +62.6% | 🟢 **ACCUMULATE ON DIP** |
-| **Петрол WTI (Crude)** | `CL=F` | **$101.04** | 🟢 GOLD | 🟢 GOLD | $70.00 - $74.00/bbl (Shale break-even) | +28.7% | 🟢 **OVERWEIGHT** |
-| **Петрол Brent** | `BZ=F` | **$104.40** | 🟢 GOLD | 🟢 GOLD | $72.00 - $76.00/bbl (Deepwater) | +28.2% | 🟢 **OVERWEIGHT** |
-| **Мед (Copper)** | `HG=F` | **$6.53** | 🟢 GOLD | 🟢 GOLD | $3.80 - $4.20/lb (Incentive price) | +38.8% | 🟢 **STRONG OVERWEIGHT** |
-| **Природен газ (NatGas)** | `NG=F` | **$2.90** | 🔴 BLUE | 🔴 BLUE | $2.50 - $2.75/MMBtu (Cash cost) | +8.7% | 🟡 **ACCUMULATE AT COST LOWS** |
-| **Платина (Platinum)** | `PL=F` | **$1,789.00** | 🟡 NEUTRAL | 🟢 GOLD | $1,100 - $1,200/oz (Shaft cost) | +35.7% | 🟢 **ACCUMULATE ON DIP** |
-| **Уран (Global X ETF)** | `URA` | **$41.37** | 🟡 NEUTRAL | 🟢 GOLD | $85.00/lb U3O8 Term benchmark | +22.6% | 🟢 **ACCUMULATE ON DIP** |
-| **Уран (Sprott Miners)** | `URNM` | **$50.22** | 🔴 BLUE | 🟡 NEUTRAL | $85.00/lb U3O8 Term benchmark | +24.3% | 🟡 **NEUTRAL / WATCH** |
+| **Злато (Gold)** | `GC=F` | **$4,395.50** | 🟢 GOLD | 🟢 GOLD | $1,350 - $1,450/oz (AISC) | +68.1% | 🟢 **STRONG OVERWEIGHT** |
+| **Сребро (Silver)** | `SI=F` | **$67.59** | 🟡 NEUTRAL | 🟢 GOLD | $22.00 - $25.00/oz | +64.5% | 🟢 **ACCUMULATE ON DIP** |
+| **Петрол WTI (Crude)** | `CL=F` | **$90.27** | 🟢 GOLD | 🟢 GOLD | $70.00 - $74.00/bbl (Shale break-even) | +20.2% | 🟢 **OVERWEIGHT** |
+| **Петрол Brent** | `BZ=F` | **$99.03** | 🟢 GOLD | 🟢 GOLD | $72.00 - $76.00/bbl (Deepwater) | +24.3% | 🟢 **OVERWEIGHT** |
+| **Мед (Copper)** | `HG=F` | **$6.90** | 🟢 GOLD | 🟢 GOLD | $3.80 - $4.20/lb (Incentive price) | +42.0% | 🟢 **STRONG OVERWEIGHT** |
+| **Природен газ (NatGas)** | `NG=F` | **$3.14** | 🟡 NEUTRAL | 🔴 BLUE | $2.50 - $2.75/MMBtu (Cash cost) | +15.7% | 🟡 **NEUTRAL / WATCH** |
+| **Платина (Platinum)** | `PL=F` | **$1,841.70** | 🟡 NEUTRAL | 🟢 GOLD | $1,100 - $1,200/oz (Shaft cost) | +37.6% | 🟢 **ACCUMULATE ON DIP** |
+| **Уран (Global X ETF)** | `URA` | **$43.72** | 🔴 BLUE | 🟢 GOLD | $85.00/lb U3O8 Term benchmark | +26.8% | 🟡 **NEUTRAL** |
+| **Уран (Sprott Miners)** | `URNM` | **$52.78** | 🔴 BLUE | 🟡 NEUTRAL | $85.00/lb U3O8 Term benchmark | +28.0% | 🟡 **NEUTRAL / WATCH** |
 
 ---
 

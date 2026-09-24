@@ -5,8 +5,10 @@ into actionable, risk-managed trade suggestions tailored for Spot investing and 
 """
 
 from dataclasses import asdict, dataclass
-from typing import Dict, Optional, Tuple, TYPE_CHECKING
+from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 import numpy as np
+
+from src.engine.asset_profiles import get_max_allowed_leverage
 
 if TYPE_CHECKING:
     from src.engine.quantamental import FundamentalProfile
@@ -33,6 +35,9 @@ class TradeSuggestion:
     z_score: Optional[float] = None
     quantamental_tag: Optional[str] = None
     dca_plan: Optional[str] = None
+    # Leverage support (1x - 3x)
+    max_leverage: int = 1  # 1, 2, 3
+    recommended_leverage: int = 1
     # Explicit Technical vs Fundamental separation
     tech_action: str = "WAIT"  # 'BUY', 'HOLD', 'EXIT', 'TAKE_PROFIT', 'SHORT', 'WAIT'
     tech_label_bg: str = "⏳ ИЗЧАКАЙ"
@@ -47,6 +52,66 @@ class TradeSuggestion:
         return asdict(self)
 
 
+def calculate_leverage_matrix(
+    entry_price: float,
+    stop_loss: Optional[float],
+    position_size_usd: float = 300.0,
+    max_leverage: int = 3,
+    direction: str = "LONG",
+) -> list:
+    """
+    Computes comparative parameters (margin, risk, estimated liquidation)
+    for each allowed leverage level from 1 to max_leverage.
+    """
+    if entry_price <= 0 or position_size_usd <= 0:
+        return []
+
+    max_lev = max(1, min(3, max_leverage))
+    matrix = []
+    is_long = direction.upper() != "SHORT"
+
+    for lev in range(1, max_lev + 1):
+        margin_usd = round(position_size_usd / lev, 2)
+        if stop_loss and stop_loss > 0:
+            sl_loss_usd = round(abs(entry_price - stop_loss) / entry_price * position_size_usd, 2)
+            sl_pct_margin = round((sl_loss_usd / margin_usd) * 100.0, 1) if margin_usd > 0 else 0.0
+        else:
+            sl_loss_usd = 0.0
+            sl_pct_margin = 0.0
+
+        if lev > 1:
+            # 0.5% maintenance margin buffer
+            if is_long:
+                liq_price = round(entry_price * (1.0 - (1.0 / lev) + 0.005), 4)
+            else:
+                liq_price = round(entry_price * (1.0 + (1.0 / lev) - 0.005), 4)
+            dist_to_liq_pct = round(abs(entry_price - liq_price) / entry_price * 100.0, 1)
+        else:
+            liq_price = None
+            dist_to_liq_pct = None
+
+        if lev == 1:
+            label = "Spot (1x)" if is_long else "Hedge 1x"
+        elif lev == 2:
+            label = "Long 2x" if is_long else "Short 2x"
+        else:
+            label = "Long 3x" if is_long else "Short 3x"
+
+        matrix.append({
+            "leverage": lev,
+            "label": label,
+            "margin_usd": margin_usd,
+            "notional_usd": round(position_size_usd, 2),
+            "sl_loss_usd": sl_loss_usd,
+            "sl_pct_margin": sl_pct_margin,
+            "liquidation_price": liq_price,
+            "dist_to_liq_pct": dist_to_liq_pct,
+        })
+
+    return matrix
+
+
+
 def calculate_position_size(
     entry_price: float,
     stop_loss: float,
@@ -54,6 +119,7 @@ def calculate_position_size(
     risk_pct: float = 1.0,
     tp1: Optional[float] = None,
     tp2: Optional[float] = None,
+    leverage: int = 1,
 ) -> dict:
     """
     Calculates institutional position sizing based on risk-per-trade.
@@ -65,11 +131,14 @@ def calculate_position_size(
         return {
             "units": 0.0,
             "position_value": 0.0,
+            "margin_usd": 0.0,
             "risk_usd": 0.0,
             "risk_per_unit": 0.0,
             "risk_pct_price": 0.0,
             "profit_tp1_usd": 0.0,
             "profit_tp2_usd": 0.0,
+            "leverage": leverage,
+            "liquidation_price": None,
         }
 
     risk_per_unit = abs(entry_price - stop_loss)
@@ -77,11 +146,14 @@ def calculate_position_size(
         return {
             "units": 0.0,
             "position_value": 0.0,
+            "margin_usd": 0.0,
             "risk_usd": 0.0,
             "risk_per_unit": 0.0,
             "risk_pct_price": 0.0,
             "profit_tp1_usd": 0.0,
             "profit_tp2_usd": 0.0,
+            "leverage": leverage,
+            "liquidation_price": None,
         }
 
     risk_usd = round(account_size * (risk_pct / 100.0), 2)
@@ -94,15 +166,23 @@ def calculate_position_size(
     profit_tp1_usd = round(units * abs(tp1 - entry_price), 2) if tp1 else None
     profit_tp2_usd = round(units * abs(tp2 - entry_price), 2) if tp2 else None
 
+    lev = max(1, min(3, leverage))
+    margin_usd = round(position_value / lev, 2)
+    liq_price = round(entry_price * (1.0 - (1.0 / lev) + 0.005), 4) if lev > 1 else None
+
     return {
         "units": units,
         "position_value": position_value,
+        "margin_usd": margin_usd,
         "risk_usd": risk_usd,
         "risk_per_unit": round(risk_per_unit, 4),
         "risk_pct_price": risk_pct_price,
         "profit_tp1_usd": profit_tp1_usd,
         "profit_tp2_usd": profit_tp2_usd,
+        "leverage": lev,
+        "liquidation_price": liq_price,
     }
+
 
 
 def calculate_confluence_score(
@@ -303,12 +383,15 @@ def _raw_generate_trade_suggestion(
     macro_1d_state: Optional[str] = None,
     min_rr_threshold: float = 1.8,
     fund_profile: Optional[object] = None,
+    ticker: Optional[str] = None,
+    asset_class: str = "crypto",
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion.
     Fuses technical momentum/structure with institutional fundamental valuation.
     """
     atr = max(atr, current_price * 0.005)
+    atr_pct = (atr / current_price) * 100.0 if current_price > 0 else 0.0
     is_mtf_aligned = (macro_1d_state == "GOLD") if (macro_1d_state and timeframe != "1D") else (state == "GOLD")
     spread_expanding = spread_pct > 0.25
 
@@ -447,6 +530,14 @@ def _raw_generate_trade_suggestion(
                 reason_bg = "Пробив над всички съпротиви (Price Discovery) със силна бича лента. Трендов моментум."
                 reason_en = "Breakout into Price Discovery with strong bullish ribbon. Momentum continuation."
 
+            max_lev = get_max_allowed_leverage(
+                ticker=ticker or "",
+                asset_class=asset_class,
+                score=score,
+                tier=tier,
+                atr_pct=atr_pct,
+                direction="LONG",
+            )
             return TradeSuggestion(
                 action="SPOT_BUY",
                 direction="LONG",
@@ -466,6 +557,8 @@ def _raw_generate_trade_suggestion(
                 moat=moat,
                 z_score=z_score,
                 quantamental_tag=quant_tag,
+                max_leverage=max_lev,
+                recommended_leverage=min(2, max_lev),
             )
 
     # -------------------------------------------------------------------------
@@ -535,6 +628,14 @@ def _raw_generate_trade_suggestion(
 
                 dca = f"50% Market (${current_price:,.2f}) + 50% Limit S1 (${s1:,.2f})" if (s1 and s1 < current_price) else None
 
+                max_lev = get_max_allowed_leverage(
+                    ticker=ticker or "",
+                    asset_class=asset_class,
+                    score=score,
+                    tier=tier,
+                    atr_pct=atr_pct,
+                    direction="LONG",
+                )
                 return TradeSuggestion(
                     action="SPOT_BUY",
                     direction="LONG",
@@ -555,6 +656,8 @@ def _raw_generate_trade_suggestion(
                     z_score=z_score,
                     quantamental_tag=quant_tag,
                     dca_plan=dca,
+                    max_leverage=max_lev,
+                    recommended_leverage=min(2, max_lev),
                 )
 
     # -------------------------------------------------------------------------
@@ -591,6 +694,16 @@ def _raw_generate_trade_suggestion(
                         )
                         tag = "SHORT_FUNDAMENTAL_ALIGNMENT" if is_bearish else "TECHNICAL_SHORT"
                         extra_reason = f" Потвърдено от слаб фундаментален рейтинг ({fund_verdict})." if is_bearish else ""
+                        max_lev = get_max_allowed_leverage(
+                            ticker=ticker or "",
+                            asset_class=asset_class,
+                            score=score,
+                            tier=tier,
+                            atr_pct=atr_pct,
+                            direction="SHORT",
+                        )
+                        lev_label = f"макс {max_lev}x левъридж" if max_lev > 1 else "1x (без левъридж)"
+                        lev_label_en = f"max {max_lev}x leverage" if max_lev > 1 else "1x (spot/no leverage)"
                         return TradeSuggestion(
                             action="SHORT_2X_OPTIONAL",
                             direction="SHORT",
@@ -602,14 +715,16 @@ def _raw_generate_trade_suggestion(
                             rr_ratio=rr,
                             score=score,
                             tier=tier,
-                            reason_bg=f"Отхвърляне от съпротива/меча панделка с потенциал до подкрепа S1 (${tp1:,.2f}).{extra_reason} Лек short с макс 2x левъридж.",
-                            reason_en=f"Rejection at resistance/bearish ribbon with room to S1 (${tp1:,.2f}).{extra_reason} Light hedge short (max 2x leverage).",
+                            reason_bg=f"Отхвърляне от съпротива/меча панделка с потенциал до подкрепа S1 (${tp1:,.2f}).{extra_reason} Лек short с {lev_label}.",
+                            reason_en=f"Rejection at resistance/bearish ribbon with room to S1 (${tp1:,.2f}).{extra_reason} Light hedge short ({lev_label_en}).",
                             fund_verdict=fund_verdict,
                             fair_value=fair_value,
                             mos_pct=mos_pct,
                             moat=moat,
                             z_score=z_score,
                             quantamental_tag=tag,
+                            max_leverage=max_lev,
+                            recommended_leverage=min(2, max_lev),
                         )
 
     # -------------------------------------------------------------------------
@@ -666,6 +781,8 @@ def generate_trade_suggestion(
     macro_1d_state: Optional[str] = None,
     min_rr_threshold: float = 1.8,
     fund_profile: Optional[object] = None,
+    ticker: Optional[str] = None,
+    asset_class: str = "crypto",
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion,
@@ -694,6 +811,8 @@ def generate_trade_suggestion(
         macro_1d_state=macro_1d_state,
         min_rr_threshold=min_rr_threshold,
         fund_profile=fund_profile,
+        ticker=ticker,
+        asset_class=asset_class,
     )
     return _enrich_trade_suggestion(
         raw_s,
@@ -704,4 +823,5 @@ def generate_trade_suggestion(
         current_price=current_price,
         fund_profile=fund_profile,
     )
+
 

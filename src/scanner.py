@@ -20,6 +20,8 @@ from src.data.sp500_loader import load_sp500_tickers
 from src.data.yfinance_fetch import YFinanceFetcher
 from src.engine.smma import compute_larsson_series, LarssonState
 from src.engine.sr_levels import analyze_sr_levels
+from src.engine.setup_monitor import SetupMonitor
+from src.engine.asset_profiles import get_quality_tier
 from src.storage.database import Database
 from src.trading.paper_trader import PaperTrader
 
@@ -46,6 +48,7 @@ class LarssonScanner:
         self.assets = self._load_yaml(assets_path)
         self.tv_mapping = self._load_json(tv_mapping_path)
         self.paper_trader = paper_trader or PaperTrader(db=self.db, notifier=self.notifier, config=self.config)
+        self.setup_monitor = SetupMonitor()
 
     def _load_yaml(self, path: str) -> dict:
         data = {}
@@ -183,6 +186,7 @@ class LarssonScanner:
         m2: float,
         v2: float,
         sr_data: Optional[dict],
+        asset_class: str = "crypto",
     ) -> Optional[dict]:
         try:
             from src.engine.trade_suggestions import generate_trade_suggestion
@@ -228,6 +232,8 @@ class LarssonScanner:
                 timeframe=timeframe,
                 macro_1d_state=macro_1d_state,
                 fund_profile=fund_profile,
+                ticker=ticker,
+                asset_class=asset_class,
             )
 
             self.db.upsert_trade_suggestion(
@@ -264,6 +270,80 @@ class LarssonScanner:
         except Exception as e:
             logger.warning(f"Failed to generate trade suggestion for {ticker} [{timeframe}]: {e}")
             return None
+
+    def _evaluate_and_persist_pending_setups(
+        self,
+        ticker: str,
+        asset_class: str,
+        timeframe: str,
+        current_price: float,
+        state: LarssonState,
+        v1: float,
+        m1: float,
+        m2: float,
+        v2: float,
+        sr_data: Optional[dict] = None,
+        closes: Optional[list] = None,
+        fund_profile: Optional[object] = None,
+    ):
+        """
+        Evaluates potential pending setups 1-3 bars away and persists them to the pending_setups table.
+        """
+        try:
+            tier = get_quality_tier(ticker)
+            macro_1d_row = self.db.get_current_state(ticker, "1D")
+            macro_1d_state = macro_1d_row["current_state"] if macro_1d_row else ""
+            weekly_row = self.db.get_current_state(ticker, "1W")
+            weekly_state = weekly_row["current_state"] if weekly_row else ""
+
+            # If current state transitioned to GOLD, mark prior imminent/dip setups as TRIGGERED
+            if state == LarssonState.GOLD:
+                self.db.mark_setup_triggered(ticker, "IMMINENT_GOLD", timeframe)
+                self.db.mark_setup_triggered(ticker, "QUALITY_DIP_BUY", timeframe)
+                self.db.mark_setup_triggered(ticker, "DIVERGENCE_FORMING", timeframe)
+
+            asset_data = {
+                "symbol": ticker,
+                "asset_class": asset_class,
+                "timeframe": timeframe,
+                "state": state.value,
+                "price": current_price,
+                "v1": v1,
+                "m1": m1,
+                "m2": m2,
+                "v2": v2,
+                "atr": sr_data.get("atr", current_price * 0.01) if sr_data else current_price * 0.01,
+                "sr_analysis": sr_data,
+                "fund_profile": fund_profile,
+                "weekly_state": weekly_state or macro_1d_state,
+                "tier": tier,
+                "recent_prices": closes[-30:] if closes is not None and len(closes) >= 20 else [],
+            }
+
+            pending_list = self.setup_monitor.scan_for_pending_setups([asset_data])
+            for ps in pending_list:
+                self.db.upsert_pending_setup(
+                    symbol=ps.symbol,
+                    asset_class=ps.asset_class,
+                    setup_type=ps.setup_type,
+                    direction=ps.direction,
+                    priority=ps.priority,
+                    quality_score=ps.quality_score,
+                    description_bg=ps.description_bg,
+                    description_en=ps.description_en,
+                    conditions_met=json.dumps(ps.conditions_met),
+                    conditions_pending=json.dumps(ps.conditions_pending),
+                    estimated_trigger=ps.estimated_trigger,
+                    current_price=ps.current_price,
+                    target_entry=ps.target_entry,
+                    target_sl=ps.target_sl,
+                    target_tp1=ps.target_tp1,
+                    key_level=ps.key_level,
+                    timeframe=ps.timeframe,
+                    tier=ps.tier,
+                )
+        except Exception as e:
+            logger.debug(f"Pending setup check failed for {ticker}: {e}")
 
     def scan_crypto_symbols(
         self,
@@ -356,6 +436,20 @@ class LarssonScanner:
 
                 self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
 
+                self._evaluate_and_persist_pending_setups(
+                    ticker=sym,
+                    asset_class="crypto",
+                    timeframe=timeframe,
+                    current_price=float(latest_price),
+                    state=current_state,
+                    v1=float(v1[-1]),
+                    m1=float(m1[-1]),
+                    m2=float(m2[-1]),
+                    v2=float(v2[-1]),
+                    sr_data=sr_data,
+                    closes=list(closes),
+                )
+
                 # Evaluate open paper positions for this ticker (SL/TP/Blue exit)
                 try:
                     self.paper_trader.evaluate_open_positions(
@@ -386,8 +480,16 @@ class LarssonScanner:
                         tv_symbol=tv_symbol,
                     )
 
-                    # Trigger interactive trade proposal if transitioning to GOLD
-                    if current_state == LarssonState.GOLD and trade_suggestion:
+                    # Trigger interactive trade proposal if actionable setup exists on state transition
+                    should_propose = False
+                    if trade_suggestion:
+                        direction = trade_suggestion.get("direction")
+                        if current_state == LarssonState.GOLD and direction == "LONG":
+                            should_propose = True
+                        elif current_state == LarssonState.BLUE and direction == "SHORT":
+                            should_propose = True
+
+                    if should_propose:
                         try:
                             self.paper_trader.handle_new_signal(
                                 ticker=sym,
@@ -510,9 +612,24 @@ class LarssonScanner:
                     m2=float(m2[-1]),
                     v2=float(v2[-1]),
                     sr_data=sr_data,
+                    asset_class=asset_class,
                 )
 
                 self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
+
+                self._evaluate_and_persist_pending_setups(
+                    ticker=sym,
+                    asset_class=asset_class,
+                    timeframe=timeframe,
+                    current_price=float(latest_price),
+                    state=current_state,
+                    v1=float(v1[-1]),
+                    m1=float(m1[-1]),
+                    m2=float(m2[-1]),
+                    v2=float(v2[-1]),
+                    sr_data=sr_data,
+                    closes=list(closes),
+                )
 
                 # Evaluate open paper positions for this symbol (SL/TP/Blue exit)
                 try:
@@ -544,8 +661,16 @@ class LarssonScanner:
                         tv_symbol=tv_symbol,
                     )
 
-                    # Trigger interactive trade proposal if transitioning to GOLD
-                    if current_state == LarssonState.GOLD and trade_suggestion:
+                    # Trigger interactive trade proposal if actionable setup exists on state transition
+                    should_propose = False
+                    if trade_suggestion:
+                        direction = trade_suggestion.get("direction")
+                        if current_state == LarssonState.GOLD and direction == "LONG":
+                            should_propose = True
+                        elif current_state == LarssonState.BLUE and direction == "SHORT":
+                            should_propose = True
+
+                    if should_propose:
                         try:
                             self.paper_trader.handle_new_signal(
                                 ticker=sym,

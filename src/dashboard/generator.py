@@ -10,6 +10,7 @@ import os
 from typing import Dict, List, Optional
 
 from src.storage.database import Database
+from src.engine.asset_profiles import get_quality_tier, get_tier_emoji
 
 DEFAULT_OUTPUT_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -36,6 +37,22 @@ def _clean_float(val: Optional[float]) -> Optional[float]:
         return f
     except (ValueError, TypeError):
         return None
+
+
+def _clean_dict_floats(obj):
+    """Recursively converts NaN/Inf to None in nested dicts/lists and converts sqlite3.Row to dict for JSON compliance."""
+    if hasattr(obj, "keys") and not isinstance(obj, dict):
+        try:
+            obj = dict(obj)
+        except Exception:
+            pass
+    if isinstance(obj, dict):
+        return {k: _clean_dict_floats(v) for k, v in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [_clean_dict_floats(elem) for elem in obj]
+    elif isinstance(obj, float):
+        return _clean_float(obj)
+    return obj
 
 
 def _load_names_map() -> Dict[str, str]:
@@ -335,6 +352,10 @@ def export_dashboard_data(
             "synthesis_label_bg": synth_label,
         }
 
+        # Quality Tier
+        asset_tier = get_quality_tier(ticker)
+        tier_emoji = get_tier_emoji(asset_tier)
+
         items.append({
             "ticker": ticker,
             "name": name,
@@ -360,6 +381,8 @@ def export_dashboard_data(
             "fundamental": fund_data,
             "synthesis": synthesis_block,
             "trade_suggestion": trade_suggestion_dict,
+            "quality_tier": asset_tier,
+            "tier_emoji": tier_emoji,
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
         })
@@ -368,6 +391,83 @@ def export_dashboard_data(
     bullish_pct = round((gold_count / total * 100), 1) if total > 0 else 0.0
     bearish_pct = round((blue_count / total * 100), 1) if total > 0 else 0.0
     neutral_pct = round((neutral_count / total * 100), 1) if total > 0 else 0.0
+
+    # Pending Setups from queue
+    pending_setups_data = []
+    try:
+        raw_setups = db.get_active_pending_setups()
+        for s in raw_setups:
+            pending_setups_data.append({
+                "symbol": s["symbol"],
+                "asset_class": s["asset_class"],
+                "setup_type": s["setup_type"],
+                "direction": s["direction"],
+                "priority": s["priority"],
+                "quality_score": _clean_float(s["quality_score"]),
+                "description_bg": s["description_bg"],
+                "conditions_met": s["conditions_met"],
+                "conditions_pending": s["conditions_pending"],
+                "estimated_trigger": s["estimated_trigger"],
+                "current_price": _clean_float(s["current_price"]),
+                "target_entry": _clean_float(s["target_entry"]),
+                "key_level": _clean_float(s["key_level"]),
+                "timeframe": s["timeframe"],
+                "tier": s["tier"],
+                "first_detected": s["first_detected"],
+                "last_updated": s["last_updated"],
+            })
+    except Exception:
+        pass
+
+    # Dual Portfolio Export: Real (Live) & Virtual (Paper)
+    portfolio_real_data = {}
+    portfolio_paper_data = {}
+    portfolio_summary = {}
+
+    try:
+        from src.trading.portfolio_tracker import PortfolioTracker
+        tracker = PortfolioTracker(db=db)
+
+        # 1. Virtual / Paper Portfolio
+        paper_summary = tracker.get_portfolio_summary(portfolio_type="PAPER")
+        paper_positions = tracker.get_open_positions_detail(portfolio_type="PAPER")
+        paper_history = tracker.get_trade_history(limit=50, portfolio_type="PAPER")
+        raw_paper_log = db.get_trade_log(limit=50, portfolio_type="PAPER") if hasattr(db, "get_trade_log") else []
+        paper_journal = [dict(entry) for entry in raw_paper_log]
+
+        portfolio_paper_data = {
+            "summary": _clean_dict_floats(paper_summary),
+            "positions": _clean_dict_floats(paper_positions),
+            "history": _clean_dict_floats(paper_history),
+            "journal": _clean_dict_floats(paper_journal),
+        }
+        portfolio_summary = portfolio_paper_data["summary"]
+
+        # 2. Real Money / Live Portfolio
+        real_summary = tracker.get_portfolio_summary(portfolio_type="REAL")
+        real_positions = tracker.get_open_positions_detail(portfolio_type="REAL")
+        real_history = tracker.get_trade_history(limit=50, portfolio_type="REAL")
+        raw_real_log = db.get_trade_log(limit=50, portfolio_type="REAL") if hasattr(db, "get_trade_log") else []
+        real_journal = [dict(entry) for entry in raw_real_log]
+
+        portfolio_real_data = {
+            "summary": _clean_dict_floats(real_summary),
+            "positions": _clean_dict_floats(real_positions),
+            "history": _clean_dict_floats(real_history),
+            "journal": _clean_dict_floats(real_journal),
+        }
+    except Exception as e:
+        # Fallback to basic summary if tracker has issue
+        try:
+            stats = db.get_portfolio_performance_stats()
+            if stats:
+                portfolio_summary = stats
+            balance = db.get_paper_balance()
+            if balance:
+                portfolio_summary["cash"] = _clean_float(balance.get("available_cash"))
+                portfolio_summary["initial_balance"] = _clean_float(balance.get("balance"))
+        except Exception:
+            pass
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -381,6 +481,10 @@ def export_dashboard_data(
             "neutral_pct": neutral_pct,
         },
         "symbols": items,
+        "pending_setups": pending_setups_data,
+        "portfolio": portfolio_summary,
+        "portfolio_paper": portfolio_paper_data,
+        "portfolio_real": portfolio_real_data,
     }
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

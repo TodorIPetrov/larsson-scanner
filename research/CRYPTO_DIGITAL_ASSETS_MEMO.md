@@ -1,6 +1,6 @@
 # ИНСТИТУЦИОНАЛЕН АНАЛИЗ НА ДИГИТАЛНИТЕ АКТИВИ (CRYPTO v2.0)
 **Обхват:** Биткойн, Водещи Layer 1/Layer 2 мрежи, Он-чейн модели и Спот ETF потоци  
-**Дата на актуализация:** 17 September 2026 г.  
+**Дата на актуализация:** 22 September 2026 г.  
 **Аналитичен консорциум:** Quantitative Valuation & Crypto Methodologists (Agents 1 & 4)  
 **Количествени модели:** 200-дневни средни мултипликатори (MVRV Proxy), Модел на себестойност на добив, Larsson Line мулти-таймфрейм синтез.
 
@@ -10,22 +10,22 @@
 
 | Актив / Токен | Тикер | Текуща цена | Режим 1D | Режим 1W | Режим 4H | Он-чейн статус & Оценка | Институционална тактика |
 | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
-| **Bitcoin** | `BTCUSDT` | **$76,500.01** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟢 **ACCUMULATE ON 4H PULLBACK** |
-| **Ethereum** | `ETHUSDT` | **$2,441.61** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
-| **Solana** | `SOLUSDT` | **$99.71** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟢 **STRONG BUY / ACCUMULATE** |
-| **BNB** | `BNBUSDT` | **$724.93** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
-| **Ripple** | `XRPUSDT` | **$1.30** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
-| **Sui** | `SUIUSDT` | **$0.72** | 🟡 NEUTRAL | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
-| **Chainlink** | `LINKUSDT` | **$10.81** | 🟢 GOLD | 🟡 NEUTRAL | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟢 **STRONG BUY / ACCUMULATE** |
-| **Dogecoin** | `DOGEUSDT` | **$0.08** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🔴 **UNDERPERFORM / HIGH BETA TRAP** |
-| **Cardano** | `ADAUSDT` | **$0.20** | 🟢 GOLD | 🔴 BLUE | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🔴 **UNDERPERFORM / HIGH BETA TRAP** |
-| **Pax Gold** | `PAXGUSDT` | **$4,314.54** | 🟢 GOLD | 🟡 NEUTRAL | 🔴 BLUE | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟢 **STRONG BUY / ACCUMULATE** |
+| **Bitcoin** | `BTCUSDT` | **$86,557.41** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.23x (Здравословна експанзия) | 🟢 **ACCUMULATE ON 4H PULLBACK** |
+| **Ethereum** | `ETHUSDT` | **$2,762.59** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.35x (Здравословна експанзия) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
+| **Solana** | `SOLUSDT` | **$118.60** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.42x (Здравословна експанзия) | 🟢 **STRONG BUY / ACCUMULATE** |
+| **BNB** | `BNBUSDT` | **$789.48** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.25x (Здравословна експанзия) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
+| **Ripple** | `XRPUSDT` | **$1.60** | 🟢 GOLD | 🔴 BLUE | 🟡 NEUTRAL | MVRV/SMA Multiple: 1.30x (Здравословна експанзия) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
+| **Sui** | `SUIUSDT` | **$1.01** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.10x (Зона на натрупване) | 🟡 **SELECTIVE HOLD / BUY SUPPORT** |
+| **Chainlink** | `LINKUSDT` | **$13.09** | 🟢 GOLD | 🟡 NEUTRAL | 🟢 GOLD | MVRV/SMA Multiple: 1.40x (Здравословна експанзия) | 🟢 **STRONG BUY / ACCUMULATE** |
+| **Dogecoin** | `DOGEUSDT` | **$0.10** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.17x (Здравословна експанзия) | 🔴 **UNDERPERFORM / HIGH BETA TRAP** |
+| **Cardano** | `ADAUSDT` | **$0.25** | 🟢 GOLD | 🔴 BLUE | 🟢 GOLD | MVRV/SMA Multiple: 1.27x (Здравословна експанзия) | 🔴 **UNDERPERFORM / HIGH BETA TRAP** |
+| **Pax Gold** | `PAXGUSDT` | **$4,381.65** | 🟢 GOLD | 🟡 NEUTRAL | 🟡 NEUTRAL | MVRV/SMA Multiple: 1.01x (Зона на натрупване) | 🟢 **STRONG BUY / ACCUMULATE** |
 
 ---
 
 ## 2. ИНСТИТУЦИОНАЛНИ МОДЕЛИ ЗА ОЦЕНКА НА БИТКОЙН И ЕКОСИСТЕМАТА
 
-### 📊 1. BITCOIN (BTCUSDT @ $76,500.01): СТРУКТУРНИ ФАКТОРИ
+### 📊 1. BITCOIN (BTCUSDT @ $86,557.41): СТРУКТУРНИ ФАКТОРИ
 * **Себестойност на добив (Miner Production Breakeven):**  
   След халвинга средните оперативни разходи (ток + амортизация на хардуера) за добива на 1 BTC при ефективните публични миньори са около **$58,000 – $64,000**. Това формира институционален структурен под.
 * **Мултипликатор спрямо дългосрочния тренд:**  

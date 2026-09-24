@@ -269,3 +269,77 @@ def test_telegram_listener_interactive_callbacks(tmp_path):
     trades_text = trader.get_trade_history_summary()
     assert "ETHUSDT" in trades_text
     assert "100.0%" in trades_text
+
+
+def test_paper_trader_partial_tp1_scale_out(tmp_path):
+    db_file = str(tmp_path / "partial_tp_test.db")
+    db = Database(db_file)
+    notifier = MockNotifier()
+
+    trader = PaperTrader(
+        db=db,
+        notifier=notifier,
+        config={
+            "trading": {
+                "enabled": True,
+                "initial_balance_usd": 1000.0,
+                "partial_take_profit": True,
+                "default_position_size_usd": 100.0,
+            }
+        },
+    )
+
+    # 1. Proposal
+    res = trader.handle_new_signal(
+        ticker="SOLUSDT",
+        timeframe="4H",
+        trade_suggestion={
+            "action": "SPOT_BUY",
+            "entry_price": 150.0,
+            "stop_loss": 140.0,
+            "tp1": 170.0,
+            "tp2": 200.0,
+            "score": 85,
+            "tier": "A+",
+            "reason_bg": "Тест",
+        },
+        current_price=150.0,
+    )
+    assert res is not None
+    prop_id = res["proposal_id"]
+
+    # 2. Approve
+    approve_res = trader.approve_proposal(prop_id, chat_id="12345")
+    assert approve_res["success"] is True
+
+    # Initial position: units = ~0.6667
+    pos = db.get_open_paper_position_by_ticker("SOLUSDT")
+    initial_units = pos["units"]
+    assert initial_units > 0
+
+    # 3. Price touches TP1 (170.0) -> Triggers partial 50% scale-out!
+    events = trader.evaluate_open_positions(prices={"SOLUSDT": 170.0})
+    assert len(events) == 1
+    assert events[0]["exit_reason"] == "TAKE_PROFIT_1_PARTIAL"
+    assert events[0]["pnl_usd"] > 0
+
+    # 4. Verify position is STILL open with 50% units, SL at breakeven (150.0), and tp1 cleared
+    pos_after = db.get_open_paper_position_by_ticker("SOLUSDT")
+    assert pos_after is not None
+    assert pos_after["status"] == "OPEN"
+    assert abs(pos_after["units"] - (initial_units * 0.5)) < 0.001
+    assert pos_after["stop_loss"] == 150.0  # Breakeven!
+    assert pos_after["tp1"] is None
+
+    # 5. Check trade log entry
+    logs = db.get_trade_log_for_position(approve_res["position_id"])
+    assert len(logs) == 1
+    assert logs[0]["action"] == "PARTIAL_CLOSE"
+
+    # 6. Price hits TP2 (200.0) -> Closes remaining 50%
+    tp2_events = trader.evaluate_open_positions(prices={"SOLUSDT": 200.0})
+    assert len(tp2_events) == 1
+    assert tp2_events[0]["exit_reason"] == "TAKE_PROFIT_2"
+
+    # Position is now fully CLOSED
+    assert db.get_open_paper_position_by_ticker("SOLUSDT") is None

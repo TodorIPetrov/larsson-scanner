@@ -119,9 +119,47 @@ def test_command_listener_advanced_commands(tmp_path):
     assert "Препоръчителен брой" in calc_msg
     assert "Максимална загуба" in calc_msg
 
-    # 5. Test /help contains new commands
+    # 5. Test /queue
+    db.upsert_pending_setup(
+        symbol="NVDA",
+        asset_class="ai_stocks",
+        setup_type="IMMINENT_GOLD",
+        direction="LONG",
+        priority="HIGH",
+        quality_score=0.90,
+        description_bg="NVDA е на 1-2 бара от Gold",
+        description_en="NVDA is 1-2 bars from Gold",
+        conditions_met='["v1 > m1"]',
+        conditions_pending='["v1 > v2"]',
+        estimated_trigger="1-2 бара",
+        current_price=120.0,
+        target_entry=119.5,
+        target_sl=115.0,
+        target_tp1=130.0,
+        key_level=118.0,
+        timeframe="1D",
+        tier="S",
+    )
+    queue_msg = listener.handle_queue()
+    assert "NVDA" in queue_msg
+    assert "Pending Setups Monitor" in queue_msg
+
+    # 6. Test /risk
+    risk_msg = listener.handle_risk()
+    assert "Доклад за Риска" in risk_msg or "Експозиция" in risk_msg or "Риск" in risk_msg
+
+    # 7. Test /journal
+    db.add_trade_log_entry("pos_test", "BTCUSDT", "OPEN", price=70000.0, quantity=0.1, notes="Тестова сделка")
+    journal_msg = listener.handle_journal()
+    assert "Търговски Дневник" in journal_msg
+    assert "BTCUSDT" in journal_msg
+
+    # 8. Test /help contains new commands
     help_msg = listener.handle_help()
     assert "/analyze" in help_msg
     assert "/alpha" in help_msg
     assert "/traps" in help_msg
     assert "/calc" in help_msg
+    assert "/queue" in help_msg
+    assert "/risk" in help_msg
+    assert "/journal" in help_msg

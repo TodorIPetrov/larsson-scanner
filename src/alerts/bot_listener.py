@@ -535,6 +535,210 @@ class TelegramCommandListener:
         threading.Thread(target=_do_scan, daemon=True, name="TelegramScanThread").start()
         return f"🚀 Сканирането на <b>{target_ac.upper()}</b> е стартирано на заден план! Резултатите ще пристигнат тук щом завърши."
 
+    def handle_queue(self, arg: str = "") -> str:
+        """Shows pending setups queue (1-3 bars ahead). Usage: /queue [top_n]"""
+        try:
+            top_n = int(arg) if arg.isdigit() else 8
+        except Exception:
+            top_n = 8
+
+        rows = self.db.get_active_pending_setups()
+        if not rows:
+            return "⏳ <b>Няма активни очаквани сетъпи в опашката.</b>\n<i>Системата сканира пазара автоматично и ще добави активи, приближаващи ключови структури.</i>"
+
+        from src.engine.setup_monitor import PendingSetup, format_queue_telegram
+        import json
+
+        setups = []
+        for r in rows:
+            try:
+                c_met = json.loads(r["conditions_met"]) if r["conditions_met"] else []
+                c_pen = json.loads(r["conditions_pending"]) if r["conditions_pending"] else []
+            except Exception:
+                c_met, c_pen = [], []
+
+            ps = PendingSetup(
+                symbol=r["symbol"],
+                asset_class=r["asset_class"],
+                setup_type=r["setup_type"],
+                direction=r["direction"],
+                priority=r["priority"],
+                quality_score=float(r["quality_score"] or 0.0),
+                description_bg=r["description_bg"] or "",
+                description_en=r["description_en"] or "",
+                conditions_met=c_met,
+                conditions_pending=c_pen,
+                estimated_trigger=r["estimated_trigger"] or "",
+                current_price=float(r["current_price"] or 0.0),
+                target_entry=float(r["target_entry"]) if r["target_entry"] else None,
+                target_sl=float(r["target_sl"]) if r["target_sl"] else None,
+                target_tp1=float(r["target_tp1"]) if r["target_tp1"] else None,
+                key_level=float(r["key_level"]) if r["key_level"] else None,
+                timeframe=r["timeframe"] or "1D",
+                tier=r["tier"] or "B",
+                first_detected=r["first_detected"] or "",
+                last_updated=r["last_updated"] or "",
+            )
+            setups.append(ps)
+
+        return format_queue_telegram(setups, top_n=top_n)
+
+    def handle_risk(self) -> str:
+        """Displays portfolio risk and exposure analysis."""
+        from src.trading.portfolio_tracker import PortfolioTracker
+        tracker = PortfolioTracker(db=self.db)
+        return tracker.format_risk_report_telegram()
+
+    def handle_journal(self, arg: str = "") -> str:
+        """Shows recent trade log entries. Usage: /journal [limit]"""
+        try:
+            limit = int(arg) if arg.isdigit() else 10
+        except Exception:
+            limit = 10
+
+        entries = self.db.get_trade_log(limit=limit)
+        if not entries:
+            return "📖 <b>Търговският дневник е празен.</b>\n<i>Все още няма записани операции или затворени позиции.</i>"
+
+        lines = [f"📖 <b>Търговски Дневник (Последни {len(entries)} записа):</b>\n"]
+        for e in entries:
+            act = e["action"]
+            ticker = e["ticker"]
+            pnl_usd = e["pnl_usd"]
+            pnl_pct = e["pnl_pct"]
+            notes = e["notes"] or ""
+            dt = e["created_at"][:16].replace("T", " ") if e["created_at"] else ""
+
+            action_emoji = {
+                "OPEN": "🟢 ВХОД",
+                "PARTIAL_CLOSE": "🎯 ЧАСТИЧЕН TP1",
+                "CLOSE": "🏁 ЗАТВАРЯНЕ",
+                "SL_UPDATE": "🛡️ СТОП",
+            }.get(act, f"⚡ {act}")
+
+            pnl_txt = ""
+            if pnl_usd is not None and abs(pnl_usd) > 0.001:
+                sign = "+" if pnl_usd >= 0 else ""
+                pnl_txt = f" | PnL: <b>{sign}${pnl_usd:,.2f} ({sign}{pnl_pct}%)</b>"
+
+            lines.append(f"• <code>[{dt}]</code> <b>{action_emoji}: {ticker}</b>{pnl_txt}\n  <i>{notes}</i>")
+
+        return "\n".join(lines)
+
+    def handle_portfolio(self, arg: str = "") -> str:
+        """Displays portfolio summary for either REAL or PAPER portfolio."""
+        from src.trading.portfolio_tracker import PortfolioTracker
+        tracker = PortfolioTracker(db=self.db)
+        raw = arg.lower().strip()
+        if raw in ["real", "live", "r"]:
+            return tracker.format_portfolio_telegram(portfolio_type="REAL")
+        elif raw in ["paper", "test", "sim", "virtual", "v", "p"]:
+            return tracker.format_portfolio_telegram(portfolio_type="PAPER")
+        else:
+            real_text = tracker.format_portfolio_telegram(portfolio_type="REAL")
+            paper_text = tracker.format_portfolio_telegram(portfolio_type="PAPER")
+            return f"{real_text}\n\n➖➖➖➖➖➖➖➖➖➖\n\n{paper_text}"
+
+    def handle_buy_real(self, parts: List[str]) -> str:
+        """
+        Records a real position execution.
+        Usage: /buy_real [ticker] [price] [units] [broker] [sl] [tp1]
+        """
+        if len(parts) < 3:
+            return (
+                "⚠️ <b>Невалиден формат за реална покупка!</b>\n\n"
+                "Формат: <code>/buy_real [тикер] [цена] [брой] [брокер_по_желание]</code>\n"
+                "Примери:\n"
+                "• <code>/buy_real NVDA 120.50 10 IBKR</code>\n"
+                "• <code>/buy_real BTCUSDT 65000 0.05 Binance</code>"
+            )
+        ticker = parts[0].upper()
+        try:
+            price = float(parts[1])
+            units = float(parts[2])
+        except ValueError:
+            return "❌ Грешка: Цената и количеството трябва да са валидни числа."
+
+        broker = parts[3] if len(parts) > 3 else "Interactive Brokers"
+        sl = float(parts[4]) if len(parts) > 4 and parts[4].replace('.', '', 1).isdigit() else None
+        tp1 = float(parts[5]) if len(parts) > 5 and parts[5].replace('.', '', 1).isdigit() else None
+
+        from src.trading.portfolio_tracker import PortfolioTracker
+        tracker = PortfolioTracker(db=self.db)
+        
+        asset_class = "crypto" if ticker.endswith("USDT") else "us_stocks"
+        try:
+            active_symbols = self.db.get_active_symbols()
+            for s in active_symbols:
+                if s["ticker"] == ticker:
+                    asset_class = s["asset_class"]
+                    break
+        except Exception:
+            pass
+
+        pos_id = tracker.add_real_position(
+            ticker=ticker,
+            asset_class=asset_class,
+            entry_price=price,
+            units=units,
+            stop_loss=sl,
+            tp1=tp1,
+            broker_exchange=broker,
+            notes=f"Ръчен вход през Telegram ({broker})"
+        )
+        total_val = price * units
+        return (
+            f"✅ <b>Записана РЕАЛНА Позиция: {ticker}</b>\n\n"
+            f"• Брокер: <b>{broker}</b>\n"
+            f"• Входна цена: <b>${price:,.2f}</b>\n"
+            f"• Количество: <b>{units} бр.</b>\n"
+            f"• Обща стойност: <b>${total_val:,.2f}</b>\n"
+            f"• ID на сделка: <code>{pos_id}</code>\n\n"
+            f"<i>Позицията се следи на живо в уеб дашборда (Зелен таб: Реално Портфолио).</i>"
+        )
+
+    def handle_close_real(self, parts: List[str]) -> str:
+        """
+        Closes an open real position.
+        Usage: /close_real [ticker] [exit_price]
+        """
+        if len(parts) < 2:
+            return (
+                "⚠️ <b>Невалиден формат за затваряне на реална сделка!</b>\n\n"
+                "Формат: <code>/close_real [тикер] [изходна_цена]</code>\n"
+                "Пример: <code>/close_real NVDA 135.00</code>"
+            )
+        ticker = parts[0].upper()
+        try:
+            exit_price = float(parts[1])
+        except ValueError:
+            return "❌ Грешка: Изходната цена трябва да е число."
+
+        from src.trading.portfolio_tracker import PortfolioTracker
+        tracker = PortfolioTracker(db=self.db)
+        ok = tracker.close_real_position(identifier=ticker, exit_price=exit_price, notes="Затворено през Telegram")
+        if ok:
+            return f"🏁 <b>Реалната позиция за {ticker} е успешно затворена</b> на цена <b>${exit_price:,.2f}</b>! Печалбата/загубата е отразена в кеша и дневника."
+        else:
+            return f"❌ Не беше намерена отворена реална позиция за символ <b>{ticker}</b>."
+
+    def handle_cash_real(self, arg: str) -> str:
+        """
+        Sets real cash balance.
+        Usage: /cash_real [amount]
+        """
+        if not arg:
+            bal = self.db.get_real_balance()
+            return f"💵 Наличен свободен реален кеш: <b>${bal.get('available_cash', 0.0):,.2f}</b>\nЗа промяна: <code>/cash_real 15000</code>"
+        try:
+            amount = float(arg)
+            if amount < 0:
+                return "❌ Кеш балансът не може да бъде отрицателен."
+            self.db.set_real_cash(amount)
+            return f"✅ Свободният реален кеш баланс е актуализиран на <b>${amount:,.2f}</b>."
+        except ValueError:
+            return "❌ Грешка: Моля посочете валидна сума за кеш."
+
     def handle_help(self) -> str:
         return (
             "🤖 <b>Larsson Line Бот Команди:</b>\n\n"
@@ -547,8 +751,21 @@ class TelegramCommandListener:
             "<b>Институционални Анализи & Сигнали:</b>\n"
             "/analyze [символ] (или /a) - Пълен фундаментален + технически анализ на актив (напр. /a NVDA или /a BTC)\n"
             "/alpha [4h|1d|1w] (или /setups) - Топ институционални Alpha входове (Tier A / A+)\n"
+            "/queue [брой] - Опашка от предстоящи сетъпи (1-3 бара напред) 🔮\n"
             "/traps - Предупреждения за валуационни капани (подценени, но в низходящ тренд)\n"
             "/calc [символ] [капитал] [риск_%] - Калкулатор за точен размер на позицията\n\n"
+            "<b>🟢 РЕАЛЕН КАПИТАЛ & СМЕТКИ:</b>\n"
+            "/real (или /portfolio real) - Справка за реално портфолио, капитал и отворени позиции 🟢\n"
+            "/buy_real [тикер] [цена] [бр] [брокер] - Запис на реална покупка (напр. /buy_real NVDA 120 10 IBKR)\n"
+            "/close_real [тикер] [цена] - Затваряне на реална позиция и финализиране на PnL\n"
+            "/cash_real [сума] - Проверка или задаване на свободен реален кеш баланс\n\n"
+            "<b>🧪 ТЕСТОВ СИМУЛАТОР (PAPER TRADING):</b>\n"
+            "/paper (или /sim) - Автономен симулатор на Larsson стратегии\n"
+            "/portfolio - Сборен преглед на двата портфейла\n"
+            "/risk - Анализ на експозицията, риска и секторните концентрации 🛡️\n"
+            "/journal - Хронологичен дневник на изпълнените сделки 📖\n"
+            "/trades (или /history) - История на приключилите сделки и Win Rate\n"
+            "/close [тикер] - Ръчно затваряне на активна тестова позиция (напр. /close SOLUSDT)\n\n"
             "<b>Управление на Активи (Scanner):</b>\n"
             "/add [символ] - Добавя актив към 24/7 сканирането (напр. /add ARM или /add SUIUSDT)\n"
             "/remove [символ] - Премахва/деактивира актив от сканирането\n\n"
@@ -556,10 +773,6 @@ class TelegramCommandListener:
             "/watchlist - Показва активите в твоя личен списък ⭐\n"
             "/watch [символ] - Добавя актив в Watchlist (напр. /watch NVDA)\n"
             "/unwatch [символ] - Премахва актив от Watchlist\n\n"
-            "<b>📈 Симулирана Spot Търговия (Paper Trading):</b>\n"
-            "/portfolio (или /positions) - Виртуален баланс, активни позиции и PnL\n"
-            "/trades (или /history) - История на приключилите сделки и Win Rate\n"
-            "/close [тикер] - Ръчно затваряне на активна позиция (напр. /close SOLUSDT)\n\n"
             "/help - Показва това съобщение"
         )
 
@@ -585,13 +798,19 @@ class TelegramCommandListener:
         data = cq.get("data", "")
         logger.info(f"Received Telegram callback_query: {data} from {user_id}")
 
-        if data.startswith("trade:approve:"):
-            proposal_id = data[len("trade:approve:"):]
-            res = self.paper_trader.approve_proposal(proposal_id, chat_id=chat_id)
+        if data.startswith("trade:approve:") or data.startswith("trade:exec:"):
+            prefix = "trade:approve:" if data.startswith("trade:approve:") else "trade:exec:"
+            raw_payload = data[len(prefix):]
+            parts = raw_payload.split(":")
+            proposal_id = parts[0]
+            leverage = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 1
+            res = self.paper_trader.approve_proposal(proposal_id, chat_id=chat_id, leverage=leverage)
             if res.get("success"):
+                dir_label = "Шорт позицията" if res.get("direction") == "SHORT" else "Покупката"
+                lev_info = f" с {res.get('leverage', leverage)}x левъридж" if res.get("leverage", leverage) > 1 else ""
                 self.notifier.answer_callback_query(
                     cq_id,
-                    text=f"✅ Покупката на {res.get('ticker')} е потвърдена в симулатора!",
+                    text=f"✅ {dir_label} на {res.get('ticker')}{lev_info} е потвърдена в симулатора!",
                     show_alert=False,
                 )
             else:
@@ -649,49 +868,69 @@ class TelegramCommandListener:
         cmd = parts[0].lower()
         arg = parts[1] if len(parts) > 1 else ""
 
-        if cmd == "/scan":
-            reply = self.handle_scan(arg)
-        elif cmd == "/status":
-            reply = self.handle_status(arg)
-        elif cmd == "/digest":
-            reply = self.handle_digest()
-        elif cmd == "/gold":
-            reply = self.handle_state_list("GOLD", "🟡", arg)
-        elif cmd == "/blue":
-            reply = self.handle_state_list("BLUE", "🔵", arg)
-        elif cmd in ["/analyze", "/a", "/ticker"]:
-            reply = self.handle_analyze(arg, parts[2] if len(parts) > 2 else None)
-        elif cmd in ["/alpha", "/setups"]:
-            reply = self.handle_alpha(arg)
-        elif cmd == "/traps":
-            reply = self.handle_traps()
-        elif cmd == "/calc":
-            reply = self.handle_calc(parts[1:])
-        elif cmd in ["/portfolio", "/positions"]:
-            reply = self.paper_trader.get_portfolio_summary()
-        elif cmd in ["/trades", "/history"]:
-            reply = self.paper_trader.get_trade_history_summary()
-        elif cmd == "/close":
-            if not arg:
-                reply = "⚠️ Моля посочи тикер за затваряне. Пример: <code>/close SOLUSDT</code>"
+        try:
+            if cmd == "/scan":
+                reply = self.handle_scan(arg)
+            elif cmd == "/status":
+                reply = self.handle_status(arg)
+            elif cmd == "/digest":
+                reply = self.handle_digest()
+            elif cmd == "/gold":
+                reply = self.handle_state_list("GOLD", "🟡", arg)
+            elif cmd == "/blue":
+                reply = self.handle_state_list("BLUE", "🔵", arg)
+            elif cmd in ["/analyze", "/a", "/ticker"]:
+                reply = self.handle_analyze(arg, parts[2] if len(parts) > 2 else None)
+            elif cmd in ["/alpha", "/setups"]:
+                reply = self.handle_alpha(arg)
+            elif cmd == "/traps":
+                reply = self.handle_traps()
+            elif cmd == "/calc":
+                reply = self.handle_calc(parts[1:])
+            elif cmd in ["/queue", "/pending"]:
+                reply = self.handle_queue(arg)
+            elif cmd == "/risk":
+                reply = self.handle_risk()
+            elif cmd in ["/journal", "/log"]:
+                reply = self.handle_journal(arg)
+            elif cmd == "/real":
+                reply = self.handle_portfolio("real")
+            elif cmd in ["/paper", "/sim"]:
+                reply = self.handle_portfolio("paper")
+            elif cmd in ["/portfolio", "/positions"]:
+                reply = self.handle_portfolio(arg)
+            elif cmd == "/buy_real":
+                reply = self.handle_buy_real(parts[1:])
+            elif cmd == "/close_real":
+                reply = self.handle_close_real(parts[1:])
+            elif cmd == "/cash_real":
+                reply = self.handle_cash_real(arg)
+            elif cmd in ["/trades", "/history"]:
+                reply = self.paper_trader.get_trade_history_summary()
+            elif cmd == "/close":
+                if not arg:
+                    reply = "⚠️ Моля посочи тикер за затваряне. Пример: <code>/close SOLUSDT</code>"
+                else:
+                    ok, msg = self.paper_trader.close_manually(arg)
+                    reply = msg
+            elif cmd == "/watchlist":
+                reply = self.handle_watchlist()
+            elif cmd == "/watch":
+                reply = self.handle_watch(arg)
+            elif cmd == "/unwatch":
+                reply = self.handle_unwatch(arg)
+            elif cmd == "/add":
+                target_class = parts[2] if len(parts) > 2 else None
+                reply = self.handle_add(arg, asset_class=target_class)
+            elif cmd == "/remove":
+                reply = self.handle_remove(arg)
+            elif cmd in ["/start", "/help"]:
+                reply = self.handle_help()
             else:
-                ok, msg = self.paper_trader.close_manually(arg)
-                reply = msg
-        elif cmd == "/watchlist":
-            reply = self.handle_watchlist()
-        elif cmd == "/watch":
-            reply = self.handle_watch(arg)
-        elif cmd == "/unwatch":
-            reply = self.handle_unwatch(arg)
-        elif cmd == "/add":
-            target_class = parts[2] if len(parts) > 2 else None
-            reply = self.handle_add(arg, asset_class=target_class)
-        elif cmd == "/remove":
-            reply = self.handle_remove(arg)
-        elif cmd in ["/start", "/help"]:
-            reply = self.handle_help()
-        else:
-            reply = "Непозната команда. Напиши /help за списък с наличните команди."
+                reply = "Непозната команда. Напиши /help за списък с наличните команди."
+        except Exception as e:
+            logger.error(f"Error handling Telegram command '{text}': {e}", exc_info=True)
+            reply = f"⚠️ Грешка при обработка на команда <code>{cmd}</code>:\n<code>{e}</code>"
 
         self.notifier.send_raw_message(reply)
 
@@ -700,6 +939,14 @@ class TelegramCommandListener:
         if not self.notifier.is_configured:
             logger.warning("Telegram not configured. Command listener stopped.")
             return
+
+        # Ensure any residual webhook is cleared so getUpdates polling works without 409 Conflict
+        try:
+            del_url = f"https://api.telegram.org/bot{self.notifier.bot_token}/deleteWebhook"
+            self.session.post(del_url, timeout=10)
+            logger.info("Cleared Telegram webhook for long-polling.")
+        except Exception as e:
+            logger.warning(f"Could not clear Telegram webhook: {e}")
 
         self.running = True
         logger.info("Telegram Command Listener polling loop started.")
@@ -714,6 +961,13 @@ class TelegramCommandListener:
                     for update in data.get("result", []):
                         self.last_update_id = update["update_id"]
                         self.process_update(update)
+                elif resp.status_code == 409:
+                    logger.warning("Telegram Conflict (409): Webhook active. Clearing webhook...")
+                    try:
+                        self.session.post(f"https://api.telegram.org/bot{self.notifier.bot_token}/deleteWebhook", timeout=10)
+                    except Exception:
+                        pass
+                    time.sleep(2)
                 else:
                     logger.warning(f"Telegram polling error {resp.status_code}: {resp.text}")
                     time.sleep(2)

@@ -1,8 +1,8 @@
 # ГЛОБАЛЕН МУЛТИАКТИВЕН ИНСТИТУЦИОНАЛЕН РЕГИСТЪР (v2.0)
 **Оркестратор:** Инвестиционен комитет на фонда (Agent 5 - CIO Synthesis)  
-**Дата на пълна синхронизация:** 17 September 2026 г.  
+**Дата на пълна синхронизация:** 22 September 2026 г.  
 **Интегриран обхват на вселената:**  
-1. **343 Корпоративни акции** (S&P 500, NASDAQ, AI Infrastructure, ADRs)  
+1. **346 Корпоративни акции** (S&P 500, NASDAQ, AI Infrastructure, ADRs)  
 2. **9 Суровинни пазара** (Злато, Сребро, Петрол WTI/Brent, Мед, Природен газ, Уран)  
 3. **12 Глобални макро индекса & валути** (S&P 500, Nasdaq, Dow, Russell, VIX, DXY, DAX, FTSE, Nikkei, HSI)  
 4. **10 Дигитални актива** (BTC, ETH, SOL, BNB, XRP, LINK, PAXG)  
@@ -30,7 +30,7 @@
 
 | Аналитичен модул | Документ / Доклад | Обхванати активи |
 | :--- | :--- | :--- |
-| **Корпоративни акции** | [`COMMITTEE_VERDICTS.md`](COMMITTEE_VERDICTS.md) | 343 корпорации (DCF, RIM, REITs, Cyclicals, Utilities) |
+| **Корпоративни акции** | [`COMMITTEE_VERDICTS.md`](COMMITTEE_VERDICTS.md) | 346 корпорации (DCF, RIM, REITs, Cyclicals, Utilities) |
 | **Суровини & Метали** | [`COMMODITIES_RESEARCH_MEMO.md`](COMMODITIES_RESEARCH_MEMO.md) | Злато, Сребро, Петрол, Мед, Уран, Природен газ |
 | **Макро & Индекси** | [`MACRO_AND_INDICES_MEMO.md`](MACRO_AND_INDICES_MEMO.md) | S&P 500, Nasdaq, VIX, DXY, DAX, Nikkei, HSI |
 | **Дигитални активи** | [`CRYPTO_DIGITAL_ASSETS_MEMO.md`](CRYPTO_DIGITAL_ASSETS_MEMO.md) | BTC, ETH, SOL, BNB, XRP, LINK, Pax Gold |

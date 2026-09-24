@@ -46,6 +46,7 @@ class PaperTrader:
         self.btc_safety_filter = bool(self.config.get("btc_safety_filter", True))
         self.min_confluence_score = int(self.config.get("min_confluence_score", 60))
         self.allowed_tiers = self.config.get("allowed_tiers", ["A+", "A", "B"])
+        self.partial_take_profit = bool(self.config.get("partial_take_profit", False))
 
         # Initialize account in DB if empty
         self.db.get_paper_balance(initial_balance=self.initial_balance)
@@ -100,17 +101,26 @@ class PaperTrader:
             logger.info(f"[PaperTrader] Max active positions ({self.max_active_positions}) reached. Skipping.")
             return None
 
+        direction = (trade_suggestion.get("direction") or "LONG").upper()
         # BTC safety check only for crypto assets
         is_crypto = ticker.endswith("USDT") or ticker.endswith("USDC")
         if is_crypto and self.btc_safety_filter and ticker != "BTCUSDT":
-            if not self.is_btc_bullish():
-                logger.info(f"[PaperTrader] BTC is in Bearish (BLUE) state on 1D. Skipping altcoin proposal {ticker}.")
+            btc_bullish = self.is_btc_bullish()
+            if direction == "LONG" and not btc_bullish:
+                logger.info(f"[PaperTrader] BTC is in Bearish (BLUE) state on 1D. Skipping altcoin Long proposal {ticker}.")
+                return None
+            elif direction == "SHORT" and btc_bullish:
+                logger.info(f"[PaperTrader] BTC is in Bullish (GOLD) state on 1D. Skipping altcoin Short proposal {ticker}.")
                 return None
 
         balance = self.db.get_paper_balance(initial_balance=self.initial_balance)
         pos_size_usd = self.default_position_size
-        if balance["available_cash"] < pos_size_usd:
-            logger.warning(f"[PaperTrader] Insufficient cash for {ticker}: {balance['available_cash']:.2f} < {pos_size_usd}")
+        max_leverage = trade_suggestion.get("max_leverage", 1)
+        recommended_leverage = trade_suggestion.get("recommended_leverage", 1)
+        margin_usd = round(pos_size_usd / max(1, recommended_leverage), 2)
+
+        if balance["available_cash"] < margin_usd:
+            logger.warning(f"[PaperTrader] Insufficient cash for {ticker}: {balance['available_cash']:.2f} < {margin_usd}")
             return None
 
         entry_price = float(trade_suggestion.get("entry_price") or current_price)
@@ -120,10 +130,18 @@ class PaperTrader:
         stop_loss = trade_suggestion.get("stop_loss")
         tp1 = trade_suggestion.get("tp1")
         tp2 = trade_suggestion.get("tp2")
-        reason = trade_suggestion.get("reason_bg") or trade_suggestion.get("setup_type", "Larsson Line Gold Setup")
+        reason = trade_suggestion.get("reason_bg") or trade_suggestion.get("setup_type", "Larsson Line Setup")
 
         units = round(pos_size_usd / entry_price, 6 if entry_price < 10 else 4)
         risk_usd = round(abs(entry_price - stop_loss) * units, 2) if stop_loss else None
+
+        if recommended_leverage > 1:
+            if direction == "SHORT":
+                liq_price = round(entry_price * (1.0 + (1.0 / recommended_leverage) - 0.005), 4)
+            else:
+                liq_price = round(entry_price * (1.0 - (1.0 / recommended_leverage) + 0.005), 4)
+        else:
+            liq_price = None
 
         now = datetime.now(timezone.utc)
         expires_at = now + timedelta(minutes=self.proposal_ttl_minutes)
@@ -131,12 +149,13 @@ class PaperTrader:
         expires_at_iso = expires_at.isoformat()
 
         proposal_id = f"prop_{ticker}_{int(time.time())}"
+        action = "SELL_SHORT" if direction == "SHORT" else "BUY"
 
         created = self.db.create_trade_proposal(
             proposal_id=proposal_id,
             ticker=ticker,
             timeframe=timeframe,
-            action="BUY",
+            action=action,
             entry_price=entry_price,
             stop_loss=stop_loss,
             tp1=tp1,
@@ -150,6 +169,12 @@ class PaperTrader:
             created_at=now_iso,
             expires_at=expires_at_iso,
             status="PENDING",
+            direction=direction,
+            max_leverage=max_leverage,
+            recommended_leverage=recommended_leverage,
+            margin_usd=margin_usd,
+            notional_usd=pos_size_usd,
+            liquidation_price=liq_price,
         )
 
         if not created:
@@ -235,8 +260,37 @@ class PaperTrader:
         rr_val = ts.get("rr") or (round(abs(tp1 - entry_price) / abs(entry_price - stop_loss), 1) if tp1 and stop_loss and entry_price != stop_loss else None)
         rr_txt = f" | R:R: <b>1:{rr_val}</b>" if rr_val else ""
 
+        direction = (ts.get("direction") or "LONG").upper()
+        max_leverage = ts.get("max_leverage", 1)
+
+        from src.engine.trade_suggestions import calculate_leverage_matrix
+        lev_matrix = calculate_leverage_matrix(
+            entry_price=entry_price,
+            stop_loss=stop_loss,
+            position_size_usd=position_size_usd,
+            max_leverage=max_leverage,
+            direction=direction,
+        )
+
+        title_action = "ШОРТ (HEDGE)" if direction == "SHORT" else "ПОКУПКА"
+        action_emoji = "🔻" if direction == "SHORT" else "🚨"
+
+        lev_block = ""
+        if lev_matrix and len(lev_matrix) > 1:
+            lev_block = "\n📊 <b>ИЗБОР НА ИЗПЪЛНЕНИЕ & ЛЕВЪРИДЖ:</b>\n"
+            for item in lev_matrix:
+                l_num = item["leverage"]
+                lbl = item["label"]
+                m_usd = item["margin_usd"]
+                sl_loss = item["sl_loss_usd"]
+                sl_loss_pct = item["sl_pct_margin"]
+                liq = item["liquidation_price"]
+                liq_txt = f" | Ликв: <code>${liq:,.2f}</code>" if liq else ""
+                e_icon = "🟢" if l_num == 1 else ("⚡" if l_num == 2 else "🚀")
+                lev_block += f"• {e_icon} <b>{lbl}:</b> Маржин <b>${m_usd:.2f}</b> | SL: -${sl_loss:.2f} (-{sl_loss_pct:.1f}%){liq_txt}\n"
+
         text = (
-            f"🚨 <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА ПОКУПКА ({asset_label}): {ticker} [{timeframe}]</b>\n"
+            f"{action_emoji} <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА {title_action} ({asset_label}): {ticker} [{timeframe}]</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
             f"📐 <b>ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon):</b>\n"
             f"• Препоръка: <b>{tech_label}</b>\n"
@@ -247,32 +301,49 @@ class PaperTrader:
             f"🎯 <b>СИНТЕЗИРАНА СТРАТЕГИЯ (Quantamental):</b>\n"
             f"• Статус: <b>{synth_badge}</b> (Скор: <b>{score}/100</b>{rr_txt})\n"
             f"• Входна цена: <code>{p_str}</code>\n"
-            f"• Размер на позицията: <b>${position_size_usd:.2f}</b> (~{units} {units_label})\n"
+            f"• Базов обем (Ноционал): <b>${position_size_usd:.2f}</b> (~{units} {units_label})\n"
             f"• 🛑 Stop-Loss: <code>{sl_str}</code>\n"
             f"• 🎯 Take-Profit 1: <code>{tp1_str}</code>\n"
         )
         if tp2:
             text += f"• 🎯 Take-Profit 2: <code>{tp2_str}</code>\n"
 
+        text += lev_block
         text += (
             f"\n💡 <i>Логика: {reason}</i>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
-            f"⏳ <i>Валидност: {expires_minutes} мин. Изберете изпълнение:</i>"
+            f"⏳ <i>Валидност: {expires_minutes} мин. Изберете ниво на експозиция:</i>"
         )
+
+        buttons_row = []
+        if lev_matrix and len(lev_matrix) > 1:
+            for item in lev_matrix:
+                l_num = item["leverage"]
+                lbl = item["label"]
+                e_icon = "🟢" if l_num == 1 else ("⚡" if l_num == 2 else "🚀")
+                buttons_row.append({
+                    "text": f"{e_icon} {lbl}",
+                    "callback_data": f"trade:approve:{proposal_id}:{l_num}",
+                })
+        else:
+            action_btn = "BUY" if direction == "LONG" else "SHORT"
+            buttons_row = [
+                {"text": f"✅ Потвърди {action_btn} (${position_size_usd:.0f})", "callback_data": f"trade:approve:{proposal_id}:1"}
+            ]
 
         reply_markup = {
             "inline_keyboard": [
+                buttons_row,
                 [
-                    {"text": f"✅ Потвърди BUY (${position_size_usd:.0f})", "callback_data": f"trade:approve:{proposal_id}"},
                     {"text": "❌ Откажи", "callback_data": f"trade:reject:{proposal_id}"},
                 ]
             ]
         }
         return text, reply_markup
 
-    def approve_proposal(self, proposal_id: str, chat_id: Optional[str] = None) -> dict:
+    def approve_proposal(self, proposal_id: str, chat_id: Optional[str] = None, leverage: int = 1) -> dict:
         """
-        User clicked 'Approve'. Validates balance, opens paper position,
+        User clicked an execution button. Validates balance, opens paper position,
         updates status, and edits the Telegram message to reflect approval.
         """
         self.db.expire_old_proposals()
@@ -294,10 +365,15 @@ class PaperTrader:
         tp2 = row["tp2"]
         msg_id = row["message_id"]
 
-        bal = self.db.get_paper_balance(initial_balance=self.initial_balance)
-        fee_entry = round(pos_size * (self.fee_pct / 100.0), 4)
-        total_required = pos_size + fee_entry
+        direction = row["direction"] if "direction" in row.keys() and row["direction"] else "LONG"
+        max_lev = row["max_leverage"] if "max_leverage" in row.keys() and row["max_leverage"] else 1
+        selected_leverage = max(1, min(max_lev, leverage))
 
+        margin_required = round(pos_size / selected_leverage, 2)
+        fee_entry = round(pos_size * (self.fee_pct / 100.0), 4)
+        total_required = margin_required + fee_entry
+
+        bal = self.db.get_paper_balance(initial_balance=self.initial_balance)
         if bal["available_cash"] < total_required:
             return {"success": False, "error": f"Недостатъчен свободен баланс (${bal['available_cash']:.2f} < ${total_required:.2f})."}
 
@@ -307,6 +383,14 @@ class PaperTrader:
 
         now_iso = datetime.now(timezone.utc).isoformat()
         position_id = f"pos_{ticker}_{int(time.time())}"
+
+        if selected_leverage > 1:
+            if direction == "SHORT":
+                liq_price = round(entry_price * (1.0 + (1.0 / selected_leverage) - 0.005), 4)
+            else:
+                liq_price = round(entry_price * (1.0 - (1.0 / selected_leverage) + 0.005), 4)
+        else:
+            liq_price = None
 
         self.db.update_paper_balance(-total_required, initial_balance=self.initial_balance)
 
@@ -322,30 +406,42 @@ class PaperTrader:
             opened_at=now_iso,
             proposal_id=proposal_id,
             fee_paid_usd=fee_entry,
+            direction=direction,
+            leverage=selected_leverage,
+            margin_usd=margin_required,
+            notional_usd=pos_size,
+            liquidation_price=liq_price,
         )
 
-        self.db.update_proposal_status(proposal_id, "APPROVED", responded_at=now_iso)
+        self.db.update_proposal_status(proposal_id, "APPROVED", responded_at=now_iso, leverage_selected=selected_leverage)
 
         if msg_id:
             p_str = format_price_str(entry_price)
+            mode_badge = f"{selected_leverage}x {direction}" if selected_leverage > 1 else ("Spot (1x)" if direction == "LONG" else "Hedge Short (1x)")
+            liq_str = f"\n• 💀 Ликвидационна цена: <code>{format_price_str(liq_price)}</code>" if liq_price else ""
+            action_desc = "Продадени (Short)" if direction == "SHORT" else "Купени (Long)"
             updated_text = (
-                f"✅ <b>ОДОБРЕНО И ИЗПЪЛНЕНО (Paper Spot)</b>\n\n"
+                f"✅ <b>ОДОБРЕНО И ИЗПЪЛНЕНО ({mode_badge})</b>\n\n"
                 f"• Актив: <b>{ticker}</b>\n"
-                f"• Купени: <b>{units}</b> единици на цена <code>{p_str}</code>\n"
-                f"• Инвестирана сума: <b>${pos_size:.2f}</b> (Такса: ${fee_entry:.2f})\n"
+                f"• {action_desc}: <b>{units}</b> единици на цена <code>{p_str}</code>\n"
+                f"• Заделен маржин: <b>${margin_required:.2f}</b> (Ноционал: ${pos_size:.2f})\n"
+                f"• Такса: <b>${fee_entry:.2f}</b>\n"
                 f"• 🛑 Stop-Loss: <code>{format_price_str(stop_loss) if stop_loss else 'Няма'}</code>\n"
-                f"• 🎯 Take-Profit: <code>{format_price_str(tp1) if tp1 else 'Няма'}</code>\n\n"
-                f"🟢 <i>Позицията е активна в симулатора. Следи се за SL/TP или /close.</i>"
+                f"• 🎯 Take-Profit: <code>{format_price_str(tp1) if tp1 else 'Няма'}</code>{liq_str}\n\n"
+                f"🟢 <i>Позицията е активна в симулатора. Следи се за SL/TP/Ликвидация или /close.</i>"
             )
             self.notifier.edit_message_text(message_id=msg_id, text=updated_text, reply_markup=None, chat_id=chat_id)
 
-        logger.info(f"[PaperTrader] Approved proposal {proposal_id}, opened position {position_id} for {ticker}")
+        logger.info(f"[PaperTrader] Approved proposal {proposal_id} ({selected_leverage}x {direction}), opened position {position_id} for {ticker}")
         return {
             "success": True,
             "position_id": position_id,
             "ticker": ticker,
             "entry_price": entry_price,
             "units": units,
+            "leverage": selected_leverage,
+            "direction": direction,
+            "margin_usd": margin_required,
         }
 
     def reject_proposal(self, proposal_id: str, chat_id: Optional[str] = None) -> dict:
@@ -409,18 +505,53 @@ class PaperTrader:
             exit_reason = None
             exit_price = current_price
 
-            if stop_loss and current_price <= stop_loss:
-                exit_reason = "STOP_LOSS"
-                exit_price = stop_loss
-            elif tp2 and current_price >= tp2:
-                exit_reason = "TAKE_PROFIT_2"
-                exit_price = tp2
-            elif tp1 and current_price >= tp1:
-                exit_reason = "TAKE_PROFIT_1"
-                exit_price = tp1
-            elif current_state == "BLUE":
-                exit_reason = "SIGNAL_BLUE"
-                exit_price = current_price
+            direction = pos["direction"] if "direction" in pos.keys() and pos["direction"] else "LONG"
+            liq_price = pos["liquidation_price"] if "liquidation_price" in pos.keys() else None
+
+            if direction == "SHORT":
+                if liq_price and current_price >= liq_price:
+                    exit_reason = "LIQUIDATION"
+                    exit_price = liq_price
+                elif stop_loss and current_price >= stop_loss:
+                    exit_reason = "STOP_LOSS"
+                    exit_price = stop_loss
+                elif tp2 and current_price <= tp2:
+                    exit_reason = "TAKE_PROFIT_2"
+                    exit_price = tp2
+                elif tp1 and current_price <= tp1:
+                    if self.partial_take_profit and tp2 and tp2 < tp1:
+                        partial_event = self._execute_partial_tp1(pos, exit_price=tp1)
+                        if partial_event:
+                            closed_events.append(partial_event)
+                        continue
+                    else:
+                        exit_reason = "TAKE_PROFIT_1"
+                        exit_price = tp1
+                elif current_state == "GOLD":
+                    exit_reason = "SIGNAL_GOLD"
+                    exit_price = current_price
+            else:
+                if liq_price and current_price <= liq_price:
+                    exit_reason = "LIQUIDATION"
+                    exit_price = liq_price
+                elif stop_loss and current_price <= stop_loss:
+                    exit_reason = "STOP_LOSS"
+                    exit_price = stop_loss
+                elif tp2 and current_price >= tp2:
+                    exit_reason = "TAKE_PROFIT_2"
+                    exit_price = tp2
+                elif tp1 and current_price >= tp1:
+                    if self.partial_take_profit and tp2 and tp2 > tp1:
+                        partial_event = self._execute_partial_tp1(pos, exit_price=tp1)
+                        if partial_event:
+                            closed_events.append(partial_event)
+                        continue
+                    else:
+                        exit_reason = "TAKE_PROFIT_1"
+                        exit_price = tp1
+                elif current_state == "BLUE":
+                    exit_reason = "SIGNAL_BLUE"
+                    exit_price = current_price
 
             if exit_reason:
                 closed = self._execute_position_close(
@@ -432,6 +563,94 @@ class PaperTrader:
                     closed_events.append(closed)
 
         return closed_events
+
+    def _execute_partial_tp1(self, position: dict, exit_price: float) -> Optional[dict]:
+        """
+        Institutional partial scale-out:
+        Closes 50% of position at TP1, moves SL to Breakeven (entry_price),
+        credits proceeds, logs trade journal entry, and sends Telegram alert.
+        """
+        pos_id = position["position_id"]
+        ticker = position["ticker"]
+        entry_price = position["entry_price"]
+        units = position["units"]
+        pos_size = position["position_size_usd"]
+        direction = position["direction"] if "direction" in position.keys() and position["direction"] else "LONG"
+        leverage = position["leverage"] if "leverage" in position.keys() and position["leverage"] else 1
+        margin = position["margin_usd"] if "margin_usd" in position.keys() and position["margin_usd"] else round(pos_size / max(1, leverage), 2)
+
+        units_sold = round(units * 0.5, 6 if entry_price < 10 else 4)
+        remaining_units = round(units - units_sold, 6 if entry_price < 10 else 4)
+        pos_size_sold = round(pos_size * 0.5, 2)
+        remaining_pos_size = round(pos_size - pos_size_sold, 2)
+        margin_sold = round(margin * 0.5, 2)
+        remaining_margin = round(margin - margin_sold, 2)
+
+        fee_exit = round((units_sold * exit_price) * (self.fee_pct / 100.0), 4)
+        if direction == "SHORT":
+            gross_pnl = round((entry_price - exit_price) * units_sold, 4)
+        else:
+            gross_pnl = round((exit_price - entry_price) * units_sold, 4)
+
+        net_pnl = round(gross_pnl - fee_exit, 2)
+        realized_pnl_usd = net_pnl
+        realized_pnl_pct = round((net_pnl / margin_sold) * 100.0, 2) if margin_sold > 0 else 0.0
+
+        net_proceeds = round(max(0.0, margin_sold + net_pnl), 2)
+
+        # Breakeven Stop-Loss
+        new_sl = entry_price
+
+        # Update Account Balance
+        self.db.update_paper_balance(net_proceeds, initial_balance=self.initial_balance)
+
+        # Update Position in DB (units halved, SL to BE, tp1 cleared, margin halved)
+        self.db.update_paper_position_after_tp1(
+            position_id=pos_id,
+            remaining_units=remaining_units,
+            remaining_size_usd=remaining_pos_size,
+            realized_pnl_usd=realized_pnl_usd,
+            fee_paid_usd=fee_exit,
+            new_stop_loss=new_sl,
+            remaining_margin_usd=remaining_margin,
+        )
+
+        # Trade Log entry
+        try:
+            self.db.add_trade_log_entry(
+                position_id=pos_id,
+                ticker=ticker,
+                action="PARTIAL_CLOSE",
+                price=exit_price,
+                quantity=units_sold,
+                pnl_usd=realized_pnl_usd,
+                pnl_pct=realized_pnl_pct,
+                notes=f"Достигнат TP1 (${exit_price:,.2f}): прибрани 50% печалба. Стопът е преместен на Breakeven (${new_sl:,.2f})",
+            )
+        except Exception as e:
+            logger.warning(f"Could not write partial TP1 to trade log: {e}")
+
+        pnl_sign = "+" if realized_pnl_usd >= 0 else ""
+        tp2_val = position["tp2"] if "tp2" in position.keys() and position["tp2"] else 0
+        msg = (
+            f"🎯 <b>ЧАСТИЧЕН ТЕЙК-ПРОФИТ 1 (50% Scale-out): {ticker}</b>\n\n"
+            f"• Продадени: <b>50%</b> ({units_sold} бр.) на цена <code>{format_price_str(exit_price)}</code>\n"
+            f"• Реализирана печалба: <b>{pnl_sign}${realized_pnl_usd:,.2f} ({pnl_sign}{realized_pnl_pct}%)</b>\n"
+            f"• Върнати в кеш: <b>${net_proceeds:,.2f}</b> (Такса: ${fee_exit:.2f})\n"
+            f"• 🛡️ <b>Stop-Loss преместен на Breakeven:</b> <code>{format_price_str(new_sl)}</code> (Безрискова позиция!)\n"
+            f"• Оставащи: <b>{remaining_units}</b> бр. бягащи към TP2: <code>{format_price_str(tp2_val)}</code>"
+        )
+        self.notifier.send_raw_message(msg)
+        logger.info(f"[PaperTrader] Scaled out 50% on TP1 for {ticker} @ {exit_price}. PnL: ${realized_pnl_usd}")
+
+        return {
+            "position_id": pos_id,
+            "ticker": ticker,
+            "exit_price": exit_price,
+            "exit_reason": "TAKE_PROFIT_1_PARTIAL",
+            "pnl_usd": realized_pnl_usd,
+            "pnl_pct": realized_pnl_pct,
+        }
 
     def _execute_position_close(
         self,
@@ -445,13 +664,25 @@ class PaperTrader:
         entry_price = position["entry_price"]
         units = position["units"]
         pos_size = position["position_size_usd"]
+        direction = position["direction"] if "direction" in position.keys() and position["direction"] else "LONG"
+        leverage = position["leverage"] if "leverage" in position.keys() and position["leverage"] else 1
+        margin = position["margin_usd"] if "margin_usd" in position.keys() and position["margin_usd"] else round(pos_size / max(1, leverage), 2)
 
-        gross_proceeds = round(units * exit_price, 4)
-        fee_exit = round(gross_proceeds * (self.fee_pct / 100.0), 4)
-        net_proceeds = round(gross_proceeds - fee_exit, 4)
+        fee_exit = round((units * exit_price) * (self.fee_pct / 100.0), 4)
 
-        realized_pnl_usd = round(net_proceeds - pos_size, 2)
-        realized_pnl_pct = round((realized_pnl_usd / pos_size) * 100.0, 2)
+        if exit_reason == "LIQUIDATION":
+            realized_pnl_usd = -margin
+            realized_pnl_pct = -100.0
+            net_proceeds = 0.0
+        else:
+            if direction == "SHORT":
+                gross_pnl = round((entry_price - exit_price) * units, 4)
+            else:
+                gross_pnl = round((exit_price - entry_price) * units, 4)
+            net_pnl = round(gross_pnl - fee_exit, 2)
+            realized_pnl_usd = net_pnl
+            realized_pnl_pct = round((net_pnl / margin) * 100.0, 2) if margin > 0 else 0.0
+            net_proceeds = round(max(0.0, margin + net_pnl), 2)
 
         now_iso = datetime.now(timezone.utc).isoformat()
 
@@ -472,15 +703,19 @@ class PaperTrader:
             "TAKE_PROFIT_1": "🎯 ДОСТИГНАТ ТЕЙК-ПРОФИТ 1 (TP1)",
             "TAKE_PROFIT_2": "🚀 ДОСТИГНАТ ТЕЙК-ПРОФИТ 2 (TP2)",
             "SIGNAL_BLUE": "🔵 МЕЧИ СИГНАЛ ЗА ИЗХОД (Larsson Blue)",
+            "SIGNAL_GOLD": "🟡 БИЧИ СИГНАЛ ЗА ИЗХОД ОТ ШОРТ (Larsson Gold)",
+            "LIQUIDATION": "💀 АВТОМАТИЧНА ЛИКВИДАЦИЯ",
             "MANUAL": "✋ РЪЧНО ЗАТВАРЯНЕ (/close)",
         }
         title = reason_labels.get(exit_reason, f"ЗАТВОРЕНА ПОЗИЦИЯ: {exit_reason}")
         pnl_emoji = "🟢" if realized_pnl_usd >= 0 else "🔴"
         pnl_sign = "+" if realized_pnl_usd >= 0 else ""
+        mode_badge = f"[{leverage}x {direction}]" if leverage > 1 else f"[{direction}]"
 
         msg = (
-            f"{pnl_emoji} <b>{title}: {ticker}</b>\n\n"
+            f"{pnl_emoji} <b>{title}: {ticker} {mode_badge}</b>\n\n"
             f"• Вход: <code>{format_price_str(entry_price)}</code> | Изход: <code>{format_price_str(exit_price)}</code>\n"
+            f"• Заделен маржин: <b>${margin:.2f}</b> (Ноционал: ${pos_size:.2f})\n"
             f"• Реализиран PnL: <b>{pnl_sign}${realized_pnl_usd:,.2f} ({pnl_sign}{realized_pnl_pct}%)</b>\n"
             f"• Върнати средства в баланса: <b>${net_proceeds:,.2f}</b> (Такса: ${fee_exit:.2f})\n"
         )
@@ -534,24 +769,32 @@ class PaperTrader:
             pos_size = pos["position_size_usd"]
             sl = pos["stop_loss"]
             tp1 = pos["tp1"]
+            direction = pos["direction"] if "direction" in pos.keys() and pos["direction"] else "LONG"
+            leverage = pos["leverage"] if "leverage" in pos.keys() and pos["leverage"] else 1
+            margin = pos["margin_usd"] if "margin_usd" in pos.keys() and pos["margin_usd"] else round(pos_size / max(1, leverage), 2)
 
             curr = price_lookup.get(ticker)
             if not curr:
                 st = self.db.get_current_state(ticker, "4H") or self.db.get_current_state(ticker, "1D")
                 curr = st["last_price"] if st else entry
 
-            val = units * curr
-            total_positions_val += val
-            u_pnl_usd = val - pos_size
-            u_pnl_pct = (u_pnl_usd / pos_size) * 100.0
+            if direction == "SHORT":
+                u_pnl_usd = round((entry - curr) * units, 2)
+            else:
+                u_pnl_usd = round((curr - entry) * units, 2)
+
+            u_pnl_pct = round((u_pnl_usd / margin) * 100.0, 1) if margin > 0 else 0.0
+            pos_equity = max(0.0, margin + u_pnl_usd)
+            total_positions_val += pos_equity
             unrealized_pnl_total += u_pnl_usd
 
             sign = "+" if u_pnl_usd >= 0 else ""
             emoji = "🟢" if u_pnl_usd >= 0 else "🔴"
+            mode_tag = f"[{leverage}x {direction}]" if leverage > 1 else f"[{direction}]"
             pos_lines.append(
-                f"• {emoji} <b>{ticker}</b>: <code>{format_price_str(curr)}</code> "
+                f"• {emoji} <b>{ticker} {mode_tag}</b>: <code>{format_price_str(curr)}</code> "
                 f"(Вход: <code>{format_price_str(entry)}</code>)\n"
-                f"  Стойност: <b>${val:.2f}</b> | PnL: <b>{sign}${u_pnl_usd:.2f} ({sign}{u_pnl_pct:.1f}%)</b>\n"
+                f"  Маржин: <b>${margin:.2f}</b> (Ноционал: ${pos_size:.2f}) | PnL: <b>{sign}${u_pnl_usd:.2f} ({sign}{u_pnl_pct:.1f}%)</b>\n"
                 f"  SL: <code>{format_price_str(sl) if sl else 'Няма'}</code> | TP: <code>{format_price_str(tp1) if tp1 else 'Няма'}</code>"
             )
 
