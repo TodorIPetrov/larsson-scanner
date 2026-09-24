@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260924_16">
+  <link rel="stylesheet" href="style.css?v=20260924_17">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -102,9 +102,12 @@
 
     <!-- Controls / Filters -->
     <section class="controls-section">
-      <div class="search-box">
+      <div class="search-box" id="scannerSearchBox">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search ticker or name (e.g. MSTR, Metaplanet, Bitcoin, Gold, Apple)...">
+        <input type="text" id="searchInput" placeholder="Търси тикер, име или пазар (напр. BTC, NAKA, MSTR, Apple, Злато, Биткойн)..." autocomplete="off" spellcheck="false">
+        <span class="search-kbd" id="searchKbdHint" title="Натиснете / за бързо търсене">/</span>
+        <button type="button" class="search-clear-btn" id="searchClearBtn" title="Изчисти търсенето (Esc)" style="display: none;">✕</button>
+        <span class="search-badge" id="searchCountBadge" style="display: none;">0 намерени</span>
       </div>
 
       <div class="filter-row">
@@ -311,6 +314,12 @@
             <button class="filter-btn filter-purple" data-queue-tier="S">💎 Tier S (Blue Chip)</button>
             <button class="filter-btn filter-gold" data-queue-tier="A">⭐ Tier A (Quality Growth)</button>
             <button class="filter-btn filter-cyan" data-queue-tier="B">🔵 Tier B</button>
+          </div>
+          <div class="search-box search-box-queue" id="queueSearchBox">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="queueSearchInput" placeholder="Търси в очакваните (напр. SOL, MSTR, BTC)..." autocomplete="off" spellcheck="false">
+            <button type="button" class="search-clear-btn" id="queueSearchClearBtn" title="Изчисти търсенето" style="display: none;">✕</button>
+            <span class="search-badge" id="queueSearchCountBadge" style="display: none;">0</span>
           </div>
         </div>
       </section>
@@ -1050,6 +1059,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260924_16"></script>
+  <script src="app.js?v=20260924_17"></script>
 </body>
 </html>

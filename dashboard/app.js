@@ -14,6 +14,7 @@ let currentSetupFilter = 'ALL';
 let currentQueuePriority = 'ALL';
 let currentQueueTier = 'ALL';
 let currentSearch = '';
+let currentQueueSearch = '';
 let currentView = localStorage.getItem('larsson_view_mode') || 'table';
 let currentTab = localStorage.getItem('larsson_active_tab') || 'scanner';
 
@@ -344,9 +345,198 @@ async function loadDashboardData() {
   }
 }
 
+// =============================================================================
+// ADVANCED SMART SEARCH ENGINE (Multi-token, Normalization, Cyrillic & Ranking)
+// =============================================================================
+
+const BG_SEMANTIC_ALIASES = {
+  'биткойн': ['btc', 'bitcoin'],
+  'биткоин': ['btc', 'bitcoin'],
+  'бикойн': ['btc', 'bitcoin'],
+  'бтк': ['btc'],
+  'етериум': ['eth', 'ethereum'],
+  'етер': ['eth', 'ethereum'],
+  'етириум': ['eth'],
+  'солана': ['sol', 'solana'],
+  'солано': ['sol', 'solana'],
+  'накамото': ['naka', 'nakamoto'],
+  'нака': ['naka'],
+  'злато': ['gold', 'paxg', 'gc=f'],
+  'златен': ['gold'],
+  'златни': ['gold'],
+  'сребро': ['silver', 'si=f'],
+  'сребърен': ['silver'],
+  'петрол': ['oil', 'cl=f'],
+  'нефт': ['oil', 'cl=f'],
+  'газ': ['gas', 'ng=f'],
+  'тесла': ['tsla', 'tesla'],
+  'микростратеджи': ['mstr', 'microstrategy'],
+  'микростратегия': ['mstr', 'microstrategy'],
+  'метапланет': ['metaplanet', '3350'],
+  'ябълка': ['aapl', 'apple'],
+  'ейпъл': ['aapl', 'apple'],
+  'апл': ['aapl', 'apple'],
+  'нвидиа': ['nvda', 'nvidia'],
+  'енвидиа': ['nvda', 'nvidia'],
+  'майкрософт': ['msft', 'microsoft'],
+  'гугъл': ['goog', 'google', 'alphabet'],
+  'алфабет': ['goog', 'alphabet'],
+  'амазон': ['amzn', 'amazon'],
+  'койнбейс': ['coin', 'coinbase'],
+  'коинбейс': ['coin', 'coinbase'],
+  'риот': ['riot'],
+  'мара': ['mara'],
+  'крипто': ['crypto'],
+  'акции': ['stocks'],
+  'индекси': ['indices', 'spx', 'ndx', 'dji']
+};
+
+const BG_PHONETIC_MAP = {
+  'а': 'a', 'б': 'b', 'в': 'w', 'г': 'g', 'д': 'd', 'е': 'e', 'ж': 'v',
+  'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+  'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f',
+  'х': 'h', 'ц': 'c', 'ч': 'ch', 'ш': 'sh', 'щ': 'sht', 'ъ': 'y', 'ь': 'x',
+  'ю': 'yu', 'я': 'ya'
+};
+
+function transliterateBg(str) {
+  if (!str) return '';
+  let res = '';
+  for (const ch of str.toLowerCase()) {
+    res += BG_PHONETIC_MAP[ch] !== undefined ? BG_PHONETIC_MAP[ch] : ch;
+  }
+  return res;
+}
+
+function normalizeSearchStr(str) {
+  if (!str) return '';
+  return String(str).toLowerCase().replace(/[\/\-_.:=\s\\,()]+/g, '');
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function calculateSearchScore(item, rawQuery, variants, tokens) {
+  const rawTicker = (item.ticker || '').toLowerCase();
+  const normTicker = normalizeSearchStr(item.ticker);
+  const rawName = (item.name || '').toLowerCase();
+  const normName = normalizeSearchStr(item.name);
+  const normTv = normalizeSearchStr(item.tv_symbol || '');
+  const rawClass = (item.asset_class || '').toLowerCase();
+  const rawTf = (item.timeframe || '').toLowerCase();
+  const rawState = (item.state || '').toLowerCase();
+  const techAction = (item.technical && item.technical.action || '').toLowerCase();
+  const fundAction = (item.fundamental && item.fundamental.action || '').toLowerCase();
+  const synthSetup = (item.synthesis && item.synthesis.setup_type || '').toLowerCase();
+  const btcVerdict = (item.btc_relative && item.btc_relative.verdict || '').toLowerCase();
+  const qClean = rawQuery.toLowerCase().trim();
+  const qNorm = normalizeSearchStr(rawQuery);
+
+  let score = 0;
+
+  // 1. Direct ticker exact match or direct USD/USDT pair match
+  if (rawTicker === qClean || normTicker === qNorm) {
+    score += 2500;
+  } else if (normTicker === qNorm + 'usdt' || normTicker === qNorm + 'usd' || rawTicker === qClean + '-usd') {
+    score += 2000;
+  } else if (normTicker.startsWith(qNorm) || rawTicker.startsWith(qClean)) {
+    score += 600;
+  } else if (normTicker.includes(qNorm) || rawTicker.includes(qClean)) {
+    score += 350;
+  }
+
+  // 2. Direct name exact or prefix match
+  if (rawName === qClean || normName === qNorm) {
+    score += 1500;
+  } else if (normName.startsWith(qNorm) || rawName.startsWith(qClean)) {
+    score += 500;
+  } else if (normName.includes(qNorm) || rawName.includes(qClean)) {
+    score += 250;
+  }
+
+  // 3. Variant matches (Cyrillic aliases / Bulgarian transliteration)
+  for (const v of variants) {
+    if (!v) continue;
+    if (normTicker === v || rawTicker === v) score += 1200;
+    else if (normTicker === v + 'usdt' || normTicker === v + 'usd' || rawTicker === v + '-usd') score += 1100;
+    else if (normTicker.startsWith(v)) score += 400;
+    else if (normTicker.includes(v)) score += 200;
+
+    if (normName === v || rawName === v) score += 900;
+    else if (normName.startsWith(v)) score += 350;
+    else if (normName.includes(v)) score += 150;
+  }
+
+  // 4. Token multi-match across fields
+  let matchedAllTokens = true;
+  for (const tok of tokens) {
+    const nTok = normalizeSearchStr(tok);
+    let tokMatch = false;
+
+    if (rawTicker.includes(tok) || normTicker.includes(nTok)) tokMatch = true;
+    else if (rawName.includes(tok) || normName.includes(nTok)) tokMatch = true;
+    else if (normTv.includes(nTok)) tokMatch = true;
+    else if (rawClass.includes(tok)) tokMatch = true;
+    else if (rawTf === tok) tokMatch = true;
+    else if (rawState === tok) tokMatch = true;
+    else if (techAction.includes(tok)) tokMatch = true;
+    else if (fundAction.includes(tok)) tokMatch = true;
+    else if (synthSetup.includes(tok)) tokMatch = true;
+    else if (tok.length >= 4 && (tok.includes('alpha') || tok.includes('bleed') || tok.includes('sat')) && btcVerdict.includes(tok)) tokMatch = true;
+
+    if (!tokMatch) {
+      matchedAllTokens = false;
+      break;
+    }
+  }
+
+  if (tokens.length > 1 && matchedAllTokens) {
+    score += 450;
+  }
+
+  // Bonus for 1D timeframe (standard daily timeframe)
+  if (score > 0 && rawTf === '1d') score += 10;
+
+  return score;
+}
+
 function getFilteredSymbols() {
   const q = currentSearch.toLowerCase().trim();
-  const filtered = allSymbols.filter(item => {
+  const qNorm = normalizeSearchStr(q);
+
+  let searchVariants = new Set();
+  let queryTokens = [];
+  if (q) {
+    if (qNorm) searchVariants.add(qNorm);
+
+    for (const [bgKey, aliases] of Object.entries(BG_SEMANTIC_ALIASES)) {
+      if (q.includes(bgKey) || bgKey.includes(q)) {
+        aliases.forEach(a => {
+          searchVariants.add(a.toLowerCase());
+          searchVariants.add(normalizeSearchStr(a));
+        });
+      }
+    }
+
+    const translit = transliterateBg(q);
+    if (translit !== q) {
+      searchVariants.add(translit);
+      searchVariants.add(normalizeSearchStr(translit));
+    }
+
+    queryTokens = q.split(/\s+/).filter(Boolean);
+  }
+
+  const scoredItems = [];
+
+  for (const item of allSymbols) {
     // 1. Asset Class Filter
     const matchesClass = (currentClass === 'ALL') || (item.asset_class === currentClass);
     // 2. Timeframe Filter
@@ -400,19 +590,27 @@ function getFilteredSymbols() {
                      (ts && (ts.action === 'SPOT_BUY' || (ts.setup_type && ts.setup_type.includes('BUY'))));
     }
 
-    // 6. Search Filter
-    const matchesSearch = !q ||
-      item.ticker.toLowerCase().includes(q) ||
-      (item.name && item.name.toLowerCase().includes(q));
+    if (!matchesClass || !matchesTf || !matchesTech || !matchesFund || !matchesSetup) {
+      continue;
+    }
 
-    return matchesClass && matchesTf && matchesTech && matchesFund && matchesSetup && matchesSearch;
-  });
+    let searchScore = 0;
+    if (q) {
+      searchScore = calculateSearchScore(item, q, searchVariants, queryTokens);
+      if (searchScore <= 0) continue;
+    }
 
+    scoredItems.push({ item, score: searchScore });
+  }
+
+  // Sorting
   if (currentSortColumn) {
     const stateRanks = { 'GOLD': 3, 'NEUTRAL': 2, 'BLUE': 1 };
     const fundRanks = { 'STRONG_BUY': 4, 'BUY': 3, 'HOLD': 2, 'REDUCE': 1, 'SPECULATIVE_NA': 0 };
 
-    filtered.sort((a, b) => {
+    scoredItems.sort((aObj, bObj) => {
+      const a = aObj.item;
+      const b = bObj.item;
       let valA, valB;
       if (currentSortColumn === 'ticker') {
         valA = a.ticker || '';
@@ -450,9 +648,14 @@ function getFilteredSymbols() {
       if (valA > valB) return currentSortDir === 'asc' ? 1 : -1;
       return 0;
     });
+  } else if (q) {
+    // Rank by relevance score when searching
+    scoredItems.sort((a, b) => b.score - a.score);
   } else {
     // Default sorting in main view: Rank assets by best trade setups from combined quantamental analysis!
-    filtered.sort((a, b) => {
+    scoredItems.sort((aObj, bObj) => {
+      const a = aObj.item;
+      const b = bObj.item;
       const rankA = getQuantamentalSetupRank(a);
       const rankB = getQuantamentalSetupRank(b);
       if (rankB !== rankA) return rankB - rankA;
@@ -466,7 +669,7 @@ function getFilteredSymbols() {
     });
   }
 
-  return filtered;
+  return scoredItems.map(s => s.item);
 }
 
 function renderOverview(data) {
@@ -512,20 +715,47 @@ function renderOverview(data) {
   }
 }
 
-function renderAllViews() {
-  renderTable();
-  renderCards();
-  applyViewMode();
+function updateSearchControls(filteredCount) {
+  const clearBtn = document.getElementById('searchClearBtn');
+  const kbdHint = document.getElementById('searchKbdHint');
+  const countBadge = document.getElementById('searchCountBadge');
+
+  if (clearBtn) {
+    clearBtn.style.display = currentSearch ? 'flex' : 'none';
+  }
+  if (kbdHint) {
+    kbdHint.style.display = currentSearch ? 'none' : 'inline-block';
+  }
+  if (countBadge) {
+    if (currentSearch) {
+      countBadge.style.display = 'inline-block';
+      countBadge.textContent = `${filteredCount} намерени`;
+      countBadge.className = filteredCount > 0 ? 'search-badge' : 'search-badge badge-empty';
+    } else {
+      countBadge.style.display = 'none';
+    }
+  }
 }
 
-function renderTable() {
-  const tbody = document.getElementById('assetsTableBody');
+function renderAllViews() {
   const filtered = getFilteredSymbols();
+  renderTable(filtered);
+  renderCards(filtered);
+  applyViewMode();
+  updateSearchControls(filtered.length);
+}
+
+function renderTable(filteredSymbols) {
+  const tbody = document.getElementById('assetsTableBody');
+  const filtered = filteredSymbols || getFilteredSymbols();
 
   if (filtered.length === 0) {
+    const emptyMsg = currentSearch
+      ? `🔍 Няма намерени активи за "<strong>${escapeHtml(currentSearch)}</strong>". <button type="button" class="btn-clear-search" onclick="clearSearch()">✕ Изчисти търсенето</button>`
+      : `Няма намерени активи по избраните критерии.`;
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" class="loading-state">Няма намерени активи по избраните критерии.</td>
+        <td colspan="9" class="loading-state">${emptyMsg}</td>
       </tr>
     `;
     return;
@@ -599,12 +829,15 @@ function renderTable() {
   updateActiveRowHighlight();
 }
 
-function renderCards() {
+function renderCards(filteredSymbols) {
   const container = document.getElementById('cardsGrid');
-  const filtered = getFilteredSymbols();
+  const filtered = filteredSymbols || getFilteredSymbols();
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">Няма намерени активи по избраните критерии.</div>`;
+    const emptyMsg = currentSearch
+      ? `🔍 Няма намерени активи за "<strong>${escapeHtml(currentSearch)}</strong>". <button type="button" class="btn-clear-search" onclick="clearSearch()">✕ Изчисти търсенето</button>`
+      : `Няма намерени активи по избраните критерии.`;
+    container.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">${emptyMsg}</div>`;
     return;
   }
 
@@ -2014,10 +2247,107 @@ document.querySelectorAll('#classFilters .filter-btn').forEach(btn => {
   });
 });
 
-document.getElementById('searchInput').addEventListener('input', (e) => {
-  currentSearch = e.target.value.trim();
+function resetFiltersToAll() {
+  currentClass = 'ALL';
+  currentTfFilter = 'ALL';
+  currentTechFilter = 'ALL';
+  currentFundFilter = 'ALL';
+  currentSetupFilter = 'ALL';
+
+  document.querySelectorAll('#classFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.class === 'ALL'));
+  document.querySelectorAll('#tfFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === 'ALL'));
+  document.querySelectorAll('#techFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tech === 'ALL'));
+  document.querySelectorAll('#fundFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.fund === 'ALL'));
+  document.querySelectorAll('#setupFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.setup === 'ALL'));
+  renderOverview();
+}
+
+window.clearSearch = function() {
+  currentSearch = '';
+  const input = document.getElementById('searchInput');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
   renderAllViews();
+  if (pendingProposals && pendingProposals.length > 0) {
+    renderProposalsBanner(pendingProposals);
+  }
+};
+
+window.clearQueueSearch = function() {
+  currentQueueSearch = '';
+  const input = document.getElementById('queueSearchInput');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  renderQueueView();
+};
+
+const searchInputElem = document.getElementById('searchInput');
+if (searchInputElem) {
+  searchInputElem.addEventListener('input', (e) => {
+    const val = e.target.value;
+    const trimmed = val.trim();
+    // If user starts a search and had specific filters active, broaden to ALL so search isn't blocked
+    if (trimmed && !currentSearch && (currentClass !== 'ALL' || currentTfFilter !== 'ALL' || currentTechFilter !== 'ALL' || currentFundFilter !== 'ALL' || currentSetupFilter !== 'ALL')) {
+      resetFiltersToAll();
+    }
+    currentSearch = trimmed;
+    renderAllViews();
+    if (pendingProposals && pendingProposals.length > 0) {
+      renderProposalsBanner(pendingProposals);
+    }
+  });
+
+  searchInputElem.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      clearSearch();
+      searchInputElem.blur();
+    }
+  });
+}
+
+const searchClearBtnElem = document.getElementById('searchClearBtn');
+if (searchClearBtnElem) {
+  searchClearBtnElem.addEventListener('click', () => {
+    clearSearch();
+  });
+}
+
+// Global hotkey: '/' to focus search, 'Escape' to blur/clear
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    const input = document.getElementById('searchInput');
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  }
 });
+
+const queueInputElem = document.getElementById('queueSearchInput');
+if (queueInputElem) {
+  queueInputElem.addEventListener('input', (e) => {
+    currentQueueSearch = e.target.value.trim();
+    renderQueueView();
+  });
+  queueInputElem.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      clearQueueSearch();
+      queueInputElem.blur();
+    }
+  });
+}
+
+const queueClearBtnElem = document.getElementById('queueSearchClearBtn');
+if (queueClearBtnElem) {
+  queueClearBtnElem.addEventListener('click', () => {
+    clearQueueSearch();
+  });
+}
 
 // Table Column Sorting Click Listener
 document.querySelectorAll('.th-sortable').forEach(th => {
@@ -2116,17 +2446,42 @@ function renderQueueView() {
   const container = document.getElementById('queueCardsGrid');
   if (!container) return;
 
+  const qClear = document.getElementById('queueSearchClearBtn');
+  const qBadge = document.getElementById('queueSearchCountBadge');
+  if (qClear) qClear.style.display = currentQueueSearch ? 'flex' : 'none';
+
   let filtered = pendingSetups.filter(s => {
     const matchesPrio = (currentQueuePriority === 'ALL') || (s.priority === currentQueuePriority);
     const matchesTier = (currentQueueTier === 'ALL') || (s.tier === currentQueueTier);
-    return matchesPrio && matchesTier;
+    let matchesSearch = true;
+    if (currentQueueSearch) {
+      const q = currentQueueSearch.toLowerCase().trim();
+      const normQ = normalizeSearchStr(q);
+      const sym = (s.symbol || '').toLowerCase();
+      const normSym = normalizeSearchStr(s.symbol || '');
+      const setupType = (s.setup_type || '').toLowerCase();
+      matchesSearch = sym.includes(q) || normSym.includes(normQ) || setupType.includes(q);
+    }
+    return matchesPrio && matchesTier && matchesSearch;
   });
 
+  if (qBadge) {
+    if (currentQueueSearch) {
+      qBadge.style.display = 'inline-block';
+      qBadge.textContent = `${filtered.length} намерени`;
+      qBadge.className = filtered.length > 0 ? 'search-badge' : 'search-badge badge-empty';
+    } else {
+      qBadge.style.display = 'none';
+    }
+  }
+
   if (filtered.length === 0) {
+    const emptyMsg = currentQueueSearch
+      ? `<h3>🔍 Няма намерени очаквани сделки за "<strong>${escapeHtml(currentQueueSearch)}</strong>"</h3><p style="margin-top: 8px;"><button type="button" class="btn-clear-search" onclick="clearQueueSearch()">✕ Изчисти търсенето</button></p>`
+      : `<h3>⏳ Няма намерени очаквани сделки по тези критерии</h3><p style="margin-top: 8px;">Системата следи непрекъснато пазара за Imminent Gold, Dip Buy, S/R приближаване и Дивергенции.</p>`;
     container.innerHTML = `
       <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted); background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-color);">
-        <h3>⏳ Няма намерени очаквани сделки по тези критерии</h3>
-        <p style="margin-top: 8px;">Системата следи непрекъснато пазара за Imminent Gold, Dip Buy, S/R приближаване и Дивергенции.</p>
+        ${emptyMsg}
       </div>
     `;
     return;
@@ -2362,11 +2717,24 @@ function renderProposalsBanner(proposals) {
   if (!banner || !grid) return;
 
   const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
-  const activeProposals = (proposals || []).filter(p => !resolved[p.proposal_id]);
+  let activeProposals = (proposals || []).filter(p => !resolved[p.proposal_id]);
 
   if (activeProposals.length === 0) {
     banner.style.display = 'none';
     return;
+  }
+
+  if (currentSearch) {
+    const qNorm = normalizeSearchStr(currentSearch);
+    const q = currentSearch.toLowerCase().trim();
+    const matching = activeProposals.filter(p => {
+      const sym = (p.ticker || p.symbol || '').toLowerCase();
+      const name = (p.name || '').toLowerCase();
+      return sym.includes(q) || normalizeSearchStr(sym).includes(qNorm) || name.includes(q);
+    });
+    if (matching.length > 0) {
+      activeProposals = matching;
+    }
   }
 
   banner.style.display = 'block';
