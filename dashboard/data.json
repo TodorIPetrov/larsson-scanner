@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T12:09:23.124098+00:00",
+  "generated_at": "2026-09-24T12:09:54.156595+00:00",
   "summary": {
     "total": 654,
     "gold": 380,
@@ -211,12 +211,12 @@
       "tv_symbol": "NASDAQ:NAKA",
       "timeframe": "1D",
       "state": "GOLD",
-      "price": 9.2,
-      "v1": 10.0,
-      "m1": 9.5,
-      "m2": 9.0,
-      "v2": 8.5,
-      "spread_pct": 17.65,
+      "price": 9.194999694824219,
+      "v1": 7.4733,
+      "m1": 7.1577,
+      "m2": 6.8647,
+      "v2": 6.7958,
+      "spread_pct": 9.97,
       "s1": 8.36,
       "s1_touches": 2,
       "s1_dist_pct": 9.08,
@@ -227,10 +227,10 @@
       "context_desc": "\u0412 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d: S1 (-9.1%) \u27f7 R1 (+50.1%)",
       "technical": {
         "state": "GOLD",
-        "spread_pct": 17.65,
-        "action": "BUY",
-        "label_bg": "\ud83d\udfe2 BUY / LONG",
-        "thesis": "\u0422\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438 \u043f\u0440\u043e\u0431\u0438\u0432 \u043d\u0430\u0434 \u043b\u043e\u043a\u0430\u043b\u043d\u0430 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u044f, \u0431\u0438\u0447\u0438 \u0437\u043b\u0430\u0442\u0435\u043d \u0440\u0438\u0431\u043e\u043d \u043d\u0430 \u0434\u043d\u0435\u0432\u043d\u0430 \u0431\u0430\u0437\u0430.",
+        "spread_pct": 9.97,
+        "action": "HOLD",
+        "label_bg": "\ud83d\udfe1 HOLD (\u0412\u044a\u0437\u0445\u043e\u0434\u044f\u0449 \u0442\u0440\u0435\u043d\u0434)",
+        "thesis": "\u0411\u0438\u0447\u0438 \u0442\u0440\u0435\u043d\u0434 (Gold, spread +10.0%). \u0417\u0430\u0434\u0440\u044a\u0436\u0442\u0435 \u0438\u043b\u0438 \u0438\u0437\u0447\u0430\u043a\u0430\u0439\u0442\u0435 \u043a\u043e\u0440\u0435\u043a\u0446\u0438\u044f \u0434\u043e S1 \u0437\u0430 \u043d\u043e\u0432 \u0432\u0445\u043e\u0434.",
         "s1": 8.36,
         "s1_dist_pct": 9.08,
         "s1_touches": 2,
@@ -247,80 +247,59 @@
         "z_score": 3.5,
         "upside_pct": 84.1,
         "thesis": "\u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442 $18.50 (+84.1%). \u0420\u043e\u0432: Narrow, ROIC: 18.0%, Z-Score: 3.50.",
-        "action": "UNDERVALUED",
-        "label_bg": "\ud83d\udc8e \u041f\u041e\u0414\u0426\u0415\u041d\u0415\u041d (BTC Treasury)",
-        "thesis_bg": "4,467 BTC \u0432 \u043a\u043e\u0440\u043f\u043e\u0440\u0430\u0442\u0438\u0432\u043d\u0438\u044f \u0442\u0440\u0435\u0436\u044a\u0440\u0438, \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043a\u0430 \u043c\u0435\u0434\u0438\u0439\u043d\u0430 \u0438 \u043a\u043e\u043d\u0444\u0435\u0440\u0435\u043d\u0442\u043d\u0430 \u043c\u043e\u043d\u043e\u043f\u043e\u043b\u0438\u044f \u0432 \u0411\u0438\u0442\u043a\u043e\u0439\u043d \u0435\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u0430\u0442\u0430."
+        "action": "STRONG_BUY",
+        "label_bg": "\ud83d\udfe2 \u0421\u0418\u041b\u041d\u041e \u041f\u041e\u0414\u0426\u0415\u041d\u0415\u041d (+38% MoS)",
+        "thesis_bg": "DCF \u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442: $16.00 (Margin of Safety: +38%, Narrow Moat). \u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442 $18.50 (+84.1%). \u0420\u043e\u0432: Narrow, ROIC: 18.0%, Z-Score: 3.50."
       },
       "synthesis": {
-        "setup_type": "QUANTAMENTAL_ALPHA_BUY",
-        "action": "SPOT_BUY",
-        "direction": "LONG",
-        "badge_bg": "\u2b50 \u0421\u0418\u041b\u041d\u0410 \u041f\u041e\u041a\u0423\u041f\u041a\u0410 (2x LEV)",
-        "label_bg": "\u0422\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438 + \u0424\u0443\u043d\u0434\u0430\u043c\u0435\u043d\u0442\u0430\u043b\u0435\u043d \u043a\u043e\u043d\u0441\u0435\u043d\u0441\u0443\u0441 (Alpha A+)",
-        "entry": 9.2,
-        "sl": 8.2,
-        "tp1": 14.0,
-        "tp2": 18.5,
-        "rr": 4.8,
-        "score": 95,
-        "tier": "A+",
-        "max_leverage": 2,
-        "recommended_leverage": 2
+        "setup_type": "WAIT_FOR_SETUP",
+        "action": "WAIT",
+        "direction": "NEUTRAL",
+        "badge_bg": "\u23f3 WAIT",
+        "label_bg": "\u0418\u0437\u0447\u0430\u043a\u0432\u0430\u043d\u0435 \u043d\u0430 \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u0430 \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0437\u0430 \u0432\u0445\u043e\u0434",
+        "entry": 9.195,
+        "sl": null,
+        "tp1": null,
+        "tp2": null,
+        "rr": null,
+        "score": 40,
+        "tier": "NONE",
+        "max_leverage": 1,
+        "recommended_leverage": 1
       },
       "trade_suggestion": {
-        "action": "SPOT_BUY",
-        "direction": "LONG",
-        "setup_type": "QUANTAMENTAL_ALPHA_BUY",
-        "entry": 9.2,
-        "sl": 8.2,
-        "tp1": 14.0,
-        "tp2": 18.5,
-        "rr": 4.8,
-        "score": 95,
-        "tier": "A+",
-        "reason_bg": "\ud83c\udfc6 QUANTAMENTAL ALPHA: Nakamoto Inc. (NAKA) \u043f\u0440\u0438\u0442\u0435\u0436\u0430\u0432\u0430 4,467 BTC \u043d\u0430 \u0431\u0430\u043b\u0430\u043d\u0441\u0430 \u0441\u0438, \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u0432\u0430 Bitcoin Magazine & Bitcoin Conference. \u0421\u0438\u043b\u043d\u043e \u043f\u043e\u0434\u0446\u0435\u043d\u0435\u043d \u0441 Fair Value $16.00 (+74%) \u0438 \u0446\u0435\u043b\u0435\u0432\u0430 \u0446\u0435\u043d\u0430 $18.50 (+101%). Gold Ribbon \u0432\u044a\u0437\u0445\u043e\u0434\u044f\u0449 \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c, \u043f\u0440\u0435\u043f\u043e\u0440\u044a\u0447\u0430\u043d isolated \u043b\u0438\u0432\u044a\u0440\u0438\u0434\u0436 2x.",
-        "reason_en": "Quantamental Alpha Buy: Nakamoto Inc. (NAKA) holds 4,467 BTC treasury. Undervalued vs fair value $16.00 with target $18.50. Gold ribbon momentum.",
+        "action": "WAIT",
+        "direction": "NEUTRAL",
+        "setup_type": "WAIT_FOR_SETUP",
+        "entry": 9.195,
+        "sl": null,
+        "tp1": null,
+        "tp2": null,
+        "rr": null,
+        "score": 40,
+        "tier": "NONE",
+        "reason_bg": "\u0426\u0435\u043d\u0430\u0442\u0430 \u0435 \u0432 \u043c\u0435\u0436\u0434\u0438\u043d\u043d\u0430 \u0437\u043e\u043d\u0430 \u0438\u043b\u0438 \u0441\u044a\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0435\u0442\u043e \u0420\u0438\u0441\u043a/\u041f\u0435\u0447\u0430\u043b\u0431\u0430 \u0435 \u043f\u043e\u0434 1:1.8. \u0418\u0437\u0447\u0430\u043a\u0430\u0439 \u0442\u0435\u0441\u0442 \u043d\u0430 \u043a\u043b\u044e\u0447\u043e\u0432\u043e \u043d\u0438\u0432\u043e. \u0424\u0443\u043d\u0434\u0430\u043c\u0435\u043d\u0442\u0430\u043b\u0435\u043d STRONG BUY (Fair Value $16.00) \u2013 \u0438\u0437\u0447\u0430\u043a\u0430\u0439\u0442\u0435 \u043a\u043e\u0440\u0435\u043a\u0446\u0438\u044f \u0434\u043e S1 \u0437\u0430 \u0432\u0445\u043e\u0434!",
+        "reason_en": "Price in mid-range or R:R below 1:1.8. Wait for key structural level test. Fundamentally STRONG BUY (Fair Value $16.00) \u2013 wait for pullback to S1 for entry!",
         "fund_verdict": "STRONG BUY",
         "fair_value": 16.0,
         "moat": "Narrow",
-        "quantamental_tag": "ALPHA_CONVICTION",
-        "tech_action": "BUY",
-        "tech_label_bg": "\ud83d\udfe2 BUY / LONG",
-        "tech_thesis_bg": "\u0422\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438 \u043f\u0440\u043e\u0431\u0438\u0432 \u043d\u0430\u0434 \u043b\u043e\u043a\u0430\u043b\u043d\u0430 \u043a\u043e\u043d\u0441\u043e\u043b\u0438\u0434\u0430\u0446\u0438\u044f, \u0431\u0438\u0447\u0438 \u0437\u043b\u0430\u0442\u0435\u043d \u0440\u0438\u0431\u043e\u043d \u043d\u0430 \u0434\u043d\u0435\u0432\u043d\u0430 \u0431\u0430\u0437\u0430.",
-        "fund_action": "UNDERVALUED",
-        "fund_label_bg": "\ud83d\udc8e \u041f\u041e\u0414\u0426\u0415\u041d\u0415\u041d (BTC Treasury)",
-        "fund_thesis_bg": "4,467 BTC \u0432 \u043a\u043e\u0440\u043f\u043e\u0440\u0430\u0442\u0438\u0432\u043d\u0438\u044f \u0442\u0440\u0435\u0436\u044a\u0440\u0438, \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043a\u0430 \u043c\u0435\u0434\u0438\u0439\u043d\u0430 \u0438 \u043a\u043e\u043d\u0444\u0435\u0440\u0435\u043d\u0442\u043d\u0430 \u043c\u043e\u043d\u043e\u043f\u043e\u043b\u0438\u044f \u0432 \u0411\u0438\u0442\u043a\u043e\u0439\u043d \u0435\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u0430\u0442\u0430.",
-        "synthesis_badge_bg": "\u2b50 \u0421\u0418\u041b\u041d\u0410 \u041f\u041e\u041a\u0423\u041f\u041a\u0410 (2x LEV)",
-        "synthesis_label_bg": "\u0422\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0438 + \u0424\u0443\u043d\u0434\u0430\u043c\u0435\u043d\u0442\u0430\u043b\u0435\u043d \u043a\u043e\u043d\u0441\u0435\u043d\u0441\u0443\u0441 (Alpha A+)",
-        "max_leverage": 2,
-        "recommended_leverage": 2,
-        "leverage_matrix": [
-          {
-            "leverage": 1,
-            "label": "Spot (1x)",
-            "margin_usd": 100.0,
-            "notional_usd": 100.0,
-            "sl_loss_usd": 10.87,
-            "sl_pct_margin": 10.9,
-            "liquidation_price": null,
-            "dist_to_liq_pct": null
-          },
-          {
-            "leverage": 2,
-            "label": "Long 2x",
-            "margin_usd": 50.0,
-            "notional_usd": 100.0,
-            "sl_loss_usd": 10.87,
-            "sl_pct_margin": 21.7,
-            "liquidation_price": 4.646,
-            "dist_to_liq_pct": 49.5
-          }
-        ]
+        "quantamental_tag": "WAIT_FOR_DIP",
+        "tech_action": "HOLD",
+        "tech_label_bg": "\ud83d\udfe1 HOLD (\u0412\u044a\u0437\u0445\u043e\u0434\u044f\u0449 \u0442\u0440\u0435\u043d\u0434)",
+        "tech_thesis_bg": "\u0411\u0438\u0447\u0438 \u0442\u0440\u0435\u043d\u0434 (Gold, spread +10.0%). \u0417\u0430\u0434\u0440\u044a\u0436\u0442\u0435 \u0438\u043b\u0438 \u0438\u0437\u0447\u0430\u043a\u0430\u0439\u0442\u0435 \u043a\u043e\u0440\u0435\u043a\u0446\u0438\u044f \u0434\u043e S1 \u0437\u0430 \u043d\u043e\u0432 \u0432\u0445\u043e\u0434.",
+        "fund_action": "STRONG_BUY",
+        "fund_label_bg": "\ud83d\udfe2 \u0421\u0418\u041b\u041d\u041e \u041f\u041e\u0414\u0426\u0415\u041d\u0415\u041d (+38% MoS)",
+        "fund_thesis_bg": "DCF \u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442: $16.00 (Margin of Safety: +38%, Narrow Moat). \u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442 $18.50 (+84.1%). \u0420\u043e\u0432: Narrow, ROIC: 18.0%, Z-Score: 3.50.",
+        "synthesis_badge_bg": "\u23f3 WAIT",
+        "synthesis_label_bg": "\u0418\u0437\u0447\u0430\u043a\u0432\u0430\u043d\u0435 \u043d\u0430 \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u0430 \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430 \u0437\u0430 \u0432\u0445\u043e\u0434",
+        "max_leverage": 1,
+        "recommended_leverage": 1,
+        "leverage_matrix": []
       },
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-24T11:58:27.415382+00:00",
-      "updated_at": "2026-09-24T11:58:27.415382+00:00"
+      "updated_at": "2026-09-24T12:09:53.282616+00:00"
     },
     {
       "ticker": "CRVUSDT",
@@ -2454,7 +2433,7 @@
       "quality_tier": "C",
       "tier_emoji": "\u26aa",
       "last_change": "2026-09-24T06:53:11.263519+00:00",
-      "updated_at": "2026-09-24T06:53:11.263519+00:00"
+      "updated_at": "2026-09-24T12:09:53.533603+00:00"
     },
     {
       "ticker": "BTBT",
@@ -2551,7 +2530,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-24T06:53:11.143868+00:00",
-      "updated_at": "2026-09-24T06:53:11.143868+00:00"
+      "updated_at": "2026-09-24T12:09:53.461400+00:00"
     },
     {
       "ticker": "HIVE",
@@ -2648,7 +2627,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-24T06:53:11.042881+00:00",
-      "updated_at": "2026-09-24T06:53:11.042881+00:00"
+      "updated_at": "2026-09-24T12:09:53.401482+00:00"
     },
     {
       "ticker": "CLSK",
@@ -2745,7 +2724,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-24T06:53:10.996251+00:00",
-      "updated_at": "2026-09-24T06:53:10.996251+00:00"
+      "updated_at": "2026-09-24T12:09:53.378376+00:00"
     },
     {
       "ticker": "RIOT",
@@ -2842,7 +2821,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-24T06:53:10.962410+00:00",
-      "updated_at": "2026-09-24T06:53:10.962410+00:00"
+      "updated_at": "2026-09-24T12:09:53.366597+00:00"
     },
     {
       "ticker": "BAC",
@@ -9678,32 +9657,32 @@
       "tv_symbol": "XETR:ADE",
       "timeframe": "1D",
       "state": "GOLD",
-      "price": 29.3799991607666,
-      "v1": 26.8573,
-      "m1": 26.5915,
-      "m2": 26.3984,
-      "v2": 26.3677,
-      "spread_pct": 1.86,
-      "s1": 28.5369,
+      "price": 28.079999923706055,
+      "v1": 27.0534,
+      "m1": 26.7748,
+      "m2": 26.5538,
+      "v2": 26.5042,
+      "spread_pct": 2.07,
+      "s1": 27.7497,
       "s1_touches": 2,
-      "s1_dist_pct": 2.87,
-      "r1": 29.3938,
-      "r1_touches": 3,
-      "r1_dist_pct": 0.05,
+      "s1_dist_pct": 1.18,
+      "r1": 28.5369,
+      "r1_touches": 2,
+      "r1_dist_pct": 1.63,
       "context_flag": "NEAR_RESISTANCE",
-      "context_desc": "\u041d\u0435\u043f\u043e\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0435\u043d\u043e \u043f\u043e\u0434 \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430 R1 (+0.1%)",
+      "context_desc": "\u041d\u0435\u043f\u043e\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0435\u043d\u043e \u043f\u043e\u0434 \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430 R1 (+1.6%)",
       "technical": {
         "state": "GOLD",
-        "spread_pct": 1.86,
+        "spread_pct": 2.07,
         "action": "TAKE_PROFIT",
         "label_bg": "\ud83d\udcb0 TAKE PROFIT (\u0422\u0435\u0441\u0442 \u043d\u0430 R1)",
         "thesis": "\u0411\u0438\u0447\u0438 \u0442\u0440\u0435\u043d\u0434, \u043d\u043e \u0446\u0435\u043d\u0430\u0442\u0430 \u0434\u043e\u0441\u0442\u0438\u0433\u0430 \u043a\u043b\u044e\u0447\u043e\u0432\u0430 \u043c\u0430\u043a\u0440\u043e \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430 R1. \u041f\u0440\u0435\u043f\u043e\u0440\u044a\u0447\u0432\u0430 \u0441\u0435 \u043f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043d\u0430 \u043f\u0435\u0447\u0430\u043b\u0431\u0430.",
-        "s1": 28.5369,
-        "s1_dist_pct": 2.87,
+        "s1": 27.7497,
+        "s1_dist_pct": 1.18,
         "s1_touches": 2,
-        "r1": 29.3938,
-        "r1_dist_pct": 0.05,
-        "r1_touches": 3
+        "r1": 28.5369,
+        "r1_dist_pct": 1.63,
+        "r1_touches": 2
       },
       "fundamental": {
         "verdict": "STRONG BUY",
@@ -9724,10 +9703,10 @@
         "direction": "NEUTRAL",
         "badge_bg": "\ud83d\udcb0 TAKE PROFIT",
         "label_bg": "\u041f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043d\u0430 \u043f\u0435\u0447\u0430\u043b\u0431\u0438 \u043f\u0440\u0438 \u0442\u0435\u0441\u0442 \u043d\u0430 \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430",
-        "entry": 29.38,
+        "entry": 28.08,
         "sl": null,
-        "tp1": 29.3938,
-        "tp2": 34.5008,
+        "tp1": 28.5369,
+        "tp2": 29.3938,
         "rr": null,
         "score": 85,
         "tier": "A+",
@@ -9738,15 +9717,15 @@
         "action": "TAKE_PROFIT",
         "direction": "NEUTRAL",
         "setup_type": "TAKE_PROFIT_SELL",
-        "entry": 29.38,
+        "entry": 28.08,
         "sl": null,
-        "tp1": 29.3938,
-        "tp2": 34.5008,
+        "tp1": 28.5369,
+        "tp2": 29.3938,
         "rr": null,
         "score": 85,
         "tier": "A+",
-        "reason_bg": "\u0426\u0435\u043d\u0430\u0442\u0430 \u0442\u0435\u0441\u0442\u0432\u0430 \u043c\u0430\u043a\u0440\u043e \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430 R1 ($29.39, \u0441\u0430\u043c\u043e +0.0%). \u041f\u0440\u0438\u0431\u0435\u0440\u0438 50-100% \u043f\u0435\u0447\u0430\u043b\u0431\u0430 \u043d\u0430 \u0441\u043f\u043e\u0442.",
-        "reason_en": "Price testing macro resistance R1 ($29.39, only +0.0%). Trim 50-100% of spot position.",
+        "reason_bg": "\u0426\u0435\u043d\u0430\u0442\u0430 \u0442\u0435\u0441\u0442\u0432\u0430 \u043c\u0430\u043a\u0440\u043e \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430 R1 ($28.54, \u0441\u0430\u043c\u043e +1.6%). \u041f\u0440\u0438\u0431\u0435\u0440\u0438 50-100% \u043f\u0435\u0447\u0430\u043b\u0431\u0430 \u043d\u0430 \u0441\u043f\u043e\u0442.",
+        "reason_en": "Price testing macro resistance R1 ($28.54, only +1.6%). Trim 50-100% of spot position.",
         "fund_verdict": "STRONG BUY",
         "fair_value": 40.05492777501936,
         "moat": "None",
@@ -9766,7 +9745,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-22T19:28:56.465502+00:00",
-      "updated_at": "2026-09-24T06:53:11.841723+00:00"
+      "updated_at": "2026-09-24T12:09:53.941894+00:00"
     },
     {
       "ticker": "BKCH",
@@ -9863,7 +9842,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-22T19:28:56.278471+00:00",
-      "updated_at": "2026-09-24T06:53:11.586190+00:00"
+      "updated_at": "2026-09-24T12:09:53.765240+00:00"
     },
     {
       "ticker": "BKKT",
@@ -9960,12 +9939,12 @@
       "quality_tier": "C",
       "tier_emoji": "\u26aa",
       "last_change": "2026-09-22T19:28:55.963372+00:00",
-      "updated_at": "2026-09-24T06:53:11.181699+00:00"
+      "updated_at": "2026-09-24T12:09:53.484822+00:00"
     },
     {
       "ticker": "IREN",
       "name": "Iris Energy (Miner/HPC)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:IREN",
       "timeframe": "1D",
       "state": "NEUTRAL",
@@ -10057,7 +10036,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-22T19:28:55.911093+00:00",
-      "updated_at": "2026-09-24T06:53:27.132655+00:00"
+      "updated_at": "2026-09-24T12:09:53.436313+00:00"
     },
     {
       "ticker": "MARA",
@@ -10154,7 +10133,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-22T19:28:55.808233+00:00",
-      "updated_at": "2026-09-24T06:53:10.932949+00:00"
+      "updated_at": "2026-09-24T12:09:53.352641+00:00"
     },
     {
       "ticker": "EFX",
@@ -10353,7 +10332,7 @@
     {
       "ticker": "TSLA",
       "name": "Tesla (BTC Treasury)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:TSLA",
       "timeframe": "1D",
       "state": "NEUTRAL",
@@ -10445,7 +10424,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-22T19:28:50.934633+00:00",
-      "updated_at": "2026-09-24T06:53:28.006802+00:00"
+      "updated_at": "2026-09-24T12:09:54.014632+00:00"
     },
     {
       "ticker": "EURUSDT",
@@ -20359,7 +20338,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-18T17:09:57.796570+00:00",
-      "updated_at": "2026-09-24T06:53:11.930250+00:00"
+      "updated_at": "2026-09-24T12:09:54.003419+00:00"
     },
     {
       "ticker": "CBOE",
@@ -20456,7 +20435,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-18T17:09:57.698205+00:00",
-      "updated_at": "2026-09-24T06:53:11.821493+00:00"
+      "updated_at": "2026-09-24T12:09:53.930101+00:00"
     },
     {
       "ticker": "MSTR",
@@ -20553,7 +20532,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-18T17:09:56.959984+00:00",
-      "updated_at": "2026-09-24T06:53:10.858560+00:00"
+      "updated_at": "2026-09-24T12:09:53.299019+00:00"
     },
     {
       "ticker": "KHC",
@@ -30045,7 +30024,7 @@
       "m2": 562.8757,
       "v2": 559.7175,
       "spread_pct": 1.87,
-      "s1": 558.271,
+      "s1": 558.2711,
       "s1_touches": 5,
       "s1_dist_pct": 0.29,
       "r1": 565.5024,
@@ -30059,7 +30038,7 @@
         "action": "TAKE_PROFIT",
         "label_bg": "\ud83d\udcb0 TAKE PROFIT (\u0422\u0435\u0441\u0442 \u043d\u0430 R1)",
         "thesis": "\u0411\u0438\u0447\u0438 \u0442\u0440\u0435\u043d\u0434, \u043d\u043e \u0446\u0435\u043d\u0430\u0442\u0430 \u0434\u043e\u0441\u0442\u0438\u0433\u0430 \u043a\u043b\u044e\u0447\u043e\u0432\u0430 \u043c\u0430\u043a\u0440\u043e \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430 R1. \u041f\u0440\u0435\u043f\u043e\u0440\u044a\u0447\u0432\u0430 \u0441\u0435 \u043f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043d\u0430 \u043f\u0435\u0447\u0430\u043b\u0431\u0430.",
-        "s1": 558.271,
+        "s1": 558.2711,
         "s1_dist_pct": 0.29,
         "s1_touches": 5,
         "r1": 565.5024,
@@ -30088,7 +30067,7 @@
         "entry": 559.92,
         "sl": null,
         "tp1": 565.5024,
-        "tp2": 571.2977,
+        "tp2": 571.2976,
         "rr": null,
         "score": 85,
         "tier": "A+",
@@ -30102,7 +30081,7 @@
         "entry": 559.92,
         "sl": null,
         "tp1": 565.5024,
-        "tp2": 571.2977,
+        "tp2": 571.2976,
         "rr": null,
         "score": 85,
         "tier": "A+",
@@ -30127,7 +30106,7 @@
       "quality_tier": "S",
       "tier_emoji": "\ud83d\udc8e",
       "last_change": "2026-09-16T07:07:13.219479+00:00",
-      "updated_at": "2026-09-24T06:53:12.000584+00:00"
+      "updated_at": "2026-09-24T12:09:54.052904+00:00"
     },
     {
       "ticker": "PYPL",
@@ -30224,7 +30203,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-16T07:07:13.112143+00:00",
-      "updated_at": "2026-09-24T06:53:11.911623+00:00"
+      "updated_at": "2026-09-24T12:09:53.990686+00:00"
     },
     {
       "ticker": "BTCX-B.TO",
@@ -30321,7 +30300,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:13.089226+00:00",
-      "updated_at": "2026-09-24T06:53:11.893098+00:00"
+      "updated_at": "2026-09-24T12:09:53.978250+00:00"
     },
     {
       "ticker": "ETHX-B.TO",
@@ -30418,7 +30397,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:13.066914+00:00",
-      "updated_at": "2026-09-24T06:53:11.876110+00:00"
+      "updated_at": "2026-09-24T12:09:53.965405+00:00"
     },
     {
       "ticker": "BTCC-B.TO",
@@ -30515,7 +30494,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:13.043026+00:00",
-      "updated_at": "2026-09-24T06:53:11.858555+00:00"
+      "updated_at": "2026-09-24T12:09:53.953415+00:00"
     },
     {
       "ticker": "CME",
@@ -30533,7 +30512,7 @@
       "s1": 268.7384,
       "s1_touches": 4,
       "s1_dist_pct": 0.76,
-      "r1": 272.1957,
+      "r1": 272.1956,
       "r1_touches": 4,
       "r1_dist_pct": 0.52,
       "context_flag": "NEAR_RESISTANCE",
@@ -30547,7 +30526,7 @@
         "s1": 268.7384,
         "s1_dist_pct": 0.76,
         "s1_touches": 4,
-        "r1": 272.1957,
+        "r1": 272.1956,
         "r1_dist_pct": 0.52,
         "r1_touches": 4
       },
@@ -30572,7 +30551,7 @@
         "label_bg": "\u041f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043d\u0430 \u043f\u0435\u0447\u0430\u043b\u0431\u0438 \u043f\u0440\u0438 \u0442\u0435\u0441\u0442 \u043d\u0430 \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430",
         "entry": 270.8,
         "sl": null,
-        "tp1": 272.1957,
+        "tp1": 272.1956,
         "tp2": 277.1561,
         "rr": null,
         "score": 90,
@@ -30586,7 +30565,7 @@
         "setup_type": "TAKE_PROFIT_SELL",
         "entry": 270.8,
         "sl": null,
-        "tp1": 272.1957,
+        "tp1": 272.1956,
         "tp2": 277.1561,
         "rr": null,
         "score": 90,
@@ -30612,7 +30591,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-16T07:07:12.968761+00:00",
-      "updated_at": "2026-09-24T06:53:11.803459+00:00"
+      "updated_at": "2026-09-24T12:09:53.918456+00:00"
     },
     {
       "ticker": "MSTU",
@@ -30709,7 +30688,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.949576+00:00",
-      "updated_at": "2026-09-24T06:53:11.786701+00:00"
+      "updated_at": "2026-09-24T12:09:53.906519+00:00"
     },
     {
       "ticker": "MSTX",
@@ -30806,7 +30785,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.926169+00:00",
-      "updated_at": "2026-09-24T06:53:11.766969+00:00"
+      "updated_at": "2026-09-24T12:09:53.894312+00:00"
     },
     {
       "ticker": "CONL",
@@ -30903,7 +30882,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.903667+00:00",
-      "updated_at": "2026-09-24T06:53:11.748627+00:00"
+      "updated_at": "2026-09-24T12:09:53.881087+00:00"
     },
     {
       "ticker": "ARKF",
@@ -31000,7 +30979,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.881666+00:00",
-      "updated_at": "2026-09-24T06:53:11.728192+00:00"
+      "updated_at": "2026-09-24T12:09:53.869432+00:00"
     },
     {
       "ticker": "ARKW",
@@ -31097,7 +31076,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.859628+00:00",
-      "updated_at": "2026-09-24T06:53:11.709244+00:00"
+      "updated_at": "2026-09-24T12:09:53.857596+00:00"
     },
     {
       "ticker": "SATO",
@@ -31194,7 +31173,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.836944+00:00",
-      "updated_at": "2026-09-24T06:53:11.691768+00:00"
+      "updated_at": "2026-09-24T12:09:53.845444+00:00"
     },
     {
       "ticker": "CRPT",
@@ -31291,7 +31270,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.815645+00:00",
-      "updated_at": "2026-09-24T06:53:11.675354+00:00"
+      "updated_at": "2026-09-24T12:09:53.830507+00:00"
     },
     {
       "ticker": "BITS",
@@ -31388,7 +31367,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.793526+00:00",
-      "updated_at": "2026-09-24T06:53:11.657357+00:00"
+      "updated_at": "2026-09-24T12:09:53.816382+00:00"
     },
     {
       "ticker": "BTF",
@@ -31485,7 +31464,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.774355+00:00",
-      "updated_at": "2026-09-24T06:53:11.639743+00:00"
+      "updated_at": "2026-09-24T12:09:53.804451+00:00"
     },
     {
       "ticker": "FDIG",
@@ -31582,7 +31561,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.752581+00:00",
-      "updated_at": "2026-09-24T06:53:11.622785+00:00"
+      "updated_at": "2026-09-24T12:09:53.792439+00:00"
     },
     {
       "ticker": "BITQ",
@@ -31679,7 +31658,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.731890+00:00",
-      "updated_at": "2026-09-24T06:53:11.604439+00:00"
+      "updated_at": "2026-09-24T12:09:53.780315+00:00"
     },
     {
       "ticker": "BLOK",
@@ -31776,7 +31755,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.688855+00:00",
-      "updated_at": "2026-09-24T06:53:11.568527+00:00"
+      "updated_at": "2026-09-24T12:09:53.752411+00:00"
     },
     {
       "ticker": "DAPP",
@@ -31873,7 +31852,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.668387+00:00",
-      "updated_at": "2026-09-24T06:53:11.551918+00:00"
+      "updated_at": "2026-09-24T12:09:53.739261+00:00"
     },
     {
       "ticker": "WGMI",
@@ -31970,7 +31949,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.644763+00:00",
-      "updated_at": "2026-09-24T06:53:11.536468+00:00"
+      "updated_at": "2026-09-24T12:09:53.725090+00:00"
     },
     {
       "ticker": "FETH",
@@ -32067,7 +32046,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.624381+00:00",
-      "updated_at": "2026-09-24T06:53:11.519035+00:00"
+      "updated_at": "2026-09-24T12:09:53.713456+00:00"
     },
     {
       "ticker": "ETHA",
@@ -32164,7 +32143,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.604518+00:00",
-      "updated_at": "2026-09-24T06:53:11.500375+00:00"
+      "updated_at": "2026-09-24T12:09:53.700181+00:00"
     },
     {
       "ticker": "ETHE",
@@ -32261,7 +32240,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.583989+00:00",
-      "updated_at": "2026-09-24T06:53:11.484132+00:00"
+      "updated_at": "2026-09-24T12:09:53.688430+00:00"
     },
     {
       "ticker": "BITO",
@@ -32358,7 +32337,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.564177+00:00",
-      "updated_at": "2026-09-24T06:53:11.467776+00:00"
+      "updated_at": "2026-09-24T12:09:53.676516+00:00"
     },
     {
       "ticker": "BITX",
@@ -32455,7 +32434,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.543636+00:00",
-      "updated_at": "2026-09-24T06:53:11.449493+00:00"
+      "updated_at": "2026-09-24T12:09:53.664635+00:00"
     },
     {
       "ticker": "EZBC",
@@ -32552,7 +32531,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.521592+00:00",
-      "updated_at": "2026-09-24T06:53:11.430499+00:00"
+      "updated_at": "2026-09-24T12:09:53.653107+00:00"
     },
     {
       "ticker": "BTCO",
@@ -32649,7 +32628,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.498709+00:00",
-      "updated_at": "2026-09-24T06:53:11.413638+00:00"
+      "updated_at": "2026-09-24T12:09:53.640528+00:00"
     },
     {
       "ticker": "HODL",
@@ -32746,7 +32725,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.476178+00:00",
-      "updated_at": "2026-09-24T06:53:11.395137+00:00"
+      "updated_at": "2026-09-24T12:09:53.624134+00:00"
     },
     {
       "ticker": "GBTC",
@@ -32843,7 +32822,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.450413+00:00",
-      "updated_at": "2026-09-24T06:53:11.377366+00:00"
+      "updated_at": "2026-09-24T12:09:53.610490+00:00"
     },
     {
       "ticker": "BITB",
@@ -32940,7 +32919,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.433189+00:00",
-      "updated_at": "2026-09-24T06:53:11.358845+00:00"
+      "updated_at": "2026-09-24T12:09:53.597202+00:00"
     },
     {
       "ticker": "ARKB",
@@ -33037,7 +33016,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.416164+00:00",
-      "updated_at": "2026-09-24T06:53:11.341783+00:00"
+      "updated_at": "2026-09-24T12:09:53.583761+00:00"
     },
     {
       "ticker": "FBTC",
@@ -33134,7 +33113,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.398694+00:00",
-      "updated_at": "2026-09-24T06:53:11.324606+00:00"
+      "updated_at": "2026-09-24T12:09:53.572441+00:00"
     },
     {
       "ticker": "IBIT",
@@ -33231,7 +33210,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.379950+00:00",
-      "updated_at": "2026-09-24T06:53:11.307910+00:00"
+      "updated_at": "2026-09-24T12:09:53.560070+00:00"
     },
     {
       "ticker": "ARBK",
@@ -33328,7 +33307,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.360636+00:00",
-      "updated_at": "2026-09-24T06:53:11.288614+00:00"
+      "updated_at": "2026-09-24T12:09:53.548186+00:00"
     },
     {
       "ticker": "ANY",
@@ -33425,7 +33404,7 @@
       "quality_tier": "C",
       "tier_emoji": "\u26aa",
       "last_change": "2026-09-16T07:07:12.342293+00:00",
-      "updated_at": "2026-09-24T06:53:11.267937+00:00"
+      "updated_at": "2026-09-24T12:09:53.535862+00:00"
     },
     {
       "ticker": "SOS",
@@ -33522,7 +33501,7 @@
       "quality_tier": "C",
       "tier_emoji": "\u26aa",
       "last_change": "2026-09-16T07:07:12.304022+00:00",
-      "updated_at": "2026-09-24T06:53:11.242680+00:00"
+      "updated_at": "2026-09-24T12:09:53.521786+00:00"
     },
     {
       "ticker": "EBON",
@@ -33619,7 +33598,7 @@
       "quality_tier": "C",
       "tier_emoji": "\u26aa",
       "last_change": "2026-09-16T07:07:12.287316+00:00",
-      "updated_at": "2026-09-24T06:53:11.226614+00:00"
+      "updated_at": "2026-09-24T12:09:53.509439+00:00"
     },
     {
       "ticker": "CAN",
@@ -33716,7 +33695,7 @@
       "quality_tier": "C",
       "tier_emoji": "\u26aa",
       "last_change": "2026-09-16T07:07:12.231500+00:00",
-      "updated_at": "2026-09-24T06:53:11.163812+00:00"
+      "updated_at": "2026-09-24T12:09:53.473417+00:00"
     },
     {
       "ticker": "WULF",
@@ -33813,7 +33792,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.194465+00:00",
-      "updated_at": "2026-09-24T06:53:11.123339+00:00"
+      "updated_at": "2026-09-24T12:09:53.448629+00:00"
     },
     {
       "ticker": "CORZ",
@@ -33910,7 +33889,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.157702+00:00",
-      "updated_at": "2026-09-24T06:53:11.083380+00:00"
+      "updated_at": "2026-09-24T12:09:53.424285+00:00"
     },
     {
       "ticker": "CIFR",
@@ -34007,7 +33986,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.140750+00:00",
-      "updated_at": "2026-09-24T06:53:11.064359+00:00"
+      "updated_at": "2026-09-24T12:09:53.413109+00:00"
     },
     {
       "ticker": "HOOD",
@@ -34104,7 +34083,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.036542+00:00",
-      "updated_at": "2026-09-24T06:53:10.914254+00:00"
+      "updated_at": "2026-09-24T12:09:53.338563+00:00"
     },
     {
       "ticker": "COIN",
@@ -34201,7 +34180,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-16T07:07:12.018635+00:00",
-      "updated_at": "2026-09-24T06:53:10.894824+00:00"
+      "updated_at": "2026-09-24T12:09:53.323304+00:00"
     },
     {
       "ticker": "BRRR",
@@ -34298,7 +34277,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:12.001125+00:00",
-      "updated_at": "2026-09-24T06:53:10.876236+00:00"
+      "updated_at": "2026-09-24T12:09:53.311241+00:00"
     },
     {
       "ticker": "ASST",
@@ -34395,7 +34374,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:11.966879+00:00",
-      "updated_at": "2026-09-24T06:53:10.820901+00:00"
+      "updated_at": "2026-09-24T12:09:53.268093+00:00"
     },
     {
       "ticker": "3350.T",
@@ -34492,7 +34471,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-16T07:07:11.948747+00:00",
-      "updated_at": "2026-09-24T06:53:10.802331+00:00"
+      "updated_at": "2026-09-24T12:09:53.223148+00:00"
     },
     {
       "ticker": "LLY",
@@ -42986,7 +42965,7 @@
     {
       "ticker": "HUT",
       "name": "Hut 8 (Miner/HPC)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:HUT",
       "timeframe": "1D",
       "state": "BLUE",
@@ -43057,8 +43036,8 @@
         "rr": 1.98,
         "score": 75,
         "tier": "A",
-        "reason_bg": "\u041e\u0442\u0445\u0432\u044a\u0440\u043b\u044f\u043d\u0435 \u043e\u0442 \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430/\u043c\u0435\u0447\u0430 \u043f\u0430\u043d\u0434\u0435\u043b\u043a\u0430 \u0441 \u043f\u043e\u0442\u0435\u043d\u0446\u0438\u0430\u043b \u0434\u043e \u043f\u043e\u0434\u043a\u0440\u0435\u043f\u0430 S1 ($93.39). \u041b\u0435\u043a short \u0441 \u043c\u0430\u043a\u0441 2x \u043b\u0435\u0432\u044a\u0440\u0438\u0434\u0436.",
-        "reason_en": "Rejection at resistance/bearish ribbon with room to S1 ($93.39). Light hedge short (max 2x leverage).",
+        "reason_bg": "\u041e\u0442\u0445\u0432\u044a\u0440\u043b\u044f\u043d\u0435 \u043e\u0442 \u0441\u044a\u043f\u0440\u043e\u0442\u0438\u0432\u0430/\u043c\u0435\u0447\u0430 \u043f\u0430\u043d\u0434\u0435\u043b\u043a\u0430 \u0441 \u043f\u043e\u0442\u0435\u043d\u0446\u0438\u0430\u043b \u0434\u043e \u043f\u043e\u0434\u043a\u0440\u0435\u043f\u0430 S1 ($93.39). \u041b\u0435\u043a short \u0441 1x (\u0431\u0435\u0437 \u043b\u0435\u0432\u044a\u0440\u0438\u0434\u0436).",
+        "reason_en": "Rejection at resistance/bearish ribbon with room to S1 ($93.39). Light hedge short (1x (spot/no leverage)).",
         "fund_verdict": "SPECULATIVE_NA",
         "fair_value": null,
         "moat": "None",
@@ -43089,12 +43068,12 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-15T13:43:29.026232+00:00",
-      "updated_at": "2026-09-24T06:53:27.148888+00:00"
+      "updated_at": "2026-09-24T12:09:53.389690+00:00"
     },
     {
       "ticker": "APLD",
       "name": "Applied Digital (HPC/BTC)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:APLD",
       "timeframe": "1D",
       "state": "BLUE",
@@ -43186,7 +43165,7 @@
       "quality_tier": "B",
       "tier_emoji": "\ud83d\udd35",
       "last_change": "2026-09-15T13:43:28.980021+00:00",
-      "updated_at": "2026-09-24T06:53:27.116714+00:00"
+      "updated_at": "2026-09-24T12:09:53.496901+00:00"
     },
     {
       "ticker": "NBIS",
@@ -46544,7 +46523,7 @@
     {
       "ticker": "AMD",
       "name": "Advanced Micro Devices (GPU)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:AMD",
       "timeframe": "1D",
       "state": "GOLD",
@@ -46657,7 +46636,7 @@
       "quality_tier": "A",
       "tier_emoji": "\u2b50",
       "last_change": "2026-09-15T13:43:27.985455+00:00",
-      "updated_at": "2026-09-24T06:53:26.294097+00:00"
+      "updated_at": "2026-09-24T12:09:54.028230+00:00"
     },
     {
       "ticker": "5802.T",
@@ -56125,7 +56104,7 @@
     {
       "ticker": "AMD",
       "name": "Advanced Micro Devices (GPU)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:AMD",
       "timeframe": "1W",
       "state": "GOLD",
@@ -56707,7 +56686,7 @@
     {
       "ticker": "TSLA",
       "name": "Tesla (BTC Treasury)",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "tv_symbol": "NASDAQ:TSLA",
       "timeframe": "1W",
       "state": "NEUTRAL",
@@ -60201,7 +60180,7 @@
       "quality_tier": "S",
       "tier_emoji": "\ud83d\udc8e",
       "last_change": "2026-09-15T12:14:21.820745+00:00",
-      "updated_at": "2026-09-24T06:53:11.981519+00:00"
+      "updated_at": "2026-09-24T12:09:54.041013+00:00"
     },
     {
       "ticker": "JPM",
@@ -65253,7 +65232,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.084268+00:00",
-      "last_updated": "2026-09-24T06:53:11.084268+00:00"
+      "last_updated": "2026-09-24T12:09:53.424732+00:00"
     },
     {
       "symbol": "WULF",
@@ -65272,11 +65251,11 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.124762+00:00",
-      "last_updated": "2026-09-24T06:53:11.124762+00:00"
+      "last_updated": "2026-09-24T12:09:53.449250+00:00"
     },
     {
       "symbol": "APLD",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "setup_type": "DIVERGENCE_FORMING",
       "direction": "LONG",
       "priority": "HIGH",
@@ -65291,7 +65270,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.209545+00:00",
-      "last_updated": "2026-09-24T06:53:27.117963+00:00"
+      "last_updated": "2026-09-24T12:09:53.497416+00:00"
     },
     {
       "symbol": "MC.PA",
@@ -66792,7 +66771,7 @@
       "timeframe": "1D",
       "tier": "S",
       "first_detected": "2026-09-24T06:53:06.552081+00:00",
-      "last_updated": "2026-09-24T06:53:11.982664+00:00"
+      "last_updated": "2026-09-24T12:09:54.041551+00:00"
     },
     {
       "symbol": "XOM",
@@ -66815,7 +66794,7 @@
     },
     {
       "symbol": "AMD",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "setup_type": "SR_APPROACH",
       "direction": "LONG",
       "priority": "MEDIUM",
@@ -66830,7 +66809,7 @@
       "timeframe": "1D",
       "tier": "A",
       "first_detected": "2026-09-24T06:53:06.628507+00:00",
-      "last_updated": "2026-09-24T06:53:26.294774+00:00"
+      "last_updated": "2026-09-24T12:09:54.029043+00:00"
     },
     {
       "symbol": "CRM",
@@ -67020,7 +66999,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.821916+00:00",
-      "last_updated": "2026-09-24T06:53:10.821916+00:00"
+      "last_updated": "2026-09-24T12:09:53.269753+00:00"
     },
     {
       "symbol": "ASST",
@@ -67039,7 +67018,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.822106+00:00",
-      "last_updated": "2026-09-24T06:53:10.822106+00:00"
+      "last_updated": "2026-09-24T12:09:53.269924+00:00"
     },
     {
       "symbol": "NAKA",
@@ -67058,7 +67037,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.842290+00:00",
-      "last_updated": "2026-09-24T06:53:10.842290+00:00"
+      "last_updated": "2026-09-24T12:09:53.283247+00:00"
     },
     {
       "symbol": "MSTR",
@@ -67077,7 +67056,7 @@
       "timeframe": "1D",
       "tier": "A",
       "first_detected": "2026-09-24T06:53:10.859546+00:00",
-      "last_updated": "2026-09-24T06:53:10.859546+00:00"
+      "last_updated": "2026-09-24T12:09:53.299722+00:00"
     },
     {
       "symbol": "BRRR",
@@ -67096,7 +67075,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.877455+00:00",
-      "last_updated": "2026-09-24T06:53:10.877455+00:00"
+      "last_updated": "2026-09-24T12:09:53.311804+00:00"
     },
     {
       "symbol": "RIOT",
@@ -67115,7 +67094,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.965359+00:00",
-      "last_updated": "2026-09-24T06:53:10.965359+00:00"
+      "last_updated": "2026-09-24T12:09:53.367419+00:00"
     },
     {
       "symbol": "BTCS",
@@ -67134,7 +67113,7 @@
       "timeframe": "1D",
       "tier": "C",
       "first_detected": "2026-09-24T06:53:11.264963+00:00",
-      "last_updated": "2026-09-24T06:53:11.264963+00:00"
+      "last_updated": "2026-09-24T12:09:53.534125+00:00"
     },
     {
       "symbol": "ANY",
@@ -67153,7 +67132,7 @@
       "timeframe": "1D",
       "tier": "C",
       "first_detected": "2026-09-24T06:53:11.269471+00:00",
-      "last_updated": "2026-09-24T06:53:11.269471+00:00"
+      "last_updated": "2026-09-24T12:09:53.536596+00:00"
     },
     {
       "symbol": "IBIT",
@@ -67172,7 +67151,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.309386+00:00",
-      "last_updated": "2026-09-24T06:53:11.309386+00:00"
+      "last_updated": "2026-09-24T12:09:53.560586+00:00"
     },
     {
       "symbol": "FBTC",
@@ -67191,7 +67170,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.325569+00:00",
-      "last_updated": "2026-09-24T06:53:11.325569+00:00"
+      "last_updated": "2026-09-24T12:09:53.572969+00:00"
     },
     {
       "symbol": "ARKB",
@@ -67210,7 +67189,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.342649+00:00",
-      "last_updated": "2026-09-24T06:53:11.342649+00:00"
+      "last_updated": "2026-09-24T12:09:53.586212+00:00"
     },
     {
       "symbol": "BITB",
@@ -67229,7 +67208,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.359831+00:00",
-      "last_updated": "2026-09-24T06:53:11.359831+00:00"
+      "last_updated": "2026-09-24T12:09:53.597718+00:00"
     },
     {
       "symbol": "GBTC",
@@ -67248,7 +67227,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.378748+00:00",
-      "last_updated": "2026-09-24T06:53:11.378748+00:00"
+      "last_updated": "2026-09-24T12:09:53.611083+00:00"
     },
     {
       "symbol": "HODL",
@@ -67267,7 +67246,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.396348+00:00",
-      "last_updated": "2026-09-24T06:53:11.396348+00:00"
+      "last_updated": "2026-09-24T12:09:53.624983+00:00"
     },
     {
       "symbol": "BTCO",
@@ -67286,7 +67265,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.414601+00:00",
-      "last_updated": "2026-09-24T06:53:11.414601+00:00"
+      "last_updated": "2026-09-24T12:09:53.641186+00:00"
     },
     {
       "symbol": "EZBC",
@@ -67305,7 +67284,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.431524+00:00",
-      "last_updated": "2026-09-24T06:53:11.431524+00:00"
+      "last_updated": "2026-09-24T12:09:53.653667+00:00"
     },
     {
       "symbol": "BITO",
@@ -67324,7 +67303,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.468896+00:00",
-      "last_updated": "2026-09-24T06:53:11.468896+00:00"
+      "last_updated": "2026-09-24T12:09:53.677012+00:00"
     },
     {
       "symbol": "ETHE",
@@ -67343,7 +67322,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.484864+00:00",
-      "last_updated": "2026-09-24T06:53:11.484864+00:00"
+      "last_updated": "2026-09-24T12:09:53.689044+00:00"
     },
     {
       "symbol": "ETHE",
@@ -67362,7 +67341,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.484991+00:00",
-      "last_updated": "2026-09-24T06:53:11.484991+00:00"
+      "last_updated": "2026-09-24T12:09:53.689152+00:00"
     },
     {
       "symbol": "ETHA",
@@ -67381,7 +67360,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.501403+00:00",
-      "last_updated": "2026-09-24T06:53:11.501403+00:00"
+      "last_updated": "2026-09-24T12:09:53.700724+00:00"
     },
     {
       "symbol": "FETH",
@@ -67400,7 +67379,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.520394+00:00",
-      "last_updated": "2026-09-24T06:53:11.520394+00:00"
+      "last_updated": "2026-09-24T12:09:53.714090+00:00"
     },
     {
       "symbol": "FETH",
@@ -67419,7 +67398,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.520562+00:00",
-      "last_updated": "2026-09-24T06:53:11.520562+00:00"
+      "last_updated": "2026-09-24T12:09:53.714223+00:00"
     },
     {
       "symbol": "DAPP",
@@ -67438,7 +67417,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.552661+00:00",
-      "last_updated": "2026-09-24T06:53:11.552661+00:00"
+      "last_updated": "2026-09-24T12:09:53.739773+00:00"
     },
     {
       "symbol": "BITQ",
@@ -67457,7 +67436,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.606651+00:00",
-      "last_updated": "2026-09-24T06:53:11.606651+00:00"
+      "last_updated": "2026-09-24T12:09:53.780873+00:00"
     },
     {
       "symbol": "FDIG",
@@ -67476,7 +67455,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.623648+00:00",
-      "last_updated": "2026-09-24T06:53:11.623648+00:00"
+      "last_updated": "2026-09-24T12:09:53.792992+00:00"
     },
     {
       "symbol": "BTF",
@@ -67495,7 +67474,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.640750+00:00",
-      "last_updated": "2026-09-24T06:53:11.640750+00:00"
+      "last_updated": "2026-09-24T12:09:53.804982+00:00"
     },
     {
       "symbol": "ARKF",
@@ -67514,7 +67493,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.730714+00:00",
-      "last_updated": "2026-09-24T06:53:11.730714+00:00"
+      "last_updated": "2026-09-24T12:09:53.869958+00:00"
     },
     {
       "symbol": "ADE.DE",
@@ -67552,7 +67531,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.877060+00:00",
-      "last_updated": "2026-09-24T06:53:11.877060+00:00"
+      "last_updated": "2026-09-24T12:09:53.966025+00:00"
     },
     {
       "symbol": "BTCX-B.TO",
@@ -67571,7 +67550,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.894254+00:00",
-      "last_updated": "2026-09-24T06:53:11.894254+00:00"
+      "last_updated": "2026-09-24T12:09:53.978924+00:00"
     },
     {
       "symbol": "OR.PA",
@@ -69569,6 +69548,25 @@
       "last_updated": "2026-09-24T12:02:34.650527+00:00"
     },
     {
+      "symbol": "ADE.DE",
+      "asset_class": "crypto_stocks",
+      "setup_type": "DIVERGENCE_FORMING",
+      "direction": "SHORT",
+      "priority": "MEDIUM",
+      "quality_score": 0.75,
+      "description_bg": "ADE.DE \u043f\u043e\u043a\u0430\u0437\u0432\u0430 bearish divergence \u043d\u0430 1D \u2014 \u043f\u043e\u0442\u0435\u043d\u0446\u0438\u0430\u043b\u0435\u043d \u043e\u0431\u0440\u0430\u0442 \u043d\u0430\u0434\u043e\u043b\u0443",
+      "conditions_met": "[\"Higher High in Price\", \"Lower High in RSI\"]",
+      "conditions_pending": "[\"Bearish structure breakdown\", \"Blue transition\"]",
+      "estimated_trigger": "1-3 \u0431\u0430\u0440\u0430",
+      "current_price": 28.079999923706055,
+      "target_entry": null,
+      "key_level": null,
+      "timeframe": "1D",
+      "tier": "B",
+      "first_detected": "2026-09-24T12:09:53.942419+00:00",
+      "last_updated": "2026-09-24T12:09:53.942419+00:00"
+    },
+    {
       "symbol": "XRPUSDT",
       "asset_class": "crypto",
       "setup_type": "SR_APPROACH",
@@ -69779,7 +69777,7 @@
     },
     {
       "symbol": "TSLA",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "setup_type": "IMMINENT_GOLD",
       "direction": "LONG",
       "priority": "MEDIUM",
@@ -69794,7 +69792,7 @@
       "timeframe": "1D",
       "tier": "A",
       "first_detected": "2026-09-24T06:53:06.515796+00:00",
-      "last_updated": "2026-09-24T06:53:28.007846+00:00"
+      "last_updated": "2026-09-24T12:09:54.015152+00:00"
     },
     {
       "symbol": "PLTR",
@@ -69870,7 +69868,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.803735+00:00",
-      "last_updated": "2026-09-24T06:53:10.803735+00:00"
+      "last_updated": "2026-09-24T12:09:53.249319+00:00"
     },
     {
       "symbol": "COIN",
@@ -69889,7 +69887,7 @@
       "timeframe": "1D",
       "tier": "A",
       "first_detected": "2026-09-24T06:53:10.896756+00:00",
-      "last_updated": "2026-09-24T06:53:10.896756+00:00"
+      "last_updated": "2026-09-24T12:09:53.323878+00:00"
     },
     {
       "symbol": "MARA",
@@ -69908,7 +69906,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.933930+00:00",
-      "last_updated": "2026-09-24T06:53:10.933930+00:00"
+      "last_updated": "2026-09-24T12:09:53.353218+00:00"
     },
     {
       "symbol": "CLSK",
@@ -69927,7 +69925,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:10.998046+00:00",
-      "last_updated": "2026-09-24T06:53:10.998046+00:00"
+      "last_updated": "2026-09-24T12:09:53.378853+00:00"
     },
     {
       "symbol": "HIVE",
@@ -69946,11 +69944,11 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.044108+00:00",
-      "last_updated": "2026-09-24T06:53:11.044108+00:00"
+      "last_updated": "2026-09-24T12:09:53.402031+00:00"
     },
     {
       "symbol": "IREN",
-      "asset_class": "ai_stocks",
+      "asset_class": "crypto_stocks",
       "setup_type": "IMMINENT_GOLD",
       "direction": "LONG",
       "priority": "MEDIUM",
@@ -69965,7 +69963,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.106872+00:00",
-      "last_updated": "2026-09-24T06:53:27.133588+00:00"
+      "last_updated": "2026-09-24T12:09:53.436775+00:00"
     },
     {
       "symbol": "BTBT",
@@ -69984,7 +69982,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.145193+00:00",
-      "last_updated": "2026-09-24T06:53:11.145193+00:00"
+      "last_updated": "2026-09-24T12:09:53.461884+00:00"
     },
     {
       "symbol": "CAN",
@@ -70003,7 +70001,7 @@
       "timeframe": "1D",
       "tier": "C",
       "first_detected": "2026-09-24T06:53:11.165205+00:00",
-      "last_updated": "2026-09-24T06:53:11.165205+00:00"
+      "last_updated": "2026-09-24T12:09:53.473901+00:00"
     },
     {
       "symbol": "BKKT",
@@ -70022,7 +70020,7 @@
       "timeframe": "1D",
       "tier": "C",
       "first_detected": "2026-09-24T06:53:11.182870+00:00",
-      "last_updated": "2026-09-24T06:53:11.182870+00:00"
+      "last_updated": "2026-09-24T12:09:53.485402+00:00"
     },
     {
       "symbol": "EBON",
@@ -70041,7 +70039,7 @@
       "timeframe": "1D",
       "tier": "C",
       "first_detected": "2026-09-24T06:53:11.227906+00:00",
-      "last_updated": "2026-09-24T06:53:11.227906+00:00"
+      "last_updated": "2026-09-24T12:09:53.510012+00:00"
     },
     {
       "symbol": "BKCH",
@@ -70060,7 +70058,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.587163+00:00",
-      "last_updated": "2026-09-24T06:53:11.587163+00:00"
+      "last_updated": "2026-09-24T12:09:53.766295+00:00"
     },
     {
       "symbol": "BITS",
@@ -70079,7 +70077,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.658909+00:00",
-      "last_updated": "2026-09-24T06:53:11.658909+00:00"
+      "last_updated": "2026-09-24T12:09:53.816901+00:00"
     },
     {
       "symbol": "CRPT",
@@ -70098,7 +70096,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.676253+00:00",
-      "last_updated": "2026-09-24T06:53:11.676253+00:00"
+      "last_updated": "2026-09-24T12:09:53.831186+00:00"
     },
     {
       "symbol": "SATO",
@@ -70117,7 +70115,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.692717+00:00",
-      "last_updated": "2026-09-24T06:53:11.692717+00:00"
+      "last_updated": "2026-09-24T12:09:53.845990+00:00"
     },
     {
       "symbol": "ARKW",
@@ -70136,7 +70134,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.710251+00:00",
-      "last_updated": "2026-09-24T06:53:11.710251+00:00"
+      "last_updated": "2026-09-24T12:09:53.858102+00:00"
     },
     {
       "symbol": "CONL",
@@ -70155,7 +70153,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.749556+00:00",
-      "last_updated": "2026-09-24T06:53:11.749556+00:00"
+      "last_updated": "2026-09-24T12:09:53.881536+00:00"
     },
     {
       "symbol": "MSTX",
@@ -70174,7 +70172,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.767953+00:00",
-      "last_updated": "2026-09-24T06:53:11.767953+00:00"
+      "last_updated": "2026-09-24T12:09:53.894776+00:00"
     },
     {
       "symbol": "MSTU",
@@ -70193,7 +70191,7 @@
       "timeframe": "1D",
       "tier": "B",
       "first_detected": "2026-09-24T06:53:11.787634+00:00",
-      "last_updated": "2026-09-24T06:53:11.787634+00:00"
+      "last_updated": "2026-09-24T12:09:53.906932+00:00"
     },
     {
       "symbol": "PYPL",
@@ -70212,7 +70210,7 @@
       "timeframe": "1D",
       "tier": "A",
       "first_detected": "2026-09-24T06:53:11.912871+00:00",
-      "last_updated": "2026-09-24T06:53:11.912871+00:00"
+      "last_updated": "2026-09-24T12:09:53.991213+00:00"
     },
     {
       "symbol": "MA",
@@ -70231,7 +70229,7 @@
       "timeframe": "1D",
       "tier": "S",
       "first_detected": "2026-09-24T06:53:12.001845+00:00",
-      "last_updated": "2026-09-24T06:53:12.001845+00:00"
+      "last_updated": "2026-09-24T12:09:54.053542+00:00"
     },
     {
       "symbol": "KNEBV.HE",
