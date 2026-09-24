@@ -1,5 +1,6 @@
 let allSymbols = [];
 let pendingSetups = [];
+let pendingProposals = [];
 let portfolioData = {};
 let portfolioPaperData = {};
 let portfolioRealData = {};
@@ -19,6 +20,9 @@ let currentTab = localStorage.getItem('larsson_active_tab') || 'scanner';
 let currentSortColumn = null;
 let currentSortDir = 'asc';
 let currentModalItem = null;
+let currentCalcDirection = 'LONG';
+let currentCalcLeverage = 1;
+let currentModalLeverage = 1;
 
 // Active chart state
 let activeChart = null; // modal chart instance
@@ -264,15 +268,18 @@ async function loadDashboardData() {
     data = await res.json();
     allSymbols = data.symbols || [];
     pendingSetups = data.pending_setups || [];
+    pendingProposals = data.pending_proposals || [];
     portfolioData = data.portfolio || {};
     portfolioPaperData = data.portfolio_paper || { summary: portfolioData, positions: [], history: [], journal: [] };
     portfolioRealData = data.portfolio_real || { summary: {}, positions: [], history: [], journal: [] };
 
     // Sync any custom positions or cash saved locally in this browser
+    syncLocalPaperStorage();
     syncLocalRealStorage();
 
     renderOverview(data);
     renderQueueView();
+    renderProposalsBanner(pendingProposals);
     initPortfolioController();
     switchPortfolioMode(currentPortfolioMode);
     initPageCalculator();
@@ -1362,6 +1369,46 @@ function updateModalTradeSuggestionStrip(ts, item) {
   if (rrEl) rrEl.textContent = s.rr ? `1 : ${s.rr}` : 'N/A';
   if (reasonEl) reasonEl.textContent = (ts && (ts.reason_bg || ts.reason_en)) || synth.label_bg || 'Няма допълнителни бележки.';
 
+  const matrixStrip = document.getElementById('modalLevMatrixStrip');
+  if (matrixStrip) {
+    const entryVal = s.entry || item.price || 0;
+    const slVal = s.sl || (entryVal * 0.95);
+    const recLev = (ts && ts.recommended_leverage) || 1;
+    const maxLev = (ts && ts.max_leverage) || (item.asset_class === 'crypto' ? 3 : (['us_stocks', 'ai_stocks'].includes(item.asset_class) ? 2 : 1));
+    const matrixData = (ts && ts.leverage_matrix && ts.leverage_matrix.length > 0)
+      ? ts.leverage_matrix
+      : [1, 2, 3].filter(l => l <= maxLev).map(l => {
+          const isL = (ts && ts.direction === 'SHORT') ? false : true;
+          const liq = l === 1 ? null : (isL ? entryVal * (1.0 - 1.0/l + 0.005) : entryVal * (1.0 + 1.0/l - 0.005));
+          const distPct = liq ? (Math.abs(entryVal - liq) / entryVal * 100).toFixed(1) : null;
+          return {
+            leverage: l,
+            label: l === 1 ? '1x Spot' : `${l}x Isolated`,
+            margin_usd: 1000 / l,
+            liquidation_price: liq,
+            dist_to_liq_pct: distPct,
+            sl_pct_margin: ((Math.abs(entryVal - slVal) / entryVal) * l * 100).toFixed(1)
+          };
+        });
+
+    matrixStrip.innerHTML = matrixData.map(m => {
+      const isRec = (m.leverage === recLev);
+      const liqText = m.liquidation_price ? `$${formatShortPrice(m.liquidation_price)}` : '🛡️ Без Liq';
+      const bufText = m.dist_to_liq_pct ? `${m.dist_to_liq_pct}% буфер` : 'Безопасно';
+      return `
+        <div class="modal-lev-card ${isRec ? 'recommended' : ''}">
+          <div class="modal-lev-card-title">
+            <span>${m.label || (m.leverage + 'x')}</span>
+            ${isRec ? '<span style="color:var(--color-gold); font-size:0.7rem;">⭐ Препоръчан</span>' : ''}
+          </div>
+          <div><span style="color:var(--text-muted)">Маржин:</span> <strong>$${formatShortPrice(m.margin_usd)}</strong></div>
+          <div><span style="color:var(--text-muted)">Ликвидация:</span> <strong style="color:${m.liquidation_price ? '#f87171' : '#34d399'}">${liqText}</strong></div>
+          <div><span style="color:var(--text-muted)">Буфер:</span> <small>${bufText}</small></div>
+        </div>
+      `;
+    }).join('');
+  }
+
   updateModalPositionCalculator(ts, item);
 }
 
@@ -1504,6 +1551,134 @@ window.addEventListener('resize', () => {
 // POSITION SIZING & STAGGERED DCA CALCULATOR
 // =============================================================================
 
+let modalCalcEventsBound = false;
+
+function bindModalCalcEvents() {
+  if (modalCalcEventsBound) return;
+  modalCalcEventsBound = true;
+
+  document.querySelectorAll('#modalCalcLevGroup .modal-lev-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('#modalCalcLevGroup .modal-lev-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentModalLeverage = parseInt(e.target.dataset.lev, 10);
+      recalculatePositionSize();
+    });
+  });
+
+  const execPaperBtn = document.getElementById('btnModalExecPaper');
+  if (execPaperBtn) {
+    execPaperBtn.addEventListener('click', () => {
+      if (!currentModalItem) return;
+      const ts = currentModalItem.trade_suggestion || {};
+      const entry = ts.entry || currentModalItem.price || 100;
+      const sl = ts.sl || (entry * 0.95);
+      const tp1 = ts.tp1 || (entry * 1.1);
+      const direction = ts.direction || (ts.action === 'EXIT_PROTECT' ? 'SHORT' : 'LONG');
+      const leverage = currentModalLeverage || 1;
+      const accountSize = parseFloat(document.getElementById('calcAccountSize')?.value || 10000) || 10000;
+      const riskPct = parseFloat(document.getElementById('calcRiskPct')?.value || 1.0) || 1.0;
+      const riskUsd = accountSize * (riskPct / 100);
+      const riskPerUnit = Math.abs(entry - sl);
+      const units = riskPerUnit > 0 ? (riskUsd / riskPerUnit) : 1;
+      const notional = units * entry;
+      const margin = notional / leverage;
+      const isLong = (direction === 'LONG');
+      const liqPrice = leverage > 1 
+        ? (isLong ? entry * (1.0 - 1.0/leverage + 0.005) : entry * (1.0 + 1.0/leverage - 0.005))
+        : null;
+
+      const newPos = {
+        position_id: `paper_modal_${currentModalItem.ticker}_${Date.now()}`,
+        symbol: currentModalItem.ticker,
+        direction: direction,
+        leverage: leverage,
+        entry_price: entry,
+        current_price: entry,
+        units: units,
+        position_size_usd: notional,
+        margin_usd: margin,
+        liquidation_price: liqPrice,
+        current_value: notional,
+        unrealized_pnl: 0.0,
+        unrealized_pnl_pct: 0.0,
+        stop_loss: sl,
+        tp1: tp1,
+        tp2: ts.tp2 || null,
+        duration_days: 0,
+        opened_at: new Date().toISOString(),
+        tier: ts.tier || 'A',
+        asset_class: currentModalItem.asset_class || 'crypto',
+        portfolio_type: 'PAPER',
+        broker_exchange: `Paper ${leverage}x Isolated`,
+        notes: `Сделка от графиката (${leverage}x ${direction})`
+      };
+
+      if (!portfolioPaperData.positions) portfolioPaperData.positions = [];
+      portfolioPaperData.positions.unshift(newPos);
+
+      const curCash = (portfolioPaperData.summary && portfolioPaperData.summary.available_cash) || 10000;
+      portfolioPaperData.summary.available_cash = Math.max(0, curCash - margin);
+      localStorage.setItem('larsson_custom_paper_cash', portfolioPaperData.summary.available_cash.toString());
+
+      try {
+        const saved = JSON.parse(localStorage.getItem('larsson_custom_paper_positions') || '[]');
+        saved.unshift(newPos);
+        localStorage.setItem('larsson_custom_paper_positions', JSON.stringify(saved));
+      } catch(err) {
+        console.error(err);
+      }
+
+      closeChartModal();
+      switchTab('portfolio');
+      switchPortfolioMode('PAPER');
+      alert(`🧪 Позицията ${currentModalItem.ticker} (${leverage}x ${direction}, маржин: $${margin.toFixed(2)}) бе отворена в симулатора!`);
+    });
+  }
+
+  const execRealBtn = document.getElementById('btnModalExecReal');
+  if (execRealBtn) {
+    execRealBtn.addEventListener('click', () => {
+      if (!currentModalItem) return;
+      const ts = currentModalItem.trade_suggestion || {};
+      const entry = ts.entry || currentModalItem.price || 100;
+      const sl = ts.sl || (entry * 0.95);
+      const tp1 = ts.tp1 || (entry * 1.1);
+      const direction = ts.direction || (ts.action === 'EXIT_PROTECT' ? 'SHORT' : 'LONG');
+      const leverage = currentModalLeverage || 1;
+      const accountSize = parseFloat(document.getElementById('calcAccountSize')?.value || 10000) || 10000;
+      const riskPct = parseFloat(document.getElementById('calcRiskPct')?.value || 1.0) || 1.0;
+      const riskUsd = accountSize * (riskPct / 100);
+      const riskPerUnit = Math.abs(entry - sl);
+      const units = riskPerUnit > 0 ? (riskUsd / riskPerUnit) : 1;
+
+      closeChartModal();
+      switchTab('portfolio');
+      switchPortfolioMode('REAL');
+      const modal = document.getElementById('addRealModal');
+      if (modal) {
+        modal.style.display = 'flex';
+        const t = document.getElementById('realTicker');
+        const c = document.getElementById('realAssetClass');
+        const e = document.getElementById('realEntryPrice');
+        const u = document.getElementById('realUnits');
+        const d = document.getElementById('realDirection');
+        const l = document.getElementById('realLeverage');
+        const s = document.getElementById('realSl');
+        const p = document.getElementById('realTp1');
+        if (t) t.value = currentModalItem.ticker;
+        if (c && currentModalItem.asset_class) c.value = currentModalItem.asset_class;
+        if (e) e.value = entry;
+        if (u) u.value = units < 1 ? units.toFixed(4) : units.toFixed(2);
+        if (d) d.value = direction;
+        if (l) l.value = leverage.toString();
+        if (s) s.value = sl;
+        if (p) p.value = tp1;
+      }
+    });
+  }
+}
+
 function updateModalPositionCalculator(ts, item) {
   currentModalItem = item;
   const calcStrip = document.getElementById('modalPosCalcStrip');
@@ -1525,6 +1700,14 @@ function updateModalPositionCalculator(ts, item) {
     }
   }
 
+  // Set recommended leverage as initial selection if available
+  const recLev = (ts && ts.recommended_leverage) || 1;
+  currentModalLeverage = recLev;
+  document.querySelectorAll('#modalCalcLevGroup .modal-lev-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.lev, 10) === recLev);
+  });
+
+  bindModalCalcEvents();
   recalculatePositionSize();
 }
 
@@ -1535,9 +1718,10 @@ function recalculatePositionSize() {
   const entry = (ts && ts.entry) || price;
   let sl = (ts && ts.sl);
   const tp1 = (ts && ts.tp1);
+  const isLong = (ts && ts.direction === 'SHORT') ? false : true;
 
-  if (!sl || sl >= entry) {
-    sl = entry * 0.95; // default 5% risk floor for calculation
+  if (!sl) {
+    sl = isLong ? entry * 0.95 : entry * 1.05;
   }
 
   const accountSizeInput = document.getElementById('calcAccountSize');
@@ -1546,6 +1730,7 @@ function recalculatePositionSize() {
 
   const accountSize = parseFloat(accountSizeInput.value) || 10000;
   const riskPct = parseFloat(riskPctInput.value) || 1.0;
+  const leverage = currentModalLeverage || 1;
 
   const riskUsd = accountSize * (riskPct / 100);
   const riskPerUnit = Math.abs(entry - sl);
@@ -1553,16 +1738,24 @@ function recalculatePositionSize() {
   if (riskPerUnit > 0 && entry > 0) {
     const units = riskUsd / riskPerUnit;
     const unitsFormatted = entry < 1 ? units.toFixed(4) : (entry < 50 ? units.toFixed(2) : (entry < 1000 ? units.toFixed(1) : units.toFixed(3)));
-    const posValue = units * entry;
-    const tp1Profit = tp1 ? units * Math.abs(tp1 - entry) : null;
+    const notional = units * entry;
+    const marginUsd = notional / leverage;
+    const tp1Profit = tp1 ? (units * 0.5 * Math.abs(tp1 - entry)) : null;
+    const liqPrice = leverage > 1 
+      ? (isLong ? entry * (1.0 - (1.0 / leverage) + 0.005) : entry * (1.0 + (1.0 / leverage) - 0.005))
+      : null;
 
     const unitsEl = document.getElementById('calcUnits');
     const posValEl = document.getElementById('calcPosValue');
+    const marginEl = document.getElementById('calcMarginUsd');
+    const liqEl = document.getElementById('calcLiqPrice');
     const riskUsdEl = document.getElementById('calcRiskUsd');
     const tp1UsdEl = document.getElementById('calcTp1Usd');
 
     if (unitsEl) unitsEl.textContent = `${unitsFormatted} ${currentModalItem.asset_class === 'crypto' ? 'tokens' : 'shares'}`;
-    if (posValEl) posValEl.textContent = `$${posValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (posValEl) posValEl.textContent = `$${notional.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (marginEl) marginEl.textContent = `$${marginUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (liqEl) liqEl.textContent = liqPrice ? `$${formatShortPrice(liqPrice)}` : '— (Няма)';
     if (riskUsdEl) riskUsdEl.textContent = `-$${riskUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     if (tp1UsdEl) tp1UsdEl.textContent = tp1Profit ? `+$${tp1Profit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'N/A';
   }
@@ -1879,6 +2072,300 @@ document.querySelectorAll('#queueTierFilters .filter-btn').forEach(btn => {
 // TAB 3: DUAL PORTFOLIO CONTROLLER (REAL MONEY VS VIRTUAL / PAPER SIMULATION)
 // =============================================================================
 
+function syncLocalPaperStorage() {
+  try {
+    const localPositions = JSON.parse(localStorage.getItem('larsson_custom_paper_positions') || '[]');
+    const localCash = localStorage.getItem('larsson_custom_paper_cash');
+    const localClosed = JSON.parse(localStorage.getItem('larsson_custom_paper_closed') || '[]');
+
+    if (!portfolioPaperData.positions) portfolioPaperData.positions = [];
+    if (!portfolioPaperData.journal) portfolioPaperData.journal = [];
+    if (!portfolioPaperData.summary) portfolioPaperData.summary = {};
+
+    const existingIds = new Set(portfolioPaperData.positions.map(p => p.position_id || p.id || p.symbol));
+    localPositions.forEach(p => {
+      const id = p.position_id || p.id || p.symbol;
+      if (!existingIds.has(id)) {
+        portfolioPaperData.positions.push(p);
+        existingIds.add(id);
+      }
+    });
+
+    const existingJournals = new Set(portfolioPaperData.journal.map(j => (j.position_id || '') + (j.created_at || '')));
+    localClosed.forEach(c => {
+      const key = (c.position_id || '') + (c.created_at || '');
+      if (!existingJournals.has(key)) {
+        portfolioPaperData.journal.unshift(c);
+        existingJournals.add(key);
+      }
+    });
+
+    if (localCash !== null && localCash !== undefined) {
+      const cashVal = parseFloat(localCash);
+      if (!isNaN(cashVal)) {
+        portfolioPaperData.summary.available_cash = cashVal;
+      }
+    }
+  } catch(e) {
+    console.warn('Error reading local paper portfolio storage:', e);
+  }
+}
+
+function closePaperPosition(posId, ticker, currentPrice, units) {
+  if (!confirm(`Сигурни ли сте, че искате да затворите симулираната позиция ${ticker} на цена $${formatShortPrice(currentPrice)}?`)) {
+    return;
+  }
+  const idx = (portfolioPaperData.positions || []).findIndex(p => (p.position_id || p.id) === posId);
+  if (idx === -1) return;
+
+  const target = portfolioPaperData.positions[idx];
+  const entry = target.entry_price || currentPrice;
+  const isShort = target.direction === 'SHORT';
+  const grossPnl = isShort ? (entry - currentPrice) * units : (currentPrice - entry) * units;
+  const netPnl = grossPnl;
+  const lev = target.leverage || 1;
+  const margin = target.margin_usd || ((entry * units) / lev);
+  const pnlPct = margin > 0 ? (netPnl / margin * 100) : 0;
+  const nowIso = new Date().toISOString();
+
+  // Return margin + netPnl to cash
+  const curCash = (portfolioPaperData.summary && portfolioPaperData.summary.available_cash) || 10000;
+  portfolioPaperData.summary.available_cash = curCash + margin + netPnl;
+  localStorage.setItem('larsson_custom_paper_cash', portfolioPaperData.summary.available_cash.toString());
+
+  if (!portfolioPaperData.summary) portfolioPaperData.summary = {};
+  portfolioPaperData.summary.total_realized_pnl = (portfolioPaperData.summary.total_realized_pnl || 0) + netPnl;
+  if (netPnl > 0) {
+    portfolioPaperData.summary.wins = (portfolioPaperData.summary.wins || 0) + 1;
+  } else {
+    portfolioPaperData.summary.losses = (portfolioPaperData.summary.losses || 0) + 1;
+  }
+
+  const journalItem = {
+    position_id: posId,
+    ticker: ticker,
+    action: isShort ? 'COVER' : 'CLOSE',
+    entry_price: entry,
+    exit_price: currentPrice,
+    price: currentPrice,
+    units: units,
+    pnl_usd: netPnl,
+    pnl_pct: pnlPct,
+    broker_exchange: target.broker_exchange || 'Paper Engine',
+    reason: `Затваряне на ${lev}x ${target.direction || 'LONG'} тестова позиция`,
+    created_at: nowIso,
+    hold_duration_days: target.duration_days || 0,
+    portfolio_type: 'PAPER'
+  };
+
+  if (!portfolioPaperData.journal) portfolioPaperData.journal = [];
+  portfolioPaperData.journal.unshift(journalItem);
+
+  portfolioPaperData.positions.splice(idx, 1);
+
+  try {
+    let saved = JSON.parse(localStorage.getItem('larsson_custom_paper_positions') || '[]');
+    saved = saved.filter(p => (p.position_id || p.id) !== posId);
+    localStorage.setItem('larsson_custom_paper_positions', JSON.stringify(saved));
+
+    const savedClosed = JSON.parse(localStorage.getItem('larsson_custom_paper_closed') || '[]');
+    savedClosed.unshift(journalItem);
+    localStorage.setItem('larsson_custom_paper_closed', JSON.stringify(savedClosed));
+  } catch(err) {
+    console.error('Storage error:', err);
+  }
+
+  renderPortfolioView();
+}
+
+// =============================================================================
+// ACTIVE LEVERAGE PROPOSALS BANNER CONTROLLER
+// =============================================================================
+
+function renderProposalsBanner(proposals) {
+  const banner = document.getElementById('proposalsBannerSection');
+  const grid = document.getElementById('proposalsCardsGrid');
+  const countBadge = document.getElementById('proposalsCount');
+  if (!banner || !grid) return;
+
+  const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+  const activeProposals = (proposals || []).filter(p => !resolved[p.proposal_id]);
+
+  if (activeProposals.length === 0) {
+    banner.style.display = 'none';
+    return;
+  }
+
+  banner.style.display = 'block';
+  if (countBadge) countBadge.textContent = `${activeProposals.length} Чакащи`;
+
+  grid.innerHTML = activeProposals.map(p => {
+    const isLong = (p.direction || 'LONG') === 'LONG';
+    const dirBadgeClass = isLong ? 'proposal-dir-badge long' : 'proposal-dir-badge short';
+    const dirText = isLong ? '🟢 LONG' : '🔴 SHORT';
+    const recLev = p.recommended_leverage || 1;
+    const maxLev = p.max_leverage || (p.asset_class === 'crypto' ? 3 : (['us_stocks', 'ai_stocks'].includes(p.asset_class) ? 2 : 1));
+
+    const entry = p.entry_price || 0;
+    const notional = p.position_size_usd || 1000;
+    const matrixRows = [1, 2, 3].filter(lev => lev <= Math.max(recLev, maxLev)).map(lev => {
+      const margin = notional / lev;
+      const liq = lev === 1 ? null : (isLong ? entry * (1.0 - 1.0/lev + 0.005) : entry * (1.0 + 1.0/lev - 0.005));
+      const distPct = liq ? (Math.abs(entry - liq) / entry * 100).toFixed(1) + '%' : '∞';
+      const isRec = (lev === recLev);
+      return `
+        <tr style="${isRec ? 'background: rgba(245, 158, 11, 0.12); font-weight: 700;' : ''}">
+          <td>${lev}x ${isRec ? '⭐' : ''}</td>
+          <td>$${formatShortPrice(margin)}</td>
+          <td>${liq ? '$' + formatShortPrice(liq) : '—'}</td>
+          <td>${distPct}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const actionBtns = `
+      <button class="btn-approve-1x" onclick="approveProposal('${p.proposal_id}', 1)">
+        ${isLong ? '🟢 Spot 1x' : '🟢 Hedge 1x'}
+      </button>
+      ${maxLev >= 2 ? `
+        <button class="btn-approve-2x" onclick="approveProposal('${p.proposal_id}', 2)">
+          ⚡ ${isLong ? 'Long' : 'Short'} 2x
+        </button>
+      ` : ''}
+      ${maxLev >= 3 ? `
+        <button class="btn-approve-3x" onclick="approveProposal('${p.proposal_id}', 3)">
+          🚀 ${isLong ? 'Long' : 'Short'} 3x
+        </button>
+      ` : ''}
+      <button class="btn-reject" onclick="rejectProposal('${p.proposal_id}')" title="Откажи предложението">
+        ✕
+      </button>
+    `;
+
+    return `
+      <div class="proposal-card" id="propCard_${p.proposal_id}">
+        <div class="proposal-card-header">
+          <div class="proposal-asset-info">
+            <span class="proposal-ticker">${p.ticker}</span>
+            <span class="${dirBadgeClass}">${dirText}</span>
+            <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class || 'Crypto'}</span>
+          </div>
+          <span class="setup-tier-badge">🏆 Tier ${p.tier || 'A'} (${p.score || 0}/100)</span>
+        </div>
+
+        <div class="proposal-metrics">
+          <div class="metric-item">
+            <span class="metric-lbl">Вход</span>
+            <span class="metric-val">$${formatShortPrice(p.entry_price)}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-lbl">Stop-Loss</span>
+            <span class="metric-val" style="color: #f87171;">$${formatShortPrice(p.stop_loss)}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-lbl">Take-Profit 1</span>
+            <span class="metric-val" style="color: #34d399;">$${formatShortPrice(p.tp1)}</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+          ${p.reason || 'Сигнал за вход по тренда.'}
+        </div>
+
+        <table class="proposal-matrix-mini">
+          <thead>
+            <tr>
+              <th>Lev</th>
+              <th>Маржин</th>
+              <th>Ликвидация</th>
+              <th>Буфер</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${matrixRows}
+          </tbody>
+        </table>
+
+        <div class="proposal-actions">
+          ${actionBtns}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function approveProposal(proposalId, leverage) {
+  const p = (pendingProposals || []).find(x => x.proposal_id === proposalId);
+  if (!p) return;
+
+  const isLong = (p.direction || 'LONG') === 'LONG';
+  const entry = p.entry_price || 0;
+  const notional = p.position_size_usd || 1000;
+  const margin = notional / leverage;
+  const liqPrice = leverage > 1 ? (isLong ? entry * (1.0 - 1.0/leverage + 0.005) : entry * (1.0 + 1.0/leverage - 0.005)) : null;
+  const units = p.units || (entry > 0 ? (notional / entry) : 1);
+
+  const newPos = {
+    position_id: `paper_prop_${p.ticker}_${Date.now()}`,
+    symbol: p.ticker,
+    direction: p.direction || 'LONG',
+    leverage: leverage,
+    entry_price: entry,
+    current_price: entry,
+    units: units,
+    position_size_usd: notional,
+    margin_usd: margin,
+    liquidation_price: liqPrice,
+    current_value: notional,
+    unrealized_pnl: 0.0,
+    unrealized_pnl_pct: 0.0,
+    stop_loss: p.stop_loss,
+    tp1: p.tp1,
+    tp2: p.tp2,
+    duration_days: 0,
+    opened_at: new Date().toISOString(),
+    tier: p.tier || 'A',
+    asset_class: p.asset_class || 'crypto',
+    portfolio_type: 'PAPER',
+    broker_exchange: `Paper ${leverage}x Isolated`,
+    notes: `Одобрено предложение ${p.proposal_id} (${leverage}x ${p.direction || 'LONG'})`
+  };
+
+  if (!portfolioPaperData.positions) portfolioPaperData.positions = [];
+  portfolioPaperData.positions.unshift(newPos);
+
+  const curCash = (portfolioPaperData.summary && portfolioPaperData.summary.available_cash) || 10000;
+  portfolioPaperData.summary.available_cash = Math.max(0, curCash - margin);
+  localStorage.setItem('larsson_custom_paper_cash', portfolioPaperData.summary.available_cash.toString());
+
+  try {
+    const saved = JSON.parse(localStorage.getItem('larsson_custom_paper_positions') || '[]');
+    saved.unshift(newPos);
+    localStorage.setItem('larsson_custom_paper_positions', JSON.stringify(saved));
+
+    const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+    resolved[proposalId] = { status: 'APPROVED', leverage: leverage, at: new Date().toISOString() };
+    localStorage.setItem('larsson_resolved_proposals', JSON.stringify(resolved));
+  } catch(err) {
+    console.error(err);
+  }
+
+  renderProposalsBanner(pendingProposals);
+  renderPortfolioView();
+  alert(`✅ Предложението за ${p.ticker} бе одобрено с ${leverage}x левъридж!\nМаржин депозит: $${margin.toFixed(2)}\nПозицията е отворена в симулатора.`);
+}
+
+function rejectProposal(proposalId) {
+  try {
+    const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+    resolved[proposalId] = { status: 'REJECTED', at: new Date().toISOString() };
+    localStorage.setItem('larsson_resolved_proposals', JSON.stringify(resolved));
+  } catch(err) {
+    console.error(err);
+  }
+  renderProposalsBanner(pendingProposals);
+}
+
 function syncLocalRealStorage() {
   try {
     const localPositions = JSON.parse(localStorage.getItem('larsson_custom_real_positions') || '[]');
@@ -1982,6 +2469,8 @@ function initPortfolioController() {
       e.preventDefault();
       const ticker = (document.getElementById('realTicker')?.value || '').trim().toUpperCase();
       const assetClass = document.getElementById('realAssetClass')?.value || 'crypto';
+      const direction = document.getElementById('realDirection')?.value || 'LONG';
+      const leverage = parseInt(document.getElementById('realLeverage')?.value || '1', 10);
       const broker = (document.getElementById('realBroker')?.value || 'Interactive Brokers').trim();
       const entryPrice = parseFloat(document.getElementById('realEntryPrice')?.value || 0);
       const units = parseFloat(document.getElementById('realUnits')?.value || 0);
@@ -1998,15 +2487,23 @@ function initPortfolioController() {
       const posId = `real_${ticker}_${Date.now()}`;
       const nowIso = new Date().toISOString();
       const posSize = entryPrice * units;
+      const marginUsd = posSize / leverage;
+      const isShort = (direction === 'SHORT');
+      const liqPrice = leverage > 1 
+        ? (isShort ? entryPrice * (1.0 + (1.0 / leverage) - 0.005) : entryPrice * (1.0 - (1.0 / leverage) + 0.005))
+        : null;
 
       const newPos = {
         position_id: posId,
         symbol: ticker,
-        direction: 'LONG',
+        direction: direction,
+        leverage: leverage,
         entry_price: entryPrice,
         current_price: entryPrice,
         units: units,
         position_size_usd: posSize,
+        margin_usd: marginUsd,
+        liquidation_price: liqPrice,
         current_value: posSize,
         unrealized_pnl: 0.0,
         unrealized_pnl_pct: 0.0,
@@ -2026,9 +2523,9 @@ function initPortfolioController() {
       if (!portfolioRealData.positions) portfolioRealData.positions = [];
       portfolioRealData.positions.unshift(newPos);
 
-      // Deduct from cash
+      // Deduct margin + fee from cash
       const curCash = (portfolioRealData.summary && portfolioRealData.summary.available_cash) || 0;
-      portfolioRealData.summary.available_cash = Math.max(0, curCash - (posSize + fee));
+      portfolioRealData.summary.available_cash = Math.max(0, curCash - (marginUsd + fee));
       localStorage.setItem('larsson_custom_real_cash', portfolioRealData.summary.available_cash.toString());
 
       // Save custom positions to localStorage
@@ -2044,13 +2541,13 @@ function initPortfolioController() {
       const journalEntry = {
         position_id: posId,
         ticker: ticker,
-        action: 'OPEN',
+        action: isShort ? 'SHORT' : 'OPEN',
         price: entryPrice,
         units: units,
         pnl_usd: 0.0,
         pnl_pct: 0.0,
         broker_exchange: broker,
-        reason: notes || `Real Buy on ${broker}`,
+        reason: notes || `Real ${leverage}x ${direction} on ${broker}`,
         created_at: nowIso,
         portfolio_type: 'REAL'
       };
@@ -2106,14 +2603,17 @@ function initPortfolioController() {
       const target = portfolioRealData.positions[idx];
       const entry = target.entry_price;
       const units = target.units;
-      const grossPnl = (exitPrice - entry) * units;
+      const isShort = (target.direction === 'SHORT');
+      const grossPnl = isShort ? (entry - exitPrice) * units : (exitPrice - entry) * units;
       const netPnl = grossPnl - fee;
-      const pnlPct = entry > 0 ? ((exitPrice - entry) / entry * 100) : 0;
+      const lev = target.leverage || 1;
+      const margin = target.margin_usd || ((entry * units) / lev);
+      const pnlPct = margin > 0 ? (netPnl / margin * 100) : 0;
       const nowIso = new Date().toISOString();
 
-      // Add proceeds to cash
+      // Return margin + netPnl to cash
       const curCash = (portfolioRealData.summary && portfolioRealData.summary.available_cash) || 0;
-      portfolioRealData.summary.available_cash = curCash + (units * exitPrice) - fee;
+      portfolioRealData.summary.available_cash = curCash + margin + netPnl;
       localStorage.setItem('larsson_custom_real_cash', portfolioRealData.summary.available_cash.toString());
 
       // Update realized stats
@@ -2129,7 +2629,7 @@ function initPortfolioController() {
       const journalItem = {
         position_id: posId,
         ticker: target.symbol,
-        action: 'CLOSE',
+        action: isShort ? 'COVER' : 'CLOSE',
         entry_price: entry,
         exit_price: exitPrice,
         price: exitPrice,
@@ -2137,7 +2637,7 @@ function initPortfolioController() {
         pnl_usd: netPnl,
         pnl_pct: pnlPct,
         broker_exchange: target.broker_exchange || 'Real Broker',
-        reason: notes || 'Ръчно затваряне на реална позиция',
+        reason: notes || `Ръчно затваряне на ${lev}x ${target.direction || 'LONG'} позиция`,
         created_at: nowIso,
         hold_duration_days: target.duration_days || 0,
         portfolio_type: 'REAL'
@@ -2251,16 +2751,25 @@ function renderPortfolioView() {
     const curP = pos.current_price || pos.entry_price || 0;
     const entryP = pos.entry_price || 0;
     const units = pos.units || 0;
-    const sizeUsd = pos.position_size_usd || (entryP * units);
-    const curVal = curP * units;
-    const uPnl = curVal - sizeUsd;
-    const uPct = sizeUsd > 0 ? (uPnl / sizeUsd * 100) : 0;
+    const dir = pos.direction || 'LONG';
+    const lev = pos.leverage || 1;
+    const isShort = (dir === 'SHORT');
+    const notional = pos.position_size_usd || (entryP * units);
+    const margin = pos.margin_usd || (notional / lev);
 
-    pos.current_value = curVal;
+    let uPnl = 0.0;
+    if (isShort) {
+      uPnl = (entryP - curP) * units;
+    } else {
+      uPnl = (curP - entryP) * units;
+    }
+    const uPct = margin > 0 ? (uPnl / margin * 100) : 0;
+
+    pos.current_value = notional;
     pos.unrealized_pnl = uPnl;
     pos.unrealized_pnl_pct = uPct;
 
-    totalInvested += sizeUsd;
+    totalInvested += margin;
     unrealizedPnl += uPnl;
   });
 
@@ -2331,10 +2840,10 @@ function renderPortfolioView() {
     if (positions.length === 0) {
       posBody.innerHTML = `
         <tr>
-          <td colspan="10" class="loading-state" style="padding: 30px; text-align: center;">
+          <td colspan="11" class="loading-state" style="padding: 30px; text-align: center;">
             ${isReal 
               ? '🟢 Няма отворени реални позиции. Натиснете <strong>"➕ Добави Реална Позиция"</strong>, за да регистрирате покупка от вашия брокер.'
-              : '🧪 Няма активни тестови позиции. Алгоритъмът изчаква нов A+ Quantamental сигнал за автоматичен симулиран вход.'}
+              : '🧪 Няма активни тестови позиции. Алгоритъмът изчаква ново A+ предложение или можете да отворите сделка от калкулатора.'}
           </td>
         </tr>
       `;
@@ -2345,10 +2854,28 @@ function renderPortfolioView() {
         const broker = p.broker_exchange || (isReal ? 'Manual / Broker' : 'Paper Engine');
         const brokerClass = isReal ? 'broker-pill' : 'broker-pill broker-pill-paper';
         const unitsFormatted = p.units < 1 ? p.units.toFixed(4) : p.units.toFixed(2);
-        const posValue = p.current_value || (p.current_price * p.units) || p.position_size_usd;
+        const dir = p.direction || 'LONG';
+        const lev = p.leverage || 1;
+        const isShort = (dir === 'SHORT');
+        const notional = p.position_size_usd || (p.entry_price * p.units);
+        const margin = p.margin_usd || (notional / lev);
+
+        let dirBadge = '';
+        if (!isShort) {
+          if (lev === 3) dirBadge = `<span class="badge-dir-long-3x">🚀 3x LONG</span>`;
+          else if (lev === 2) dirBadge = `<span class="badge-dir-long-2x">⚡ 2x LONG</span>`;
+          else dirBadge = `<span class="badge-dir-long-1x">🟢 1x SPOT</span>`;
+        } else {
+          if (lev >= 2) dirBadge = `<span class="badge-dir-short-2x">⚡ ${lev}x SHORT</span>`;
+          else dirBadge = `<span class="badge-dir-short-1x">🔴 1x HEDGE</span>`;
+        }
 
         const slText = p.stop_loss ? `$${formatShortPrice(p.stop_loss)}` : '<span style="color:var(--text-muted)">Няма</span>';
         const tpText = p.tp1 ? `$${formatShortPrice(p.tp1)}` : '<span style="color:var(--text-muted)">Няма</span>';
+        const liqP = p.liquidation_price || (lev > 1 ? (isShort ? p.entry_price * (1.0 + 1.0/lev - 0.005) : p.entry_price * (1.0 - 1.0/lev + 0.005)) : null);
+        const liqDisplay = liqP 
+          ? `<div style="font-size:0.75rem; color:#f87171;">Liq: $${formatShortPrice(liqP)}</div>`
+          : `<div style="font-size:0.7rem; color:#34d399;">🛡️ Без Liq</div>`;
 
         const actionBtns = isReal ? `
           <div style="display:flex; gap:6px;">
@@ -2360,16 +2887,24 @@ function renderPortfolioView() {
             </button>
           </div>
         ` : `
-          <button class="btn-table-action" onclick="openChartModal('${p.symbol}', '1D', '${p.asset_class}')">
-            📊 Графика
-          </button>
+          <div style="display:flex; gap:6px;">
+            <button class="btn-close-real-trade" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #f87171;" onclick="closePaperPosition('${p.position_id || p.id}', '${p.symbol}', ${p.current_price || p.entry_price}, ${p.units})">
+              🔴 Затвори
+            </button>
+            <button class="btn-table-action" onclick="openChartModal('${p.symbol}', '1D', '${p.asset_class}')" title="Графика">
+              📊
+            </button>
+          </div>
         `;
 
         return `
           <tr>
             <td>
               <div class="ticker-cell" style="cursor: pointer;" onclick="openChartModal('${p.symbol}', '1D', '${p.asset_class}')">
-                <span class="ticker-symbol">${p.symbol}</span>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span class="ticker-symbol">${p.symbol}</span>
+                  ${dirBadge}
+                </div>
                 <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class}</span>
               </div>
             </td>
@@ -2383,9 +2918,16 @@ function renderPortfolioView() {
             <td><strong>$${formatShortPrice(p.current_price)}</strong></td>
             <td>
               <div>${unitsFormatted} бр.</div>
-              <small style="color: var(--text-muted);">$${formatShortPrice(posValue)}</small>
+              <small style="color: var(--text-muted);">Ноц: $${formatShortPrice(notional)}</small>
             </td>
-            <td><strong style="color: #f87171;">${slText}</strong></td>
+            <td>
+              <strong style="color: #60a5fa;">$${formatShortPrice(margin)}</strong>
+              <div style="font-size: 0.7rem; color: var(--text-muted);">${(100 / lev).toFixed(0)}% Колатерал</div>
+            </td>
+            <td>
+              <strong style="color: #f87171;">${slText}</strong>
+              ${liqDisplay}
+            </td>
             <td><strong style="color: #34d399;">${tpText}</strong></td>
             <td>
               <strong style="color: ${uColor};">${uSign}$${(p.unrealized_pnl || 0).toFixed(2)}</strong>
@@ -2450,6 +2992,8 @@ function renderPortfolioView() {
 // TAB 4: ADVANCED INSTITUTIONAL TRADE CALCULATOR CONTROLLER
 // =============================================================================
 
+let pageCalcEventsBound = false;
+
 function initPageCalculator() {
   const capInput = document.getElementById('pageCalcCapital');
   const tickerInput = document.getElementById('pageCalcTicker');
@@ -2466,10 +3010,13 @@ function initPageCalculator() {
     const tier = tierSelect ? tierSelect.value : 'A';
     const tierMultiplier = { 'S': 1.0, 'A': 0.85, 'B': 0.6, 'C': 0.3 }[tier] || 0.85;
 
+    const isLong = (currentCalcDirection === 'LONG');
+    const leverage = currentCalcLeverage || 1;
+
     const entry = parseFloat(entryInput ? entryInput.value : 100) || 100;
-    let sl = parseFloat(slInput ? slInput.value : 95) || (entry * 0.95);
-    const tp1 = parseFloat(tp1Input ? tp1Input.value : 110) || 0;
-    const tp2 = parseFloat(tp2Input ? tp2Input.value : 120) || 0;
+    let sl = parseFloat(slInput ? slInput.value : (isLong ? 95 : 105)) || (isLong ? entry * 0.95 : entry * 1.05);
+    const tp1 = parseFloat(tp1Input ? tp1Input.value : (isLong ? 110 : 90)) || 0;
+    const tp2 = parseFloat(tp2Input ? tp2Input.value : (isLong ? 120 : 80)) || 0;
 
     const baseRiskUsd = capital * (riskPct / 100.0);
     const riskUsd = baseRiskUsd * tierMultiplier;
@@ -2477,26 +3024,61 @@ function initPageCalculator() {
 
     if (riskPerUnit > 0 && entry > 0) {
       const units = riskUsd / riskPerUnit;
-      const posValue = units * entry;
+      const notional = units * entry;
+      const margin = notional / leverage;
       const riskPctOfPrice = ((riskPerUnit / entry) * 100.0).toFixed(2);
 
-      const rr1 = tp1 > entry ? ((tp1 - entry) / riskPerUnit).toFixed(2) : '1.0';
-      const rr2 = tp2 > entry ? ((tp2 - entry) / riskPerUnit).toFixed(2) : null;
+      const rr1 = isLong 
+        ? (tp1 > entry ? ((tp1 - entry) / riskPerUnit).toFixed(2) : '1.0')
+        : (tp1 < entry ? ((entry - tp1) / riskPerUnit).toFixed(2) : '1.0');
+      const rr2 = isLong
+        ? (tp2 > entry ? ((tp2 - entry) / riskPerUnit).toFixed(2) : null)
+        : (tp2 < entry ? ((entry - tp2) / riskPerUnit).toFixed(2) : null);
 
-      const tp1Profit = tp1 > entry ? (units * 0.5 * (tp1 - entry)) : 0;
-      const tp2Profit = tp2 > entry ? (units * 0.5 * (tp2 - entry)) : 0;
+      const tp1Profit = isLong 
+        ? (tp1 > entry ? (units * 0.5 * (tp1 - entry)) : 0)
+        : (tp1 < entry ? (units * 0.5 * (entry - tp1)) : 0);
+      const tp2Profit = isLong
+        ? (tp2 > entry ? (units * 0.5 * (tp2 - entry)) : 0)
+        : (tp2 < entry ? (units * 0.5 * (entry - tp2)) : 0);
+
+      const liqPrice = leverage > 1 
+        ? (isLong ? entry * (1.0 - (1.0 / leverage) + 0.005) : entry * (1.0 + (1.0 / leverage) - 0.005))
+        : null;
+      const distPct = liqPrice ? (Math.abs(entry - liqPrice) / entry * 100) : null;
+      const isSafe = liqPrice ? (isLong ? sl > liqPrice : sl < liqPrice) : true;
 
       const unitsEl = document.getElementById('pageCalcUnits');
       if (unitsEl) unitsEl.textContent = `${units < 1 ? units.toFixed(4) : units.toFixed(2)} бр.`;
 
       const valEl = document.getElementById('pageCalcVal');
-      if (valEl) valEl.textContent = `Стойност: $${posValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (valEl) valEl.textContent = `Ноционал: $${notional.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      const marginEl = document.getElementById('pageCalcMarginUsd');
+      if (marginEl) marginEl.textContent = `$${margin.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      const marginSubEl = document.getElementById('pageCalcMarginSub');
+      if (marginSubEl) marginSubEl.textContent = `${leverage}x Isolated (${(100 / leverage).toFixed(1)}% колатерал)`;
 
       const riskUsdEl = document.getElementById('pageCalcRiskUsd');
       if (riskUsdEl) riskUsdEl.textContent = `-$${riskUsd.toFixed(2)}`;
 
       const riskPctEl = document.getElementById('pageCalcRiskPct');
-      if (riskPctEl) riskPctEl.textContent = `-${riskPctOfPrice}% от цената (Риск: ${riskPct}% * Tier ${tier})`;
+      if (riskPctEl) riskPctEl.textContent = `-${riskPctOfPrice}% от входа (Риск: ${riskPct}% * Tier ${tier})`;
+
+      const liqEl = document.getElementById('pageCalcLiqPrice');
+      if (liqEl) liqEl.textContent = liqPrice ? `$${formatShortPrice(liqPrice)}` : '— (Няма при 1x)';
+
+      const liqBufEl = document.getElementById('pageCalcLiqBuffer');
+      if (liqBufEl) {
+        if (!liqPrice) {
+          liqBufEl.innerHTML = `<span class="liq-safe-pill">Дистанция: ∞ (Без ликвидация при 1x)</span>`;
+        } else {
+          const pillClass = isSafe ? 'liq-safe-pill' : 'liq-danger-pill';
+          const pillIcon = isSafe ? '🛡️ SL пази преди Liq' : '⚠️ Внимание: SL е твърде близо до Liq!';
+          liqBufEl.innerHTML = `<span class="${pillClass}">Дистанция: ${distPct.toFixed(1)}% (${pillIcon})</span>`;
+        }
+      }
 
       const tp1ProfitEl = document.getElementById('pageCalcTp1Profit');
       if (tp1ProfitEl) tp1ProfitEl.textContent = `+$${tp1Profit.toFixed(2)}`;
@@ -2507,14 +3089,42 @@ function initPageCalculator() {
       const rrBadge = document.getElementById('pageCalcRrBadge');
       if (rrBadge) rrBadge.textContent = `R:R 1:${rr1}${rr2 ? ` (TP2 1:${rr2})` : ''}`;
 
+      // Render Comparative Matrix Table (1x vs 2x vs 3x)
+      const matrixBody = document.getElementById('pageCalcMatrixBody');
+      if (matrixBody) {
+        matrixBody.innerHTML = [1, 2, 3].map(lev => {
+          const mReq = notional / lev;
+          const mLiq = lev === 1 ? null : (isLong ? entry * (1.0 - 1.0/lev + 0.005) : entry * (1.0 + 1.0/lev - 0.005));
+          const mDist = mLiq ? (Math.abs(entry - mLiq) / entry * 100).toFixed(1) + '%' : '∞ (Няма)';
+          const mRiskPct = (riskUsd / mReq * 100).toFixed(1) + '%';
+          const mRoiTp1 = (tp1Profit / mReq * 100).toFixed(1) + '%';
+          const mRoiTp2 = ((tp1Profit + tp2Profit) / mReq * 100).toFixed(1) + '%';
+          const isActive = (lev === leverage);
+          const isLevSafe = mLiq ? (isLong ? sl > mLiq : sl < mLiq) : true;
+
+          return `
+            <tr class="${isActive ? 'active-lev-row' : ''}">
+              <td><strong>${lev}x ${lev === 1 ? (isLong ? 'Spot' : 'Hedge') : 'Isolated'}</strong> ${isActive ? '👉' : ''}</td>
+              <td><strong style="color: #60a5fa;">$${formatShortPrice(mReq)}</strong></td>
+              <td>$${formatShortPrice(notional)}</td>
+              <td>-$${riskUsd.toFixed(2)} (${mRiskPct})</td>
+              <td><strong style="color: ${mLiq ? '#f87171' : '#34d399'};">${mLiq ? '$' + formatShortPrice(mLiq) : '—'}</strong></td>
+              <td><span class="${isLevSafe ? 'liq-safe-pill' : 'liq-danger-pill'}">${mDist}</span></td>
+              <td><strong style="color: #34d399;">+${mRoiTp1}</strong></td>
+              <td><strong style="color: #34d399;">+${mRoiTp2}</strong></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
       const dca1 = document.getElementById('pageDcaStep1');
-      if (dca1) dca1.textContent = `Пазарен вход на $${entry.toFixed(2)} (${(units * 0.5).toFixed(2)} бр. = $${(posValue * 0.5).toFixed(2)})`;
+      if (dca1) dca1.textContent = `Пазарен вход на $${entry.toFixed(2)} (${(units * 0.5).toFixed(2)} бр. = $${(notional * 0.5).toFixed(2)})`;
 
       const dca2 = document.getElementById('pageDcaStep2');
-      if (dca2) dca2.textContent = `Лимитна поръчка на S1 подкрепа (${(units * 0.5).toFixed(2)} бр. = $${(posValue * 0.5).toFixed(2)})`;
+      if (dca2) dca2.textContent = `Лимитна поръчка на S1 подкрепа (${(units * 0.5).toFixed(2)} бр. = $${(notional * 0.5).toFixed(2)})`;
 
       // Compound growth calculations
-      const monthlyReturnPct = 0.04; // conservative ~4% monthly expectancy
+      const monthlyReturnPct = 0.04;
       const m3 = capital * Math.pow(1 + monthlyReturnPct, 3);
       const m6 = capital * Math.pow(1 + monthlyReturnPct, 6);
       const m12 = capital * Math.pow(1 + monthlyReturnPct, 12);
@@ -2528,22 +3138,168 @@ function initPageCalculator() {
     }
   };
 
-  [capInput, tickerInput, tierSelect, entryInput, slInput, tp1Input, tp2Input].forEach(el => {
-    if (el) el.addEventListener('input', recalc);
-  });
+  if (!pageCalcEventsBound) {
+    pageCalcEventsBound = true;
 
-  document.querySelectorAll('#pageRiskPresets .preset-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('#pageRiskPresets .preset-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      recalc();
+    [capInput, tickerInput, tierSelect, entryInput, slInput, tp1Input, tp2Input].forEach(el => {
+      if (el) el.addEventListener('input', recalc);
     });
-  });
+
+    document.querySelectorAll('#pageRiskPresets .preset-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#pageRiskPresets .preset-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        recalc();
+      });
+    });
+
+    document.querySelectorAll('#pageCalcDirectionGroup .dir-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#pageCalcDirectionGroup .dir-toggle-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCalcDirection = e.target.dataset.dir;
+
+        // Auto adjust SL/TP defaults if they were on opposite side
+        const entry = parseFloat(entryInput ? entryInput.value : 100) || 100;
+        if (currentCalcDirection === 'SHORT') {
+          if (slInput && parseFloat(slInput.value) < entry) slInput.value = (entry * 1.05).toFixed(2);
+          if (tp1Input && parseFloat(tp1Input.value) > entry) tp1Input.value = (entry * 0.90).toFixed(2);
+          if (tp2Input && parseFloat(tp2Input.value) > entry) tp2Input.value = (entry * 0.80).toFixed(2);
+        } else {
+          if (slInput && parseFloat(slInput.value) > entry) slInput.value = (entry * 0.95).toFixed(2);
+          if (tp1Input && parseFloat(tp1Input.value) < entry) tp1Input.value = (entry * 1.10).toFixed(2);
+          if (tp2Input && parseFloat(tp2Input.value) < entry) tp2Input.value = (entry * 1.20).toFixed(2);
+        }
+        recalc();
+      });
+    });
+
+    document.querySelectorAll('#pageCalcLeverageGroup .lev-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('#pageCalcLeverageGroup .lev-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentCalcLeverage = parseInt(e.target.dataset.lev, 10);
+        recalc();
+      });
+    });
+
+    // Execution Buttons
+    const execPaperBtn = document.getElementById('btnPageExecPaper');
+    if (execPaperBtn) {
+      execPaperBtn.addEventListener('click', () => {
+        const ticker = (tickerInput ? tickerInput.value : 'NVDA').trim().toUpperCase();
+        const entry = parseFloat(entryInput ? entryInput.value : 100) || 100;
+        const sl = parseFloat(slInput ? slInput.value : 95) || 95;
+        const tp1 = parseFloat(tp1Input ? tp1Input.value : 110) || 110;
+        const tp2 = parseFloat(tp2Input ? tp2Input.value : 120) || 120;
+        const tier = tierSelect ? tierSelect.value : 'A';
+        const direction = currentCalcDirection;
+        const leverage = currentCalcLeverage;
+        const capital = parseFloat(capInput ? capInput.value : 10000) || 10000;
+        const activeRiskBtn = document.querySelector('#pageRiskPresets .preset-btn.active');
+        const riskPct = activeRiskBtn ? parseFloat(activeRiskBtn.dataset.risk) : 1.0;
+        const tierMultiplier = { 'S': 1.0, 'A': 0.85, 'B': 0.6, 'C': 0.3 }[tier] || 0.85;
+        const riskUsd = capital * (riskPct / 100.0) * tierMultiplier;
+        const riskPerUnit = Math.abs(entry - sl);
+        const units = riskPerUnit > 0 ? (riskUsd / riskPerUnit) : 1;
+        const notional = units * entry;
+        const margin = notional / leverage;
+        const isLong = (direction === 'LONG');
+        const liqPrice = leverage > 1 
+          ? (isLong ? entry * (1.0 - 1.0/leverage + 0.005) : entry * (1.0 + 1.0/leverage - 0.005))
+          : null;
+
+        const newPos = {
+          position_id: `paper_calc_${ticker}_${Date.now()}`,
+          symbol: ticker,
+          direction: direction,
+          leverage: leverage,
+          entry_price: entry,
+          current_price: entry,
+          units: units,
+          position_size_usd: notional,
+          margin_usd: margin,
+          liquidation_price: liqPrice,
+          current_value: notional,
+          unrealized_pnl: 0.0,
+          unrealized_pnl_pct: 0.0,
+          stop_loss: sl,
+          tp1: tp1,
+          tp2: tp2,
+          duration_days: 0,
+          opened_at: new Date().toISOString(),
+          tier: tier,
+          asset_class: 'us_stocks',
+          portfolio_type: 'PAPER',
+          broker_exchange: `Calculator ${leverage}x Isolated`,
+          notes: `Ръчно въведена позиция от Калкулатора (${leverage}x ${direction})`
+        };
+
+        if (!portfolioPaperData.positions) portfolioPaperData.positions = [];
+        portfolioPaperData.positions.unshift(newPos);
+
+        const curCash = (portfolioPaperData.summary && portfolioPaperData.summary.available_cash) || 10000;
+        portfolioPaperData.summary.available_cash = Math.max(0, curCash - margin);
+        localStorage.setItem('larsson_custom_paper_cash', portfolioPaperData.summary.available_cash.toString());
+
+        try {
+          const saved = JSON.parse(localStorage.getItem('larsson_custom_paper_positions') || '[]');
+          saved.unshift(newPos);
+          localStorage.setItem('larsson_custom_paper_positions', JSON.stringify(saved));
+        } catch(err) {
+          console.error(err);
+        }
+
+        switchTab('portfolio');
+        switchPortfolioMode('PAPER');
+        alert(`🧪 Позицията ${ticker} (${leverage}x ${direction}, Маржин депозит: $${margin.toFixed(2)}) бе записана в симулатора!`);
+      });
+    }
+
+    const execRealBtn = document.getElementById('btnPageExecReal');
+    if (execRealBtn) {
+      execRealBtn.addEventListener('click', () => {
+        const ticker = (tickerInput ? tickerInput.value : 'NVDA').trim().toUpperCase();
+        const entry = parseFloat(entryInput ? entryInput.value : 100) || 100;
+        const sl = parseFloat(slInput ? slInput.value : 95) || 95;
+        const tp1 = parseFloat(tp1Input ? tp1Input.value : 110) || 110;
+        const capital = parseFloat(capInput ? capInput.value : 10000) || 10000;
+        const activeRiskBtn = document.querySelector('#pageRiskPresets .preset-btn.active');
+        const riskPct = activeRiskBtn ? parseFloat(activeRiskBtn.dataset.risk) : 1.0;
+        const tier = tierSelect ? tierSelect.value : 'A';
+        const tierMultiplier = { 'S': 1.0, 'A': 0.85, 'B': 0.6, 'C': 0.3 }[tier] || 0.85;
+        const riskUsd = capital * (riskPct / 100.0) * tierMultiplier;
+        const riskPerUnit = Math.abs(entry - sl);
+        const units = riskPerUnit > 0 ? (riskUsd / riskPerUnit) : 1;
+
+        switchTab('portfolio');
+        switchPortfolioMode('REAL');
+        const modal = document.getElementById('addRealModal');
+        if (modal) {
+          modal.style.display = 'flex';
+          const t = document.getElementById('realTicker');
+          const e = document.getElementById('realEntryPrice');
+          const u = document.getElementById('realUnits');
+          const d = document.getElementById('realDirection');
+          const l = document.getElementById('realLeverage');
+          const s = document.getElementById('realSl');
+          const p = document.getElementById('realTp1');
+          if (t) t.value = ticker;
+          if (e) e.value = entry;
+          if (u) u.value = units < 1 ? units.toFixed(4) : units.toFixed(2);
+          if (d) d.value = currentCalcDirection;
+          if (l) l.value = currentCalcLeverage.toString();
+          if (s) s.value = sl;
+          if (p) p.value = tp1;
+        }
+      });
+    }
+  }
 
   recalc();
 }
 
-function quickFillCalculator(ticker, entry, sl, tp1, tp2, tier) {
+function quickFillCalculator(ticker, entry, sl, tp1, tp2, tier, direction, leverage) {
   switchTab('calculator');
   const tInput = document.getElementById('pageCalcTicker');
   if (tInput) tInput.value = ticker;
@@ -2557,6 +3313,19 @@ function quickFillCalculator(ticker, entry, sl, tp1, tp2, tier) {
   if (p2Input && tp2) p2Input.value = tp2;
   const tierSel = document.getElementById('pageCalcTier');
   if (tierSel && tier) tierSel.value = tier;
+
+  if (direction) {
+    currentCalcDirection = direction;
+    document.querySelectorAll('#pageCalcDirectionGroup .dir-toggle-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.dir === direction);
+    });
+  }
+  if (leverage) {
+    currentCalcLeverage = leverage;
+    document.querySelectorAll('#pageCalcLeverageGroup .lev-btn').forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.lev, 10) === leverage);
+    });
+  }
 
   initPageCalculator();
 }

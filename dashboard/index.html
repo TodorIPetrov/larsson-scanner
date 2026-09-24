@@ -26,6 +26,23 @@
       </div>
     </header>
 
+    <!-- Active Leverage Trade Proposals Banner -->
+    <section class="proposals-banner-section" id="proposalsBannerSection" style="display: none;">
+      <div class="proposals-banner-header">
+        <div class="proposals-title-group">
+          <span class="live-pulse-dot"></span>
+          <h2>⚡ АКТИВНИ ПРЕДЛОЖЕНИЯ С ЛЕВЪРИДЖ (Интерактивно Одобрение)</h2>
+        </div>
+        <span class="badge badge-gold" id="proposalsCountBadge">0 Предложения</span>
+      </div>
+      <p class="proposals-banner-subtitle">
+        Системата генерира институционални предложения при потвърден пробив или тест на подкрепа/съпротива. Изберете желаното ниво на експозиция (1x Spot, 2x или 3x Изолиран маржин):
+      </p>
+      <div class="proposals-cards-grid" id="proposalsCardsGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
     <!-- Master Navigation Tabs -->
     <nav class="main-nav-tabs" id="mainNavTabs">
       <button class="nav-tab-btn active" data-tab="scanner">
@@ -169,6 +186,7 @@
             <button class="quick-pill" data-ticker="SOLUSDT" data-tf="1D" data-class="crypto">🪙 SOL</button>
             <button class="quick-pill" data-ticker="NVDA" data-tf="1D" data-class="ai_stocks">🤖 NVDA</button>
             <button class="quick-pill" data-ticker="MSTR" data-tf="1D" data-class="crypto_stocks">⚡ MSTR</button>
+            <button class="quick-pill" data-ticker="NAKA" data-tf="1D" data-class="crypto_stocks">⚡ NAKA</button>
             <button class="quick-pill" data-ticker="GC=F" data-tf="1D" data-class="commodities">⛏️ GOLD</button>
           </div>
 
@@ -369,13 +387,14 @@
           <table class="assets-table">
             <thead>
               <tr>
-                <th>Актив</th>
+                <th>Актив &amp; Посока</th>
                 <th>Клас &amp; Tier</th>
                 <th>Брокер / Борса</th>
                 <th>Входна Цена</th>
                 <th>Текуща Цена</th>
-                <th>Количество &amp; Стойност</th>
-                <th>Stop-Loss</th>
+                <th>Количество &amp; Ноционал</th>
+                <th>Маржин (Collateral)</th>
+                <th>SL &amp; Ликвидация</th>
                 <th>Take-Profit</th>
                 <th>Нереализиран P&amp;L</th>
                 <th>Действия</th>
@@ -383,7 +402,7 @@
             </thead>
             <tbody id="portPositionsBody">
               <tr>
-                <td colspan="10" class="loading-state">Няма активни позиции в момента.</td>
+                <td colspan="11" class="loading-state">Няма активни позиции в момента.</td>
               </tr>
             </tbody>
           </table>
@@ -430,7 +449,7 @@
         <div class="calc-input-panel">
           <div class="calc-panel-header">
             <h3>🧮 Параметри на Сделката</h3>
-            <span class="calc-badge">Institutional 1% Risk</span>
+            <span class="calc-badge">Institutional 1% Risk &bull; Smart Leverage</span>
           </div>
 
           <div class="calc-form-grid">
@@ -446,6 +465,23 @@
                 <button type="button" class="preset-btn active" data-risk="1.0">1.0%</button>
                 <button type="button" class="preset-btn" data-risk="2.0">2.0%</button>
                 <button type="button" class="preset-btn" data-risk="3.0">3.0%</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Посока на Позицията (Direction)</label>
+              <div class="direction-toggle-group" id="pageCalcDirectionGroup">
+                <button type="button" class="dir-toggle-btn active" data-dir="LONG">🟢 LONG (Spot / Buy)</button>
+                <button type="button" class="dir-toggle-btn" data-dir="SHORT">🔴 SHORT (Hedge / Sell)</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Левъридж (Isolated Margin)</label>
+              <div class="leverage-selector-group" id="pageCalcLeverageGroup">
+                <button type="button" class="lev-btn active" data-lev="1">1x Spot / Hedge</button>
+                <button type="button" class="lev-btn" data-lev="2">2x Левъридж</button>
+                <button type="button" class="lev-btn" data-lev="3">3x Левъридж</button>
               </div>
             </div>
 
@@ -496,13 +532,25 @@
             <div class="calc-out-card">
               <span class="calc-out-label">Препоръчан Обем:</span>
               <strong class="calc-out-value highlight-val" id="pageCalcUnits">16.66 бр.</strong>
-              <span class="calc-out-sub" id="pageCalcVal">Стойност: $2,000.00</span>
+              <span class="calc-out-sub" id="pageCalcVal">Ноционал: $2,000.00</span>
+            </div>
+
+            <div class="calc-out-card">
+              <span class="calc-out-label">Необходим Маржин (Margin):</span>
+              <strong class="calc-out-value text-accent" id="pageCalcMarginUsd">$2,000.00</strong>
+              <span class="calc-out-sub" id="pageCalcMarginSub">Колатерал (100% при 1x)</span>
             </div>
 
             <div class="calc-out-card">
               <span class="calc-out-label">Максимален Риск (SL):</span>
               <strong class="calc-out-value danger-val" id="pageCalcRiskUsd">-$100.00</strong>
               <span class="calc-out-sub" id="pageCalcRiskPct">-5.00% от цената</span>
+            </div>
+
+            <div class="calc-out-card">
+              <span class="calc-out-label">Ликвидационна Цена (Liq):</span>
+              <strong class="calc-out-value danger-val" id="pageCalcLiqPrice">— (Няма при 1x)</strong>
+              <span class="calc-out-sub" id="pageCalcLiqBuffer">Дистанция: — (Безопасно)</span>
             </div>
 
             <div class="calc-out-card">
@@ -514,8 +562,45 @@
             <div class="calc-out-card">
               <span class="calc-out-label">Печалба при TP2 (остатък):</span>
               <strong class="calc-out-value success-val" id="pageCalcTp2Profit">+$208.33</strong>
-              <span class="calc-out-sub">Обща възможна печалба: +$308.33</span>
+              <span class="calc-out-sub">Обща печалба: +$308.33</span>
             </div>
+          </div>
+
+          <!-- Comparative Leverage Matrix Card -->
+          <div class="calc-matrix-card">
+            <div class="calc-matrix-header">
+              <h4>⚖️ Сравнителна Матрица: 1x Spot / Hedge срещу 2x &amp; 3x Isolated Margin</h4>
+              <span class="calc-matrix-tag">Smart Leverage Multiplier</span>
+            </div>
+            <div class="calc-matrix-table-wrap">
+              <table class="calc-matrix-table" id="pageCalcMatrixTable">
+                <thead>
+                  <tr>
+                    <th>Левъридж</th>
+                    <th>Маржин (Депозит)</th>
+                    <th>Ноционален Размер</th>
+                    <th>Риск при SL ($ / %)</th>
+                    <th>Ликвидационна Цена</th>
+                    <th>Буфер до Ликвидация</th>
+                    <th>ROI при TP1 (50%)</th>
+                    <th>ROI при TP2 (Пълен)</th>
+                  </tr>
+                </thead>
+                <tbody id="pageCalcMatrixBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Direct Execution Actions -->
+          <div class="calc-actions-strip">
+            <button type="button" class="btn btn-exec-paper" id="btnPageExecPaper">
+              🧪 Отвори в Paper Симулатора
+            </button>
+            <button type="button" class="btn btn-exec-real" id="btnPageExecReal">
+              🟢 Запиши в Реално Портфолио
+            </button>
           </div>
 
           <!-- Staggered DCA Plan Card -->
@@ -661,6 +746,11 @@
           <div class="setup-reason-box" id="modalSetupReason">
             Pullback to major support S1 in bullish trend.
           </div>
+
+          <!-- ⚡ Leverage Matrix Strip in Synth Banner -->
+          <div class="modal-lev-matrix-strip" id="modalLevMatrixStrip">
+            <!-- Populated dynamically by JS -->
+          </div>
         </div>
 
         <!-- 4. Dual-Pillar Analysis HUD: Technical vs Fundamental -->
@@ -722,13 +812,29 @@
               </div>
               <input type="number" id="calcRiskPct" value="1.0" min="0.1" max="10.0" step="0.1" style="width: 65px;">
             </div>
+            <div class="pos-input-group">
+              <label>Leverage:</label>
+              <div class="modal-lev-btn-group" id="modalCalcLevGroup">
+                <button type="button" class="modal-lev-btn active" data-lev="1">1x Spot</button>
+                <button type="button" class="modal-lev-btn" data-lev="2">2x</button>
+                <button type="button" class="modal-lev-btn" data-lev="3">3x</button>
+              </div>
+            </div>
             <div class="pos-result-box">
-              <span class="lbl">Shares / Coins to Buy</span>
+              <span class="lbl">Units / Shares</span>
               <strong id="calcUnits">0</strong>
             </div>
             <div class="pos-result-box">
-              <span class="lbl">Total Position Value</span>
+              <span class="lbl">Total Notional</span>
               <strong id="calcPosValue">$0.00</strong>
+            </div>
+            <div class="pos-result-box">
+              <span class="lbl">Isolated Margin</span>
+              <strong class="text-accent" id="calcMarginUsd">$0.00</strong>
+            </div>
+            <div class="pos-result-box">
+              <span class="lbl">Liquidation Price</span>
+              <strong class="text-danger" id="calcLiqPrice">—</strong>
             </div>
             <div class="pos-result-box">
               <span class="lbl">Max Risk (SL Loss)</span>
@@ -738,6 +844,14 @@
               <span class="lbl">Target Profit (TP1)</span>
               <strong class="text-success" id="calcTp1Usd">+$0.00</strong>
             </div>
+          </div>
+          <div class="modal-calc-actions-strip">
+            <button type="button" class="btn btn-exec-paper btn-sm" id="btnModalExecPaper">
+              🧪 Добави в Paper Симулатора
+            </button>
+            <button type="button" class="btn btn-exec-real btn-sm" id="btnModalExecReal">
+              🟢 Запиши в Реално Портфолио
+            </button>
           </div>
         </div>
 
@@ -779,6 +893,21 @@
                 <option value="intl_stocks">🌍 Europe &amp; Global</option>
                 <option value="commodities">⛏️ Commodities</option>
                 <option value="indices">📈 Indices</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="realDirection">Посока (Direction) *</label>
+              <select id="realDirection">
+                <option value="LONG" selected>🟢 LONG (Spot / Buy)</option>
+                <option value="SHORT">🔴 SHORT (Hedge / Sell)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="realLeverage">Левъридж (Leverage) *</label>
+              <select id="realLeverage">
+                <option value="1" selected>1x (Spot / Collateral 100%)</option>
+                <option value="2">2x Isolated Margin (50% Collateral)</option>
+                <option value="3">3x Isolated Margin (33.3% Collateral)</option>
               </select>
             </div>
             <div class="form-group">
