@@ -22,6 +22,7 @@ from src.engine.smma import compute_larsson_series, LarssonState
 from src.engine.sr_levels import analyze_sr_levels
 from src.engine.setup_monitor import SetupMonitor
 from src.engine.asset_profiles import get_quality_tier
+from src.engine.btc_relative import BTCRelativeStrengthAnalyzer
 from src.storage.database import Database
 from src.trading.paper_trader import PaperTrader
 
@@ -49,6 +50,11 @@ class LarssonScanner:
         self.tv_mapping = self._load_json(tv_mapping_path)
         self.paper_trader = paper_trader or PaperTrader(db=self.db, notifier=self.notifier, config=self.config)
         self.setup_monitor = SetupMonitor()
+        self.btc_analyzer = BTCRelativeStrengthAnalyzer()
+        self._btc_crypto_cache = None
+        self._btc_crypto_cache_time = 0.0
+        self._btc_stock_cache = None
+        self._btc_stock_cache_time = 0.0
 
     def _load_yaml(self, path: str) -> dict:
         data = {}
@@ -88,6 +94,38 @@ class LarssonScanner:
         elif asset_class in ["us_stocks", "intl_stocks", "ai_stocks"]:
             return f"NASDAQ:{ticker}"
         return ticker
+
+    def _get_btc_crypto_candles(self, timeframe: str = "1D") -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Retrieves and caches daily Bitcoin benchmark candles from Binance."""
+        now = time.time()
+        if self._btc_crypto_cache and (now - self._btc_crypto_cache_time) < 300:
+            return self._btc_crypto_cache
+        try:
+            min_warmup = self.config.get("scanner", {}).get("min_warmup_candles", 160)
+            data = self.binance_fetcher.fetch_klines("BTCUSDT", timeframe, limit=min_warmup)
+            if data:
+                self._btc_crypto_cache = data
+                self._btc_crypto_cache_time = now
+                return data
+        except Exception as e:
+            logger.debug(f"Failed to fetch Binance BTC benchmark: {e}")
+        return None
+
+    def _get_btc_stock_candles(self, timeframe: str = "1D") -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Retrieves and caches Bitcoin benchmark candles aligned with stock market calendar."""
+        now = time.time()
+        if self._btc_stock_cache and (now - self._btc_stock_cache_time) < 300:
+            return self._btc_stock_cache
+        try:
+            batch = self.yf_fetcher.fetch_batch(["BTC-USD"], timeframe=timeframe)
+            if batch and "BTC-USD" in batch:
+                self._btc_stock_cache = batch["BTC-USD"]
+                self._btc_stock_cache_time = now
+                return self._btc_stock_cache
+        except Exception as e:
+            logger.debug(f"Failed to fetch YFinance BTC-USD benchmark: {e}")
+        # Fallback to Binance BTC
+        return self._get_btc_crypto_candles(timeframe)
 
     def _resolve_sr_analysis(
         self,
@@ -187,6 +225,7 @@ class LarssonScanner:
         v2: float,
         sr_data: Optional[dict],
         asset_class: str = "crypto",
+        btc_relative: Optional[object] = None,
     ) -> Optional[dict]:
         try:
             from src.engine.trade_suggestions import generate_trade_suggestion
@@ -234,6 +273,7 @@ class LarssonScanner:
                 fund_profile=fund_profile,
                 ticker=ticker,
                 asset_class=asset_class,
+                btc_relative=btc_relative,
             )
 
             self.db.upsert_trade_suggestion(
@@ -265,6 +305,14 @@ class LarssonScanner:
                 fund_thesis_bg=suggestion.fund_thesis_bg,
                 synthesis_badge_bg=suggestion.synthesis_badge_bg,
                 synthesis_label_bg=suggestion.synthesis_label_bg,
+                btc_ratio_state=suggestion.btc_ratio_state,
+                btc_alpha_30d=suggestion.btc_alpha_30d,
+                btc_alpha_7d=suggestion.btc_alpha_7d,
+                btc_ratio_spread=suggestion.btc_ratio_spread,
+                btc_verdict=suggestion.btc_verdict,
+                btc_badge_bg=suggestion.btc_badge_bg,
+                btc_thesis_bg=suggestion.btc_thesis_bg,
+                btc_leverage_allowed=1 if suggestion.btc_leverage_allowed else 0,
             )
             return suggestion.to_dict()
         except Exception as e:
@@ -366,6 +414,10 @@ class LarssonScanner:
         }
 
         min_warmup = self.config.get("scanner", {}).get("min_warmup_candles", 160)
+        btc_candles = self._get_btc_crypto_candles(timeframe)
+        btc_h = btc_candles[0][:-1] if btc_candles and len(btc_candles[0]) > 1 else None
+        btc_l = btc_candles[1][:-1] if btc_candles and len(btc_candles[1]) > 1 else None
+        btc_c = btc_candles[2][:-1] if btc_candles and len(btc_candles[2]) > 1 else None
 
         for sym in symbols:
             try:
@@ -421,6 +473,20 @@ class LarssonScanner:
                     price=float(latest_price),
                 )
 
+                # Compute BTC Relative Strength (Asset / BTC Ratio)
+                btc_rel = None
+                if sym != "BTCUSDT" and btc_c is not None and len(btc_c) >= 30:
+                    btc_rel = self.btc_analyzer.compute_relative_strength(
+                        ticker=sym,
+                        asset_class="crypto",
+                        asset_highs=highs,
+                        asset_lows=lows,
+                        asset_closes=closes,
+                        btc_highs=btc_h,
+                        btc_lows=btc_l,
+                        btc_closes=btc_c,
+                    )
+
                 # Evaluate and record Trade Suggestion
                 trade_suggestion = self._evaluate_and_persist_trade_suggestion(
                     ticker=sym,
@@ -432,6 +498,8 @@ class LarssonScanner:
                     m2=float(m2[-1]),
                     v2=float(v2[-1]),
                     sr_data=sr_data,
+                    asset_class="crypto",
+                    btc_relative=btc_rel,
                 )
 
                 self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
@@ -555,6 +623,12 @@ class LarssonScanner:
 
         batch_data = self.yf_fetcher.fetch_batch(tickers, timeframe=timeframe)
 
+        # Pre-fetch BTC benchmark for crypto_stocks relative strength analysis
+        btc_bench = self._get_btc_stock_candles(timeframe) if asset_class == "crypto_stocks" else None
+        btc_h = btc_bench[0] if btc_bench else None
+        btc_l = btc_bench[1] if btc_bench else None
+        btc_c = btc_bench[2] if btc_bench else None
+
         for sym in tickers:
             try:
                 if sym not in batch_data:
@@ -601,6 +675,20 @@ class LarssonScanner:
                     price=float(latest_price),
                 )
 
+                # Compute BTC Relative Strength for crypto stocks (e.g. NAKA, MSTR, COIN)
+                btc_rel = None
+                if asset_class == "crypto_stocks" and btc_c is not None and len(btc_c) >= 30:
+                    btc_rel = self.btc_analyzer.compute_relative_strength(
+                        ticker=sym,
+                        asset_class="crypto_stocks",
+                        asset_highs=highs,
+                        asset_lows=lows,
+                        asset_closes=closes,
+                        btc_highs=btc_h,
+                        btc_lows=btc_l,
+                        btc_closes=btc_c,
+                    )
+
                 # Evaluate and record Trade Suggestion
                 trade_suggestion = self._evaluate_and_persist_trade_suggestion(
                     ticker=sym,
@@ -613,6 +701,7 @@ class LarssonScanner:
                     v2=float(v2[-1]),
                     sr_data=sr_data,
                     asset_class=asset_class,
+                    btc_relative=btc_rel,
                 )
 
                 self.db.upsert_symbols([(sym, asset_class, tv_symbol)])

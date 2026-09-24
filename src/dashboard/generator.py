@@ -394,6 +394,31 @@ def export_dashboard_data(
             "leverage_matrix": _clean_dict_floats(lev_matrix),
         }
 
+        # BTC Relative Strength Block (for crypto and crypto_stocks)
+        btc_ratio_state = _row_val(r, "ts_btc_ratio_state", "NA")
+        btc_alpha_30d = _clean_float(_row_val(r, "ts_btc_alpha_30d"))
+        btc_alpha_7d = _clean_float(_row_val(r, "ts_btc_alpha_7d"))
+        btc_ratio_spread = _clean_float(_row_val(r, "ts_btc_ratio_spread"))
+        btc_verdict = _row_val(r, "ts_btc_verdict")
+        btc_badge_bg = _row_val(r, "ts_btc_badge_bg")
+        btc_thesis_bg = _row_val(r, "ts_btc_thesis_bg")
+        btc_leverage_allowed = bool(_row_val(r, "ts_btc_leverage_allowed", 1))
+
+        btc_relative_block = None
+        if r["asset_class"] in ["crypto", "crypto_stocks"]:
+            sign = "+" if (btc_alpha_30d or 0) >= 0 else ""
+            btc_relative_block = {
+                "ratio_state": btc_ratio_state,
+                "alpha_30d_pct": btc_alpha_30d,
+                "alpha_7d_pct": btc_alpha_7d,
+                "ratio_spread_pct": btc_ratio_spread,
+                "verdict": btc_verdict or "NA",
+                "badge_bg": btc_badge_bg or (f"₿ {sign}{btc_alpha_30d:.1f}% vs BTC" if btc_alpha_30d is not None else "₿ vs BTC"),
+                "thesis_bg": btc_thesis_bg or "",
+                "leverage_allowed": btc_leverage_allowed,
+            }
+            trade_suggestion_dict["btc_relative"] = btc_relative_block
+
         # Quality Tier
         asset_tier = get_quality_tier(ticker)
         tier_emoji = get_tier_emoji(asset_tier)
@@ -423,6 +448,7 @@ def export_dashboard_data(
             "fundamental": fund_data,
             "synthesis": synthesis_block,
             "trade_suggestion": trade_suggestion_dict,
+            "btc_relative": btc_relative_block,
             "quality_tier": asset_tier,
             "tier_emoji": tier_emoji,
             "last_change": r["last_state_change"],

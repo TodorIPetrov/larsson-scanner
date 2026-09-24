@@ -47,6 +47,15 @@ class TradeSuggestion:
     fund_thesis_bg: str = ""
     synthesis_badge_bg: str = "⏳ WAIT"
     synthesis_label_bg: str = ""
+    # BTC Relative Strength fields
+    btc_ratio_state: str = "NA"  # 'GOLD', 'BLUE', 'NEUTRAL', 'NA'
+    btc_alpha_30d: Optional[float] = None
+    btc_alpha_7d: Optional[float] = None
+    btc_ratio_spread: Optional[float] = None
+    btc_verdict: Optional[str] = None
+    btc_badge_bg: Optional[str] = None
+    btc_thesis_bg: Optional[str] = None
+    btc_leverage_allowed: bool = True
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -192,10 +201,11 @@ def calculate_confluence_score(
     spread_expanding: bool,
     rr_ratio: Optional[float],
     fund_profile: Optional[object] = None,
+    btc_relative: Optional[object] = None,
 ) -> Tuple[int, str]:
     """
     Calculates institutional confluence score (0 - 100) and assigns a quality tier.
-    Enriched with fundamental valuation metrics (MoS, Moat, Altman Z).
+    Enriched with fundamental valuation metrics (MoS, Moat, Altman Z) and BTC Relative Alpha.
     """
     score = 40  # baseline for valid directional setup
 
@@ -232,6 +242,15 @@ def calculate_confluence_score(
         elif is_bearish:
             score -= 25
 
+    # BTC Relative Strength adjustments (Alpha vs Bitcoin Benchmark)
+    if btc_relative:
+        r_state = getattr(btc_relative, "ratio_state", "NA")
+        alpha_30 = getattr(btc_relative, "alpha_30d_pct", 0.0)
+        if r_state == "GOLD":
+            score += 15 if alpha_30 >= 5.0 else 8
+        elif r_state == "BLUE":
+            score -= 20 if alpha_30 <= -5.0 else 10
+
     score = max(0, min(100, score))
 
     if score >= 85:
@@ -254,8 +273,9 @@ def _enrich_trade_suggestion(
     r1: Optional[float],
     current_price: float,
     fund_profile: Optional[object],
+    btc_relative: Optional[object] = None,
 ) -> TradeSuggestion:
-    """Enriches a TradeSuggestion with clear, distinct technical and fundamental fields."""
+    """Enriches a TradeSuggestion with clear, distinct technical, fundamental, and BTC relative fields."""
     # 1. Technical Analysis Recommendation & Details
     if state == "GOLD":
         if s.action == "SPOT_BUY":
@@ -357,6 +377,26 @@ def _enrich_trade_suggestion(
         s.synthesis_badge_bg = "⏳ WAIT"
         s.synthesis_label_bg = "Изчакване на качествена структура за вход"
 
+    # 4. BTC Relative Strength Enrichment & Leverage Gating
+    if btc_relative:
+        s.btc_ratio_state = getattr(btc_relative, "ratio_state", "NA")
+        s.btc_alpha_30d = getattr(btc_relative, "alpha_30d_pct", None)
+        s.btc_alpha_7d = getattr(btc_relative, "alpha_7d_pct", None)
+        s.btc_ratio_spread = getattr(btc_relative, "ratio_spread_pct", None)
+        s.btc_verdict = getattr(btc_relative, "verdict", None)
+        s.btc_badge_bg = getattr(btc_relative, "badge_bg", None)
+        s.btc_thesis_bg = getattr(btc_relative, "thesis_bg", None)
+        s.btc_leverage_allowed = getattr(btc_relative, "leverage_allowed", True)
+
+        if not s.btc_leverage_allowed:
+            s.max_leverage = 1
+            s.recommended_leverage = 1
+            if "Изостава от BTC" not in s.reason_bg and s.btc_alpha_30d is not None:
+                s.reason_bg = f"{s.reason_bg} ⚠️ Изостава от BTC ({s.btc_alpha_30d:+.1f}% за 30д): Левъриджът е блокиран на 1x Spot."
+        elif s.btc_ratio_state == "GOLD":
+            if "Водещ актив спрямо BTC" not in s.reason_bg and s.btc_alpha_30d is not None:
+                s.reason_bg = f"{s.reason_bg} 🚀 Водещ актив спрямо BTC (+{s.btc_alpha_30d:.1f}% Alpha): Потвърден възходящ тренд."
+
     return s
 
 
@@ -385,6 +425,7 @@ def _raw_generate_trade_suggestion(
     fund_profile: Optional[object] = None,
     ticker: Optional[str] = None,
     asset_class: str = "crypto",
+    btc_relative: Optional[object] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion.
@@ -509,6 +550,7 @@ def _raw_generate_trade_suggestion(
                 spread_expanding=spread_expanding,
                 rr_ratio=rr,
                 fund_profile=fund_profile,
+                btc_relative=btc_relative,
             )
 
             if is_bearish:
@@ -597,6 +639,7 @@ def _raw_generate_trade_suggestion(
                     spread_expanding=spread_expanding,
                     rr_ratio=rr,
                     fund_profile=fund_profile,
+                    btc_relative=btc_relative,
                 )
 
                 s1_desc = f"${s1:,.2f}" if s1 else "лентата"
@@ -783,6 +826,7 @@ def generate_trade_suggestion(
     fund_profile: Optional[object] = None,
     ticker: Optional[str] = None,
     asset_class: str = "crypto",
+    btc_relative: Optional[object] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion,
@@ -813,6 +857,7 @@ def generate_trade_suggestion(
         fund_profile=fund_profile,
         ticker=ticker,
         asset_class=asset_class,
+        btc_relative=btc_relative,
     )
     return _enrich_trade_suggestion(
         raw_s,
@@ -822,6 +867,7 @@ def generate_trade_suggestion(
         r1=r1,
         current_price=current_price,
         fund_profile=fund_profile,
+        btc_relative=btc_relative,
     )
 
 

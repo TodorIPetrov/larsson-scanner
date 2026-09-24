@@ -200,6 +200,14 @@ class Database:
                 ("fund_thesis_bg", "TEXT"),
                 ("synthesis_badge_bg", "TEXT"),
                 ("synthesis_label_bg", "TEXT"),
+                ("btc_ratio_state", "TEXT DEFAULT 'NA'"),
+                ("btc_alpha_30d", "REAL"),
+                ("btc_alpha_7d", "REAL"),
+                ("btc_ratio_spread", "REAL"),
+                ("btc_verdict", "TEXT"),
+                ("btc_badge_bg", "TEXT"),
+                ("btc_thesis_bg", "TEXT"),
+                ("btc_leverage_allowed", "INTEGER DEFAULT 1"),
             ]:
                 if col_name not in existing_cols:
                     cur.execute(f"ALTER TABLE symbol_trade_suggestions ADD COLUMN {col_name} {col_type}")
@@ -518,7 +526,11 @@ class Database:
                    ts.quantamental_tag AS ts_quantamental_tag,
                    ts.tech_action AS ts_tech_action, ts.tech_label_bg AS ts_tech_label_bg, ts.tech_thesis_bg AS ts_tech_thesis_bg,
                    ts.fund_action AS ts_fund_action, ts.fund_label_bg AS ts_fund_label_bg, ts.fund_thesis_bg AS ts_fund_thesis_bg,
-                   ts.synthesis_badge_bg AS ts_synthesis_badge_bg, ts.synthesis_label_bg AS ts_synthesis_label_bg
+                   ts.synthesis_badge_bg AS ts_synthesis_badge_bg, ts.synthesis_label_bg AS ts_synthesis_label_bg,
+                   ts.btc_ratio_state AS ts_btc_ratio_state, ts.btc_alpha_30d AS ts_btc_alpha_30d,
+                   ts.btc_alpha_7d AS ts_btc_alpha_7d, ts.btc_ratio_spread AS ts_btc_ratio_spread,
+                   ts.btc_verdict AS ts_btc_verdict, ts.btc_badge_bg AS ts_btc_badge_bg,
+                   ts.btc_thesis_bg AS ts_btc_thesis_bg, ts.btc_leverage_allowed AS ts_btc_leverage_allowed
             FROM symbols s
             JOIN symbol_states st ON s.ticker = st.ticker
             LEFT JOIN symbol_sr_levels sr ON s.ticker = sr.ticker 
@@ -763,6 +775,14 @@ class Database:
         fund_thesis_bg: str = "",
         synthesis_badge_bg: str = "⏳ WAIT",
         synthesis_label_bg: str = "",
+        btc_ratio_state: str = "NA",
+        btc_alpha_30d: Optional[float] = None,
+        btc_alpha_7d: Optional[float] = None,
+        btc_ratio_spread: Optional[float] = None,
+        btc_verdict: Optional[str] = None,
+        btc_badge_bg: Optional[str] = None,
+        btc_thesis_bg: Optional[str] = None,
+        btc_leverage_allowed: int = 1,
         now_iso: Optional[str] = None,
     ):
         """Inserts or updates a trade suggestion for a symbol and timeframe."""
@@ -778,8 +798,10 @@ class Database:
              fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag,
              tech_action, tech_label_bg, tech_thesis_bg,
              fund_action, fund_label_bg, fund_thesis_bg,
-             synthesis_badge_bg, synthesis_label_bg, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             synthesis_badge_bg, synthesis_label_bg,
+             btc_ratio_state, btc_alpha_30d, btc_alpha_7d, btc_ratio_spread,
+             btc_verdict, btc_badge_bg, btc_thesis_bg, btc_leverage_allowed, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(ticker, timeframe) DO UPDATE SET
                 action = excluded.action,
                 direction = excluded.direction,
@@ -807,6 +829,14 @@ class Database:
                 fund_thesis_bg = excluded.fund_thesis_bg,
                 synthesis_badge_bg = excluded.synthesis_badge_bg,
                 synthesis_label_bg = excluded.synthesis_label_bg,
+                btc_ratio_state = excluded.btc_ratio_state,
+                btc_alpha_30d = excluded.btc_alpha_30d,
+                btc_alpha_7d = excluded.btc_alpha_7d,
+                btc_ratio_spread = excluded.btc_ratio_spread,
+                btc_verdict = excluded.btc_verdict,
+                btc_badge_bg = excluded.btc_badge_bg,
+                btc_thesis_bg = excluded.btc_thesis_bg,
+                btc_leverage_allowed = excluded.btc_leverage_allowed,
                 updated_at = excluded.updated_at;
             """, (
                 ticker, timeframe, action, direction, setup_type, entry_price, stop_loss,
@@ -814,7 +844,9 @@ class Database:
                 fund_verdict, fair_value, mos_pct, moat, z_score, quantamental_tag,
                 tech_action, tech_label_bg, tech_thesis_bg,
                 fund_action, fund_label_bg, fund_thesis_bg,
-                synthesis_badge_bg, synthesis_label_bg, now_iso
+                synthesis_badge_bg, synthesis_label_bg,
+                btc_ratio_state, btc_alpha_30d, btc_alpha_7d, btc_ratio_spread,
+                btc_verdict, btc_badge_bg, btc_thesis_bg, btc_leverage_allowed, now_iso
             ))
 
     def get_trade_suggestion(self, ticker: str, timeframe: str) -> Optional[sqlite3.Row]:
