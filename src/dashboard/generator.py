@@ -196,6 +196,31 @@ def export_dashboard_data(
         s1_dist = _clean_float(_row_val(r, "s1_dist_pct"))
         r1_val = _clean_float(_row_val(r, "r1"))
         r1_dist = _clean_float(_row_val(r, "r1_dist_pct"))
+        # Determine Recent Gold Flip status (Fresh 1-5 bar breakout / early expansion)
+        is_gold_flip = False
+        gold_flip_bars = None
+        last_chg = r["last_state_change"]
+        if state == "GOLD" and last_chg:
+            try:
+                lc_dt = datetime.fromisoformat(last_chg.replace("Z", "+00:00"))
+                now_dt = datetime.now(timezone.utc)
+                age_hours = (now_dt - lc_dt).total_seconds() / 3600.0
+                tf = r["timeframe"]
+                s_pct = spread_pct if spread_pct is not None else 999.0
+                if tf == "4H":
+                    bars_est = max(1, int(round(age_hours / 4.0)))
+                    is_gold_flip = (age_hours <= 28.0 or bars_est <= 5) and (0.0 <= s_pct <= 7.5)
+                    gold_flip_bars = bars_est if is_gold_flip else None
+                elif tf == "1D":
+                    bars_est = max(1, int(round(age_hours / 24.0)))
+                    is_gold_flip = (age_hours <= 72.0 or bars_est <= 4) and (0.0 <= s_pct <= 7.5)
+                    gold_flip_bars = bars_est if is_gold_flip else None
+                elif tf == "1W":
+                    bars_est = max(1, int(round(age_hours / 168.0)))
+                    is_gold_flip = (age_hours <= 168.0 or bars_est <= 2) and (0.0 <= s_pct <= 7.5)
+                    gold_flip_bars = bars_est if is_gold_flip else None
+            except Exception:
+                pass
 
         technical_block = {
             "state": state,
@@ -209,6 +234,8 @@ def export_dashboard_data(
             "r1": r1_val,
             "r1_dist_pct": r1_dist,
             "r1_touches": _row_val(r, "r1_touches", 0),
+            "is_gold_flip": is_gold_flip,
+            "gold_flip_bars": gold_flip_bars,
         }
 
         # ---------------------------------------------------------------------
@@ -451,6 +478,8 @@ def export_dashboard_data(
             "btc_relative": btc_relative_block,
             "quality_tier": asset_tier,
             "tier_emoji": tier_emoji,
+            "is_gold_flip": is_gold_flip,
+            "gold_flip_bars": gold_flip_bars,
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
         })

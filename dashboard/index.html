@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260924_17">
+  <link rel="stylesheet" href="style.css?v=20260924_18">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -22,18 +22,26 @@
       </div>
       <div class="header-right">
         <div class="last-updated" id="lastUpdated">Updated: Just now</div>
+        <button class="btn btn-action-analyze" id="btnRunNewAnalysis" title="Стартирай нов пазарен анализ за генериране на търговски предложения (1x Spot, 2x, 3x)">
+          <span class="analyze-icon">⚡</span> Нов Анализ (Сделки)
+        </button>
         <button class="btn btn-refresh" id="refreshBtn" title="Reload data">↻ Refresh</button>
       </div>
     </header>
 
     <!-- Active Leverage Trade Proposals Banner -->
-    <section class="proposals-banner-section" id="proposalsBannerSection" style="display: none;">
+    <section class="proposals-banner-section" id="proposalsBannerSection">
       <div class="proposals-banner-header">
         <div class="proposals-title-group">
           <span class="live-pulse-dot"></span>
           <h2>⚡ АКТИВНИ ПРЕДЛОЖЕНИЯ С ЛЕВЪРИДЖ (Интерактивно Одобрение)</h2>
         </div>
-        <span class="badge badge-gold" id="proposalsCountBadge">0 Предложения</span>
+        <div class="proposals-header-actions" style="display: flex; gap: 10px; align-items: center;">
+          <button class="btn btn-analyze-banner" id="btnBannerAnalyze" title="Сканирай пазара за нови предложения">
+            <span class="analyze-icon">⚡</span> Нов Анализ
+          </button>
+          <span class="badge badge-gold" id="proposalsCountBadge">0 Предложения</span>
+        </div>
       </div>
       <p class="proposals-banner-subtitle">
         Системата генерира институционални предложения при потвърден пробив или тест на подкрепа/съпротива. Изберете желаното ниво на експозиция (1x Spot, 2x или 3x Изолиран маржин):
@@ -134,9 +142,10 @@
             <span class="filter-badge-lbl filter-lbl-tech">📐 Техника:</span>
             <button class="filter-btn active" data-tech="ALL">Всички</button>
             <button class="filter-btn filter-gold" data-tech="GOLD">🟡 Gold</button>
+            <button class="filter-btn filter-gold-flip" data-tech="RECENT_GOLD_FLIP" title="Свеж пробив в Gold Ribbon (1-5 бара) - перфектен за вход">✨ Пресен Gold Flip</button>
             <button class="filter-btn filter-blue" data-tech="BLUE">🔵 Blue</button>
             <button class="filter-btn filter-cyan" data-tech="BUY">🟢 Tech Buy</button>
-            <button class="filter-btn" data-tech="EXIT">🔴 Tech Exit</button>
+            <button class="filter-btn filter-ruby" data-tech="EXIT">🔴 Tech Exit</button>
           </div>
 
           <div class="filter-group" id="fundFilters">
@@ -1057,8 +1066,9 @@
         </form>
       </div>
     </div>
-  </div>
+  <!-- Global Analysis Feedback Toast -->
+  <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20260924_17"></script>
+  <script src="app.js?v=20260924_18"></script>
 </body>
 </html>

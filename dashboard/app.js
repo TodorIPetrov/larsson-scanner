@@ -507,6 +507,29 @@ function calculateSearchScore(item, rawQuery, variants, tokens) {
   return score;
 }
 
+function isRecentGoldFlip(item) {
+  if (item.state !== 'GOLD') return false;
+  if (item.is_gold_flip !== undefined) return Boolean(item.is_gold_flip);
+  if (item.technical && item.technical.is_gold_flip !== undefined) return Boolean(item.technical.is_gold_flip);
+
+  // Dynamic fallback evaluation from last_change timestamp
+  if (item.last_change) {
+    const diffHours = (Date.now() - new Date(item.last_change).getTime()) / (1000 * 3600);
+    const tf = item.timeframe || '1D';
+    const sPct = item.spread_pct !== null && item.spread_pct !== undefined ? item.spread_pct : 999;
+    if (tf === '4H' && (diffHours <= 28 || (sPct >= 0 && sPct <= 7.5))) return true;
+    if (tf === '1D' && (diffHours <= 72 || (sPct >= 0 && sPct <= 7.5))) return true;
+    if (tf === '1W' && (diffHours <= 168 || (sPct >= 0 && sPct <= 7.5))) return true;
+  }
+  return (item.spread_pct !== null && item.spread_pct >= 0 && item.spread_pct <= 6.0);
+}
+
+function renderGoldFlipBadge(item) {
+  if (!isRecentGoldFlip(item)) return '';
+  const barsTxt = (item.gold_flip_bars || (item.technical && item.technical.gold_flip_bars)) ? ` ${item.gold_flip_bars || item.technical.gold_flip_bars}б` : '';
+  return `<span class="badge-gold-flip" title="Пресен пробив в Gold Ribbon (${barsTxt ? barsTxt.trim() + ' назад' : '1-5 бара'}). Ранна входна фаза на разширение!">✨ GOLD FLIP${barsTxt}</span>`;
+}
+
 function getFilteredSymbols() {
   const q = currentSearch.toLowerCase().trim();
   const qNorm = normalizeSearchStr(q);
@@ -547,6 +570,8 @@ function getFilteredSymbols() {
     let matchesTech = true;
     if (currentTechFilter === 'GOLD') {
       matchesTech = item.state === 'GOLD';
+    } else if (currentTechFilter === 'RECENT_GOLD_FLIP') {
+      matchesTech = isRecentGoldFlip(item);
     } else if (currentTechFilter === 'BLUE') {
       matchesTech = item.state === 'BLUE';
     } else if (currentTechFilter === 'BUY') {
@@ -801,6 +826,7 @@ function renderTable(filteredSymbols) {
               <span class="tv-badge">TV ↗</span>
             </a>
             <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
+            ${renderGoldFlipBadge(item)}
             ${renderBtcBadge(item.btc_relative)}
           </div>
         </td>
@@ -875,6 +901,7 @@ function renderCards(filteredSymbols) {
           <div class="card-badges">
             <span class="class-badge class-${item.asset_class}">${classLabel}</span>
             <span class="tf-badge">${item.timeframe}</span>
+            ${renderGoldFlipBadge(item)}
             ${renderBtcBadge(item.btc_relative)}
           </div>
         </div>
@@ -2720,7 +2747,20 @@ function renderProposalsBanner(proposals) {
   let activeProposals = (proposals || []).filter(p => !resolved[p.proposal_id]);
 
   if (activeProposals.length === 0) {
-    banner.style.display = 'none';
+    banner.style.display = 'block';
+    if (countBadge) countBadge.textContent = '0 Чакащи';
+    grid.innerHTML = `
+      <div class="proposal-empty-card" style="grid-column: 1/-1; text-align: center; padding: 32px 20px; background: rgba(15, 23, 42, 0.55); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 12px;">
+        <div style="font-size: 2.2rem; margin-bottom: 8px;">⚡</div>
+        <h3 style="font-size: 1.1rem; color: #f1f5f9; margin-bottom: 6px;">Няма активни търговски предложения в момента</h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 580px; margin: 0 auto 16px auto; line-height: 1.5;">
+          Системата следи непрекъснато пазара за пресни сигнали от <b>Larsson Gold Flip</b>, <b>Quantamental Alpha</b> и <b>BTC Relative Strength</b>. Натиснете бутона по-долу, за да стартирате нов анализ за предложения (1x Spot, 2x или 3x левъридж).
+        </p>
+        <button class="btn btn-action-analyze" onclick="runNewTradeAnalysis()" style="display: inline-flex; align-items: center; gap: 8px; margin: 0 auto; cursor: pointer;">
+          <span class="analyze-icon">⚡</span> Стартирай Анализ за Нови Сделки
+        </button>
+      </div>
+    `;
     return;
   }
 
@@ -2734,6 +2774,15 @@ function renderProposalsBanner(proposals) {
     });
     if (matching.length > 0) {
       activeProposals = matching;
+    } else {
+      banner.style.display = 'block';
+      if (countBadge) countBadge.textContent = '0 Намерени';
+      grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 24px; color: var(--text-muted); background: rgba(15, 23, 42, 0.4); border-radius: 8px; border: 1px dashed var(--border-color);">
+          Няма активни предложения, отговарящи на филтъра за търсене "<b>${escapeHtml(currentSearch)}</b>".
+        </div>
+      `;
+      return;
     }
   }
 
@@ -2917,6 +2966,251 @@ function rejectProposal(proposalId) {
     console.error(err);
   }
   renderProposalsBanner(pendingProposals);
+}
+
+// =============================================================================
+// ON-DEMAND MARKET ANALYSIS & TRADE PROPOSALS CONTROLLER
+// =============================================================================
+
+let analysisToastTimeout = null;
+
+function showAnalysisToast(message, type = 'info', duration = 4500) {
+  const toast = document.getElementById('analysisToast');
+  if (!toast) return;
+
+  if (analysisToastTimeout) {
+    clearTimeout(analysisToastTimeout);
+    analysisToastTimeout = null;
+  }
+
+  toast.className = `analysis-toast toast-${type}`;
+  const icon = type === 'loading' ? '<span class="analyze-icon spinning" style="font-size: 1.1rem; margin-right: 6px;">⚡</span>' : '';
+  const closeBtn = type !== 'loading' ? '<span class="toast-close" onclick="this.parentElement.style.display=\'none\'" style="cursor:pointer; margin-left:14px; opacity:0.8; font-weight:bold; font-size:1.1rem;">✕</span>' : '';
+  
+  toast.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+      <span class="toast-content" style="display: flex; align-items: center;">${icon}${message}</span>
+      ${closeBtn}
+    </div>
+  `;
+  toast.style.display = 'flex';
+
+  if (duration > 0) {
+    analysisToastTimeout = setTimeout(() => {
+      toast.style.display = 'none';
+      analysisToastTimeout = null;
+    }, duration);
+  }
+}
+
+function synthesizeClientProposals() {
+  if (!allSymbols || allSymbols.length === 0) return 0;
+
+  // Filter high-conviction bullish candidates
+  const candidates = allSymbols.filter(s => {
+    if (!s.price || s.price <= 0) return false;
+    const isGold = s.state === 'GOLD';
+    const isFlip = isRecentGoldFlip(s);
+    const hasBuySignal = (s.trade_suggestion && s.trade_suggestion.action === 'SPOT_BUY') ||
+                         (s.technical && (s.technical.action === 'BUY' || s.technical.action === 'ACCUMULATE')) ||
+                         (s.synthesis && (s.synthesis.action === 'SPOT_BUY' || (s.synthesis.setup_type && s.synthesis.setup_type.includes('BUY'))));
+    return (isFlip || (isGold && hasBuySignal));
+  });
+
+  // Sort by quantamental rank + gold flip bonus
+  candidates.sort((a, b) => {
+    const scoreA = getQuantamentalSetupRank(a) + (isRecentGoldFlip(a) ? 1500 : 0);
+    const scoreB = getQuantamentalSetupRank(b) + (isRecentGoldFlip(b) ? 1500 : 0);
+    return scoreB - scoreA;
+  });
+
+  const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+  const existingTickers = new Set((pendingProposals || []).filter(p => !resolved[p.proposal_id]).map(p => p.ticker));
+
+  let topCandidates = candidates.filter(c => !existingTickers.has(c.ticker)).slice(0, 6);
+  if (topCandidates.length === 0 && candidates.length > 0) {
+    topCandidates = candidates.slice(0, 4);
+  }
+
+  let addedCount = 0;
+  const newProposals = [];
+
+  topCandidates.forEach((s, idx) => {
+    const isCrypto = s.asset_class === 'crypto';
+    const isStock = ['us_stocks', 'ai_stocks'].includes(s.asset_class);
+    const btcRel = s.btc_relative;
+    const isBtcBleeding = isCrypto && btcRel && !btcRel.leverage_allowed;
+
+    let maxLev = 1;
+    let recLev = 1;
+
+    if (isCrypto) {
+      if (isBtcBleeding) {
+        maxLev = 1;
+        recLev = 1;
+      } else {
+        maxLev = 3;
+        recLev = 2;
+      }
+    } else if (isStock) {
+      maxLev = 2;
+      recLev = 2;
+    }
+
+    const entry = s.price;
+    const sl = s.s1 ? Math.min(s.s1 * 0.985, entry * 0.95) : entry * 0.94;
+    const tp1 = s.r1 ? Math.max(s.r1, entry * 1.08) : entry * 1.10;
+    const tp2 = s.r1 ? s.r1 * 1.10 : entry * 1.20;
+    const notional = isCrypto ? 1000 : 500;
+    const units = entry > 0 ? (notional / entry) : 1;
+    const tier = (s.fundamental && s.fundamental.moat === 'Wide') ? 'S' : (s.tier || 'A');
+
+    let reason = '';
+    if (isRecentGoldFlip(s)) {
+      reason = `✨ Пресен Gold Flip пробив (${s.gold_flip_bars || 1}б назад). Ранна фаза на разширение по тренда с висок моментум.`;
+    } else if (s.trade_suggestion && s.trade_suggestion.thesis) {
+      reason = s.trade_suggestion.thesis;
+    } else if (s.synthesis && s.synthesis.narrative) {
+      reason = s.synthesis.narrative;
+    } else {
+      reason = `🟢 Бичи трендов импулс с чиста подкрепа на $${formatShortPrice(sl)} и цел $${formatShortPrice(tp1)}.`;
+    }
+
+    const propId = `prop_gen_${s.ticker}_${Date.now()}_${idx}`;
+
+    const propObj = {
+      id: Date.now() + idx,
+      proposal_id: propId,
+      ticker: s.ticker,
+      name: s.name || s.ticker,
+      timeframe: s.timeframe || '1D',
+      action: 'BUY',
+      direction: 'LONG',
+      status: 'PENDING',
+      asset_class: s.asset_class || 'crypto',
+      entry_price: entry,
+      stop_loss: Number(sl.toFixed(entry < 1 ? 4 : 2)),
+      tp1: Number(tp1.toFixed(entry < 1 ? 4 : 2)),
+      tp2: Number(tp2.toFixed(entry < 1 ? 4 : 2)),
+      position_size_usd: notional,
+      units: Number(units.toFixed(units < 1 ? 4 : 2)),
+      risk_usd: Number((Math.abs(entry - sl) * units).toFixed(2)),
+      tier: tier,
+      score: isRecentGoldFlip(s) ? 94 : 88,
+      reason: reason,
+      recommended_leverage: recLev,
+      max_leverage: maxLev,
+      btc_relative: btcRel || null,
+      created_at: new Date().toISOString()
+    };
+
+    newProposals.push(propObj);
+    addedCount++;
+  });
+
+  if (newProposals.length > 0) {
+    pendingProposals = [...newProposals, ...(pendingProposals || [])];
+  }
+  return addedCount;
+}
+
+let isAnalyzingTrades = false;
+
+async function runNewTradeAnalysis() {
+  if (isAnalyzingTrades) return;
+  isAnalyzingTrades = true;
+
+  const btnHeader = document.getElementById('btnRunNewAnalysis');
+  const btnBanner = document.getElementById('btnBannerAnalyze');
+
+  const setButtonsLoading = (loading) => {
+    [btnHeader, btnBanner].forEach(btn => {
+      if (!btn) return;
+      btn.disabled = loading;
+      const icon = btn.querySelector('.analyze-icon');
+      if (icon) {
+        if (loading) icon.classList.add('spinning');
+        else icon.classList.remove('spinning');
+      }
+    });
+  };
+
+  setButtonsLoading(true);
+  showAnalysisToast('⚡ Стартиране на нов пазарен анализ за търговски предложения...', 'loading', 0);
+
+  try {
+    let apiSuccess = false;
+    let apiMsg = '';
+    let fetchedCount = 0;
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch('/api/scan', { 
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) {
+          apiSuccess = true;
+          fetchedCount = json.proposals_count || 0;
+          apiMsg = json.message || `Открити са ${fetchedCount} активни предложения за търговия!`;
+        }
+      }
+    } catch(err) {
+      console.warn('Backend API /api/scan not reachable, using local quantamental synthesis fallback:', err);
+    }
+
+    if (apiSuccess) {
+      await loadDashboardData();
+      showAnalysisToast(`✅ ${apiMsg}`, 'success', 5000);
+    } else {
+      // Local browser-side synthesis fallback
+      const createdCount = synthesizeClientProposals();
+      renderProposalsBanner(pendingProposals);
+      renderOverview();
+      const totalActive = (pendingProposals || []).length;
+      showAnalysisToast(`✅ Анализът завърши! Генерирани са ${createdCount} нови предложения (Общо активни: ${totalActive}) на база пресен Gold Flip и Quantamental Alpha.`, 'success', 5500);
+    }
+
+    // Scroll smoothly to proposals section
+    const banner = document.getElementById('proposalsBannerSection');
+    if (banner) {
+      banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch(err) {
+    console.error('Error during trade analysis:', err);
+    showAnalysisToast(`⚠️ Грешка при стартиране на анализ: ${err.message}`, 'error', 5000);
+  } finally {
+    isAnalyzingTrades = false;
+    setButtonsLoading(false);
+  }
+}
+
+// Attach event listeners to analysis buttons
+document.addEventListener('DOMContentLoaded', () => {
+  const btnRunNew = document.getElementById('btnRunNewAnalysis');
+  if (btnRunNew) {
+    btnRunNew.addEventListener('click', runNewTradeAnalysis);
+  }
+  const btnBanner = document.getElementById('btnBannerAnalyze');
+  if (btnBanner) {
+    btnBanner.addEventListener('click', runNewTradeAnalysis);
+  }
+});
+
+// Also immediately attach in case DOM is already ready
+const btnRunNewImmediate = document.getElementById('btnRunNewAnalysis');
+if (btnRunNewImmediate) {
+  btnRunNewImmediate.addEventListener('click', runNewTradeAnalysis);
+}
+const btnBannerImmediate = document.getElementById('btnBannerAnalyze');
+if (btnBannerImmediate) {
+  btnBannerImmediate.addEventListener('click', runNewTradeAnalysis);
 }
 
 function syncLocalRealStorage() {
