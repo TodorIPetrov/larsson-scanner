@@ -341,7 +341,22 @@ async function checkServerStatus() {
       throw new Error(`HTTP ${res.status}`);
     }
   } catch (err) {
+    const isCloud = window.location.hostname.includes('github.io') || 
+                   (window.location.protocol === 'https:' && !window.location.port);
+    if (isCloud && isDataLoaded && allSymbols.length > 0) {
+      serverHealth.isOnline = true;
+      serverHealth.isCloud = true;
+      serverHealth.symbolsInDb = allSymbols.length;
+      serverHealth.dbHealthy = true;
+      serverHealth.dataJsonExists = true;
+      serverHealth.lastPollTime = new Date();
+      updateSystemHealthBadge();
+      updateDiagnosticsModalUI();
+      return;
+    }
+
     serverHealth.isOnline = false;
+    serverHealth.isCloud = false;
     dot.className = 'status-indicator-dot offline';
     text.textContent = '🔴 Няма връзка със сървъра';
     badge.title = 'Сървърът на localhost:8080 не отговаря. Уверете се, че server.py е стартиран.';
@@ -371,6 +386,10 @@ function updateSystemHealthBadge() {
       dot.className = 'status-indicator-dot filtered';
       text.textContent = `🟡 ${filteredCount} от ${totalCount} (Филтриран)`;
       badge.title = `Има активни филтри: показват се ${filteredCount} от общо ${totalCount} инструмента. Кликнете за диагностика.`;
+    } else if (serverHealth.isCloud) {
+      dot.className = 'status-indicator-dot online';
+      text.textContent = `☁️ Облачен Скенер (${totalCount} актива)`;
+      badge.title = `Работи на живо в GitHub Pages. Автономно сканиране на ${totalCount} актива на всеки 4 часа през GitHub Actions.`;
     } else {
       dot.className = 'status-indicator-dot online';
       const count = totalCount || serverHealth.symbolsInDb || 659;
@@ -446,6 +465,21 @@ function updateDiagnosticsModalUI() {
     if (subtitle) subtitle.textContent = 'Сървърът на localhost:8080 не отговаря. Стартирайте python src/dashboard/server.py 8080';
     if (serverVal) serverVal.textContent = 'Прекъсната (Offline)';
     if (uptimeVal) uptimeVal.textContent = 'Проверете конзолата';
+  } else if (serverHealth.isCloud) {
+    if (dot) dot.className = 'status-indicator-dot online';
+    if (hero) hero.className = 'diag-status-hero hero-online';
+    if (icon) icon.textContent = '☁️';
+    const totalCount = allSymbols.length || 664;
+    if (title) title.textContent = 'Скенерът работи в Облачен Режим (GitHub Pages)';
+    if (subtitle) subtitle.textContent = `Пазарните данни и сигнали за ${totalCount} актива се обновяват автономно на всеки 4 часа през GitHub Actions.`;
+    if (serverVal) serverVal.textContent = 'GitHub Pages (24/7 Cloud)';
+    if (uptimeVal) uptimeVal.textContent = 'GitHub Actions Scheduler (Cron)';
+    if (scannerVal) scannerVal.textContent = '24/7 Автономен Скенер';
+    if (scanElapsedVal) scanElapsedVal.textContent = 'График: На всеки 4 часа';
+    if (dbVal) dbVal.textContent = `${totalCount} пазарни актива`;
+    if (dbHealthVal) dbHealthVal.textContent = '✅ Облачна база данни (Здрава)';
+    if (jsonVal) jsonVal.textContent = '✅ Зареден успешно';
+    if (jsonMtimeVal) jsonMtimeVal.textContent = 'GitHub Pages Live';
   } else if (serverHealth.isScanning) {
     if (dot) dot.className = 'status-indicator-dot scanning';
     if (hero) hero.className = 'diag-status-hero hero-scanning';
