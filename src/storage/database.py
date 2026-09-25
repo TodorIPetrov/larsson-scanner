@@ -216,9 +216,19 @@ class Database:
                 ("btc_badge_bg", "TEXT"),
                 ("btc_thesis_bg", "TEXT"),
                 ("btc_leverage_allowed", "INTEGER DEFAULT 1"),
+                ("options_flow_json", "TEXT"),
             ]:
                 if col_name not in existing_cols:
                     cur.execute(f"ALTER TABLE symbol_trade_suggestions ADD COLUMN {col_name} {col_type}")
+
+            # Table for Options Flow (US Equities)
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS symbol_options_flow (
+                symbol TEXT PRIMARY KEY,
+                options_flow_json TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+            """)
 
             # Table for Trade Proposals requiring user confirmation
             cur.execute("""
@@ -265,6 +275,7 @@ class Database:
                 ("margin_usd", "REAL"),
                 ("notional_usd", "REAL"),
                 ("liquidation_price", "REAL"),
+                ("options_flow_json", "TEXT"),
             ]:
                 if col_name not in tp_cols:
                     cur.execute(f"ALTER TABLE trade_proposals ADD COLUMN {col_name} {col_type}")
@@ -428,6 +439,36 @@ class Database:
             );
             """)
             cur.execute("CREATE INDEX IF NOT EXISTS idx_pending_setups_status ON pending_setups(status);")
+
+            # Table for per-symbol custom watchlist alert conditions
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS watchlist_conditions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                symbol TEXT NOT NULL,
+                condition_type TEXT NOT NULL,
+                condition_value TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL,
+                alert_sent INTEGER NOT NULL DEFAULT 0
+            );
+            """)
+
+            # Table for historical sector breadth snapshots (Task 6: Sector Rotation Heatmap)
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS sector_breadth_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                sector TEXT NOT NULL,
+                gold_pct REAL NOT NULL,
+                blue_pct REAL NOT NULL,
+                neutral_pct REAL NOT NULL,
+                regime TEXT NOT NULL,
+                total INTEGER NOT NULL DEFAULT 0,
+                gold INTEGER NOT NULL DEFAULT 0,
+                blue INTEGER NOT NULL DEFAULT 0
+            );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_sbh_sector_ts ON sector_breadth_history(sector, timestamp);")
+
 
     def restore_from_json_if_empty(self, json_path: Optional[str] = None) -> int:
         """
@@ -800,11 +841,14 @@ class Database:
         btc_badge_bg: Optional[str] = None,
         btc_thesis_bg: Optional[str] = None,
         btc_leverage_allowed: int = 1,
+        options_flow: Optional[dict] = None,
         now_iso: Optional[str] = None,
     ):
         """Inserts or updates a trade suggestion for a symbol and timeframe."""
         if not now_iso:
             now_iso = datetime.now(timezone.utc).isoformat()
+
+        options_flow_json = json.dumps(options_flow) if options_flow else None
 
         with self._get_connection() as conn:
             cur = conn.cursor()
@@ -817,8 +861,8 @@ class Database:
              fund_action, fund_label_bg, fund_thesis_bg,
              synthesis_badge_bg, synthesis_label_bg,
              btc_ratio_state, btc_alpha_30d, btc_alpha_7d, btc_ratio_spread,
-             btc_verdict, btc_badge_bg, btc_thesis_bg, btc_leverage_allowed, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             btc_verdict, btc_badge_bg, btc_thesis_bg, btc_leverage_allowed, options_flow_json, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(ticker, timeframe) DO UPDATE SET
                 action = excluded.action,
                 direction = excluded.direction,
@@ -854,6 +898,7 @@ class Database:
                 btc_badge_bg = excluded.btc_badge_bg,
                 btc_thesis_bg = excluded.btc_thesis_bg,
                 btc_leverage_allowed = excluded.btc_leverage_allowed,
+                options_flow_json = excluded.options_flow_json,
                 updated_at = excluded.updated_at;
             """, (
                 ticker, timeframe, action, direction, setup_type, entry_price, stop_loss,
@@ -863,8 +908,35 @@ class Database:
                 fund_action, fund_label_bg, fund_thesis_bg,
                 synthesis_badge_bg, synthesis_label_bg,
                 btc_ratio_state, btc_alpha_30d, btc_alpha_7d, btc_ratio_spread,
-                btc_verdict, btc_badge_bg, btc_thesis_bg, btc_leverage_allowed, now_iso
+                btc_verdict, btc_badge_bg, btc_thesis_bg, btc_leverage_allowed, options_flow_json, now_iso
             ))
+
+    def save_options_flow(self, symbol: str, flow_data: dict, now_iso: Optional[str] = None):
+        """Saves options flow data for a symbol in the database."""
+        if not now_iso:
+            now_iso = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO symbol_options_flow (symbol, options_flow_json, updated_at)
+            VALUES (?, ?, ?)
+            ON CONFLICT(symbol) DO UPDATE SET
+                options_flow_json = excluded.options_flow_json,
+                updated_at = excluded.updated_at;
+            """, (symbol, json.dumps(flow_data), now_iso))
+
+    def get_options_flow(self, symbol: str) -> Optional[dict]:
+        """Retrieves options flow data for a symbol from the database."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT options_flow_json FROM symbol_options_flow WHERE symbol = ?", (symbol,))
+            row = cur.fetchone()
+            if row and row["options_flow_json"]:
+                try:
+                    return json.loads(row["options_flow_json"])
+                except Exception:
+                    return None
+            return None
 
     def get_trade_suggestion(self, ticker: str, timeframe: str) -> Optional[sqlite3.Row]:
         """Retrieves trade suggestion for a specific ticker and timeframe."""
@@ -900,12 +972,15 @@ class Database:
         margin_usd: Optional[float] = None,
         notional_usd: Optional[float] = None,
         liquidation_price: Optional[float] = None,
+        options_flow: Optional[dict] = None,
     ) -> bool:
         """Inserts a new trade proposal."""
         if notional_usd is None:
             notional_usd = position_size_usd
         if margin_usd is None:
             margin_usd = round(position_size_usd / max(1, recommended_leverage), 2)
+
+        options_flow_json = json.dumps(options_flow) if options_flow else None
 
         with self._get_connection() as conn:
             cur = conn.cursor()
@@ -914,13 +989,13 @@ class Database:
             (proposal_id, ticker, timeframe, action, status, entry_price, stop_loss,
              tp1, tp2, position_size_usd, units, risk_usd, tier, score, reason,
              created_at, expires_at, direction, max_leverage, recommended_leverage,
-             margin_usd, notional_usd, liquidation_price)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             margin_usd, notional_usd, liquidation_price, options_flow_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 proposal_id, ticker, timeframe, action, status, entry_price, stop_loss,
                 tp1, tp2, position_size_usd, units, risk_usd, tier, score, reason,
                 created_at, expires_at, direction, max_leverage, recommended_leverage,
-                margin_usd, notional_usd, liquidation_price
+                margin_usd, notional_usd, liquidation_price, options_flow_json
             ))
             return True
 
@@ -1541,23 +1616,73 @@ class Database:
                 return {k: (v / total) * 100.0 for k, v in allocations.items()}
             return {}
 
-    def get_real_portfolio_performance_stats(self) -> dict:
-        """Returns aggregate performance stats from closed real positions."""
+    # =========================================================================
+    # WATCHLIST CONDITIONS (Custom Per-Symbol Alert Triggers)
+    # =========================================================================
+
+    # Supported condition types:
+    #   PRICE_LEVEL   – fire when price hits a specific value
+    #   STATE_CHANGE  – fire when Larsson state transitions to the given value (e.g. 'GOLD')
+    #   ALPHA_POSITIVE – fire when BTC alpha (btc_alpha_30d) goes positive
+    #   WEEKLY_GOLD   – fire when weekly timeframe turns Gold
+
+    def add_watchlist_condition(
+        self,
+        symbol: str,
+        condition_type: str,
+        condition_value: str = "",
+    ) -> int:
+        """
+        Adds a new watchlist condition and returns its row id.
+        condition_type must be one of: PRICE_LEVEL, STATE_CHANGE, ALPHA_POSITIVE, WEEKLY_GOLD.
+        """
+        now_iso = datetime.now(timezone.utc).isoformat()
         with self._get_connection() as conn:
             cur = conn.cursor()
-            cur.execute("""
-            SELECT 
-                COUNT(*) as total_trades,
-                SUM(CASE WHEN realized_pnl_usd > 0 THEN 1 ELSE 0 END) as wins,
-                SUM(CASE WHEN realized_pnl_usd <= 0 THEN 1 ELSE 0 END) as losses,
-                AVG(realized_pnl_pct) as avg_pnl_pct,
-                MAX(realized_pnl_pct) as best_trade_pct,
-                MIN(realized_pnl_pct) as worst_trade_pct,
-                SUM(realized_pnl_usd) as total_realized_pnl,
-                SUM(fee_paid_usd) as total_fees
-            FROM real_positions
-            WHERE status = 'CLOSED'
-            """)
+            cur.execute(
+                """
+                INSERT INTO watchlist_conditions (symbol, condition_type, condition_value, created_at, alert_sent)
+                VALUES (?, ?, ?, ?, 0)
+                """,
+                (symbol.upper(), condition_type.upper(), condition_value, now_iso),
+            )
+            return cur.lastrowid  # type: ignore[return-value]
+
+    def get_watchlist_conditions(self, symbol: Optional[str] = None, unsent_only: bool = False) -> List[sqlite3.Row]:
+        """
+        Returns all watchlist conditions, optionally filtered by symbol and/or only those not yet sent.
+        """
+        query = "SELECT * FROM watchlist_conditions WHERE 1=1"
+        params: List = []
+        if symbol:
+            query += " AND symbol = ?"
+            params.append(symbol.upper())
+        if unsent_only:
+            query += " AND alert_sent = 0"
+        query += " ORDER BY id ASC"
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute(query, params)
+            return cur.fetchall()
+
+    def mark_watchlist_condition_sent(self, condition_id: int) -> bool:
+        """Marks a condition as alert_sent=1 after the alert has fired."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE watchlist_conditions SET alert_sent = 1 WHERE id = ?",
+                (condition_id,),
+            )
+            return cur.rowcount > 0
+
+    def delete_watchlist_condition(self, condition_id: int) -> bool:
+        """Deletes a watchlist condition by id."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("DELETE FROM watchlist_conditions WHERE id = ?", (condition_id,))
+            return cur.rowcount > 0
+
+
             row = cur.fetchone()
             if not row or row["total_trades"] == 0:
                 return {

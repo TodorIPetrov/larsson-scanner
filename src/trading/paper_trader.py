@@ -177,6 +177,7 @@ class PaperTrader:
             margin_usd=margin_usd,
             notional_usd=pos_size_usd,
             liquidation_price=liq_price,
+            options_flow=trade_suggestion.get("options_flow") if trade_suggestion else None,
         )
 
         if not created:
@@ -291,6 +292,20 @@ class PaperTrader:
                 e_icon = "🟢" if l_num == 1 else ("⚡" if l_num == 2 else "🚀")
                 lev_block += f"• {e_icon} <b>{lbl}:</b> Маржин <b>${m_usd:.2f}</b> | SL: -${sl_loss:.2f} (-{sl_loss_pct:.1f}%){liq_txt}\n"
 
+        options_line = ""
+        opt_flow = ts.get("options_flow") or (trade_suggestion.get("options_flow") if trade_suggestion else None)
+        if not opt_flow and hasattr(self, "db") and self.db:
+            try:
+                opt_flow = self.db.get_options_flow(ticker)
+            except Exception:
+                pass
+
+        if opt_flow:
+            pcr = opt_flow.get("put_call_ratio", 1.0)
+            sentiment = opt_flow.get("net_sentiment", "NEUTRAL")
+            sweep_txt = "Unusual call sweep detected" if opt_flow.get("unusual_call_sweep") else "Normal flow"
+            options_line = f"📈 Options: {sweep_txt} | PCR: {pcr:.2f} ({sentiment})\n\n"
+
         text = (
             f"{action_emoji} <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА {title_action} ({asset_label}): {ticker} [{timeframe}]</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
@@ -300,6 +315,11 @@ class PaperTrader:
             f"🏢 <b>ФУНДАМЕНТАЛЕН АНАЛИЗ (DCF & Valuation):</b>\n"
             f"• Оценка: <b>{fund_label}</b>\n"
             f"• Теза: <i>{fund_thesis}</i>\n\n"
+        )
+        if options_line:
+            text += f"⚡ <b>ОПЦИОНЕН ПОТОК (Options Flow):</b>\n• {options_line}"
+
+        text += (
             f"🎯 <b>СИНТЕЗИРАНА СТРАТЕГИЯ (Quantamental):</b>\n"
             f"• Статус: <b>{synth_badge}</b> (Скор: <b>{score}/100</b>{rr_txt})\n"
             f"• Входна цена: <code>{p_str}</code>\n"

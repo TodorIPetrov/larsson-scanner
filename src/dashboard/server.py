@@ -47,9 +47,27 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=DASHBOARD_DIR, **kwargs)
 
+    def guess_type(self, path):
+        """Overrides MIME type guessing for PWA manifest, service worker, and web assets."""
+        path_str = str(path).lower()
+        if path_str.endswith("manifest.json"):
+            return "application/manifest+json"
+        if path_str.endswith("sw.js") or path_str.endswith(".js"):
+            return "application/javascript"
+        if path_str.endswith(".svg"):
+            return "image/svg+xml"
+        if path_str.endswith(".png"):
+            return "image/png"
+        return super().guess_type(path)
+
     def end_headers(self):
-        # Disable caching for live data and dynamic files
-        if self.path.startswith("/data.json") or self.path.startswith("/api/"):
+        # Service worker header and caching controls
+        if self.path.endswith("sw.js"):
+            self.send_header("Service-Worker-Allowed", "/")
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        elif self.path.endswith("manifest.json"):
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        elif self.path.startswith("/data.json") or self.path.startswith("/api/"):
             self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")

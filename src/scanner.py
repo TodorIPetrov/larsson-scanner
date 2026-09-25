@@ -23,6 +23,7 @@ from src.engine.sr_levels import analyze_sr_levels
 from src.engine.setup_monitor import SetupMonitor
 from src.engine.asset_profiles import get_quality_tier
 from src.engine.btc_relative import BTCRelativeStrengthAnalyzer
+from src.engine.options_flow import get_options_flow, is_crypto_or_non_equity
 from src.storage.database import Database
 from src.trading.paper_trader import PaperTrader
 
@@ -241,6 +242,7 @@ class LarssonScanner:
         sr_data: Optional[dict],
         asset_class: str = "crypto",
         btc_relative: Optional[object] = None,
+        options_flow: Optional[dict] = None,
     ) -> Optional[dict]:
         try:
             from src.engine.trade_suggestions import generate_trade_suggestion
@@ -289,6 +291,7 @@ class LarssonScanner:
                 ticker=ticker,
                 asset_class=asset_class,
                 btc_relative=btc_relative,
+                options_flow=options_flow,
             )
 
             self.db.upsert_trade_suggestion(
@@ -328,6 +331,7 @@ class LarssonScanner:
                 btc_badge_bg=suggestion.btc_badge_bg,
                 btc_thesis_bg=suggestion.btc_thesis_bg,
                 btc_leverage_allowed=1 if suggestion.btc_leverage_allowed else 0,
+                options_flow=options_flow,
             )
             return suggestion.to_dict()
         except Exception as e:
@@ -634,6 +638,7 @@ class LarssonScanner:
             "neutral_count": 0,
             "failed_count": 0,
             "state_changes": [],
+            "options_flow": {},
         }
 
         if not tickers:
@@ -709,6 +714,17 @@ class LarssonScanner:
                         btc_closes=btc_c,
                     )
 
+                # Options Flow for US Equities (cached for 1h)
+                options_flow = None
+                if asset_class in ["us_stocks", "ai_stocks"] or not is_crypto_or_non_equity(sym):
+                    try:
+                        options_flow = get_options_flow(sym, ribbon_state=current_state.value)
+                        if options_flow:
+                            results["options_flow"][sym] = options_flow
+                            self.db.save_options_flow(sym, options_flow)
+                    except Exception as e:
+                        logger.debug(f"Options flow fetch failed for {sym}: {e}")
+
                 # Evaluate and record Trade Suggestion
                 trade_suggestion = self._evaluate_and_persist_trade_suggestion(
                     ticker=sym,
@@ -722,6 +738,7 @@ class LarssonScanner:
                     sr_data=sr_data,
                     asset_class=asset_class,
                     btc_relative=btc_rel,
+                    options_flow=options_flow,
                 )
 
                 self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
@@ -759,6 +776,7 @@ class LarssonScanner:
                         "tv_symbol": tv_symbol,
                         "sr_data": sr_data,
                         "trade_suggestion": trade_suggestion,
+                        "options_flow": options_flow,
                     }
                     results["state_changes"].append(change_event)
                     self.db.log_alert(

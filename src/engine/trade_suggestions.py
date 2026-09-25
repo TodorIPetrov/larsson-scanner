@@ -56,6 +56,8 @@ class TradeSuggestion:
     btc_badge_bg: Optional[str] = None
     btc_thesis_bg: Optional[str] = None
     btc_leverage_allowed: bool = True
+    # Options Flow (US Equities)
+    options_flow: Optional[dict] = None
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -274,6 +276,7 @@ def _enrich_trade_suggestion(
     current_price: float,
     fund_profile: Optional[object],
     btc_relative: Optional[object] = None,
+    options_flow: Optional[dict] = None,
 ) -> TradeSuggestion:
     """Enriches a TradeSuggestion with clear, distinct technical, fundamental, and BTC relative fields."""
     # 1. Technical Analysis Recommendation & Details
@@ -396,6 +399,19 @@ def _enrich_trade_suggestion(
         elif s.btc_ratio_state == "GOLD":
             if "Водещ актив спрямо BTC" not in s.reason_bg and s.btc_alpha_30d is not None:
                 s.reason_bg = f"{s.reason_bg} 🚀 Водещ актив спрямо BTC (+{s.btc_alpha_30d:.1f}% Alpha): Потвърден възходящ тренд."
+
+    # 5. Options Flow Enrichment (US Equities)
+    if options_flow:
+        s.options_flow = options_flow
+        pcr = options_flow.get("put_call_ratio", 1.0)
+        sentiment = options_flow.get("net_sentiment", "NEUTRAL")
+        unusual_sweep = options_flow.get("unusual_call_sweep", False)
+        sweep_txt = "Unusual call sweep detected" if unusual_sweep else "Normal options flow"
+        opt_str = f"📈 Options: {sweep_txt} | PCR: {pcr:.2f} ({sentiment})"
+        if "📈 Options:" not in s.reason_bg:
+            s.reason_bg = f"{s.reason_bg} | {opt_str}".strip(" |")
+        if options_flow.get("confluence_boost"):
+            s.score = min(100, s.score + 5)
 
     return s
 
@@ -827,6 +843,7 @@ def generate_trade_suggestion(
     ticker: Optional[str] = None,
     asset_class: str = "crypto",
     btc_relative: Optional[object] = None,
+    options_flow: Optional[dict] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion,
@@ -868,6 +885,7 @@ def generate_trade_suggestion(
         current_price=current_price,
         fund_profile=fund_profile,
         btc_relative=btc_relative,
+        options_flow=options_flow,
     )
 
 

@@ -496,6 +496,21 @@ def export_dashboard_data(
         asset_tier = get_quality_tier(ticker)
         tier_emoji = get_tier_emoji(asset_tier)
 
+        # Options Flow (US Equities)
+        opt_flow = None
+        opt_json = _row_val(r, "options_flow_json")
+        if opt_json:
+            try:
+                opt_flow = json.loads(opt_json)
+            except Exception:
+                pass
+        if not opt_flow and hasattr(db, "get_options_flow"):
+            opt_flow = db.get_options_flow(ticker)
+
+        clean_opt = _clean_dict_floats(opt_flow) if opt_flow else None
+        if clean_opt:
+            trade_suggestion_dict["options_flow"] = clean_opt
+
         items.append({
             "ticker": ticker,
             "name": name,
@@ -522,6 +537,7 @@ def export_dashboard_data(
             "synthesis": synthesis_block,
             "trade_suggestion": trade_suggestion_dict,
             "btc_relative": btc_relative_block,
+            "options_flow": clean_opt,
             "quality_tier": asset_tier,
             "tier_emoji": tier_emoji,
             "is_gold_flip": is_gold_flip,

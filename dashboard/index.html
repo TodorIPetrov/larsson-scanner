@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFD700">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Larsson Line Market Scanner</title>
   <link rel="stylesheet" href="style.css?v=20260925_03">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,8 +42,17 @@
           <span class="analyze-icon">⚡</span> Нов Анализ (Сделки)
         </button>
         <button class="btn btn-refresh" id="refreshBtn" title="Reload data">↻ Refresh</button>
+        <button type="button" class="btn btn-install-app" id="btnInstallApp" style="display: none;" title="Инсталирай Larsson Scanner като приложение (PWA)">
+          <span>📲</span> <span>Инсталирай App</span>
+        </button>
       </div>
     </header>
+
+    <!-- Offline Fallback Banner -->
+    <div class="offline-banner" id="offlineDataBanner" style="display: none;">
+      <span class="offline-badge">CACHED DATA</span>
+      <span class="offline-text">Няма интернет връзка. Показват се последно запазените кеширани пазарни данни.</span>
+    </div>
 
     <!-- Active Leverage Trade Proposals Banner -->
     <section class="proposals-banner-section" id="proposalsBannerSection">
@@ -1218,5 +1230,64 @@
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
   <script src="app.js?v=20260925_03"></script>
+
+  <!-- Progressive Web App (PWA) Registration & Install Prompt Handler -->
+  <script>
+    // 1. Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then((reg) => {
+            console.log('[PWA] Service Worker registered with scope:', reg.scope);
+          })
+          .catch((err) => {
+            console.warn('[PWA] Service Worker registration failed:', err);
+          });
+      });
+    }
+
+    // 2. Handle beforeinstallprompt for 'Install App' Button
+    let deferredInstallPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const installBtn = document.getElementById('btnInstallApp');
+      if (installBtn) {
+        installBtn.style.display = 'inline-flex';
+        installBtn.onclick = async () => {
+          if (deferredInstallPrompt) {
+            deferredInstallPrompt.prompt();
+            const choiceResult = await deferredInstallPrompt.userChoice;
+            if (choiceResult.outcome === 'accepted') {
+              console.log('[PWA] User accepted installation prompt');
+              installBtn.style.display = 'none';
+            }
+            deferredInstallPrompt = null;
+          }
+        };
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('[PWA] Larsson Scanner installed successfully');
+      const installBtn = document.getElementById('btnInstallApp');
+      if (installBtn) installBtn.style.display = 'none';
+      deferredInstallPrompt = null;
+    });
+
+    // 3. Offline / Cached Data Banner toggle
+    function checkPwaOnlineState() {
+      const banner = document.getElementById('offlineDataBanner');
+      if (!banner) return;
+      if (!navigator.onLine) {
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+    window.addEventListener('online', checkPwaOnlineState);
+    window.addEventListener('offline', checkPwaOnlineState);
+    window.addEventListener('DOMContentLoaded', checkPwaOnlineState);
+  </script>
 </body>
 </html>
