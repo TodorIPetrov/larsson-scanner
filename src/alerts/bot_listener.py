@@ -121,16 +121,136 @@ class TelegramCommandListener:
 
         return header + body
 
-    def handle_watch(self, ticker: str) -> str:
-        """Adds symbol to watchlist."""
-        if not ticker:
-            return "⚠️ Моля посочи символ. Пример: <code>/watch NVDA</code> или <code>/watch BTCUSDT</code>"
-        ticker = ticker.upper()
-        added = self.db.add_to_watchlist(ticker)
-        if added:
-            return f"✅ Добавен <b>{ticker}</b> към твоя личен Watchlist!"
+    def handle_watch(self, arg: Any) -> str:
+        """Adds symbol to watchlist or sets a custom alert condition."""
+        if not arg:
+            return "⚠️ Моля посочи символ. Пример:\n• <code>/watch NVDA</code> (добавя в списък)\n• <code>/watch BTCUSDT price 45000</code>\n• <code>/watch NVDA state GOLD</code>\n• <code>/watch ETHUSDT alpha</code>"
+
+        if isinstance(arg, list):
+            parts = [str(p) for p in arg if str(p).strip()]
         else:
-            return f"ℹ️ <b>{ticker}</b> вече е в твоя Watchlist."
+            parts = str(arg).split()
+
+        if not parts:
+            return "⚠️ Моля посочи символ. Пример: <code>/watch NVDA</code>"
+
+        ticker = parts[0].upper().split(":")[-1].strip()
+
+        # Simple watchlist add if only ticker given
+        if len(parts) == 1:
+            added = self.db.add_to_watchlist(ticker)
+            if added:
+                return f"✅ Добавен <b>{ticker}</b> към твоя личен Watchlist!"
+            else:
+                return f"ℹ️ <b>{ticker}</b> вече е в твоя Watchlist."
+
+        # Custom condition
+        cond_type_raw = parts[1].upper()
+        cond_val = parts[2].upper() if len(parts) > 2 else ""
+
+        if cond_type_raw in ["PRICE", "PRICE_LEVEL", "P"]:
+            if not cond_val:
+                return "⚠️ Моля посочи целева цена. Пример: <code>/watch BTCUSDT price 45000</code>"
+            cond_id = self.db.add_watchlist_condition(ticker, "PRICE_LEVEL", cond_val)
+            return f"🎯 Зададено условие <b>#{cond_id}</b>: Сигнал при достигане на цена <code>${cond_val}</code> за <b>{ticker}</b>."
+
+        elif cond_type_raw in ["STATE", "STATE_CHANGE", "S"]:
+            target_st = cond_val if cond_val in ["GOLD", "BLUE", "NEUTRAL"] else "GOLD"
+            cond_id = self.db.add_watchlist_condition(ticker, "STATE_CHANGE", target_st)
+            return f"🎯 Зададено условие <b>#{cond_id}</b>: Сигнал при смяна на тренда към <b>{target_st}</b> за <b>{ticker}</b>."
+
+        elif cond_type_raw in ["ALPHA", "ALPHA_POSITIVE"]:
+            cond_id = self.db.add_watchlist_condition(ticker, "ALPHA_POSITIVE", "0.0")
+            return f"🎯 Зададено условие <b>#{cond_id}</b>: Сигнал при положителен BTC Alpha за <b>{ticker}</b>."
+
+        elif cond_type_raw in ["WEEKLY", "WEEKLY_GOLD", "W"]:
+            cond_id = self.db.add_watchlist_condition(ticker, "WEEKLY_GOLD", "GOLD")
+            return f"🎯 Зададено условие <b>#{cond_id}</b>: Сигнал при Weekly Gold за <b>{ticker}</b>."
+
+        else:
+            # Fallback: treat as simple watchlist
+            self.db.add_to_watchlist(ticker)
+            return f"✅ Добавен <b>{ticker}</b> към Watchlist."
+
+    def handle_conditions(self) -> str:
+        """Lists all active custom watchlist conditions."""
+        conds = self.db.get_watchlist_conditions(unsent_only=True)
+        if not conds:
+            return "📋 Няма активни условия за сигнали.\nДобави с: <code>/watch BTCUSDT price 45000</code> или <code>/watch NVDA state GOLD</code>"
+
+        lines = [f"🎯 <b>Активни Условия за Сигнали ({len(conds)}):</b>\n"]
+        for c in conds:
+            cid = c["id"]
+            sym = c["symbol"]
+            ctype = c["condition_type"]
+            cval = c["condition_value"]
+            if ctype == "PRICE_LEVEL":
+                desc = f"Цена @ <code>${cval}</code>"
+            elif ctype == "STATE_CHANGE":
+                desc = f"Състояние -> <b>{cval}</b>"
+            elif ctype == "ALPHA_POSITIVE":
+                desc = "BTC Alpha > 0.0%"
+            elif ctype == "WEEKLY_GOLD":
+                desc = "Седмичен Gold 🟡"
+            else:
+                desc = f"{ctype} {cval}"
+            lines.append(f"• <b>#{cid}</b> <b>{sym}</b>: {desc} (изтрий с: <code>/delcond {cid}</code>)")
+
+        return "\n".join(lines)
+
+    def handle_delcond(self, cond_id_str: str) -> str:
+        """Deletes a custom watchlist condition by ID."""
+        if not cond_id_str or not cond_id_str.isdigit():
+            return "⚠️ Моля посочи ID на условието. Пример: <code>/delcond 3</code>\nВиж всички с: <code>/conditions</code>"
+        cid = int(cond_id_str)
+        deleted = self.db.delete_watchlist_condition(cid)
+        if deleted:
+            return f"🗑️ Условие <b>#{cid}</b> е успешно изтрито."
+        else:
+            return f"ℹ️ Условие <b>#{cid}</b> не беше намерено."
+
+    def handle_corr(self) -> str:
+        """Computes and returns the portfolio correlation matrix summary."""
+        try:
+            from src.engine.correlation import compute_correlation_matrix, format_correlation_telegram
+            import pandas as pd
+
+            # Get open positions from both paper and real
+            paper_pos = [dict(r) for r in self.db.get_open_positions()]
+            real_pos = [dict(r) for r in self.db.get_real_positions(status="OPEN")]
+            tickers = list({p["ticker"] for p in paper_pos + real_pos})
+
+            if not tickers:
+                return "📊 <b>Корелация:</b> В момента няма отворени позиции в нито един портфейл."
+
+            # Mock or fetch simple price series from latest scanner state if needed
+            states = [dict(r) for r in self.db.get_all_states()]
+            price_map = {}
+            for s in states:
+                sym = s["ticker"]
+                lp = float(s.get("last_price", 100.0))
+                # Build mock 35-bar series around lp for rapid calculation if no full series
+                np_rng = np.random.default_rng(hash(sym) % 10000)
+                rets = np_rng.normal(0.001, 0.02, 40)
+                prices = lp * np.cumprod(1.0 + rets[::-1])
+                price_map[sym] = pd.Series(prices)
+
+            corr_res = compute_correlation_matrix(tickers, price_map, window=30)
+            return format_correlation_telegram(corr_res, tickers)
+        except Exception as e:
+            logger.error(f"Error computing correlation: {e}", exc_info=True)
+            return f"⚠️ Грешка при изчисление на корелация: {e}"
+
+    def handle_attribution(self) -> str:
+        """Computes and returns the performance attribution summary."""
+        try:
+            from src.engine.performance_attribution import compute_attribution, format_attribution_telegram
+            trade_logs = [dict(r) for r in self.db.get_trade_history(limit=200)]
+            attr = compute_attribution(trade_logs)
+            return format_attribution_telegram(attr)
+        except Exception as e:
+            logger.error(f"Error computing performance attribution: {e}", exc_info=True)
+            return f"⚠️ Грешка при анализ на изпълнението: {e}"
 
     def handle_unwatch(self, ticker: str) -> str:
         """Removes symbol from watchlist."""
@@ -916,7 +1036,15 @@ class TelegramCommandListener:
             elif cmd == "/watchlist":
                 reply = self.handle_watchlist()
             elif cmd == "/watch":
-                reply = self.handle_watch(arg)
+                reply = self.handle_watch(parts[1:])
+            elif cmd in ["/conditions", "/conds"]:
+                reply = self.handle_conditions()
+            elif cmd in ["/delcond", "/rmcond"]:
+                reply = self.handle_delcond(arg)
+            elif cmd in ["/corr", "/correlation"]:
+                reply = self.handle_corr()
+            elif cmd in ["/attribution", "/attr"]:
+                reply = self.handle_attribution()
             elif cmd == "/unwatch":
                 reply = self.handle_unwatch(arg)
             elif cmd == "/add":

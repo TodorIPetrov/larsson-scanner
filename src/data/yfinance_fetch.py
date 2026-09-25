@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 TIMEFRAME_TO_YF_PARAMS = {
     "1D": {"interval": "1d", "period": "2y"},
     "1W": {"interval": "1wk", "period": "5y"},
+    "4H": {"interval": "4h", "period": "60d"},
 }
 
 
@@ -114,6 +115,26 @@ class YFinanceFetcher:
         if res is not None:
             return res
         return self.fetch_via_chart_api(ticker, timeframe=timeframe)
+
+    def fetch_weekly(
+        self,
+        ticker: str,
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Fetches Weekly (1wk, 5y) OHLCV data for a single ticker via yfinance.
+
+        Returns (highs, lows, closes, latest_price) or None on failure.
+        """
+        return self.fetch_single(ticker, timeframe="1W")
+
+    def fetch_4h(
+        self,
+        ticker: str,
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Fetches 4-Hour (4h, 60d) OHLCV data for a single ticker via yfinance.
+
+        Returns (highs, lows, closes, latest_price) or None on failure.
+        """
+        return self.fetch_single(ticker, timeframe="4H")
 
     def fetch_via_chart_api(
         self,

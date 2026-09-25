@@ -1683,6 +1683,23 @@ class Database:
             return cur.rowcount > 0
 
 
+    def get_real_portfolio_performance_stats(self) -> dict:
+        """Returns aggregate performance stats from closed real positions."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT 
+                COUNT(*) as total_trades,
+                SUM(CASE WHEN realized_pnl_usd > 0 THEN 1 ELSE 0 END) as wins,
+                SUM(CASE WHEN realized_pnl_usd <= 0 THEN 1 ELSE 0 END) as losses,
+                AVG(realized_pnl_pct) as avg_pnl_pct,
+                MAX(realized_pnl_pct) as best_trade_pct,
+                MIN(realized_pnl_pct) as worst_trade_pct,
+                SUM(realized_pnl_usd) as total_realized_pnl,
+                SUM(fee_paid_usd) as total_fees
+            FROM real_positions
+            WHERE status = 'CLOSED'
+            """)
             row = cur.fetchone()
             if not row or row["total_trades"] == 0:
                 return {
@@ -1704,5 +1721,57 @@ class Database:
                 "total_realized_pnl": round(row["total_realized_pnl"] or 0.0, 2),
                 "total_fees": round(row["total_fees"] or 0.0, 2)
             }
+
+    # =========================================================================
+    # SECTOR BREADTH HISTORY
+    # =========================================================================
+
+    def save_sector_breadth(self, sector_breadth: dict, timestamp: Optional[str] = None):
+        """Saves a sector breadth snapshot into sector_breadth_history."""
+        if not timestamp:
+            timestamp = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            for sector, stats in sector_breadth.items():
+                cur.execute("""
+                INSERT INTO sector_breadth_history (
+                    timestamp, sector, gold_pct, blue_pct, neutral_pct, regime, total, gold, blue
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    timestamp,
+                    sector,
+                    stats.get("gold_pct", 0.0),
+                    stats.get("blue_pct", 0.0),
+                    stats.get("neutral_pct", 0.0),
+                    stats.get("regime", "MIXED"),
+                    stats.get("total", 0),
+                    stats.get("gold", 0),
+                    stats.get("blue", 0),
+                ))
+
+    def get_latest_sector_breadth(self) -> dict:
+        """Retrieves the most recent sector breadth snapshot from history."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT sector, gold_pct, blue_pct, neutral_pct, regime, total, gold, blue, timestamp
+            FROM sector_breadth_history
+            WHERE timestamp = (SELECT MAX(timestamp) FROM sector_breadth_history)
+            """)
+            rows = cur.fetchall()
+            out = {}
+            for r in rows:
+                out[r["sector"]] = {
+                    "gold_pct": r["gold_pct"],
+                    "blue_pct": r["blue_pct"],
+                    "neutral_pct": r["neutral_pct"],
+                    "regime": r["regime"],
+                    "total": r["total"],
+                    "gold": r["gold"],
+                    "blue": r["blue"],
+                    "timestamp": r["timestamp"],
+                }
+            return out
+
 
 

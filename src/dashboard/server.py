@@ -78,8 +78,36 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_api_status()
         elif self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
             self.handle_api_scan()
+        elif self.path == "/api/state":
+            self.handle_serve_file(os.path.join(DASHBOARD_DIR, "data", "state.json"), fallback="data.json")
+        elif self.path == "/api/fundamentals":
+            self.handle_serve_file(os.path.join(DASHBOARD_DIR, "data", "fundamentals.json"))
+        elif self.path == "/api/history":
+            self.handle_serve_file(os.path.join(DASHBOARD_DIR, "data", "history.json"))
         else:
             super().do_GET()
+
+    def handle_serve_file(self, file_path: str, fallback: Optional[str] = None):
+        """Serves a JSON file directly with no-cache headers."""
+        target = file_path
+        if not os.path.exists(target) and fallback:
+            target = os.path.join(DASHBOARD_DIR, fallback)
+
+        if not os.path.exists(target):
+            self.send_error(404, "File Not Found")
+            return
+
+        try:
+            with open(target, "rb") as f:
+                content = f.read()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(content)))
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+            self.end_headers()
+            self.wfile.write(content)
+        except Exception as e:
+            self.send_error(500, f"Error reading file: {e}")
 
     def do_POST(self):
         if self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):

@@ -103,3 +103,27 @@ class BinanceFetcher:
         except Exception as e:
             logger.error(f"Error fetching klines for {symbol} [{timeframe}]: {e}")
             return None
+
+    def fetch_weekly_klines(
+        self,
+        symbol: str,
+        limit: int = 260,
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Fetches Weekly (1w) klines from Binance.
+
+        Default limit 260 ≈ 5 years of weekly candles (52 * 5).
+        Returns (highs, lows, closes, latest_price) or None.
+        """
+        return self.fetch_klines(symbol, "1W", limit=limit)
+
+    def fetch_4h_klines(
+        self,
+        symbol: str,
+        limit: int = 360,
+    ) -> Optional[Tuple[np.ndarray, np.ndarray, np.ndarray, float]]:
+        """Fetches 4-Hour klines from Binance.
+
+        Default limit 360 ≈ 60 days of 4h candles (6 per day * 60).
+        Returns (highs, lows, closes, latest_price) or None.
+        """
+        return self.fetch_klines(symbol, "4H", limit=limit)

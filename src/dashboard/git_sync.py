@@ -43,9 +43,13 @@ def sync_dashboard_to_git() -> bool:
             capture_output=True,
         )
 
+        # Detect active branch
+        branch_res = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True)
+        active_branch = branch_res.stdout.strip() or "master"
+
         # Pull and merge remote changes with -X ours to prevent any conflicts
         subprocess.run(
-            ["git", "pull", "--no-rebase", "-X", "ours", "origin", "master", "-m", "chore: merge remote market data"],
+            ["git", "pull", "--no-rebase", "-X", "ours", "origin", active_branch, "-m", "chore: merge remote market data"],
             capture_output=True,
             text=True,
             timeout=30,
@@ -53,7 +57,7 @@ def sync_dashboard_to_git() -> bool:
 
         # Push to remote
         push = subprocess.run(
-            ["git", "push", "origin", "master"],
+            ["git", "push", "origin", active_branch],
             capture_output=True,
             text=True,
             timeout=30,
