@@ -856,16 +856,15 @@ function isRecentGoldFlip(item) {
   if (item.is_gold_flip !== undefined) return Boolean(item.is_gold_flip);
   if (item.technical && item.technical.is_gold_flip !== undefined) return Boolean(item.technical.is_gold_flip);
 
-  // Dynamic fallback evaluation from last_change timestamp
+  // Dynamic fallback evaluation ONLY if explicitly recent and healthy spread
   if (item.last_change) {
     const diffHours = (Date.now() - new Date(item.last_change).getTime()) / (1000 * 3600);
     const tf = item.timeframe || '1D';
     const sPct = item.spread_pct !== null && item.spread_pct !== undefined ? item.spread_pct : 999;
-    if (tf === '4H' && (diffHours <= 28 || (sPct >= 0 && sPct <= 7.5))) return true;
-    if (tf === '1D' && (diffHours <= 72 || (sPct >= 0 && sPct <= 7.5))) return true;
-    if (tf === '1W' && (diffHours <= 168 || (sPct >= 0 && sPct <= 7.5))) return true;
+    if (tf === '4H' && diffHours <= 6 && sPct >= 0 && sPct <= 6.0) return true;
+    if (tf === '1D' && diffHours <= 28 && sPct >= 0 && sPct <= 6.0) return true;
   }
-  return (item.spread_pct !== null && item.spread_pct >= 0 && item.spread_pct <= 6.0);
+  return false;
 }
 
 function renderGoldFlipBadge(item) {

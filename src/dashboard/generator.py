@@ -240,28 +240,33 @@ def export_dashboard_data(
         # Determine Recent Gold Flip status (Fresh 1-5 bar breakout / early expansion)
         is_gold_flip = False
         gold_flip_bars = None
-        last_chg = r["last_state_change"]
-        if state == "GOLD" and last_chg:
-            try:
-                lc_dt = datetime.fromisoformat(last_chg.replace("Z", "+00:00"))
-                now_dt = datetime.now(timezone.utc)
-                age_hours = (now_dt - lc_dt).total_seconds() / 3600.0
-                tf = r["timeframe"]
-                s_pct = spread_pct if spread_pct is not None else 999.0
-                if tf == "4H":
-                    bars_est = max(1, int(round(age_hours / 4.0)))
-                    is_gold_flip = (age_hours <= 28.0 or bars_est <= 5) and (0.0 <= s_pct <= 7.5)
-                    gold_flip_bars = bars_est if is_gold_flip else None
-                elif tf == "1D":
-                    bars_est = max(1, int(round(age_hours / 24.0)))
-                    is_gold_flip = (age_hours <= 72.0 or bars_est <= 4) and (0.0 <= s_pct <= 7.5)
-                    gold_flip_bars = bars_est if is_gold_flip else None
-                elif tf == "1W":
-                    bars_est = max(1, int(round(age_hours / 168.0)))
-                    is_gold_flip = (age_hours <= 168.0 or bars_est <= 2) and (0.0 <= s_pct <= 7.5)
-                    gold_flip_bars = bars_est if is_gold_flip else None
-            except Exception:
-                pass
+        db_bars = _row_val(r, "bars_since_flip")
+        s_pct = spread_pct if spread_pct is not None else 999.0
+
+        if state == "GOLD":
+            if db_bars is not None:
+                # 0 to 4 bars elapsed since transition candle (i.e. bars 1 to 5 of the trend)
+                if 0 <= db_bars <= 4 and (0.0 <= s_pct <= 7.5):
+                    is_gold_flip = True
+                    gold_flip_bars = db_bars + 1
+            else:
+                # Fallback only when bars_since_flip is not recorded in DB
+                last_chg = r["last_state_change"]
+                if last_chg:
+                    try:
+                        lc_dt = datetime.fromisoformat(last_chg.replace("Z", "+00:00"))
+                        now_dt = datetime.now(timezone.utc)
+                        age_hours = (now_dt - lc_dt).total_seconds() / 3600.0
+                        tf = r["timeframe"]
+                        # Strict time checks - DO NOT estimate on 1W without candle bars
+                        if tf == "4H" and age_hours <= 5.0 and (0.0 <= s_pct <= 6.0):
+                            is_gold_flip = True
+                            gold_flip_bars = 1
+                        elif tf == "1D" and age_hours <= 28.0 and (0.0 <= s_pct <= 6.0):
+                            is_gold_flip = True
+                            gold_flip_bars = 1
+                    except Exception:
+                        pass
 
         technical_block = {
             "state": state,

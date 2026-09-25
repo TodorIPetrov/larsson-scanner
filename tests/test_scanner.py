@@ -54,3 +54,55 @@ def test_scanner_real_yfinance_run(temp_scanner):
     tickers = [s["ticker"] for s in states]
     assert "GC=F" in tickers
     assert "SI=F" in tickers
+
+
+def test_calculate_bars_since_flip_logic():
+    from src.scanner import calculate_bars_since_flip
+    from src.engine.smma import LarssonState
+
+    # Empty / short series
+    assert calculate_bars_since_flip([]) is None
+    assert calculate_bars_since_flip([LarssonState.GOLD]) is None
+
+    # Just flipped on latest bar (0 bars elapsed)
+    states_0 = [LarssonState.BLUE, LarssonState.NEUTRAL, LarssonState.GOLD]
+    assert calculate_bars_since_flip(states_0) == 0
+
+    # Flipped 1 bar ago
+    states_1 = [LarssonState.BLUE, LarssonState.GOLD, LarssonState.GOLD]
+    assert calculate_bars_since_flip(states_1) == 1
+
+    # Flipped 3 bars ago
+    states_3 = [LarssonState.NEUTRAL, LarssonState.GOLD, LarssonState.GOLD, LarssonState.GOLD, LarssonState.GOLD]
+    assert calculate_bars_since_flip(states_3) == 3
+
+    # Sustained trend that never changed
+    states_sustained = [LarssonState.GOLD] * 50
+    assert calculate_bars_since_flip(states_sustained) == 50
+
+
+def test_database_bars_since_flip_persistence(temp_scanner):
+    db = temp_scanner.db
+    db.upsert_symbols([("NVDA", "us_stocks", "NASDAQ:NVDA")])
+    
+    # Store NVDA with 34 bars since flip
+    db.update_state(
+        ticker="NVDA",
+        timeframe="1D",
+        v1=120.0,
+        m1=118.0,
+        m2=116.0,
+        v2=114.0,
+        new_state=LarssonState.GOLD,
+        price=122.0,
+        bars_since_flip=34,
+    )
+    
+    row = db.get_current_state("NVDA", "1D")
+    assert row is not None
+    assert row["bars_since_flip"] == 34
+    
+    all_rows = db.get_all_states()
+    nvda_row = next(r for r in all_rows if r["ticker"] == "NVDA")
+    assert nvda_row["bars_since_flip"] == 34
+

@@ -94,9 +94,17 @@ class Database:
                 last_price REAL NOT NULL,
                 last_state_change TEXT NOT NULL,
                 updated_at TEXT NOT NULL,
+                bars_since_flip INTEGER,
                 PRIMARY KEY (ticker, timeframe)
             );
             """)
+
+            # Automatic column migrations for symbol_states
+            cur.execute("PRAGMA table_info(symbol_states)")
+            ss_cols = {col[1] for col in cur.fetchall()}
+            if "bars_since_flip" not in ss_cols:
+                cur.execute("ALTER TABLE symbol_states ADD COLUMN bars_since_flip INTEGER")
+
 
             # Table for recording alert history
             cur.execute("""
@@ -461,6 +469,7 @@ class Database:
                         s.get("price", 0.0),
                         s.get("last_change", ""),
                         s.get("updated_at", ""),
+                        s.get("gold_flip_bars"),
                     ))
 
                 if symbols:
@@ -471,8 +480,8 @@ class Database:
                 if states:
                     cur.executemany("""
                     INSERT OR REPLACE INTO symbol_states
-                    (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at, bars_since_flip)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """, states)
                 return len(states)
             except Exception:
@@ -514,7 +523,7 @@ class Database:
             cur = conn.cursor()
             cur.execute("""
             SELECT s.ticker, s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
-                   st.current_state, st.last_price, st.last_state_change, st.updated_at,
+                   st.current_state, st.last_price, st.last_state_change, st.updated_at, st.bars_since_flip,
                    sr.s1, sr.s1_touches, sr.s1_dist_pct, sr.r1, sr.r1_touches, sr.r1_dist_pct,
                    sr.context_flag, sr.context_desc,
                    ts.action AS ts_action, ts.direction AS ts_direction, ts.setup_type AS ts_setup_type,
@@ -552,6 +561,7 @@ class Database:
         new_state: LarssonState,
         price: float,
         now_iso: Optional[str] = None,
+        bars_since_flip: Optional[int] = None,
     ) -> Tuple[bool, Optional[LarssonState]]:
         """
         Updates the state of a symbol.
@@ -562,16 +572,16 @@ class Database:
 
         with self._get_connection() as conn:
             cur = conn.cursor()
-            cur.execute("SELECT current_state, last_state_change FROM symbol_states WHERE ticker = ? AND timeframe = ?", (ticker, timeframe))
+            cur.execute("SELECT current_state, last_state_change, bars_since_flip FROM symbol_states WHERE ticker = ? AND timeframe = ?", (ticker, timeframe))
             row = cur.fetchone()
 
             if row is None:
                 # First time seeing this symbol/timeframe
                 cur.execute("""
                 INSERT INTO symbol_states
-                (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (ticker, timeframe, v1, m1, m2, v2, new_state.value, price, now_iso, now_iso))
+                (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at, bars_since_flip)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (ticker, timeframe, v1, m1, m2, v2, new_state.value, price, now_iso, now_iso, bars_since_flip))
                 return False, None
 
             old_state_str = row["current_state"]
@@ -579,12 +589,19 @@ class Database:
             state_changed = (old_state != new_state)
             last_change = now_iso if state_changed else row["last_state_change"]
 
+            eff_bars = bars_since_flip
+            if eff_bars is None:
+                if state_changed:
+                    eff_bars = 0
+                else:
+                    eff_bars = row["bars_since_flip"]
+
             cur.execute("""
             UPDATE symbol_states
             SET v1 = ?, m1 = ?, m2 = ?, v2 = ?, current_state = ?, last_price = ?,
-                last_state_change = ?, updated_at = ?
+                last_state_change = ?, updated_at = ?, bars_since_flip = ?
             WHERE ticker = ? AND timeframe = ?
-            """, (v1, m1, m2, v2, new_state.value, price, last_change, now_iso, ticker, timeframe))
+            """, (v1, m1, m2, v2, new_state.value, price, last_change, now_iso, eff_bars, ticker, timeframe))
 
             return state_changed, old_state
 
@@ -639,7 +656,7 @@ class Database:
             cur = conn.cursor()
             cur.execute("""
             SELECT s.ticker, s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
-                   st.current_state, st.last_price, st.last_state_change, st.updated_at
+                   st.current_state, st.last_price, st.last_state_change, st.updated_at, st.bars_since_flip
             FROM watchlist w
             JOIN symbols s ON w.ticker = s.ticker
             JOIN symbol_states st ON s.ticker = st.ticker

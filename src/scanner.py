@@ -29,6 +29,21 @@ from src.trading.paper_trader import PaperTrader
 logger = logging.getLogger(__name__)
 
 
+def calculate_bars_since_flip(states: List[LarssonState]) -> Optional[int]:
+    """
+    Computes elapsed bars since the current state was entered.
+    0 means entered on the latest closed candle.
+    1 means entered 1 candle ago, etc.
+    """
+    if not states or len(states) < 2:
+        return None
+    current_state = states[-1]
+    for i in range(len(states) - 1, 0, -1):
+        if states[i] == current_state and states[i - 1] != current_state:
+            return (len(states) - 1) - i
+    return len(states)
+
+
 class LarssonScanner:
     def __init__(
         self,
@@ -461,6 +476,8 @@ class LarssonScanner:
                 else:
                     results["neutral_count"] += 1
 
+                bars_since_flip = calculate_bars_since_flip(states)
+
                 # Update database and check for transition
                 state_changed, old_state = self.db.update_state(
                     ticker=sym,
@@ -471,6 +488,7 @@ class LarssonScanner:
                     v2=float(v2[-1]),
                     new_state=current_state,
                     price=float(latest_price),
+                    bars_since_flip=bars_since_flip,
                 )
 
                 # Compute BTC Relative Strength (Asset / BTC Ratio)
@@ -663,6 +681,7 @@ class LarssonScanner:
                     results["neutral_count"] += 1
 
                 tv_symbol = self.get_tv_symbol(sym, asset_class)
+                bars_since_flip = calculate_bars_since_flip(states)
 
                 state_changed, old_state = self.db.update_state(
                     ticker=sym,
@@ -673,6 +692,7 @@ class LarssonScanner:
                     v2=float(v2[-1]),
                     new_state=current_state,
                     price=float(latest_price),
+                    bars_since_flip=bars_since_flip,
                 )
 
                 # Compute BTC Relative Strength for crypto stocks (e.g. NAKA, MSTR, COIN)
