@@ -26,10 +26,10 @@
 4. Кликни върху зеления бутон **New repository secret**:
    - **Secret 1**:
      - *Name*: `TELEGRAM_BOT_TOKEN`
-     - *Secret*: `8875473177:AAHB3HbEuF764xf7lqzMZwLC7wycsQ8DyxE`
+     - *Secret*: `YOUR_BOT_TOKEN_HERE`
    - **Secret 2**:
      - *Name*: `TELEGRAM_CHAT_ID`
-     - *Secret*: `8464055753`
+     - *Secret*: `YOUR_CHAT_ID_HERE`
 
 ### 2. Активиране на права за запис (Workflow Permissions):
 *Важно за автоматично обновяване на сайта при сканиране:*
@@ -61,8 +61,8 @@
    - **Start Command**: `python src/main.py --scheduler`
    - **Instance Type**: `Free` ($0/месец)
 5. В секция **Environment Variables** добави:
-   - `TELEGRAM_BOT_TOKEN`: `8875473177:AAHB3HbEuF764xf7lqzMZwLC7wycsQ8DyxE`
-   - `TELEGRAM_CHAT_ID`: `8464055753`
+   - `TELEGRAM_BOT_TOKEN`: `YOUR_BOT_TOKEN_HERE`
+   - `TELEGRAM_CHAT_ID`: `YOUR_CHAT_ID_HERE`
    - `PORT`: `10000`
 6. Кликни **Deploy Web Service**!
 
