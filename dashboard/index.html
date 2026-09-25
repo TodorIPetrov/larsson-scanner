@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260924_19">
+  <link rel="stylesheet" href="style.css?v=20260925_01">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,6 +21,14 @@
         </div>
       </div>
       <div class="header-right">
+        <div class="header-view-toggles" id="headerViewToggles" title="Бързо показване / скриване на панели">
+          <button type="button" class="btn-hdr-toggle" id="hdrToggleProposals" title="Скрий / Покажи секцията с активни предложения">
+            <span class="hdr-toggle-dot"></span> <span id="hdrToggleProposalsTxt">⚡ Сделки</span>
+          </button>
+          <button type="button" class="btn-hdr-toggle" id="hdrToggleChart" title="Скрий / Покажи интерактивната графика">
+            <span class="hdr-toggle-dot"></span> <span id="hdrToggleChartTxt">📈 Графика</span>
+          </button>
+        </div>
         <div class="last-updated" id="lastUpdated">Updated: Just now</div>
         <button class="btn btn-action-analyze" id="btnRunNewAnalysis" title="Стартирай нов пазарен анализ за генериране на търговски предложения (1x Spot, 2x, 3x)">
           <span class="analyze-icon">⚡</span> Нов Анализ (Сделки)
@@ -37,6 +45,9 @@
           <h2>⚡ АКТИВНИ ПРЕДЛОЖЕНИЯ С ЛЕВЪРИДЖ (Интерактивно Одобрение)</h2>
         </div>
         <div class="proposals-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button class="btn btn-toggle-section" id="btnToggleProposals" title="Скрий или покажи активните предложения" aria-expanded="true">
+            <span class="toggle-icon">▲</span> <span id="btnToggleProposalsTxt">Скрий</span>
+          </button>
           <button class="btn btn-undo-action" id="btnUndoProposal" style="display: none;" title="Върни назад последното отхвърлено или одобрено предложение">
             <span class="undo-icon">↩️</span> Върни назад (<span id="undoCount">0</span>)
           </button>
@@ -221,6 +232,10 @@
             <button class="live-ratio-btn active" data-ratio="USD" title="Стандартна цена в USD">💵 USD</button>
             <button class="live-ratio-btn" data-ratio="BTC" title="Съотношение спрямо Bitcoin (Asset/BTC)">₿ vs BTC</button>
           </div>
+
+          <button class="btn-toggle-section" id="btnToggleLiveChart" title="Скрий или покажи графиката" aria-expanded="true">
+            <span class="toggle-icon">▲</span> <span id="btnToggleLiveChartTxt">Скрий графиката</span>
+          </button>
 
           <button class="btn-expand-modal" id="liveExpandBtn" title="Отвори на цял екран с калкулатор">
             ⛶ Цял Екран
@@ -1083,6 +1098,6 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20260924_19"></script>
+  <script src="app.js?v=20260925_01"></script>
 </body>
 </html>

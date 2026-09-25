@@ -2827,6 +2827,7 @@ function renderProposalsBanner(proposals) {
   const rejectedCount = Object.values(resolved).filter(v => v.status === 'REJECTED').length;
 
   updateProposalUndoUI();
+  applyProposalsVisibility(isProposalsCollapsed);
 
   if (activeProposals.length === 0) {
     banner.style.display = 'block';
@@ -3457,6 +3458,13 @@ async function runNewTradeAnalysis() {
       renderOverview();
       const totalActive = (pendingProposals || []).length;
       showAnalysisToast(`✅ Анализът завърши! Генерирани са ${createdCount} нови предложения (Общо активни: ${totalActive}) на база пресен Gold Flip и Quantamental Alpha.`, 'success', 5500);
+    }
+
+    // Automatically expand proposals section if it was collapsed
+    if (isProposalsCollapsed) {
+      isProposalsCollapsed = false;
+      localStorage.setItem('larsson_proposals_collapsed', 'false');
+      applyProposalsVisibility(false);
     }
 
     // Scroll smoothly to proposals section
@@ -4459,6 +4467,169 @@ function quickFillCalculator(ticker, entry, sl, tp1, tp2, tier, direction, lever
   initPageCalculator();
 }
 
+// =============================================================================
+// SECTION VISIBILITY CONTROLLERS (HIDE / SHOW PROPOSALS & LIVE CHART)
+// =============================================================================
+
+let isProposalsCollapsed = localStorage.getItem('larsson_proposals_collapsed') === 'true';
+let isChartCollapsed = localStorage.getItem('larsson_chart_collapsed') === 'true';
+let sectionVisibilityEventsBound = false;
+
+function initSectionVisibilityControllers() {
+  applyProposalsVisibility(isProposalsCollapsed);
+  applyChartVisibility(isChartCollapsed);
+
+  if (sectionVisibilityEventsBound) return;
+  sectionVisibilityEventsBound = true;
+
+  // Proposals toggle buttons
+  const btnToggleProp = document.getElementById('btnToggleProposals');
+  if (btnToggleProp) {
+    btnToggleProp.addEventListener('click', toggleProposalsVisibility);
+  }
+  const hdrToggleProp = document.getElementById('hdrToggleProposals');
+  if (hdrToggleProp) {
+    hdrToggleProp.addEventListener('click', toggleProposalsVisibility);
+  }
+
+  // Chart toggle buttons
+  const btnToggleChart = document.getElementById('btnToggleLiveChart');
+  if (btnToggleChart) {
+    btnToggleChart.addEventListener('click', toggleChartVisibility);
+  }
+  const hdrToggleChart = document.getElementById('hdrToggleChart');
+  if (hdrToggleChart) {
+    hdrToggleChart.addEventListener('click', toggleChartVisibility);
+  }
+}
+
+function toggleProposalsVisibility() {
+  isProposalsCollapsed = !isProposalsCollapsed;
+  localStorage.setItem('larsson_proposals_collapsed', isProposalsCollapsed ? 'true' : 'false');
+  applyProposalsVisibility(isProposalsCollapsed);
+}
+
+function applyProposalsVisibility(collapsed) {
+  const section = document.getElementById('proposalsBannerSection');
+  const btnToggle = document.getElementById('btnToggleProposals');
+  const btnTxt = document.getElementById('btnToggleProposalsTxt');
+  const hdrBtn = document.getElementById('hdrToggleProposals');
+  const hdrTxt = document.getElementById('hdrToggleProposalsTxt');
+  if (!section) return;
+
+  let resolved = {};
+  try {
+    resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
+  } catch(e) { resolved = {}; }
+  const activeCount = (pendingProposals || []).filter(p => !resolved[p.proposal_id]).length;
+
+  if (collapsed) {
+    section.classList.add('is-collapsed');
+    if (btnToggle) {
+      btnToggle.classList.add('is-collapsed');
+      btnToggle.setAttribute('aria-expanded', 'false');
+      const icon = btnToggle.querySelector('.toggle-icon');
+      if (icon) icon.textContent = '▼';
+    }
+    if (btnTxt) {
+      btnTxt.textContent = activeCount > 0 ? `Покажи (${activeCount})` : 'Покажи';
+    }
+    if (hdrBtn) {
+      hdrBtn.classList.add('is-hidden');
+    }
+    if (hdrTxt) {
+      hdrTxt.textContent = '⚡ Сделки (скрити)';
+    }
+  } else {
+    section.classList.remove('is-collapsed');
+    if (btnToggle) {
+      btnToggle.classList.remove('is-collapsed');
+      btnToggle.setAttribute('aria-expanded', 'true');
+      const icon = btnToggle.querySelector('.toggle-icon');
+      if (icon) icon.textContent = '▲';
+    }
+    if (btnTxt) {
+      btnTxt.textContent = 'Скрий';
+    }
+    if (hdrBtn) {
+      hdrBtn.classList.remove('is-hidden');
+    }
+    if (hdrTxt) {
+      hdrTxt.textContent = '⚡ Сделки';
+    }
+  }
+}
+
+function toggleChartVisibility() {
+  isChartCollapsed = !isChartCollapsed;
+  localStorage.setItem('larsson_chart_collapsed', isChartCollapsed ? 'true' : 'false');
+  applyChartVisibility(isChartCollapsed);
+}
+
+function applyChartVisibility(collapsed) {
+  const section = document.getElementById('liveChartSection');
+  const btnToggle = document.getElementById('btnToggleLiveChart');
+  const btnTxt = document.getElementById('btnToggleLiveChartTxt');
+  const hdrBtn = document.getElementById('hdrToggleChart');
+  const hdrTxt = document.getElementById('hdrToggleChartTxt');
+  if (!section) return;
+
+  if (collapsed) {
+    section.classList.add('is-collapsed');
+    if (btnToggle) {
+      btnToggle.classList.add('is-collapsed');
+      btnToggle.setAttribute('aria-expanded', 'false');
+      const icon = btnToggle.querySelector('.toggle-icon');
+      if (icon) icon.textContent = '▼';
+    }
+    if (btnTxt) {
+      btnTxt.textContent = 'Покажи графиката';
+    }
+    if (hdrBtn) {
+      hdrBtn.classList.add('is-hidden');
+    }
+    if (hdrTxt) {
+      hdrTxt.textContent = '📈 Графика (скрита)';
+    }
+  } else {
+    section.classList.remove('is-collapsed');
+    if (btnToggle) {
+      btnToggle.classList.remove('is-collapsed');
+      btnToggle.setAttribute('aria-expanded', 'true');
+      const icon = btnToggle.querySelector('.toggle-icon');
+      if (icon) icon.textContent = '▲';
+    }
+    if (btnTxt) {
+      btnTxt.textContent = 'Скрий графиката';
+    }
+    if (hdrBtn) {
+      hdrBtn.classList.remove('is-hidden');
+    }
+    if (hdrTxt) {
+      hdrTxt.textContent = '📈 Графика';
+    }
+
+    // Auto-refresh or resize chart upon expanding
+    setTimeout(() => {
+      const container = document.getElementById('liveChartCanvas');
+      if (liveActiveChart && container && container.clientWidth) {
+        liveActiveChart.applyOptions({ 
+          width: container.clientWidth,
+          height: container.clientHeight || 480
+        });
+      } else if (!liveActiveChart && liveTicker) {
+        selectLiveAsset(liveTicker, liveTf, liveClass);
+      }
+    }, 60);
+  }
+}
+
+// Immediate init of visibility on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+  initSectionVisibilityControllers();
+});
+
 // Initialize
+initSectionVisibilityControllers();
 loadDashboardData();
 

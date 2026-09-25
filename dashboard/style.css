@@ -646,6 +646,129 @@ h1 {
   color: #38bdf8;
 }
 
+/* Quick View Toggles in Header */
+.header-view-toggles {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+  gap: 4px;
+}
+
+.btn-hdr-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-hdr-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-hdr-toggle .hdr-toggle-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+  transition: all 0.2s ease;
+}
+
+.btn-hdr-toggle.is-hidden {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.btn-hdr-toggle.is-hidden .hdr-toggle-dot {
+  background: #64748b;
+  box-shadow: none;
+}
+
+/* Section Toggle Collapse Buttons */
+.btn-toggle-section {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid var(--border-color);
+  color: #cbd5e1;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-toggle-section:hover {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.btn-toggle-section .toggle-icon {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-toggle-section.is-collapsed {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+}
+
+.btn-toggle-section.is-collapsed:hover {
+  background: rgba(245, 158, 11, 0.28);
+  color: #ffffff;
+}
+
+/* Collapsed States for Sections */
+.proposals-banner-section.is-collapsed {
+  padding: 10px 18px;
+  margin-bottom: 16px;
+  border-color: rgba(245, 158, 11, 0.25);
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.proposals-banner-section.is-collapsed .proposals-banner-header {
+  margin-bottom: 0;
+}
+
+.proposals-banner-section.is-collapsed .proposals-banner-subtitle,
+.proposals-banner-section.is-collapsed .proposals-cards-grid {
+  display: none !important;
+}
+
+.live-chart-section.is-collapsed {
+  padding: 10px 18px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  gap: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.live-chart-section.is-collapsed .live-hud-strip,
+.live-chart-section.is-collapsed .live-chart-canvas-container,
+.live-chart-section.is-collapsed .live-quick-pills,
+.live-chart-section.is-collapsed .live-tf-group,
+.live-chart-section.is-collapsed .live-ratio-group {
+  display: none !important;
+}
+
 .class-badge {
   font-size: 0.6875rem;
   font-weight: 600;
