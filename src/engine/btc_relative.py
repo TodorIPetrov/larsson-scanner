@@ -17,6 +17,70 @@ from src.engine.smma import compute_larsson_series, evaluate_larsson_state, Lars
 logger = logging.getLogger(__name__)
 
 
+# Canonical mapping for top cryptocurrencies with native BTC pairs on Binance
+NATIVE_BINANCE_BTC_PAIRS: Dict[str, str] = {
+    "ETHUSDT": "BINANCE:ETHBTC",
+    "SOLUSDT": "BINANCE:SOLBTC",
+    "BNBUSDT": "BINANCE:BNBBTC",
+    "XRPUSDT": "BINANCE:XRPBTC",
+    "ADAUSDT": "BINANCE:ADABTC",
+    "AVAXUSDT": "BINANCE:AVAXBTC",
+    "DOGEUSDT": "BINANCE:DOGEBTC",
+    "LINKUSDT": "BINANCE:LINKBTC",
+    "DOTUSDT": "BINANCE:DOTBTC",
+    "NEARUSDT": "BINANCE:NEARBTC",
+    "LTCUSDT": "BINANCE:LTCBTC",
+    "BCHUSDT": "BINANCE:BCHBTC",
+    "ATOMUSDT": "BINANCE:ATOMBTC",
+}
+
+
+def get_tradingview_ratio_symbol(
+    ticker: str,
+    asset_class: str = "crypto",
+    tv_symbol: Optional[str] = None,
+) -> str:
+    """
+    Generates the canonical TradingView symbol or mathematical formula for an Asset / BTC chart.
+    
+    Examples:
+      - ETHUSDT -> 'BINANCE:ETHBTC' (native pair)
+      - SUIUSDT -> 'BINANCE:SUIUSDT/BINANCE:BTCUSDT' (synthetic formula)
+      - MSTR    -> 'NASDAQ:MSTR/BINANCE:BTCUSDT'
+      - NVDA    -> 'NASDAQ:NVDA/BINANCE:BTCUSDT'
+    """
+    clean = ticker.upper()
+    if clean in NATIVE_BINANCE_BTC_PAIRS:
+        return NATIVE_BINANCE_BTC_PAIRS[clean]
+
+    base_sym = tv_symbol or clean
+    if asset_class == "crypto":
+        if not base_sym.startswith("BINANCE:") and (clean.endswith("USDT") or clean.endswith("USDC")):
+            base_sym = f"BINANCE:{clean}"
+        return f"{base_sym}/BINANCE:BTCUSDT"
+
+    elif asset_class in ("crypto_stocks", "us_stocks", "ai_stocks"):
+        if ":" not in base_sym:
+            base_sym = f"NASDAQ:{clean}"
+        return f"{base_sym}/BINANCE:BTCUSDT"
+
+    return f"{base_sym}/BINANCE:BTCUSDT"
+
+
+def get_tradingview_ratio_link(
+    ticker: str,
+    asset_class: str = "crypto",
+    timeframe: str = "1D",
+    tv_symbol: Optional[str] = None,
+) -> str:
+    """Generates a direct TradingView chart URL for the Asset / BTC pair."""
+    import urllib.parse
+    tf_code = "240" if timeframe.upper() == "4H" else timeframe
+    ratio_sym = get_tradingview_ratio_symbol(ticker, asset_class=asset_class, tv_symbol=tv_symbol)
+    encoded_sym = urllib.parse.quote(ratio_sym, safe="")
+    return f"https://www.tradingview.com/chart/?symbol={encoded_sym}&interval={tf_code}"
+
+
 @dataclass
 class BTCRelativeAnalysis:
     """Comprehensive relative strength analysis of an asset against Bitcoin."""
@@ -37,6 +101,8 @@ class BTCRelativeAnalysis:
     label_bg: str                              # e.g. "🟢 НАДМИНАВА BTC (Alpha лидер)"
     thesis_bg: str                             # Detailed Bulgarian reasoning
     ratio_candles: List[Dict[str, Union[float, int]]] = field(default_factory=list) # [{time, open, high, low, close}] for UI chart
+    tv_ratio_symbol: str = ""                  # e.g. 'BINANCE:ETHBTC' or 'BINANCE:SOLUSDT/BINANCE:BTCUSDT'
+    tv_ratio_url: str = ""                     # Direct TradingView URL for /BTC chart
 
 
 class BTCRelativeStrengthAnalyzer:
@@ -180,6 +246,9 @@ class BTCRelativeStrengthAnalyzer:
                 "close": round(float(ratio_c[i]), 8),
             })
 
+        tv_ratio_sym = get_tradingview_ratio_symbol(ticker, asset_class=asset_class)
+        tv_ratio_url = get_tradingview_ratio_link(ticker, asset_class=asset_class, timeframe="1D")
+
         return BTCRelativeAnalysis(
             ticker=ticker,
             asset_class=asset_class,
@@ -198,4 +267,7 @@ class BTCRelativeStrengthAnalyzer:
             label_bg=label_bg,
             thesis_bg=thesis_bg,
             ratio_candles=ratio_candles,
+            tv_ratio_symbol=tv_ratio_sym,
+            tv_ratio_url=tv_ratio_url,
         )
+

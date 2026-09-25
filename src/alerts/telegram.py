@@ -159,8 +159,10 @@ class TelegramNotifier:
                     price=item["price"],
                     tv_symbol=item["tv_symbol"],
                     sr_data=item.get("sr_data"),
+                    asset_class=item.get("asset_class", "crypto"),
                 )
                 self.send_raw_message(msg)
+
                 time.sleep(0.05)  # Small breather between messages
         else:
             batch_msg = format_batch_alert(alerts)

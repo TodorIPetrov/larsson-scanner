@@ -11,6 +11,7 @@ from typing import Dict, List, Optional
 
 from src.storage.database import Database
 from src.engine.asset_profiles import get_quality_tier, get_tier_emoji
+from src.engine.btc_relative import get_tradingview_ratio_symbol, get_tradingview_ratio_link
 
 DEFAULT_OUTPUT_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -477,6 +478,10 @@ def export_dashboard_data(
         btc_thesis_bg = _row_val(r, "ts_btc_thesis_bg")
         btc_leverage_allowed = bool(_row_val(r, "ts_btc_leverage_allowed", 1))
 
+        # TradingView /BTC ratio symbol & link
+        tv_ratio_symbol = get_tradingview_ratio_symbol(ticker, r["asset_class"], r["tv_symbol"])
+        tv_ratio_url = get_tradingview_ratio_link(ticker, r["asset_class"], _row_val(r, "timeframe", "1D"), r["tv_symbol"])
+
         btc_relative_block = None
         if r["asset_class"] in ["crypto", "crypto_stocks"]:
             sign = "+" if (btc_alpha_30d or 0) >= 0 else ""
@@ -489,6 +494,8 @@ def export_dashboard_data(
                 "badge_bg": btc_badge_bg or (f"₿ {sign}{btc_alpha_30d:.1f}% vs BTC" if btc_alpha_30d is not None else "₿ vs BTC"),
                 "thesis_bg": btc_thesis_bg or "",
                 "leverage_allowed": btc_leverage_allowed,
+                "tv_ratio_symbol": tv_ratio_symbol,
+                "tv_ratio_url": tv_ratio_url,
             }
             trade_suggestion_dict["btc_relative"] = btc_relative_block
 
@@ -516,6 +523,8 @@ def export_dashboard_data(
             "name": name,
             "asset_class": r["asset_class"],
             "tv_symbol": r["tv_symbol"],
+            "tv_ratio_symbol": tv_ratio_symbol,
+            "tv_ratio_url": tv_ratio_url,
             "timeframe": r["timeframe"],
             "state": state,
             "price": _clean_float(r["last_price"]),

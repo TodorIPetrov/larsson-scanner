@@ -51,10 +51,12 @@ def format_single_alert(
     price: float,
     tv_symbol: str,
     sr_data: Optional[dict] = None,
+    asset_class: str = "crypto",
 ) -> str:
     """
     Formats a single state transition alert in Telegram HTML format,
-    enriched with macro Support & Resistance (S/R) levels and context flags.
+    enriched with macro Support & Resistance (S/R) levels, context flags,
+    and TradingView USD & /BTC ratio chart links.
     """
     new_emoji = STATE_EMOJI.get(new_state, "⚪")
     old_emoji = STATE_EMOJI.get(old_state, "⚪")
@@ -113,8 +115,20 @@ def format_single_alert(
             elif context_flag == "BREAKDOWN_BELOW":
                 lines.append("🔻 <b>Срив:</b> Пробив под всички ключови нива на подкрепа!")
 
-    lines.append(f"📊 <a href=\"{tv_url}\">Отвори в TradingView</a>")
+    # TradingView links (USD & /BTC ratio)
+    links = [f"📊 <a href=\"{tv_url}\">TradingView (USD)</a>"]
+    clean_t = ticker.upper()
+    if clean_t not in ("BTCUSDT", "BTC-USD", "BTC") and not clean_t.startswith("^"):
+        try:
+            from src.engine.btc_relative import get_tradingview_ratio_link
+            btc_tv_url = get_tradingview_ratio_link(ticker, asset_class=asset_class, timeframe=timeframe, tv_symbol=tv_symbol)
+            links.append(f"🪙 <a href=\"{btc_tv_url}\">TradingView (/BTC)</a>")
+        except Exception:
+            pass
+
+    lines.append(" | ".join(links))
     return "\n".join(lines)
+
 
 
 def format_batch_alert(changes: List[dict]) -> str:

@@ -257,3 +257,29 @@ class TestBTCRelativeStrength:
         assert naka_row["ts_btc_alpha_30d"] == pytest.approx(18.5)
         assert naka_row["ts_btc_leverage_allowed"] == 1
         assert "Alpha" in naka_row["ts_btc_badge_bg"]
+
+    def test_tradingview_ratio_symbols_and_links(self):
+        from src.engine.btc_relative import get_tradingview_ratio_symbol, get_tradingview_ratio_link
+
+        # Native pairs
+        assert get_tradingview_ratio_symbol("ETHUSDT", "crypto") == "BINANCE:ETHBTC"
+        assert get_tradingview_ratio_symbol("SOLUSDT", "crypto") == "BINANCE:SOLBTC"
+
+        # Synthetic crypto pairs
+        assert get_tradingview_ratio_symbol("SUIUSDT", "crypto") == "BINANCE:SUIUSDT/BINANCE:BTCUSDT"
+
+        # Crypto stocks / equities
+        assert get_tradingview_ratio_symbol("MSTR", "crypto_stocks") == "NASDAQ:MSTR/BINANCE:BTCUSDT"
+        assert get_tradingview_ratio_symbol("NVDA", "us_stocks") == "NASDAQ:NVDA/BINANCE:BTCUSDT"
+
+        # Direct URLs
+        link_eth = get_tradingview_ratio_link("ETHUSDT", "crypto", "1D")
+        assert "https://www.tradingview.com/chart/?symbol=" in link_eth
+        assert "interval=1D" in link_eth
+        assert "ETHBTC" in link_eth
+
+        link_sui_4h = get_tradingview_ratio_link("SUIUSDT", "crypto", "4H")
+        assert "interval=240" in link_sui_4h
+        assert "SUIUSDT" in link_sui_4h
+        assert "BTCUSDT" in link_sui_4h
+

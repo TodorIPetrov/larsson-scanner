@@ -436,6 +436,22 @@ class TelegramCommandListener:
         if fund_thesis:
             fund_block += f"• Теза: <i>{fund_thesis}</i>\n"
 
+        # 2.5 ⚡ BTC СРАВНИТЕЛЕН АНАЛИЗ (Alpha vs Bitcoin)
+        btc_state = selected.get("ts_btc_ratio_state")
+        btc_block = ""
+        if btc_state and btc_state != "NA" and clean_ticker not in ("BTCUSDT", "BTC-USD", "BTC"):
+            from src.engine.btc_relative import get_tradingview_ratio_link
+            btc_badge = selected.get("ts_btc_badge_bg", f"{btc_state} vs BTC")
+            btc_thesis = selected.get("ts_btc_thesis_bg", "")
+            btc_url = get_tradingview_ratio_link(clean_ticker, asset_class=selected.get("asset_class", "crypto"), timeframe=tf, tv_symbol=tv_sym)
+            btc_block = (
+                f"\n⚡ <b>BTC СРАВНИТЕЛЕН АНАЛИЗ (Alpha):</b>\n"
+                f"• Статус: <b>{btc_badge}</b>\n"
+                f"• 🪙 <a href=\"{btc_url}\">Отвори {clean_ticker}/BTC Графика в TradingView ↗</a>\n"
+            )
+            if btc_thesis:
+                btc_block += f"• Теза: <i>{btc_thesis}</i>\n"
+
         # 3. 🎯 СИНТЕЗИРАНА СТРАТЕГИЯ (Quantamental Confluence)
         action = selected.get("ts_action", "WAIT")
         tier = selected.get("ts_tier", "NONE")
@@ -477,9 +493,16 @@ class TelegramCommandListener:
 
         header = f"📊 <b>Анализ на {clean_ticker} [{tf}]</b>\n"
         header += f"💵 Цена: <code>{p_str}</code>\n━━━━━━━━━━━━━━━━━━━━\n"
-        tv_footer = f"\n━━━━━━━━━━━━━━━━━━━━\n🔗 <a href=\"{url}\">Отвори интерактивната графика в TradingView ↗</a>"
 
-        return header + tech_block + fund_block + synth_block + tv_footer
+        # TradingView Footers (USD + BTC Ratio)
+        tv_footer = f"\n━━━━━━━━━━━━━━━━━━━━\n📈 <a href=\"{url}\">TradingView (USD) ↗</a>"
+        if clean_ticker not in ("BTCUSDT", "BTC-USD", "BTC") and not clean_ticker.startswith("^"):
+            from src.engine.btc_relative import get_tradingview_ratio_link
+            btc_tv_url = get_tradingview_ratio_link(clean_ticker, asset_class=selected.get("asset_class", "crypto"), timeframe=tf, tv_symbol=tv_sym)
+            tv_footer += f" | 🪙 <a href=\"{btc_tv_url}\">TradingView ({clean_ticker}/BTC) ↗</a>"
+
+        return header + tech_block + fund_block + btc_block + synth_block + tv_footer
+
 
     def handle_alpha(self, timeframe: Optional[str] = None) -> str:
         """Lists active high-conviction Tier A+ and Tier A institutional setups separated into Crypto & Equities."""
@@ -520,8 +543,14 @@ class TelegramCommandListener:
                 rr = s.get("ts_rr")
                 url = get_tradingview_link(s["tv_symbol"], tf)
                 rr_txt = f" | R:R 1:{rr}" if rr else ""
-                crypto_lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): 🪙 <b>Tier {tier}</b> ({score}/100) @ <code>${entry:,.2f}</code>{rr_txt}")
+                btc_link_txt = ""
+                if ticker.upper() not in ("BTCUSDT", "BTC-USD", "BTC"):
+                    from src.engine.btc_relative import get_tradingview_ratio_link
+                    btc_tv_url = get_tradingview_ratio_link(ticker, asset_class="crypto", timeframe=tf, tv_symbol=s["tv_symbol"])
+                    btc_link_txt = f" [<a href=\"{btc_tv_url}\">/BTC ↗</a>]"
+                crypto_lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a>{btc_link_txt} ({tf}): 🪙 <b>Tier {tier}</b> ({score}/100) @ <code>${entry:,.2f}</code>{rr_txt}")
             sections.append("\n".join(crypto_lines))
+
 
         if equity_matches:
             eq_lines = [f"\n🏛️ <b>Акции & Суровини ({len(equity_matches)}):</b>"]
