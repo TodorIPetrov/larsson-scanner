@@ -81,6 +81,50 @@ function getTvSymbol(item, ticker, assetClass) {
   return ticker;
 }
 
+const NATIVE_BINANCE_BTC_PAIRS = {
+  'ETHUSDT': 'BINANCE:ETHBTC',
+  'SOLUSDT': 'BINANCE:SOLBTC',
+  'BNBUSDT': 'BINANCE:BNBBTC',
+  'XRPUSDT': 'BINANCE:XRPBTC',
+  'ADAUSDT': 'BINANCE:ADABTC',
+  'AVAXUSDT': 'BINANCE:AVAXBTC',
+  'DOGEUSDT': 'BINANCE:DOGEBTC',
+  'LINKUSDT': 'BINANCE:LINKBTC',
+  'DOTUSDT': 'BINANCE:DOTBTC',
+  'NEARUSDT': 'BINANCE:NEARBTC',
+  'LTCUSDT': 'BINANCE:LTCBTC',
+  'BCHUSDT': 'BINANCE:BCHBTC',
+  'ATOMUSDT': 'BINANCE:ATOMBTC',
+};
+
+function getTvRatioSymbol(item, ticker, assetClass) {
+  if (item && item.tv_ratio_symbol) return item.tv_ratio_symbol;
+  const sym = (ticker || (item && item.ticker) || '').toUpperCase();
+  if (NATIVE_BINANCE_BTC_PAIRS[sym]) {
+    return NATIVE_BINANCE_BTC_PAIRS[sym];
+  }
+  const cls = assetClass || (item && item.asset_class) || 'crypto';
+  const baseSym = (item && item.tv_symbol) || sym;
+  if (cls === 'crypto') {
+    let clean = baseSym;
+    if (!clean.startsWith('BINANCE:') && (sym.endsWith('USDT') || sym.endsWith('USDC'))) {
+      clean = `BINANCE:${sym}`;
+    }
+    return `${clean}/BINANCE:BTCUSDT`;
+  } else if (cls === 'crypto_stocks' || cls === 'us_stocks' || cls === 'ai_stocks') {
+    const clean = baseSym.includes(':') ? baseSym : `NASDAQ:${sym}`;
+    return `${clean}/BINANCE:BTCUSDT`;
+  }
+  return `${baseSym}/BINANCE:BTCUSDT`;
+}
+
+function getTvRatioLink(item, ticker, assetClass, timeframe) {
+  if (item && item.tv_ratio_url) return item.tv_ratio_url;
+  const ratioSym = getTvRatioSymbol(item, ticker, assetClass);
+  const tfCode = getTvInterval(timeframe || (item && item.timeframe) || '1D');
+  return `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(ratioSym)}&interval=${tfCode}`;
+}
+
 const CLASS_LABELS = {
   crypto_stocks: 'Crypto Stock',
   ai_stocks: 'AI Stock',
@@ -112,7 +156,11 @@ function renderBtcBadge(btcRel) {
   } else if (btcRel.ratio_state === 'BLUE' || !btcRel.leverage_allowed) {
     cls = 'btc-badge-blue';
   }
-  return `<span class="btc-alpha-badge ${cls}" title="${btcRel.thesis_bg || ''}">${btcRel.badge_bg}</span>`;
+  const title = (btcRel.thesis_bg || '') + (btcRel.tv_ratio_url ? ' (Кликни за TradingView /BTC графика)' : '');
+  if (btcRel.tv_ratio_url) {
+    return `<a href="${btcRel.tv_ratio_url}" target="_blank" rel="noopener" class="btc-alpha-badge ${cls}" style="text-decoration: none;" onclick="event.stopPropagation()" title="${title}">${btcRel.badge_bg} ↗</a>`;
+  }
+  return `<span class="btc-alpha-badge ${cls}" title="${title}">${btcRel.badge_bg}</span>`;
 }
 
 function getQuantamentalSetupRank(item) {
@@ -1151,6 +1199,9 @@ function renderTable(filteredSymbols) {
     const tfCode = getTvInterval(item.timeframe);
     const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
     const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
+    const tvRatioUrl = item.tv_ratio_url || getTvRatioLink(item, item.ticker, item.asset_class, item.timeframe);
+    const tvRatioSym = item.tv_ratio_symbol || getTvRatioSymbol(item, item.ticker, item.asset_class);
+    const hasBtcRatio = (item.asset_class === 'crypto' || item.asset_class === 'crypto_stocks') && !item.ticker.startsWith('BTC');
 
     const priceFormatted = item.price >= 1000 
       ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
@@ -1208,6 +1259,10 @@ function renderTable(filteredSymbols) {
             <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" onclick="event.stopPropagation()" title="Отвори в TradingView">
               TV ↗
             </a>
+            ${hasBtcRatio ? `
+            <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="tv-link-btn tv-btc-link" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Отвори ${tvRatioSym} в TradingView">
+              🪙 /BTC ↗
+            </a>` : ''}
           </div>
         </td>
       </tr>
@@ -1229,6 +1284,9 @@ function renderCards(filteredSymbols) {
     const tfCode = getTvInterval(item.timeframe);
     const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
     const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
+    const tvRatioUrl = item.tv_ratio_url || getTvRatioLink(item, item.ticker, item.asset_class, item.timeframe);
+    const tvRatioSym = item.tv_ratio_symbol || getTvRatioSymbol(item, item.ticker, item.asset_class);
+    const hasBtcRatio = (item.asset_class === 'crypto' || item.asset_class === 'crypto_stocks') && !item.ticker.startsWith('BTC');
     
     let cardClass = 'card-neutral';
     if (item.state === 'GOLD') cardClass = 'card-gold';
@@ -1296,6 +1354,8 @@ function renderCards(filteredSymbols) {
           <div style="display: flex; gap: 6px; align-items: center;">
             <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">📊 S/R</button>
             <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn" onclick="event.stopPropagation()">TV ↗</a>
+            ${hasBtcRatio ? `
+            <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="card-chart-btn" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Отвори ${tvRatioSym} в TradingView">/BTC ↗</a>` : ''}
           </div>
         </div>
       </div>
@@ -1662,11 +1722,13 @@ async function loadChart(container, ticker, timeframe, assetClass, height = 500,
         chartInstance = renderLightweightChart(container, candles, item, height, true);
         return chartInstance;
       } else {
-        renderTradingViewIframe(container, `BINANCE:${cleanBase}BTC`, timeframe);
+        const ratioSym = getTvRatioSymbol(item, ticker, assetClass);
+        renderTradingViewIframe(container, ratioSym, timeframe);
         return null;
       }
-    } else if (isCryptoStock) {
-      renderTradingViewIframe(container, `${ticker}/BTCUSD`, timeframe);
+    } else if (isCryptoStock || assetClass === 'crypto') {
+      const ratioSym = getTvRatioSymbol(item, ticker, assetClass);
+      renderTradingViewIframe(container, ratioSym, timeframe);
       return null;
     }
   }
@@ -1747,8 +1809,32 @@ function updateLiveChartHud(item, ticker, timeframe, assetClass) {
   }
 
   const tvLinkEl = document.getElementById('liveTvLink');
+  const tvBtcLinkEl = document.getElementById('liveTvBtcLink');
+  const isEligibleRatio = (assetClass === 'crypto' || assetClass === 'crypto_stocks') && !ticker.startsWith('BTC');
+  const tvRatioUrl = item.tv_ratio_url || getTvRatioLink(item, ticker, assetClass, timeframe);
+  const tvRatioSym = item.tv_ratio_symbol || getTvRatioSymbol(item, ticker, assetClass);
+  const tvUsdUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tvInterval}`;
+
   if (tvLinkEl) {
-    tvLinkEl.href = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tvInterval}`;
+    if (liveRatioMode === 'BTC' && isEligibleRatio) {
+      tvLinkEl.href = tvRatioUrl;
+      tvLinkEl.title = `Отвори ${tvRatioSym} в TradingView`;
+      tvLinkEl.innerHTML = `🪙 TV /BTC ↗`;
+    } else {
+      tvLinkEl.href = tvUsdUrl;
+      tvLinkEl.title = `Отвори ${tvSym} в TradingView`;
+      tvLinkEl.innerHTML = `TV ↗`;
+    }
+  }
+
+  if (tvBtcLinkEl) {
+    if (isEligibleRatio) {
+      tvBtcLinkEl.style.display = 'inline-block';
+      tvBtcLinkEl.href = tvRatioUrl;
+      tvBtcLinkEl.title = `Отвори ${tvRatioSym} в TradingView`;
+    } else {
+      tvBtcLinkEl.style.display = 'none';
+    }
   }
 
   // 3-Pillar Compact Strip
@@ -1899,9 +1985,33 @@ async function openChartModal(ticker, timeframe, assetClass) {
 
   const tvInterval = getTvInterval(activeTf);
   const tvSym = getTvSymbol(item, ticker, assetClass);
+  const isEligibleRatio = (assetClass === 'crypto' || assetClass === 'crypto_stocks') && !ticker.startsWith('BTC');
+  const tvRatioUrl = item.tv_ratio_url || getTvRatioLink(item, ticker, assetClass, activeTf);
+  const tvRatioSym = item.tv_ratio_symbol || getTvRatioSymbol(item, ticker, assetClass);
+  const tvUsdUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tvInterval}`;
+
   const modalTvBtn = document.getElementById('modalTvBtn');
   if (modalTvBtn) {
-    modalTvBtn.href = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tvInterval}`;
+    if (modalRatioMode === 'BTC' && isEligibleRatio) {
+      modalTvBtn.href = tvRatioUrl;
+      modalTvBtn.title = `Отвори ${tvRatioSym} в TradingView`;
+      modalTvBtn.innerHTML = `🪙 TV /BTC ↗`;
+    } else {
+      modalTvBtn.href = tvUsdUrl;
+      modalTvBtn.title = `Отвори ${tvSym} в TradingView`;
+      modalTvBtn.innerHTML = `TV ↗`;
+    }
+  }
+
+  const modalTvBtcBtn = document.getElementById('modalTvBtcBtn');
+  if (modalTvBtcBtn) {
+    if (isEligibleRatio) {
+      modalTvBtcBtn.style.display = 'inline-block';
+      modalTvBtcBtn.href = tvRatioUrl;
+      modalTvBtcBtn.title = `Отвори ${tvRatioSym} в TradingView`;
+    } else {
+      modalTvBtcBtn.style.display = 'none';
+    }
   }
 
   // Update Active TF Buttons in Modal
