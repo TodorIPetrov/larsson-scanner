@@ -42,6 +42,23 @@ class FundamentalProfile:
     m_score: Optional[float] = None
     upside_pct: Optional[float] = None
     thesis: str = ""
+    # Enriched forensic and company metrics
+    sector: Optional[str] = None
+    industry: Optional[str] = None
+    model_type: Optional[str] = None
+    price: Optional[float] = None
+    shares: Optional[float] = None
+    mcap_b: Optional[float] = None
+    beta: Optional[float] = None
+    revenue_b: Optional[float] = None
+    ebit_b: Optional[float] = None
+    nopat_b: Optional[float] = None
+    tata: Optional[float] = None
+    entry_price: Optional[float] = None
+    action: Optional[str] = None
+    solvency_type: Optional[str] = None
+    production_cost: Optional[float] = None
+    mvrv_ratio: Optional[float] = None
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -766,6 +783,119 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "upside_pct": 36.5,
         "thesis": "Глобален доминант в стрийминга с над 280 млн. абонати и 33% оперативен марж. Рекламният план (AVOD) и монетизирането на пароли ускоряват FCF. Forward P/E ~18.8x срещу исторически 35x+. Справедлива стойност $88.00 (+22.6% MoS), Таргет $98.00. Ров: Wide, ROIC: 25.5%, Z-Score: 4.5.",
     },
+    # 🤖 AI & High-Conviction Tech Leaders
+    "NVDA": {
+        "name": "NVIDIA Corporation",
+        "verdict": "STRONG BUY",
+        "target_price": 175.0,
+        "fair_value": 155.0,
+        "mos_pct": 28.5,
+        "moat": "Wide",
+        "roic_pct": 62.0,
+        "wacc_pct": 9.8,
+        "z_score": 11.2,
+        "m_score": -2.85,
+        "upside_pct": 42.5,
+        "thesis": "Хегемон в AI ускорението и центровете за данни с CUDA софтуерен ров. Blackwell архитектурата гарантира висока рентабилност и над 70% брутен марж. Справедлива стойност $155.00 (+28.5% MoS), Таргет $175.00. Ров: Wide, ROIC: 62.0%, Z-Score: 11.2.",
+        "sector": "Technology",
+        "industry": "Semiconductors",
+        "model_type": "Three-Stage DCF & CUDA Ecosystem Model",
+        "price": 122.8,
+        "shares": 24500000000,
+        "mcap_b": 3010.0,
+        "beta": 1.68,
+        "revenue_b": 115.0,
+        "ebit_b": 68.0,
+        "nopat_b": 58.5,
+        "tata": -0.04,
+        "entry_price": 118.0,
+        "action": "BUY",
+        "solvency_type": "Altman Z-Score (Ultra Safe Zone)",
+    },
+    "MSTR": {
+        "name": "MicroStrategy Inc.",
+        "verdict": "STRONG BUY",
+        "target_price": 480.0,
+        "fair_value": 420.0,
+        "mos_pct": 31.0,
+        "moat": "Wide",
+        "roic_pct": 28.0,
+        "wacc_pct": 9.5,
+        "z_score": 3.8,
+        "m_score": -2.45,
+        "upside_pct": 48.0,
+        "thesis": "Първата в света Bitcoin Treasury компания с над 400,000 BTC. Използва интелигентен конвертируем дълг с 0-1% лихва за акумулиране на биткойни с положителна акреция (BTC Yield >25%). Справедлива стойност $420.00 (+31% MoS), Таргет $480.00.",
+        "sector": "Financial Services",
+        "industry": "Bitcoin Treasury & Enterprise Software",
+        "model_type": "Look-Through Bitcoin NAV & Treasury Accretion Model",
+        "price": 324.0,
+        "shares": 225000000,
+        "mcap_b": 72.9,
+        "beta": 3.1,
+        "revenue_b": 0.49,
+        "ebit_b": -0.05,
+        "nopat_b": -0.04,
+        "tata": -0.01,
+        "entry_price": 310.0,
+        "action": "BUY",
+        "solvency_type": "Bitcoin Treasury Solvency (Safe Zone)",
+    },
+    "TSLA": {
+        "name": "Tesla, Inc.",
+        "verdict": "BUY",
+        "target_price": 290.0,
+        "fair_value": 260.0,
+        "mos_pct": 18.0,
+        "moat": "Narrow",
+        "roic_pct": 14.2,
+        "wacc_pct": 10.2,
+        "z_score": 5.2,
+        "m_score": -2.6,
+        "upside_pct": 26.5,
+        "thesis": "Лидер в автономното шофиране (FSD v13+), съхранението на енергия (Megapack +120% YoY) и хуманоидната роботика (Optimus). Справедлива стойност $260.00 (+18% MoS), Таргет $290.00. Ров: Narrow, ROIC: 14.2%, Z-Score: 5.2.",
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Manufacturers & Energy Storage",
+        "model_type": "DCF Multi-Division SOTP (Auto, Energy, AI)",
+        "price": 229.0,
+        "shares": 3180000000,
+        "mcap_b": 728.0,
+        "beta": 2.2,
+        "revenue_b": 97.0,
+        "ebit_b": 9.2,
+        "nopat_b": 7.8,
+        "tata": -0.02,
+        "entry_price": 220.0,
+        "action": "BUY",
+        "solvency_type": "Altman Z-Score (Safe Zone)",
+    },
+    "PLTR": {
+        "name": "Palantir Technologies",
+        "verdict": "BUY",
+        "target_price": 75.0,
+        "fair_value": 65.0,
+        "mos_pct": 15.0,
+        "moat": "Wide",
+        "roic_pct": 22.0,
+        "wacc_pct": 9.0,
+        "z_score": 6.8,
+        "m_score": -2.9,
+        "upside_pct": 24.0,
+        "thesis": "Доминантна операционна система за предприятиен изкуствен интелект (AIP). Експоненциален растеж в US Commercial сектора (+54% YoY) и непоклатими правителствени договори. Справедлива стойност $65.00, Таргет $75.00.",
+        "sector": "Technology",
+        "industry": "Software - Infrastructure",
+        "model_type": "High-Growth Software DCF & Rule of 40",
+        "price": 60.5,
+        "shares": 2240000000,
+        "mcap_b": 135.5,
+        "beta": 1.8,
+        "revenue_b": 2.8,
+        "ebit_b": 0.65,
+        "nopat_b": 0.58,
+        "tata": -0.05,
+        "entry_price": 58.0,
+        "action": "BUY",
+        "solvency_type": "Altman Z-Score (Safe Zone)",
+    },
     # 🪙 Bitcoin-Native Holding & Treasury Companies
     "NAKA": {
         "name": "Nakamoto Inc.",
@@ -779,6 +909,20 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "z_score": 3.5,
         "upside_pct": 84.1,
         "thesis": "Bitcoin-native трежъри холдинг на Дейвид Бейли (NASDAQ: NAKA) с 4,467 BTC в баланса. Търгува се с екстремна отстъпка от ~37% под нетната стойност на биткойните си (NAV $16.00). Притежава Bitcoin Magazine, най-голямата глобална Bitcoin конференция и UTXO Management. Справедлива стойност $16.00 (+59% MoS), Таргет $18.50.",
+        "sector": "Financial Services",
+        "industry": "Bitcoin Treasury & Holding",
+        "model_type": "Look-Through Bitcoin NAV & Treasury Valuation",
+        "price": 10.05,
+        "shares": 17900000.0,
+        "mcap_b": 0.18,
+        "beta": 2.85,
+        "revenue_b": 0.035,
+        "ebit_b": 0.005,
+        "nopat_b": 0.004,
+        "tata": -0.02,
+        "entry_price": 10.05,
+        "action": "BUY",
+        "solvency_type": "Spot Bitcoin Treasury (Safe Zone)",
     },
 }
 
@@ -809,7 +953,7 @@ class QuantamentalRegistry:
         count = 0
         # 1. Load multi-asset profiles first (Crypto, Commodities, Macro)
         for ticker, data in _MULTI_ASSET_PROFILES.items():
-            self.profiles[ticker.upper()] = FundamentalProfile(
+            prof = FundamentalProfile(
                 ticker=ticker,
                 name=data.get("name", ticker),
                 verdict=data.get("verdict", "NEUTRAL"),
@@ -823,7 +967,27 @@ class QuantamentalRegistry:
                 m_score=data.get("m_score"),
                 upside_pct=data.get("upside_pct"),
                 thesis=data.get("thesis", ""),
+                sector=data.get("sector") or ("Крипто активи" if "USDT" in ticker else ("Суровини" if "=F" in ticker else "Макро индекси")),
+                industry=data.get("industry") or ("Layer 1 / DeFi" if "USDT" in ticker else ("Индустриални & Благородни метали" if "=F" in ticker else "Борсови индекси")),
+                model_type=data.get("model_type") or "Макро ончейн оценка & Себестойност",
+                price=data.get("price"),
+                shares=data.get("shares"),
+                mcap_b=data.get("mcap_b"),
+                beta=data.get("beta"),
+                revenue_b=data.get("revenue_b"),
+                ebit_b=data.get("ebit_b"),
+                nopat_b=data.get("nopat_b"),
+                tata=data.get("tata"),
+                entry_price=data.get("entry_price"),
+                action=data.get("action") or ("BUY" if "BUY" in data.get("verdict", "") else ("HOLD" if "HOLD" in data.get("verdict", "") else "REDUCE")),
+                solvency_type=data.get("solvency_type") or "Altman Z-Score",
+                production_cost=data.get("production_cost") or (62000.0 if ticker == "BTCUSDT" else None),
+                mvrv_ratio=data.get("mvrv_ratio") or (1.95 if ticker == "BTCUSDT" else None),
             )
+            self.profiles[ticker.upper()] = prof
+            if ticker.endswith("USDT"):
+                base_sym = ticker[:-4].upper()
+                self.profiles[base_sym] = prof
             count += 1
 
         # 2. Load equity verdicts from research/verdicts.json
@@ -872,6 +1036,20 @@ class QuantamentalRegistry:
                         m_score=m_val,
                         upside_pct=upside,
                         thesis=f"Справедлива стойност {target_str} ({upside_str}). Ров: {item.get('moat', 'None')}, ROIC: {roic_str}, Z-Score: {z_str}.",
+                        sector=item.get("sector"),
+                        industry=item.get("industry"),
+                        model_type=item.get("model_type"),
+                        price=price,
+                        shares=_clean_float(item.get("shares")),
+                        mcap_b=_clean_float(item.get("mcap_b")),
+                        beta=_clean_float(item.get("beta")),
+                        revenue_b=_clean_float(item.get("revenue_b")),
+                        ebit_b=_clean_float(item.get("ebit_b")),
+                        nopat_b=_clean_float(item.get("nopat_b")),
+                        tata=_clean_float(item.get("tata")),
+                        entry_price=_clean_float(item.get("entry_price")),
+                        action=item.get("action"),
+                        solvency_type=item.get("solvency_type"),
                     )
                     self.profiles[ticker.upper()] = profile
                     count += 1

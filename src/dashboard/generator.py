@@ -136,23 +136,57 @@ def export_dashboard_data(
             fund_data = {
                 "verdict": fund.verdict,
                 "fair_value": _clean_float(fund.fair_value),
+                "target_price": _clean_float(fund.target_price),
                 "mos_pct": _clean_float(fund.mos_pct),
                 "moat": fund.moat,
                 "roic_pct": _clean_float(fund.roic_pct),
+                "wacc_pct": _clean_float(fund.wacc_pct),
                 "z_score": _clean_float(fund.z_score),
+                "m_score": _clean_float(fund.m_score),
+                "tata": _clean_float(fund.tata),
                 "upside_pct": _clean_float(fund.upside_pct),
                 "thesis": fund.thesis,
+                "sector": fund.sector,
+                "industry": fund.industry,
+                "model_type": fund.model_type,
+                "shares": _clean_float(fund.shares),
+                "mcap_b": _clean_float(fund.mcap_b),
+                "beta": _clean_float(fund.beta),
+                "revenue_b": _clean_float(fund.revenue_b),
+                "ebit_b": _clean_float(fund.ebit_b),
+                "nopat_b": _clean_float(fund.nopat_b),
+                "entry_price": _clean_float(fund.entry_price),
+                "solvency_type": fund.solvency_type,
+                "production_cost": _clean_float(fund.production_cost),
+                "mvrv_ratio": _clean_float(fund.mvrv_ratio),
             }
         elif _row_val(r, "ts_fund_verdict"):
             fund_data = {
                 "verdict": _row_val(r, "ts_fund_verdict"),
                 "fair_value": _clean_float(_row_val(r, "ts_fair_value")),
+                "target_price": _clean_float(_row_val(r, "ts_fair_value")),
                 "mos_pct": _clean_float(_row_val(r, "ts_mos_pct")),
                 "moat": _row_val(r, "ts_moat") or "None",
                 "roic_pct": None,
+                "wacc_pct": None,
                 "z_score": _clean_float(_row_val(r, "ts_z_score")),
+                "m_score": None,
+                "tata": None,
                 "upside_pct": None,
                 "thesis": "",
+                "sector": None,
+                "industry": None,
+                "model_type": None,
+                "shares": None,
+                "mcap_b": None,
+                "beta": None,
+                "revenue_b": None,
+                "ebit_b": None,
+                "nopat_b": None,
+                "entry_price": None,
+                "solvency_type": None,
+                "production_cost": None,
+                "mvrv_ratio": None,
             }
 
         # ---------------------------------------------------------------------
@@ -597,6 +631,16 @@ def export_dashboard_data(
     except Exception:
         pass
 
+    # Master fundamental profiles registry for all analyzed companies/assets
+    profiles_registry = {}
+    try:
+        from src.engine.quantamental import QuantamentalRegistry
+        reg = QuantamentalRegistry.get_instance()
+        for k, prof in reg.profiles.items():
+            profiles_registry[k] = _clean_dict_floats(prof.to_dict())
+    except Exception as e:
+        logger.warning(f"Failed to export master fundamental profiles registry: {e}")
+
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "summary": {
@@ -611,6 +655,7 @@ def export_dashboard_data(
         "symbols": items,
         "pending_setups": pending_setups_data,
         "pending_proposals": pending_proposals_data,
+        "fundamental_profiles": profiles_registry,
         "portfolio": portfolio_summary,
         "portfolio_paper": portfolio_paper_data,
         "portfolio_real": portfolio_real_data,

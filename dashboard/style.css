@@ -5108,3 +5108,565 @@ h1 {
   background: var(--bg-hover);
   border-color: #3b82f6;
 }
+
+/* =============================================================================
+   TAB 5: FUNDAMENTAL ANALYSIS & DCF HUB STYLES
+   ============================================================================= */
+
+.fund-back-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  background: var(--bg-card);
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.fund-search-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.fund-search-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  min-width: 280px;
+  transition: border-color 0.2s;
+}
+
+.fund-search-input-wrap:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.fund-search-input-wrap .search-icon {
+  margin-right: 8px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.fund-search-input-wrap input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.btn-fund-load {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: background 0.15s;
+}
+
+.btn-fund-load:hover {
+  background: #1d4ed8;
+}
+
+.fund-quick-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.fund-quick-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.fund-pill {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fund-pill:hover, .fund-pill.active {
+  background: rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
+  border-color: #3b82f6;
+}
+
+/* Dossier Layout */
+.fund-dossier-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fund-loading-placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-color);
+  color: var(--text-muted);
+}
+
+.fund-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+/* Dossier Header */
+.fund-header-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.fund-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fund-header-ticker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: -0.5px;
+}
+
+.fund-header-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fund-header-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.fund-meta-chip {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.fund-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Hero Valuation Barometer */
+.fund-hero-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.fund-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.fund-hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fund-hero-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.fund-hero-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.fund-hero-value.bullish {
+  color: #10b981;
+}
+
+.fund-hero-value.bearish {
+  color: #ef4444;
+}
+
+.fund-hero-value.accent {
+  color: #f59e0b;
+}
+
+.fund-barometer-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.fund-barometer-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fund-barometer-track {
+  width: 100%;
+  height: 12px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fund-barometer-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fill-undervalued {
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+}
+
+.fill-fair {
+  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.fill-overvalued {
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+}
+
+/* 3-Pillars Institutional Grid */
+.fund-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.fund-pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fund-pillar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+}
+
+.fund-pillar-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fund-pillar-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.fund-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.85rem;
+}
+
+.fund-metric-row:last-child {
+  border-bottom: none;
+}
+
+.fund-metric-label {
+  color: var(--text-secondary);
+}
+
+.fund-metric-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+/* Solvency Thermometer */
+.fund-zscore-thermometer {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 6px 0;
+  background: #1e293b;
+}
+
+.z-distress-zone {
+  flex: 1.81;
+  background: rgba(239, 68, 68, 0.4);
+}
+
+.z-grey-zone {
+  flex: 1.18;
+  background: rgba(245, 158, 11, 0.4);
+}
+
+.z-safe-zone {
+  flex: 3;
+  background: rgba(16, 185, 129, 0.4);
+}
+
+/* Crypto & Commodities Specialized Card */
+.fund-crypto-card {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Investment Committee Thesis Memo */
+.fund-thesis-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 22px;
+}
+
+.fund-thesis-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fund-thesis-body {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+  background: rgba(15, 23, 42, 0.4);
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #3b82f6;
+}
+
+/* Interactive DCF Sensitivity Simulator */
+.fund-simulator-card {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.15) 0%, rgba(15, 23, 42, 0.75) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fund-sim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fund-sim-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fund-sim-sliders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.fund-sim-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.fund-sim-control-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fund-sim-control-val {
+  font-family: 'JetBrains Mono', monospace;
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.fund-sim-slider {
+  width: 100%;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.fund-sim-results-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: rgba(15, 23, 42, 0.85);
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.fund-sim-res-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.fund-sim-res-lbl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.fund-sim-res-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+/* Action Bar inside Fundamentals Tab */
+.fund-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: var(--bg-card);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.fund-proposal-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.fund-external-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Interactive Fundamental Cell in Scanner Table */
+.fund-cell-interactive {
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.fund-cell-interactive:hover {
+  background: rgba(59, 130, 246, 0.12);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35);
+}
+
+/* Fund Button on Proposal Cards */
+.btn-fund-action {
+  background: rgba(30, 41, 59, 0.85);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btn-fund-action:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #ffffff;
+}

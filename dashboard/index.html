@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260925_02">
+  <link rel="stylesheet" href="style.css?v=20260925_03">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -87,6 +87,9 @@
       </button>
       <button class="nav-tab-btn" data-tab="calculator">
         <span class="tab-icon">🧮</span> Калкулатор на Сделки
+      </button>
+      <button class="nav-tab-btn" data-tab="fundamentals" id="navTabFundamentals">
+        <span class="tab-icon">🏢</span> Фундамент &amp; DCF
       </button>
     </nav>
 
@@ -256,7 +259,7 @@
           <strong id="liveTechAction">🟢 BUY</strong>
           <span class="live-hud-sub" id="liveTechSpread">Spread: +0.0%</span>
         </div>
-        <div class="live-hud-col live-hud-fund">
+        <div class="live-hud-col live-hud-fund" onclick="openFundamentalTab(liveTicker, 'chart')" title="🏢 Кликнете за пълен фундаментален анализ и DCF оценка" style="cursor: pointer;">
           <span class="live-hud-tag">🏢 ФУНДАМЕНТ:</span>
           <strong id="liveFundAction">⚪ МАКРО</strong>
           <span class="live-hud-sub" id="liveFundMoat">Network Effect</span>
@@ -702,6 +705,47 @@
         </div>
       </section>
     </div> <!-- End Tab 4: tabContentCalculator -->
+
+    <!-- Tab 5: Fundamental Analysis & DCF Hub -->
+    <div class="tab-content-panel" id="tabContentFundamentals" style="display: none;">
+      <!-- Back Navigation & Search Strip -->
+      <div class="view-back-bar fund-back-bar" id="fundBackBar">
+        <button type="button" class="btn btn-view-back" onclick="navigateBack()" title="Върни се към предишния екран">
+          <span class="back-arrow">↩️</span> <span>Назад</span> <span class="back-target" id="fundBackTargetText">(към Скенера)</span>
+        </button>
+        <div class="fund-search-strip">
+          <div class="fund-search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="fundTickerInput" placeholder="Търси тикер или компания (NVDA, MSTR, NAKA, AAPL, BTC, ETH, GC=F)..." autocomplete="off" spellcheck="false">
+            <button type="button" class="btn btn-fund-load" onclick="handleFundSearchSubmit()">Зареди</button>
+          </div>
+          <div class="fund-quick-pills">
+            <span class="fund-quick-label">Бърз избор:</span>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('NVDA')">NVDA</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('MSTR')">MSTR</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('NAKA')">NAKA</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('AAPL')">AAPL</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('MSFT')">MSFT</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('BTCUSDT')">₿ BTC</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('ETHUSDT')">Ξ ETH</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('SOLUSDT')">◎ SOL</button>
+            <button type="button" class="fund-pill" onclick="openFundamentalTab('GC=F')">🏆 Gold</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dossier Content Container (Filled dynamically by app.js) -->
+      <section class="fund-dossier-layout" id="fundDossierLayout">
+        <!-- Rendered by renderFundamentalDossier(profile, symbolItem) in app.js -->
+        <div class="fund-loading-placeholder">
+          <div class="fund-empty-icon">🏢</div>
+          <h3>Фундаментален Анализ &amp; DCF Оценка</h3>
+          <p>Изберете актив от предложенията, скенера или лентата за бърз избор горе за пълен институционален анализ.</p>
+        </div>
+      </section>
+    </div> <!-- End Tab 5: tabContentFundamentals -->
+
+    <footer class="site-footer">
       <p>Larsson Line Scanner • 100% Free & Open Source Stack • <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>
     </footer>
   </div>
@@ -1173,6 +1217,6 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20260925_02"></script>
+  <script src="app.js?v=20260925_03"></script>
 </body>
 </html>

@@ -25,6 +25,12 @@ let currentCalcDirection = 'LONG';
 let currentCalcLeverage = 1;
 let currentModalLeverage = 1;
 
+// Fundamental & DCF Hub State
+let fundamentalProfiles = {};
+let currentFundTicker = 'NVDA';
+let fundReturnContext = 'scanner';
+let currentSimBase = null;
+
 // System Health & Scanner Polling State
 let serverHealth = {
   isOnline: false,
@@ -185,8 +191,9 @@ function renderTechCell(tech, item) {
 }
 
 function renderFundCell(fund, item) {
+  const ticker = item ? (item.ticker || item.symbol || '') : '';
   if (!fund) {
-    return `<div class="fund-cell"><span class="fund-badge fund-badge-speculative">⚪ N/A</span></div>`;
+    return `<div class="fund-cell fund-cell-interactive" onclick="event.stopPropagation(); openFundamentalTab('${escapeHtml(ticker)}', 'scanner');" title="🏢 Кликнете за пълен фундаментален анализ и DCF оценка"><span class="fund-badge fund-badge-speculative">⚪ N/A</span></div>`;
   }
   const action = fund.action || 'SPECULATIVE_NA';
   let badgeClass = 'fund-badge-speculative';
@@ -210,8 +217,8 @@ function renderFundCell(fund, item) {
   }
 
   return `
-    <div class="fund-cell">
-      <span class="fund-badge ${badgeClass}" title="${fund.thesis_bg || fund.thesis || ''}">
+    <div class="fund-cell fund-cell-interactive" onclick="event.stopPropagation(); openFundamentalTab('${escapeHtml(ticker)}', 'scanner');" title="🏢 Кликнете за пълен фундаментален анализ и DCF оценка">
+      <span class="fund-badge ${badgeClass}" title="${escapeHtml(fund.thesis_bg || fund.thesis || '')}">
         ${fund.label_bg || '⚪ МАКРО / СПЕКУЛАТИВЕН'}
       </span>
       <div class="fund-sub-row">
@@ -591,6 +598,7 @@ async function loadDashboardData() {
     data = await res.json();
     window.lastLoadedDashboardData = data;
     allSymbols = data.symbols || [];
+    fundamentalProfiles = data.fundamental_profiles || {};
     pendingSetups = data.pending_setups || [];
     pendingProposals = data.pending_proposals || [];
     portfolioData = data.portfolio || {};
@@ -2777,7 +2785,8 @@ function switchTab(tabName, pushToHistory = true) {
     'scanner': 'tabContentScanner',
     'queue': 'tabContentQueue',
     'portfolio': 'tabContentPortfolio',
-    'calculator': 'tabContentCalculator'
+    'calculator': 'tabContentCalculator',
+    'fundamentals': 'tabContentFundamentals'
   };
 
   Object.keys(tabMap).forEach(key => {
@@ -2795,6 +2804,12 @@ function switchTab(tabName, pushToHistory = true) {
 
   updateNavBackButtons(prevTab);
 
+  if (tabName === 'fundamentals') {
+    if (currentFundTicker) {
+      renderFundamentalDossier(currentFundTicker);
+    }
+  }
+
   if (tabName === 'scanner' && liveActiveChart) {
     const liveContainer = document.getElementById('liveChartCanvas');
     if (liveContainer && liveContainer.clientWidth) {
@@ -2804,15 +2819,20 @@ function switchTab(tabName, pushToHistory = true) {
 }
 
 function updateNavBackButtons(fromTab) {
+  const names = {
+    'scanner': '(към Скенера)',
+    'queue': '(към Очаквани Сделки)',
+    'portfolio': '(към Портфолиото)',
+    'calculator': '(към Калкулатора)',
+    'fundamentals': '(към Фундамент)'
+  };
   const calcTarget = document.getElementById('calcBackTargetText');
   if (calcTarget) {
-    const names = {
-      'scanner': '(към Скенера)',
-      'queue': '(към Очаквани Сделки)',
-      'portfolio': '(към Портфолиото)',
-      'calculator': '(към Калкулатора)'
-    };
     calcTarget.textContent = names[fromTab] || '(към Скенера)';
+  }
+  const fundTarget = document.getElementById('fundBackTargetText');
+  if (fundTarget) {
+    fundTarget.textContent = names[fromTab] || '(към Скенера)';
   }
 }
 
@@ -2853,7 +2873,7 @@ window.addEventListener('popstate', (e) => {
     isNavigatingHistory = false;
   } else if (location.hash) {
     const hashTab = location.hash.replace('#', '').split('?')[0];
-    if (['scanner', 'queue', 'portfolio', 'calculator'].includes(hashTab)) {
+    if (['scanner', 'queue', 'portfolio', 'calculator', 'fundamentals'].includes(hashTab)) {
       isNavigatingHistory = true;
       switchTab(hashTab, false);
       isNavigatingHistory = false;
@@ -3253,6 +3273,9 @@ function renderProposalsBanner(proposals) {
           🚀 ${isLong ? 'Long' : 'Short'} 3x
         </button>
       ` : ''}
+      <button type="button" class="btn-fund-action" onclick="openFundamentalTab('${p.ticker}', 'proposals')" title="Прегледай пълен фундаментален анализ и DCF оценка">
+        🏢 Фундамент
+      </button>
       <button class="btn-reject" onclick="rejectProposal('${p.proposal_id}')" title="Откажи предложението">
         ✕
       </button>
@@ -3261,7 +3284,7 @@ function renderProposalsBanner(proposals) {
     return `
       <div class="proposal-card" id="propCard_${p.proposal_id}">
         <div class="proposal-card-header">
-          <div class="proposal-asset-info">
+          <div class="proposal-asset-info" onclick="openFundamentalTab('${p.ticker}', 'proposals')" style="cursor: pointer;" title="Кликнете за пълен фундаментален анализ и DCF оценка">
             <span class="proposal-ticker">${p.ticker}</span>
             <span class="${dirBadgeClass}">${dirText}</span>
             <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class || 'Crypto'}</span>
@@ -5014,6 +5037,677 @@ function initSystemDiagnosticsListeners() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initSystemDiagnosticsListeners();
+  initFundamentalSearchListeners();
 });
 initSystemDiagnosticsListeners();
+
+// =============================================================================
+// TAB 5: FUNDAMENTAL ANALYSIS & INSTITUTIONAL DCF HUB CONTROLLER
+// =============================================================================
+
+function initFundamentalSearchListeners() {
+  const fundInput = document.getElementById('fundTickerInput');
+  if (fundInput) {
+    fundInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handleFundSearchSubmit();
+      }
+    });
+  }
+}
+
+function openFundamentalTab(ticker, returnContext) {
+  if (returnContext) {
+    fundReturnContext = returnContext;
+  }
+  if (ticker) {
+    currentFundTicker = ticker.trim().toUpperCase();
+  }
+
+  // Switch tab navigation
+  switchTab('fundamentals');
+
+  // Sync search input
+  const inputEl = document.getElementById('fundTickerInput');
+  if (inputEl) {
+    inputEl.value = currentFundTicker || '';
+  }
+
+  // Highlight matching quick pill
+  document.querySelectorAll('.fund-pill').forEach(pill => {
+    const pillTxt = pill.textContent.replace(/[₿Ξ◎🏆\s]/g, '').trim().toUpperCase();
+    const curNorm = (currentFundTicker || '').replace('USDT', '').trim().toUpperCase();
+    pill.classList.toggle('active', pillTxt === curNorm || pill.textContent.toUpperCase().includes(curNorm));
+  });
+
+  if (currentFundTicker) {
+    renderFundamentalDossier(currentFundTicker);
+  }
+}
+
+function handleFundSearchSubmit() {
+  const inputEl = document.getElementById('fundTickerInput');
+  if (!inputEl) return;
+  const val = inputEl.value.trim();
+  if (val) {
+    openFundamentalTab(val);
+  }
+}
+
+function getFundamentalProfile(ticker) {
+  if (!ticker) return null;
+  const symNorm = ticker.toUpperCase().trim();
+
+  // 1. Direct match in fundamentalProfiles
+  if (fundamentalProfiles[symNorm]) {
+    return fundamentalProfiles[symNorm];
+  }
+
+  // 1b. Crypto aliases (e.g. BTC <-> BTCUSDT)
+  if (fundamentalProfiles[symNorm + 'USDT']) {
+    return fundamentalProfiles[symNorm + 'USDT'];
+  }
+  if (symNorm.endsWith('USDT') && fundamentalProfiles[symNorm.slice(0, -4)]) {
+    return fundamentalProfiles[symNorm.slice(0, -4)];
+  }
+
+  // 2. Search in allSymbols
+  const s = allSymbols.find(x => (x.ticker || '').toUpperCase() === symNorm) ||
+            allSymbols.find(x => (x.symbol || '').toUpperCase() === symNorm) ||
+            allSymbols.find(x => (x.ticker || '').toUpperCase().startsWith(symNorm));
+
+  if (s && (s.fund_data || s.fundamental)) {
+    const fd = s.fund_data || {};
+    const f = s.fundamental || {};
+    return {
+      ticker: s.ticker,
+      name: s.name || s.ticker,
+      verdict: fd.action || fd.verdict || f.action || 'HOLD',
+      target_price: fd.fair_value || f.fair_value,
+      fair_value: fd.fair_value || f.fair_value,
+      mos_pct: fd.mos_pct !== undefined ? fd.mos_pct : f.mos_pct,
+      moat: fd.moat || f.moat || 'None',
+      roic_pct: fd.roic_pct !== undefined ? fd.roic_pct : f.roic_pct,
+      wacc_pct: fd.wacc_pct !== undefined ? fd.wacc_pct : f.wacc_pct,
+      z_score: fd.z_score !== undefined ? fd.z_score : f.z_score,
+      m_score: fd.m_score !== undefined ? fd.m_score : f.m_score,
+      tata: fd.tata,
+      upside_pct: fd.upside_pct !== undefined ? fd.upside_pct : f.upside_pct,
+      thesis: fd.thesis || fd.thesis_bg || f.thesis_bg || f.thesis,
+      sector: fd.sector || (s.asset_class === 'crypto' ? 'Крипто активи' : (s.asset_class === 'commodities' ? 'Суровини' : 'Акции')),
+      industry: fd.industry || s.asset_class,
+      model_type: fd.model_type || (s.asset_class === 'crypto' ? 'Макро ончейн себестойност' : 'DCF модел'),
+      price: s.price,
+      shares: fd.shares,
+      mcap_b: fd.mcap_b,
+      beta: fd.beta,
+      revenue_b: fd.revenue_b,
+      ebit_b: fd.ebit_b,
+      nopat_b: fd.nopat_b,
+      entry_price: fd.entry_price || (s.trade_suggestion && s.trade_suggestion.entry),
+      action: fd.action || f.action,
+      solvency_type: fd.solvency_type,
+      production_cost: fd.production_cost,
+      mvrv_ratio: fd.mvrv_ratio
+    };
+  }
+
+  // 3. Fallback to basic symbol if present
+  if (s) {
+    return {
+      ticker: s.ticker,
+      name: s.name || s.ticker,
+      verdict: 'SPECULATIVE_NA',
+      target_price: s.price,
+      fair_value: s.price,
+      mos_pct: 0,
+      moat: 'None',
+      price: s.price,
+      sector: s.asset_class === 'crypto' ? 'Крипто активи' : 'Финансови пазари',
+      industry: s.asset_class,
+      model_type: 'Технически модел на Larsson',
+      thesis: 'Липсва пълен фундаментален модел за актива. Анализът се базира на технически индикатори и тренд на Larsson.'
+    };
+  }
+
+  return null;
+}
+
+function renderFundamentalDossier(ticker) {
+  const container = document.getElementById('fundDossierLayout');
+  if (!container) return;
+
+  const prof = getFundamentalProfile(ticker);
+  const symItem = allSymbols.find(x => (x.ticker || '').toUpperCase() === (ticker || '').toUpperCase()) ||
+                  allSymbols.find(x => (x.ticker || '').toUpperCase().startsWith((ticker || '').toUpperCase()));
+
+  if (!prof) {
+    container.innerHTML = `
+      <div class="fund-loading-placeholder">
+        <div class="fund-empty-icon">⚠️</div>
+        <h3>Няма намерен фундаментален модел за "${escapeHtml(ticker)}"</h3>
+        <p>Моля, въведете валиден тикер (напр. NVDA, MSTR, NAKA, AAPL, BTC, ETH, GC=F) или изберете от бързите бутони горе.</p>
+        <button type="button" class="btn btn-fund-load" onclick="openFundamentalTab('NVDA')" style="margin-top: 14px; cursor: pointer;">
+          Зареди NVDA (Примерен анализ)
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  const price = (symItem && symItem.price) ? symItem.price : (prof.price || 0);
+  const fairValue = prof.fair_value || prof.target_price || price;
+
+  // Calculate MoS & Upside dynamically if price available
+  let mosPct = prof.mos_pct;
+  let upsidePct = prof.upside_pct;
+  if (price > 0 && fairValue > 0) {
+    mosPct = Math.round(((fairValue - price) / fairValue) * 100);
+    upsidePct = Math.round(((fairValue - price) / price) * 100);
+  }
+
+  // Base values for DCF Simulator
+  const baseWacc = prof.wacc_pct || 9.5;
+  const baseG = 2.5;
+  const baseFcfGrowth = 0.0;
+  currentSimBase = {
+    ticker: prof.ticker,
+    price: price,
+    baseFairValue: fairValue,
+    baseWacc: baseWacc,
+    baseG: baseG,
+    baseFcfGrowth: baseFcfGrowth
+  };
+
+  // Verdict style
+  const isStrongBuy = (prof.verdict || '').includes('STRONG BUY') || (prof.action === 'STRONG_BUY');
+  const isBuy = (prof.verdict || '').includes('BUY') || (prof.action === 'BUY');
+  const isHold = (prof.verdict || '').includes('HOLD') || (prof.action === 'HOLD');
+  const isReduce = (prof.verdict || '').includes('REDUCE') || (prof.verdict || '').includes('AVOID');
+
+  let verdictBadge = 'badge-gold';
+  let verdictText = prof.verdict || 'BUY';
+  if (isStrongBuy) {
+    verdictBadge = 'badge-gold';
+    verdictText = '⭐ ALPHA STRONG BUY';
+  } else if (isBuy) {
+    verdictBadge = 'badge-gold';
+    verdictText = '🟢 VALUE BUY';
+  } else if (isHold) {
+    verdictBadge = 'badge-neutral';
+    verdictText = '⚪ HOLD / FAIR VALUE';
+  } else if (isReduce) {
+    verdictBadge = 'badge-blue';
+    verdictText = '🔴 REDUCE / AVOID';
+  }
+
+  // MoS Styling
+  let mosClass = 'accent';
+  let mosLabel = 'Неопределен';
+  if (mosPct !== null && mosPct !== undefined) {
+    if (mosPct >= 20) {
+      mosClass = 'bullish';
+      mosLabel = `+${mosPct}% (Здрав институционален буфер)`;
+    } else if (mosPct >= 0) {
+      mosClass = 'accent';
+      mosLabel = `+${mosPct}% (Справедлива цена)`;
+    } else {
+      mosClass = 'bearish';
+      mosLabel = `${mosPct}% (Надценена)`;
+    }
+  }
+
+  // Barometer track fill calculation
+  let trackPct = 50;
+  let trackClass = 'fill-fair';
+  if (fairValue > 0) {
+    const ratio = price / fairValue;
+    if (ratio < 0.8) {
+      trackPct = Math.min(100, Math.max(15, (1 - ratio) * 100 + 30));
+      trackClass = 'fill-undervalued';
+    } else if (ratio <= 1.1) {
+      trackPct = 50;
+      trackClass = 'fill-fair';
+    } else {
+      trackPct = Math.min(100, (ratio - 1) * 100 + 40);
+      trackClass = 'fill-overvalued';
+    }
+  }
+
+  // Moat & EVA
+  const moat = prof.moat || 'None';
+  let moatBadge = '<span class="fund-pillar-badge" style="background: rgba(148, 163, 184, 0.2); color: #94a3b8;">⚪ No Moat</span>';
+  if (moat === 'Wide') {
+    moatBadge = '<span class="fund-pillar-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">💎 Wide Moat</span>';
+  } else if (moat === 'Narrow') {
+    moatBadge = '<span class="fund-pillar-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">🏰 Narrow Moat</span>';
+  }
+
+  const roic = prof.roic_pct;
+  const wacc = prof.wacc_pct || baseWacc;
+  let evaSpreadHtml = '—';
+  if (roic !== null && roic !== undefined && wacc !== null && wacc !== undefined) {
+    const spread = (roic - wacc).toFixed(1);
+    if (spread > 0) {
+      evaSpreadHtml = `<span style="color: #34d399;">+${spread}% (Създава акционерна стойност)</span>`;
+    } else {
+      evaSpreadHtml = `<span style="color: #f87171;">${spread}% (Унищожава капитал)</span>`;
+    }
+  }
+
+  // Altman Z-Score & Solvency
+  const zScore = prof.z_score;
+  let zBadge = '<span class="fund-pillar-badge" style="background: rgba(148, 163, 184, 0.2); color: #94a3b8;">N/A</span>';
+  let zStatusText = 'Няма данни';
+  if (zScore !== null && zScore !== undefined) {
+    if (zScore >= 2.99) {
+      zBadge = '<span class="fund-pillar-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">🟢 Safe Zone</span>';
+      zStatusText = 'Нулев кредитен риск / Отличен баланс';
+    } else if (zScore >= 1.81) {
+      zBadge = '<span class="fund-pillar-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">🟡 Grey Zone</span>';
+      zStatusText = 'Умерено внимание / Стабилна ликвидност';
+    } else {
+      zBadge = '<span class="fund-pillar-badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">🔴 Distress Zone</span>';
+      zStatusText = 'Висок финансов риск / Спекулативен дълг';
+    }
+  }
+
+  // Beneish M-Score & Forensic
+  const mScore = prof.m_score;
+  let mBadge = '<span class="fund-pillar-badge" style="background: rgba(148, 163, 184, 0.2); color: #94a3b8;">N/A</span>';
+  let mStatusText = 'Няма данни за счетоводни начисления';
+  if (mScore !== null && mScore !== undefined) {
+    if (mScore <= -1.78) {
+      mBadge = '<span class="fund-pillar-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">🟢 Low Risk</span>';
+      mStatusText = 'Чисти финансови отчети / Качествен FCF';
+    } else {
+      mBadge = '<span class="fund-pillar-badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">🔴 Manipulation Alert</span>';
+      mStatusText = 'Риск от агресивно признаване на приходи';
+    }
+  }
+
+  // Crypto / Commodities Specifics
+  const isCrypto = (symItem && symItem.asset_class === 'crypto') || prof.ticker.includes('USDT') || prof.production_cost || prof.mvrv_ratio;
+  let cryptoCardHtml = '';
+  if (isCrypto) {
+    const prodCost = prof.production_cost || (prof.ticker.startsWith('BTC') ? 62000 : null);
+    const mvrv = prof.mvrv_ratio || (prof.ticker.startsWith('BTC') ? 1.95 : null);
+    cryptoCardHtml = `
+      <div class="fund-crypto-card">
+        <div class="fund-pillar-header">
+          <span class="fund-pillar-title">🪙 Ончейн &amp; Себестойностен Анализ (Digital Asset Valuation)</span>
+          <span class="fund-pillar-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">⚡ Proof-of-Work &amp; Network Value</span>
+        </div>
+        <div class="fund-pillars-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Себестойност (Mining / Floor Cost):</span>
+            <span class="fund-metric-val" style="color: #f59e0b;">${prodCost ? '$' + formatShortPrice(prodCost) : 'Пазарна себестойност'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">MVRV Ratio:</span>
+            <span class="fund-metric-val" style="color: #38bdf8;">${mvrv ? mvrv.toFixed(2) + ' (Консолидационна зона)' : 'Зрял мрежов ефект'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Институционален интерес:</span>
+            <span class="fund-metric-val">Спот ETF притоци &amp; Трежъри акумулация</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Дългосрочен подкрепен под:</span>
+            <span class="fund-metric-val" style="color: #34d399;">$${prodCost ? formatShortPrice(prodCost * 0.95) : formatShortPrice(price * 0.8)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Active Proposal Link (if any)
+  const activeProposal = (pendingProposals || []).find(p => p.ticker === prof.ticker);
+  let proposalActionsHtml = '';
+  if (activeProposal) {
+    const isLong = (activeProposal.direction || 'LONG') === 'LONG';
+    const recLev = activeProposal.recommended_leverage || 1;
+    proposalActionsHtml = `
+      <div class="fund-proposal-actions">
+        <span style="font-size: 0.85rem; font-weight: 700; color: #f59e0b;">⚡ Активно Предложение:</span>
+        <button type="button" class="btn btn-approve-1x" onclick="approveProposal('${activeProposal.proposal_id}', 1); openFundamentalTab('${prof.ticker}');">
+          ${isLong ? '🟢 Одобри Spot 1x' : '🟢 Одобри Hedge 1x'}
+        </button>
+        ${(recLev >= 2 || (activeProposal.max_leverage || 1) >= 2) ? `
+          <button type="button" class="btn btn-approve-2x" onclick="approveProposal('${activeProposal.proposal_id}', 2); openFundamentalTab('${prof.ticker}');">
+            ⚡ Long 2x
+          </button>
+        ` : ''}
+        ${(recLev >= 3 || (activeProposal.max_leverage || 1) >= 3) ? `
+          <button type="button" class="btn btn-approve-3x" onclick="approveProposal('${activeProposal.proposal_id}', 3); openFundamentalTab('${prof.ticker}');">
+            🚀 Long 3x
+          </button>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  // Render Full HTML layout
+  container.innerHTML = `
+    <!-- Header Card -->
+    <div class="fund-header-card">
+      <div class="fund-header-left">
+        <div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="fund-header-ticker">${prof.ticker}</span>
+            <span class="badge ${verdictBadge}">${verdictText}</span>
+          </div>
+          <div class="fund-header-name">${escapeHtml(prof.name || prof.ticker)}</div>
+          <div class="fund-header-meta">
+            <span class="fund-meta-chip">📁 Сектор: ${escapeHtml(prof.sector || 'Финансови пазари')}</span>
+            <span class="fund-meta-chip">🏭 Индустрия: ${escapeHtml(prof.industry || 'Инфраструктура')}</span>
+            <span class="fund-meta-chip">📐 Модел: ${escapeHtml(prof.model_type || 'Тристепенен DCF')}</span>
+          </div>
+        </div>
+      </div>
+      <div class="fund-header-right">
+        ${moatBadge}
+      </div>
+    </div>
+
+    <!-- Hero Valuation Card -->
+    <div class="fund-hero-card">
+      <div class="fund-hero-grid">
+        <div class="fund-hero-stat">
+          <span class="fund-hero-label">Текуща Пазарна Цена</span>
+          <span class="fund-hero-value">$${formatShortPrice(price)}</span>
+        </div>
+        <div class="fund-hero-stat">
+          <span class="fund-hero-label">DCF Справедлива Стойност (Base)</span>
+          <span class="fund-hero-value" style="color: #60a5fa;">$${formatShortPrice(fairValue)}</span>
+        </div>
+        <div class="fund-hero-stat">
+          <span class="fund-hero-label">Марж на Безопасност (Margin of Safety)</span>
+          <span class="fund-hero-value ${mosClass}">${mosLabel}</span>
+        </div>
+        <div class="fund-hero-stat">
+          <span class="fund-hero-label">Потенциал за Ръст (Upside)</span>
+          <span class="fund-hero-value ${upsidePct >= 0 ? 'bullish' : 'bearish'}">${upsidePct !== null && upsidePct !== undefined ? (upsidePct >= 0 ? '+' : '') + upsidePct + '%' : '—'}</span>
+        </div>
+      </div>
+
+      <!-- Barometer Track -->
+      <div class="fund-barometer-bar-container">
+        <div class="fund-barometer-labels">
+          <span>🟢 Подценена зона (Discount)</span>
+          <span>🟡 Справедлива цена ($${formatShortPrice(fairValue)})</span>
+          <span>🔴 Надценена зона (Premium)</span>
+        </div>
+        <div class="fund-barometer-track">
+          <div class="fund-barometer-fill ${trackClass}" style="width: ${trackPct}%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Pillars Institutional Grid -->
+    <div class="fund-pillars-grid">
+      <!-- Pillar 1: Economic Moat & EVA -->
+      <div class="fund-pillar-card">
+        <div class="fund-pillar-header">
+          <span class="fund-pillar-title">💎 Стълб 1: Икономически Ров (Moat) &amp; EVA</span>
+          ${moatBadge}
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Възвръщаемост на Капитала (ROIC):</span>
+          <span class="fund-metric-val" style="color: #38bdf8;">${roic !== null && roic !== undefined ? roic.toFixed(1) + '%' : '—'}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Цена на Капитала (WACC):</span>
+          <span class="fund-metric-val">${wacc !== null && wacc !== undefined ? wacc.toFixed(1) + '%' : '9.5%'}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">EVA Спред (ROIC - WACC):</span>
+          <span class="fund-metric-val">${evaSpreadHtml}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Конкурентен бариерен статус:</span>
+          <span class="fund-metric-val">${moat === 'Wide' ? 'Високи превключващи разходи & Мрежов ефект' : (moat === 'Narrow' ? 'Умерено ценово предимство' : 'Ценова конкуренция')}</span>
+        </div>
+      </div>
+
+      <!-- Pillar 2: Solvency & Distress (Altman Z-Score) -->
+      <div class="fund-pillar-card">
+        <div class="fund-pillar-header">
+          <span class="fund-pillar-title">🛡️ Стълб 2: Платежоспособност (Altman Z-Score)</span>
+          ${zBadge}
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Z-Score Индекс:</span>
+          <span class="fund-metric-val" style="color: #34d399; font-size: 1.15rem;">${zScore !== null && zScore !== undefined ? zScore.toFixed(2) : '—'}</span>
+        </div>
+        <div class="fund-zscore-thermometer" title="Altman Z-Score зони: Червено (<1.81), Жълто (1.81-2.99), Зелено (>2.99)">
+          <div class="z-distress-zone"></div>
+          <div class="z-grey-zone"></div>
+          <div class="z-safe-zone"></div>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Статус на Ликвидност:</span>
+          <span class="fund-metric-val">${zStatusText}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Модел на оценка:</span>
+          <span class="fund-metric-val">${escapeHtml(prof.solvency_type || 'Altman Z-Score Standard')}</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3: Forensic Red Flags (Beneish M-Score) -->
+      <div class="fund-pillar-card">
+        <div class="fund-pillar-header">
+          <span class="fund-pillar-title">🔬 Стълб 3: Счетоводна Чистота (Beneish M)</span>
+          ${mBadge}
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Beneish M-Score (Праг -1.78):</span>
+          <span class="fund-metric-val" style="color: #38bdf8;">${mScore !== null && mScore !== undefined ? mScore.toFixed(2) : '—'}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Качество на печалбите:</span>
+          <span class="fund-metric-val">${mStatusText}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Начисления спрямо активи (TATA):</span>
+          <span class="fund-metric-val">${prof.tata !== null && prof.tata !== undefined ? prof.tata.toFixed(3) : 'Норма'}</span>
+        </div>
+        <div class="fund-metric-row">
+          <span class="fund-metric-label">Риск от ревизия на отчети:</span>
+          <span class="fund-metric-val" style="color: #34d399;">Минимален</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crypto / Commodities Specialized Card (if applicable) -->
+    ${cryptoCardHtml}
+
+    <!-- Financial Fundamentals & Multiples (if company) -->
+    ${(!isCrypto && (prof.mcap_b || prof.revenue_b)) ? `
+      <div class="fund-pillar-card">
+        <div class="fund-pillar-header">
+          <span class="fund-pillar-title">📊 Финансови Параметри &amp; Мащаб на Бизнеса</span>
+          <span class="fund-pillar-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">SEC Filings / LTM</span>
+        </div>
+        <div class="fund-pillars-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Пазарна капитализация:</span>
+            <span class="fund-metric-val">${prof.mcap_b ? '$' + prof.mcap_b.toFixed(1) + ' млрд.' : '—'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Приходи (LTM Revenue):</span>
+            <span class="fund-metric-val">${prof.revenue_b ? '$' + prof.revenue_b.toFixed(2) + ' млрд.' : '—'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Оперативна печалба (EBIT):</span>
+            <span class="fund-metric-val">${prof.ebit_b ? '$' + prof.ebit_b.toFixed(2) + ' млрд.' : '—'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Чист NOPAT:</span>
+            <span class="fund-metric-val">${prof.nopat_b ? '$' + prof.nopat_b.toFixed(2) + ' млрд.' : '—'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Пазарен коефициент Beta:</span>
+            <span class="fund-metric-val">${prof.beta ? prof.beta.toFixed(2) : '1.0'}</span>
+          </div>
+          <div class="fund-metric-row">
+            <span class="fund-metric-label">Брой акции в обращение:</span>
+            <span class="fund-metric-val">${prof.shares ? (prof.shares / 1e6).toFixed(1) + ' млн.' : '—'}</span>
+          </div>
+        </div>
+      </div>
+    ` : ''}
+
+    <!-- Investment Committee Thesis Memo -->
+    <div class="fund-thesis-card">
+      <div class="fund-thesis-title">
+        <span>📝</span> Меморандум на Инвестиционния Комитет (Investment Thesis)
+      </div>
+      <div class="fund-thesis-body">
+        ${escapeHtml(prof.thesis || 'Анализът се базира на фундаменталното съотношение риск/доходност и стабилен икономически ров.')}
+      </div>
+    </div>
+
+    <!-- Interactive DCF Sensitivity Simulator -->
+    <div class="fund-simulator-card">
+      <div class="fund-sim-header">
+        <div class="fund-sim-title">
+          <span>🧮</span> Интерактивен DCF Симулатор на Чувствителността (What-If Analysis)
+        </div>
+        <button type="button" class="btn btn-secondary" onclick="resetDcfSimulator('${prof.ticker}')" style="font-size: 0.75rem; padding: 4px 10px; cursor: pointer;">
+          ↺ Върни базови стойности
+        </button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+        Променете цената на капитала (WACC), дългосрочния терминален растеж ($g$) или паричните потоци, за да видите динамичната оценка:
+      </p>
+      <div class="fund-sim-sliders-grid">
+        <div class="fund-sim-control">
+          <div class="fund-sim-control-header">
+            <span>Цена на капитала (WACC %):</span>
+            <span class="fund-sim-control-val" id="valSimWacc">${baseWacc.toFixed(1)}%</span>
+          </div>
+          <input type="range" class="fund-sim-slider" id="sliderSimWacc" min="6.0" max="18.0" step="0.1" value="${baseWacc.toFixed(1)}" oninput="updateDcfSimulator('${prof.ticker}')">
+        </div>
+        <div class="fund-sim-control">
+          <div class="fund-sim-control-header">
+            <span>Терминален растеж g (%):</span>
+            <span class="fund-sim-control-val" id="valSimG">${baseG.toFixed(1)}%</span>
+          </div>
+          <input type="range" class="fund-sim-slider" id="sliderSimG" min="1.0" max="5.0" step="0.1" value="${baseG.toFixed(1)}" oninput="updateDcfSimulator('${prof.ticker}')">
+        </div>
+        <div class="fund-sim-control">
+          <div class="fund-sim-control-header">
+            <span>Корекция на свободен FCF (%):</span>
+            <span class="fund-sim-control-val" id="valSimFcf">0%</span>
+          </div>
+          <input type="range" class="fund-sim-slider" id="sliderSimFcf" min="-50" max="50" step="5" value="0" oninput="updateDcfSimulator('${prof.ticker}')">
+        </div>
+      </div>
+
+      <div class="fund-sim-results-strip">
+        <div class="fund-sim-res-item">
+          <span class="fund-sim-res-lbl">Симулирана Справедлива Цена</span>
+          <span class="fund-sim-res-val" id="simResultFairValue" style="color: #60a5fa;">$${formatShortPrice(fairValue)}</span>
+        </div>
+        <div class="fund-sim-res-item">
+          <span class="fund-sim-res-lbl">Симулиран Марж (MoS)</span>
+          <span class="fund-sim-res-val ${mosClass}" id="simResultMos">${mosPct !== null ? (mosPct >= 0 ? '+' : '') + mosPct + '%' : '—'}</span>
+        </div>
+        <div class="fund-sim-res-item">
+          <span class="fund-sim-res-lbl">Симулиран Потенциал (Upside)</span>
+          <span class="fund-sim-res-val ${upsidePct >= 0 ? 'bullish' : 'bearish'}" id="simResultUpside">${upsidePct !== null ? (upsidePct >= 0 ? '+' : '') + upsidePct + '%' : '—'}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="fund-action-bar">
+      ${proposalActionsHtml}
+      <div class="fund-external-actions">
+        <button type="button" class="btn btn-primary-action" onclick="openChartModal('${prof.ticker}')">
+          📊 Отвори Графика &amp; Нива
+        </button>
+        <button type="button" class="btn btn-secondary-action" onclick="openCalculatorForTicker('${prof.ticker}')">
+          🧮 Отвори в Калкулатора
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function updateDcfSimulator(ticker) {
+  if (!currentSimBase) return;
+  const sliderWacc = document.getElementById('sliderSimWacc');
+  const sliderG = document.getElementById('sliderSimG');
+  const sliderFcf = document.getElementById('sliderSimFcf');
+
+  const valWaccEl = document.getElementById('valSimWacc');
+  const valGEl = document.getElementById('valSimG');
+  const valFcfEl = document.getElementById('valSimFcf');
+
+  const resFvEl = document.getElementById('simResultFairValue');
+  const resMosEl = document.getElementById('simResultMos');
+  const resUpsideEl = document.getElementById('simResultUpside');
+
+  if (!sliderWacc || !sliderG || !sliderFcf) return;
+
+  const newWacc = parseFloat(sliderWacc.value);
+  const newG = parseFloat(sliderG.value);
+  const newFcf = parseFloat(sliderFcf.value);
+
+  if (valWaccEl) valWaccEl.textContent = newWacc.toFixed(1) + '%';
+  if (valGEl) valGEl.textContent = newG.toFixed(1) + '%';
+  if (valFcfEl) valFcfEl.textContent = (newFcf >= 0 ? '+' : '') + newFcf + '%';
+
+  // Prevent divide by zero or negative denominator
+  const denom = Math.max(0.01, (newWacc - newG) / 100);
+  const baseDenom = Math.max(0.01, (currentSimBase.baseWacc - currentSimBase.baseG) / 100);
+  const fcfMult = 1.0 + (newFcf / 100);
+
+  const multiplier = (baseDenom / denom) * fcfMult;
+  const simFairValue = Math.max(0.01, currentSimBase.baseFairValue * multiplier);
+
+  const price = currentSimBase.price || 0;
+  let simMos = 0;
+  let simUpside = 0;
+  if (price > 0 && simFairValue > 0) {
+    simMos = Math.round(((simFairValue - price) / simFairValue) * 100);
+    simUpside = Math.round(((simFairValue - price) / price) * 100);
+  }
+
+  if (resFvEl) resFvEl.textContent = '$' + formatShortPrice(simFairValue);
+  if (resMosEl) {
+    resMosEl.textContent = (simMos >= 0 ? '+' : '') + simMos + '%';
+    resMosEl.className = 'fund-sim-res-val ' + (simMos >= 20 ? 'bullish' : (simMos >= 0 ? 'accent' : 'bearish'));
+  }
+  if (resUpsideEl) {
+    resUpsideEl.textContent = (simUpside >= 0 ? '+' : '') + simUpside + '%';
+    resUpsideEl.className = 'fund-sim-res-val ' + (simUpside >= 0 ? 'bullish' : 'bearish');
+  }
+}
+
+function resetDcfSimulator(ticker) {
+  if (!currentSimBase) return;
+  const sliderWacc = document.getElementById('sliderSimWacc');
+  const sliderG = document.getElementById('sliderSimG');
+  const sliderFcf = document.getElementById('sliderSimFcf');
+
+  if (sliderWacc) sliderWacc.value = currentSimBase.baseWacc.toFixed(1);
+  if (sliderG) sliderG.value = currentSimBase.baseG.toFixed(1);
+  if (sliderFcf) sliderFcf.value = 0;
+
+  updateDcfSimulator(ticker);
+}
+
+function openCalculatorForTicker(ticker) {
+  switchTab('calculator');
+  const s = allSymbols.find(x => x.ticker === ticker);
+  const tickerInput = document.getElementById('pageCalcTicker');
+  const entryInput = document.getElementById('pageCalcEntry');
+  if (tickerInput) tickerInput.value = ticker;
+  if (entryInput && s && s.price) entryInput.value = s.price;
+  if (typeof initPageCalculator === 'function') initPageCalculator();
+}
+
 
