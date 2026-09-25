@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260925_01">
+  <link rel="stylesheet" href="style.css?v=20260925_02">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,6 +21,11 @@
         </div>
       </div>
       <div class="header-right">
+        <!-- Live System & Scanner Diagnostics Pill -->
+        <button type="button" class="system-status-pill" id="systemStatusBadge" onclick="toggleSystemStatusModal()" title="Кликнете за системна диагностика и статус на скенера">
+          <span class="status-indicator-dot online" id="systemStatusDot"></span>
+          <span class="status-indicator-text" id="systemStatusText">Свързване...</span>
+        </button>
         <div class="header-view-toggles" id="headerViewToggles" title="Бързо показване / скриване на панели">
           <button type="button" class="btn-hdr-toggle" id="hdrToggleProposals" title="Скрий / Покажи секцията с активни предложения">
             <span class="hdr-toggle-dot"></span> <span id="hdrToggleProposalsTxt">⚡ Сделки</span>
@@ -108,19 +113,19 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-label">Total Monitored</div>
-          <div class="stat-value" id="totalCount">0</div>
+          <div class="stat-value" id="totalCount"><span class="stat-loading-dots">...</span></div>
         </div>
         <div class="stat-card stat-gold">
           <div class="stat-label">🟡 Gold State (Bullish)</div>
-          <div class="stat-value" id="goldCount">0</div>
+          <div class="stat-value" id="goldCount"><span class="stat-loading-dots">...</span></div>
         </div>
         <div class="stat-card stat-blue">
           <div class="stat-label">🔵 Blue State (Bearish)</div>
-          <div class="stat-value" id="blueCount">0</div>
+          <div class="stat-value" id="blueCount"><span class="stat-loading-dots">...</span></div>
         </div>
         <div class="stat-card stat-neutral">
           <div class="stat-label">⚪ Neutral (Consolidation)</div>
-          <div class="stat-value" id="neutralCount">0</div>
+          <div class="stat-value" id="neutralCount"><span class="stat-loading-dots">...</span></div>
         </div>
       </div>
     </section>
@@ -1095,9 +1100,79 @@
         </form>
       </div>
     </div>
+  </div>
+
+  <!-- System Diagnostics & Scanner Health Modal -->
+  <div class="chart-modal-backdrop" id="systemStatusModal" style="display: none;">
+    <div class="chart-modal-content system-status-modal-box">
+      <div class="chart-modal-header">
+        <div class="system-modal-title">
+          <span class="status-indicator-dot online" id="modalStatusDot"></span>
+          <h3>Диагностика на Системата &amp; Скенера</h3>
+        </div>
+        <button class="modal-close-btn" id="closeSystemStatusModalBtn">&times;</button>
+      </div>
+      <div class="system-modal-body">
+        <div class="diag-status-hero" id="diagStatusHero">
+          <div class="diag-hero-icon" id="diagHeroIcon">🟢</div>
+          <div class="diag-hero-text">
+            <h4 id="diagHeroTitle">Системата работи нормално</h4>
+            <p id="diagHeroSubtitle">659 пазарни актива са активни и готови за анализ.</p>
+          </div>
+        </div>
+
+        <div class="diag-grid">
+          <div class="diag-card">
+            <span class="diag-label">📡 Сървър &amp; Протокол</span>
+            <div class="diag-val" id="diagServerVal">Свързан (localhost:8080)</div>
+            <span class="diag-sub" id="diagUptimeVal">Uptime: 0s</span>
+          </div>
+
+          <div class="diag-card">
+            <span class="diag-label">⚡ Състояние на Скенера</span>
+            <div class="diag-val" id="diagScannerVal">В покой (Готов)</div>
+            <span class="diag-sub" id="diagScanElapsedVal">Последен анализ: наскоро</span>
+          </div>
+
+          <div class="diag-card">
+            <span class="diag-label">🗄️ База Данни (SQLite)</span>
+            <div class="diag-val" id="diagDbVal">659 актива</div>
+            <span class="diag-sub" id="diagDbHealthVal">Статус: Изряден (WAL)</span>
+          </div>
+
+          <div class="diag-card">
+            <span class="diag-label">📄 Файл с данни (data.json)</span>
+            <div class="diag-val" id="diagJsonVal">4.9 MB</div>
+            <span class="diag-sub" id="diagJsonMtimeVal">Обновен: днес</span>
+          </div>
+        </div>
+
+        <!-- Active Filter Diagnostics (helps user understand if 0 is due to filters) -->
+        <div class="diag-filters-section" id="diagFiltersSection">
+          <span class="diag-section-title">🔍 Активни филтри в момента:</span>
+          <div class="diag-filter-chips" id="diagFilterChips">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <div class="diag-actions">
+          <button type="button" class="btn btn-action-analyze" id="btnDiagRunScan">
+            <span class="analyze-icon">⚡</span> Нов Анализ на Пазара
+          </button>
+          <button type="button" class="btn btn-refresh" id="btnDiagReload">
+            ↻ Презареди Данните
+          </button>
+          <button type="button" class="btn btn-secondary" id="btnDiagResetFilters" style="display: none;">
+            ✕ Изчисти Филтрите
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20260925_01"></script>
+  <script src="app.js?v=20260925_02"></script>
 </body>
 </html>

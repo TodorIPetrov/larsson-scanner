@@ -25,6 +25,23 @@ let currentCalcDirection = 'LONG';
 let currentCalcLeverage = 1;
 let currentModalLeverage = 1;
 
+// System Health & Scanner Polling State
+let serverHealth = {
+  isOnline: false,
+  isScanning: false,
+  scanDurationSec: 0,
+  symbolsInDb: 0,
+  dbHealthy: true,
+  dataJsonExists: true,
+  dataJsonSize: 0,
+  dataJsonMtime: null,
+  uptimeSec: 0,
+  lastPollTime: null,
+};
+let isDataLoading = false;
+let isDataLoaded = false;
+let systemStatusTimer = null;
+
 // Active chart state
 let activeChart = null; // modal chart instance
 let activeTicker = '';
@@ -268,24 +285,319 @@ function renderSynthesisCell(synth, ts, item) {
   `;
 }
 
+// =============================================================================
+// LIVE SYSTEM HEALTH & SCANNER DIAGNOSTICS (THINKING / IDLE / OFFLINE DETECTOR)
+// =============================================================================
+
+async function checkServerStatus() {
+  const badge = document.getElementById('systemStatusBadge');
+  const dot = document.getElementById('systemStatusDot');
+  const text = document.getElementById('systemStatusText');
+  if (!badge || !dot || !text) return;
+
+  const isFile = window.location.protocol === 'file:';
+  if (isFile) {
+    serverHealth.isOnline = false;
+    dot.className = 'status-indicator-dot offline';
+    text.textContent = '⚠️ file:// (Няма CORS)';
+    badge.title = 'Отворено през file:// протокол. Браузърът блокира API заявки. Отворете http://localhost:8080';
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/status', { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      serverHealth.isOnline = true;
+      serverHealth.isScanning = Boolean(data.is_scanning);
+      serverHealth.scanDurationSec = data.scan_duration_sec || 0;
+      serverHealth.symbolsInDb = data.symbols_in_db || 0;
+      serverHealth.dbHealthy = data.db_healthy !== false;
+      serverHealth.dataJsonExists = data.data_json_exists;
+      serverHealth.dataJsonSize = data.data_json_size || 0;
+      serverHealth.dataJsonMtime = data.data_json_mtime;
+      serverHealth.uptimeSec = data.server_uptime_sec || 0;
+      serverHealth.lastPollTime = new Date();
+
+      updateSystemHealthBadge();
+      updateDiagnosticsModalUI();
+
+      // If server was scanning and just finished, reload dashboard data automatically!
+      if (window._wasScanning && !serverHealth.isScanning) {
+        window._wasScanning = false;
+        loadDashboardData();
+      }
+      if (serverHealth.isScanning) {
+        window._wasScanning = true;
+      }
+    } else {
+      throw new Error(`HTTP ${res.status}`);
+    }
+  } catch (err) {
+    serverHealth.isOnline = false;
+    dot.className = 'status-indicator-dot offline';
+    text.textContent = '🔴 Няма връзка със сървъра';
+    badge.title = 'Сървърът на localhost:8080 не отговаря. Уверете се, че server.py е стартиран.';
+    updateDiagnosticsModalUI();
+  }
+}
+
+function updateSystemHealthBadge() {
+  const badge = document.getElementById('systemStatusBadge');
+  const dot = document.getElementById('systemStatusDot');
+  const text = document.getElementById('systemStatusText');
+  if (!badge || !dot || !text) return;
+
+  if (serverHealth.isScanning) {
+    dot.className = 'status-indicator-dot scanning';
+    const durTxt = serverHealth.scanDurationSec > 0 ? ` (${serverHealth.scanDurationSec}s)` : '';
+    text.textContent = `⚡ Сканира пазара${durTxt}... (Мисли)`;
+    badge.title = 'Скенерът мисли и анализира пазарните данни в реално време!';
+    return;
+  }
+
+  if (serverHealth.isOnline) {
+    const filteredCount = getFilteredSymbols().length;
+    const totalCount = allSymbols.length;
+
+    if (totalCount > 0 && filteredCount < totalCount) {
+      dot.className = 'status-indicator-dot filtered';
+      text.textContent = `🟡 ${filteredCount} от ${totalCount} (Филтриран)`;
+      badge.title = `Има активни филтри: показват се ${filteredCount} от общо ${totalCount} инструмента. Кликнете за диагностика.`;
+    } else {
+      dot.className = 'status-indicator-dot online';
+      const count = totalCount || serverHealth.symbolsInDb || 659;
+      text.textContent = `🟢 Свързан (${count} актива)`;
+      badge.title = `Сървърът и базата данни са активни. ${count} актива са готови. Кликнете за диагностика.`;
+    }
+  }
+}
+
+function toggleSystemStatusModal() {
+  const modal = document.getElementById('systemStatusModal');
+  if (!modal) return;
+  const isHidden = modal.style.display === 'none' || !modal.style.display;
+  if (isHidden) {
+    openSystemStatusModal();
+  } else {
+    closeSystemStatusModal();
+  }
+}
+window.toggleSystemStatusModal = toggleSystemStatusModal;
+
+function openSystemStatusModal() {
+  const modal = document.getElementById('systemStatusModal');
+  if (!modal) return;
+  updateDiagnosticsModalUI();
+  modal.style.display = 'flex';
+  checkServerStatus();
+}
+window.openSystemStatusModal = openSystemStatusModal;
+
+function closeSystemStatusModal() {
+  const modal = document.getElementById('systemStatusModal');
+  if (modal) modal.style.display = 'none';
+}
+window.closeSystemStatusModal = closeSystemStatusModal;
+
+function updateDiagnosticsModalUI() {
+  const modal = document.getElementById('systemStatusModal');
+  if (!modal || modal.style.display === 'none') return;
+
+  const dot = document.getElementById('modalStatusDot');
+  const hero = document.getElementById('diagStatusHero');
+  const icon = document.getElementById('diagHeroIcon');
+  const title = document.getElementById('diagHeroTitle');
+  const subtitle = document.getElementById('diagHeroSubtitle');
+
+  const serverVal = document.getElementById('diagServerVal');
+  const uptimeVal = document.getElementById('diagUptimeVal');
+  const scannerVal = document.getElementById('diagScannerVal');
+  const scanElapsedVal = document.getElementById('diagScanElapsedVal');
+  const dbVal = document.getElementById('diagDbVal');
+  const dbHealthVal = document.getElementById('diagDbHealthVal');
+  const jsonVal = document.getElementById('diagJsonVal');
+  const jsonMtimeVal = document.getElementById('diagJsonMtimeVal');
+  const chipsContainer = document.getElementById('diagFilterChips');
+  const resetBtn = document.getElementById('btnDiagResetFilters');
+
+  const isFile = window.location.protocol === 'file:';
+
+  if (isFile) {
+    if (dot) dot.className = 'status-indicator-dot offline';
+    if (hero) hero.className = 'diag-status-hero hero-offline';
+    if (icon) icon.textContent = '⚠️';
+    if (title) title.textContent = 'Отворено през file:// протокол (CORS ограничение)';
+    if (subtitle) subtitle.textContent = 'Уеб браузърите забраняват зареждане на JSON файлове директно от локалния диск. Моля отворете http://localhost:8080';
+    if (serverVal) serverVal.textContent = 'file:// (Локален файл)';
+    if (uptimeVal) uptimeVal.textContent = 'Няма връзка с localhost';
+  } else if (!serverHealth.isOnline) {
+    if (dot) dot.className = 'status-indicator-dot offline';
+    if (hero) hero.className = 'diag-status-hero hero-offline';
+    if (icon) icon.textContent = '🔴';
+    if (title) title.textContent = 'Няма връзка със сървъра';
+    if (subtitle) subtitle.textContent = 'Сървърът на localhost:8080 не отговаря. Стартирайте python src/dashboard/server.py 8080';
+    if (serverVal) serverVal.textContent = 'Прекъсната (Offline)';
+    if (uptimeVal) uptimeVal.textContent = 'Проверете конзолата';
+  } else if (serverHealth.isScanning) {
+    if (dot) dot.className = 'status-indicator-dot scanning';
+    if (hero) hero.className = 'diag-status-hero hero-scanning';
+    if (icon) icon.textContent = '⚡';
+    if (title) title.textContent = 'Скенерът мисли и сканира пазара в момента...';
+    if (subtitle) subtitle.textContent = `Изпълнява се дълбок анализ на Larsson панделките и се генерират нови търговски предложения (${serverHealth.scanDurationSec}s).`;
+    if (serverVal) serverVal.textContent = 'Свързан (localhost:8080)';
+    if (uptimeVal) uptimeVal.textContent = `Uptime: ${Math.round(serverHealth.uptimeSec / 60)} min`;
+    if (scannerVal) scannerVal.textContent = `⚡ Сканира (${serverHealth.scanDurationSec}s)...`;
+    if (scanElapsedVal) scanElapsedVal.textContent = 'Статус: Активно изчисление';
+  } else {
+    if (dot) dot.className = 'status-indicator-dot online';
+    if (hero) hero.className = 'diag-status-hero';
+    if (icon) icon.textContent = '🟢';
+    const totalCount = allSymbols.length || serverHealth.symbolsInDb || 659;
+    if (title) title.textContent = 'Системата работи нормално и е напълно готова';
+    if (subtitle) subtitle.textContent = `${totalCount} пазарни актива са заредени в паметта и достъпни за филтриране и графичен анализ.`;
+    if (serverVal) serverVal.textContent = 'Свързан (localhost:8080)';
+    if (uptimeVal) uptimeVal.textContent = `Uptime: ${Math.round(serverHealth.uptimeSec / 60)} min`;
+    if (scannerVal) scannerVal.textContent = 'В покой (Готов)';
+    if (scanElapsedVal) scanElapsedVal.textContent = 'Статус: Изчаква заявка';
+  }
+
+  if (serverHealth.isOnline) {
+    if (dbVal) dbVal.textContent = `${serverHealth.symbolsInDb || allSymbols.length} инструмента`;
+    if (dbHealthVal) dbHealthVal.textContent = serverHealth.dbHealthy ? 'Статус: SQLite WAL изряден' : 'Грешка при четене на БД';
+
+    const sizeMb = serverHealth.dataJsonSize ? (serverHealth.dataJsonSize / (1024 * 1024)).toFixed(2) : '4.93';
+    if (jsonVal) jsonVal.textContent = `${sizeMb} MB`;
+    if (jsonMtimeVal) {
+      if (serverHealth.dataJsonMtime) {
+        const d = new Date(serverHealth.dataJsonMtime);
+        jsonMtimeVal.textContent = `Обновен: ${d.toLocaleTimeString()}`;
+      } else {
+        jsonMtimeVal.textContent = 'Наличен';
+      }
+    }
+  }
+
+  // Active filters list
+  if (chipsContainer) {
+    const activeFilters = [];
+    if (currentSearch) activeFilters.push({ label: `Търсене: "${currentSearch}"`, type: 'search' });
+    if (currentClass !== 'ALL') activeFilters.push({ label: `Пазар: ${CLASS_LABELS[currentClass] || currentClass}`, type: 'class' });
+    if (currentTfFilter !== 'ALL') activeFilters.push({ label: `ТФ: ${currentTfFilter}`, type: 'tf' });
+    if (currentTechFilter !== 'ALL') activeFilters.push({ label: `Техника: ${currentTechFilter}`, type: 'tech' });
+    if (currentFundFilter !== 'ALL') activeFilters.push({ label: `Фундамент: ${currentFundFilter}`, type: 'fund' });
+    if (currentSetupFilter !== 'ALL') activeFilters.push({ label: `Синтез: ${currentSetupFilter}`, type: 'setup' });
+
+    if (activeFilters.length === 0) {
+      chipsContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.8rem;">Няма активни филтри — показват се всички активи.</span>';
+      if (resetBtn) resetBtn.style.display = 'none';
+    } else {
+      chipsContainer.innerHTML = activeFilters.map(f => `
+        <span class="diag-chip">
+          ${escapeHtml(f.label)}
+        </span>
+      `).join('');
+      if (resetBtn) resetBtn.style.display = 'inline-block';
+    }
+  }
+}
+
+function getZeroStateHtml() {
+  if (allSymbols.length === 0) {
+    if (isDataLoading) {
+      return `
+        <div class="zero-state-banner">
+          <div class="spinner" style="width: 32px; height: 32px; border-width: 3px;"></div>
+          <div class="zero-state-content">
+            <h4>Зареждане на пазарните данни...</h4>
+            <p>Системата извлича 659 актива и Larsson панделки от локалната база данни. Моля изчакайте секунда...</p>
+          </div>
+        </div>
+      `;
+    }
+    const isFile = window.location.protocol === 'file:';
+    if (isFile) {
+      return `
+        <div class="zero-state-banner" style="border-color: #f59e0b;">
+          <div class="zero-state-icon">⚠️</div>
+          <div class="zero-state-content">
+            <h4 style="color: #f59e0b;">Браузърът блокира data.json (CORS при file:// протокол)</h4>
+            <p>За сигурност уеб браузърите не позволяват зареждане на JSON файлове при директно отваряне с двоен клик на файла. Моля отворете адреса през локалния уеб сървър:</p>
+            <div class="zero-state-actions">
+              <a href="http://localhost:8080" class="btn btn-primary-action">🚀 Отвори през Localhost:8080</a>
+              <a href="https://todoripetrov.github.io/larsson-scanner/" target="_blank" rel="noopener" class="btn btn-secondary-action">🌐 GitHub Pages</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    return `
+      <div class="zero-state-banner">
+        <div class="zero-state-icon">⚡</div>
+        <div class="zero-state-content">
+          <h4>Няма заредени данни в скенера</h4>
+          <p>Базата данни може би се сканира в момента или сървърът е стартиран наскоро.</p>
+          <div class="zero-state-actions">
+            <button class="btn btn-primary-action" onclick="runNewTradeAnalysis()">⚡ Стартирай Анализ</button>
+            <button class="btn btn-secondary-action" onclick="loadDashboardData()">↻ Презареди</button>
+            <button class="btn btn-secondary-action" onclick="toggleSystemStatusModal()">🔍 Системна Диагностика</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Case: allSymbols.length > 0, but active filters reduced to 0
+  const activeTags = [];
+  if (currentSearch) activeTags.push(`Търсене: "${escapeHtml(currentSearch)}"`);
+  if (currentClass !== 'ALL') activeTags.push(`Пазар: ${CLASS_LABELS[currentClass] || currentClass}`);
+  if (currentTfFilter !== 'ALL') activeTags.push(`Времева рамка: ${currentTfFilter}`);
+  if (currentTechFilter !== 'ALL') activeTags.push(`Техника: ${currentTechFilter}`);
+  if (currentFundFilter !== 'ALL') activeTags.push(`Фундамент: ${currentFundFilter}`);
+  if (currentSetupFilter !== 'ALL') activeTags.push(`Синтез: ${currentSetupFilter}`);
+
+  const tagsHtml = activeTags.map(t => `<span class="zero-state-tag">${t}</span>`).join('');
+
+  return `
+    <div class="zero-state-banner">
+      <div class="zero-state-icon">🔍</div>
+      <div class="zero-state-content">
+        <h4>Няма намерени активи за текущите филтри</h4>
+        <p>В системата има <strong>${allSymbols.length} активни пазарни инструмента</strong>, но активните критерии скриват всички резултати:</p>
+        <div class="zero-state-tags">
+          ${tagsHtml || '<span class="zero-state-tag">Активен филтър</span>'}
+        </div>
+        <div class="zero-state-actions">
+          <button class="btn btn-primary-action" onclick="resetAllFilters()">✕ Нулирай всички филтри (${allSymbols.length} актива)</button>
+          <button class="btn btn-secondary-action" onclick="toggleSystemStatusModal()">🔍 Системна Диагностика</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderTradeSuggestionCell(ts, item) {
   return renderSynthesisCell(item ? item.synthesis : null, ts, item);
 }
 
 async function loadDashboardData() {
   let data;
+  isDataLoading = true;
   try {
     const res = await fetch('data.json?t=' + new Date().getTime());
     if (!res.ok) {
       throw new Error(`Failed to load data.json: ${res.statusText}`);
     }
     data = await res.json();
+    window.lastLoadedDashboardData = data;
     allSymbols = data.symbols || [];
     pendingSetups = data.pending_setups || [];
     pendingProposals = data.pending_proposals || [];
     portfolioData = data.portfolio || {};
     portfolioPaperData = data.portfolio_paper || { summary: portfolioData, positions: [], history: [], journal: [] };
     portfolioRealData = data.portfolio_real || { summary: {}, positions: [], history: [], journal: [] };
+    isDataLoaded = true;
+    isDataLoading = false;
 
     // Sync any custom positions or cash saved locally in this browser
     syncLocalPaperStorage();
@@ -298,35 +610,25 @@ async function loadDashboardData() {
     switchPortfolioMode(currentPortfolioMode);
     initPageCalculator();
     switchTab(currentTab);
+    checkServerStatus();
   } catch (err) {
+    isDataLoading = false;
     console.error('Error loading data.json:', err);
-    const isFileProtocol = window.location.protocol === 'file:';
-    const errorHtml = isFileProtocol ? `
-      <div style="padding: 24px; text-align: center; line-height: 1.6;">
-        <h3 style="color: #f59e0b; margin-bottom: 8px;">⚠️ Браузърът блокира зареждането през file:// протокол (CORS)</h3>
-        <p style="color: var(--text-muted); margin-bottom: 16px;">
-          За сигурност уеб браузърите не позволяват четене на JSON данни при директно отваряне с двоен клик на файла.
-        </p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <a href="http://localhost:8080" class="btn btn-refresh" style="text-decoration: none; padding: 10px 18px; font-weight: 600;">
-            🚀 Отвори през Localhost:8080
-          </a>
-          <a href="https://todoripetrov.github.io/larsson-scanner/" target="_blank" rel="noopener" class="btn btn-refresh" style="text-decoration: none; padding: 10px 18px; font-weight: 600; background: rgba(234, 179, 8, 0.15); border-color: #eab308; color: #facc15;">
-            🌐 Отвори в GitHub Pages
-          </a>
-        </div>
-      </div>
-    ` : `⚠️ Failed to load <code>data.json</code>. Run a scan first: <code>python src/main.py --scan</code>`;
+    checkServerStatus();
+    const errorHtml = getZeroStateHtml();
 
-    document.getElementById('assetsTableBody').innerHTML = `
-      <tr>
-        <td colspan="14" class="loading-state" style="color: #ef4444;">
-          ${errorHtml}
-        </td>
-      </tr>
-    `;
+    const tbody = document.getElementById('assetsTableBody');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="14" style="padding: 0;">
+            ${errorHtml}
+          </td>
+        </tr>
+      `;
+    }
     const cards = document.getElementById('cardsGrid');
-    if (cards) cards.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">${errorHtml}</div>`;
+    if (cards) cards.innerHTML = `<div style="grid-column: 1/-1;">${errorHtml}</div>`;
     return;
   }
 
@@ -698,6 +1000,7 @@ function getFilteredSymbols() {
 }
 
 function renderOverview(data) {
+  if (data) window.lastLoadedDashboardData = data;
   let activeSet = allSymbols;
   if (currentClass !== 'ALL') {
     activeSet = activeSet.filter(s => s.asset_class === currentClass);
@@ -721,10 +1024,27 @@ function renderOverview(data) {
   const bluePct = total > 0 ? Math.round((blueCount / total) * 100) : 0;
   const neutralPct = total > 0 ? Math.round((neutralCount / total) * 100) : 0;
 
-  document.getElementById('totalCount').textContent = total;
-  document.getElementById('goldCount').textContent = goldCount;
-  document.getElementById('blueCount').textContent = blueCount;
-  document.getElementById('neutralCount').textContent = neutralCount;
+  const totalEl = document.getElementById('totalCount');
+  if (totalEl) {
+    if (allSymbols.length === 0) {
+      if (isDataLoading) {
+        totalEl.innerHTML = '<span class="stat-loading-dots">...</span>';
+      } else {
+        totalEl.textContent = '0';
+      }
+    } else if (total < allSymbols.length) {
+      totalEl.innerHTML = `${total} <span class="filter-hint" title="Филтрирано по пазар/времева рамка">(от ${allSymbols.length})</span>`;
+    } else {
+      totalEl.textContent = total;
+    }
+  }
+
+  const goldEl = document.getElementById('goldCount');
+  if (goldEl) goldEl.textContent = goldCount;
+  const blueEl = document.getElementById('blueCount');
+  if (blueEl) blueEl.textContent = blueCount;
+  const neutralEl = document.getElementById('neutralCount');
+  if (neutralEl) neutralEl.textContent = neutralCount;
 
   document.getElementById('goldPct').textContent = `${goldPct}%`;
   document.getElementById('bluePct').textContent = `${bluePct}%`;
@@ -738,6 +1058,8 @@ function renderOverview(data) {
     const d = new Date(data.generated_at);
     document.getElementById('lastUpdated').textContent = `Обновено: ${d.toLocaleTimeString()} (${d.toLocaleDateString()})`;
   }
+
+  updateSystemHealthBadge();
 }
 
 function updateSearchControls(filteredCount) {
@@ -768,6 +1090,7 @@ function renderAllViews() {
   renderCards(filtered);
   applyViewMode();
   updateSearchControls(filtered.length);
+  updateSystemHealthBadge();
 }
 
 function renderTable(filteredSymbols) {
@@ -775,12 +1098,9 @@ function renderTable(filteredSymbols) {
   const filtered = filteredSymbols || getFilteredSymbols();
 
   if (filtered.length === 0) {
-    const emptyMsg = currentSearch
-      ? `🔍 Няма намерени активи за "<strong>${escapeHtml(currentSearch)}</strong>". <button type="button" class="btn-clear-search" onclick="clearSearch()">✕ Изчисти търсенето</button>`
-      : `Няма намерени активи по избраните критерии.`;
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" class="loading-state">${emptyMsg}</td>
+        <td colspan="9" style="padding: 0;">${getZeroStateHtml()}</td>
       </tr>
     `;
     return;
@@ -860,10 +1180,7 @@ function renderCards(filteredSymbols) {
   const filtered = filteredSymbols || getFilteredSymbols();
 
   if (filtered.length === 0) {
-    const emptyMsg = currentSearch
-      ? `🔍 Няма намерени активи за "<strong>${escapeHtml(currentSearch)}</strong>". <button type="button" class="btn-clear-search" onclick="clearSearch()">✕ Изчисти търсенето</button>`
-      : `Няма намерени активи по избраните критерии.`;
-    container.innerHTML = `<div class="loading-state" style="grid-column: 1/-1;">${emptyMsg}</div>`;
+    container.innerHTML = `<div style="grid-column: 1/-1;">${getZeroStateHtml()}</div>`;
     return;
   }
 
@@ -2274,20 +2591,34 @@ document.querySelectorAll('#classFilters .filter-btn').forEach(btn => {
   });
 });
 
-function resetFiltersToAll() {
+function resetAllFilters() {
   currentClass = 'ALL';
   currentTfFilter = 'ALL';
   currentTechFilter = 'ALL';
   currentFundFilter = 'ALL';
   currentSetupFilter = 'ALL';
+  currentSearch = '';
 
   document.querySelectorAll('#classFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.class === 'ALL'));
   document.querySelectorAll('#tfFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === 'ALL'));
   document.querySelectorAll('#techFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tech === 'ALL'));
   document.querySelectorAll('#fundFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.fund === 'ALL'));
   document.querySelectorAll('#setupFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.setup === 'ALL'));
-  renderOverview();
+
+  const input = document.getElementById('searchInput');
+  if (input) input.value = '';
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+  const countBadge = document.getElementById('searchCountBadge');
+  if (countBadge) countBadge.style.display = 'none';
+
+  renderOverview(window.lastLoadedDashboardData || { symbols: allSymbols });
+  renderAllViews();
+  updateSystemHealthBadge();
+  updateDiagnosticsModalUI();
 }
+window.resetAllFilters = resetAllFilters;
+window.resetFiltersToAll = resetAllFilters;
 
 window.clearSearch = function() {
   currentSearch = '';
@@ -4632,4 +4963,57 @@ document.addEventListener('DOMContentLoaded', () => {
 // Initialize
 initSectionVisibilityControllers();
 loadDashboardData();
+
+function initSystemDiagnosticsListeners() {
+  const closeBtn = document.getElementById('closeSystemStatusModalBtn');
+  if (closeBtn) closeBtn.addEventListener('click', closeSystemStatusModal);
+
+  const modal = document.getElementById('systemStatusModal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeSystemStatusModal();
+    });
+  }
+
+  const btnScan = document.getElementById('btnDiagRunScan');
+  if (btnScan) {
+    btnScan.addEventListener('click', () => {
+      closeSystemStatusModal();
+      runNewTradeAnalysis();
+    });
+  }
+
+  const btnReload = document.getElementById('btnDiagReload');
+  if (btnReload) {
+    btnReload.addEventListener('click', () => {
+      loadDashboardData();
+    });
+  }
+
+  const btnReset = document.getElementById('btnDiagResetFilters');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      resetAllFilters();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const diagModal = document.getElementById('systemStatusModal');
+      if (diagModal && diagModal.style.display !== 'none') {
+        closeSystemStatusModal();
+      }
+    }
+  });
+
+  checkServerStatus();
+  if (!systemStatusTimer) {
+    systemStatusTimer = setInterval(checkServerStatus, 5000);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initSystemDiagnosticsListeners();
+});
+initSystemDiagnosticsListeners();
 

@@ -81,6 +81,13 @@ def export_dashboard_data(
     if db is None:
         db = Database()
 
+    # Safety: do not clobber production dashboard data.json from a non-default test DB
+    if output_path == DEFAULT_OUTPUT_PATH:
+        from src.storage.database import DEFAULT_DB_PATH
+        if os.path.exists(DEFAULT_DB_PATH) and os.path.abspath(db.db_path) != os.path.abspath(DEFAULT_DB_PATH):
+            logger.info(f"Skipping default dashboard export from non-production db: {db.db_path}")
+            return {"symbols": [], "summary": {}}
+
     names_map = _load_names_map()
     rows = db.get_all_states()
 
