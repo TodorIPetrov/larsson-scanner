@@ -105,7 +105,7 @@ jobs:
 
       - name: 💾 Commit & Push Updated Dashboard Data
         run: |
-          git add dashboard/data.json
+          git add dashboard/
           if ! git diff --cached --quiet; then
             git commit -m "chore(data): auto-update market scanner data [skip ci]"
             git pull --no-rebase -X ours origin master || true

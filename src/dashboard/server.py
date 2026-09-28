@@ -4,6 +4,8 @@ Serves static dashboard assets and exposes REST endpoints for on-demand market a
 trade proposals generation, and live system status.
 """
 
+from __future__ import annotations
+
 import http.server
 import json
 import logging
@@ -12,6 +14,7 @@ import sys
 import threading
 import time
 from datetime import datetime, timezone
+from typing import Optional
 
 if sys.platform == "win32":
     try:

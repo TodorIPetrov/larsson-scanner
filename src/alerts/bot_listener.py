@@ -5,10 +5,12 @@ and replies with instant market summaries and asset lists.
 Requires no open ports, webhooks, or public IP.
 """
 
+from __future__ import annotations
+
 from datetime import datetime, timezone
 import logging
 import time
-from typing import Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 import requests
 
 from src.alerts.formatter import get_tradingview_link
