@@ -5,7 +5,7 @@
  * - Offline fallback with cached data and status signaling
  */
 
-const CACHE_NAME = 'larsson-v1';
+const CACHE_NAME = 'larsson-v2';
 const STATIC_ASSETS = [
   './',
   'index.html',
@@ -56,8 +56,8 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
 
-  // Dynamic endpoints: /data.json or /api/
-  const isDataRequest = url.pathname.endsWith('data.json') || url.pathname.includes('/api/');
+  // Dynamic endpoints: /data.json, /data/ or /api/
+  const isDataRequest = url.pathname.endsWith('data.json') || url.pathname.includes('/data/') || url.pathname.includes('/api/');
 
   if (isDataRequest) {
     event.respondWith(

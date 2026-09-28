@@ -1877,9 +1877,6 @@ function updateLiveChartHud(item, ticker, timeframe, assetClass) {
   const btcBadge = document.getElementById('liveBtcBadge');
   const btcAlpha = document.getElementById('liveBtcAlpha');
   const ratioGroup = document.getElementById('liveRatioGroup');
-
-  const isEligibleRatio = (assetClass === 'crypto' || assetClass === 'crypto_stocks') && !ticker.startsWith('BTC');
-
   if (ratioGroup) {
     ratioGroup.style.display = isEligibleRatio ? 'inline-flex' : 'none';
     ratioGroup.querySelectorAll('.live-ratio-btn').forEach(b => {
