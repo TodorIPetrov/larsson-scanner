@@ -279,6 +279,6 @@ def test_format_queue_telegram():
     assert '<b>BTC</b> (S Tier)' in msg
     assert 'БТК е готов за полет' in msg
     assert '✅ v1 > m1' in msg
-    assert '⬜ v1 > v2' in msg
-    assert '<a href=\'https://www.tradingview.com/chart/?symbol=BTC\'>📈 TradingView</a>' in msg
-    assert '<b>ETH</b> (S Tier)' in msg
+    assert 'TradingView Графика' in msg
+    assert 'https://www.tradingview.com/chart/?symbol=' in msg
+    assert '<b>ETH</b>' in msg

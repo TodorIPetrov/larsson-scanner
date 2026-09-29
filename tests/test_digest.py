@@ -112,6 +112,14 @@ def test_generate_digest_data(tmp_path):
     assert data["top_bearish"][0]["ticker"] == "MSTR"
     assert data["top_bearish"][0]["spread_pct"] == -20.0
 
+    # Priority focus summary must contain BTC and MSTR
+    priority_tickers = [p["ticker"] for p in data.get("priority_summary", [])]
+    assert "BTCUSDT" in priority_tickers
+    assert "MSTR" in priority_tickers
+    assert "Ключови активи (Focus Watch)" in data["message"]
+    assert "Bitcoin (BTC)" in data["message"]
+    assert "MicroStrategy (MSTR)" in data["message"]
+
 
 def test_send_daily_digest_deduplication(tmp_path):
     db_file = str(tmp_path / "test_send_digest.db")

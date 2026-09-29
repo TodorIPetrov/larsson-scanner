@@ -4,7 +4,8 @@ Uses SQLite with Write-Ahead Logging (WAL) mode for maximum concurrency and safe
 """
 
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+import json
 import os
 import sqlite3
 import threading
@@ -1011,6 +1012,18 @@ class Database:
         with self._get_connection() as conn:
             cur = conn.cursor()
             cur.execute("SELECT * FROM trade_proposals WHERE status = 'PENDING' ORDER BY created_at DESC")
+            return cur.fetchall()
+
+    def get_recent_proposals_by_ticker(self, ticker: str, hours: int = 24) -> List[sqlite3.Row]:
+        """Returns proposals for a specific ticker created in the last N hours."""
+        cutoff = (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT * FROM trade_proposals
+            WHERE ticker = ? AND created_at >= ?
+            ORDER BY created_at DESC
+            """, (ticker, cutoff))
             return cur.fetchall()
 
     def update_proposal_status(

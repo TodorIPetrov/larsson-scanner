@@ -56,10 +56,27 @@ def _clean_dict_floats(obj):
     return obj
 
 
+TV_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "config",
+    "tv_mapping.json",
+)
+
+
 def _load_names_map() -> Dict[str, str]:
     try:
         if os.path.exists(NAMES_PATH):
             with open(NAMES_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+
+def _load_tv_map() -> Dict[str, str]:
+    try:
+        if os.path.exists(TV_PATH):
+            with open(TV_PATH, "r", encoding="utf-8") as f:
                 return json.load(f)
     except Exception:
         pass
@@ -562,11 +579,30 @@ def export_dashboard_data(
 
     # Pending Setups from queue
     pending_setups_data = []
+    tv_map = _load_tv_map()
     try:
+        from src.alerts.formatter import get_tradingview_link
         raw_setups = db.get_active_pending_setups()
         for s in raw_setups:
+            sym = s["symbol"]
+            s_name = names_map.get(sym)
+            if not s_name:
+                if sym.endswith("USDT"):
+                    s_name = f"{sym[:-4]} / USDT"
+                elif sym.endswith("USDC"):
+                    s_name = f"{sym[:-4]} / USDC"
+                else:
+                    s_name = sym
+
+            s_tf = s["timeframe"] or "1D"
+            s_tv_sym = tv_map.get(sym) or (f"BINANCE:{sym}" if (sym.endswith("USDT") or sym.endswith("USDC")) else sym)
+            s_tv_url = get_tradingview_link(s_tv_sym, s_tf)
+
             pending_setups_data.append({
-                "symbol": s["symbol"],
+                "symbol": sym,
+                "name": s_name,
+                "tv_symbol": s_tv_sym,
+                "tv_url": s_tv_url,
                 "asset_class": s["asset_class"],
                 "setup_type": s["setup_type"],
                 "direction": s["direction"],
@@ -579,7 +615,7 @@ def export_dashboard_data(
                 "current_price": _clean_float(s["current_price"]),
                 "target_entry": _clean_float(s["target_entry"]),
                 "key_level": _clean_float(s["key_level"]),
-                "timeframe": s["timeframe"],
+                "timeframe": s_tf,
                 "tier": s["tier"],
                 "first_detected": s["first_detected"],
                 "last_updated": s["last_updated"],

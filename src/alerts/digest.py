@@ -116,29 +116,56 @@ def generate_digest_data(db: Database) -> Dict:
     else:
         top_bearish = sorted(blue_items, key=lambda x: x["spread_pct"])[:4]
 
-    # Recent changes: from alert_logs first, fallback to symbol_states cutoff
+    # Recent changes: filtered to only GOLD transitions or priority assets (BTC, MSTR, Metaplanet, NAKA)
+    from src.alerts.filter import is_alert_eligible_for_telegram
     recent_alerts = db.get_recent_alerts(hours=24)
     recent_changes = []
     if recent_alerts:
         for a in recent_alerts:
-            recent_changes.append({
-                "ticker": a["ticker"],
-                "timeframe": a["timeframe"],
-                "old_state": a["old_state"],
-                "new_state": a["new_state"],
-                "price": a["price"],
-                "tv_symbol": a["tv_symbol"],
-            })
+            if is_alert_eligible_for_telegram(a["ticker"], a["old_state"], a["new_state"]):
+                recent_changes.append({
+                    "ticker": a["ticker"],
+                    "timeframe": a["timeframe"],
+                    "old_state": a["old_state"],
+                    "new_state": a["new_state"],
+                    "price": a["price"],
+                    "tv_symbol": a["tv_symbol"],
+                })
     else:
         # Fallback to symbol_states that changed in last 24h
-        for c in state_change_candidates[:8]:
-            recent_changes.append({
-                "ticker": c["ticker"],
-                "timeframe": c["timeframe"],
-                "old_state": "⚪ NEUTRAL",
-                "new_state": c["state"],
-                "price": c["price"],
-                "tv_symbol": c["tv_symbol"],
+        for c in state_change_candidates:
+            if is_alert_eligible_for_telegram(c["ticker"], "NEUTRAL", c["state"]):
+                recent_changes.append({
+                    "ticker": c["ticker"],
+                    "timeframe": c["timeframe"],
+                    "old_state": "⚪ NEUTRAL",
+                    "new_state": c["state"],
+                    "price": c["price"],
+                    "tv_symbol": c["tv_symbol"],
+                })
+
+    # Extract priority focus assets: BTC, MSTR, Metaplanet (3350.T), NAKA
+    priority_keys = [
+        ("Bitcoin (BTC)", ["BTCUSDT", "BTC-USD", "BTC", "BTCUSDC"]),
+        ("MicroStrategy (MSTR)", ["MSTR"]),
+        ("Metaplanet (3350.T)", ["3350.T", "3350", "METAPLANET"]),
+        ("Nakamoto Inc. (NAKA)", ["NAKA"]),
+    ]
+    priority_summary = []
+    for label, aliases in priority_keys:
+        matched = [i for i in all_items if i["ticker"].upper() in aliases and i["timeframe"] == "1D"]
+        if not matched:
+            matched = [i for i in all_items if i["ticker"].upper() in aliases]
+        if matched:
+            item = matched[0]
+            priority_summary.append({
+                "ticker": item["ticker"],
+                "name": label,
+                "state": item["state"],
+                "price": item["price"],
+                "spread_pct": item["spread_pct"],
+                "timeframe": item["timeframe"],
+                "tv_symbol": item["tv_symbol"],
             })
 
     date_str = datetime.now(timezone.utc).strftime("%d.%m.%Y")
@@ -151,6 +178,7 @@ def generate_digest_data(db: Database) -> Dict:
         top_bearish=top_bearish,
         recent_changes=recent_changes,
         date_str=date_str,
+        priority_summary=priority_summary,
     )
 
     return {
@@ -158,6 +186,7 @@ def generate_digest_data(db: Database) -> Dict:
         "gold_count": gold_count,
         "blue_count": blue_count,
         "neutral_count": neutral_count,
+        "priority_summary": priority_summary,
         "top_bullish": top_bullish,
         "top_bearish": top_bearish,
         "recent_changes": recent_changes,

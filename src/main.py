@@ -195,12 +195,18 @@ def start_scheduler(scanner: LarssonScanner):
         name="Traditional & Crypto Stocks Weekly Scan (Fri 21:10 UTC)",
     )
 
-    # Daily Morning Digest: 08:00 UTC (11:00 Bulgarian time)
+    # Daily Morning Digest: 09:00 Bulgarian time (Europe/Sofia)
+    tg_cfg = scanner.config.get("telegram", {})
+    md_cfg = tg_cfg.get("morning_digest", {})
+    md_hour = int(md_cfg.get("hour", 9))
+    md_minute = int(md_cfg.get("minute", 0))
+    md_tz = md_cfg.get("timezone", "Europe/Sofia")
+
     sched.add_job(
         func=lambda: send_daily_digest(scanner.notifier, scanner.db),
-        trigger=CronTrigger(hour=8, minute=0, timezone="UTC"),
+        trigger=CronTrigger(hour=md_hour, minute=md_minute, timezone=md_tz),
         id="daily_digest",
-        name="Daily Morning Digest (08:00 UTC)",
+        name=f"Daily Morning Digest ({md_hour:02d}:{md_minute:02d} {md_tz})",
     )
 
     logger.info("Scheduler started with cron jobs:")
@@ -209,7 +215,7 @@ def start_scheduler(scanner: LarssonScanner):
     logger.info("  - Crypto 1W: Mondays at 00:05 UTC")
     logger.info("  - Stocks/Commodities 1D: Mon-Fri at 21:05 UTC")
     logger.info("  - Stocks/Commodities 1W: Fridays at 21:10 UTC")
-    logger.info("  - Daily Digest: Daily at 08:00 UTC (11:00 EEST)")
+    logger.info(f"  - Daily Digest: Daily at {md_hour:02d}:{md_minute:02d} ({md_tz})")
 
     # Start Binance WebSocket listener for sub-second real-time crypto candle close alerts
     try:

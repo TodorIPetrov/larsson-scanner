@@ -20,6 +20,43 @@ STATE_TITLE = {
 }
 
 
+import json
+import os
+
+NAMES_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "config",
+    "names_mapping.json",
+)
+_NAMES_MAP_CACHE = None
+
+def get_asset_name(ticker: str) -> str:
+    """Returns human-readable name/description for an asset ticker."""
+    global _NAMES_MAP_CACHE
+    if not isinstance(ticker, str):
+        return str(ticker) if ticker is not None else ""
+
+    if _NAMES_MAP_CACHE is None:
+        try:
+            if os.path.exists(NAMES_PATH):
+                with open(NAMES_PATH, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    _NAMES_MAP_CACHE = data if isinstance(data, dict) else {}
+            else:
+                _NAMES_MAP_CACHE = {}
+        except Exception:
+            _NAMES_MAP_CACHE = {}
+
+    name = _NAMES_MAP_CACHE.get(ticker)
+    if name:
+        return name
+    if len(ticker) > 4 and ticker.endswith("USDT"):
+        return f"{ticker[:-4]} / USDT"
+    if len(ticker) > 4 and ticker.endswith("USDC"):
+        return f"{ticker[:-4]} / USDC"
+    return ticker
+
+
 def get_tradingview_link(tv_symbol: str, timeframe: str) -> str:
     """
     Generates a deep link to TradingView chart.
@@ -65,9 +102,11 @@ def format_single_alert(
 
     tv_url = get_tradingview_link(tv_symbol, timeframe)
     price_str = _format_price(price)
+    asset_name = get_asset_name(ticker)
+    name_desc = f" ({asset_name})" if asset_name and asset_name != ticker else ""
 
     lines = [
-        f"{new_emoji} <b>{ticker} | {timeframe}</b>",
+        f"{new_emoji} <b>{ticker}{name_desc} | {timeframe}</b>",
         f"🔄 {old_emoji} {old_text} ➡️ <b>{new_emoji} {new_text}</b>",
         f"💵 Цена: <code>{price_str}</code>",
     ]
@@ -161,7 +200,9 @@ def format_batch_alert(changes: List[dict]) -> str:
             parts = [p for p in [s_part, r_part] if p]
             sr_tag = f" <i>[{' | '.join(parts)}]</i>"
 
-        line = f"• <a href=\"{tv_url}\"><b>{ticker}</b></a> ({tf}): {old_emoji} ➡️ <b>{new_emoji} {new_state.value}</b> @ <code>{p_str}</code>{sr_tag}"
+        asset_name = get_asset_name(ticker)
+        desc = f" ({asset_name})" if asset_name and asset_name != ticker else ""
+        line = f"• <a href=\"{tv_url}\"><b>{ticker}</b></a>{desc} ({tf}): {old_emoji} ➡️ <b>{new_emoji} {new_state.value}</b> @ <code>{p_str}</code>{sr_tag}"
         lines.append(line)
 
     body = "\n".join(lines)
@@ -178,6 +219,7 @@ def format_daily_digest(
     recent_changes: List[dict],
     date_str: Optional[str] = None,
     dashboard_url: str = "https://todoripetrov.github.io/larsson-scanner/",
+    priority_summary: Optional[List[dict]] = None,
 ) -> str:
     """
     Formats the daily market digest into a clean, comprehensive Telegram HTML message.
@@ -202,7 +244,25 @@ def format_daily_digest(
     )
     sections.append(header)
 
-    # 2. Top Bullish Trends (Highest Spread %)
+    # 2. Priority Focus Assets (BTC, MSTR, Metaplanet, NAKA)
+    if priority_summary:
+        focus_lines = ["⭐ <b>Ключови активи (Focus Watch):</b>"]
+        for p in priority_summary:
+            ticker = p["ticker"]
+            name = p.get("name", ticker)
+            tf = p.get("timeframe", "1D")
+            st = str(p.get("state", "NEUTRAL")).upper()
+            st_emoji = "🟡" if "GOLD" in st else ("🔵" if "BLUE" in st else "⚪")
+            spread = p.get("spread_pct", 0.0)
+            sign = "+" if spread > 0 else ""
+            price = p.get("price", 0.0)
+            p_str = _format_price(price)
+            tv_sym = p.get("tv_symbol", ticker)
+            url = get_tradingview_link(tv_sym, tf)
+            focus_lines.append(f"• <a href=\"{url}\"><b>{name}</b></a>: {st_emoji} <b>{st}</b> @ <code>{p_str}</code> ({sign}{spread:.1f}%)")
+        sections.append("\n".join(focus_lines))
+
+    # 3. Top Bullish Trends (Highest Spread %)
     if top_bullish:
         bull_lines = ["🚀 <b>Топ Бичи Трендове (Ribbon Spread):</b>"]
         for item in top_bullish:
@@ -251,8 +311,10 @@ def format_daily_digest(
             new_em = STATE_EMOJI.get(new_st, "⚪") if isinstance(new_st, LarssonState) else ("🟡" if new_st == "GOLD" else ("🔵" if new_st == "BLUE" else "⚪"))
             old_em = STATE_EMOJI.get(old_st, "⚪") if isinstance(old_st, LarssonState) else ("🟡" if old_st == "GOLD" else ("🔵" if old_st == "BLUE" else "⚪"))
             new_val = new_st.value if isinstance(new_st, LarssonState) else str(new_st)
+            asset_name = get_asset_name(ticker)
+            desc = f" ({asset_name})" if asset_name and asset_name != ticker else ""
 
-            chg_lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): {old_em} ➡️ <b>{new_em} {new_val}</b> @ <code>{p_str}</code>")
+            chg_lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a>{desc} ({tf}): {old_em} ➡️ <b>{new_em} {new_val}</b> @ <code>{p_str}</code>")
 
         if len(recent_changes) > 8:
             chg_lines.append(f"<i>... и още {len(recent_changes) - 8} промени в дашборда.</i>")

@@ -6,9 +6,9 @@ on:
     # 1) Every 4 hours at :05 UTC (00:05, 04:05, 08:05, 12:05, 16:05, 20:05 UTC)
     #    Monitors 4H and 1D crypto candle closes and general market momentum
     - cron: '5 */4 * * *'
-    # 2) Daily at 08:00 UTC (11:00 Bulgarian time / EEST)
+    # 2) Daily at 06:00 UTC (09:00 Bulgarian time / EEST)
     #    Dispatches Daily Morning Digest and checks morning market setups
-    - cron: '0 8 * * *'
+    - cron: '0 6 * * *'
     # 3) Monday to Friday at 21:05 UTC (shortly after US stock market close at 21:00 UTC)
     #    Scans traditional assets (US stocks, crypto stocks, international stocks, commodities, indices)
     - cron: '5 21 * * 1-5'
@@ -96,7 +96,7 @@ jobs:
         run: |
           CURRENT_HOUR=$(date -u +%H)
           SEND_DIGEST="${{ github.event.inputs.send_digest }}"
-          if [ "$SEND_DIGEST" = "true" ] || [ "$CURRENT_HOUR" = "07" ] || [ "$CURRENT_HOUR" = "08" ] || [ "$CURRENT_HOUR" = "09" ]; then
+          if [ "$SEND_DIGEST" = "true" ] || [ "$CURRENT_HOUR" = "06" ] || [ "$CURRENT_HOUR" = "07" ]; then
             echo "Dispatching daily market digest to Telegram (UTC hour: $CURRENT_HOUR)..."
             python src/main.py --digest || echo "Digest already sent today or skipped."
           else

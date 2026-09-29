@@ -10,7 +10,7 @@ import math
 import time
 from typing import Dict, List, Optional, Tuple
 
-from src.alerts.formatter import get_tradingview_link
+from src.alerts.formatter import get_tradingview_link, get_asset_name
 from src.alerts.telegram import TelegramNotifier
 from src.storage.database import Database
 
@@ -82,6 +82,9 @@ class PaperTrader:
             logger.debug(f"[PaperTrader] Skipping {ticker}: score={score}, tier={tier} below threshold.")
             return None
 
+        # Expire any stale proposals first
+        self.db.expire_old_proposals()
+
         # Check if active position already exists
         existing_pos = self.db.get_open_paper_position_by_ticker(ticker)
         if existing_pos:
@@ -94,6 +97,12 @@ class PaperTrader:
             if p["ticker"] == ticker:
                 logger.info(f"[PaperTrader] Proposal already pending for {ticker}. Skipping.")
                 return None
+
+        # Anti-spam cooldown: skip if proposal was already created in last 12 hours
+        recent = self.db.get_recent_proposals_by_ticker(ticker, hours=12)
+        if recent:
+            logger.info(f"[PaperTrader] Proposal already dispatched for {ticker} within 12h. Skipping.")
+            return None
 
         # Check max active positions
         open_positions = self.db.get_open_paper_positions()
@@ -306,9 +315,15 @@ class PaperTrader:
             sweep_txt = "Unusual call sweep detected" if opt_flow.get("unusual_call_sweep") else "Normal flow"
             options_line = f"📈 Options: {sweep_txt} | PCR: {pcr:.2f} ({sentiment})\n\n"
 
+        asset_name = get_asset_name(ticker)
+        name_desc = f" ({asset_name})" if asset_name and asset_name != ticker else ""
+
         text = (
-            f"{action_emoji} <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА {title_action} ({asset_label}): {ticker} [{timeframe}]</b>\n"
+            f"{action_emoji} <b>{asset_emoji} ПРЕДЛОЖЕНИЕ ЗА {title_action} ({asset_label}): {ticker}{name_desc} [{timeframe}]</b>\n"
             f"━━━━━━━━━━━━━━━━━━━━\n"
+            f"🏢 <b>АКТИВ / ПРОФИЛ:</b>\n"
+            f"• Име / Описание: <b>{asset_name}</b>\n"
+            f"• Пазарен клас: <b>{asset_label}</b> | Времева рамка: <b>{timeframe}</b>\n\n"
             f"📐 <b>ТЕХНИЧЕСКИ АНАЛИЗ (Larsson Ribbon):</b>\n"
             f"• Препоръка: <b>{tech_label}</b>\n"
             f"• Теза: <i>{tech_thesis}</i>\n\n"
@@ -337,27 +352,34 @@ class PaperTrader:
             f"⏳ <i>Валидност: {expires_minutes} мин. Изберете ниво на експозиция:</i>"
         )
 
-        buttons_row = []
+        # Row 1: Virtual Portfolio (Paper Trading) Options
+        virtual_buttons = []
         if lev_matrix and len(lev_matrix) > 1:
             for item in lev_matrix:
                 l_num = item["leverage"]
                 lbl = item["label"]
                 e_icon = "🟢" if l_num == 1 else ("⚡" if l_num == 2 else "🚀")
-                buttons_row.append({
-                    "text": f"{e_icon} {lbl}",
+                virtual_buttons.append({
+                    "text": f"🎮 {lbl}",
                     "callback_data": f"trade:approve:{proposal_id}:{l_num}",
                 })
         else:
             action_btn = "BUY" if direction == "LONG" else "SHORT"
-            buttons_row = [
-                {"text": f"✅ Потвърди {action_btn} (${position_size_usd:.0f})", "callback_data": f"trade:approve:{proposal_id}:1"}
+            virtual_buttons = [
+                {"text": f"🎮 Виртуално портфолио (${position_size_usd:.0f})", "callback_data": f"trade:approve:{proposal_id}:1"}
             ]
 
         reply_markup = {
             "inline_keyboard": [
-                buttons_row,
+                virtual_buttons,
                 [
-                    {"text": "❌ Откажи", "callback_data": f"trade:reject:{proposal_id}"},
+                    {"text": "📊 TradingView Графика", "url": tv_url},
+                ],
+                [
+                    {"text": "📌 Имай предвид за реални сделки", "callback_data": f"trade:real_watch:{proposal_id}"},
+                ],
+                [
+                    {"text": "❌ Пропусни", "callback_data": f"trade:reject:{proposal_id}"},
                 ]
             ]
         }
@@ -491,6 +513,64 @@ class PaperTrader:
 
         logger.info(f"[PaperTrader] Rejected proposal {proposal_id} for {row['ticker']}")
         return {"success": True, "ticker": row["ticker"]}
+
+    def mark_proposal_real_watch(self, proposal_id: str, chat_id: Optional[str] = None) -> dict:
+        """
+        User clicked 'Keep in mind for real trading' / 'Watch'.
+        Marks proposal as NOTED_FOR_REAL, adds ticker to personal Watchlist,
+        leaves paper balance untouched, and edits message with ready-to-copy /buy_real command.
+        """
+        row = self.db.get_proposal(proposal_id)
+        if not row:
+            return {"success": False, "error": "Предложението не беше намерено."}
+
+        status = row["status"]
+        if status != "PENDING":
+            return {"success": False, "error": f"Предложението вече е със статус: {status}."}
+
+        now_iso = datetime.now(timezone.utc).isoformat()
+        self.db.update_proposal_status(proposal_id, "NOTED_FOR_REAL", responded_at=now_iso)
+
+        ticker = row["ticker"]
+        entry_price = float(row["entry_price"])
+        stop_loss = row["stop_loss"]
+        tp1 = row["tp1"]
+        timeframe = row["timeframe"]
+        msg_id = row["message_id"]
+
+        # Add to personal watchlist
+        self.db.add_to_watchlist(ticker)
+
+        if msg_id:
+            p_str = format_price_str(entry_price)
+            sl_str = format_price_str(stop_loss) if stop_loss else "Няма"
+            tp1_str = format_price_str(tp1) if tp1 else "Няма"
+
+            is_crypto = ticker.endswith("USDT") or ticker.endswith("USDC")
+            broker_hint = "Binance" if is_crypto else "IBKR"
+            p_num = f"{entry_price:.2f}" if entry_price >= 1 else f"{entry_price:.5f}"
+
+            updated_text = (
+                f"📌 <b>ОТБЕЛЯЗАНО ЗА РЕАЛНИ СДЕЛКИ / НАБЛЮДЕНИЕ</b>\n\n"
+                f"• Актив: <b>{ticker}</b> [{timeframe}]\n"
+                f"• Референтен вход: <code>{p_str}</code>\n"
+                f"• 🛑 Препоръчителен Stop-Loss: <code>{sl_str}</code>\n"
+                f"• 🎯 Цел 1 (TP1): <code>{tp1_str}</code>\n"
+                f"• 👁️ <b>Статус:</b> Добавен в личния Watchlist (Виртуалният баланс не е засегнат).\n\n"
+                f"💡 <b>За запис в дневника след реално изпълнение:</b>\n"
+                f"<code>/buy_real {ticker} {p_num} 10 {broker_hint}</code>\n"
+                f"<i>(Копирайте и заменете '10' с вашия реален брой акции/монети)</i>"
+            )
+            self.notifier.edit_message_text(message_id=msg_id, text=updated_text, reply_markup=None, chat_id=chat_id)
+
+        logger.info(f"[PaperTrader] Marked proposal {proposal_id} ({ticker}) as NOTED_FOR_REAL and added to watchlist.")
+        return {
+            "success": True,
+            "proposal_id": proposal_id,
+            "ticker": ticker,
+            "entry_price": entry_price,
+            "status": "NOTED_FOR_REAL",
+        }
 
     def evaluate_open_positions(
         self,

@@ -386,6 +386,24 @@ def format_queue_telegram(setups: List[PendingSetup], top_n: int = 5) -> str:
     """
     if not setups:
         return "Няма чакащи сетъпи в момента."
+
+    from src.alerts.formatter import get_asset_name, get_tradingview_link
+    import json
+    import os
+
+    # Load TV mapping for exchange-accurate links
+    tv_map = {}
+    try:
+        tv_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+            "config",
+            "tv_mapping.json",
+        )
+        if os.path.exists(tv_path):
+            with open(tv_path, "r", encoding="utf-8") as f:
+                tv_map = json.load(f)
+    except Exception:
+        tv_map = {}
         
     prio_emoji = {
         'HIGH': '🔴',
@@ -407,8 +425,12 @@ def format_queue_telegram(setups: List[PendingSetup], top_n: int = 5) -> str:
     for s in top_setups:
         p_emo = prio_emoji.get(s.priority, '⚪')
         t_emo = type_emoji.get(s.setup_type, '⚡')
+        asset_name = get_asset_name(s.symbol)
+        name_desc = f" ({asset_name})" if asset_name and asset_name != s.symbol else ""
         
-        msg += f"{p_emo} <b>{s.symbol}</b> ({s.tier} Tier) - {t_emo} <i>{s.setup_type.replace('_', ' ')}</i>\n"
+        msg += f"{p_emo} <b>{s.symbol}</b>{name_desc} ({s.tier} Tier) - {t_emo} <i>{s.setup_type.replace('_', ' ')}</i>\n"
+        if asset_name and asset_name != s.symbol:
+            msg += f"🏢 <i>Профил: {asset_name}</i>\n"
         msg += f"💡 {s.description_bg}\n"
         
         msg += "<b>Условия:</b>\n"
@@ -419,7 +441,8 @@ def format_queue_telegram(setups: List[PendingSetup], top_n: int = 5) -> str:
             
         msg += f"⏱ <i>Тригър: {s.estimated_trigger}</i>\n"
         
-        tv_link = f"https://www.tradingview.com/chart/?symbol={s.symbol}"
-        msg += f"<a href='{tv_link}'>📈 TradingView</a>\n\n"
+        tv_sym = tv_map.get(s.symbol) or (f"BINANCE:{s.symbol}" if (s.symbol.endswith("USDT") or s.symbol.endswith("USDC")) else s.symbol)
+        tv_link = get_tradingview_link(tv_sym, s.timeframe or "1D")
+        msg += f"📊 <a href='{tv_link}'>TradingView Графика</a>\n\n"
         
     return msg.strip()

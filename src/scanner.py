@@ -567,29 +567,31 @@ class LarssonScanner:
                         old_state=old_state,
                         new_state=current_state,
                         price=latest_price,
-                        tv_symbol=tv_symbol,
-                    )
+                        )
 
-                    # Trigger interactive trade proposal if actionable setup exists on state transition
-                    should_propose = False
-                    if trade_suggestion:
-                        direction = trade_suggestion.get("direction")
-                        if current_state == LarssonState.GOLD and direction == "LONG":
-                            should_propose = True
-                        elif current_state == LarssonState.BLUE and direction == "SHORT":
-                            should_propose = True
+                # Trigger interactive trade proposal if actionable setup exists (on transition or pullback/bounce)
+                should_propose = False
+                if trade_suggestion:
+                    direction = trade_suggestion.get("direction")
+                    action = trade_suggestion.get("action")
+                    from src.alerts.filter import is_priority_asset
+                    is_priority = is_priority_asset(sym)
+                    if current_state == LarssonState.GOLD and direction == "LONG" and action == "SPOT_BUY":
+                        should_propose = True
+                    elif is_priority and current_state == LarssonState.BLUE and direction == "SHORT":
+                        should_propose = True
 
-                    if should_propose:
-                        try:
-                            self.paper_trader.handle_new_signal(
-                                ticker=sym,
-                                timeframe=timeframe,
-                                trade_suggestion=trade_suggestion,
-                                current_price=float(latest_price),
-                                tv_symbol=tv_symbol,
-                            )
-                        except Exception as e:
-                            logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
+                if should_propose:
+                    try:
+                        self.paper_trader.handle_new_signal(
+                            ticker=sym,
+                            timeframe=timeframe,
+                            trade_suggestion=trade_suggestion,
+                            current_price=float(latest_price),
+                            tv_symbol=tv_symbol,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
 
                 if delay_s > 0:
                     time.sleep(delay_s)
@@ -607,9 +609,15 @@ class LarssonScanner:
     def _dispatch_state_changes(self, state_changes: List[dict]):
         if not state_changes:
             return
+        from src.alerts.filter import filter_state_changes_for_telegram
+        filtered_changes = filter_state_changes_for_telegram(state_changes, config=self.config)
+        if not filtered_changes:
+            logger.debug(f"Suppressed {len(state_changes)} state changes per Telegram filter policy.")
+            return
+
         include_sr = self.config.get("telegram", {}).get("include_sr_in_alerts", False)
         dispatched = []
-        for ev in state_changes:
+        for ev in filtered_changes:
             item = dict(ev)
             if not include_sr:
                 item.pop("sr_data", None)
@@ -785,29 +793,31 @@ class LarssonScanner:
                         old_state=old_state,
                         new_state=current_state,
                         price=latest_price,
-                        tv_symbol=tv_symbol,
                     )
 
-                    # Trigger interactive trade proposal if actionable setup exists on state transition
-                    should_propose = False
-                    if trade_suggestion:
-                        direction = trade_suggestion.get("direction")
-                        if current_state == LarssonState.GOLD and direction == "LONG":
-                            should_propose = True
-                        elif current_state == LarssonState.BLUE and direction == "SHORT":
-                            should_propose = True
+                # Trigger interactive trade proposal if actionable setup exists (on transition or pullback/bounce)
+                should_propose = False
+                if trade_suggestion:
+                    direction = trade_suggestion.get("direction")
+                    action = trade_suggestion.get("action")
+                    from src.alerts.filter import is_priority_asset
+                    is_priority = is_priority_asset(sym)
+                    if current_state == LarssonState.GOLD and direction == "LONG" and action == "SPOT_BUY":
+                        should_propose = True
+                    elif is_priority and current_state == LarssonState.BLUE and direction == "SHORT":
+                        should_propose = True
 
-                    if should_propose:
-                        try:
-                            self.paper_trader.handle_new_signal(
-                                ticker=sym,
-                                timeframe=timeframe,
-                                trade_suggestion=trade_suggestion,
-                                current_price=float(latest_price),
-                                tv_symbol=tv_symbol,
-                            )
-                        except Exception as e:
-                            logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
+                if should_propose:
+                    try:
+                        self.paper_trader.handle_new_signal(
+                            ticker=sym,
+                            timeframe=timeframe,
+                            trade_suggestion=trade_suggestion,
+                            current_price=float(latest_price),
+                            tv_symbol=tv_symbol,
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to generate trade proposal for {sym}: {e}")
 
             except Exception as e:
                 logger.error(f"Error scanning yfinance symbol {sym} [{timeframe}]: {e}", exc_info=True)

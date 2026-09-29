@@ -21,7 +21,7 @@ def test_single_alert_formatting():
         price=65430.50,
         tv_symbol="BINANCE:BTCUSDT",
     )
-    assert "BTCUSDT | 1D" in msg
+    assert "BTCUSDT" in msg and "| 1D" in msg
     assert "🟡" in msg
     assert "⚪" in msg
     assert "$65,430.50" in msg
@@ -76,4 +76,29 @@ def test_single_alert_formatting_with_sr():
     assert "S/R Нива (1D Macro):" in msg
     assert "🔴 Съпротива (R1): <code>$70,000.00</code> (+2.9% | 4 теста)" in msg
     assert "🟢 Подкрепа (S1): <code>$64,000.00</code> (-5.9% | 3 теста)" in msg
+
+
+def test_dispatch_alerts_filtering(monkeypatch):
+    notifier = TelegramNotifier()
+    sent = []
+    monkeypatch.setattr(notifier, "send_raw_message", lambda text: sent.append(text))
+
+    alerts = [
+        # Should be filtered out
+        {"ticker": "SOLUSDT", "timeframe": "1D", "old_state": LarssonState.GOLD, "new_state": LarssonState.BLUE, "price": 140.0, "tv_symbol": "BINANCE:SOLUSDT"},
+        # Should pass (GOLD)
+        {"ticker": "ETHUSDT", "timeframe": "1D", "old_state": LarssonState.NEUTRAL, "new_state": LarssonState.GOLD, "price": 2600.0, "tv_symbol": "BINANCE:ETHUSDT"},
+        # Should pass (priority BTC to BLUE)
+        {"ticker": "BTCUSDT", "timeframe": "1D", "old_state": LarssonState.GOLD, "new_state": LarssonState.BLUE, "price": 62000.0, "tv_symbol": "BINANCE:BTCUSDT"},
+        # Should pass (priority Metaplanet to NEUTRAL)
+        {"ticker": "3350.T", "timeframe": "1D", "old_state": LarssonState.BLUE, "new_state": LarssonState.NEUTRAL, "price": 1100.0, "tv_symbol": "TSE:3350"},
+    ]
+
+    notifier.dispatch_alerts(alerts)
+    # 3 messages should be sent (ETHUSDT, BTCUSDT, 3350.T)
+    assert len(sent) == 3
+    assert any("ETHUSDT" in m for m in sent)
+    assert any("BTCUSDT" in m for m in sent)
+    assert any("3350.T" in m for m in sent)
+    assert not any("SOLUSDT" in m for m in sent)
 

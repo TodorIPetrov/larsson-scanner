@@ -144,9 +144,18 @@ class TelegramNotifier:
     def dispatch_alerts(self, alerts: List[dict]):
         """
         Dispatches a list of detected state change events.
+        Applies strict filtering:
+        - ANY asset transitioning to GOLD
+        - Priority assets (BTC, MSTR, Metaplanet, NAKA) on ANY transition
         If the number of changes exceeds batch_threshold, combines them into a digest.
         """
         if not alerts:
+            return
+
+        from src.alerts.filter import filter_state_changes_for_telegram
+        alerts = filter_state_changes_for_telegram(alerts)
+        if not alerts:
+            logger.debug("No state changes matched Telegram alert filter criteria.")
             return
 
         if len(alerts) <= self.batch_threshold:

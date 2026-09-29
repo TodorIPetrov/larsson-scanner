@@ -13,7 +13,7 @@ import time
 from typing import Any, Dict, List, Optional, Tuple, Union
 import requests
 
-from src.alerts.formatter import get_tradingview_link
+from src.alerts.formatter import get_tradingview_link, get_asset_name
 from src.alerts.telegram import TelegramNotifier
 from src.storage.database import Database
 
@@ -287,7 +287,9 @@ class TelegramCommandListener:
 
             emoji = "🟡" if state == "GOLD" else ("🔵" if state == "BLUE" else "⚪")
             p_str = f"${price:,.2f}" if price >= 1000 else (f"${price:.2f}" if price >= 1 else f"${price:.5f}")
-            lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a> ({tf}): {emoji} <b>{state}</b> @ <code>{p_str}</code>")
+            asset_name = get_asset_name(ticker)
+            desc = f" ({asset_name})" if asset_name and asset_name != ticker else ""
+            lines.append(f"• <a href=\"{url}\"><b>{ticker}</b></a>{desc} ({tf}): {emoji} <b>{state}</b> @ <code>{p_str}</code>")
 
         return header + "\n".join(lines)
 
@@ -968,6 +970,21 @@ class TelegramCommandListener:
                 self.notifier.answer_callback_query(
                     cq_id,
                     text=f"⚠️ {res.get('error', 'Грешка при одобрение')}",
+                    show_alert=True,
+                )
+        elif data.startswith("trade:real_watch:"):
+            proposal_id = data[len("trade:real_watch:"):]
+            res = self.paper_trader.mark_proposal_real_watch(proposal_id, chat_id=chat_id)
+            if res.get("success"):
+                self.notifier.answer_callback_query(
+                    cq_id,
+                    text=f"📌 {res.get('ticker')} е отбелязан за реални сделки и добавен в Watchlist!",
+                    show_alert=False,
+                )
+            else:
+                self.notifier.answer_callback_query(
+                    cq_id,
+                    text=f"⚠️ {res.get('error', 'Грешка при отбелязване')}",
                     show_alert=True,
                 )
         elif data.startswith("trade:reject:"):

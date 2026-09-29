@@ -3,6 +3,18 @@ telegram:
   chat_id: ""    # Set here or in config/settings.local.yaml
   batch_threshold: 5
   include_sr_in_alerts: false # Set to true when confident in S/R levels to enable in Telegram alerts
+  alert_filters:
+    only_gold_transitions: true  # Only dispatch alerts when assets transition to GOLD
+    priority_assets:             # For these assets, dispatch ALL transitions (GOLD, BLUE, NEUTRAL)
+      - "BTCUSDT"
+      - "BTC"
+      - "MSTR"
+      - "3350.T"
+      - "NAKA"
+  morning_digest:
+    hour: 9
+    minute: 0
+    timezone: "Europe/Sofia"
 
 scanner:
   crypto_top_n: 100       # Automatically scan top N USDT pairs by 24h volume

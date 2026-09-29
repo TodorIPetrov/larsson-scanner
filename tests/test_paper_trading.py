@@ -550,3 +550,108 @@ def test_telegram_listener_parses_leverage_callback(tmp_path):
     pos = db.get_open_paper_position_by_ticker("BTCUSDT")
     assert pos is not None
     assert pos["leverage"] == 3
+
+
+def test_proposal_real_watch_option(tmp_path):
+    db_file = str(tmp_path / "real_watch_test.db")
+    db = Database(db_file)
+    notifier = MockNotifier()
+
+    trader = PaperTrader(db=db, notifier=notifier, config={"trading": {"enabled": True, "initial_balance_usd": 5000.0}})
+
+    res = trader.handle_new_signal(
+        ticker="MSTR",
+        timeframe="1D",
+        trade_suggestion={
+            "action": "SPOT_BUY",
+            "direction": "LONG",
+            "entry_price": 180.0,
+            "stop_loss": 160.0,
+            "tp1": 220.0,
+            "score": 90,
+            "tier": "A+",
+            "reason_bg": "Bitcoin treasury accumulation",
+            "max_leverage": 1,
+        },
+        current_price=180.0,
+    )
+    assert res is not None
+    prop_id = res["proposal_id"]
+
+    # Verify buttons in sent proposal message
+    last_msg = notifier.sent_messages[-1]
+    markup = last_msg["reply_markup"]["inline_keyboard"]
+    button_texts = [btn["text"] for row in markup for btn in row]
+    callback_data = [btn.get("callback_data") for row in markup for btn in row if "callback_data" in btn]
+    url_buttons = [btn for row in markup for btn in row if "url" in btn]
+
+    assert any("Виртуално" in t for t in button_texts)
+    assert "📊 TradingView Графика" in button_texts
+    assert len(url_buttons) >= 1
+    assert "tradingview.com" in url_buttons[0]["url"]
+    assert "📌 Имай предвид за реални сделки" in button_texts
+    assert f"trade:real_watch:{prop_id}" in callback_data
+    assert "❌ Пропусни" in button_texts
+
+    # User clicks real watch
+    watch_res = trader.mark_proposal_real_watch(prop_id)
+    assert watch_res["success"] is True
+    assert watch_res["status"] == "NOTED_FOR_REAL"
+
+    # Virtual balance must be UNCHANGED
+    bal = db.get_paper_balance()
+    assert bal["available_cash"] == 5000.0
+
+    # No open paper position created
+    assert db.get_open_paper_position_by_ticker("MSTR") is None
+
+    # Ticker must be added to user's Watchlist
+    watchlist = db.get_watchlist()
+    assert "MSTR" in watchlist
+
+    # Message must be edited with /buy_real command template
+    edited = notifier.edited_messages[-1]
+    assert "ОТБЕЛЯЗАНО ЗА РЕАЛНИ СДЕЛКИ" in edited["text"]
+    assert "/buy_real MSTR 180.00" in edited["text"]
+
+
+def test_telegram_listener_real_watch_callback(tmp_path):
+    db_file = str(tmp_path / "listener_rw_test.db")
+    db = Database(db_file)
+    notifier = MockNotifier()
+
+    trader = PaperTrader(db=db, notifier=notifier, config={"trading": {"enabled": True, "initial_balance_usd": 1000.0}})
+    listener = TelegramCommandListener(notifier=notifier, db=db, paper_trader=trader)
+
+    res = trader.handle_new_signal(
+        ticker="NAKA",
+        timeframe="1D",
+        trade_suggestion={
+            "action": "SPOT_BUY",
+            "direction": "LONG",
+            "entry_price": 1.50,
+            "stop_loss": 1.30,
+            "tp1": 2.10,
+            "score": 88,
+            "tier": "A",
+            "reason_bg": "Breakout",
+            "max_leverage": 1,
+        },
+        current_price=1.50,
+    )
+    prop_id = res["proposal_id"]
+
+    # Trigger callback
+    auth_update = {
+        "callback_query": {
+            "id": "cb_rw_1",
+            "from": {"id": 12345},
+            "message": {"message_id": 1, "chat": {"id": 12345}},
+            "data": f"trade:real_watch:{prop_id}",
+        }
+    }
+    listener.process_update(auth_update)
+
+    assert len(notifier.answered_callbacks) == 1
+    assert "отбелязан за реални сделки" in notifier.answered_callbacks[0]["text"]
+    assert "Watchlist" in notifier.answered_callbacks[0]["text"]

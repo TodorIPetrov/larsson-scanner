@@ -3114,6 +3114,9 @@ function renderQueueView() {
     const keyLvlStr = s.key_level ? `$${formatShortPrice(s.key_level)}` : 'N/A';
     const triggerStr = s.estimated_trigger || '1-3 бара';
 
+    const tvUrl = s.tv_url || `https://www.tradingview.com/chart/?symbol=${s.tv_symbol || s.symbol}&interval=1D`;
+    const assetDesc = s.name && s.name !== s.symbol ? s.name : '';
+
     return `
       <div class="queue-card ${prioClass}">
         <div class="queue-card-header">
@@ -3121,7 +3124,8 @@ function renderQueueView() {
             <span class="queue-card-ticker">
               ${s.symbol} <span class="class-badge">${CLASS_LABELS[s.asset_class] || s.asset_class}</span>
             </span>
-            <div class="queue-card-setup-title">
+            ${assetDesc ? `<div style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px; font-weight: 500;">${escapeHtml(assetDesc)}</div>` : ''}
+            <div class="queue-card-setup-title" style="margin-top: 4px;">
               <span>${typeInfo.emoji}</span> ${typeInfo.title}
             </div>
           </div>
@@ -3166,8 +3170,11 @@ function renderQueueView() {
         </div>
 
         <div class="queue-card-actions">
+          <a class="btn-queue-tv" href="${tvUrl}" target="_blank" rel="noopener noreferrer">
+            📊 TradingView
+          </a>
           <button class="btn-queue-calc" onclick="quickFillCalculator('${s.symbol}', ${s.target_entry || s.current_price || 0}, ${s.target_sl || 0}, ${s.target_tp1 || 0}, 0, '${s.tier}')">
-            🧮 Зареди в Калкулатора
+            🧮 Калкулатор
           </button>
         </div>
       </div>
