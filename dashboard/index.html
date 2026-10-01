@@ -308,7 +308,7 @@
       <table class="assets-table">
         <thead>
           <tr>
-            <th class="th-sortable" data-sort="ticker">Актив <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="ticker" title="Кликнете звездата (★) до всеки актив или бутона 'Запази' за да го добавите към Моите Идеи">⭐ Актив <span class="sort-icon">⇅</span></th>
             <th class="th-sortable" data-sort="asset_class">Клас <span class="sort-icon">⇅</span></th>
             <th>ТФ</th>
             <th class="th-sortable" data-sort="price">Цена <span class="sort-icon">⇅</span></th>
@@ -322,7 +322,7 @@
               <div class="th-title-flex"><span class="pillar-indicator synth-glow"></span>🎯 Синтезирана Стратегия (Quantamental) <span class="sort-icon">⇅</span></div>
             </th>
             <th class="th-sortable" data-sort="s1_dist">Нива S/R <span class="sort-icon">⇅</span></th>
-            <th>Действия</th>
+            <th>Действия &amp; Радар</th>
           </tr>
         </thead>
         <tbody id="assetsTableBody">
@@ -812,6 +812,9 @@
         <div class="chart-modal-title-area">
           <span class="chart-ticker" id="modalTicker">BTCUSDT</span>
           <span class="class-badge" id="modalClass">Crypto</span>
+          <button type="button" class="btn-action-radar" id="modalRadarBtn" onclick="toggleTradeIdea(activeTicker)" title="Запази в Моите Идеи">
+            ★ Запази
+          </button>
           <div class="modal-tf-group" id="modalTfGroup">
             <button class="modal-tf-btn active" data-tf="1D">1D</button>
             <button class="modal-tf-btn" data-tf="4H">4H</button>

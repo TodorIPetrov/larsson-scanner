@@ -1262,7 +1262,13 @@ function renderTable(filteredSymbols) {
         <td>${renderSynthesisCell(item.synthesis, item.trade_suggestion, item)}</td>
         <td>${srCellHtml}</td>
         <td>
-          <div style="display: flex; gap: 6px; align-items: center;">
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+            <button class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
+                    data-ticker="${item.ticker}"
+                    onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
+                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+              ★ ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'В Радара' : 'Запази'}
+            </button>
             <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Интерактивна графика и тристепенен анализ">
               📊 S/R
             </button>
@@ -1995,6 +2001,14 @@ async function openChartModal(ticker, timeframe, assetClass) {
   if (modalTickerEl) modalTickerEl.textContent = ticker;
   const modalClassEl = document.getElementById('modalClass');
   if (modalClassEl) modalClassEl.textContent = CLASS_LABELS[assetClass] || assetClass;
+
+  const modalRadarBtn = document.getElementById('modalRadarBtn');
+  if (modalRadarBtn) {
+    const isSaved = (typeof isTradeIdea === 'function' && isTradeIdea(ticker));
+    modalRadarBtn.classList.toggle('active', isSaved);
+    modalRadarBtn.innerHTML = `★ ${isSaved ? 'В Радара' : 'Запази'}`;
+    modalRadarBtn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+  }
 
   const tvInterval = getTvInterval(activeTf);
   const tvSym = getTvSymbol(item, ticker, assetClass);
@@ -3194,6 +3208,12 @@ function renderQueueView() {
         </div>
 
         <div class="queue-card-actions">
+          <button class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'active' : ''}"
+                  data-ticker="${s.symbol}"
+                  onclick="event.stopPropagation(); toggleTradeIdea('${s.symbol}')"
+                  title="${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+            ★ ${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'В Радара' : 'Запази'}
+          </button>
           <a class="btn-queue-tv" href="${tvUrl}" target="_blank" rel="noopener noreferrer">
             📊 TradingView
           </a>
@@ -3491,7 +3511,13 @@ function renderProposalsBanner(proposals) {
             </div>
             ${(assetName && assetName !== p.ticker) ? `<div class="proposal-asset-name" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(assetName)}</div>` : ''}
           </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <button class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(p.ticker)) ? 'active' : ''}"
+                    data-ticker="${p.ticker}"
+                    onclick="event.stopPropagation(); toggleTradeIdea('${p.ticker}')"
+                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(p.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+              ★ ${(typeof isTradeIdea === 'function' && isTradeIdea(p.ticker)) ? 'В Радара' : 'Запази'}
+            </button>
             <a href="${tvUrl}" target="_blank" rel="noopener noreferrer" class="btn-tv-link" style="text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); display: inline-flex; align-items: center; gap: 4px;" title="Отвори интерактивна графика в TradingView">
               📈 TV
             </a>
@@ -5598,7 +5624,13 @@ function renderFundamentalDossier(ticker) {
     <div class="fund-header-card">
       <div class="fund-header-left">
         <div>
-          <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(prof.ticker)) ? 'active' : ''}"
+                    data-ticker="${prof.ticker}"
+                    onclick="event.stopPropagation(); toggleTradeIdea('${prof.ticker}')"
+                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(prof.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+              ★ ${(typeof isTradeIdea === 'function' && isTradeIdea(prof.ticker)) ? 'В Радара' : 'Запази'}
+            </button>
             <span class="fund-header-ticker">${prof.ticker}</span>
             <span class="badge ${verdictBadge}">${verdictText}</span>
           </div>
@@ -6016,6 +6048,17 @@ function updateAllIdeaStarButtons(targetTicker) {
       btn.textContent = isSaved ? '★' : '☆';
       btn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
     });
+    document.querySelectorAll(`.btn-action-radar[data-ticker="${targetTicker}"]`).forEach(btn => {
+      btn.classList.toggle('active', isSaved);
+      btn.textContent = `★ ${isSaved ? 'В Радара' : 'Запази'}`;
+      btn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+    });
+    const modalBtn = document.getElementById('modalRadarBtn');
+    if (modalBtn && typeof activeTicker !== 'undefined' && (activeTicker || '').toUpperCase() === targetTicker.toUpperCase()) {
+      modalBtn.classList.toggle('active', isSaved);
+      modalBtn.textContent = `★ ${isSaved ? 'В Радара' : 'Запази'}`;
+      modalBtn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+    }
   } else {
     syncAllStarButtons();
   }
@@ -6029,6 +6072,20 @@ function syncAllStarButtons() {
     btn.textContent = isSaved ? '★' : '☆';
     btn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
   });
+  document.querySelectorAll('.btn-action-radar[data-ticker]').forEach(btn => {
+    const t = btn.dataset.ticker;
+    const isSaved = isTradeIdea(t);
+    btn.classList.toggle('active', isSaved);
+    btn.textContent = `★ ${isSaved ? 'В Радара' : 'Запази'}`;
+    btn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+  });
+  const modalBtn = document.getElementById('modalRadarBtn');
+  if (modalBtn && typeof activeTicker !== 'undefined' && activeTicker) {
+    const isSaved = isTradeIdea(activeTicker);
+    modalBtn.classList.toggle('active', isSaved);
+    modalBtn.textContent = `★ ${isSaved ? 'В Радара' : 'Запази'}`;
+    modalBtn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+  }
 }
 
 function handleAddCustomIdea() {
