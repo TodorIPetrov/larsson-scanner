@@ -692,6 +692,10 @@ async function loadDashboardData() {
     // Sync any custom positions or cash saved locally in this browser
     syncLocalPaperStorage();
     syncLocalRealStorage();
+    if (typeof loadTradeIdeas === 'function') {
+      loadTradeIdeas(data.watchlist);
+      renderIdeasView();
+    }
 
     renderOverview(data);
     renderQueueView();
@@ -1233,6 +1237,12 @@ function renderTable(filteredSymbols) {
           onclick="selectLiveAsset('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">
         <td>
           <div class="symbol-cell">
+            <button class="btn-star-idea ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
+                    data-ticker="${item.ticker}"
+                    onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
+                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+              ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? '★' : '☆'}
+            </button>
             <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" onclick="event.stopPropagation()" title="Отвори ${tvSym} в TradingView">
               <span class="ticker-text">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
@@ -1308,6 +1318,12 @@ function renderCards(filteredSymbols) {
            onclick="selectLiveAsset('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">
         <div class="card-top">
           <div class="card-identity">
+            <button class="btn-star-idea ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
+                    data-ticker="${item.ticker}"
+                    onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
+                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+              ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? '★' : '☆'}
+            </button>
             <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" onclick="event.stopPropagation()" title="Отвори TradingView">
               <span class="card-ticker">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
@@ -2926,7 +2942,8 @@ function switchTab(tabName, pushToHistory = true) {
     'queue': 'tabContentQueue',
     'portfolio': 'tabContentPortfolio',
     'calculator': 'tabContentCalculator',
-    'fundamentals': 'tabContentFundamentals'
+    'fundamentals': 'tabContentFundamentals',
+    'ideas': 'tabContentIdeas'
   };
 
   Object.keys(tabMap).forEach(key => {
@@ -2950,6 +2967,12 @@ function switchTab(tabName, pushToHistory = true) {
     }
   }
 
+  if (tabName === 'ideas') {
+    if (typeof renderIdeasView === 'function') {
+      renderIdeasView();
+    }
+  }
+
   if (tabName === 'scanner' && liveActiveChart) {
     const liveContainer = document.getElementById('liveChartCanvas');
     if (liveContainer && liveContainer.clientWidth) {
@@ -2964,7 +2987,8 @@ function updateNavBackButtons(fromTab) {
     'queue': '(към Очаквани Сделки)',
     'portfolio': '(към Портфолиото)',
     'calculator': '(към Калкулатора)',
-    'fundamentals': '(към Фундамент)'
+    'fundamentals': '(към Фундамент)',
+    'ideas': '(към Моите Идеи)'
   };
   const calcTarget = document.getElementById('calcBackTargetText');
   if (calcTarget) {
@@ -5891,5 +5915,516 @@ function openCalculatorForTicker(ticker) {
   if (entryInput && s && s.price) entryInput.value = s.price;
   if (typeof initPageCalculator === 'function') initPageCalculator();
 }
+
+// =============================================================================
+// PERSONAL RADAR & TRADE IDEAS CONTROLLER (Моите Идеи за сделки)
+// =============================================================================
+
+let tradeIdeas = [];
+
+function loadTradeIdeas(serverWatchlist) {
+  try {
+    const raw = localStorage.getItem('larsson_saved_trade_ideas') || localStorage.getItem('larsson_trade_ideas');
+    if (raw) {
+      tradeIdeas = JSON.parse(raw);
+    }
+  } catch(e) {
+    console.warn('Failed to parse local trade ideas:', e);
+    tradeIdeas = [];
+  }
+
+  // Merge server watchlist if available
+  if (Array.isArray(serverWatchlist) && serverWatchlist.length > 0) {
+    const existing = new Set(tradeIdeas.map(i => (i.ticker || '').toUpperCase()));
+    serverWatchlist.forEach(w => {
+      const sym = (w.ticker || '').toUpperCase();
+      if (!existing.has(sym)) {
+        tradeIdeas.push({
+          ticker: sym,
+          name: w.name || sym,
+          note: w.user_note || '',
+          target_price: w.target_price || null,
+          added_at: w.added_at || new Date().toISOString()
+        });
+        existing.add(sym);
+      }
+    });
+    saveTradeIdeas();
+  }
+
+  updateIdeaBadges();
+  syncAllStarButtons();
+  return tradeIdeas;
+}
+
+function saveTradeIdeas() {
+  try {
+    localStorage.setItem('larsson_saved_trade_ideas', JSON.stringify(tradeIdeas));
+    localStorage.setItem('larsson_trade_ideas', JSON.stringify(tradeIdeas));
+  } catch(e) {
+    console.error('Error saving trade ideas to localStorage:', e);
+  }
+  updateIdeaBadges();
+}
+
+function updateIdeaBadges() {
+  const count = tradeIdeas.length;
+  const navBadge = document.getElementById('ideasCountBadge');
+  if (navBadge) navBadge.textContent = count;
+  const gridCount = document.getElementById('ideasGridCount');
+  if (gridCount) gridCount.textContent = `${count} ${count === 1 ? 'запазена идея' : 'запазени идеи'}`;
+}
+
+function isTradeIdea(ticker) {
+  if (!ticker) return false;
+  const norm = ticker.toUpperCase();
+  return tradeIdeas.some(i => (i.ticker || '').toUpperCase() === norm);
+}
+
+function toggleTradeIdea(ticker, note = '', target = null) {
+  if (!ticker) return;
+  const norm = ticker.toUpperCase();
+  const idx = tradeIdeas.findIndex(i => (i.ticker || '').toUpperCase() === norm);
+
+  if (idx >= 0) {
+    tradeIdeas.splice(idx, 1);
+    saveTradeIdeas();
+    updateAllIdeaStarButtons(norm);
+    if (currentTab === 'ideas') renderIdeasView();
+    showAnalysisToast(`☆ Премахнат от Моите Идеи: <b>${norm}</b>`, 'info', 2500);
+  } else {
+    const s = (allSymbols || []).find(x => (x.ticker || '').toUpperCase() === norm);
+    tradeIdeas.unshift({
+      ticker: norm,
+      name: s ? (s.name || norm) : norm,
+      note: note || '',
+      target_price: target !== null && !isNaN(target) ? Number(target) : null,
+      added_at: new Date().toISOString()
+    });
+    saveTradeIdeas();
+    updateAllIdeaStarButtons(norm);
+    if (currentTab === 'ideas') renderIdeasView();
+    showAnalysisToast(`★ Добавен към Моите Идеи: <b>${norm}</b>`, 'success', 3000);
+  }
+}
+
+function updateAllIdeaStarButtons(targetTicker) {
+  if (targetTicker) {
+    const isSaved = isTradeIdea(targetTicker);
+    document.querySelectorAll(`.btn-star-idea[data-ticker="${targetTicker}"]`).forEach(btn => {
+      btn.classList.toggle('active', isSaved);
+      btn.textContent = isSaved ? '★' : '☆';
+      btn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+    });
+  } else {
+    syncAllStarButtons();
+  }
+}
+
+function syncAllStarButtons() {
+  document.querySelectorAll('.btn-star-idea[data-ticker]').forEach(btn => {
+    const t = btn.dataset.ticker;
+    const isSaved = isTradeIdea(t);
+    btn.classList.toggle('active', isSaved);
+    btn.textContent = isSaved ? '★' : '☆';
+    btn.title = isSaved ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи';
+  });
+}
+
+function handleAddCustomIdea() {
+  const inputT = document.getElementById('inputIdeaTicker');
+  const inputN = document.getElementById('inputIdeaNote');
+  const inputTg = document.getElementById('inputIdeaTarget');
+
+  const rawTicker = (inputT?.value || '').trim();
+  if (!rawTicker) {
+    showAnalysisToast('⚠️ Моля въведете тикер (напр. NVDA, SOLUSDT, BTC)...', 'warning', 3000);
+    if (inputT) inputT.focus();
+    return;
+  }
+
+  const norm = rawTicker.toUpperCase();
+  const note = (inputN?.value || '').trim();
+  const targetVal = inputTg?.value ? parseFloat(inputTg.value) : null;
+  const s = (allSymbols || []).find(x => (x.ticker || '').toUpperCase() === norm);
+  const name = s ? (s.name || norm) : norm;
+
+  const idx = tradeIdeas.findIndex(i => (i.ticker || '').toUpperCase() === norm);
+  if (idx >= 0) {
+    tradeIdeas[idx].note = note || tradeIdeas[idx].note;
+    if (targetVal !== null && !isNaN(targetVal)) {
+      tradeIdeas[idx].target_price = targetVal;
+    }
+  } else {
+    tradeIdeas.unshift({
+      ticker: norm,
+      name: name,
+      note: note,
+      target_price: targetVal !== null && !isNaN(targetVal) ? targetVal : null,
+      added_at: new Date().toISOString()
+    });
+  }
+
+  saveTradeIdeas();
+  if (inputT) inputT.value = '';
+  if (inputN) inputN.value = '';
+  if (inputTg) inputTg.value = '';
+
+  updateAllIdeaStarButtons(norm);
+  renderIdeasView();
+  showAnalysisToast(`★ Запазен в Моите Идеи: <b>${norm}</b>`, 'success', 3500);
+}
+
+function quickAddIdea(ticker, note = '', target = null) {
+  toggleTradeIdea(ticker, note, target);
+}
+
+function removeTradeIdea(ticker) {
+  if (!ticker) return;
+  const norm = ticker.toUpperCase();
+  tradeIdeas = tradeIdeas.filter(i => (i.ticker || '').toUpperCase() !== norm);
+  saveTradeIdeas();
+  updateAllIdeaStarButtons(norm);
+  renderIdeasView();
+  showAnalysisToast(`🗑️ Премахнат от Моите Идеи: <b>${norm}</b>`, 'info', 2500);
+}
+
+function promptEditIdeaNote(ticker) {
+  const norm = (ticker || '').toUpperCase();
+  const idea = tradeIdeas.find(i => (i.ticker || '').toUpperCase() === norm);
+  if (!idea) return;
+
+  const currentNote = idea.note || '';
+  const currentTarget = (idea.target_price !== null && idea.target_price !== undefined) ? idea.target_price : '';
+
+  const newNote = prompt(`Редактирай бележка / теза за ${norm}:`, currentNote);
+  if (newNote === null) return;
+
+  const newTargetStr = prompt(`Целева цена $ за ${norm} (остави празно, ако няма цел):`, currentTarget);
+  const newTarget = (newTargetStr && !isNaN(parseFloat(newTargetStr))) ? parseFloat(newTargetStr) : null;
+
+  idea.note = newNote.trim();
+  idea.target_price = newTarget;
+
+  saveTradeIdeas();
+  renderIdeasView();
+  showAnalysisToast(`💾 Бележката за <b>${norm}</b> е обновена!`, 'success', 3000);
+}
+
+function evaluateTradeIdea(ticker) {
+  if (!ticker) return false;
+  const norm = ticker.toUpperCase();
+  const s = (allSymbols || []).find(x => (x.ticker || '').toUpperCase() === norm);
+
+  if (!s) {
+    showAnalysisToast(`ℹ️ <b>${norm}</b> е запазен в твоя личен радар, но не присъства в текущия сканиращ пакет. Използвай бутона <b>📈 TV</b> за графичен анализ.`, 'info', 4500);
+    return false;
+  }
+
+  // Institutional 7-Gate Rules evaluation
+  const isGold = s.state === 'GOLD';
+  const isFlip = isRecentGoldFlip(s);
+  const isBlue = s.state === 'BLUE';
+
+  if (isBlue) {
+    showAnalysisToast(`⚠️ <b>${s.ticker}</b> е в СИНЯ лента (низходящ тренд). Правило 1 от стратегията изисква обръщане в ЗЛАТНО (Gold Flip) преди вход.`, 'warning', 5500);
+    return false;
+  }
+
+  if (s.r1 && s.price && s.r1 > s.price) {
+    const distToR1 = (s.r1 - s.price) / s.price;
+    if (distToR1 < 0.015) {
+      showAnalysisToast(`⚠️ <b>${s.ticker}</b> е непосредствено под съпротивата R1 ($${formatShortPrice(s.r1)}). Изчакай чист пробив или pullback към подкрепа S1 ($${formatShortPrice(s.s1)}).`, 'warning', 5500);
+      return false;
+    }
+  }
+
+  // Calculate entry, stop loss, targets
+  const isCrypto = s.asset_class === 'crypto';
+  const isStock = ['us_stocks', 'ai_stocks', 'crypto_stocks'].includes(s.asset_class);
+  const btcRel = s.btc_relative;
+  const isBtcBleeding = isCrypto && btcRel && !btcRel.leverage_allowed;
+
+  let lev = 1;
+  let maxLev = 1;
+  if (isCrypto) {
+    if (isBtcBleeding) {
+      lev = 1;
+      maxLev = 1;
+    } else {
+      lev = 2;
+      maxLev = 3;
+    }
+  } else if (isStock) {
+    lev = 2;
+    maxLev = 2;
+  }
+
+  const entry = s.price;
+  const sl = s.s1 ? Math.min(s.s1 * 0.985, entry * 0.95) : entry * 0.94;
+  const tp1 = s.r1 ? Math.max(s.r1, entry * 1.08) : entry * 1.10;
+  const tp2 = s.r1 ? s.r1 * 1.10 : entry * 1.20;
+  const notional = isCrypto ? 1000 : 500;
+  const units = entry > 0 ? (notional / entry) : 1;
+  const tier = (s.fundamental && s.fundamental.moat === 'Wide') ? 'S' : (s.tier || 'A');
+
+  const ideaObj = tradeIdeas.find(i => (i.ticker || '').toUpperCase() === norm);
+  let reason = '';
+  if (ideaObj && ideaObj.note) {
+    reason = `💡 Личен Радар: "${ideaObj.note}". ${isFlip ? 'Пресен Gold Flip пробив' : 'Златна трендова лента'} с подкрепа на $${formatShortPrice(sl)} и първа цел $${formatShortPrice(tp1)}.`;
+  } else if (isFlip) {
+    reason = `✨ Пресен Gold Flip пробив (${s.gold_flip_bars || 1}б назад). Потвърден възходящ импулс с чиста подкрепа $${formatShortPrice(sl)}.`;
+  } else {
+    reason = `🟢 Възходяща Златна лента, подкрепа на S1 ($${formatShortPrice(sl)}) и насочен таргет R1 ($${formatShortPrice(tp1)}).`;
+  }
+
+  const propId = `prop_idea_${s.ticker}_${Date.now()}`;
+  const propObj = {
+    id: Date.now(),
+    proposal_id: propId,
+    ticker: s.ticker,
+    name: s.name || s.ticker,
+    timeframe: s.timeframe || '1D',
+    action: 'BUY',
+    direction: 'LONG',
+    status: 'PENDING',
+    asset_class: s.asset_class || 'crypto',
+    entry_price: entry,
+    stop_loss: Number(sl.toFixed(entry < 1 ? 4 : 2)),
+    tp1: Number(tp1.toFixed(entry < 1 ? 4 : 2)),
+    tp2: Number(tp2.toFixed(entry < 1 ? 4 : 2)),
+    position_size_usd: notional,
+    units: Number(units.toFixed(units < 1 ? 4 : 2)),
+    risk_usd: Number((Math.abs(entry - sl) * units).toFixed(2)),
+    tier: tier,
+    score: isFlip ? 95 : 90,
+    reason: reason,
+    recommended_leverage: lev,
+    max_leverage: maxLev,
+    btc_relative: btcRel || null,
+    created_at: new Date().toISOString()
+  };
+
+  pendingProposals = [propObj, ...(pendingProposals || []).filter(p => p.ticker !== s.ticker)];
+  renderProposalsBanner(pendingProposals);
+
+  // Uncollapse proposals banner if collapsed
+  if (typeof isProposalsCollapsed !== 'undefined') {
+    isProposalsCollapsed = false;
+    if (typeof applyProposalsVisibility === 'function') {
+      applyProposalsVisibility(false);
+    }
+  }
+
+  showAnalysisToast(`⚡ Създадено е предложение за вход за <b>${s.ticker}</b> (${lev}x)! Прегледай го в 'Очаквани Сделки' в горната лента.`, 'success', 5500);
+  return true;
+}
+
+function evaluateAllTradeIdeas() {
+  if (tradeIdeas.length === 0) {
+    showAnalysisToast('ℹ️ Няма запазени идеи за оценка. Добави тикери в личния си радар!', 'info', 3000);
+    return;
+  }
+
+  let readyCount = 0;
+  let waitingCount = 0;
+  let unlistedCount = 0;
+
+  tradeIdeas.forEach(idea => {
+    const s = (allSymbols || []).find(x => (x.ticker || '').toUpperCase() === (idea.ticker || '').toUpperCase());
+    if (!s) {
+      unlistedCount++;
+      return;
+    }
+    const isGold = s.state === 'GOLD';
+    const isFlip = isRecentGoldFlip(s);
+    const isNearR1 = (s.r1 && s.price && s.r1 > s.price && ((s.r1 - s.price) / s.price < 0.015));
+
+    if ((isGold || isFlip) && !isNearR1) {
+      evaluateTradeIdea(idea.ticker);
+      readyCount++;
+    } else {
+      waitingCount++;
+    }
+  });
+
+  if (readyCount > 0) {
+    showAnalysisToast(`⚡ Анализирани ${tradeIdeas.length} идеи: <b>${readyCount}</b> подготвени за вход в Очаквани Сделки, <b>${waitingCount}</b> изчакват потвърждение.`, 'success', 5500);
+  } else {
+    showAnalysisToast(`ℹ️ Анализирани ${tradeIdeas.length} идеи: Всички активи изчакват техническо потвърждение (Gold Flip или тест на S1).`, 'info', 5000);
+  }
+}
+
+function renderIdeasView() {
+  updateIdeaBadges();
+  const container = document.getElementById('ideasCardsGrid');
+  if (!container) return;
+
+  if (tradeIdeas.length === 0) {
+    container.innerHTML = `
+      <div class="ideas-empty-state">
+        <div class="empty-icon">💡</div>
+        <h3>Все още нямаш запазени идеи в личния радар</h3>
+        <p>Запазвай активи с 1 клик чрез звездата <b>(★)</b> в Скенера и Очаквани Сделки, или въведи тикер по-горе.</p>
+        <div class="quick-add-section" style="margin-top: 16px;">
+          <div style="font-size: 0.8125rem; color: #94a3b8; margin-bottom: 8px;">Бързо добавяне на популярни лидери:</div>
+          <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-secondary" onclick="quickAddIdea('NVDA', 'Лидер в AI чипове', 150)">+ NVDA</button>
+            <button class="btn btn-sm btn-secondary" onclick="quickAddIdea('BTCUSDT', 'Дигитално злато / макро тренд', 100000)">+ BTCUSDT</button>
+            <button class="btn btn-sm btn-secondary" onclick="quickAddIdea('SOLUSDT', 'Високоскоростен Layer 1', 250)">+ SOLUSDT</button>
+            <button class="btn btn-sm btn-secondary" onclick="quickAddIdea('TSLA', 'Автономия и роботика', 280)">+ TSLA</button>
+            <button class="btn btn-sm btn-secondary" onclick="quickAddIdea('MSTR', 'Биткойн хазна плей', 450)">+ MSTR</button>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = tradeIdeas.map(idea => {
+    const sym = (idea.ticker || '').toUpperCase();
+    const s = (allSymbols || []).find(x => (x.ticker || '').toUpperCase() === sym);
+    const cls = s ? (s.asset_class || 'crypto') : 'crypto';
+    const tf = s ? (s.timeframe || '1D') : '1D';
+    const tfCode = getTvInterval(tf);
+    const tvSym = s ? getTvSymbol(s, s.ticker, s.asset_class) : sym;
+    const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
+    const classLabel = CLASS_LABELS[cls] || cls;
+
+    let stateClass = 'state-neutral';
+    let stateBadgeText = '⚪ НЕУТРАЛЕН ТРЕНД';
+    if (s) {
+      if (s.state === 'GOLD') {
+        stateClass = 'state-gold';
+        stateBadgeText = isRecentGoldFlip(s) ? '✨ GOLD FLIP ПРОБИВ' : '🟡 ЗЛАТНА ЛЕНТА (ВЪЗХОДЯЩ)';
+      } else if (s.state === 'BLUE') {
+        stateClass = 'state-blue';
+        stateBadgeText = '🔵 СИНЯ ЛЕНТА (НИЗХОДЯЩ)';
+      }
+    } else {
+      stateBadgeText = '📡 ИЗВЪН СКЕНЕРА (СЛЕДЕНЕ)';
+    }
+
+    const priceFormatted = s && s.price ? (
+      s.price >= 1000 
+        ? `$${s.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+        : `$${s.price.toFixed(s.price >= 1 ? 2 : 5)}`
+    ) : '—';
+
+    // Support / Resistance
+    const hasS1 = s && s.s1 !== null && s.s1 !== undefined;
+    const hasR1 = s && s.r1 !== null && s.r1 !== undefined;
+    const s1Txt = hasS1 ? `🟢 S1: $${formatShortPrice(s.s1)} (-${s.s1_dist_pct}%)` : '🟢 S1: —';
+    const r1Txt = hasR1 ? `🔴 R1: $${formatShortPrice(s.r1)} (+${s.r1_dist_pct}%)` : '🔴 R1: —';
+
+    // Target calculation
+    let targetHtml = '';
+    if (idea.target_price) {
+      const tg = Number(idea.target_price);
+      let hit = false;
+      let distPct = 0;
+      if (s && s.price) {
+        hit = s.price >= tg;
+        distPct = (((tg - s.price) / s.price) * 100).toFixed(1);
+      }
+      targetHtml = `
+        <div class="idea-target-info ${hit ? 'target-hit' : ''}">
+          <span class="target-title">🎯 Цел: $${formatShortPrice(tg)}</span>
+          ${hit ? '<span class="badge-target-hit">✅ ЦЕЛТА Е ДОСТИГНАТА!</span>' : `<span class="target-remain">(остават +${distPct}%)</span>`}
+        </div>
+      `;
+    }
+
+    return `
+      <div class="idea-card">
+        <div class="idea-card-header">
+          <div class="idea-identity">
+            <button class="btn-star-idea active" onclick="toggleTradeIdea('${sym}')" title="Премахни от Моите Идеи">★</button>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="idea-ticker">${sym}</span>
+                <span class="class-badge class-${cls}">${classLabel}</span>
+                <span class="tf-badge">${tf}</span>
+              </div>
+              <div class="idea-name">${s ? (s.name || sym) : (idea.name || sym)}</div>
+            </div>
+          </div>
+          <div>
+            <span class="ideas-state-badge ${stateClass}">${stateBadgeText}</span>
+          </div>
+        </div>
+
+        <div class="idea-metrics-grid">
+          <div class="idea-metric-box">
+            <span class="idea-metric-lbl">Текуща Цена</span>
+            <span class="idea-metric-val ${s && s.state === 'GOLD' ? 'bullish' : ''}">${priceFormatted}</span>
+          </div>
+          <div class="idea-metric-box">
+            <span class="idea-metric-lbl">Подкрепа S1</span>
+            <span class="idea-metric-val" style="color: #34d399; font-size: 0.8125rem;">${s1Txt}</span>
+          </div>
+          <div class="idea-metric-box">
+            <span class="idea-metric-lbl">Съпротива R1</span>
+            <span class="idea-metric-val" style="color: #f87171; font-size: 0.8125rem;">${r1Txt}</span>
+          </div>
+        </div>
+
+        <div class="idea-note-box">
+          <div class="idea-note-header">
+            <span class="idea-note-lbl">📝 Моята бележка &amp; теза:</span>
+            <button class="btn-edit-note" onclick="promptEditIdeaNote('${sym}')" title="Редактирай бележка и цел">✏️ Редактирай</button>
+          </div>
+          <div class="idea-note-text">${idea.note ? idea.note : '<em style="color:#64748b;">Няма добавена бележка. Кликни "Редактирай" за да запишеш цел или план за вход.</em>'}</div>
+          ${targetHtml}
+        </div>
+
+        <div class="idea-actions-bar">
+          <button class="btn btn-eval-idea" onclick="evaluateTradeIdea('${sym}')" title="Оцени срещу 7-те институционални правила и генерирай предложение за вход">
+            <span>⚡</span> Оцени за вход
+          </button>
+          <button class="btn btn-fund-idea" onclick="openFundamentalModal('${sym}')" title="Отвори фундаментално досие и DCF модел">
+            <span>🏢</span> Досие
+          </button>
+          <button class="btn btn-chart-idea" onclick="openChartModal('${sym}', '${tf}', '${cls}')" title="Интерактивна S/R графика">
+            <span>📊</span> S/R
+          </button>
+          <a href="${tvUrl}" target="_blank" rel="noopener" class="btn btn-tv-idea" title="Отвори в TradingView">
+            <span>📈</span> TV ↗
+          </a>
+          <button class="btn btn-delete-idea" onclick="removeTradeIdea('${sym}')" title="Премахни от Моите Идеи">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Attach keyboard listeners for Add Idea inputs
+document.addEventListener('DOMContentLoaded', () => {
+  ['inputIdeaTicker', 'inputIdeaNote', 'inputIdeaTarget'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleAddCustomIdea();
+      });
+    }
+  });
+});
+
+// Expose to window for inline onclick handlers
+window.tradeIdeas = tradeIdeas;
+window.loadTradeIdeas = loadTradeIdeas;
+window.saveTradeIdeas = saveTradeIdeas;
+window.isTradeIdea = isTradeIdea;
+window.toggleTradeIdea = toggleTradeIdea;
+window.handleAddCustomIdea = handleAddCustomIdea;
+window.removeTradeIdea = removeTradeIdea;
+window.promptEditIdeaNote = promptEditIdeaNote;
+window.evaluateTradeIdea = evaluateTradeIdea;
+window.evaluateAllTradeIdeas = evaluateAllTradeIdeas;
+window.renderIdeasView = renderIdeasView;
+window.quickAddIdea = quickAddIdea;
+
 
 

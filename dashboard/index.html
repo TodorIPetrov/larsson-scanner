@@ -103,6 +103,10 @@
       <button class="nav-tab-btn" data-tab="fundamentals" id="navTabFundamentals">
         <span class="tab-icon">🏢</span> Фундамент &amp; DCF
       </button>
+      <button class="nav-tab-btn" data-tab="ideas" id="navTabIdeas">
+        <span class="tab-icon">💡</span> Моите Идеи &amp; Радар
+        <span class="tab-badge" id="ideasCountBadge">0</span>
+      </button>
     </nav>
 
     <!-- Tab 1: Scanner View (Default) -->
@@ -757,6 +761,44 @@
         </div>
       </section>
     </div> <!-- End Tab 5: tabContentFundamentals -->
+
+    <!-- Tab 6: Personal Trade Ideas & Watchlist Radar -->
+    <div class="tab-content-panel" id="tabContentIdeas" style="display: none;">
+      <section class="ideas-header-section">
+        <div class="ideas-intro">
+          <h2>💡 Моите Идеи за Сделки &amp; Личен Радар</h2>
+          <p class="ideas-subtitle">
+            Запазвайте активи, които харесвате или обмисляте за търговия. Задавайте лични бележки, целеви цени и правете моментален <b>пълен анализ</b> или <b>генерирайте входно предложение от системата</b> с институционален риск мениджмънт.
+          </p>
+        </div>
+        <!-- Input & Add Bar -->
+        <div class="ideas-add-bar">
+          <div class="ideas-input-group">
+            <input type="text" id="inputIdeaTicker" class="ideas-input" placeholder="Символ (напр. NVDA, SOLUSDT, BTC, PLTR, MSTR)..." autocomplete="off" />
+            <input type="text" id="inputIdeaNote" class="ideas-input note-input" placeholder="Лична бележка / теза (напр. Очаквам откат до $120)..." />
+            <input type="number" id="inputIdeaTarget" class="ideas-input target-input" placeholder="Цел $ (опция)..." step="any" />
+            <button type="button" class="btn btn-add-idea" id="btnAddIdea" onclick="handleAddCustomIdea()">
+              <span>➕</span> Добави към Идеи
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ideas Cards Grid -->
+      <section class="ideas-grid-section">
+        <div class="ideas-grid-header">
+          <span class="ideas-count-text" id="ideasGridCount">0 запазени идеи</span>
+          <div class="ideas-filter-actions">
+            <button type="button" class="btn btn-eval-all-ideas" id="btnEvalAllIdeas" onclick="evaluateAllTradeIdeas()" title="Оцени всички запазени идеи едновременно за готовност за вход">
+              <span>⚡</span> Оцени Всички за Вход
+            </button>
+          </div>
+        </div>
+        <div class="ideas-grid" id="ideasCardsGrid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </section>
+    </div> <!-- End Tab 6: tabContentIdeas -->
 
     <footer class="site-footer">
       <p>Larsson Line Scanner • 100% Free & Open Source Stack • <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>

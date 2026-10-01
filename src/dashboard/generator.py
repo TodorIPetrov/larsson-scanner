@@ -760,6 +760,19 @@ def export_dashboard_data(
     except Exception as e:
         logger.debug(f"Could not compute correlation matrix: {e}")
 
+    # Watchlist / Trade Ideas
+    watchlist_data = []
+    try:
+        raw_wl = db.get_watchlist_detailed() if hasattr(db, "get_watchlist_detailed") else []
+        for w in raw_wl:
+            w_dict = dict(w)
+            sym = w_dict.get("ticker", "")
+            if sym and not w_dict.get("name"):
+                w_dict["name"] = names_map.get(sym, sym)
+            watchlist_data.append(_clean_dict_floats(w_dict))
+    except Exception as e:
+        logger.debug(f"Could not load watchlist data for dashboard: {e}")
+
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "summary": {
@@ -774,6 +787,7 @@ def export_dashboard_data(
         "symbols": items,
         "pending_setups": pending_setups_data,
         "pending_proposals": pending_proposals_data,
+        "watchlist": watchlist_data,
         "fundamental_profiles": profiles_registry,
         "portfolio": portfolio_summary,
         "portfolio_paper": portfolio_paper_data,
@@ -800,6 +814,7 @@ def export_dashboard_data(
             "symbols": payload["symbols"],
             "pending_setups": payload["pending_setups"],
             "pending_proposals": payload["pending_proposals"],
+            "watchlist": payload["watchlist"],
             "sector_heatmap": sector_breadth_data,
             "market_regime": market_regime_data,
             "portfolio": payload["portfolio"],

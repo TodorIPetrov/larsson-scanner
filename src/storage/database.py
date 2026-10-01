@@ -121,13 +121,23 @@ class Database:
             );
             """)
 
-            # Table for user personal watchlist
+            # Table for user personal watchlist / trade ideas
             cur.execute("""
             CREATE TABLE IF NOT EXISTS watchlist (
                 ticker TEXT PRIMARY KEY,
-                added_at TEXT NOT NULL
+                added_at TEXT NOT NULL,
+                user_note TEXT,
+                target_price REAL
             );
             """)
+            try:
+                cur.execute("ALTER TABLE watchlist ADD COLUMN user_note TEXT")
+            except sqlite3.OperationalError:
+                pass
+            try:
+                cur.execute("ALTER TABLE watchlist ADD COLUMN target_price REAL")
+            except sqlite3.OperationalError:
+                pass
 
             # Table for internal key-value system metadata (e.g. last digest date)
             cur.execute("""
@@ -668,14 +678,32 @@ class Database:
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (ticker, timeframe, old_state.value, new_state.value, price, tv_symbol, now_iso))
 
-    def add_to_watchlist(self, ticker: str) -> bool:
-        """Adds a ticker to personal watchlist."""
+    def add_to_watchlist(
+        self,
+        ticker: str,
+        user_note: Optional[str] = None,
+        target_price: Optional[float] = None,
+    ) -> bool:
+        """Adds or updates a ticker in the personal watchlist / trade ideas."""
         now_iso = datetime.now(timezone.utc).isoformat()
         with self._get_connection() as conn:
             cur = conn.cursor()
             cur.execute("""
-            INSERT OR IGNORE INTO watchlist (ticker, added_at) VALUES (?, ?)
-            """, (ticker.upper(), now_iso))
+            INSERT INTO watchlist (ticker, added_at, user_note, target_price) VALUES (?, ?, ?, ?)
+            ON CONFLICT(ticker) DO UPDATE SET
+                user_note = COALESCE(excluded.user_note, watchlist.user_note),
+                target_price = COALESCE(excluded.target_price, watchlist.target_price)
+            """, (ticker.upper(), now_iso, user_note, target_price))
+            return cur.rowcount > 0
+
+    def update_watchlist_note(self, ticker: str, user_note: str, target_price: Optional[float] = None) -> bool:
+        """Updates user note and target price for a watched ticker."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            if target_price is not None:
+                cur.execute("UPDATE watchlist SET user_note = ?, target_price = ? WHERE ticker = ?", (user_note, target_price, ticker.upper()))
+            else:
+                cur.execute("UPDATE watchlist SET user_note = ? WHERE ticker = ?", (user_note, ticker.upper()))
             return cur.rowcount > 0
 
     def remove_from_watchlist(self, ticker: str) -> bool:
@@ -692,17 +720,25 @@ class Database:
             cur.execute("SELECT ticker FROM watchlist ORDER BY ticker")
             return [row["ticker"] for row in cur.fetchall()]
 
+    def get_watchlist_detailed(self) -> List[sqlite3.Row]:
+        """Returns all watchlist / trade idea items with notes and target prices."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT ticker, added_at, user_note, target_price FROM watchlist ORDER BY added_at DESC")
+            return cur.fetchall()
+
     def get_watchlist_states(self) -> List[sqlite3.Row]:
         """Returns all states for symbols in the personal watchlist."""
         with self._get_connection() as conn:
             cur = conn.cursor()
             cur.execute("""
-            SELECT s.ticker, s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
+            SELECT w.ticker, w.added_at, w.user_note, w.target_price,
+                   s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
                    st.current_state, st.last_price, st.last_state_change, st.updated_at, st.bars_since_flip
             FROM watchlist w
             JOIN symbols s ON w.ticker = s.ticker
             JOIN symbol_states st ON s.ticker = st.ticker
-            ORDER BY w.ticker, st.timeframe
+            ORDER BY w.added_at DESC, st.timeframe
             """)
             return cur.fetchall()
 
