@@ -21,13 +21,19 @@ class TelegramNotifier:
         bot_token: Optional[str] = None,
         chat_id: Optional[str] = None,
         batch_threshold: int = 5,
+        enabled: Optional[bool] = None,
     ):
+        self.enabled = (
+            enabled
+            if enabled is not None
+            else (os.environ.get("TELEGRAM_ENABLED", "true").lower() not in ("false", "0", "no"))
+        )
         self.bot_token = bot_token or os.environ.get("TELEGRAM_BOT_TOKEN")
         self.chat_id = str(chat_id) if chat_id else os.environ.get("TELEGRAM_CHAT_ID")
         self.batch_threshold = batch_threshold
         self.session = requests.Session()
 
-        if (not self.bot_token or not self.chat_id) and not os.environ.get("PYTEST_CURRENT_TEST"):
+        if not os.environ.get("PYTEST_CURRENT_TEST"):
             try:
                 import yaml
                 for p in ["config/settings.local.yaml", "config/settings.yaml"]:
@@ -35,6 +41,8 @@ class TelegramNotifier:
                         with open(p, "r", encoding="utf-8") as f:
                             cfg = yaml.safe_load(f) or {}
                             tg = cfg.get("telegram", {})
+                            if enabled is None and "enabled" in tg:
+                                self.enabled = bool(tg.get("enabled"))
                             if not self.bot_token and tg.get("bot_token"):
                                 self.bot_token = str(tg.get("bot_token"))
                             if not self.chat_id and tg.get("chat_id"):
@@ -48,6 +56,10 @@ class TelegramNotifier:
 
     def send_message_with_markup(self, text: str, reply_markup: Optional[dict] = None) -> Optional[int]:
         """Sends an HTML formatted message and returns the Telegram message_id."""
+        if not self.enabled:
+            logger.info(f"[PAUSED] Telegram notifications disabled by user. Message suppressed:\n{text[:100]}...")
+            return None
+
         if not self.is_configured:
             logger.info(f"[DRY-RUN] Telegram not configured. Message would be:\n{text}\nMarkup: {reply_markup}")
             return 1  # Dummy message_id for dry-run
@@ -76,6 +88,8 @@ class TelegramNotifier:
 
     def send_raw_message(self, text: str, reply_markup: Optional[dict] = None) -> bool:
         """Sends an HTML formatted message via Telegram Bot API."""
+        if not self.enabled:
+            return False
         msg_id = self.send_message_with_markup(text, reply_markup=reply_markup)
         if not self.is_configured:
             return True

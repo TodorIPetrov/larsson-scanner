@@ -1,4 +1,5 @@
 telegram:
+  enabled: false # Paused per user request until further notice
   bot_token: ""  # Set here or in config/settings.local.yaml
   chat_id: ""    # Set here or in config/settings.local.yaml
   batch_threshold: 5

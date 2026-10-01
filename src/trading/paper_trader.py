@@ -155,7 +155,12 @@ class PaperTrader:
             liq_price = None
 
         now = datetime.now(timezone.utc)
-        expires_at = now + timedelta(minutes=self.proposal_ttl_minutes)
+        ttl_minutes = self.proposal_ttl_minutes
+        if timeframe in ["1D", "D", "DAILY"]:
+            ttl_minutes = max(ttl_minutes, 720)
+        elif timeframe in ["1W", "W", "WEEKLY"]:
+            ttl_minutes = max(ttl_minutes, 2880)
+        expires_at = now + timedelta(minutes=ttl_minutes)
         now_iso = now.isoformat()
         expires_at_iso = expires_at.isoformat()
 

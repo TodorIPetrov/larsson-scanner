@@ -102,3 +102,13 @@ def test_dispatch_alerts_filtering(monkeypatch):
     assert any("3350.T" in m for m in sent)
     assert not any("SOLUSDT" in m for m in sent)
 
+
+def test_telegram_disabled_suppresses_messages(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_ENABLED", "false")
+    notifier = TelegramNotifier()
+    assert notifier.enabled is False
+    res = notifier.send_message_with_markup("<b>Test should not send</b>")
+    assert res is None
+    assert notifier.send_raw_message("<b>Test raw</b>") is False
+
+

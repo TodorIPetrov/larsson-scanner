@@ -677,9 +677,17 @@ def export_dashboard_data(
     pending_proposals_data = []
     try:
         from src.engine.trade_suggestions import calculate_leverage_matrix
+        db.expire_old_proposals()
         raw_proposals = db.get_pending_proposals()
+        tv_map_cache = _load_tv_map()
         for p in raw_proposals:
             p_dict = dict(p)
+            sym = p_dict.get("ticker", "")
+            if sym and not p_dict.get("name"):
+                p_dict["name"] = names_map.get(sym, sym)
+            if sym and not p_dict.get("tv_symbol"):
+                p_dict["tv_symbol"] = tv_map_cache.get(sym, sym)
+
             p_entry = _clean_float(p_dict.get("entry_price")) or 0.0
             p_sl = _clean_float(p_dict.get("stop_loss"))
             p_size = _clean_float(p_dict.get("position_size_usd")) or 100.0
@@ -694,8 +702,8 @@ def export_dashboard_data(
             )
             p_dict["leverage_matrix"] = matrix
             pending_proposals_data.append(_clean_dict_floats(p_dict))
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Error preparing pending proposals for dashboard: {e}")
 
     # Master fundamental profiles registry for all analyzed companies/assets
     profiles_registry = {}

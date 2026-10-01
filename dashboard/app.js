@@ -3321,7 +3321,31 @@ function renderProposalsBanner(proposals) {
   if (!banner || !grid) return;
 
   const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
-  let activeProposals = (proposals || []).filter(p => !resolved[p.proposal_id]);
+  const nowMs = Date.now();
+  let activeProposals = (proposals || []).filter(p => {
+    if (resolved[p.proposal_id]) return false;
+    if (p.expires_at) {
+      const expMs = new Date(p.expires_at).getTime();
+      if (!isNaN(expMs) && expMs <= nowMs) return false;
+    }
+    return true;
+  });
+
+  // If no active proposals exist, synthesize fresh high-conviction proposals from scanned symbols
+  if (activeProposals.length === 0 && typeof synthesizeClientProposals === 'function' && allSymbols && allSymbols.length > 0) {
+    const synthCount = synthesizeClientProposals();
+    if (synthCount > 0) {
+      activeProposals = (pendingProposals || []).filter(p => {
+        if (resolved[p.proposal_id]) return false;
+        if (p.expires_at) {
+          const expMs = new Date(p.expires_at).getTime();
+          if (!isNaN(expMs) && expMs <= nowMs) return false;
+        }
+        return true;
+      });
+    }
+  }
+
   const rejectedCount = Object.values(resolved).filter(v => v.status === 'REJECTED').length;
 
   updateProposalUndoUI();
@@ -3402,6 +3426,9 @@ function renderProposalsBanner(proposals) {
     }).join('');
 
     const s = allSymbols.find(x => x.ticker === p.ticker);
+    const assetName = p.name || (s && s.name) || p.ticker;
+    const tvSymbol = p.tv_symbol || (s && s.tv_symbol) || p.ticker;
+    const tvUrl = (typeof getTradingViewLink === 'function') ? getTradingViewLink(tvSymbol, p.timeframe || '1D') : `https://www.tradingview.com/chart/?symbol=${tvSymbol}&interval=1D`;
     const btcRel = p.btc_relative || (s && s.btc_relative);
     const btcBadgeHtml = renderBtcBadge(btcRel);
     const isBtcBleeding = btcRel && !btcRel.leverage_allowed;
@@ -3432,12 +3459,20 @@ function renderProposalsBanner(proposals) {
       <div class="proposal-card" id="propCard_${p.proposal_id}">
         <div class="proposal-card-header">
           <div class="proposal-asset-info" onclick="openFundamentalTab('${p.ticker}', 'proposals')" style="cursor: pointer;" title="Кликнете за пълен фундаментален анализ и DCF оценка">
-            <span class="proposal-ticker">${p.ticker}</span>
-            <span class="${dirBadgeClass}">${dirText}</span>
-            <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class || 'Crypto'}</span>
-            ${btcBadgeHtml}
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span class="proposal-ticker">${p.ticker}</span>
+              <span class="${dirBadgeClass}">${dirText}</span>
+              <span class="asset-class-tag">${CLASS_LABELS[p.asset_class] || p.asset_class || 'Crypto'}</span>
+              ${btcBadgeHtml}
+            </div>
+            ${(assetName && assetName !== p.ticker) ? `<div class="proposal-asset-name" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(assetName)}</div>` : ''}
           </div>
-          <span class="setup-tier-badge">🏆 Tier ${p.tier || 'A'} (${p.score || 0}/100)</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <a href="${tvUrl}" target="_blank" rel="noopener noreferrer" class="btn-tv-link" style="text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); display: inline-flex; align-items: center; gap: 4px;" title="Отвори интерактивна графика в TradingView">
+              📈 TV
+            </a>
+            <span class="setup-tier-badge">🏆 Tier ${p.tier || 'A'} (${p.score || 0}/100)</span>
+          </div>
         </div>
 
         ${isBtcBleeding ? `

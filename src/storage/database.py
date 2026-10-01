@@ -1008,10 +1008,16 @@ class Database:
             return cur.fetchone()
 
     def get_pending_proposals(self) -> List[sqlite3.Row]:
-        """Returns all currently pending proposals."""
+        """Returns all currently pending proposals, automatically expiring stale ones."""
+        self.expire_old_proposals()
+        now_iso = datetime.now(timezone.utc).isoformat()
         with self._get_connection() as conn:
             cur = conn.cursor()
-            cur.execute("SELECT * FROM trade_proposals WHERE status = 'PENDING' ORDER BY created_at DESC")
+            cur.execute("""
+            SELECT * FROM trade_proposals 
+            WHERE status = 'PENDING' AND (expires_at IS NULL OR expires_at > ?) 
+            ORDER BY created_at DESC
+            """, (now_iso,))
             return cur.fetchall()
 
     def get_recent_proposals_by_ticker(self, ticker: str, hours: int = 24) -> List[sqlite3.Row]:
