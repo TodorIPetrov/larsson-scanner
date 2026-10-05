@@ -15,7 +15,7 @@ let currentQueuePriority = 'ALL';
 let currentQueueTier = 'ALL';
 let currentSearch = '';
 let currentQueueSearch = '';
-let currentView = localStorage.getItem('larsson_view_mode') || 'table';
+let currentView = localStorage.getItem('larsson_view_mode') || (window.innerWidth <= 768 ? 'cards' : 'table');
 let currentTab = localStorage.getItem('larsson_active_tab') || 'scanner';
 
 let currentSortColumn = null;
