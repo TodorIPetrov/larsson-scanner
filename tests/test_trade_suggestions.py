@@ -255,3 +255,47 @@ def test_max_allowed_leverage_rules():
     assert short_map[2]["margin_usd"] == 100.0
     # Liquidation price for 2x short: 3000 * (1 + 0.5 - 0.005) = 3000 * 1.495 = 4485
     assert short_map[2]["liquidation_price"] > 3150.0
+
+
+def test_invalidation_level_and_htf_alignment():
+    # 1. Test Invalidation Level calculation on 1D
+    s_1d = generate_trade_suggestion(
+        current_price=100.0,
+        state="GOLD",
+        v1=98.0,
+        m1=96.0,
+        m2=94.0,
+        v2=92.0,
+        spread_pct=2.0,
+        atr=3.0,
+        s1=95.0,
+        context_flag="BREAKOUT_ABOVE",
+        timeframe="1D",
+        asset_class="stocks",
+    )
+    assert s_1d.invalidation_level is not None
+    assert s_1d.invalidation_level <= 100.0
+    assert s_1d.invalidation_pct is not None
+    assert s_1d.time_stop_bars == 60
+    assert s_1d.htf_aligned is True
+
+    # 2. Test HTF Conflict on 4H (4H Gold but 1D Blue)
+    s_4h_conflict = generate_trade_suggestion(
+        current_price=100.0,
+        state="GOLD",
+        v1=98.0,
+        m1=96.0,
+        m2=94.0,
+        v2=92.0,
+        spread_pct=2.0,
+        atr=3.0,
+        s1=95.0,
+        context_flag="BREAKOUT_ABOVE",
+        timeframe="4H",
+        macro_1d_state="BLUE",
+        asset_class="crypto",
+    )
+    assert s_4h_conflict.htf_aligned is False
+    assert s_4h_conflict.action == "WAIT"
+    assert "HTF CONFLICT" in s_4h_conflict.synthesis_badge_bg
+

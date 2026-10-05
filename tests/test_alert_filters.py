@@ -102,3 +102,29 @@ def test_filter_state_changes_for_telegram():
     assert tickers_passed == ["ETHUSDT", "BTCUSDT", "MSTR", "3350.T", "NAKA"]
     assert "SOLUSDT" not in tickers_passed
     assert "NVDA" not in tickers_passed
+
+
+def test_htf_gating_for_4h_alerts():
+    # 4H GOLD with 1D BLUE macro trend -> suppressed for non-priority
+    assert is_alert_eligible_for_telegram(
+        "ETHUSDT", LarssonState.NEUTRAL, LarssonState.GOLD,
+        timeframe="4H", macro_1d_state="BLUE"
+    ) is False
+
+    # 4H GOLD with 1D GOLD macro trend -> approved
+    assert is_alert_eligible_for_telegram(
+        "ETHUSDT", LarssonState.NEUTRAL, LarssonState.GOLD,
+        timeframe="4H", macro_1d_state="GOLD"
+    ) is True
+
+    # 4H BLUE with 1D GOLD macro trend -> suppressed
+    assert is_alert_eligible_for_telegram(
+        "ETHUSDT", LarssonState.GOLD, LarssonState.BLUE,
+        timeframe="4H", macro_1d_state="GOLD"
+    ) is False
+
+    # Priority asset (BTC) bypasses HTF gating
+    assert is_alert_eligible_for_telegram(
+        "BTCUSDT", LarssonState.NEUTRAL, LarssonState.GOLD,
+        timeframe="4H", macro_1d_state="BLUE"
+    ) is True

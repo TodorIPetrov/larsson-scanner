@@ -4,7 +4,7 @@ Generates clean HTML messages for Telegram with TradingView deep-links.
 """
 
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import Any, List, Optional
 from src.engine.smma import LarssonState
 
 STATE_EMOJI = {
@@ -89,6 +89,7 @@ def format_single_alert(
     tv_symbol: str,
     sr_data: Optional[dict] = None,
     asset_class: str = "crypto",
+    trade_suggestion: Optional[Any] = None,
 ) -> str:
     """
     Formats a single state transition alert in Telegram HTML format,
@@ -153,6 +154,32 @@ def format_single_alert(
                 lines.append(f"⚠️ <b>Внимание:</b> Директно върху силна подкрепа S1 (-{s1_dist:.1f}%)!")
             elif context_flag == "BREAKDOWN_BELOW":
                 lines.append("🔻 <b>Срив:</b> Пробив под всички ключови нива на подкрепа!")
+
+    # Phase 3: Invalidation Level, Time Stop, and Base Rates
+    if trade_suggestion:
+        inv_lvl = getattr(trade_suggestion, "invalidation_level", None)
+        inv_pct = getattr(trade_suggestion, "invalidation_pct", None)
+        time_stop = getattr(trade_suggestion, "time_stop_bars", 60)
+        win_rate = getattr(trade_suggestion, "base_rate_win_rate", None)
+        mean_ret = getattr(trade_suggestion, "base_rate_mean_ret", None)
+        n_samples = getattr(trade_suggestion, "base_rate_sample_size", None)
+        htf_ok = getattr(trade_suggestion, "htf_aligned", True)
+
+        lines.append("\n🛑 <b>Ниво на невалидност & Базови вероятности:</b>")
+        if inv_lvl is not None:
+            inv_str = _format_price(inv_lvl)
+            pct_str = f" (-{inv_pct:.1f}%)" if inv_pct is not None else ""
+            lines.append(f"• 🛑 <b>Invalidation Level:</b> <code>{inv_str}</code>{pct_str}")
+            lines.append(f"• ⏳ <b>Time Stop:</b> {time_stop} бара (~макс. хоризонт)")
+
+        if win_rate is not None and mean_ret is not None:
+            n_str = f" (N={n_samples})" if n_samples else ""
+            lines.append(
+                f"• 📊 <b>Base Rate:</b> <b>{win_rate * 100:.1f}%</b> Win Rate | <b>{mean_ret * 100:+.1f}%</b> Нетна доходност{n_str}"
+            )
+
+        if not htf_ok:
+            lines.append("• ⚠️ <b>Предупреждение:</b> Конфликт с дневния макро тренд (HTF)!")
 
     # TradingView links (USD & /BTC ratio)
     links = [f"📊 <a href=\"{tv_url}\">TradingView (USD)</a>"]

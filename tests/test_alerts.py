@@ -112,3 +112,30 @@ def test_telegram_disabled_suppresses_messages(monkeypatch):
     assert notifier.send_raw_message("<b>Test raw</b>") is False
 
 
+def test_single_alert_formatting_with_invalidation_and_base_rates():
+    class MockSuggestion:
+        invalidation_level = 62000.0
+        invalidation_pct = 4.6
+        time_stop_bars = 60
+        base_rate_win_rate = 0.652
+        base_rate_mean_ret = 0.0434
+        base_rate_sample_size = 66
+        htf_aligned = True
+
+    msg = format_single_alert(
+        ticker="BTCUSDT",
+        timeframe="1D",
+        old_state=LarssonState.NEUTRAL,
+        new_state=LarssonState.GOLD,
+        price=65000.0,
+        tv_symbol="BINANCE:BTCUSDT",
+        trade_suggestion=MockSuggestion(),
+    )
+    assert "Invalidation Level:" in msg
+    assert "$62,000.00" in msg
+    assert "(-4.6%)" in msg
+    assert "Base Rate:" in msg
+    assert "65.2%" in msg
+    assert "+4.3%" in msg
+
+

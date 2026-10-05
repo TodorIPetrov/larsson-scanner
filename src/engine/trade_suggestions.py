@@ -58,6 +58,15 @@ class TradeSuggestion:
     btc_leverage_allowed: bool = True
     # Options Flow (US Equities)
     options_flow: Optional[dict] = None
+    # Phase 3: Invalidation Level, Time Stop, and Empirical Base Rates
+    invalidation_level: Optional[float] = None
+    invalidation_pct: Optional[float] = None
+    time_stop_bars: int = 60
+    base_rate_win_rate: Optional[float] = None
+    base_rate_mean_ret: Optional[float] = None
+    base_rate_sample_size: Optional[int] = None
+    base_rate_horizon: Optional[int] = 60
+    htf_aligned: bool = True
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -277,6 +286,10 @@ def _enrich_trade_suggestion(
     fund_profile: Optional[object],
     btc_relative: Optional[object] = None,
     options_flow: Optional[dict] = None,
+    v2: Optional[float] = None,
+    asset_class: str = "crypto",
+    timeframe: str = "1D",
+    macro_1d_state: Optional[str] = None,
 ) -> TradeSuggestion:
     """Enriches a TradeSuggestion with clear, distinct technical, fundamental, and BTC relative fields."""
     # 1. Technical Analysis Recommendation & Details
@@ -412,6 +425,53 @@ def _enrich_trade_suggestion(
             s.reason_bg = f"{s.reason_bg} | {opt_str}".strip(" |")
         if options_flow.get("confluence_boost"):
             s.score = min(100, s.score + 5)
+
+    # 6. Invalidation Level and Time Stop
+    if s.invalidation_level is None:
+        if s.stop_loss and s.stop_loss > 0:
+            s.invalidation_level = s.stop_loss
+        elif v2 is not None and v2 > 0:
+            if state == "GOLD":
+                s.invalidation_level = round(v2 * 0.995, 4)
+            elif state == "BLUE":
+                s.invalidation_level = round(v2 * 1.005, 4)
+
+    if s.invalidation_level is not None and current_price > 0:
+        s.invalidation_pct = round(abs(current_price - s.invalidation_level) / current_price * 100.0, 2)
+
+    # 7. Higher-Timeframe (HTF) Alignment Gating (4H confirmed by 1D)
+    if timeframe == "4H" and macro_1d_state:
+        m_st = str(macro_1d_state).upper()
+        if state == "GOLD" and "BLUE" in m_st:
+            s.htf_aligned = False
+            s.action = "WAIT"
+            s.synthesis_badge_bg = "⚠️ HTF CONFLICT"
+            s.synthesis_label_bg = "4H е Gold, но 1D Macro е в BLUE мечи тренд. Не се препоръчва вход!"
+            s.reason_bg = f"{s.reason_bg} ⚠️ [HTF Conflict] 4H е бичи, но дневният макро тренд е мечи (BLUE). Риск от фалшив фитил!".strip()
+        elif state == "BLUE" and "GOLD" in m_st:
+            s.htf_aligned = False
+            s.action = "WAIT"
+            s.synthesis_badge_bg = "⚠️ HTF CONFLICT"
+            s.synthesis_label_bg = "4H е Blue, но 1D Macro е в GOLD бичи тренд. Не скъсявайте!"
+            s.reason_bg = f"{s.reason_bg} ⚠️ [HTF Conflict] 4H е мечи, но дневният макро тренд е бичи (GOLD). Не шортвайте срещу макро тренда!".strip()
+
+    # 8. Empirical Base Rates Lookup
+    try:
+        from src.backtest.event_study import lookup_base_rate
+        trans_key = f"NEUTRAL_TO_{state}" if state in ["GOLD", "BLUE"] else "GOLD_TO_NEUTRAL"
+        br = lookup_base_rate(
+            transition_type=trans_key,
+            asset_class=asset_class,
+            timeframe=timeframe,
+            horizon=60,
+        )
+        if br:
+            s.base_rate_win_rate = br.get("win_rate")
+            s.base_rate_mean_ret = br.get("mean_return")
+            s.base_rate_sample_size = br.get("sample_size")
+            s.base_rate_horizon = br.get("horizon", 60)
+    except Exception:
+        pass
 
     return s
 
@@ -886,6 +946,10 @@ def generate_trade_suggestion(
         fund_profile=fund_profile,
         btc_relative=btc_relative,
         options_flow=options_flow,
+        v2=v2,
+        asset_class=asset_class,
+        timeframe=timeframe,
+        macro_1d_state=macro_1d_state,
     )
 
 

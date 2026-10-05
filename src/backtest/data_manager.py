@@ -87,9 +87,10 @@ class BacktestDataManager:
                 if not klines:
                     break
 
+                date_fmt = "%Y-%m-%d" if timeframe == "1D" else "%Y-%m-%d %H:%M"
                 for k in klines:
                     # kline: [open_time, open, high, low, close, volume, close_time, ...]
-                    ts = datetime.fromtimestamp(k[0] / 1000.0, tz=timezone.utc).strftime("%Y-%m-%d")
+                    ts = datetime.fromtimestamp(k[0] / 1000.0, tz=timezone.utc).strftime(date_fmt)
                     all_rows.append({
                         "date": ts,
                         "open": float(k[1]),

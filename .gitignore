@@ -7,5 +7,7 @@ state.db-wal
 state.db-shm
 config/settings.local.yaml
 .env
-/data/
+/data/*
+!/data/base_rates.json
 scratch/
+.agents/

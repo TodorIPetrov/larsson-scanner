@@ -19,6 +19,9 @@ from src.engine.correlation import (
     compute_correlation_matrix,
     suggest_diversification,
     format_correlation_telegram,
+    cluster_transition_signals,
+    format_cluster_alerts_telegram,
+    SignalCluster,
     CONCENTRATION_WARNING_THRESHOLD,
 )
 
@@ -98,3 +101,54 @@ def test_telegram_formatter():
     assert "Корелационна Матрица" in msg
     assert "0.85" in msg
     assert "PAXG" in msg
+
+
+def test_cluster_transition_signals():
+    # 3 crypto assets: BTC and ETH are highly correlated (~0.99), SOL is independent/noisy
+    s_btc = _make_prices(50, seed=1)
+    s_eth = s_btc * 1.5 + np.random.normal(0, 0.01, 50)
+    s_sol = _make_prices(50, trend=-0.5, noise=3.0, seed=777)
+
+    price_data = {
+        "BTCUSDT": s_btc,
+        "ETHUSDT": s_eth,
+        "SOLUSDT": s_sol,
+    }
+
+    transitions = [
+        {"ticker": "BTCUSDT", "asset_class": "crypto", "transition_type": "NEUTRAL_TO_GOLD"},
+        {"ticker": "ETHUSDT", "asset_class": "crypto", "transition_type": "NEUTRAL_TO_GOLD"},
+        {"ticker": "SOLUSDT", "asset_class": "crypto", "transition_type": "NEUTRAL_TO_GOLD"},
+    ]
+
+    clusters = cluster_transition_signals(
+        transitions=transitions,
+        price_data=price_data,
+        correlation_threshold=0.70,
+        benchmark_symbol="BTCUSDT",
+    )
+
+    assert len(clusters) == 2
+    # One cluster has 2 symbols (BTC + ETH), the other has 1 (SOL)
+    sizes = sorted([len(c.member_symbols) for c in clusters])
+    assert sizes == [1, 2]
+
+    # Find the multi-asset cluster
+    macro_cluster = next(c for c in clusters if len(c.member_symbols) == 2)
+    assert "BTCUSDT" in macro_cluster.member_symbols
+    assert "ETHUSDT" in macro_cluster.member_symbols
+    assert macro_cluster.avg_correlation > 0.8
+    assert macro_cluster.is_solo is False
+
+    # Find the solo cluster
+    solo_cluster = next(c for c in clusters if len(c.member_symbols) == 1)
+    assert solo_cluster.leader_symbol == "SOLUSDT"
+    assert solo_cluster.is_solo is True
+
+    # Test Telegram alert formatting
+    tg_msg = format_cluster_alerts_telegram(clusters)
+    assert "Клъстеризирани пазарни преходи" in tg_msg
+    assert "BTCUSDT" in tg_msg
+    assert "SOLUSDT" in tg_msg
+    assert "Внимание" in tg_msg
+

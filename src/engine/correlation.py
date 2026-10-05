@@ -6,9 +6,10 @@ and suggests universe assets that would reduce portfolio correlation.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 import logging
 import math
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import pandas as pd
 import numpy as np
@@ -270,4 +271,193 @@ def format_correlation_telegram(corr_result: dict, portfolio_symbols: List[str])
         for cand in candidates[:3]:
             lines.append(f"  • <b>{cand}</b> – ниска корелация с портфолиото")
 
+    return "\n".join(lines)
+
+
+@dataclass
+class SignalCluster:
+    cluster_id: str
+    asset_class: str
+    transition_type: str
+    leader_symbol: str
+    member_symbols: List[str]
+    avg_correlation: float
+    benchmark_beta: Optional[float] = None
+    is_solo: bool = False
+    details: Optional[Dict[str, Any]] = None
+
+
+def cluster_transition_signals(
+    transitions: List[Dict[str, Any]],
+    price_data: Dict[str, pd.Series],
+    correlation_threshold: float = 0.70,
+    benchmark_symbol: Optional[str] = None,
+    window: int = 30,
+) -> List[SignalCluster]:
+    """
+    Groups simultaneous state transitions into correlation clusters.
+    Prevents alert fatigue and fake diversification by identifying when
+    multiple signals represent a single correlated macro factor bet.
+    """
+    if not transitions:
+        return []
+
+    # Bucket transitions by (asset_class, transition_type)
+    buckets: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
+    for t in transitions:
+        ac = t.get("asset_class", "unknown")
+        ttype = t.get("transition_type") or f"{t.get('old_state', 'UNKNOWN')}_TO_{t.get('new_state', 'UNKNOWN')}"
+        key = (ac, ttype)
+        if key not in buckets:
+            buckets[key] = []
+        buckets[key].append(t)
+
+    clusters: List[SignalCluster] = []
+    cluster_counter = 1
+
+    for (ac, ttype), trans_list in buckets.items():
+        symbols = [t["ticker"] for t in trans_list if "ticker" in t]
+        if not symbols:
+            continue
+
+        if len(symbols) == 1:
+            sym = symbols[0]
+            clusters.append(
+                SignalCluster(
+                    cluster_id=f"cluster_{cluster_counter}",
+                    asset_class=ac,
+                    transition_type=ttype,
+                    leader_symbol=sym,
+                    member_symbols=[sym],
+                    avg_correlation=1.0,
+                    is_solo=True,
+                )
+            )
+            cluster_counter += 1
+            continue
+
+        # Compute return series for available symbols
+        returns: Dict[str, pd.Series] = {}
+        for s in symbols:
+            if s in price_data and price_data[s] is not None and len(price_data[s]) >= 10:
+                ret = _daily_returns(price_data[s].iloc[-(window + 5):])
+                if len(ret) >= 5:
+                    returns[s] = ret
+
+        # Compute pairwise correlations
+        adj: Dict[str, Set[str]] = {s: set() for s in symbols}
+        pairwise_corrs: Dict[Tuple[str, str], float] = {}
+
+        for i, s1 in enumerate(symbols):
+            for j, s2 in enumerate(symbols):
+                if i < j:
+                    if s1 in returns and s2 in returns:
+                        c = _pearson_correlation(returns[s1], returns[s2])
+                        if c is not None:
+                            pairwise_corrs[(s1, s2)] = c
+                            pairwise_corrs[(s2, s1)] = c
+                            if c >= correlation_threshold:
+                                adj[s1].add(s2)
+                                adj[s2].add(s1)
+
+        # Graph connected components for clusters
+        visited = set()
+        components: List[List[str]] = []
+
+        for s in symbols:
+            if s not in visited:
+                comp = []
+                queue = [s]
+                visited.add(s)
+                while queue:
+                    curr = queue.pop(0)
+                    comp.append(curr)
+                    for neighbor in adj[curr]:
+                        if neighbor not in visited:
+                            visited.add(neighbor)
+                            queue.append(neighbor)
+                components.append(comp)
+
+        # Benchmark returns for beta
+        bench_ret = None
+        bench_sym = benchmark_symbol or ("BTCUSDT" if ac == "crypto" else "SPY")
+        if bench_sym in price_data and price_data[bench_sym] is not None:
+            bench_ret = _daily_returns(price_data[bench_sym].iloc[-(window + 5):])
+
+        # Form clusters
+        for comp in components:
+            # Pick leader: highest recent 5-day return or highest volume/score
+            leader = comp[0]
+            best_recent_ret = -999.0
+            for s in comp:
+                if s in price_data and len(price_data[s]) >= 5:
+                    r5 = float(price_data[s].iloc[-1] / price_data[s].iloc[-5] - 1.0)
+                    if r5 > best_recent_ret:
+                        best_recent_ret = r5
+                        leader = s
+
+            # Calculate intra-cluster avg correlation
+            if len(comp) > 1:
+                comp_corrs = []
+                for s1 in comp:
+                    for s2 in comp:
+                        if s1 != s2 and (s1, s2) in pairwise_corrs:
+                            comp_corrs.append(pairwise_corrs[(s1, s2)])
+                avg_c = round(float(np.mean(comp_corrs)), 2) if comp_corrs else correlation_threshold
+                is_solo = False
+            else:
+                avg_c = 1.0
+                is_solo = True
+
+            # Calculate benchmark beta for leader
+            beta = None
+            if bench_ret is not None and leader in returns:
+                c_df = pd.concat([returns[leader], bench_ret], axis=1, join="inner").dropna()
+                if len(c_df) >= 10:
+                    cov = np.cov(c_df.iloc[:, 0], c_df.iloc[:, 1])[0][1]
+                    var_b = np.var(c_df.iloc[:, 1])
+                    if var_b > 1e-8:
+                        beta = round(float(cov / var_b), 2)
+
+            clusters.append(
+                SignalCluster(
+                    cluster_id=f"cluster_{cluster_counter}",
+                    asset_class=ac,
+                    transition_type=ttype,
+                    leader_symbol=leader,
+                    member_symbols=comp,
+                    avg_correlation=avg_c,
+                    benchmark_beta=beta,
+                    is_solo=is_solo,
+                )
+            )
+            cluster_counter += 1
+
+    return clusters
+
+
+def format_cluster_alerts_telegram(clusters: List[SignalCluster]) -> str:
+    """
+    Formats a noise-filtered Telegram HTML alert summary of clustered transitions.
+    """
+    if not clusters:
+        return "Няма клъстерни сигнали."
+
+    lines = ["🌐 <b>Клъстеризирани пазарни преходи (Noise-Filtered)</b>\n"]
+    for c in clusters:
+        arrow = "🟢" if "GOLD" in c.transition_type else ("🔴" if "BLUE" in c.transition_type else "⚪")
+        if c.is_solo:
+            lines.append(
+                f"{arrow} <b>{c.leader_symbol}</b> [<code>{c.asset_class}</code>]: <code>{c.transition_type}</code> (Изолиран индивидуален сигнал)\n"
+            )
+        else:
+            members_str = ", ".join(c.member_symbols)
+            beta_str = f" | Beta: <b>{c.benchmark_beta:+.2f}</b>" if c.benchmark_beta is not None else ""
+            lines.append(
+                f"{arrow} <b>Клъстер {c.asset_class.upper()} [{len(c.member_symbols)} актива]</b>: <code>{c.transition_type}</code>\n"
+                f"   • Водещ актив: <b>{c.leader_symbol}</b>\n"
+                f"   • Активи: <i>{members_str}</i>\n"
+                f"   • Вътрешна корелация: <b>{c.avg_correlation:.2f}</b>{beta_str}\n"
+                f"   ⚠️ <i>Внимание: Това представлява един макро залог, а не {len(c.member_symbols)} независими сделки!</i>\n"
+            )
     return "\n".join(lines)
