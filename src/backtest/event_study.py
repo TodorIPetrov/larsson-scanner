@@ -43,6 +43,8 @@ class TransitionEvent:
     forward_mae: Dict[int, float]      # horizon -> max adverse excursion
     live_rule_returns: Optional[Dict[int, float]] = None  # trailing SMMA-29 stop + time stop
     excess_returns: Optional[Dict[int, float]] = None     # net return minus benchmark return
+    r_multiples: Optional[Dict[int, float]] = None        # Phase 2: net R return from multi-exit policy
+    exit_details: Optional[Dict[int, Dict[str, Any]]] = None
 
 
 @dataclass
@@ -70,6 +72,12 @@ class BaseRateMetrics:
     excess_mean_return: Optional[float] = None
     fdr_p_value: Optional[float] = None
     fdr_significant: Optional[bool] = None
+    mean_r: Optional[float] = None
+    median_r: Optional[float] = None
+    ci_lower_r: Optional[float] = None
+    ci_upper_r: Optional[float] = None
+    effective_n: Optional[int] = None
+    validation_status: Optional[str] = "PAPER"
 
 
 def benjamini_hochberg_correction(p_values: List[float]) -> List[float]:
@@ -89,6 +97,268 @@ def benjamini_hochberg_correction(p_values: List[float]) -> List[float]:
         running_min = min(running_min, adj_p)
         adjusted[idx] = running_min
     return adjusted
+
+
+def simulate_multi_exit_policy(
+    entry_price: float,
+    initial_sl: float,
+    tp1: float,
+    opens: np.ndarray,
+    highs: np.ndarray,
+    lows: np.ndarray,
+    closes: np.ndarray,
+    trailing_stops: np.ndarray,
+    start_idx: int,
+    horizon: int = 60,
+    asset_class: str = "crypto",
+    direction: str = "LONG",
+) -> Dict[str, Any]:
+    """
+    Realistic Multi-Exit Simulation Policy (Opus Phase 2 Specification):
+    - Tranche 1 (50% weight): Limit TP1 fill.
+    - Tranche 2 (50% weight): Trailing SMMA-29 stop on bar close, executing at NEXT OPEN.
+    - Hard disaster initial stop: Active on all bars; gap fills at min(Open, SL).
+    - Ambiguous bars (High >= TP1 and Low <= SL): SL hit FIRST (pessimistic institutional standard).
+    - Tranche 1 fallback: If TP1 never reached before trail/stop exit, exit1 = exit2.
+    - Time stop: at horizon bars (e.g. 60), open tranches exit at Close.
+    - Asymmetric friction: 10 bps base fee, 5 bps TP limit slip, 15 bps market stop slip.
+    - Funding/borrow cost: 1.0 bp/bar for crypto, 0.5 bp/bar for equities.
+    - All returns and friction denominated in R units: R = (Exit - Entry) / Stop_Dist.
+    """
+    assert direction.upper() == "LONG", "Long-only sign convention enforced for Phase 2 simulation."
+
+    stop_dist = entry_price - initial_sl
+    if stop_dist <= 1e-6 or entry_price <= 0:
+        return {
+            "net_r": 0.0,
+            "raw_r": 0.0,
+            "friction_r": 0.0,
+            "exit1_price": entry_price,
+            "exit2_price": entry_price,
+            "exit1_reason": "INVALID_STOP",
+            "exit2_reason": "INVALID_STOP",
+            "bars_held": 0,
+        }
+
+    r_stop = stop_dist / entry_price
+    n_bars = len(closes)
+    end_idx = min(start_idx + horizon, n_bars - 1)
+
+    exit1_price: Optional[float] = None
+    exit1_bar: Optional[int] = None
+    exit1_reason: str = ""
+
+    exit2_price: Optional[float] = None
+    exit2_bar: Optional[int] = None
+    exit2_reason: str = ""
+
+    pending_trail_exit = False
+
+    for k in range(start_idx + 1, end_idx + 1):
+        # 1. Next-open execution for trailing stop triggered on previous bar close
+        if pending_trail_exit:
+            fill_p = opens[k]
+            if exit2_price is None:
+                exit2_price = fill_p
+                exit2_bar = k
+                exit2_reason = "TRAIL_NEXT_OPEN"
+            if exit1_price is None:
+                # Tranche 1 fallback when TP1 was never reached before trail exit
+                exit1_price = fill_p
+                exit1_bar = k
+                exit1_reason = "TRAIL_FALLBACK_NEXT_OPEN"
+            break
+
+        o_k = opens[k]
+        h_k = highs[k]
+        l_k = lows[k]
+        c_k = closes[k]
+        trail_k = trailing_stops[k]
+
+        # 2. Disaster Stop: Gap down through initial SL on open
+        if o_k <= initial_sl:
+            fill_p = min(o_k, initial_sl)
+            if exit1_price is None:
+                exit1_price = fill_p
+                exit1_bar = k
+                exit1_reason = "GAP_DISASTER_STOP"
+            if exit2_price is None:
+                exit2_price = fill_p
+                exit2_bar = k
+                exit2_reason = "GAP_DISASTER_STOP"
+            break
+
+        # 3. Ambiguous Bar: Both TP1 and initial SL breached in same bar -> SL fires first
+        touches_tp1 = (exit1_price is None) and (h_k >= tp1)
+        touches_sl = l_k <= initial_sl
+        if touches_tp1 and touches_sl:
+            fill_p = min(o_k, initial_sl)
+            exit1_price = fill_p
+            exit1_bar = k
+            exit1_reason = "AMBIGUOUS_BAR_SL_FIRST"
+            exit2_price = fill_p
+            exit2_bar = k
+            exit2_reason = "AMBIGUOUS_BAR_SL_FIRST"
+            break
+
+        # 4. Hard initial SL intrabar touch
+        if touches_sl:
+            fill_p = min(o_k, initial_sl)
+            if exit1_price is None:
+                exit1_price = fill_p
+                exit1_bar = k
+                exit1_reason = "HARD_DISASTER_STOP"
+            if exit2_price is None:
+                exit2_price = fill_p
+                exit2_bar = k
+                exit2_reason = "HARD_DISASTER_STOP"
+            break
+
+        # 5. Take Profit 1 limit hit (Tranche 1 exits)
+        if exit1_price is None and h_k >= tp1:
+            exit1_price = tp1
+            exit1_bar = k
+            exit1_reason = "TP1_LIMIT"
+
+        # 6. Trailing stop evaluation on bar close (Close < SMMA-29)
+        if c_k < trail_k:
+            if k < end_idx:
+                pending_trail_exit = True
+            else:
+                # Last bar of horizon: no next open available, fills on Close_k
+                fill_p = c_k
+                if exit2_price is None:
+                    exit2_price = fill_p
+                    exit2_bar = k
+                    exit2_reason = "TRAIL_LAST_BAR_CLOSE"
+                if exit1_price is None:
+                    exit1_price = fill_p
+                    exit1_bar = k
+                    exit1_reason = "TRAIL_FALLBACK_LAST_BAR_CLOSE"
+                break
+
+    # 7. Horizon / Time Stop expiration if still open
+    if exit1_price is None or exit2_price is None:
+        last_k = end_idx
+        fill_p = closes[last_k]
+        if exit1_price is None:
+            exit1_price = fill_p
+            exit1_bar = last_k
+            exit1_reason = "TIME_STOP_HORIZON"
+        if exit2_price is None:
+            exit2_price = fill_p
+            exit2_bar = last_k
+            exit2_reason = "TIME_STOP_HORIZON"
+
+    # Friction calculation in R-units
+    bars_held = max(exit1_bar or start_idx, exit2_bar or start_idx) - start_idx
+    fee_base = 0.0010  # 10 bps round-trip
+
+    # Asymmetric slippage: limit TP fill has 5 bps, stop market exit has 15 bps
+    slip1 = 0.0005 if exit1_reason == "TP1_LIMIT" else 0.0015
+    slip2 = 0.0010 if "TIME_STOP" in exit2_reason else 0.0015
+    weighted_slip = 0.5 * slip1 + 0.5 * slip2
+
+    # Funding / borrow cost per bar
+    funding_rate = 0.0001 if asset_class.lower() == "crypto" else 0.00005
+    funding_cost = funding_rate * max(1, bars_held)
+
+    total_friction_pct = fee_base + weighted_slip + funding_cost
+    friction_r = total_friction_pct / r_stop
+
+    # R-Multiple calculation
+    r1 = (exit1_price - entry_price) / stop_dist
+    r2 = (exit2_price - entry_price) / stop_dist
+    raw_r = 0.5 * r1 + 0.5 * r2
+    net_r = raw_r - friction_r
+
+    return {
+        "net_r": round(float(net_r), 4),
+        "raw_r": round(float(raw_r), 4),
+        "friction_r": round(float(friction_r), 4),
+        "r1": round(float(r1), 4),
+        "r2": round(float(r2), 4),
+        "exit1_price": round(float(exit1_price), 4),
+        "exit2_price": round(float(exit2_price), 4),
+        "exit1_reason": exit1_reason,
+        "exit2_reason": exit2_reason,
+        "bars_held": bars_held,
+    }
+
+
+def calendar_block_bootstrap(
+    dates: List[str],
+    r_multiples: List[float],
+    block_days: int = 60,
+    n_resamples: int = 2000,
+    seed: int = 42,
+) -> Dict[str, Any]:
+    """
+    Calendar-Time Block Bootstrap across events (Opus Phase 2 Specification):
+    - Blocks events by calendar time (L = 60 days) to account for cross-asset correlation.
+    - Resamples calendar blocks with replacement B = 2,000 times.
+    - Yields 95% Confidence Interval for mean R and counts effective N blocks.
+    """
+    if not r_multiples or len(r_multiples) != len(dates):
+        return {
+            "mean_r": 0.0,
+            "median_r": 0.0,
+            "ci_lower_r": 0.0,
+            "ci_upper_r": 0.0,
+            "effective_n": 0,
+        }
+
+    # Convert dates to day ordinals relative to min date
+    try:
+        s_dt = pd.Series(pd.to_datetime(dates))
+        min_dt = s_dt.min()
+        day_diffs = (s_dt - min_dt).dt.days.to_numpy()
+    except Exception:
+        day_diffs = np.arange(len(dates))
+
+    block_ids = day_diffs // block_days
+
+    # Group R-multiples by block_id
+    block_map: Dict[int, List[float]] = {}
+    for bid, r in zip(block_ids, r_multiples):
+        block_map.setdefault(int(bid), []).append(float(r))
+
+    effective_n = len(block_map)
+    mean_r = float(np.mean(r_multiples))
+    median_r = float(np.median(r_multiples))
+
+    if effective_n < 2:
+        return {
+            "mean_r": round(mean_r, 4),
+            "median_r": round(median_r, 4),
+            "ci_lower_r": round(mean_r - 0.5, 4),
+            "ci_upper_r": round(mean_r + 0.5, 4),
+            "effective_n": effective_n,
+        }
+
+    # Vectorized block bootstrap
+    block_sums = np.array([sum(vals) for vals in block_map.values()], dtype=np.float64)
+    block_counts = np.array([len(vals) for vals in block_map.values()], dtype=np.float64)
+
+    rng = np.random.default_rng(seed)
+    sampled_indices = rng.choice(effective_n, size=(n_resamples, effective_n), replace=True)
+
+    sampled_sums = np.sum(block_sums[sampled_indices], axis=1)
+    sampled_counts = np.sum(block_counts[sampled_indices], axis=1)
+
+    valid_mask = sampled_counts > 0
+    resampled_means = np.where(valid_mask, sampled_sums / np.maximum(sampled_counts, 1e-8), mean_r)
+
+    ci_lower = float(np.percentile(resampled_means, 2.5))
+    ci_upper = float(np.percentile(resampled_means, 97.5))
+
+    return {
+        "mean_r": round(mean_r, 4),
+        "median_r": round(median_r, 4),
+        "ci_lower_r": round(ci_lower, 4),
+        "ci_upper_r": round(ci_upper, 4),
+        "effective_n": effective_n,
+    }
 
 
 class EventStudyEngine:
@@ -152,6 +422,8 @@ class EventStudyEngine:
             forward_mae: Dict[int, float] = {}
             live_rule_returns: Dict[int, float] = {}
             excess_returns: Dict[int, float] = {}
+            r_multiples: Dict[int, float] = {}
+            exit_details: Dict[int, Dict[str, Any]] = {}
 
             for h in self.horizons:
                 if i + h < n_bars:
@@ -175,6 +447,28 @@ class EventStudyEngine:
                                 exit_idx = k_bar
                                 break
                         live_ret = ((live_exit_price - entry_price) / entry_price) - self.cost
+
+                        # Phase 2: Institutional Non-Binary Multi-Exit Simulation in R units
+                        initial_sl = v2[i]
+                        if (entry_price - initial_sl) < 0.02 * entry_price:
+                            initial_sl = entry_price * 0.98
+                        tp1 = entry_price + 1.8 * (entry_price - initial_sl)
+                        sim_res = simulate_multi_exit_policy(
+                            entry_price=entry_price,
+                            initial_sl=initial_sl,
+                            tp1=tp1,
+                            opens=opens,
+                            highs=highs,
+                            lows=lows,
+                            closes=closes,
+                            trailing_stops=v2,
+                            start_idx=i,
+                            horizon=h,
+                            asset_class=asset_class,
+                            direction="LONG",
+                        )
+                        r_multiples[h] = sim_res["net_r"]
+                        exit_details[h] = sim_res
 
                     elif curr_s == "BLUE":
                         raw_ret = (entry_price - future_close) / entry_price
@@ -236,6 +530,8 @@ class EventStudyEngine:
                     forward_mae=forward_mae,
                     live_rule_returns=live_rule_returns,
                     excess_returns=excess_returns,
+                    r_multiples=r_multiples,
+                    exit_details=exit_details,
                 )
             )
 
@@ -330,6 +626,23 @@ class EventStudyEngine:
 
                 excess_mean = float(np.mean(excess_rets)) if excess_rets else mean_ret
 
+                # Phase 2: Calendar-Time Block Bootstrap (L = 60 days) across all events
+                r_vals = [e.r_multiples[h] for e in ev_list if e.r_multiples and h in e.r_multiples]
+                dates_list = [e.date for e in ev_list if e.r_multiples and h in e.r_multiples]
+                if r_vals:
+                    boot = calendar_block_bootstrap(dates_list, r_vals, block_days=60, n_resamples=2000)
+                    mean_r = boot["mean_r"]
+                    median_r = boot["median_r"]
+                    ci_lower_r = boot["ci_lower_r"]
+                    ci_upper_r = boot["ci_upper_r"]
+                    eff_n = boot["effective_n"]
+                else:
+                    mean_r = None
+                    median_r = None
+                    ci_lower_r = None
+                    ci_upper_r = None
+                    eff_n = None
+
                 summaries.append(
                     BaseRateMetrics(
                         transition_type=ttype,
@@ -353,16 +666,37 @@ class EventStudyEngine:
                         live_mean_return=live_mean,
                         trimmed_mean_return=trimmed_mean,
                         excess_mean_return=excess_mean,
+                        mean_r=mean_r,
+                        median_r=median_r,
+                        ci_lower_r=ci_lower_r,
+                        ci_upper_r=ci_upper_r,
+                        effective_n=eff_n,
+                        validation_status="PAPER",
                     )
                 )
 
-        # Multiple testing correction using Benjamini-Hochberg (FDR)
+        # Multiple testing correction using Benjamini-Hochberg (FDR) and Opus Dual Gate
         if summaries:
             raw_p_values = [s.p_value for s in summaries]
             fdr_p_values = benjamini_hochberg_correction(raw_p_values)
             for s, fdr_p in zip(summaries, fdr_p_values):
                 s.fdr_p_value = round(float(fdr_p), 4)
                 s.fdr_significant = bool(fdr_p < 0.10 and s.t_stat > 0)
+                # Opus Dual Gate for Validation:
+                # 1. E[R] >= +0.25R
+                # 2. CI_lower > 0.0R (95% bootstrap lower bound positive)
+                # 3. Effective N >= 30 independent calendar blocks
+                # 4. Multiple testing FDR q < 0.10
+                if s.mean_r is not None and s.ci_lower_r is not None and s.effective_n is not None:
+                    is_validated = bool(
+                        s.mean_r >= 0.25
+                        and s.ci_lower_r > 0.0
+                        and s.effective_n >= 30
+                        and s.fdr_significant
+                    )
+                    s.validation_status = "VALIDATED" if is_validated else "PAPER"
+                else:
+                    s.validation_status = "PAPER"
 
         return summaries
 
@@ -433,16 +767,16 @@ class EventStudyEngine:
 
     def format_terminal_report(self, metrics: List[BaseRateMetrics]) -> str:
         """
-        Renders clear ASCII table of the results including live stop, excess alpha, and FDR corrections.
+        Renders clear ASCII table of the results including live stop, excess alpha, R expectancy, and Opus validation.
         """
         lines = []
-        lines.append("\n" + "=" * 115)
-        lines.append("  [QUANT AUDIT] LARSSON SCANNER: REALISTIC LIVE-RULE BASE RATES & BENCHMARK ALPHA")
-        lines.append("=" * 115)
+        lines.append("\n" + "=" * 135)
+        lines.append("  [QUANT AUDIT] LARSSON SCANNER: REALISTIC MULTI-EXIT BASE RATES, BLOCK-BOOTSTRAP & OPUS GATES")
+        lines.append("=" * 135)
         lines.append(
-            f"{'Transition':<16} | {'Asset Class':<10} | {'TF':<3} | {'H':<3} | {'N':<4} | {'Live WinRate':<12} | {'Live Ret':<9} | {'Excess Alpha':<12} | {'Trimmed':<8} | {'FDR (q<0.10)':<12}"
+            f"{'Transition':<16} | {'Asset Class':<10} | {'TF':<3} | {'H':<3} | {'N':<4} | {'N_eff':<5} | {'E[R]':<7} | {'95% CI [R]':<16} | {'Status':<10} | {'Live WinRate':<12} | {'Excess Alpha':<12} | {'FDR (q<0.10)':<12}"
         )
-        lines.append("-" * 115)
+        lines.append("-" * 135)
 
         # Focus on key actionable transitions: NEUTRAL_TO_GOLD, BLUE_TO_GOLD, GOLD_TO_BLUE, NEUTRAL_TO_BLUE
         key_transitions = ["NEUTRAL_TO_GOLD", "BLUE_TO_GOLD", "NEUTRAL_TO_BLUE", "GOLD_TO_BLUE"]
@@ -454,14 +788,16 @@ class EventStudyEngine:
         for m in filtered:
             fdr_marker = "YES (q<0.10)" if m.fdr_significant else "NO"
             live_win = f"{m.live_win_rate * 100:.1f}%" if m.live_win_rate is not None else f"{m.win_rate * 100:.1f}%"
-            live_ret = f"{m.live_mean_return * 100:+.2f}%" if m.live_mean_return is not None else f"{m.mean_return * 100:+.2f}%"
             excess_str = f"{m.excess_mean_return * 100:+.2f}%" if m.excess_mean_return is not None else "N/A"
-            trim_str = f"{m.trimmed_mean_return * 100:+.2f}%" if m.trimmed_mean_return is not None else "N/A"
+            r_str = f"{m.mean_r:+.2f}R" if m.mean_r is not None else "N/A"
+            ci_str = f"[{m.ci_lower_r:+.2f}, {m.ci_upper_r:+.2f}]" if m.ci_lower_r is not None and m.ci_upper_r is not None else "N/A"
+            eff_n_str = str(m.effective_n) if m.effective_n is not None else "N/A"
+            status_str = m.validation_status or "PAPER"
             lines.append(
-                f"{m.transition_type:<16} | {m.asset_class:<10} | {m.timeframe:<3} | {m.horizon:<3} | {m.sample_size:<4} | {live_win:<12} | {live_ret:<9} | {excess_str:<12} | {trim_str:<8} | {fdr_marker:<12}"
+                f"{m.transition_type:<16} | {m.asset_class:<10} | {m.timeframe:<3} | {m.horizon:<3} | {m.sample_size:<4} | {eff_n_str:<5} | {r_str:<7} | {ci_str:<16} | {status_str:<10} | {live_win:<12} | {excess_str:<12} | {fdr_marker:<12}"
             )
 
-        lines.append("=" * 115)
+        lines.append("=" * 135)
         return "\n".join(lines)
 
 

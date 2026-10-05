@@ -181,3 +181,138 @@ def test_invalid_parameters():
     )
     assert check.allowed is False
     assert "Invalid price or equity" in check.reason
+
+
+def test_leverage_ban_and_position_notional_cap():
+    rm = PortfolioRiskManager()
+    equity = 100_000.0
+
+    # 1. Single position notional cap: 20% of equity = $20,000 max notional.
+    # Entry = 100, Stop = 99 (1% stop distance).
+    # Allowed risk 1% = $1,000 -> Naive units = 1000 / 1 = 1,000 units ($100,000 notional = 100% equity).
+    # Phase 3 cap must clamp notional to exactly $20,000 (200 units).
+    check = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=100.0,
+        stop_loss=99.0,
+        cluster_id="MEGA_TECH",
+        macro_regime="AGGRESSIVE_RISK_ON",
+    )
+    assert check.allowed is True
+    assert check.adjusted_position_usd == 20000.0
+    assert check.units == 200.0
+    # Risk is now 200 units * $1 = $200 (0.2% equity), clamped from notional
+    assert check.risk_usd == 200.0
+
+    # 2. Leverage ban: gross portfolio exposure cannot exceed 100% of equity
+    # If open positions already consume 95% notional ($95,000):
+    open_pos = [
+        {"symbol": "AAPL", "cluster_id": "TECH", "risk_usd": 500.0, "notional_usd": 95000.0}
+    ]
+    # New order can only take remaining $5,000 notional (5%)
+    check_lev = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=100.0,
+        stop_loss=95.0,
+        cluster_id="CRYPTO_L1",
+        current_open_positions=open_pos,
+        macro_regime="AGGRESSIVE_RISK_ON",
+    )
+    assert check_lev.allowed is True
+    assert check_lev.adjusted_position_usd == 5000.0
+    assert check_lev.units == 50.0
+
+    # If book is at 100% notional, new orders are rejected with leverage ban reason
+    open_pos_full = [
+        {"symbol": "AAPL", "cluster_id": "TECH", "risk_usd": 500.0, "notional_usd": 100000.0}
+    ]
+    check_full = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=100.0,
+        stop_loss=95.0,
+        cluster_id="CRYPTO_L1",
+        current_open_positions=open_pos_full,
+        macro_regime="AGGRESSIVE_RISK_ON",
+    )
+    assert check_full.allowed is False
+    assert "Gross portfolio exposure cap of 100% reached" in check_full.reason
+
+
+def test_minimum_stop_floor_atr():
+    rm = PortfolioRiskManager()
+    equity = 100_000.0
+    entry = 100.0
+    # Micro-stop requested at 99.8 (0.2% distance)
+    # Crypto ATR is 4.0 -> k=1.5 * 4.0 = 6.0 min stop distance
+    check = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=entry,
+        stop_loss=99.8,
+        cluster_id="CRYPTO_L1",
+        macro_regime="AGGRESSIVE_RISK_ON",
+        atr=4.0,
+        asset_class="crypto",
+    )
+    assert check.allowed is True
+    # Stop distance was clamped to at least 6.0 (effective stop = 94.0)
+    assert check.effective_stop_loss == 94.0
+
+
+def test_portfolio_heat_mtm_and_crypto_stress_floor():
+    rm = PortfolioRiskManager()
+    equity = 100_000.0
+
+    # Scenario:
+    # 1. SOLUSDT: Entry 100, current price 150, trailing stop 140, ATR 5.0, 10 units.
+    #    Trail distance is 150 - 140 = 10. + 1.0x ATR (5) = 15.
+    #    Crypto 20% stress floor on price 150 is 30.0!
+    #    Max(15, 30) = 30.0 risk per unit -> Heat = 10 * 30 = $300.
+    # 2. AAPL (Stock): Entry 150, current price 200, trailing stop 195, ATR 3.0, 20 units.
+    #    Trail distance = 200 - 195 = 5. + 1.0x ATR (3) = 8.
+    #    Heat = 20 * 8 = $160.
+    open_positions = [
+        {
+            "symbol": "SOLUSDT",
+            "asset_class": "crypto",
+            "units": 10.0,
+            "current_price": 150.0,
+            "trailing_stop": 140.0,
+            "atr": 5.0,
+        },
+        {
+            "symbol": "AAPL",
+            "asset_class": "stocks",
+            "units": 20.0,
+            "current_price": 200.0,
+            "trailing_stop": 195.0,
+            "atr": 3.0,
+        },
+    ]
+
+    heat = rm.calculate_portfolio_heat(equity, open_positions)
+    assert heat["total_heat_usd"] == 460.0  # 300 + 160
+    assert heat["portfolio_heat_pct"] == 0.46
+    assert heat["total_notional_usd"] == 5500.0  # (10*150) + (20*200) = 1500 + 4000
+    assert heat["gross_exposure_pct"] == 5.5
+    assert heat["leverage_banned"] is True
+
+
+def test_liquidity_depth_and_adv_caps():
+    rm = PortfolioRiskManager()
+    equity = 100_000.0
+    entry = 100.0
+    stop = 90.0
+
+    # Normal position would be $10,000 notional (100 units).
+    # But 2% order book depth is only $40,000 -> 5% depth cap is $2,000 (20 units).
+    check = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=entry,
+        stop_loss=stop,
+        cluster_id="CRYPTO_LOW_CAP",
+        depth_2pct_usd=40_000.0,
+    )
+    assert check.allowed is True
+    assert check.adjusted_position_usd == 2000.0
+    assert check.units == 20.0
+

@@ -37,7 +37,9 @@ import numpy as np
 from src.backtest.event_study import (
     EventStudyEngine,
     benjamini_hochberg_correction,
+    calendar_block_bootstrap,
     lookup_base_rate,
+    simulate_multi_exit_policy,
 )
 from src.alerts.filter import is_alert_eligible_for_telegram
 from src.engine.risk_budget import PortfolioRiskManager
@@ -217,6 +219,90 @@ def run_opus_compliance_audit():
 
     test6_passed = chk1_valid and chk2_valid and chk3_valid
     scorecard["6. Institutional Risk Budgeting"] = "PASS" if test6_passed else "FAIL"
+
+    # -------------------------------------------------------------------------
+    # TEST 7: Phase 2 Realistic Multi-Exit Simulation & Calendar Block Bootstrap
+    # -------------------------------------------------------------------------
+    print("\n[TEST 7] Testing Phase 2 Multi-Exit Policy & Calendar Block Bootstrap...")
+    # 7A: Gap down disaster stop (must record < -1.0R loss honestly)
+    sim_gap = simulate_multi_exit_policy(
+        entry_price=100.0,
+        initial_sl=95.0,
+        tp1=110.0,
+        opens=np.array([100.0, 92.0]),
+        highs=np.array([100.0, 93.0]),
+        lows=np.array([100.0, 90.0]),
+        closes=np.array([100.0, 91.0]),
+        trailing_stops=np.array([95.0, 95.0]),
+        start_idx=0,
+        horizon=1,
+        asset_class="crypto",
+    )
+    t7a = sim_gap["exit1_price"] == 92.0 and sim_gap["raw_r"] == -1.6
+    print(f"   -> 7A: Gap-down fill at min(Open, SL): Raw R={sim_gap['raw_r']}R, Net R={sim_gap['net_r']}R - {'PASS' if t7a else 'FAIL'}")
+
+    # 7B: Ambiguous bar (SL must fire first)
+    sim_amb = simulate_multi_exit_policy(
+        entry_price=100.0,
+        initial_sl=95.0,
+        tp1=108.0,
+        opens=np.array([100.0, 100.0]),
+        highs=np.array([100.0, 110.0]),  # touches TP1
+        lows=np.array([100.0, 94.0]),    # touches SL
+        closes=np.array([100.0, 105.0]),
+        trailing_stops=np.array([95.0, 95.0]),
+        start_idx=0,
+        horizon=1,
+        asset_class="crypto",
+    )
+    t7b = sim_amb["exit1_reason"] == "AMBIGUOUS_BAR_SL_FIRST" and sim_amb["raw_r"] == -1.0
+    print(f"   -> 7B: Ambiguous bar resolution (SL fires first): {sim_amb['exit1_reason']} - {'PASS' if t7b else 'FAIL'}")
+
+    # 7C: Calendar block bootstrap (L=60 days)
+    dates = ["2023-01-01", "2023-01-15", "2023-04-01", "2023-07-01", "2023-10-01"]
+    r_multiples = [0.5, 0.7, -0.4, 1.2, 0.8]
+    boot = calendar_block_bootstrap(dates, r_multiples, block_days=60, n_resamples=500)
+    t7c = boot["effective_n"] == 4 and boot["ci_lower_r"] <= boot["mean_r"] <= boot["ci_upper_r"]
+    print(f"   -> 7C: Calendar Block Bootstrap (L=60): N_eff={boot['effective_n']}, E[R]={boot['mean_r']}R, 95% CI=[{boot['ci_lower_r']}, {boot['ci_upper_r']}] - {'PASS' if t7c else 'FAIL'}")
+
+    scorecard["7. Multi-Exit & Block Bootstrap"] = "PASS" if (t7a and t7b and t7c) else "FAIL"
+
+    # -------------------------------------------------------------------------
+    # TEST 8: Phase 3 Institutional Leverage Ban & Mark-to-Market Portfolio Heat
+    # -------------------------------------------------------------------------
+    print("\n[TEST 8] Testing Phase 3 Institutional Leverage Ban & Portfolio Heat...")
+    # 8A: Leverage ban (gross notional <= 100% equity)
+    chk_lev_full = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=100.0,
+        stop_loss=95.0,
+        cluster_id="TECH",
+        current_open_positions=[{"symbol": "X", "risk_usd": 100.0, "notional_usd": 100000.0}],
+    )
+    t8a = not chk_lev_full.allowed and "100%" in chk_lev_full.reason
+    print(f"   -> 8A: Leverage Ban (100% gross exposure cap): {'REJECTED (Strict Leverage Ban Enforced)' if t8a else 'FAILED'}")
+
+    # 8B: Micro-stop ATR floor clamping
+    chk_floor = rm.evaluate_order_risk(
+        account_equity=equity,
+        entry_price=100.0,
+        stop_loss=99.8,
+        cluster_id="CRYPTO_L1",
+        atr=4.0,
+        asset_class="crypto",
+    )
+    t8b = chk_floor.effective_stop_loss == 94.0
+    print(f"   -> 8B: Micro-Stop ATR Floor: Effective Stop=${chk_floor.effective_stop_loss:.2f} (Floor {rm.min_stop_atr_crypto}x ATR) - {'PASS' if t8b else 'FAILED'}")
+
+    # 8C: MTM Portfolio Heat with 20% crypto stress floor
+    heat = rm.calculate_portfolio_heat(equity, [
+        {"symbol": "SOLUSDT", "asset_class": "crypto", "units": 10.0, "current_price": 150.0, "trailing_stop": 140.0, "atr": 5.0}
+    ])
+    # price 150 * 0.20 = 30.0 risk/unit. Heat = 10 * 30 = $300.
+    t8c = heat["total_heat_usd"] == 300.0 and heat["leverage_banned"] is True
+    print(f"   -> 8C: MTM Portfolio Heat (20% Crypto Stress Floor): Total Heat=${heat['total_heat_usd']:.2f} ({heat['portfolio_heat_pct']}%) - {'PASS' if t8c else 'FAILED'}")
+
+    scorecard["8. Leverage Ban & MTM Heat"] = "PASS" if (t8a and t8b and t8c) else "FAIL"
 
     # -------------------------------------------------------------------------
     # FINAL SUMMARY
