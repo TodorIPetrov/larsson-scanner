@@ -222,6 +222,92 @@ QUALITY_TIERS: Dict[str, str] = {
     'DX-Y.NYB': 'A',
 }
 
+# Canonical Registry mapping tickers to asset classes (keyed by institutional data source)
+ASSET_CLASS_REGISTRY: Dict[str, str] = {
+    # === CRYPTO ===
+    'BTCUSDT': 'crypto', 'ETHUSDT': 'crypto', 'SOLUSDT': 'crypto', 'BNBUSDT': 'crypto',
+    'XRPUSDT': 'crypto', 'LINKUSDT': 'crypto', 'AVAXUSDT': 'crypto', 'ADAUSDT': 'crypto',
+    'SUIUSDT': 'crypto', 'DOGEUSDT': 'crypto', 'PAXGUSDT': 'crypto',
+    
+    # === US STOCKS ===
+    'AAPL': 'us_stocks', 'MSFT': 'us_stocks', 'GOOGL': 'us_stocks', 'AMZN': 'us_stocks',
+    'META': 'us_stocks', 'NVDA': 'us_stocks', 'JPM': 'us_stocks', 'V': 'us_stocks',
+    'JNJ': 'us_stocks', 'WMT': 'us_stocks', 'PG': 'us_stocks', 'UNH': 'us_stocks',
+    'HD': 'us_stocks', 'MA': 'us_stocks', 'LLY': 'us_stocks', 'AVGO': 'us_stocks',
+    'COST': 'us_stocks', 'TSLA': 'us_stocks', 'NFLX': 'us_stocks', 'AMD': 'us_stocks',
+    'CRM': 'us_stocks', 'PLTR': 'us_stocks', 'UBER': 'us_stocks', 'XOM': 'us_stocks',
+    'CVX': 'us_stocks', 'ABBV': 'us_stocks', 'MRK': 'us_stocks', 'INTU': 'us_stocks',
+    'ADBE': 'us_stocks', 'MELI': 'us_stocks', 'AXP': 'us_stocks', 'BAC': 'us_stocks',
+    'KO': 'us_stocks', 'OXY': 'us_stocks', 'MCO': 'us_stocks', 'CB': 'us_stocks',
+    'RKLB': 'us_stocks', 'ASTS': 'us_stocks', 'LUNR': 'us_stocks', 'RDW': 'us_stocks',
+    'DECK': 'us_stocks', 'NU': 'us_stocks', 'NDAQ': 'us_stocks', 'EFX': 'us_stocks',
+    'KHC': 'us_stocks', 'PSUS': 'us_stocks', 'PS': 'us_stocks', 'SIRI': 'us_stocks',
+    
+    # === AI STOCKS ===
+    'ASML': 'ai_stocks', 'TSM': 'ai_stocks', '005930.KS': 'ai_stocks',
+    'CRWD': 'ai_stocks', 'MSTR': 'ai_stocks', 'COIN': 'ai_stocks', 'DELL': 'ai_stocks',
+    'AMAT': 'ai_stocks', 'LRCX': 'ai_stocks', 'SNPS': 'ai_stocks', 'CDNS': 'ai_stocks',
+    'CSCO': 'ai_stocks', 'MRVL': 'ai_stocks', 'INTC': 'ai_stocks', 'QCOM': 'ai_stocks',
+    'ARM': 'ai_stocks', 'KLAC': 'ai_stocks', 'TER': 'ai_stocks', 'MU': 'ai_stocks',
+    'ORCL': 'ai_stocks', 'HPE': 'ai_stocks', 'NOW': 'ai_stocks', 'WDAY': 'ai_stocks',
+    'PANW': 'ai_stocks', 'FTNT': 'ai_stocks', 'NET': 'ai_stocks', 'TXN': 'ai_stocks',
+    'NXPI': 'ai_stocks', 'SMCI': 'ai_stocks', 'SNOW': 'ai_stocks', 'CEG': 'ai_stocks',
+    'VST': 'ai_stocks', 'TLN': 'ai_stocks', 'NEE': 'ai_stocks', 'SO': 'ai_stocks',
+    'EQIX': 'ai_stocks', 'DLR': 'ai_stocks', 'AMT': 'ai_stocks', 'ANET': 'ai_stocks',
+    'BIDU': 'ai_stocks', 'MDB': 'ai_stocks', 'ESTC': 'ai_stocks', 'DDOG': 'ai_stocks',
+    'DT': 'ai_stocks', 'GTLB': 'ai_stocks', 'AI': 'ai_stocks', 'SOUN': 'ai_stocks',
+    'SERV': 'ai_stocks',
+    
+    # === CRYPTO STOCKS (Equities / ETFs, NOT Pure Crypto) ===
+    'HOOD': 'crypto_stocks', 'MARA': 'crypto_stocks', 'RIOT': 'crypto_stocks',
+    'CLSK': 'crypto_stocks', 'HUT': 'crypto_stocks', 'HIVE': 'crypto_stocks',
+    'CIFR': 'crypto_stocks', 'CORZ': 'crypto_stocks', 'IREN': 'crypto_stocks',
+    'WULF': 'crypto_stocks', 'BTBT': 'crypto_stocks', 'CAN': 'crypto_stocks',
+    'BKKT': 'crypto_stocks', 'APLD': 'crypto_stocks', 'EBON': 'crypto_stocks',
+    'SOS': 'crypto_stocks', 'BTCS': 'crypto_stocks', 'ANY': 'crypto_stocks',
+    'IBIT': 'crypto_stocks', 'FBTC': 'crypto_stocks', 'ARKB': 'crypto_stocks',
+    'BITB': 'crypto_stocks', 'GBTC': 'crypto_stocks', 'HODL': 'crypto_stocks',
+    'BITX': 'crypto_stocks', 'BITO': 'crypto_stocks', 'ETHE': 'crypto_stocks',
+    'ETHA': 'crypto_stocks', 'CME': 'crypto_stocks', 'CBOE': 'crypto_stocks',
+    'PYPL': 'crypto_stocks', 'SOFI': 'crypto_stocks',
+    
+    # === INTERNATIONAL ===
+    'MC.PA': 'intl_stocks', 'RMS.PA': 'intl_stocks', 'NOVO-B.CO': 'intl_stocks',
+    'SAP': 'intl_stocks', 'SAP.DE': 'intl_stocks', 'ASML.AS': 'intl_stocks',
+    'AZN.L': 'intl_stocks', 'SHEL.L': 'intl_stocks', '7203.T': 'intl_stocks',
+    '6758.T': 'intl_stocks', '0700.HK': 'intl_stocks', 'RACE.MI': 'intl_stocks',
+    'OR.PA': 'intl_stocks', 'ITX.MC': 'intl_stocks', 'NESN.SW': 'intl_stocks',
+    'HEIA.AS': 'intl_stocks', 'ULVR.L': 'intl_stocks', 'DGE.L': 'intl_stocks',
+    'SU.PA': 'intl_stocks', 'SIE.DE': 'intl_stocks', 'ABBN.SW': 'intl_stocks',
+    'ADYEN.AS': 'intl_stocks', 'NOVN.SW': 'intl_stocks', 'RO.SW': 'intl_stocks',
+    'SAN.PA': 'intl_stocks', 'GSK.L': 'intl_stocks', 'AIR.PA': 'intl_stocks',
+    'TTE.PA': 'intl_stocks', 'IBE.MC': 'intl_stocks', 'ALV.DE': 'intl_stocks',
+    'BNP.PA': 'intl_stocks', 'ISP.MI': 'intl_stocks', 'HSBA.L': 'intl_stocks',
+    'DTE.DE': 'intl_stocks', 'MBG.DE': 'intl_stocks', 'BABA': 'intl_stocks',
+    'BHP.AX': 'intl_stocks', 'RIO.L': 'intl_stocks', 'CBA.AX': 'intl_stocks',
+    'CSL.AX': 'intl_stocks',
+    
+    # === COMMODITIES ===
+    'GC=F': 'commodities', 'SI=F': 'commodities', 'CL=F': 'commodities',
+    'BZ=F': 'commodities', 'HG=F': 'commodities', 'NG=F': 'commodities',
+    'PL=F': 'commodities', 'URA': 'commodities', 'URNM': 'commodities',
+    'CCJ': 'commodities',
+    
+    # === INDICES ===
+    '^GSPC': 'indices', '^IXIC': 'indices', '^DJI': 'indices', '^RUT': 'indices',
+    '^FTSE': 'indices', '^GDAXI': 'indices', '^FCHI': 'indices', '^N225': 'indices',
+    '^HSI': 'indices', '^AXJO': 'indices', '^VIX': 'indices', 'DX-Y.NYB': 'indices',
+}
+
+
+def get_asset_class_for_ticker(ticker: Optional[str]) -> Optional[str]:
+    """Resolves asset class from registry lookup table rather than string guessing (Opus Patch 2)."""
+    if not ticker:
+        return None
+    clean = ticker.split(":")[-1].strip().upper()
+    return ASSET_CLASS_REGISTRY.get(clean)
+
+
 def get_asset_profile(asset_class: str) -> AssetClassProfile:
     """Returns the trading profile for an asset class. Falls back to us_stocks if unknown."""
     return ASSET_CLASS_PROFILES.get(asset_class, ASSET_CLASS_PROFILES['us_stocks'])

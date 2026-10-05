@@ -5,10 +5,18 @@ into actionable, risk-managed trade suggestions tailored for Spot investing and 
 """
 
 from dataclasses import asdict, dataclass
+import math
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 import numpy as np
 
 from src.engine.asset_profiles import get_max_allowed_leverage
+from src.engine.consistency_guard import (
+    is_pure_crypto,
+    normalize_moat,
+    validate_fair_value_and_mos,
+    validate_options_flow,
+    validate_target_and_valuation,
+)
 
 if TYPE_CHECKING:
     from src.engine.quantamental import FundamentalProfile
@@ -213,10 +221,18 @@ def calculate_confluence_score(
     rr_ratio: Optional[float],
     fund_profile: Optional[object] = None,
     btc_relative: Optional[object] = None,
+    asset_class: str = "crypto",
+    current_price: Optional[float] = None,
+    options_flow: Optional[dict] = None,
+    force_technical_only: bool = False,
 ) -> Tuple[int, str]:
     """
     Calculates institutional confluence score (0 - 100) and assigns a quality tier.
-    Enriched with fundamental valuation metrics (MoS, Moat, Altman Z) and BTC Relative Alpha.
+    Hardened with ConsistencyGuard (Phase 1):
+    - Zero DCF points for pure crypto; crypto uses its own rescaled technical + BTC-relative model.
+    - Robust MoS & positive FV validation (MoS >= 15% required for equity bonus).
+    - Strict moat normalization (Wide +5, Narrow +2, None/null +0).
+    - Data-quality and sanity-band checked options flow boost.
     """
     score = 40  # baseline for valid directional setup
 
@@ -238,20 +254,39 @@ def calculate_confluence_score(
         elif rr_ratio < 1.8:
             score -= 20
 
-    # Fundamental Confluence adjustments
-    if fund_profile:
-        is_bullish = getattr(fund_profile, "is_bullish", False)
+    # Fundamental Confluence adjustments (Patches 1, 2, 3)
+    if not force_technical_only and fund_profile:
         is_bearish = getattr(fund_profile, "is_bearish_or_distressed", False)
-        moat = getattr(fund_profile, "moat", "None")
+        is_bullish = getattr(fund_profile, "is_bullish", False)
 
-        if is_bullish:
-            score += 15
-            if moat == "Wide":
-                score += 5
-            elif moat == "Narrow":
-                score += 2
-        elif is_bearish:
-            score -= 25
+        if is_pure_crypto(asset_class=asset_class, fund_profile=fund_profile):
+            # Patch 2: Pure crypto has NO corporate DCF points
+            if is_bearish:
+                score -= 25
+        else:
+            # Equities / non-crypto: evaluate DCF, MoS, and Moat
+            fair_value = getattr(fund_profile, "fair_value", None)
+            raw_moat = getattr(fund_profile, "moat", None)
+
+            if current_price is not None and current_price > 0:
+                _, is_undervalued, _ = validate_fair_value_and_mos(
+                    fair_value=fair_value,
+                    current_price=current_price,
+                    asset_class=asset_class,
+                    fund_profile=fund_profile,
+                )
+            else:
+                raw_mos = getattr(fund_profile, "mos_pct", None)
+                is_undervalued = bool(
+                    raw_mos is not None and raw_mos >= 15.0 and fair_value is not None and fair_value > 0
+                )
+
+            if is_bullish and is_undervalued:
+                score += 15
+                _, moat_bonus = normalize_moat(raw_moat)
+                score += moat_bonus
+            elif is_bearish:
+                score -= 25
 
     # BTC Relative Strength adjustments (Alpha vs Bitcoin Benchmark)
     if btc_relative:
@@ -261,6 +296,12 @@ def calculate_confluence_score(
             score += 15 if alpha_30 >= 5.0 else 8
         elif r_state == "BLUE":
             score -= 20 if alpha_30 <= -5.0 else 10
+
+    # Options Flow boost (Patch 5)
+    if options_flow and current_price is not None and current_price > 0:
+        is_valid, _, _ = validate_options_flow(options_flow, current_price)
+        if is_valid and options_flow.get("confluence_boost"):
+            score += 5
 
     score = max(0, min(100, score))
 
@@ -328,46 +369,62 @@ def _enrich_trade_suggestion(
         s.tech_thesis_bg = "Панделката е преплетена без ясна посока. Изчакайте разширяване и формиране на тренд."
 
     # 2. Fundamental Analysis Recommendation & Details
-    fund_verdict = getattr(fund_profile, "verdict", None) if fund_profile else s.fund_verdict
-    fair_value = getattr(fund_profile, "fair_value", None) if fund_profile else s.fair_value
-    mos_pct = getattr(fund_profile, "mos_pct", None) if fund_profile else s.mos_pct
-    moat = getattr(fund_profile, "moat", None) if fund_profile else s.moat
-    thesis = getattr(fund_profile, "thesis", "") if fund_profile else ""
-
-    if fund_verdict:
-        fv_txt = f"${fair_value:,.2f}" if fair_value else "N/A"
-        mos_txt = f"{mos_pct:+.0f}%" if mos_pct is not None else "N/A"
-        moat_txt = f", {moat} Moat" if moat and moat != "None" else ""
-
-        if "STRONG BUY" in fund_verdict.upper():
-            s.fund_action = "STRONG_BUY"
-            s.fund_label_bg = f"🟢 СИЛНО ПОДЦЕНЕН ({mos_txt} MoS)"
-            s.fund_thesis_bg = f"DCF Справедлива стойност: {fv_txt} (Margin of Safety: {mos_txt}{moat_txt}). {thesis}".strip()
-        elif "BUY" in fund_verdict.upper() or "OVERWEIGHT" in fund_verdict.upper():
-            s.fund_action = "BUY"
-            s.fund_label_bg = f"🟢 ПОДЦЕНЕН ({mos_txt} MoS)"
-            s.fund_thesis_bg = f"DCF Справедлива стойност: {fv_txt} (Margin of Safety: {mos_txt}{moat_txt}). {thesis}".strip()
-        elif "HOLD" in fund_verdict.upper() or "NEUTRAL" in fund_verdict.upper():
-            s.fund_action = "HOLD"
-            s.fund_label_bg = "🟡 СПРАВЕДЛИВА ЦЕНА (Hold)"
-            s.fund_thesis_bg = f"Търгува се близо до DCF оценка {fv_txt}{moat_txt}. Балансиран риск/доходност.".strip()
-        elif "REDUCE" in fund_verdict.upper() or "AVOID" in fund_verdict.upper() or "UNDERPERFORM" in fund_verdict.upper():
-            s.fund_action = "REDUCE"
-            s.fund_label_bg = "🔴 НАДЦЕНЕН (Reduce)"
-            s.fund_thesis_bg = f"Надценен спрямо паричните потоци или влошаващи се финансови показатели (DCF {fv_txt}). {thesis}".strip()
-        else:
-            s.fund_action = "HOLD"
-            s.fund_label_bg = f"⚪ {fund_verdict}"
-            s.fund_thesis_bg = f"DCF: {fv_txt}{moat_txt}. {thesis}".strip()
-    else:
+    if is_pure_crypto(asset_class=asset_class, fund_profile=fund_profile):
         s.fund_action = "SPECULATIVE_NA"
         s.fund_label_bg = "⚪ МАКРО / СПЕКУЛАТИВЕН"
         s.fund_thesis_bg = "Крипто/суровинен инструмент без класически корпоративен DCF модел. Движи се от мрежови ефекти, ликвидност и технически моментум."
+        s.fair_value = None
+        s.mos_pct = None
+        s.moat = None
+    else:
+        fund_verdict = getattr(fund_profile, "verdict", None) if fund_profile else s.fund_verdict
+        fair_value = getattr(fund_profile, "fair_value", None) if fund_profile else s.fair_value
+        raw_moat = getattr(fund_profile, "moat", None) if fund_profile else s.moat
+        norm_moat, _ = normalize_moat(raw_moat)
+        s.moat = norm_moat
+        thesis = getattr(fund_profile, "thesis", "") if fund_profile else ""
+
+        clean_mos, is_undervalued, _ = validate_fair_value_and_mos(fair_value, current_price, asset_class, fund_profile=fund_profile)
+        s.mos_pct = clean_mos
+        s.fair_value = fair_value if (fair_value and fair_value > 0 and math.isfinite(fair_value)) else None
+
+        if fund_verdict and s.fair_value:
+            fv_txt = f"${s.fair_value:,.2f}"
+            mos_txt = f"{clean_mos:+.0f}%" if clean_mos is not None else "N/A"
+            moat_txt = f", {norm_moat} Moat" if norm_moat and norm_moat != "None" else ""
+
+            if is_undervalued and ("STRONG BUY" in fund_verdict.upper()):
+                s.fund_action = "STRONG_BUY"
+                s.fund_label_bg = f"🟢 СИЛНО ПОДЦЕНЕН ({mos_txt} MoS)"
+                s.fund_thesis_bg = f"DCF Справедлива стойност: {fv_txt} (Margin of Safety: {mos_txt}{moat_txt}). {thesis}".strip()
+            elif is_undervalued and ("BUY" in fund_verdict.upper() or "OVERWEIGHT" in fund_verdict.upper()):
+                s.fund_action = "BUY"
+                s.fund_label_bg = f"🟢 ПОДЦЕНЕН ({mos_txt} MoS)"
+                s.fund_thesis_bg = f"DCF Справедлива стойност: {fv_txt} (Margin of Safety: {mos_txt}{moat_txt}). {thesis}".strip()
+            elif "HOLD" in fund_verdict.upper() or "NEUTRAL" in fund_verdict.upper():
+                s.fund_action = "HOLD"
+                s.fund_label_bg = "🟡 СПРАВЕДЛИВА ЦЕНА (Hold)"
+                s.fund_thesis_bg = f"Търгува се близо до DCF оценка {fv_txt}{moat_txt}. Балансиран риск/доходност.".strip()
+            elif "REDUCE" in fund_verdict.upper() or "AVOID" in fund_verdict.upper() or "UNDERPERFORM" in fund_verdict.upper():
+                s.fund_action = "REDUCE"
+                s.fund_label_bg = "🔴 НАДЦЕНЕН (Reduce)"
+                s.fund_thesis_bg = f"Надценен спрямо паричните потоци или влошаващи се финансови показатели (DCF {fv_txt}). {thesis}".strip()
+            else:
+                s.fund_action = "HOLD"
+                s.fund_label_bg = f"⚪ {fund_verdict}"
+                s.fund_thesis_bg = f"DCF: {fv_txt}{moat_txt}. {thesis}".strip()
+        else:
+            s.fund_action = "SPECULATIVE_NA"
+            s.fund_label_bg = "⚪ МАКРО / СПЕКУЛАТИВЕН"
+            s.fund_thesis_bg = "Инструмент без валидна DCF справедлива стойност. Води се по пазарна ликвидност и технически профил."
 
     # 3. Quantamental Synthesis & Confluence
     if s.setup_type == "QUANTAMENTAL_ALPHA_BUY":
         s.synthesis_badge_bg = "⭐ ALPHA BUY"
         s.synthesis_label_bg = "Пълен консенсус (Бича техника + Подценен фундамент)"
+    elif s.setup_type == "TECHNICAL_MOMENTUM_BREAKOUT":
+        s.synthesis_badge_bg = "⚡ MOMENTUM BREAKOUT"
+        s.synthesis_label_bg = "Технически пробив извън DCF рамката (чист моментум)"
     elif s.setup_type == "VALUE_TRAP_WARNING":
         s.synthesis_badge_bg = "⏳ VALUE TRAP RISK"
         s.synthesis_label_bg = "Конфликт: Евтин фундамент, но меча техника (Не купувай преди обръщане!)"
@@ -413,18 +470,21 @@ def _enrich_trade_suggestion(
             if "Водещ актив спрямо BTC" not in s.reason_bg and s.btc_alpha_30d is not None:
                 s.reason_bg = f"{s.reason_bg} 🚀 Водещ актив спрямо BTC (+{s.btc_alpha_30d:.1f}% Alpha): Потвърден възходящ тренд."
 
-    # 5. Options Flow Enrichment (US Equities)
+    # 5. Options Flow Enrichment (US Equities - Patch 5)
     if options_flow:
-        s.options_flow = options_flow
-        pcr = options_flow.get("put_call_ratio", 1.0)
-        sentiment = options_flow.get("net_sentiment", "NEUTRAL")
-        unusual_sweep = options_flow.get("unusual_call_sweep", False)
-        sweep_txt = "Unusual call sweep detected" if unusual_sweep else "Normal options flow"
-        opt_str = f"📈 Options: {sweep_txt} | PCR: {pcr:.2f} ({sentiment})"
-        if "📈 Options:" not in s.reason_bg:
-            s.reason_bg = f"{s.reason_bg} | {opt_str}".strip(" |")
-        if options_flow.get("confluence_boost"):
-            s.score = min(100, s.score + 5)
+        is_valid, val_msg, sanitized_flow = validate_options_flow(options_flow, current_price)
+        s.options_flow = sanitized_flow or options_flow
+        if is_valid and sanitized_flow:
+            pcr = sanitized_flow.get("put_call_ratio", 1.0)
+            sentiment = sanitized_flow.get("net_sentiment", "NEUTRAL")
+            unusual_sweep = sanitized_flow.get("unusual_call_sweep", False)
+            sweep_txt = "Unusual call sweep detected" if unusual_sweep else "Normal options flow"
+            opt_str = f"📈 Options: {sweep_txt} | PCR: {pcr:.2f} ({sentiment})"
+            if "📈 Options:" not in s.reason_bg:
+                s.reason_bg = f"{s.reason_bg} | {opt_str}".strip(" |")
+        else:
+            s.options_flow["is_valid"] = False
+            s.options_flow["confluence_boost"] = False
 
     # 6. Invalidation Level and Time Stop
     if s.invalidation_level is None:
@@ -502,11 +562,23 @@ def _raw_generate_trade_suggestion(
     ticker: Optional[str] = None,
     asset_class: str = "crypto",
     btc_relative: Optional[object] = None,
+    options_flow: Optional[dict] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion.
     Fuses technical momentum/structure with institutional fundamental valuation.
     """
+    # Resolve true asset class from registry or fundamental profile if defaulted
+    eff_ticker = ticker or (getattr(fund_profile, "ticker", None) if fund_profile else None)
+    if eff_ticker:
+        from src.engine.asset_profiles import get_asset_class_for_ticker
+        reg_ac = get_asset_class_for_ticker(str(eff_ticker))
+        if reg_ac:
+            asset_class = reg_ac
+    elif fund_profile and (getattr(fund_profile, "sector", None) or getattr(fund_profile, "model_type", None) or getattr(fund_profile, "shares", None)):
+        if asset_class == "crypto":
+            asset_class = "us_stocks"
+
     atr = max(atr, current_price * 0.005)
     atr_pct = (atr / current_price) * 100.0 if current_price > 0 else 0.0
     is_mtf_aligned = (macro_1d_state == "GOLD") if (macro_1d_state and timeframe != "1D") else (state == "GOLD")
@@ -516,7 +588,8 @@ def _raw_generate_trade_suggestion(
     fund_verdict = getattr(fund_profile, "verdict", None) if fund_profile else None
     fair_value = getattr(fund_profile, "fair_value", None) if fund_profile else None
     mos_pct = getattr(fund_profile, "mos_pct", None) if fund_profile else None
-    moat = getattr(fund_profile, "moat", None) if fund_profile else None
+    raw_moat = getattr(fund_profile, "moat", None) if fund_profile else None
+    moat, _ = normalize_moat(raw_moat)
     z_score = getattr(fund_profile, "z_score", None) if fund_profile else None
     is_bullish = getattr(fund_profile, "is_bullish", False) if fund_profile else False
     is_bearish = getattr(fund_profile, "is_bearish_or_distressed", False) if fund_profile else False
@@ -526,28 +599,33 @@ def _raw_generate_trade_suggestion(
     # -------------------------------------------------------------------------
     # 0. VALUE TRAP GUARD (Fundamental Buy in active Technical Downtrend)
     # -------------------------------------------------------------------------
-    if is_bullish and (state == "BLUE" or context_flag == "BREAKDOWN_BELOW" or (s1 is not None and current_price < s1)):
-        fv_str = f"${fair_value:,.2f}" if fair_value else "N/A"
-        return TradeSuggestion(
-            action="WAIT",
-            direction="NEUTRAL",
-            setup_type="VALUE_TRAP_WARNING",
-            entry_price=round(current_price, 4),
-            stop_loss=None,
-            tp1=None,
-            tp2=None,
-            rr_ratio=None,
-            score=45,
-            tier="NONE",
-            reason_bg=f"⏳ ВАЛУАЦИОНЕН КАПАН: Фундаментално подценен актив ({fund_verdict}, Fair Value {fv_str}), но в активен низходящ тренд (BLUE/под S1). Изчакайте бичо обръщане в GOLD и тест на подкрепа преди вход!",
-            reason_en=f"Value trap risk: Undervalued asset ({fund_verdict}, Fair Value {fv_str}), but in active downtrend. Wait for bullish GOLD reversal before entry.",
-            fund_verdict=fund_verdict,
-            fair_value=fair_value,
-            mos_pct=mos_pct,
-            moat=moat,
-            z_score=z_score,
-            quantamental_tag="VALUE_TRAP_RISK",
+    if is_bullish and not is_pure_crypto(asset_class=asset_class, ticker=eff_ticker, fund_profile=fund_profile) and (state == "BLUE" or context_flag == "BREAKDOWN_BELOW" or (s1 is not None and current_price < s1)):
+        clean_mos, is_undervalued, _ = validate_fair_value_and_mos(
+            fair_value, current_price, asset_class, ticker=eff_ticker, fund_profile=fund_profile
         )
+        if is_undervalued:
+            fv_str = f"${fair_value:,.2f}" if fair_value else "N/A"
+            mos_str = f"{clean_mos:+.0f}%" if clean_mos is not None else "N/A"
+            return TradeSuggestion(
+                action="WAIT",
+                direction="NEUTRAL",
+                setup_type="VALUE_TRAP_WARNING",
+                entry_price=round(current_price, 4),
+                stop_loss=None,
+                tp1=None,
+                tp2=None,
+                rr_ratio=None,
+                score=45,
+                tier="NONE",
+                reason_bg=f"⏳ ВАЛУАЦИОНЕН КАПАН: Фундаментално подценен актив ({fund_verdict}, Fair Value {fv_str}, MoS {mos_str}), но в активен низходящ тренд (BLUE/под S1). Изчакайте бичо обръщане в GOLD и тест на подкрепа преди вход!",
+                reason_en=f"Value trap risk: Undervalued asset ({fund_verdict}, Fair Value {fv_str}, MoS {mos_str}), but in active downtrend. Wait for bullish GOLD reversal before entry.",
+                fund_verdict=fund_verdict,
+                fair_value=fair_value,
+                mos_pct=clean_mos,
+                moat=moat,
+                z_score=z_score,
+                quantamental_tag="VALUE_TRAP_RISK",
+            )
 
     # -------------------------------------------------------------------------
     # 1. STRUCTURAL EXIT / CAPITAL PROTECTION (Spot Protect)
@@ -616,35 +694,115 @@ def _raw_generate_trade_suggestion(
         risk = current_price - sl
 
         if risk > 0:
-            tp1 = round(current_price + (1.8 * risk), 4)
-            tp2 = round(current_price + (3.5 * risk), 4)
-            rr = round((tp1 - current_price) / risk, 2)
-            score, tier = calculate_confluence_score(
-                is_mtf_aligned=is_mtf_aligned,
-                near_support=False,
-                s1_touches=s1_touches,
-                spread_expanding=spread_expanding,
-                rr_ratio=rr,
-                fund_profile=fund_profile,
-                btc_relative=btc_relative,
-            )
+            # Deterministic target precedence (Patch 4)
+            if context_flag == "BREAKOUT_ABOVE" and r2 is not None and r2 > current_price:
+                tp1 = round(r2, 4)
+                reward1 = tp1 - current_price
+                rr = round(reward1 / risk, 2)
+                tp2 = round(current_price + (3.0 * risk), 4)
+            else:
+                tp1 = round(current_price + (1.8 * risk), 4)
+                tp2 = round(current_price + (3.5 * risk), 4)
+                rr = round((tp1 - current_price) / risk, 2)
 
             if is_bearish:
                 tier = "B"
                 setup_type = "SPECULATIVE_MOMENTUM_BUY"
                 quant_tag = "SPECULATIVE_MOMENTUM"
+                score, _ = calculate_confluence_score(
+                    is_mtf_aligned=is_mtf_aligned,
+                    near_support=False,
+                    s1_touches=s1_touches,
+                    spread_expanding=spread_expanding,
+                    rr_ratio=rr,
+                    fund_profile=fund_profile,
+                    btc_relative=btc_relative,
+                    asset_class=asset_class,
+                    current_price=current_price,
+                    options_flow=options_flow,
+                )
                 reason_bg = f"Пробив в Price Discovery, но с фундаментален рейтинг {fund_verdict} (слаб баланс). Търгувайте само със свит стоп!"
                 reason_en = f"Breakout into Price Discovery, but with weak fundamentals ({fund_verdict}). Strict trailing SL required."
             elif is_bullish:
-                setup_type = "QUANTAMENTAL_ALPHA_BUY"
-                quant_tag = "INSTITUTIONAL_ALPHA"
-                if fair_value and fair_value > tp2:
-                    tp2 = round(fair_value, 4)
-                reason_bg = f"Пробив в Price Discovery в синергия с институционален {fund_verdict} (Fair Value ${fair_value:,.2f}, Ров: {moat}). Трендов моментум."
-                reason_en = f"Breakout into Price Discovery aligned with institutional {fund_verdict} (Fair Value ${fair_value:,.2f}, Moat: {moat}). Momentum continuation."
+                if is_pure_crypto(asset_class):
+                    # Patch 2: Pure crypto does not have a DCF model
+                    setup_type = "BREAKOUT_BUY"
+                    quant_tag = "TECHNICAL_MOMENTUM"
+                    score, tier = calculate_confluence_score(
+                        is_mtf_aligned=is_mtf_aligned,
+                        near_support=False,
+                        s1_touches=s1_touches,
+                        spread_expanding=spread_expanding,
+                        rr_ratio=rr,
+                        fund_profile=None,
+                        btc_relative=btc_relative,
+                        asset_class=asset_class,
+                        current_price=current_price,
+                        options_flow=options_flow,
+                    )
+                    reason_bg = "Пробив над всички съпротиви (Price Discovery) със силна бича лента. Трендов моментум."
+                    reason_en = "Breakout into Price Discovery with strong bullish ribbon. Momentum continuation."
+                else:
+                    # Patch 4: Validate TP1 <= Fair Value
+                    clean_setup, requires_rescoring, audit_reason = validate_target_and_valuation(
+                        setup_type="QUANTAMENTAL_ALPHA_BUY",
+                        tp1=tp1,
+                        fair_value=fair_value,
+                        current_price=current_price,
+                        asset_class=asset_class,
+                    )
+                    if requires_rescoring:
+                        setup_type = clean_setup
+                        quant_tag = "TECHNICAL_MOMENTUM"
+                        score, tier = calculate_confluence_score(
+                            is_mtf_aligned=is_mtf_aligned,
+                            near_support=False,
+                            s1_touches=s1_touches,
+                            spread_expanding=spread_expanding,
+                            rr_ratio=rr,
+                            fund_profile=None,
+                            btc_relative=btc_relative,
+                            asset_class=asset_class,
+                            current_price=current_price,
+                            options_flow=options_flow,
+                            force_technical_only=True,
+                        )
+                        reason_bg = f"⚡ ТЕХНИЧЕСКИ МОМЕНТУМ: {audit_reason}."
+                        reason_en = f"Technical Momentum Breakout: {audit_reason}."
+                    else:
+                        setup_type = "QUANTAMENTAL_ALPHA_BUY"
+                        quant_tag = "INSTITUTIONAL_ALPHA"
+                        score, tier = calculate_confluence_score(
+                            is_mtf_aligned=is_mtf_aligned,
+                            near_support=False,
+                            s1_touches=s1_touches,
+                            spread_expanding=spread_expanding,
+                            rr_ratio=rr,
+                            fund_profile=fund_profile,
+                            btc_relative=btc_relative,
+                            asset_class=asset_class,
+                            current_price=current_price,
+                            options_flow=options_flow,
+                        )
+                        if fair_value and fair_value > tp2:
+                            tp2 = round(fair_value, 4)
+                        reason_bg = f"Пробив в Price Discovery в синергия с институционален {fund_verdict} (Fair Value ${fair_value:,.2f}, Ров: {moat}). Трендов моментум."
+                        reason_en = f"Breakout into Price Discovery aligned with institutional {fund_verdict} (Fair Value ${fair_value:,.2f}, Moat: {moat}). Momentum continuation."
             else:
                 setup_type = "BREAKOUT_BUY"
                 quant_tag = "TECHNICAL_MOMENTUM"
+                score, tier = calculate_confluence_score(
+                    is_mtf_aligned=is_mtf_aligned,
+                    near_support=False,
+                    s1_touches=s1_touches,
+                    spread_expanding=spread_expanding,
+                    rr_ratio=rr,
+                    fund_profile=fund_profile,
+                    btc_relative=btc_relative,
+                    asset_class=asset_class,
+                    current_price=current_price,
+                    options_flow=options_flow,
+                )
                 reason_bg = "Пробив над всички съпротиви (Price Discovery) със силна бича лента. Трендов моментум."
                 reason_en = "Breakout into Price Discovery with strong bullish ribbon. Momentum continuation."
 
@@ -696,7 +854,7 @@ def _raw_generate_trade_suggestion(
         risk = current_price - sl
 
         if risk > 0:
-            # Targets: TP1 at R1 lower (or 1.8R), TP2 at R2
+            # Deterministic Target Precedence (Patch 4)
             if r1 is not None and r1 > current_price:
                 tp1 = round(r1_lower if r1_lower is not None else r1, 4)
                 reward1 = tp1 - current_price
@@ -708,40 +866,125 @@ def _raw_generate_trade_suggestion(
                 rr = 2.0
 
             if rr >= min_rr_threshold:
-                score, tier = calculate_confluence_score(
-                    is_mtf_aligned=is_mtf_aligned,
-                    near_support=True,
-                    s1_touches=s1_touches,
-                    spread_expanding=spread_expanding,
-                    rr_ratio=rr,
-                    fund_profile=fund_profile,
-                    btc_relative=btc_relative,
-                )
-
                 s1_desc = f"${s1:,.2f}" if s1 else "лентата"
                 r1_desc = f"${tp1:,.2f}" if tp1 else "R1"
 
                 if is_bullish:
-                    setup_type = "QUANTAMENTAL_ALPHA_BUY"
-                    quant_tag = "INSTITUTIONAL_ALPHA"
-                    if fair_value and fair_value > tp2:
-                        tp2 = round(fair_value, 4)
-                    reason_bg = f"💎 ИНСТИТУЦИОНАЛЕН АЛФА ВХОД: Корекция до S1 ({s1_desc}) с институционален {fund_verdict} (Fair Value ${fair_value:,.2f}, Ров: {moat}). R:R 1:{rr:.1f} с таван до R1 ({r1_desc}) и макро цел ${tp2:,.2f}."
-                    reason_en = f"Quantamental Alpha: Pullback to S1 ({s1_desc}) aligned with institutional {fund_verdict} (Fair Value ${fair_value:,.2f}, Moat: {moat}). R:R 1:{rr:.1f} targeting R1 ({r1_desc}) and macro target ${tp2:,.2f}."
+                    if is_pure_crypto(asset_class):
+                        # Patch 2: Pure crypto does not have a DCF model
+                        setup_type = "PULLBACK_VALUE_BUY"
+                        quant_tag = "TECHNICAL_VALUE"
+                        score, tier = calculate_confluence_score(
+                            is_mtf_aligned=is_mtf_aligned,
+                            near_support=True,
+                            s1_touches=s1_touches,
+                            spread_expanding=spread_expanding,
+                            rr_ratio=rr,
+                            fund_profile=None,
+                            btc_relative=btc_relative,
+                            asset_class=asset_class,
+                            current_price=current_price,
+                            options_flow=options_flow,
+                        )
+                        reason_bg = f"Корекция до подкрепа S1 ({s1_desc}) в бичи тренд. Отличен Risk/Reward (1:{rr:.1f}) с таван до R1 ({r1_desc})."
+                        reason_en = f"Pullback to support S1 ({s1_desc}) in bullish trend. Solid R:R (1:{rr:.1f}) targeting R1 ({r1_desc})."
+                    else:
+                        # Patch 4: Validate TP1 <= Fair Value
+                        clean_setup, requires_rescoring, audit_reason = validate_target_and_valuation(
+                            setup_type="QUANTAMENTAL_ALPHA_BUY",
+                            tp1=tp1,
+                            fair_value=fair_value,
+                            current_price=current_price,
+                            asset_class=asset_class,
+                        )
+                        if requires_rescoring:
+                            setup_type = clean_setup
+                            quant_tag = "TECHNICAL_MOMENTUM"
+                            score, tier = calculate_confluence_score(
+                                is_mtf_aligned=is_mtf_aligned,
+                                near_support=True,
+                                s1_touches=s1_touches,
+                                spread_expanding=spread_expanding,
+                                rr_ratio=rr,
+                                fund_profile=None,
+                                btc_relative=btc_relative,
+                                asset_class=asset_class,
+                                current_price=current_price,
+                                options_flow=options_flow,
+                                force_technical_only=True,
+                            )
+                            reason_bg = f"⚡ ТЕХНИЧЕСКИ МОМЕНТУМ: {audit_reason}. R:R 1:{rr:.1f} до R1 ({r1_desc})."
+                            reason_en = f"Technical Momentum Breakout: {audit_reason}. R:R 1:{rr:.1f} targeting R1 ({r1_desc})."
+                        else:
+                            setup_type = "QUANTAMENTAL_ALPHA_BUY"
+                            quant_tag = "INSTITUTIONAL_ALPHA"
+                            score, tier = calculate_confluence_score(
+                                is_mtf_aligned=is_mtf_aligned,
+                                near_support=True,
+                                s1_touches=s1_touches,
+                                spread_expanding=spread_expanding,
+                                rr_ratio=rr,
+                                fund_profile=fund_profile,
+                                btc_relative=btc_relative,
+                                asset_class=asset_class,
+                                current_price=current_price,
+                                options_flow=options_flow,
+                            )
+                            if fair_value and fair_value > tp2:
+                                tp2 = round(fair_value, 4)
+                            reason_bg = f"💎 ИНСТИТУЦИОНАЛЕН АЛФА ВХОД: Корекция до S1 ({s1_desc}) с институционален {fund_verdict} (Fair Value ${fair_value:,.2f}, Ров: {moat}). R:R 1:{rr:.1f} с таван до R1 ({r1_desc}) и макро цел ${tp2:,.2f}."
+                            reason_en = f"Quantamental Alpha: Pullback to S1 ({s1_desc}) aligned with institutional {fund_verdict} (Fair Value ${fair_value:,.2f}, Moat: {moat}). R:R 1:{rr:.1f} targeting R1 ({r1_desc}) and macro target ${tp2:,.2f}."
                 elif is_hold:
                     setup_type = "QUALITY_HOLD_ACCUMULATION"
                     quant_tag = "CORE_QUALITY_HOLD"
+                    score, tier = calculate_confluence_score(
+                        is_mtf_aligned=is_mtf_aligned,
+                        near_support=True,
+                        s1_touches=s1_touches,
+                        spread_expanding=spread_expanding,
+                        rr_ratio=rr,
+                        fund_profile=fund_profile,
+                        btc_relative=btc_relative,
+                        asset_class=asset_class,
+                        current_price=current_price,
+                        options_flow=options_flow,
+                    )
                     reason_bg = f"🏰 ЕЛИТЕН ЛИДЕР: Корекция до S1 ({s1_desc}) за качествен лидер ({fund_name or 'Емитент'}, {fund_verdict}). R:R 1:{rr:.1f} до R1 ({r1_desc})."
                     reason_en = f"Quality Leader: Pullback to S1 ({s1_desc}) for high-quality core hold ({fund_name or 'Asset'}, {fund_verdict}). R:R 1:{rr:.1f} targeting R1 ({r1_desc})."
                 elif is_bearish:
                     tier = "B"
                     setup_type = "SPECULATIVE_PULLBACK_BUY"
                     quant_tag = "SPECULATIVE_MOMENTUM"
+                    score, _ = calculate_confluence_score(
+                        is_mtf_aligned=is_mtf_aligned,
+                        near_support=True,
+                        s1_touches=s1_touches,
+                        spread_expanding=spread_expanding,
+                        rr_ratio=rr,
+                        fund_profile=fund_profile,
+                        btc_relative=btc_relative,
+                        asset_class=asset_class,
+                        current_price=current_price,
+                        options_flow=options_flow,
+                    )
+                    tier = "B"
                     reason_bg = f"⚠️ СПЕКУЛАТИВЕН ВХОД: Технически отскок от S1 ({s1_desc}), но със слаб фундаментален профил ({fund_verdict}). Търгувайте само със свит стоп!"
                     reason_en = f"Speculative Bounce: Technical bounce at S1 ({s1_desc}), but weak fundamental profile ({fund_verdict}). Strict stop required!"
                 else:
                     setup_type = "PULLBACK_VALUE_BUY"
                     quant_tag = "TECHNICAL_VALUE"
+                    score, tier = calculate_confluence_score(
+                        is_mtf_aligned=is_mtf_aligned,
+                        near_support=True,
+                        s1_touches=s1_touches,
+                        spread_expanding=spread_expanding,
+                        rr_ratio=rr,
+                        fund_profile=fund_profile,
+                        btc_relative=btc_relative,
+                        asset_class=asset_class,
+                        current_price=current_price,
+                        options_flow=options_flow,
+                    )
                     reason_bg = f"Корекция до подкрепа S1 ({s1_desc}) в бичи тренд. Отличен Risk/Reward (1:{rr:.1f}) с таван до R1 ({r1_desc})."
                     reason_en = f"Pullback to support S1 ({s1_desc}) in bullish trend. Solid R:R (1:{rr:.1f}) targeting R1 ({r1_desc})."
 
@@ -909,6 +1152,16 @@ def generate_trade_suggestion(
     Evaluates market conditions and returns an institutional TradeSuggestion,
     enriched with distinct Technical vs Fundamental recommendations and Quantamental synthesis.
     """
+    eff_ticker = ticker or (getattr(fund_profile, "ticker", None) if fund_profile else None)
+    if eff_ticker:
+        from src.engine.asset_profiles import get_asset_class_for_ticker
+        reg_ac = get_asset_class_for_ticker(str(eff_ticker))
+        if reg_ac:
+            asset_class = reg_ac
+    elif fund_profile and (getattr(fund_profile, "sector", None) or getattr(fund_profile, "model_type", None) or getattr(fund_profile, "shares", None)):
+        if asset_class == "crypto":
+            asset_class = "us_stocks"
+
     raw_s = _raw_generate_trade_suggestion(
         current_price=current_price,
         state=state,
@@ -935,6 +1188,7 @@ def generate_trade_suggestion(
         ticker=ticker,
         asset_class=asset_class,
         btc_relative=btc_relative,
+        options_flow=options_flow,
     )
     return _enrich_trade_suggestion(
         raw_s,
