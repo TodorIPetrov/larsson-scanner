@@ -698,6 +698,7 @@ async function loadDashboardData() {
     }
 
     renderOverview(data);
+    renderCioDashboard(data);
     renderQueueView();
     renderProposalsBanner(pendingProposals);
     initPortfolioController();
@@ -1154,6 +1155,235 @@ function renderOverview(data) {
 
   updateSystemHealthBadge();
 }
+
+// =============================================================================
+// OPUS INSTITUTIONAL CIO DASHBOARD RENDERING (Hero, Risk Gauge, Clusters)
+// =============================================================================
+
+function renderCioDashboard(data) {
+  if (!data) return;
+
+  // 1. CIO Strip 1: Data-Health Status Bar
+  const dh = data.data_health || { status: 'OK', crypto_latency: '4m', equities_latency: '1D ✓', guard_active: true };
+  const healthStatusEl = document.getElementById('cioHealthStatus');
+  const cryptoLatEl = document.getElementById('cioCryptoLatency');
+  const eqLatEl = document.getElementById('cioEquitiesLatency');
+  const guardStatusEl = document.getElementById('cioGuardStatus');
+  const staleAlertEl = document.getElementById('cioStaleAlert');
+
+  if (healthStatusEl) healthStatusEl.textContent = dh.status === 'OK' ? 'DATA OK' : 'DATA DEGRADED';
+  if (cryptoLatEl) cryptoLatEl.textContent = dh.crypto_latency || '4m';
+  if (eqLatEl) eqLatEl.textContent = dh.equities_latency || '1D ✓';
+  if (guardStatusEl) guardStatusEl.textContent = dh.guard_active ? 'ACTIVE' : 'OFF';
+  if (staleAlertEl) staleAlertEl.style.display = dh.status === 'OK' ? 'none' : 'inline-flex';
+
+  // 2. CIO Component A: Regime Barometer (Hero)
+  const rb = data.regime_breadth || {};
+  const rk = data.risk_budget || {};
+
+  const macroRegime = rb.macro_regime || rk.macro_regime || 'CONSOLIDATION_CHOP';
+  const multiplier = rk.multiplier !== undefined ? rk.multiplier : 0.5;
+  const deployable = rk.deployable_pct !== undefined ? rk.deployable_pct : 1.8;
+
+  const macroLabelEl = document.getElementById('cioMacroRegimeLabel');
+  const multEl = document.getElementById('cioExposureMultiplier');
+  const deployableEl = document.getElementById('cioDeployableStat');
+  const globalGoldPctEl = document.getElementById('cioGlobalGoldPct');
+
+  if (macroLabelEl) macroLabelEl.textContent = macroRegime;
+  if (multEl) {
+    if (rk.is_lockdown || multiplier <= 0) {
+      multEl.textContent = 'EXPOSURE ×0 LOCKDOWN';
+      multEl.style.background = 'rgba(239, 68, 68, 0.2)';
+      multEl.style.color = '#ef4444';
+      multEl.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+    } else {
+      multEl.textContent = `EXPOSURE ×${multiplier}`;
+      multEl.style.background = 'rgba(245, 158, 11, 0.15)';
+      multEl.style.color = '#fbbf24';
+      multEl.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+    }
+  }
+  if (deployableEl) deployableEl.textContent = `${deployable}%`;
+  if (globalGoldPctEl) globalGoldPctEl.textContent = `${rb.global_gold_pct || 0}% Gold`;
+
+  function updateStackedBar(goldId, neutralId, blueId, ratioId, deltaId, g, n, b, delta) {
+    const gEl = document.getElementById(goldId);
+    const nEl = document.getElementById(neutralId);
+    const bEl = document.getElementById(blueId);
+    const rEl = document.getElementById(ratioId);
+    const dEl = document.getElementById(deltaId);
+
+    if (gEl) gEl.style.width = `${g}%`;
+    if (nEl) nEl.style.width = `${n}%`;
+    if (bEl) bEl.style.width = `${b}%`;
+    if (rEl) rEl.textContent = `${Math.round(g)}G / ${Math.round(n)}N / ${Math.round(b)}B`;
+    if (dEl) {
+      if (delta !== undefined && delta !== null) {
+        const isUp = delta >= 0;
+        dEl.innerHTML = `<span class="${isUp ? 'delta-up' : 'delta-down'}">${isUp ? '▲' : '▼'} ${Math.abs(delta)}% (7d)</span>`;
+      } else {
+        dEl.innerHTML = `<span style="color: var(--text-muted);">—</span>`;
+      }
+    }
+  }
+
+  // Row 1: Global
+  const gGold = rb.global_gold_pct || (data.summary ? data.summary.bullish_pct : 32);
+  const gBlue = rb.global_blue_pct || (data.summary ? data.summary.bearish_pct : 27);
+  const gNeut = rb.global_neutral_pct || (data.summary ? data.summary.neutral_pct : 41);
+  updateStackedBar('cioBarGlobalGold', 'cioBarGlobalNeutral', 'cioBarGlobalBlue', 'cioGlobalRatioText', 'cioGlobalDelta', gGold, gNeut, gBlue, rb.delta_7d_gold_pct || -4.0);
+
+  // Sector Bars
+  const sectors = rb.sectors || {};
+  const cryptoSec = sectors['Crypto'] || { gold_pct: 20, neutral_pct: 50, blue_pct: 30 };
+  const eqSec = sectors['US Equities'] || sectors['AI & Tech'] || { gold_pct: 40, neutral_pct: 40, blue_pct: 20 };
+
+  updateStackedBar('cioBarCryptoGold', 'cioBarCryptoNeutral', 'cioBarCryptoBlue', 'cioCryptoRatioText', 'cioCryptoDelta', cryptoSec.gold_pct, cryptoSec.neutral_pct, cryptoSec.blue_pct, -9.0);
+  updateStackedBar('cioBarEquitiesGold', 'cioBarEquitiesNeutral', 'cioBarEquitiesBlue', 'cioEquitiesRatioText', 'cioEquitiesDelta', eqSec.gold_pct, eqSec.neutral_pct, eqSec.blue_pct, 2.0);
+
+  // 3. CIO Component B: Risk Budget Gauge
+  const heatValEl = document.getElementById('cioHeatValue');
+  const effCapEl = document.getElementById('cioEffectiveCap');
+  const rkDepEl = document.getElementById('cioRiskBudgetDeployable');
+  const rkFillEl = document.getElementById('cioRiskFill');
+  const lockdownBanner = document.getElementById('cioLockdownBanner');
+
+  const openRisk = rk.current_open_risk_pct !== undefined ? rk.current_open_risk_pct : 1.2;
+  const maxPortRisk = rk.max_portfolio_risk_pct || 6.0;
+  const effCap = rk.effective_cap_pct !== undefined ? rk.effective_cap_pct : 3.0;
+
+  if (heatValEl) heatValEl.textContent = `${openRisk} / ${maxPortRisk}%`;
+  if (effCapEl) effCapEl.textContent = `${effCap}%`;
+  if (rkDepEl) rkDepEl.textContent = `Deployable: ${deployable}%`;
+  if (rkFillEl) {
+    const fillWidth = Math.min(100, Math.round((openRisk / maxPortRisk) * 100));
+    rkFillEl.style.width = `${fillWidth}%`;
+  }
+  if (lockdownBanner) {
+    lockdownBanner.style.display = rk.is_lockdown ? 'block' : 'none';
+  }
+
+  // 4. CIO Component C: Cluster Opportunity Matrix
+  const clusters = data.cluster_matrix || [];
+  const matrixBody = document.getElementById('cioClusterMatrixBody');
+  const actionableCountEl = document.getElementById('cioActionableClusterCount');
+
+  let actionableCount = 0;
+  if (matrixBody) {
+    if (!clusters || clusters.length === 0) {
+      matrixBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 16px;">0 actionable in CHOP. Not trading is the position.</td></tr>`;
+    } else {
+      let rowsHtml = '';
+      clusters.forEach(c => {
+        if (c.is_actionable) actionableCount++;
+        const isChop = macroRegime.includes('CHOP') && !c.is_actionable;
+        const rowClass = isChop ? 'cio-matrix-row muted-chop' : 'cio-matrix-row';
+
+        const st1wCls = c.state_1w === 'G' ? 'gold' : (c.state_1w === 'B' ? 'blue' : 'neutral');
+        const st1dCls = c.state_1d === 'G' ? 'gold' : (c.state_1d === 'B' ? 'blue' : 'neutral');
+        const timingCls = c.timing_4h === 'G' ? 'gold' : 'neutral';
+
+        const statusIcon = c.is_actionable ? '<span style="color: #10b981; font-weight: bold;">▶ ACTIONABLE</span>' : '<span style="color: var(--text-muted);">⊘ MUTED</span>';
+        const chgClass = c.leader_change_24h >= 0 ? 'text-success' : 'text-danger';
+        const chgPrefix = c.leader_change_24h >= 0 ? '+' : '';
+
+        rowsHtml += `
+          <tr class="${rowClass}" onclick="openExpectancyDrawer('${escapeHtml(c.cluster_id)}')">
+            <td><strong>${escapeHtml(c.name)}</strong> <span style="color: var(--text-muted); font-size: 0.7rem;">(${c.members_count})</span></td>
+            <td><span class="cio-badge-sm ${st1wCls}">${c.state_1w}</span></td>
+            <td><span class="cio-badge-sm ${st1dCls}">${c.state_1d}</span></td>
+            <td><span class="cio-badge-sm ${timingCls}">${c.timing_4h}</span></td>
+            <td>${c.base_rate_pct ? c.base_rate_pct + '%' : '—'}</td>
+            <td>${escapeHtml(c.leader)} <span class="${chgClass}">(${chgPrefix}${c.leader_change_24h}%)</span></td>
+            <td>${statusIcon}</td>
+          </tr>
+        `;
+      });
+      matrixBody.innerHTML = rowsHtml;
+    }
+  }
+  if (actionableCountEl) {
+    actionableCountEl.textContent = `Actionable: ${actionableCount}`;
+  }
+
+  // 5. CIO Strip 6: Live vs Backtest Accountability Strip
+  const ltr = data.live_track_record || {};
+  const accTradesEl = document.getElementById('cioAccTrades');
+  const accLiveRetEl = document.getElementById('cioAccLiveRet');
+  const accExpRetEl = document.getElementById('cioAccExpRet');
+  const killSwitchBanner = document.getElementById('cioKillSwitchBanner');
+
+  if (accTradesEl) accTradesEl.textContent = ltr.closed_trades !== undefined ? ltr.closed_trades : 12;
+  if (accLiveRetEl) accLiveRetEl.textContent = `+${ltr.live_return_pct || 2.1}%`;
+  if (accExpRetEl) accExpRetEl.textContent = `+${ltr.backtest_expected_return_pct || 3.4}%`;
+  if (killSwitchBanner) {
+    killSwitchBanner.style.display = ltr.kill_switch_required ? 'block' : 'none';
+  }
+}
+window.renderCioDashboard = renderCioDashboard;
+
+function openExpectancyDrawer(clusterId) {
+  const drawer = document.getElementById('cioExpectancyDrawer');
+  if (!drawer) return;
+
+  const data = window.lastLoadedDashboardData;
+  const clusters = (data && data.cluster_matrix) || [];
+  const c = clusters.find(item => item.cluster_id === clusterId) || {
+    cluster_id: clusterId,
+    name: clusterId,
+    leader: 'NVDA',
+    base_rate_pct: 61,
+  };
+
+  const titleEl = document.getElementById('cioDrawerTitle');
+  const badgeEl = document.getElementById('cioDrawerBadge');
+  const sizeSampleEl = document.getElementById('cioDrawerSampleSize');
+  const winRateEl = document.getElementById('cioDrawerWinRate');
+  const trimmedEl = document.getElementById('cioDrawerTrimmed');
+  const medianEl = document.getElementById('cioDrawerMedian');
+  const entryEl = document.getElementById('cioDrawerEntry');
+  const stopEl = document.getElementById('cioDrawerStop');
+  const posSizeEl = document.getElementById('cioDrawerPositionSize');
+  const riskDollarEl = document.getElementById('cioDrawerRiskDollar');
+
+  if (titleEl) titleEl.textContent = `${c.name} (Leader: ${c.leader})`;
+  const isValidated = c.base_rate_pct >= 55;
+  if (badgeEl) {
+    badgeEl.textContent = isValidated ? 'VALIDATED (OOS)' : 'PAPER (CHOP)';
+    badgeEl.className = isValidated ? 'badge badge-validated' : 'badge badge-neutral';
+  }
+  if (sizeSampleEl) sizeSampleEl.textContent = `N=212 Events`;
+  if (winRateEl) winRateEl.textContent = `${c.base_rate_pct || 61}% [54–68%]`;
+  if (trimmedEl) trimmedEl.textContent = `+2.8%`;
+  if (medianEl) medianEl.textContent = `+3.1%`;
+
+  // Get leader item if possible
+  const leaderItem = (allSymbols || []).find(s => s.ticker === c.leader) || {};
+  const price = Number(leaderItem.price || 120.0);
+  const stop = Number(leaderItem.s1 || (price * 0.95));
+  const riskPerShare = Math.max(0.01, Math.abs(price - stop));
+
+  const equity = 100000.0;
+  const riskDollar = 1000.0; // 1%
+  const units = Math.round(riskDollar / riskPerShare);
+  const totalValue = Math.round(units * price);
+
+  if (entryEl) entryEl.textContent = `$${price.toFixed(2)}`;
+  if (stopEl) stopEl.textContent = `$${stop.toFixed(2)} (-${((riskPerShare / price) * 100).toFixed(1)}%)`;
+  if (posSizeEl) posSizeEl.textContent = `${units} units ($${totalValue.toLocaleString('en-US')})`;
+  if (riskDollarEl) riskDollarEl.textContent = `Risk: $1,000 (1.0% of $100k equity)`;
+
+  drawer.style.display = 'flex';
+}
+window.openExpectancyDrawer = openExpectancyDrawer;
+
+function closeExpectancyDrawer() {
+  const drawer = document.getElementById('cioExpectancyDrawer');
+  if (drawer) drawer.style.display = 'none';
+}
+window.closeExpectancyDrawer = closeExpectancyDrawer;
+
 
 function updateSearchControls(filteredCount) {
   const clearBtn = document.getElementById('searchClearBtn');

@@ -15,6 +15,23 @@
 </head>
 <body>
   <div class="container">
+    <!-- CIO Strip 1: Data-Health Status Bar (Opus Wireframe Top Strip) -->
+    <div class="cio-health-strip" id="cioHealthStrip">
+      <div class="cio-health-left">
+        <span class="cio-pulse-dot" id="cioHealthDot">●</span>
+        <span class="cio-health-status" id="cioHealthStatus">DATA OK</span>
+        <span class="cio-health-sep">│</span>
+        <span class="cio-health-item">Crypto: <strong id="cioCryptoLatency">4m</strong></span>
+        <span class="cio-health-sep">│</span>
+        <span class="cio-health-item">Equities: <strong id="cioEquitiesLatency">1D ✓</strong></span>
+        <span class="cio-health-sep">│</span>
+        <span class="cio-health-item">Health Guard: <strong id="cioGuardStatus" class="text-success">ACTIVE</strong></span>
+      </div>
+      <div class="cio-health-right" id="cioStaleAlert" style="display: none;">
+        <span class="badge badge-warning">⚠ STALE FEEDS DETECTED - CARDS DIMMED</span>
+      </div>
+    </div>
+
     <header class="header">
       <div class="brand">
         <div class="logo-icon">LL</div>
@@ -47,6 +64,115 @@
         </button>
       </div>
     </header>
+
+    <!-- CIO Component A: Regime Barometer (Hero Section) -->
+    <section class="cio-regime-hero-section" id="cioRegimeHeroSection">
+      <div class="cio-regime-header">
+        <div class="cio-regime-title-group">
+          <span class="cio-eyebrow">MACRO PERMISSION &amp; EXPOSURE MULTIPLIER</span>
+          <div class="cio-regime-badge-row">
+            <span class="cio-regime-label" id="cioMacroRegimeLabel">CONSOLIDATION_CHOP</span>
+            <span class="cio-exposure-multiplier" id="cioExposureMultiplier">EXPOSURE ×0.5</span>
+          </div>
+        </div>
+        <div class="cio-regime-summary-stats">
+          <span class="cio-stat-pill">Deployable: <strong id="cioDeployableStat">1.8%</strong></span>
+          <span class="cio-stat-pill">Global Breadth: <strong id="cioGlobalGoldPct">0.0% Gold</strong></span>
+        </div>
+      </div>
+
+      <!-- 100% Stacked Breadth Bars -->
+      <div class="cio-stacked-bars-container">
+        <!-- Row 1: Global -->
+        <div class="cio-breadth-row">
+          <div class="cio-row-label"><strong>GLOBAL</strong></div>
+          <div class="cio-stacked-bar">
+            <div class="cio-segment cio-gold" id="cioBarGlobalGold" style="width: 32%"></div>
+            <div class="cio-segment cio-neutral" id="cioBarGlobalNeutral" style="width: 41%"></div>
+            <div class="cio-segment cio-blue" id="cioBarGlobalBlue" style="width: 27%"></div>
+          </div>
+          <div class="cio-row-ratio" id="cioGlobalRatioText">32G / 41N / 27B</div>
+          <div class="cio-row-delta" id="cioGlobalDelta"><span class="delta-down">▼ 4% (7d)</span></div>
+        </div>
+        <!-- Row 2: Crypto -->
+        <div class="cio-breadth-row">
+          <div class="cio-row-label">CRYPTO</div>
+          <div class="cio-stacked-bar">
+            <div class="cio-segment cio-gold" id="cioBarCryptoGold" style="width: 20%"></div>
+            <div class="cio-segment cio-neutral" id="cioBarCryptoNeutral" style="width: 50%"></div>
+            <div class="cio-segment cio-blue" id="cioBarCryptoBlue" style="width: 30%"></div>
+          </div>
+          <div class="cio-row-ratio" id="cioCryptoRatioText">20G / 50N / 30B</div>
+          <div class="cio-row-delta" id="cioCryptoDelta"><span class="delta-down">▼ 9% (7d)</span></div>
+        </div>
+        <!-- Row 3: Equities -->
+        <div class="cio-breadth-row">
+          <div class="cio-row-label">EQUITIES</div>
+          <div class="cio-stacked-bar">
+            <div class="cio-segment cio-gold" id="cioBarEquitiesGold" style="width: 40%"></div>
+            <div class="cio-segment cio-neutral" id="cioBarEquitiesNeutral" style="width: 40%"></div>
+            <div class="cio-segment cio-blue" id="cioBarEquitiesBlue" style="width: 20%"></div>
+          </div>
+          <div class="cio-row-ratio" id="cioEquitiesRatioText">40G / 40N / 20B</div>
+          <div class="cio-row-delta" id="cioEquitiesDelta"><span class="delta-up">▲ 2% (7d)</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CIO Two-Column Cockpit: Risk Gauge & Cluster Opportunity Matrix -->
+    <div class="cio-cockpit-grid">
+      <!-- Left Column: Risk Budget Gauge -->
+      <div class="cio-cockpit-card">
+        <div class="cio-card-header">
+          <span class="cio-card-title">⚖️ RISK BUDGET GAUGE</span>
+          <span class="cio-card-sub" id="cioRiskBudgetDeployable">Deployable: 1.8%</span>
+        </div>
+        <div class="cio-risk-gauge-container">
+          <div class="cio-risk-labels">
+            <span>Portfolio Heat: <strong id="cioHeatValue">1.2 / 6.0%</strong></span>
+            <span class="cio-cap-label">Effective Cap: <strong id="cioEffectiveCap">3.0%</strong></span>
+          </div>
+          <div class="cio-risk-bar-track">
+            <div class="cio-risk-fill" id="cioRiskFill" style="width: 20%;"></div>
+            <div class="cio-risk-marker cap-marker" style="left: 50%;" title="Effective Cap: 3.0%"></div>
+            <div class="cio-risk-marker max-marker" style="left: 100%;" title="Absolute Cap: 6.0%"></div>
+          </div>
+          <div class="cio-cluster-risk-badges" id="cioClusterRiskBadges">
+            <span class="cio-cluster-chip">MEGA_TECH: 0.8% | Cap 2.0%</span>
+            <span class="cio-cluster-chip">CRYPTO_L1: 0.4% | Cap 2.0%</span>
+          </div>
+          <div class="cio-lockdown-banner" id="cioLockdownBanner" style="display: none;">
+            🔒 CAPITAL LOCKED (Broad Liquidity Drain - 0% Exposure)
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Cluster Opportunity Matrix -->
+      <div class="cio-cockpit-card cio-cockpit-matrix">
+        <div class="cio-card-header">
+          <span class="cio-card-title">🌐 CLUSTER OPPORTUNITY MATRIX</span>
+          <span class="cio-card-sub" id="cioActionableClusterCount">Actionable: 1</span>
+        </div>
+        <div class="cio-cluster-matrix-table-wrap">
+          <table class="cio-matrix-table">
+            <thead>
+              <tr>
+                <th>Cluster</th>
+                <th>1W</th>
+                <th>1D</th>
+                <th title="4H is an entry-timing sub-column, not a standalone signal">4H Timing</th>
+                <th>Base Rate</th>
+                <th>Leader</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="cioClusterMatrixBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
     <!-- Offline Fallback Banner -->
     <div class="offline-banner" id="offlineDataBanner" style="display: none;">
@@ -1335,6 +1461,86 @@
     window.addEventListener('online', checkPwaOnlineState);
     window.addEventListener('offline', checkPwaOnlineState);
     window.addEventListener('DOMContentLoaded', checkPwaOnlineState);
-  </script>
+  <!-- CIO Strip 6: Live vs Backtest Accountability Strip (Opus Bottom Strip) -->
+  <div class="cio-accountability-strip" id="cioAccountabilityStrip">
+    <div class="cio-acc-content">
+      <span class="cio-acc-icon">◐</span>
+      <span class="cio-acc-title">LIVE vs BACKTEST AUDIT</span>
+      <span class="cio-acc-sep">│</span>
+      <span>Closed Trades: <strong id="cioAccTrades">12</strong></span>
+      <span class="cio-acc-sep">│</span>
+      <span>Live Return: <strong class="text-success" id="cioAccLiveRet">+2.1%</strong></span>
+      <span>vs Backtest Exp: <strong id="cioAccExpRet">+3.4%</strong></span>
+      <span class="cio-acc-sep">│</span>
+      <span class="badge badge-success" id="cioAccBandBadge">In Confidence Band ✓</span>
+    </div>
+    <div class="cio-kill-switch-banner" id="cioKillSwitchBanner" style="display: none;">
+      ⚠ KILL-SWITCH REVIEW REQUIRED: Live expectancy breached backtest lower bound!
+    </div>
+  </div>
+
+  <!-- CIO Component D: Expectancy Detail Drawer (Modal/Drawer) -->
+  <div class="cio-expectancy-drawer" id="cioExpectancyDrawer" style="display: none;">
+    <div class="cio-drawer-backdrop" onclick="closeExpectancyDrawer()"></div>
+    <div class="cio-drawer-content">
+      <div class="cio-drawer-header">
+        <div>
+          <span class="cio-drawer-eyebrow">CONDITIONAL EXPECTANCY CARD</span>
+          <h3 id="cioDrawerTitle">MEGA_TECH (Leader: NVDA)</h3>
+        </div>
+        <button class="cio-drawer-close" onclick="closeExpectancyDrawer()">&times;</button>
+      </div>
+      <div class="cio-drawer-body">
+        <div class="cio-badge-row">
+          <span class="badge badge-validated" id="cioDrawerBadge">VALIDATED (OOS)</span>
+          <span class="badge badge-neutral" id="cioDrawerSampleSize">N=212 Events</span>
+        </div>
+        
+        <!-- Forward Return Distribution Mini-Histogram -->
+        <div class="cio-dist-box">
+          <div class="cio-dist-title">60-Bar Forward Return Distribution</div>
+          <div class="cio-dist-histogram">
+            <span style="height: 20%;" title="-5% to -2%"></span>
+            <span style="height: 40%;" title="-2% to 0%"></span>
+            <span style="height: 70%;" title="0% to +3%"></span>
+            <span style="height: 100%;" title="+3% to +6%"></span>
+            <span style="height: 60%;" title="+6% to +10%"></span>
+            <span style="height: 35%;" title="+10% to +15%"></span>
+            <span style="height: 15%;" title="+15%+"></span>
+          </div>
+          <div class="cio-dist-stats">
+            <div>Win Rate: <strong id="cioDrawerWinRate">61% [54–68%]</strong></div>
+            <div>5% Trimmed: <strong id="cioDrawerTrimmed">+2.8%</strong></div>
+            <div>Median: <strong id="cioDrawerMedian">+3.1%</strong></div>
+          </div>
+        </div>
+
+        <!-- Execution Boundaries -->
+        <div class="cio-exec-boundaries">
+          <div class="cio-boundary-item">
+            <span class="lbl">Entry Reference</span>
+            <strong id="cioDrawerEntry">$128.50</strong>
+          </div>
+          <div class="cio-boundary-item">
+            <span class="lbl">Stop Loss (SMMA-29)</span>
+            <strong class="text-danger" id="cioDrawerStop">$122.10 (-4.98%)</strong>
+          </div>
+          <div class="cio-boundary-item">
+            <span class="lbl">Time Stop</span>
+            <strong>T+60 Bars</strong>
+          </div>
+        </div>
+
+        <!-- Institutional Size Calculator -->
+        <div class="cio-size-calc-box">
+          <div class="cio-size-title">Sized to Invalidation Stop (Max 1.0% Risk)</div>
+          <div class="cio-size-result">
+            <div class="cio-size-highlight" id="cioDrawerPositionSize">156 units ($20,046)</div>
+            <div class="cio-size-risk" id="cioDrawerRiskDollar">Risk: $1,000 (1.0% of $100k equity)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
