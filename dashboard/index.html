@@ -180,31 +180,31 @@
       <span class="offline-text">Няма интернет връзка. Показват се последно запазените кеширани пазарни данни.</span>
     </div>
 
-    <!-- Active Leverage Trade Proposals Banner -->
-    <section class="proposals-banner-section" id="proposalsBannerSection">
+    <!-- Trade Approval Queue (Cleared by Regime & Risk Budget) -->
+    <section class="proposals-banner-section approval-queue-section" id="proposalsBannerSection">
       <div class="proposals-banner-header">
         <div class="proposals-title-group">
-          <span class="live-pulse-dot"></span>
-          <h2>⚡ АКТИВНИ ПРЕДЛОЖЕНИЯ С ЛЕВЪРИДЖ (Интерактивно Одобрение)</h2>
+          <span class="queue-status-dot"></span>
+          <h2>Trade Approval Queue</h2>
+          <span class="badge badge-slate" id="proposalsCountBadge">0 Pending</span>
         </div>
         <div class="proposals-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <button class="btn btn-toggle-section" id="btnToggleProposals" title="Скрий или покажи активните предложения" aria-expanded="true">
-            <span class="toggle-icon">▲</span> <span id="btnToggleProposalsTxt">Скрий</span>
+          <button class="btn btn-toggle-section" id="btnToggleProposals" title="Toggle queue visibility" aria-expanded="true">
+            <span class="toggle-icon">▲</span> <span id="btnToggleProposalsTxt">Hide</span>
           </button>
-          <button class="btn btn-undo-action" id="btnUndoProposal" style="display: none;" title="Върни назад последното отхвърлено или одобрено предложение">
-            <span class="undo-icon">↩️</span> Върни назад (<span id="undoCount">0</span>)
+          <button class="btn btn-undo-action" id="btnUndoProposal" style="display: none;" title="Undo previous review action">
+            <span class="undo-icon">↩</span> Undo (<span id="undoCount">0</span>)
           </button>
-          <button class="btn btn-restore-action" id="btnRestoreRejected" style="display: none;" title="Възстанови всички отхвърлени предложения обратно в списъка">
-            <span>🔄</span> Възстанови отхвърлени
+          <button class="btn btn-restore-action" id="btnRestoreRejected" style="display: none;" title="Restore rejected proposals">
+            <span>↺</span> Restore
           </button>
-          <button class="btn btn-analyze-banner" id="btnBannerAnalyze" title="Сканирай пазара за нови предложения">
-            <span class="analyze-icon">⚡</span> Нов Анализ
+          <button class="btn btn-analyze-banner" id="btnBannerAnalyze" title="Scan setup candidates against risk budget">
+            <span class="analyze-icon">↻</span> Rescan
           </button>
-          <span class="badge badge-gold" id="proposalsCountBadge">0 Предложения</span>
         </div>
       </div>
       <p class="proposals-banner-subtitle">
-        Системата генерира институционални предложения при потвърден пробив или тест на подкрепа/съпротива. Изберете желаното ниво на експозиция (1x Spot, 2x или 3x Изолиран маржин):
+        Candidate setups cleared by Regime Barometer and Risk Budget headroom. Review trade expectancy and select sizing:
       </p>
       <div class="proposals-cards-grid" id="proposalsCardsGrid">
         <!-- Rendered dynamically by app.js -->
@@ -237,107 +237,77 @@
 
     <!-- Tab 1: Scanner View (Default) -->
     <div class="tab-content-panel active" id="tabContentScanner">
-      <!-- Market Overview / Health Bar -->
-      <section class="overview-section">
-      <div class="meter-card">
-        <div class="meter-header">
-          <span class="meter-title">Market Sentiment Ratio</span>
-          <div class="meter-legend">
-            <span class="badge badge-gold"><span class="dot"></span> Gold <strong id="goldPct">0%</strong></span>
-            <span class="badge badge-blue"><span class="dot"></span> Blue <strong id="bluePct">0%</strong></span>
-            <span class="badge badge-neutral"><span class="dot"></span> Neutral <strong id="neutralPct">0%</strong></span>
-          </div>
-        </div>
-        <div class="meter-bar">
-          <div class="meter-fill fill-gold" id="barGold" style="width: 0%"></div>
-          <div class="meter-fill fill-blue" id="barBlue" style="width: 0%"></div>
-          <div class="meter-fill fill-neutral" id="barNeutral" style="width: 0%"></div>
-        </div>
-      </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Monitored</div>
-          <div class="stat-value" id="totalCount"><span class="stat-loading-dots">...</span></div>
-        </div>
-        <div class="stat-card stat-gold">
-          <div class="stat-label">🟡 Gold State (Bullish)</div>
-          <div class="stat-value" id="goldCount"><span class="stat-loading-dots">...</span></div>
-        </div>
-        <div class="stat-card stat-blue">
-          <div class="stat-label">🔵 Blue State (Bearish)</div>
-          <div class="stat-value" id="blueCount"><span class="stat-loading-dots">...</span></div>
-        </div>
-        <div class="stat-card stat-neutral">
-          <div class="stat-label">⚪ Neutral (Consolidation)</div>
-          <div class="stat-value" id="neutralCount"><span class="stat-loading-dots">...</span></div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Controls / Filters -->
-    <section class="controls-section">
-      <div class="search-box" id="scannerSearchBox">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Търси тикер, име или пазар (напр. BTC, NAKA, MSTR, Apple, Злато, Биткойн)..." autocomplete="off" spellcheck="false">
-        <span class="search-kbd" id="searchKbdHint" title="Натиснете / за бързо търсене">/</span>
-        <button type="button" class="search-clear-btn" id="searchClearBtn" title="Изчисти търсенето (Esc)" style="display: none;">✕</button>
-        <span class="search-badge" id="searchCountBadge" style="display: none;">0 намерени</span>
-      </div>
-
-      <div class="filter-row">
-        <div class="filter-group" id="classFilters">
-          <button class="filter-btn active" data-class="ALL">Всички Пазари</button>
-          <button class="filter-btn" data-class="crypto_stocks">⚡ Crypto Stocks</button>
-          <button class="filter-btn" data-class="ai_stocks">🤖 AI Stocks</button>
-          <button class="filter-btn" data-class="crypto">🪙 Crypto</button>
-          <button class="filter-btn" data-class="us_stocks">🏛️ US Stocks</button>
-          <button class="filter-btn" data-class="intl_stocks">🌍 Europe & Global</button>
-          <button class="filter-btn" data-class="commodities">⛏️ Commodities</button>
-          <button class="filter-btn" data-class="indices">📈 Indices</button>
+    <!-- Institutional Command Bar -->
+    <section class="controls-section institutional-command-bar">
+      <div class="command-bar-row">
+        <div class="search-box" id="scannerSearchBox">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search cluster leader, ticker, or name (e.g. BTC, NVDA, MSTR, EBON)..." autocomplete="off" spellcheck="false">
+          <span class="search-kbd" id="searchKbdHint" title="Press / to search">/</span>
+          <button type="button" class="search-clear-btn" id="searchClearBtn" title="Clear search (Esc)" style="display: none;">✕</button>
+          <span class="search-badge" id="searchCountBadge" style="display: none;">0 matches</span>
         </div>
 
-        <div class="filter-toolbar">
-          <div class="filter-group" id="tfFilters">
-            <button class="filter-btn active" data-tf="ALL">Всички ТФ</button>
-            <button class="filter-btn" data-tf="1D">📅 1D</button>
-            <button class="filter-btn" data-tf="4H">⏱️ 4H</button>
-            <button class="filter-btn" data-tf="1W">📆 1W</button>
-          </div>
+        <div class="cluster-scope-pills" id="clusterScopeFilters">
+          <button class="scope-btn active" data-scope="ACTIONABLE" id="scopeBtnActionable" title="Show only verified actionable clusters with 1W & 1D regime alignment">
+            ⚡ Actionable Clusters (3)
+          </button>
+          <button class="scope-btn" data-scope="ALL" id="scopeBtnAll" title="Show all clusters (muted clusters collapsed)">
+            All Clusters (7)
+          </button>
+        </div>
 
-          <div class="filter-group" id="techFilters">
-            <span class="filter-badge-lbl filter-lbl-tech">📐 Техника:</span>
-            <button class="filter-btn active" data-tech="ALL">Всички</button>
-            <button class="filter-btn filter-gold" data-tech="GOLD">🟡 Gold</button>
-            <button class="filter-btn filter-gold-flip" data-tech="RECENT_GOLD_FLIP" title="Свеж пробив в Gold Ribbon (1-5 бара) - перфектен за вход">✨ Пресен Gold Flip</button>
-            <button class="filter-btn filter-blue" data-tech="BLUE">🔵 Blue</button>
-            <button class="filter-btn filter-cyan" data-tech="BUY">🟢 Tech Buy</button>
-            <button class="filter-btn filter-ruby" data-tech="EXIT">🔴 Tech Exit</button>
-          </div>
+        <div class="command-actions-group">
+          <details class="filter-dropdown-menu" id="advancedFiltersMenu">
+            <summary class="btn-filter-trigger">
+              <span>⚙ Filters</span>
+            </summary>
+            <div class="filter-dropdown-content">
+              <div class="filter-subgroup" id="classFilters">
+                <span class="filter-subgroup-title">Market Class</span>
+                <div class="filter-chip-row">
+                  <button class="filter-btn active" data-class="ALL">All Markets</button>
+                  <button class="filter-btn" data-class="crypto">Crypto L1</button>
+                  <button class="filter-btn" data-class="crypto_stocks">Crypto Equities</button>
+                  <button class="filter-btn" data-class="ai_stocks">Tech Equities</button>
+                  <button class="filter-btn" data-class="commodities">Commodities</button>
+                  <button class="filter-btn" data-class="indices">Indices</button>
+                  <button class="filter-btn" data-class="intl_stocks">Global</button>
+                </div>
+              </div>
 
-          <div class="filter-group" id="fundFilters">
-            <span class="filter-badge-lbl filter-lbl-fund">🏢 Фундамент:</span>
-            <button class="filter-btn active" data-fund="ALL">Всички</button>
-            <button class="filter-btn filter-emerald" data-fund="UNDERVALUED">🟢 Подценени (DCF)</button>
-            <button class="filter-btn filter-purple" data-fund="WIDE_MOAT">💎 Wide Moat</button>
-            <button class="filter-btn filter-ruby" data-fund="OVERVALUED">🔴 Надценени</button>
-            <button class="filter-btn" data-fund="SPECULATIVE">⚪ Крипто / Макро</button>
-          </div>
+              <div class="filter-subgroup" id="techFilters">
+                <span class="filter-subgroup-title">Trend State</span>
+                <div class="filter-chip-row">
+                  <button class="filter-btn active" data-tech="ALL">All States</button>
+                  <button class="filter-btn filter-gold" data-tech="GOLD">Gold Trend</button>
+                  <button class="filter-btn filter-gold-flip" data-tech="RECENT_GOLD_FLIP">Fresh Gold Flip (1-5b)</button>
+                  <button class="filter-btn filter-blue" data-tech="BLUE">Blue Downtrend</button>
+                </div>
+              </div>
 
-          <div class="filter-group" id="setupFilters">
-            <span class="filter-badge-lbl filter-lbl-synth">🎯 Синтез:</span>
-            <button class="filter-btn active" data-setup="ALL">Всички</button>
-            <button class="filter-btn filter-gold-glow" data-setup="QUANTAMENTAL_ALPHA">⭐ Alpha Buy</button>
-            <button class="filter-btn filter-btc" data-setup="BTC_ALPHA" title="Активи с положителна алфа и бича панделка спрямо Bitcoin">⚡ ₿ Alpha Лидери</button>
-            <button class="filter-btn filter-btc-bleed" data-setup="BTC_BLEED" title="Активи губещи от Bitcoin (1x Spot ограничение)">⚠️ ₿ Bleeding vs BTC</button>
-            <button class="filter-btn filter-amber" data-setup="VALUE_TRAP">⏳ Value Traps</button>
-            <button class="filter-btn filter-emerald" data-setup="QUALITY_HOLD">🧱 Accumulate</button>
-            <button class="filter-btn" data-setup="SPOT_BUY">🟢 Spot Buy</button>
-          </div>
+              <div class="filter-subgroup" id="tfFilters" style="display: none;">
+                <button class="filter-btn active" data-tf="ALL">All TF</button>
+                <button class="filter-btn" data-tf="1D">1D</button>
+                <button class="filter-btn" data-tf="4H">4H</button>
+                <button class="filter-btn" data-tf="1W">1W</button>
+              </div>
+
+              <div class="filter-subgroup" id="fundFilters" style="display: none;">
+                <button class="filter-btn active" data-fund="ALL">All</button>
+              </div>
+
+              <div class="filter-subgroup" id="setupFilters" style="display: none;">
+                <button class="filter-btn active" data-setup="ALL">All</button>
+              </div>
+            </div>
+          </details>
 
           <div class="view-toggle" id="viewToggle">
-            <button class="toggle-btn active" data-view="table">💻 Таблица</button>
-            <button class="toggle-btn" data-view="cards">📱 Карти</button>
+            <button class="toggle-btn active" data-view="table" title="Table View">Table</button>
+            <button class="toggle-btn" data-view="cards" title="Cards View">Cards</button>
           </div>
         </div>
       </div>
@@ -434,26 +404,22 @@
       <table class="assets-table">
         <thead>
           <tr>
-            <th class="th-sortable" data-sort="ticker" title="Кликнете звездата (★) до всеки актив или бутона 'Запази' за да го добавите към Моите Идеи">⭐ Актив <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="asset_class">Клас <span class="sort-icon">⇅</span></th>
-            <th>ТФ</th>
-            <th class="th-sortable" data-sort="price">Цена <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="ticker">⭐ Asset &amp; 4H Timing <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="asset_class">Cluster <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable" data-sort="price">Price <span class="sort-icon">⇅</span></th>
             <th class="th-sortable th-tech-header" data-sort="state">
-              <div class="th-title-flex"><span class="pillar-indicator tech-glow"></span>📐 Технически Анализ (Larsson Ribbon) <span class="sort-icon">⇅</span></div>
+              <div class="th-title-flex"><span class="pillar-indicator tech-glow"></span>Trend State (Ribbon) <span class="sort-icon">⇅</span></div>
             </th>
-            <th class="th-sortable th-fund-header" data-sort="fund_verdict">
-              <div class="th-title-flex"><span class="pillar-indicator fund-glow"></span>🏢 Фундаментален Анализ (DCF & Valuation) <span class="sort-icon">⇅</span></div>
+            <th class="th-sortable" data-sort="s1_dist">Support &amp; Stop <span class="sort-icon">⇅</span></th>
+            <th class="th-sortable th-expectancy-header" data-sort="tier">
+              <div class="th-title-flex"><span class="pillar-indicator expectancy-glow"></span>Expectancy &amp; Sizing (Institutional) <span class="sort-icon">⇅</span></div>
             </th>
-            <th class="th-sortable th-synth-header" data-sort="tier">
-              <div class="th-title-flex"><span class="pillar-indicator synth-glow"></span>🎯 Синтезирана Стратегия (Quantamental) <span class="sort-icon">⇅</span></div>
-            </th>
-            <th class="th-sortable" data-sort="s1_dist">Нива S/R <span class="sort-icon">⇅</span></th>
-            <th>Действия &amp; Радар</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody id="assetsTableBody">
           <tr>
-            <td colspan="9" class="loading-state">Зареждане на пазарните данни...</td>
+            <td colspan="7" class="loading-state">Loading market data...</td>
           </tr>
         </tbody>
       </table>

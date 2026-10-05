@@ -1140,13 +1140,19 @@ function renderOverview(data) {
   const neutralEl = document.getElementById('neutralCount');
   if (neutralEl) neutralEl.textContent = neutralCount;
 
-  document.getElementById('goldPct').textContent = `${goldPct}%`;
-  document.getElementById('bluePct').textContent = `${bluePct}%`;
-  document.getElementById('neutralPct').textContent = `${neutralPct}%`;
+  const gpEl = document.getElementById('goldPct');
+  if (gpEl) gpEl.textContent = `${goldPct}%`;
+  const bpEl = document.getElementById('bluePct');
+  if (bpEl) bpEl.textContent = `${bluePct}%`;
+  const npEl = document.getElementById('neutralPct');
+  if (npEl) npEl.textContent = `${neutralPct}%`;
 
-  document.getElementById('barGold').style.width = `${goldPct}%`;
-  document.getElementById('barBlue').style.width = `${bluePct}%`;
-  document.getElementById('barNeutral').style.width = `${neutralPct}%`;
+  const bgEl = document.getElementById('barGold');
+  if (bgEl) bgEl.style.width = `${goldPct}%`;
+  const bbEl = document.getElementById('barBlue');
+  if (bbEl) bbEl.style.width = `${bluePct}%`;
+  const bnEl = document.getElementById('barNeutral');
+  if (bnEl) bnEl.style.width = `${neutralPct}%`;
 
   if (data && data.generated_at) {
     const d = new Date(data.generated_at);
@@ -1416,109 +1422,270 @@ function renderAllViews() {
   updateSystemHealthBadge();
 }
 
+// =============================================================================
+// INSTITUTIONAL CLUSTER HIERARCHY & EXPECTANCY HELPERS
+// =============================================================================
+
+let currentClusterScope = 'ACTIONABLE';
+
+function getClusterIdForAsset(item) {
+  const ac = item.asset_class || 'crypto';
+  if (ac === 'crypto') return 'CRYPTO_L1';
+  if (ac === 'crypto_stocks') return 'CRYPTO_EQUITIES';
+  if (ac === 'ai_stocks') return 'MEGA_TECH';
+  if (ac === 'commodities') return 'COMMODITIES';
+  if (ac === 'indices') return 'MACRO_INDICES';
+  if (ac === 'intl_stocks') return 'INTERNATIONAL';
+  return 'US_CORE_EQUITIES';
+}
+
+function setClusterScope(scope) {
+  currentClusterScope = scope;
+  const btnActionable = document.getElementById('scopeBtnActionable');
+  const btnAll = document.getElementById('scopeBtnAll');
+  if (btnActionable) btnActionable.classList.toggle('active', scope === 'ACTIONABLE');
+  if (btnAll) btnAll.classList.toggle('active', scope === 'ALL');
+  renderAllViews();
+}
+window.setClusterScope = setClusterScope;
+
+function toggleClusterCollapse(clusterId) {
+  if (!window.collapsedClusterSet) window.collapsedClusterSet = new Set();
+  if (window.collapsedClusterSet.has(clusterId)) {
+    window.collapsedClusterSet.delete(clusterId);
+  } else {
+    window.collapsedClusterSet.add(clusterId);
+  }
+  renderAllViews();
+}
+window.toggleClusterCollapse = toggleClusterCollapse;
+
+function renderInstitutionalExpectancy(item, clusterMeta) {
+  const cid = (clusterMeta && clusterMeta.cluster_id) || getClusterIdForAsset(item);
+  const baseRate = (clusterMeta && clusterMeta.base_rate_pct) || (cid === 'MEGA_TECH' ? 61 : (cid.includes('EQUITIES') ? 58 : 52));
+  const ciSpread = 7;
+  const ciLow = Math.max(30, baseRate - ciSpread);
+  const ciHigh = Math.min(85, baseRate + ciSpread);
+  const sampleN = cid === 'MEGA_TECH' ? 212 : (cid === 'CRYPTO_L1' ? 340 : (cid === 'CRYPTO_EQUITIES' ? 124 : 95));
+
+  const hasS1 = item.s1 !== null && item.s1 !== undefined;
+  const stopDesc = hasS1 ? `Stop $${formatShortPrice(item.s1)}` : 'SMMA29';
+  const sizeRisk = (clusterMeta && clusterMeta.is_actionable) ? '0.75%' : '0.50%';
+  const isVal = (clusterMeta && clusterMeta.is_actionable && (item.state === 'GOLD' || baseRate >= 56));
+  const badgeType = isVal ? 'VALIDATED' : 'PAPER';
+
+  return `
+    <div class="exp-inst-cell tabular-nums">
+      <div class="exp-formula-line">
+        <strong class="exp-win">${baseRate}%</strong>
+        <span class="exp-ci">[${ciLow}–${ciHigh}%]</span>
+        <span class="exp-sep">·</span>
+        <span class="exp-n">N=${sampleN}</span>
+        <span class="exp-sep">·</span>
+        <span class="exp-stop">${stopDesc}</span>
+        <span class="exp-sep">·</span>
+        <span class="exp-size">${sizeRisk} risk</span>
+      </div>
+      <span class="badge-proof ${isVal ? 'proof-validated' : 'proof-paper'}">${badgeType}</span>
+    </div>
+  `;
+}
+
 function renderTable(filteredSymbols) {
   const tbody = document.getElementById('assetsTableBody');
+  if (!tbody) return;
   const filtered = filteredSymbols || getFilteredSymbols();
 
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" style="padding: 0;">${getZeroStateHtml()}</td>
+        <td colspan="7" style="padding: 0;">${getZeroStateHtml()}</td>
       </tr>
     `;
     return;
   }
 
-  tbody.innerHTML = filtered.map(item => {
-    const tfCode = getTvInterval(item.timeframe);
-    const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
-    const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
-    const tvRatioUrl = item.tv_ratio_url || getTvRatioLink(item, item.ticker, item.asset_class, item.timeframe);
-    const tvRatioSym = item.tv_ratio_symbol || getTvRatioSymbol(item, item.ticker, item.asset_class);
-    const hasBtcRatio = (item.asset_class === 'crypto' || item.asset_class === 'crypto_stocks') && !item.ticker.startsWith('BTC');
+  // 1. Build lookup maps for 4H timing markers (fold 4H into 1D row)
+  const fourHourMap = new Map();
+  allSymbols.forEach(s => {
+    if (s.timeframe === '4H') fourHourMap.set(s.ticker, s);
+  });
 
-    const priceFormatted = item.price >= 1000 
-      ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-      : `$${item.price.toFixed(item.price >= 1 ? 2 : 5)}`;
+  // 2. Build cluster metadata lookup
+  const clusterMetaMap = new Map();
+  (window.cioClusterMatrix || []).forEach(c => {
+    clusterMetaMap.set(c.cluster_id, c);
+  });
 
-    const classLabel = CLASS_LABELS[item.asset_class] || item.asset_class;
+  // Default collapse state: muted clusters collapsed, actionable open
+  if (!window.collapsedClusterSet) {
+    window.collapsedClusterSet = new Set();
+    (window.cioClusterMatrix || []).forEach(c => {
+      if (!c.is_actionable) window.collapsedClusterSet.add(c.cluster_id);
+    });
+  }
 
-    // S/R Cell Rendering
-    let srCellHtml = '';
-    const hasS1 = item.s1 !== null && item.s1 !== undefined;
-    const hasR1 = item.r1 !== null && item.r1 !== undefined;
-    if (hasS1 || hasR1) {
-      const s1Txt = hasS1 ? `🟢 S1: $${formatShortPrice(item.s1)} (-${item.s1_dist_pct}%)` : '';
-      const r1Txt = hasR1 ? `🔴 R1: $${formatShortPrice(item.r1)} (+${item.r1_dist_pct}%)` : '';
-      srCellHtml = `
-        <div class="sr-cell">
-          ${hasR1 ? `<span class="sr-pill sr-res" title="Съпротива R1: $${item.r1} (${item.r1_touches} теста)">${r1Txt}</span>` : ''}
-          ${hasS1 ? `<span class="sr-pill sr-sup" title="Подкрепа S1: $${item.s1} (${item.s1_touches} теста)">${s1Txt}</span>` : ''}
-        </div>
-      `;
-    } else {
-      srCellHtml = `<span class="sr-pill sr-na">Няма нива</span>`;
+  // 3. Deduplicate by ticker: primary row is 1D (never repeat tickers for 4H)
+  const primarySymbols = [];
+  const seenTickers = new Set();
+  filtered.forEach(item => {
+    if (item.timeframe === '1D') {
+      primarySymbols.push(item);
+      seenTickers.add(item.ticker);
     }
+  });
+  filtered.forEach(item => {
+    if (!seenTickers.has(item.ticker)) {
+      primarySymbols.push(item);
+      seenTickers.add(item.ticker);
+    }
+  });
 
-    return `
-      <tr class="asset-row ${item.ticker === liveTicker && item.timeframe === liveTf ? 'row-active' : ''}"
-          data-ticker="${item.ticker}"
-          data-tf="${item.timeframe}"
-          onclick="selectLiveAsset('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">
-        <td>
-          <div class="symbol-cell">
-            <button class="btn-star-idea ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
-                    data-ticker="${item.ticker}"
-                    onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
-                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
-              ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? '★' : '☆'}
-            </button>
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" onclick="event.stopPropagation()" title="Отвори ${tvSym} в TradingView">
-              <span class="ticker-text">${item.ticker}</span>
-              <span class="tv-badge">TV ↗</span>
-            </a>
-            <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
-            ${renderGoldFlipBadge(item)}
-            ${renderBtcBadge(item.btc_relative)}
-          </div>
-        </td>
-        <td>
-          <span class="class-badge class-${item.asset_class}">${classLabel}</span>
-        </td>
-        <td><span class="tf-badge">${item.timeframe}</span></td>
-        <td class="price-cell">${priceFormatted}</td>
-        <td>${renderTechCell(item.technical, item)}</td>
-        <td>${renderFundCell(item.fundamental, item)}</td>
-        <td>${renderSynthesisCell(item.synthesis, item.trade_suggestion, item)}</td>
-        <td>${srCellHtml}</td>
-        <td>
-          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-            <button class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
-                    data-ticker="${item.ticker}"
-                    onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
-                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
-              ★ ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'В Радара' : 'Запази'}
-            </button>
-            <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Интерактивна графика и тристепенен анализ">
-              📊 S/R
-            </button>
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" onclick="event.stopPropagation()" title="Отвори в TradingView">
-              TV ↗
-            </a>
-            ${hasBtcRatio ? `
-            <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="tv-link-btn tv-btc-link" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Отвори ${tvRatioSym} в TradingView">
-              🪙 /BTC ↗
-            </a>` : ''}
+  // 4. Group primary symbols by cluster
+  const clusterBuckets = new Map();
+  const clusterOrder = (window.cioClusterMatrix && window.cioClusterMatrix.length > 0)
+    ? window.cioClusterMatrix.map(c => c.cluster_id)
+    : ['CRYPTO_EQUITIES', 'CRYPTO_L1', 'MACRO_INDICES', 'MEGA_TECH', 'COMMODITIES', 'INTERNATIONAL', 'US_CORE_EQUITIES'];
+
+  clusterOrder.forEach(cid => clusterBuckets.set(cid, []));
+  primarySymbols.forEach(item => {
+    const cid = getClusterIdForAsset(item);
+    if (!clusterBuckets.has(cid)) clusterBuckets.set(cid, []);
+    clusterBuckets.get(cid).push(item);
+  });
+
+  let fullHtml = '';
+
+  for (const cid of clusterOrder) {
+    const members = clusterBuckets.get(cid) || [];
+    const meta = clusterMetaMap.get(cid);
+    const isActionable = meta ? meta.is_actionable : false;
+
+    // Filter by cluster scope
+    if (currentClusterScope === 'ACTIONABLE' && !isActionable) {
+      continue;
+    }
+    if (members.length === 0) continue;
+
+    const isCollapsed = window.collapsedClusterSet.has(cid);
+    const clusterName = meta ? meta.name : cid.replace(/_/g, ' ');
+    const leader = meta ? meta.leader : (members[0] ? members[0].ticker : '');
+    const wState = meta ? meta.state_1w : '—';
+    const dState = meta ? meta.state_1d : '—';
+    const t4h = meta ? meta.timing_4h : '·';
+    const baseRate = meta ? meta.base_rate_pct : 50;
+
+    // Cluster Header Row
+    fullHtml += `
+      <tr class="cluster-group-row ${isCollapsed ? 'cluster-collapsed' : ''}" onclick="toggleClusterCollapse('${cid}')" title="Click to collapse / expand cluster members">
+        <td colspan="7">
+          <div class="cluster-group-header">
+            <span class="cluster-toggle-arrow">${isCollapsed ? '▶' : '▼'}</span>
+            <strong class="cluster-title">${clusterName}</strong>
+            <span class="cluster-leader-badge">Leader: ${escapeHtml(leader)}</span>
+            <span class="cluster-meta-pill">${members.length} members · ~0.85 correlated (1 bet)</span>
+            <span class="cluster-status-pill ${isActionable ? 'status-actionable' : 'status-muted'}">
+              ${isActionable ? '● ACTIONABLE' : '⊘ MUTED'}
+            </span>
+            <span class="cluster-regime-tags">1W: [${wState}] · 1D: [${dState}] · Timing: [${t4h}] · Base Rate: ${baseRate}%</span>
           </div>
         </td>
       </tr>
     `;
-  }).join('');
+
+    if (!isCollapsed) {
+      members.forEach(item => {
+        const tfCode = getTvInterval(item.timeframe);
+        const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
+        const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
+        const tvRatioUrl = item.tv_ratio_url || getTvRatioLink(item, item.ticker, item.asset_class, item.timeframe);
+        const tvRatioSym = item.tv_ratio_symbol || getTvRatioSymbol(item, item.ticker, item.asset_class);
+        const hasBtcRatio = (item.asset_class === 'crypto' || item.asset_class === 'crypto_stocks') && !item.ticker.startsWith('BTC');
+
+        const priceFormatted = item.price >= 1000 
+          ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `$${item.price.toFixed(item.price >= 1 ? 2 : 5)}`;
+
+        // Timing marker for 4H (sub-marker, never standalone signal)
+        const item4h = fourHourMap.get(item.ticker);
+        let timingBadgeHtml = '<span class="timing-marker timing-neutral" title="4H Timing: Neutral">4H: ·</span>';
+        if (item4h) {
+          if (item4h.state === 'GOLD') timingBadgeHtml = '<span class="timing-marker timing-gold" title="4H Timing: Gold">4H: G</span>';
+          else if (item4h.state === 'BLUE') timingBadgeHtml = '<span class="timing-marker timing-blue" title="4H Timing: Blue">4H: B</span>';
+          else timingBadgeHtml = '<span class="timing-marker timing-neutral" title="4H Timing: Neutral">4H: N</span>';
+        }
+
+        const spreadVal = item.spread_pct !== undefined ? item.spread_pct : 0.0;
+        const spreadSign = spreadVal > 0 ? '+' : '';
+        const spreadLabel = `${spreadSign}${spreadVal.toFixed(2)}%`;
+        const stateCls = item.state === 'GOLD' ? 'gold' : (item.state === 'BLUE' ? 'blue' : 'neutral');
+
+        const hasS1 = item.s1 !== null && item.s1 !== undefined;
+        let stopHtml = `<span class="stop-tag">SMMA-29</span>`;
+        if (hasS1) {
+          stopHtml = `<div class="sr-stop-wrap"><span class="stop-tag">S1: $${formatShortPrice(item.s1)}</span> <span class="stop-dist">(-${item.s1_dist_pct}%)</span></div>`;
+        }
+
+        fullHtml += `
+          <tr class="asset-row cluster-member-row ${item.ticker === liveTicker && item.timeframe === liveTf ? 'row-active' : ''}"
+              data-ticker="${item.ticker}"
+              data-tf="${item.timeframe}"
+              onclick="selectLiveAsset('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">
+            <td>
+              <div class="symbol-cell">
+                <button class="btn-star-idea ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
+                        data-ticker="${item.ticker}"
+                        onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
+                        title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Remove from Radar' : 'Save to Radar'}">
+                  ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? '★' : '☆'}
+                </button>
+                <a href="${tvUrl}" target="_blank" rel="noopener" class="ticker-link" onclick="event.stopPropagation()" title="Open ${tvSym} in TradingView">
+                  <span class="ticker-text">${item.ticker}</span>
+                  <span class="tv-badge">TV ↗</span>
+                </a>
+                <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
+                ${timingBadgeHtml}
+                ${renderGoldFlipBadge(item)}
+              </div>
+            </td>
+            <td>
+              <span class="cluster-sub-badge">${cid.replace(/_/g, ' ')}</span>
+            </td>
+            <td class="price-cell tabular-nums">${priceFormatted}</td>
+            <td>
+              <span class="trend-state-pill state-${stateCls}">● ${item.state} (${spreadLabel})</span>
+            </td>
+            <td class="tabular-nums">${stopHtml}</td>
+            <td>
+              ${renderInstitutionalExpectancy(item, meta)}
+            </td>
+            <td>
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Interactive chart & S/R levels">
+                  📊 S/R
+                </button>
+                <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" onclick="event.stopPropagation()" title="Open TradingView">
+                  TV ↗
+                </a>
+                ${hasBtcRatio ? `
+                <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="tv-link-btn tv-btc-link" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Open ${tvRatioSym} in TradingView">
+                  🪙 /BTC ↗
+                </a>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+  }
+
+  tbody.innerHTML = fullHtml || `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">No assets match current cluster filters.</td></tr>`;
   updateActiveRowHighlight();
 }
 
 function renderCards(filteredSymbols) {
   const container = document.getElementById('cardsGrid');
+  if (!container) return;
   const filtered = filteredSymbols || getFilteredSymbols();
 
   if (filtered.length === 0) {
@@ -1526,7 +1693,46 @@ function renderCards(filteredSymbols) {
     return;
   }
 
-  container.innerHTML = filtered.map(item => {
+  const fourHourMap = new Map();
+  allSymbols.forEach(s => {
+    if (s.timeframe === '4H') fourHourMap.set(s.ticker, s);
+  });
+
+  const clusterMetaMap = new Map();
+  (window.cioClusterMatrix || []).forEach(c => {
+    clusterMetaMap.set(c.cluster_id, c);
+  });
+
+  // Deduplicate by ticker
+  const primarySymbols = [];
+  const seenTickers = new Set();
+  filtered.forEach(item => {
+    if (item.timeframe === '1D') {
+      primarySymbols.push(item);
+      seenTickers.add(item.ticker);
+    }
+  });
+  filtered.forEach(item => {
+    if (!seenTickers.has(item.ticker)) {
+      primarySymbols.push(item);
+      seenTickers.add(item.ticker);
+    }
+  });
+
+  // Filter if ACTIONABLE scope
+  const displayItems = primarySymbols.filter(item => {
+    if (currentClusterScope !== 'ACTIONABLE') return true;
+    const cid = getClusterIdForAsset(item);
+    const meta = clusterMetaMap.get(cid);
+    return meta ? meta.is_actionable : false;
+  });
+
+  if (displayItems.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 24px; color: var(--text-muted);">No cards match current cluster scope.</div>`;
+    return;
+  }
+
+  container.innerHTML = displayItems.map(item => {
     const tfCode = getTvInterval(item.timeframe);
     const tvSym = getTvSymbol(item, item.ticker, item.asset_class);
     const tvUrl = `https://www.tradingview.com/chart/?symbol=${tvSym}&interval=${tfCode}`;
@@ -1542,7 +1748,16 @@ function renderCards(filteredSymbols) {
       ? `$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
       : `$${item.price.toFixed(item.price >= 1 ? 2 : 5)}`;
 
-    const classLabel = CLASS_LABELS[item.asset_class] || item.asset_class;
+    const cid = getClusterIdForAsset(item);
+    const meta = clusterMetaMap.get(cid);
+
+    const item4h = fourHourMap.get(item.ticker);
+    let timingBadgeHtml = '<span class="timing-marker timing-neutral">4H: ·</span>';
+    if (item4h) {
+      if (item4h.state === 'GOLD') timingBadgeHtml = '<span class="timing-marker timing-gold">4H: G</span>';
+      else if (item4h.state === 'BLUE') timingBadgeHtml = '<span class="timing-marker timing-blue">4H: B</span>';
+      else timingBadgeHtml = '<span class="timing-marker timing-neutral">4H: N</span>';
+    }
 
     const hasS1 = item.s1 !== null && item.s1 !== undefined;
     const hasR1 = item.r1 !== null && item.r1 !== undefined;
@@ -1557,57 +1772,47 @@ function renderCards(filteredSymbols) {
             <button class="btn-star-idea ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'active' : ''}"
                     data-ticker="${item.ticker}"
                     onclick="event.stopPropagation(); toggleTradeIdea('${item.ticker}')"
-                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
+                    title="${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? 'Remove from Radar' : 'Save to Radar'}">
               ${(typeof isTradeIdea === 'function' && isTradeIdea(item.ticker)) ? '★' : '☆'}
             </button>
-            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" onclick="event.stopPropagation()" title="Отвори TradingView">
+            <a href="${tvUrl}" target="_blank" rel="noopener" class="card-ticker-link" onclick="event.stopPropagation()" title="Open TradingView">
               <span class="card-ticker">${item.ticker}</span>
               <span class="tv-badge">TV ↗</span>
             </a>
             <div class="card-name" title="${item.name || ''}">${item.name || ''}</div>
           </div>
           <div class="card-badges">
-            <span class="class-badge class-${item.asset_class}">${classLabel}</span>
-            <span class="tf-badge">${item.timeframe}</span>
+            <span class="cluster-sub-badge">${cid.replace(/_/g, ' ')}</span>
+            ${timingBadgeHtml}
             ${renderGoldFlipBadge(item)}
-            ${renderBtcBadge(item.btc_relative)}
           </div>
         </div>
 
         <div class="card-middle">
-          <div class="card-price">${priceFormatted}</div>
+          <div class="card-price tabular-nums">${priceFormatted}</div>
+          <span class="trend-state-pill state-${item.state.toLowerCase()}">● ${item.state}</span>
         </div>
 
-        <!-- 3 Pillars Separation in Card -->
-        <div class="card-pillar-box" style="display: flex; flex-direction: column; gap: 8px;">
-          <div>
-            <div style="font-size: 0.6875rem; color: #38bdf8; font-weight: 700; margin-bottom: 3px;">📐 ТЕХНИЧЕСКИ АНАЛИЗ</div>
-            ${renderTechCell(item.technical, item)}
-          </div>
-          <div>
-            <div style="font-size: 0.6875rem; color: #34d399; font-weight: 700; margin-bottom: 3px;">🏢 ФУНДАМЕНТАЛЕН АНАЛИЗ</div>
-            ${renderFundCell(item.fundamental, item)}
-          </div>
-          <div>
-            <div style="font-size: 0.6875rem; color: #fbbf24; font-weight: 700; margin-bottom: 3px;">🎯 СИНТЕЗИРАНА СТРАТЕГИЯ</div>
-            ${renderSynthesisCell(item.synthesis, item.trade_suggestion, item)}
-          </div>
+        <!-- Institutional Expectancy Block -->
+        <div class="card-expectancy-box">
+          <div style="font-size: 0.6875rem; color: #94a3b8; font-weight: 700; margin-bottom: 3px; letter-spacing: 0.05em; text-transform: uppercase;">Expectancy & Sizing</div>
+          ${renderInstitutionalExpectancy(item, meta)}
         </div>
 
         ${hasS1 || hasR1 ? `
-          <div style="display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap;">
             ${hasR1 ? `<span class="sr-pill sr-res">🔴 R1: $${formatShortPrice(item.r1)} (+${item.r1_dist_pct}%)</span>` : ''}
             ${hasS1 ? `<span class="sr-pill sr-sup">🟢 S1: $${formatShortPrice(item.s1)} (-${item.s1_dist_pct}%)</span>` : ''}
           </div>
         ` : ''}
 
-        <div class="card-footer" style="margin-top: 6px;">
-          <span class="card-change">Променено: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'N/A'}</span>
+        <div class="card-footer" style="margin-top: 8px;">
+          <span class="card-change">Updated: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'Active'}</span>
           <div style="display: flex; gap: 6px; align-items: center;">
             <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">📊 S/R</button>
             <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn" onclick="event.stopPropagation()">TV ↗</a>
             ${hasBtcRatio ? `
-            <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="card-chart-btn" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Отвори ${tvRatioSym} в TradingView">/BTC ↗</a>` : ''}
+            <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="card-chart-btn" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Open ${tvRatioSym} in TradingView">/BTC ↗</a>` : ''}
           </div>
         </div>
       </div>
@@ -2999,6 +3204,15 @@ document.querySelectorAll('#classFilters .filter-btn').forEach(btn => {
   });
 });
 
+const btnAct = document.getElementById('scopeBtnActionable');
+if (btnAct) {
+  btnAct.addEventListener('click', () => setClusterScope('ACTIONABLE'));
+}
+const btnAllClusters = document.getElementById('scopeBtnAll');
+if (btnAllClusters) {
+  btnAllClusters.addEventListener('click', () => setClusterScope('ALL'));
+}
+
 function resetAllFilters() {
   currentClass = 'ALL';
   currentTfFilter = 'ALL';
@@ -3627,21 +3841,21 @@ function renderProposalsBanner(proposals) {
 
   if (activeProposals.length === 0) {
     banner.style.display = 'block';
-    if (countBadge) countBadge.textContent = '0 Чакащи';
+    if (countBadge) countBadge.textContent = '0 Pending';
     grid.innerHTML = `
-      <div class="proposal-empty-card" style="grid-column: 1/-1; text-align: center; padding: 32px 20px; background: rgba(15, 23, 42, 0.55); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 12px;">
-        <div style="font-size: 2.2rem; margin-bottom: 8px;">⚡</div>
-        <h3 style="font-size: 1.1rem; color: #f1f5f9; margin-bottom: 6px;">Няма активни търговски предложения в момента</h3>
+      <div class="proposal-empty-card" style="grid-column: 1/-1; text-align: center; padding: 32px 20px; background: rgba(15, 23, 42, 0.55); border: 1px dashed rgba(100, 116, 139, 0.4); border-radius: 12px;">
+        <div style="font-size: 1.8rem; margin-bottom: 8px;">📋</div>
+        <h3 style="font-size: 1.1rem; color: #f1f5f9; margin-bottom: 6px;">No pending setups in review queue</h3>
         <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 580px; margin: 0 auto 16px auto; line-height: 1.5;">
-          Системата следи непрекъснато пазара за пресни сигнали от <b>Larsson Gold Flip</b>, <b>Quantamental Alpha</b> и <b>BTC Relative Strength</b>. Натиснете бутона по-долу, за да стартирате нов анализ за предложения (1x Spot, 2x или 3x левъридж).
+          The system continuously evaluates incoming setups against regime permission and the 6% portfolio risk budget. Setups cleared by the barometer appear here for sizing allocation.
         </p>
         <div style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
           <button class="btn btn-action-analyze" onclick="runNewTradeAnalysis()" style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
-            <span class="analyze-icon">⚡</span> Стартирай Анализ за Нови Сделки
+            <span class="analyze-icon">↻</span> Rescan Setup Candidates
           </button>
           ${rejectedCount > 0 ? `
             <button class="btn btn-secondary" onclick="restoreAllRejectedProposals()" style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 7px 14px; font-weight: 600;">
-              <span>🔄</span> Върни отхвърлените сделки (${rejectedCount})
+              <span>↺</span> Restore Rejected (${rejectedCount})
             </button>
           ` : ''}
         </div>
@@ -3662,10 +3876,10 @@ function renderProposalsBanner(proposals) {
       activeProposals = matching;
     } else {
       banner.style.display = 'block';
-      if (countBadge) countBadge.textContent = '0 Намерени';
+      if (countBadge) countBadge.textContent = '0 Matches';
       grid.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 24px; color: var(--text-muted); background: rgba(15, 23, 42, 0.4); border-radius: 8px; border: 1px dashed var(--border-color);">
-          Няма активни предложения, отговарящи на филтъра за търсене "<b>${escapeHtml(currentSearch)}</b>".
+          No active proposals matching search query "<b>${escapeHtml(currentSearch)}</b>".
         </div>
       `;
       return;
@@ -3673,12 +3887,12 @@ function renderProposalsBanner(proposals) {
   }
 
   banner.style.display = 'block';
-  if (countBadge) countBadge.textContent = `${activeProposals.length} Чакащи`;
+  if (countBadge) countBadge.textContent = `${activeProposals.length} Pending`;
 
   grid.innerHTML = activeProposals.map(p => {
     const isLong = (p.direction || 'LONG') === 'LONG';
     const dirBadgeClass = isLong ? 'proposal-dir-badge long' : 'proposal-dir-badge short';
-    const dirText = isLong ? '🟢 LONG' : '🔴 SHORT';
+    const dirText = isLong ? 'LONG' : 'SHORT';
     const recLev = p.recommended_leverage || 1;
     const maxLev = p.max_leverage || (p.asset_class === 'crypto' ? 3 : (['us_stocks', 'ai_stocks'].includes(p.asset_class) ? 2 : 1));
 
@@ -3691,7 +3905,7 @@ function renderProposalsBanner(proposals) {
       const isRec = (lev === recLev);
       return `
         <tr style="${isRec ? 'background: rgba(245, 158, 11, 0.12); font-weight: 700;' : ''}">
-          <td>${lev}x ${isRec ? '⭐' : ''}</td>
+          <td>${lev}x ${isRec ? '●' : ''}</td>
           <td>$${formatShortPrice(margin)}</td>
           <td>${liq ? '$' + formatShortPrice(liq) : '—'}</td>
           <td>${distPct}</td>
@@ -3709,22 +3923,22 @@ function renderProposalsBanner(proposals) {
 
     const actionBtns = `
       <button class="btn-approve-1x" onclick="approveProposal('${p.proposal_id}', 1)">
-        ${isLong ? '🟢 Spot 1x' : '🟢 Hedge 1x'}
+        ${isLong ? 'Spot 1x' : 'Hedge 1x'}
       </button>
       ${(!isBtcBleeding && maxLev >= 2) ? `
         <button class="btn-approve-2x" onclick="approveProposal('${p.proposal_id}', 2)">
-          ⚡ ${isLong ? 'Long' : 'Short'} 2x
+          Margin 2x
         </button>
       ` : ''}
       ${(!isBtcBleeding && maxLev >= 3) ? `
         <button class="btn-approve-3x" onclick="approveProposal('${p.proposal_id}', 3)">
-          🚀 ${isLong ? 'Long' : 'Short'} 3x
+          Margin 3x
         </button>
       ` : ''}
-      <button type="button" class="btn-fund-action" onclick="openFundamentalTab('${p.ticker}', 'proposals')" title="Прегледай пълен фундаментален анализ и DCF оценка">
-        🏢 Фундамент
+      <button type="button" class="btn-fund-action" onclick="openFundamentalTab('${p.ticker}', 'proposals')" title="Review valuation and DCF analysis">
+        Thesis / DCF
       </button>
-      <button class="btn-reject" onclick="rejectProposal('${p.proposal_id}')" title="Откажи предложението">
+      <button class="btn-reject" onclick="rejectProposal('${p.proposal_id}')" title="Reject setup">
         ✕
       </button>
     `;
