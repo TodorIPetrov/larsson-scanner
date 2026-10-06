@@ -3893,25 +3893,29 @@ function renderProposalsBanner(proposals) {
     const isLong = (p.direction || 'LONG') === 'LONG';
     const dirBadgeClass = isLong ? 'proposal-dir-badge long' : 'proposal-dir-badge short';
     const dirText = isLong ? 'LONG' : 'SHORT';
+    const isCrypto = p.asset_class === 'crypto' || (p.ticker && p.ticker.endsWith('USDT'));
     const recLev = p.recommended_leverage || 1;
-    const maxLev = p.max_leverage || (p.asset_class === 'crypto' ? 3 : (['us_stocks', 'ai_stocks'].includes(p.asset_class) ? 2 : 1));
+    const maxLev = p.max_leverage || (isCrypto ? 3 : (['us_stocks', 'ai_stocks'].includes(p.asset_class) ? 2 : 1));
 
     const entry = p.entry_price || 0;
+    const sl = p.stop_loss || (isLong ? entry * 0.95 : entry * 1.05);
+    const tp1 = p.tp1 || (isLong ? entry * 1.10 : entry * 0.90);
     const notional = p.position_size_usd || 1000;
-    const matrixRows = [1, 2, 3].filter(lev => lev <= Math.max(recLev, maxLev)).map(lev => {
-      const margin = notional / lev;
-      const liq = lev === 1 ? null : (isLong ? entry * (1.0 - 1.0/lev + 0.005) : entry * (1.0 + 1.0/lev - 0.005));
-      const distPct = liq ? (Math.abs(entry - liq) / entry * 100).toFixed(1) + '%' : '∞';
-      const isRec = (lev === recLev);
-      return `
-        <tr style="${isRec ? 'background: rgba(245, 158, 11, 0.12); font-weight: 700;' : ''}">
-          <td>${lev}x ${isRec ? '●' : ''}</td>
-          <td>$${formatShortPrice(margin)}</td>
-          <td>${liq ? '$' + formatShortPrice(liq) : '—'}</td>
-          <td>${distPct}</td>
-        </tr>
-      `;
-    }).join('');
+
+    const slDistPct = (entry > 0 && sl > 0) ? Math.abs((entry - sl) / entry * 100).toFixed(1) : '5.0';
+    const tpDistPct = (entry > 0 && tp1 > 0) ? Math.abs((tp1 - entry) / entry * 100).toFixed(1) : '10.0';
+    const riskAmt = Math.abs(entry - sl);
+    const rewAmt = Math.abs(tp1 - entry);
+    const rrrVal = (riskAmt > 0 && rewAmt > 0) ? (rewAmt / riskAmt).toFixed(2) : '1.80';
+    const rrrNum = parseFloat(rrrVal) || 1.8;
+    const rrrColor = rrrNum >= 2.0 ? '#34d399' : (rrrNum >= 1.8 ? '#38bdf8' : '#f87171');
+    const riskUsd = p.risk_usd || Math.round((notional * parseFloat(slDistPct)) / 100);
+
+    // Calculate leverage safety
+    const liq2 = isLong ? entry * (1.0 - 0.5 + 0.005) : entry * (1.0 + 0.5 - 0.005);
+    const liq3 = isLong ? entry * (1.0 - (1.0 / 3) + 0.005) : entry * (1.0 + (1.0 / 3) - 0.005);
+    const liqGap2 = isLong ? ((sl - liq2) / entry * 100) : ((liq2 - sl) / entry * 100);
+    const liqGap3 = isLong ? ((sl - liq3) / entry * 100) : ((liq3 - sl) / entry * 100);
 
     const s = allSymbols.find(x => x.ticker === p.ticker);
     const assetName = p.name || (s && s.name) || p.ticker;
@@ -3919,34 +3923,81 @@ function renderProposalsBanner(proposals) {
     const tvUrl = (typeof getTradingViewLink === 'function') ? getTradingViewLink(tvSymbol, p.timeframe || '1D') : `https://www.tradingview.com/chart/?symbol=${tvSymbol}&interval=1D`;
     const btcRel = p.btc_relative || (s && s.btc_relative);
     const btcBadgeHtml = renderBtcBadge(btcRel);
-    const isBtcBleeding = btcRel && !btcRel.leverage_allowed;
+    const isBtcBleeding = isCrypto && btcRel && !btcRel.leverage_allowed;
+
+    const lev2Safe = !isBtcBleeding && sl > 0 && (isLong ? sl > liq2 : liq2 > sl) && liqGap2 >= 10.0;
+    const lev3Safe = !isBtcBleeding && sl > 0 && (isLong ? sl > liq3 : liq3 > sl) && liqGap3 >= 10.0;
+
+    const matrixRows = [1, 2, 3].filter(lev => lev <= Math.max(recLev, maxLev)).map(lev => {
+      const margin = notional / lev;
+      const liq = lev === 1 ? null : (lev === 2 ? liq2 : liq3);
+      const gap = lev === 2 ? liqGap2 : (lev === 3 ? liqGap3 : null);
+
+      let gapText = '—';
+      let gapStyle = '';
+      if (lev === 1) {
+        gapText = '🛡️ Без риск от ликв.';
+        gapStyle = 'color: #38bdf8; font-weight: 600;';
+      } else if (liq && sl > 0) {
+        if ((isLong && sl <= liq) || (!isLong && liq <= sl)) {
+          gapText = '⚠️ FATAL (Ликв > Стоп)';
+          gapStyle = 'color: #f87171; font-weight: 700; background: rgba(239, 68, 68, 0.15); padding: 2px 4px; border-radius: 4px;';
+        } else if (gap < 10.0) {
+          gapText = `+${gap.toFixed(1)}% ⚠️ (Слаб буфер)`;
+          gapStyle = 'color: #f87171; font-weight: 700;';
+        } else {
+          gapText = `+${gap.toFixed(1)}% (Безопасен)`;
+          gapStyle = 'color: #34d399; font-weight: 600;';
+        }
+      }
+
+      const isRec = (lev === recLev);
+      return `
+        <tr style="${isRec ? 'background: rgba(16, 185, 129, 0.08); font-weight: 700;' : ''}">
+          <td>${lev}x ${isRec ? '●' : ''}</td>
+          <td>$${formatShortPrice(margin)}</td>
+          <td>${liq ? '$' + formatShortPrice(liq) : '—'}</td>
+          <td style="${gapStyle}">${gapText}</td>
+        </tr>
+      `;
+    }).join('');
 
     const actionBtns = `
-      <button class="btn-approve-1x" onclick="approveProposal('${p.proposal_id}', 1)">
-        ${isLong ? 'Spot 1x' : 'Hedge 1x'}
+      <button class="btn btn-approve-1x" onclick="approveProposal('${p.proposal_id}', 1)" style="background: #10b981; color: #ffffff; font-weight: 700; border: none; padding: 7px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+        ${isLong ? '🟢 Spot 1x' : '🟢 Hedge 1x'}
       </button>
-      ${(!isBtcBleeding && maxLev >= 2) ? `
-        <button class="btn-approve-2x" onclick="approveProposal('${p.proposal_id}', 2)">
+      ${maxLev >= 2 ? (lev2Safe ? `
+        <button class="btn btn-approve-2x" onclick="approveProposal('${p.proposal_id}', 2)" style="background: transparent; border: 1px solid #3b82f6; color: #60a5fa; font-weight: 600; padding: 7px 12px; border-radius: 6px; cursor: pointer;">
           Margin 2x
         </button>
-      ` : ''}
-      ${(!isBtcBleeding && maxLev >= 3) ? `
-        <button class="btn-approve-3x" onclick="approveProposal('${p.proposal_id}', 3)">
+      ` : `
+        <button class="btn btn-approve-2x disabled" disabled style="opacity: 0.35; cursor: not-allowed; background: transparent; border: 1px solid rgba(148, 163, 184, 0.3); color: #94a3b8; padding: 7px 12px; border-radius: 6px;" title="Блокирано: Буферът между Стоп и Ликвидация е под 10% или активът изостава от BTC">
+          Margin 2x 🔒
+        </button>
+      `) : ''}
+      ${maxLev >= 3 ? (lev3Safe ? `
+        <button class="btn btn-approve-3x" onclick="approveProposal('${p.proposal_id}', 3)" style="background: transparent; border: 1px solid #f59e0b; color: #fbbf24; font-weight: 600; padding: 7px 12px; border-radius: 6px; cursor: pointer;">
           Margin 3x
         </button>
+      ` : `
+        <button class="btn btn-approve-3x disabled" disabled style="opacity: 0.35; cursor: not-allowed; background: transparent; border: 1px solid rgba(148, 163, 184, 0.3); color: #94a3b8; padding: 7px 12px; border-radius: 6px;" title="Блокирано: Ликвидационната цена изпреварва стопа или буферът е опасен">
+          Margin 3x 🔒
+        </button>
+      `) : ''}
+      ${!isCrypto ? `
+        <button type="button" class="btn btn-fund-action" onclick="openFundamentalTab('${p.ticker}', 'proposals')" style="background: rgba(100, 116, 139, 0.15); border: 1px solid rgba(100, 116, 139, 0.3); color: #cbd5e1; padding: 7px 10px; border-radius: 6px; cursor: pointer;" title="Преглед на институционалния DCF и MoS анализ">
+          Thesis / DCF
+        </button>
       ` : ''}
-      <button type="button" class="btn-fund-action" onclick="openFundamentalTab('${p.ticker}', 'proposals')" title="Review valuation and DCF analysis">
-        Thesis / DCF
-      </button>
-      <button class="btn-reject" onclick="rejectProposal('${p.proposal_id}')" title="Reject setup">
-        ✕
+      <button class="btn btn-reject" onclick="rejectProposal('${p.proposal_id}')" style="background: transparent; border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; padding: 7px 10px; border-radius: 6px; cursor: pointer;" title="Отхвърли това предложение">
+        ✕ Отхвърли
       </button>
     `;
 
     return `
       <div class="proposal-card" id="propCard_${p.proposal_id}">
         <div class="proposal-card-header">
-          <div class="proposal-asset-info" onclick="openFundamentalTab('${p.ticker}', 'proposals')" style="cursor: pointer;" title="Кликнете за пълен фундаментален анализ и DCF оценка">
+          <div class="proposal-asset-info" onclick="${!isCrypto ? `openFundamentalTab('${p.ticker}', 'proposals')` : ''}" style="${!isCrypto ? 'cursor: pointer;' : ''}" title="${!isCrypto ? 'Кликнете за пълен фундаментален анализ и DCF оценка' : 'Дигитален актив'}">
             <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
               <span class="proposal-ticker">${p.ticker}</span>
               <span class="${dirBadgeClass}">${dirText}</span>
@@ -3971,26 +4022,34 @@ function renderProposalsBanner(proposals) {
 
         ${isBtcBleeding ? `
           <div style="color: #f87171; font-size: 0.75rem; font-weight: 700; margin: 4px 0 8px 0; padding: 4px 8px; background: rgba(239, 68, 68, 0.12); border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.35);">
-            ⚠️ ₿ Bleeding Alert: Активът губи от Bitcoin (${btcRel.alpha_30d_pct ? btcRel.alpha_30d_pct.toFixed(1) : '-'}%). Левъриджът е ограничен строго до 1x Spot.
+            ⚠️ ₿ Bleeding Alert: Активът изостава от Bitcoin (${btcRel.alpha_30d_pct ? btcRel.alpha_30d_pct.toFixed(1) : '-'}%). Левъриджът е строго забранен!
           </div>
         ` : ''}
 
-        <div class="proposal-metrics">
+        <div class="proposal-metrics" style="grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));">
           <div class="metric-item">
             <span class="metric-lbl">Вход</span>
-            <span class="metric-val">$${formatShortPrice(p.entry_price)}</span>
+            <span class="metric-val">$${formatShortPrice(entry)}</span>
           </div>
           <div class="metric-item">
             <span class="metric-lbl">Stop-Loss</span>
-            <span class="metric-val" style="color: #f87171;">$${formatShortPrice(p.stop_loss)}</span>
+            <span class="metric-val" style="color: #f87171;">$${formatShortPrice(sl)} <small style="font-size: 0.7rem;">(-${slDistPct}%)</small></span>
           </div>
           <div class="metric-item">
             <span class="metric-lbl">Take-Profit 1</span>
-            <span class="metric-val" style="color: #34d399;">$${formatShortPrice(p.tp1)}</span>
+            <span class="metric-val" style="color: #34d399;">$${formatShortPrice(tp1)} <small style="font-size: 0.7rem;">(+${tpDistPct}%)</small></span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-lbl">🎯 R:R</span>
+            <span class="metric-val" style="color: ${rrrColor}; font-weight: 700;">1:${rrrVal}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-lbl">Риск ($)</span>
+            <span class="metric-val" style="color: #f59e0b;">$${formatShortPrice(riskUsd)}</span>
           </div>
         </div>
 
-        <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+        <div style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; margin: 6px 0;">
           ${p.reason || 'Сигнал за вход по тренда.'}
         </div>
 
@@ -4000,7 +4059,7 @@ function renderProposalsBanner(proposals) {
               <th>Lev</th>
               <th>Маржин</th>
               <th>Ликвидация</th>
-              <th>Буфер</th>
+              <th>Стоп → Ликвидация</th>
             </tr>
           </thead>
           <tbody>
@@ -4008,7 +4067,7 @@ function renderProposalsBanner(proposals) {
           </tbody>
         </table>
 
-        <div class="proposal-actions">
+        <div class="proposal-actions" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
           ${actionBtns}
         </div>
       </div>
@@ -4354,39 +4413,84 @@ function synthesizeClientProposals() {
     const btcRel = s.btc_relative;
     const isBtcBleeding = isCrypto && btcRel && !btcRel.leverage_allowed;
 
-    let maxLev = 1;
-    let recLev = 1;
+    const entry = s.price;
+    if (!entry || entry <= 0) return;
 
-    if (isCrypto) {
-      if (isBtcBleeding) {
-        maxLev = 1;
-        recLev = 1;
+    // Hard bounded stop loss: never exceed 2.5*ATR or 8% drop, and must be below entry
+    const atrBuf = s.atr ? (2.0 * s.atr) : (entry * 0.05);
+    const maxDrop = Math.max(atrBuf, entry * 0.08);
+    let sl = s.s1 && s.s1 < entry ? Math.max(s.s1 * 0.985, entry - maxDrop) : (entry - Math.max(atrBuf, entry * 0.05));
+    if (sl >= entry) sl = entry * 0.95;
+
+    const riskDist = entry - sl;
+    if (riskDist <= 0) return;
+
+    // Strict R:R >= 1.8 enforcement for TP1
+    const minTp1 = entry + 1.8 * riskDist;
+    let tp1 = s.r1 && s.r1 > entry ? s.r1 : minTp1;
+    if (tp1 < minTp1) {
+      if (s.r2 && s.r2 >= minTp1) {
+        tp1 = s.r2;
       } else {
-        maxLev = 3;
-        recLev = 2;
+        // Structural targets do not satisfy minimum 1.8 R:R -> discard proposal
+        return;
       }
-    } else if (isStock) {
-      maxLev = 2;
-      recLev = 2;
     }
 
-    const entry = s.price;
-    const sl = s.s1 ? Math.min(s.s1 * 0.985, entry * 0.95) : entry * 0.94;
-    const tp1 = s.r1 ? Math.max(s.r1, entry * 1.08) : entry * 1.10;
-    const tp2 = s.r1 ? s.r1 * 1.10 : entry * 1.20;
+    const rrr = (tp1 - entry) / riskDist;
+    if (rrr < 1.8) return; // Discard poor R:R proposals
+
+    const tp2 = s.r2 && s.r2 > tp1 ? s.r2 : (entry + 3.0 * riskDist);
+
+    // Leverage safety calculation: Spot (1x) is always default
+    let maxLev = 1;
+    const recLev = 1; // Strict: Spot is primary recommendation
+
+    if (isCrypto && !isBtcBleeding) {
+      // Check 3x liquidation price (long): entry * (1 - 1/3 + 0.005)
+      const liq3x = entry * (1 - (1 / 3) + 0.005);
+      const gap3xPct = ((sl - liq3x) / entry) * 100;
+      
+      // Check 2x liquidation price (long): entry * (1 - 1/2 + 0.005)
+      const liq2x = entry * (1 - (1 / 2) + 0.005);
+      const gap2xPct = ((sl - liq2x) / entry) * 100;
+
+      if (gap3xPct >= 10) {
+        maxLev = 3;
+      } else if (gap2xPct >= 10) {
+        maxLev = 2;
+      } else {
+        maxLev = 1;
+      }
+    } else if (isStock) {
+      maxLev = 1; // Cash/spot only for stocks
+    }
+
     const notional = isCrypto ? 1000 : 500;
     const units = entry > 0 ? (notional / entry) : 1;
-    const tier = (s.fundamental && s.fundamental.moat === 'Wide') ? 'S' : (s.tier || 'A');
+
+    // Accurate Tier assignment: Crypto never gets Wide moat Tier S
+    let tier = s.tier || 'B';
+    if (!isCrypto && s.fundamental && s.fundamental.moat === 'Wide') {
+      tier = 'S';
+    } else if (isRecentGoldFlip(s) && (s.gold_score || 0) >= 80) {
+      tier = 'A';
+    } else if (isCrypto) {
+      tier = isRecentGoldFlip(s) ? 'A' : (s.tier || 'B');
+    }
+
+    const baseScore = s.score || s.confidence || (isRecentGoldFlip(s) ? 85 : 75);
+    const score = Math.min(95, Math.max(60, Math.round(baseScore)));
 
     let reason = '';
     if (isRecentGoldFlip(s)) {
-      reason = `✨ Пресен Gold Flip пробив (${s.gold_flip_bars || 1}б назад). Ранна фаза на разширение по тренда с висок моментум.`;
+      reason = `✨ Пресен Gold Flip пробив (${s.gold_flip_bars || 1}б назад). R:R ${rrr.toFixed(2)}x със стоп на $${formatShortPrice(sl)} и цел $${formatShortPrice(tp1)}.`;
     } else if (s.trade_suggestion && s.trade_suggestion.thesis) {
       reason = s.trade_suggestion.thesis;
     } else if (s.synthesis && s.synthesis.narrative) {
       reason = s.synthesis.narrative;
     } else {
-      reason = `🟢 Бичи трендов импулс с чиста подкрепа на $${formatShortPrice(sl)} и цел $${formatShortPrice(tp1)}.`;
+      reason = `🟢 Бичи импулс с потвърден R:R ${rrr.toFixed(2)}x. Стоп под подкрепата на $${formatShortPrice(sl)}, цел $${formatShortPrice(tp1)}.`;
     }
 
     const propId = `prop_gen_${s.ticker}_${Date.now()}_${idx}`;
@@ -4407,9 +4511,9 @@ function synthesizeClientProposals() {
       tp2: Number(tp2.toFixed(entry < 1 ? 4 : 2)),
       position_size_usd: notional,
       units: Number(units.toFixed(units < 1 ? 4 : 2)),
-      risk_usd: Number((Math.abs(entry - sl) * units).toFixed(2)),
+      risk_usd: Number((riskDist * units).toFixed(2)),
       tier: tier,
-      score: isRecentGoldFlip(s) ? 94 : 88,
+      score: score,
       reason: reason,
       recommended_leverage: recLev,
       max_leverage: maxLev,
