@@ -4016,6 +4016,11 @@ function renderProposalsBanner(proposals) {
             <a href="${tvUrl}" target="_blank" rel="noopener noreferrer" class="btn-tv-link" style="text-decoration: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); display: inline-flex; align-items: center; gap: 4px;" title="Отвори интерактивна графика в TradingView">
               📈 TV
             </a>
+            ${(p.is_gold_flip || (s && isRecentGoldFlip(s)) || (p.reason && p.reason.includes('Gold Flip'))) ? `
+              <span class="setup-flip-badge" style="background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.45); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                ✨ GOLD FLIP
+              </span>
+            ` : ''}
             <span class="setup-tier-badge">🏆 Tier ${p.tier || 'A'} (${p.score || 0}/100)</span>
           </div>
         </div>
@@ -4414,24 +4419,39 @@ function synthesizeClientProposals() {
     const btcRel = s.btc_relative;
     const isBtcBleeding = isCrypto && btcRel && !btcRel.leverage_allowed;
 
+    const isFlip = isRecentGoldFlip(s);
     const entry = s.price;
     if (!entry || entry <= 0) return;
 
-    // Hard bounded stop loss: never exceed 2.5*ATR or 8% drop, and must be below entry
+    let sl;
+    let riskDist;
     const atrBuf = s.atr ? (2.0 * s.atr) : (entry * 0.05);
-    const maxDrop = Math.max(atrBuf, entry * 0.08);
-    let sl = s.s1 && s.s1 < entry ? Math.max(s.s1 * 0.985, entry - maxDrop) : (entry - Math.max(atrBuf, entry * 0.05));
-    if (sl >= entry) sl = entry * 0.95;
 
-    const riskDist = entry - sl;
+    if (isFlip) {
+      // Dynamic Stop for Fresh Gold Flip: Below ribbon bottom v2 or S1 with slight buffer, capped at 8%
+      const slBase = s.v2 ? Math.min(s.v2, entry * 0.96) : (s.s1 && s.s1 < entry ? s.s1 : entry * 0.95);
+      sl = Math.max(slBase * 0.985, entry * 0.92);
+      if (sl >= entry) sl = entry * 0.95;
+      riskDist = entry - sl;
+    } else {
+      // Standard bounded stop loss: never exceed 2.5*ATR or 8% drop, and must be below entry
+      const maxDrop = Math.max(atrBuf, entry * 0.08);
+      sl = s.s1 && s.s1 < entry ? Math.max(s.s1 * 0.985, entry - maxDrop) : (entry - Math.max(atrBuf, entry * 0.05));
+      if (sl >= entry) sl = entry * 0.95;
+      riskDist = entry - sl;
+    }
+
     if (riskDist <= 0) return;
 
-    // Strict R:R >= 1.8 enforcement for TP1
+    // Target calculation: For fresh gold flip, extend past immediate micro-resistance if too tight
     const minTp1 = entry + 1.8 * riskDist;
     let tp1 = s.r1 && s.r1 > entry ? s.r1 : minTp1;
     if (tp1 < minTp1) {
       if (s.r2 && s.r2 >= minTp1) {
         tp1 = s.r2;
+      } else if (isFlip) {
+        // Momentum expansion for fresh flip: project target to 2.0x risk
+        tp1 = Number((entry + 2.0 * riskDist).toFixed(entry < 1 ? 4 : 2));
       } else {
         // Structural targets do not satisfy minimum 1.8 R:R -> discard proposal
         return;
@@ -4439,7 +4459,7 @@ function synthesizeClientProposals() {
     }
 
     const rrr = (tp1 - entry) / riskDist;
-    if (rrr < 1.8) return; // Discard poor R:R proposals
+    if (rrr < 1.7) return; // Discard poor R:R proposals
 
     const tp2 = s.r2 && s.r2 > tp1 ? s.r2 : (entry + 3.0 * riskDist);
 

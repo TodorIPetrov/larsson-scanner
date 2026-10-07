@@ -403,7 +403,10 @@ def _enrich_trade_suggestion(
     if state == "GOLD":
         if s.action == "SPOT_BUY":
             s.tech_action = "BUY"
-            if s.setup_type in ["PULLBACK_VALUE_BUY", "QUALITY_HOLD_ACCUMULATION", "SPECULATIVE_PULLBACK_BUY"]:
+            if s.setup_type == "GOLD_FLIP_MOMENTUM_BUY":
+                s.tech_label_bg = "✨ BUY (Gold Flip Пробив)"
+                s.tech_thesis_bg = f"Пресeн Gold Flip пробив на Larsson лентата (spread {spread_pct:+.1f}%). Ранна импулсна вълна."
+            elif s.setup_type in ["PULLBACK_VALUE_BUY", "QUALITY_HOLD_ACCUMULATION", "SPECULATIVE_PULLBACK_BUY"]:
                 s.tech_label_bg = "🟢 BUY (Pullback S1)"
                 s.tech_thesis_bg = f"Бичи тренд (Gold, spread {spread_pct:+.1f}%) с успешен тест на S1 подкрепа."
             elif s.setup_type in ["BREAKOUT_BUY", "SPECULATIVE_MOMENTUM_BUY"]:
@@ -485,7 +488,10 @@ def _enrich_trade_suggestion(
             s.fund_thesis_bg = "Инструмент без валидна DCF справедлива стойност. Води се по пазарна ликвидност и технически профил."
 
     # 3. Quantamental Synthesis & Confluence
-    if s.setup_type == "QUANTAMENTAL_ALPHA_BUY":
+    if s.setup_type == "GOLD_FLIP_MOMENTUM_BUY":
+        s.synthesis_badge_bg = "✨ GOLD FLIP"
+        s.synthesis_label_bg = "Пресен златен пробив: ранен вход по тренда преди разширение"
+    elif s.setup_type == "QUANTAMENTAL_ALPHA_BUY":
         s.synthesis_badge_bg = "⭐ ALPHA BUY"
         s.synthesis_label_bg = "Пълен консенсус (Бича техника + Подценен фундамент)"
     elif s.setup_type == "TECHNICAL_MOMENTUM_BREAKOUT":
@@ -661,6 +667,7 @@ def _raw_generate_trade_suggestion(
     btc_relative: Optional[object] = None,
     options_flow: Optional[dict] = None,
     btc_cycle: Optional[object] = None,
+    bars_since_flip: Optional[int] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion.
@@ -790,6 +797,83 @@ def _raw_generate_trade_suggestion(
             z_score=z_score,
             quantamental_tag="PROFIT_REALIZATION",
         )
+
+    # -------------------------------------------------------------------------
+    # 2.5 FRESH GOLD FLIP MOMENTUM (Larsson Ribbon Trend Reversal Entry)
+    # -------------------------------------------------------------------------
+    is_fresh_flip = (state == "GOLD" and bars_since_flip is not None and bars_since_flip <= 2)
+    if is_fresh_flip:
+        # Dynamic invalidation stop: Under bottom of expanding ribbon v2 with ATR cushion
+        sl_base = min(v2, s1) if (s1 is not None and s1 < current_price) else v2
+        sl = round(sl_base - (0.4 * atr), 4)
+        risk = current_price - sl
+
+        if risk > 0:
+            # For a fresh gold flip breakout, expand targets beyond immediate micro-resistance
+            min_target = current_price + (1.8 * risk)
+            if r1 is not None and r1 >= min_target:
+                tp1 = round(r1, 4)
+            elif r2 is not None and r2 >= min_target:
+                tp1 = round(r2, 4)
+            else:
+                tp1 = round(current_price + (2.0 * risk), 4)
+
+            tp2 = round(current_price + (3.5 * risk), 4)
+            rr = round((tp1 - current_price) / risk, 2)
+
+            score, tier = calculate_confluence_score(
+                is_mtf_aligned=is_mtf_aligned,
+                near_support=True,  # Fresh flip across the ribbon acts as dynamic support
+                s1_touches=max(1, s1_touches),
+                spread_expanding=spread_expanding,
+                rr_ratio=rr,
+                fund_profile=fund_profile if not is_pure_crypto(asset_class) else None,
+                btc_relative=btc_relative,
+                asset_class=asset_class,
+                current_price=current_price,
+                options_flow=options_flow,
+            )
+            # Give priority boost for fresh flip conviction
+            score = min(98, score + 10)
+            if score >= 85:
+                tier = "A+"
+            elif score >= 70:
+                tier = "A"
+
+            bars_txt = f"{bars_since_flip} бара" if bars_since_flip > 0 else "текущия бар"
+            reason_bg = f"✨ ПРЕСЕН GOLD FLIP ПРОБИВ ({bars_txt} назад): Златната панделка се разширява нагоре (spread {spread_pct:+.1f}%). Ранен импулс с чиста подкрепа на ${sl:,.2f} и първа цел ${tp1:,.2f} (R:R 1:{rr:.1f})."
+            reason_en = f"Fresh Gold Flip breakout ({bars_txt} ago): Bullish ribbon expanding (spread {spread_pct:+.1f}%). Early momentum with invalidation at ${sl:,.2f} and target ${tp1:,.2f} (R:R 1:{rr:.1f})."
+
+            max_lev = get_max_allowed_leverage(
+                ticker=ticker or "",
+                asset_class=asset_class,
+                score=score,
+                tier=tier,
+                atr_pct=atr_pct,
+                direction="LONG",
+            )
+            return TradeSuggestion(
+                action="SPOT_BUY",
+                direction="LONG",
+                setup_type="GOLD_FLIP_MOMENTUM_BUY",
+                entry_price=round(current_price, 4),
+                stop_loss=sl,
+                tp1=tp1,
+                tp2=tp2,
+                rr_ratio=rr,
+                score=score,
+                tier=tier,
+                reason_bg=reason_bg,
+                reason_en=reason_en,
+                fund_verdict=fund_verdict,
+                fair_value=fair_value,
+                mos_pct=mos_pct,
+                moat=moat,
+                z_score=z_score,
+                quantamental_tag="GOLD_FLIP_MOMENTUM",
+                max_leverage=max_lev,
+                recommended_leverage=min(2, max_lev),
+            )
 
     # -------------------------------------------------------------------------
     # 3. BREAKOUT BUY (Spot Long Momentum)
@@ -1255,6 +1339,7 @@ def generate_trade_suggestion(
     btc_relative: Optional[object] = None,
     options_flow: Optional[dict] = None,
     btc_cycle: Optional[object] = None,
+    bars_since_flip: Optional[int] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion,
@@ -1298,6 +1383,7 @@ def generate_trade_suggestion(
         btc_relative=btc_relative,
         options_flow=options_flow,
         btc_cycle=btc_cycle,
+        bars_since_flip=bars_since_flip,
     )
     return _enrich_trade_suggestion(
         raw_s,

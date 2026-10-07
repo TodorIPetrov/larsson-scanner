@@ -243,6 +243,7 @@ class LarssonScanner:
         asset_class: str = "crypto",
         btc_relative: Optional[object] = None,
         options_flow: Optional[dict] = None,
+        bars_since_flip: Optional[int] = None,
     ) -> Optional[dict]:
         try:
             from src.engine.trade_suggestions import generate_trade_suggestion
@@ -301,6 +302,7 @@ class LarssonScanner:
                 btc_relative=btc_relative,
                 options_flow=options_flow,
                 btc_cycle=btc_cycle,
+                bars_since_flip=bars_since_flip,
             )
 
             self.db.upsert_trade_suggestion(
@@ -531,6 +533,7 @@ class LarssonScanner:
                     sr_data=sr_data,
                     asset_class="crypto",
                     btc_relative=btc_rel,
+                    bars_since_flip=bars_since_flip,
                 )
 
                 self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
@@ -757,6 +760,7 @@ class LarssonScanner:
                     asset_class=asset_class,
                     btc_relative=btc_rel,
                     options_flow=options_flow,
+                    bars_since_flip=bars_since_flip,
                 )
 
                 self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
