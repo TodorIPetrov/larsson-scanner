@@ -4470,26 +4470,19 @@ function synthesizeClientProposals() {
   });
 
   const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
-  
-  // Strict selection: Pick top 5 highest-ranking setups, skipping only explicitly reviewed ones (APPROVED/REJECTED)
-  const topCandidates = candidates.filter(c => {
-    // Check if this symbol already has a user-resolved proposal
-    const hasResolved = Object.values(resolved).some(r => r.ticker === c.ticker);
-    return !hasResolved;
-  }).slice(0, 5);
+  const eligibleCandidates = candidates.filter(c => {
+    return !Object.values(resolved).some(r => r.ticker === c.ticker);
+  });
 
-  let addedCount = 0;
-  const newProposals = [];
-
-  topCandidates.forEach((s, idx) => {
+  function buildProposalFromSymbol(s, idx) {
     const isCrypto = s.asset_class === 'crypto';
-    const isStock = ['us_stocks', 'ai_stocks'].includes(s.asset_class);
+    const isStock = ['us_stocks', 'ai_stocks', 'intl_stocks', 'crypto_stocks'].includes(s.asset_class);
     const btcRel = s.btc_relative;
     const isBtcBleeding = isCrypto && btcRel && !btcRel.leverage_allowed;
 
     const isFlip = isRecentGoldFlip(s);
     const entry = s.price;
-    if (!entry || entry <= 0) return;
+    if (!entry || entry <= 0) return null;
 
     let sl;
     let riskDist;
@@ -4509,7 +4502,7 @@ function synthesizeClientProposals() {
       riskDist = entry - sl;
     }
 
-    if (riskDist <= 0) return;
+    if (riskDist <= 0) return null;
 
     // Target calculation: For fresh gold flip, extend past immediate micro-resistance if too tight
     const minTp1 = entry + 1.8 * riskDist;
@@ -4517,17 +4510,17 @@ function synthesizeClientProposals() {
     if (tp1 < minTp1) {
       if (s.r2 && s.r2 >= minTp1) {
         tp1 = s.r2;
-      } else if (isFlip) {
-        // Momentum expansion for fresh flip: project target to 2.0x risk
+      } else if (isFlip || (s.trade_suggestion && s.trade_suggestion.action === 'SPOT_BUY')) {
+        // Momentum expansion for fresh flip / confirmed spot buy: project target to 2.0x risk
         tp1 = Number((entry + 2.0 * riskDist).toFixed(entry < 1 ? 4 : 2));
       } else {
         // Structural targets do not satisfy minimum 1.8 R:R -> discard proposal
-        return;
+        return null;
       }
     }
 
     const rrr = (tp1 - entry) / riskDist;
-    if (rrr < 1.7) return; // Discard poor R:R proposals
+    if (rrr < 1.7) return null; // Discard poor R:R proposals
 
     const tp2 = s.r2 && s.r2 > tp1 ? s.r2 : (entry + 3.0 * riskDist);
 
@@ -4584,7 +4577,7 @@ function synthesizeClientProposals() {
 
     const propId = `prop_gen_${s.ticker}_${Date.now()}_${idx}`;
 
-    const propObj = {
+    return {
       id: Date.now() + idx,
       proposal_id: propId,
       ticker: s.ticker,
@@ -4609,10 +4602,45 @@ function synthesizeClientProposals() {
       btc_relative: btcRel || null,
       created_at: new Date().toISOString()
     };
+  }
 
-    newProposals.push(propObj);
-    addedCount++;
-  });
+  const newProposals = [];
+  const selectedTickers = new Set();
+  const maxProposals = 6;
+
+  // 1. Pick up to 3 best valid traditional market proposals (stocks, commodities, indices)
+  const tradCandidates = eligibleCandidates.filter(c => c.asset_class !== 'crypto');
+  for (const s of tradCandidates) {
+    if (newProposals.filter(p => p.asset_class !== 'crypto').length >= 3) break;
+    const prop = buildProposalFromSymbol(s, newProposals.length);
+    if (prop) {
+      newProposals.push(prop);
+      selectedTickers.add(s.ticker);
+    }
+  }
+
+  // 2. Pick up to 3 best valid crypto proposals
+  const cryptoCandidates = eligibleCandidates.filter(c => c.asset_class === 'crypto');
+  for (const s of cryptoCandidates) {
+    if (newProposals.filter(p => p.asset_class === 'crypto').length >= 3) break;
+    if (selectedTickers.has(s.ticker)) continue;
+    const prop = buildProposalFromSymbol(s, newProposals.length);
+    if (prop) {
+      newProposals.push(prop);
+      selectedTickers.add(s.ticker);
+    }
+  }
+
+  // 3. Fill up to maxProposals with any remaining top valid candidates from any class
+  for (const s of eligibleCandidates) {
+    if (newProposals.length >= maxProposals) break;
+    if (selectedTickers.has(s.ticker)) continue;
+    const prop = buildProposalFromSymbol(s, newProposals.length);
+    if (prop) {
+      newProposals.push(prop);
+      selectedTickers.add(s.ticker);
+    }
+  }
 
   // Clean replacement: Keep any server-backed unexpired proposals, replace synthetic ones with the new top batch
   const serverProposals = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.pending_proposals) 
@@ -4620,7 +4648,7 @@ function synthesizeClientProposals() {
     : [];
 
   pendingProposals = [...serverProposals, ...newProposals];
-  return addedCount;
+  return newProposals.length;
 }
 
 let isAnalyzingTrades = false;
