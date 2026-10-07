@@ -4397,12 +4397,13 @@ function synthesizeClientProposals() {
   });
 
   const resolved = JSON.parse(localStorage.getItem('larsson_resolved_proposals') || '{}');
-  const existingTickers = new Set((pendingProposals || []).filter(p => !resolved[p.proposal_id]).map(p => p.ticker));
-
-  let topCandidates = candidates.filter(c => !existingTickers.has(c.ticker)).slice(0, 6);
-  if (topCandidates.length === 0 && candidates.length > 0) {
-    topCandidates = candidates.slice(0, 4);
-  }
+  
+  // Strict selection: Pick top 5 highest-ranking setups, skipping only explicitly reviewed ones (APPROVED/REJECTED)
+  const topCandidates = candidates.filter(c => {
+    // Check if this symbol already has a user-resolved proposal
+    const hasResolved = Object.values(resolved).some(r => r.ticker === c.ticker);
+    return !hasResolved;
+  }).slice(0, 5);
 
   let addedCount = 0;
   const newProposals = [];
@@ -4525,9 +4526,12 @@ function synthesizeClientProposals() {
     addedCount++;
   });
 
-  if (newProposals.length > 0) {
-    pendingProposals = [...newProposals, ...(pendingProposals || [])];
-  }
+  // Clean replacement: Keep any server-backed unexpired proposals, replace synthetic ones with the new top batch
+  const serverProposals = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.pending_proposals) 
+    ? window.lastLoadedDashboardData.pending_proposals.filter(p => !p.proposal_id.startsWith('prop_gen_'))
+    : [];
+
+  pendingProposals = [...serverProposals, ...newProposals];
   return addedCount;
 }
 
@@ -4586,12 +4590,19 @@ async function runNewTradeAnalysis() {
       await loadDashboardData();
       showAnalysisToast(`✅ ${apiMsg}`, 'success', 5000);
     } else {
-      // Local browser-side synthesis fallback
+      // Reload freshest remote/local market data first so prices and indicators are 100% current
+      try {
+        await loadDashboardData();
+      } catch (loadErr) {
+        console.warn('Could not re-fetch data.json before synthesis, using currently loaded symbols:', loadErr);
+      }
+
+      // Local browser-side synthesis: evaluate current states and select the top 5 highest-conviction setups
       const createdCount = synthesizeClientProposals();
       renderProposalsBanner(pendingProposals);
       renderOverview();
       const totalActive = (pendingProposals || []).length;
-      showAnalysisToast(`✅ Анализът завърши! Генерирани са ${createdCount} нови предложения (Общо активни: ${totalActive}) на база пресен Gold Flip и Quantamental Alpha.`, 'success', 5500);
+      showAnalysisToast(`✅ Пазарният анализ завърши! Класирани са топ ${createdCount} предложения за търговия (Общо активни: ${totalActive}) с най-висок Quantamental Alpha ранг.`, 'success', 5500);
     }
 
     // Automatically expand proposals section if it was collapsed
