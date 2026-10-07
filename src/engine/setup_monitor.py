@@ -75,6 +75,10 @@ class SetupMonitor:
 
     def detect_imminent_gold(self, asset: Dict[str, Any]) -> Optional[PendingSetup]:
         try:
+            tier = asset.get('tier', 'B')
+            if tier in ['C', 'C-']:
+                return None
+
             state = asset.get('state', 'NEUTRAL')
             if state == 'GOLD':
                 return None
@@ -113,7 +117,7 @@ class SetupMonitor:
                     conditions_pending=["v1 > v2", "m2 < v2"],
                     estimated_trigger="1-2 бара",
                     current_price=asset['price'],
-                    tier=asset.get('tier', 'B'),
+                    tier=tier,
                     first_detected=self.now_str,
                     last_updated=self.now_str
                 )
@@ -167,6 +171,10 @@ class SetupMonitor:
 
     def detect_sr_approach(self, asset: Dict[str, Any]) -> Optional[PendingSetup]:
         try:
+            tier = asset.get('tier', 'B')
+            if tier in ['C', 'C-']:
+                return None
+
             sr = asset.get('sr_analysis')
             if not sr:
                 return None
@@ -187,27 +195,28 @@ class SetupMonitor:
             state = asset.get('state', 'NEUTRAL')
             
             setup = None
-            if s1 and price > s1 and (price - s1) <= 3 * atr and (price - s1) > 0.5 * atr:
+            # Tightened distance: price approaching S1 within 1.2 * atr (imminent touch)
+            if s1 and price > s1 and (price - s1) <= 1.2 * atr and (price - s1) >= 0.1 * atr:
                 if state == 'GOLD':
                     setup = PendingSetup(
                         symbol=asset['symbol'],
                         asset_class=asset['asset_class'],
                         setup_type='SR_APPROACH',
                         direction='LONG',
-                        priority='MEDIUM',
-                        quality_score=0.75,
-                        description_bg=f"{asset['symbol']} приближава support ${s1:,.2f} — следете за bounce setup",
-                        description_en=f"{asset['symbol']} approaching support ${s1:,.2f} — watch for bounce setup",
+                        priority='HIGH' if tier in ['S', 'A'] else 'MEDIUM',
+                        quality_score=0.85 if tier in ['S', 'A'] else 0.72,
+                        description_bg=f"{asset['symbol']} е на прага на support ${s1:,.2f} (≤ 1.2 ATR) — следете за bounce setup",
+                        description_en=f"{asset['symbol']} approaching support ${s1:,.2f} (≤ 1.2 ATR) — watch for bounce setup",
                         conditions_met=["Uptrend (GOLD)", "Approaching S1"],
                         conditions_pending=["Price reaches S1", "Bullish reaction/bounce"],
-                        estimated_trigger=f"при достигане на ${s1:,.2f}",
+                        estimated_trigger=f"при тест на ${s1:,.2f}",
                         current_price=price,
                         key_level=s1,
-                        tier=asset.get('tier', 'B'),
+                        tier=tier,
                         first_detected=self.now_str,
                         last_updated=self.now_str
                     )
-            elif r1 and price < r1 and (r1 - price) <= 3 * atr and (r1 - price) > 0.5 * atr:
+            elif r1 and price < r1 and (r1 - price) <= 1.2 * atr and (r1 - price) >= 0.1 * atr:
                 if state == 'GOLD':
                     setup = PendingSetup(
                         symbol=asset['symbol'],
@@ -215,15 +224,15 @@ class SetupMonitor:
                         setup_type='SR_APPROACH',
                         direction='SHORT',
                         priority='MEDIUM',
-                        quality_score=0.70,
-                        description_bg=f"{asset['symbol']} приближава resistance ${r1:,.2f} — следете за take profit или reversal",
-                        description_en=f"{asset['symbol']} approaching resistance ${r1:,.2f} — watch for take profit or reversal",
+                        quality_score=0.70 if tier in ['S', 'A'] else 0.60,
+                        description_bg=f"{asset['symbol']} приближава resistance ${r1:,.2f} (≤ 1.2 ATR) — следете за take profit или reversal",
+                        description_en=f"{asset['symbol']} approaching resistance ${r1:,.2f} (≤ 1.2 ATR) — watch for take profit or reversal",
                         conditions_met=["Uptrend (GOLD)", "Approaching R1"],
                         conditions_pending=["Price reaches R1", "Bearish rejection"],
-                        estimated_trigger=f"при достигане на ${r1:,.2f}",
+                        estimated_trigger=f"при тест на ${r1:,.2f}",
                         current_price=price,
                         key_level=r1,
-                        tier=asset.get('tier', 'B'),
+                        tier=tier,
                         first_detected=self.now_str,
                         last_updated=self.now_str
                     )
@@ -234,6 +243,10 @@ class SetupMonitor:
 
     def detect_accumulation_pattern(self, asset: Dict[str, Any]) -> Optional[PendingSetup]:
         try:
+            tier = asset.get('tier', 'B')
+            if tier in ['C', 'C-']:
+                return None
+
             state = asset.get('state')
             if state != 'NEUTRAL':
                 return None
@@ -253,8 +266,8 @@ class SetupMonitor:
             if isinstance(fund_profile, dict) and fund_profile.get('is_bullish'):
                 is_bullish = True
                 
-            priority = 'HIGH' if is_bullish else 'MEDIUM'
-            score = 0.85 if is_bullish else 0.65
+            priority = 'HIGH' if is_bullish or tier in ['S', 'A'] else 'MEDIUM'
+            score = 0.85 if is_bullish else (0.75 if tier in ['S', 'A'] else 0.65)
             
             return PendingSetup(
                 symbol=asset['symbol'],
@@ -269,7 +282,7 @@ class SetupMonitor:
                 conditions_pending=["Volume spike", "Price breakout above resistance"],
                 estimated_trigger="при пробив",
                 current_price=asset['price'],
-                tier=asset.get('tier', 'B'),
+                tier=tier,
                 first_detected=self.now_str,
                 last_updated=self.now_str
             )
@@ -279,6 +292,10 @@ class SetupMonitor:
 
     def detect_divergence_forming(self, asset: Dict[str, Any]) -> Optional[PendingSetup]:
         try:
+            tier = asset.get('tier', 'B')
+            if tier in ['C', 'C-']:
+                return None
+
             prices = asset.get('recent_prices', [])
             if not prices or len(prices) < 20:
                 return None
@@ -286,7 +303,6 @@ class SetupMonitor:
             prices_arr = np.array(prices, dtype=np.float64)
             rsi = calculate_rsi(prices_arr)
             
-            # Very basic divergence check (last 2 swing lows)
             # Find swing lows in price
             lows = []
             for i in range(2, len(prices)-2):
@@ -295,28 +311,30 @@ class SetupMonitor:
             
             if len(lows) >= 2:
                 idx1, idx2 = lows[-2], lows[-1]
-                p1, p2 = prices[idx1], prices[idx2]
-                r1, r2 = rsi[idx1], rsi[idx2]
-                
-                # Bullish Divergence: Lower low in price, Higher low in RSI
-                if p2 < p1 and r2 > r1 and asset.get('state') != 'GOLD':
-                    return PendingSetup(
-                        symbol=asset['symbol'],
-                        asset_class=asset['asset_class'],
-                        setup_type='DIVERGENCE_FORMING',
-                        direction='LONG',
-                        priority='HIGH',
-                        quality_score=0.80,
-                        description_bg=f"{asset['symbol']} показва bullish divergence на 1D — потенциален обрат",
-                        description_en=f"{asset['symbol']} shows bullish divergence on 1D — potential reversal",
-                        conditions_met=["Lower Low in Price", "Higher Low in RSI"],
-                        conditions_pending=["Bullish structure breakout", "Gold transition"],
-                        estimated_trigger="1-3 бара",
-                        current_price=asset['price'],
-                        tier=asset.get('tier', 'B'),
-                        first_detected=self.now_str,
-                        last_updated=self.now_str
-                    )
+                # Enforce that the second swing low is fresh (within last 7 bars of available prices)
+                if idx2 >= len(prices) - 7:
+                    p1, p2 = prices[idx1], prices[idx2]
+                    r1, r2 = rsi[idx1], rsi[idx2]
+                    
+                    # Bullish Divergence: Lower low in price, Higher low in RSI
+                    if p2 < p1 and r2 > r1 and asset.get('state') != 'GOLD':
+                        return PendingSetup(
+                            symbol=asset['symbol'],
+                            asset_class=asset['asset_class'],
+                            setup_type='DIVERGENCE_FORMING',
+                            direction='LONG',
+                            priority='HIGH' if tier in ['S', 'A'] else 'MEDIUM',
+                            quality_score=0.85 if tier in ['S', 'A'] else 0.75,
+                            description_bg=f"{asset['symbol']} показва bullish divergence на 1D — пресен суинг за обрат",
+                            description_en=f"{asset['symbol']} shows fresh bullish divergence on 1D — potential reversal",
+                            conditions_met=["Lower Low in Price", "Higher Low in RSI"],
+                            conditions_pending=["Bullish structure breakout", "Gold transition"],
+                            estimated_trigger="1-3 бара",
+                            current_price=asset['price'],
+                            tier=tier,
+                            first_detected=self.now_str,
+                            last_updated=self.now_str
+                        )
                     
             # Check for bearish divergence
             highs = []
@@ -326,28 +344,30 @@ class SetupMonitor:
                     
             if len(highs) >= 2:
                 idx1, idx2 = highs[-2], highs[-1]
-                p1, p2 = prices[idx1], prices[idx2]
-                r1, r2 = rsi[idx1], rsi[idx2]
-                
-                # Bearish Divergence: Higher high in price, Lower high in RSI
-                if p2 > p1 and r2 < r1 and asset.get('state') == 'GOLD':
-                    return PendingSetup(
-                        symbol=asset['symbol'],
-                        asset_class=asset['asset_class'],
-                        setup_type='DIVERGENCE_FORMING',
-                        direction='SHORT',
-                        priority='MEDIUM',
-                        quality_score=0.75,
-                        description_bg=f"{asset['symbol']} показва bearish divergence на 1D — потенциален обрат надолу",
-                        description_en=f"{asset['symbol']} shows bearish divergence on 1D — potential reversal down",
-                        conditions_met=["Higher High in Price", "Lower High in RSI"],
-                        conditions_pending=["Bearish structure breakdown", "Blue transition"],
-                        estimated_trigger="1-3 бара",
-                        current_price=asset['price'],
-                        tier=asset.get('tier', 'B'),
-                        first_detected=self.now_str,
-                        last_updated=self.now_str
-                    )
+                # Enforce that the second swing high is fresh (within last 7 bars of available prices)
+                if idx2 >= len(prices) - 7:
+                    p1, p2 = prices[idx1], prices[idx2]
+                    r1, r2 = rsi[idx1], rsi[idx2]
+                    
+                    # Bearish Divergence: Higher high in price, Lower high in RSI
+                    if p2 > p1 and r2 < r1 and asset.get('state') == 'GOLD':
+                        return PendingSetup(
+                            symbol=asset['symbol'],
+                            asset_class=asset['asset_class'],
+                            setup_type='DIVERGENCE_FORMING',
+                            direction='SHORT',
+                            priority='MEDIUM',
+                            quality_score=0.75 if tier in ['S', 'A'] else 0.65,
+                            description_bg=f"{asset['symbol']} показва bearish divergence на 1D — потенциален обрат надолу",
+                            description_en=f"{asset['symbol']} shows bearish divergence on 1D — potential reversal down",
+                            conditions_met=["Higher High in Price", "Lower High in RSI"],
+                            conditions_pending=["Bearish structure breakdown", "Blue transition"],
+                            estimated_trigger="1-3 бара",
+                            current_price=asset['price'],
+                            tier=tier,
+                            first_detected=self.now_str,
+                            last_updated=self.now_str
+                        )
         except Exception as e:
             logger.error(f"Error in detect_divergence_forming for {asset.get('symbol')}: {e}")
         return None

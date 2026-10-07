@@ -582,7 +582,14 @@ def export_dashboard_data(
     tv_map = _load_tv_map()
     try:
         from src.alerts.formatter import get_tradingview_link
-        raw_setups = db.get_active_pending_setups()
+        if hasattr(db, "expire_stale_setups"):
+            db.expire_stale_setups(max_age_hours=48)
+        if hasattr(db, "clear_triggered_setups"):
+            db.clear_triggered_setups()
+        raw_setups = db.get_active_pending_setups(exclude_tier_c=True)
+        # Curate to top 35-40 highest quality pending setups
+        if len(raw_setups) > 35:
+            raw_setups = raw_setups[:35]
         for s in raw_setups:
             sym = s["symbol"]
             s_name = names_map.get(sym)

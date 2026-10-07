@@ -1416,8 +1416,9 @@ class Database:
 
     def get_active_pending_setups(self, asset_class: Optional[str] = None,
                                    priority: Optional[str] = None,
-                                   tier: Optional[str] = None) -> List[sqlite3.Row]:
-        """Returns all active pending setups, optionally filtered."""
+                                   tier: Optional[str] = None,
+                                   exclude_tier_c: bool = False) -> List[sqlite3.Row]:
+        """Returns active pending setups, optionally filtered by tier, priority, or excluding Tier C."""
         query = "SELECT * FROM pending_setups WHERE status = 'ACTIVE'"
         params = []
         if asset_class:
@@ -1429,7 +1430,12 @@ class Database:
         if tier:
             query += " AND tier = ?"
             params.append(tier)
-        query += " ORDER BY quality_score DESC"
+        elif exclude_tier_c:
+            query += " AND tier NOT IN ('C', 'C-')"
+        query += """ ORDER BY 
+            CASE priority WHEN 'HIGH' THEN 1 WHEN 'MEDIUM' THEN 2 ELSE 3 END,
+            CASE tier WHEN 'S' THEN 1 WHEN 'A' THEN 2 WHEN 'B' THEN 3 ELSE 4 END,
+            quality_score DESC"""
         
         with self._get_connection() as conn:
             cur = conn.cursor()
@@ -1447,7 +1453,7 @@ class Database:
             WHERE symbol = ? AND setup_type = ? AND timeframe = ? AND status = 'ACTIVE'
             """, (now, now, symbol, setup_type, timeframe))
 
-    def expire_stale_setups(self, max_age_hours: int = 168):
+    def expire_stale_setups(self, max_age_hours: int = 48):
         """Expires setups that have been pending for too long without triggering."""
         from datetime import timedelta
         cutoff = (datetime.now(timezone.utc) - timedelta(hours=max_age_hours)).isoformat()

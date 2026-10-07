@@ -369,6 +369,9 @@ class LarssonScanner:
         """
         try:
             tier = get_quality_tier(ticker)
+            if tier in ['C', 'C-']:
+                return None
+
             macro_1d_row = self.db.get_current_state(ticker, "1D")
             macro_1d_state = macro_1d_row["current_state"] if macro_1d_row else ""
             weekly_row = self.db.get_current_state(ticker, "1W")
