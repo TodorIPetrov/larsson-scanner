@@ -167,17 +167,30 @@ function getQuantamentalSetupRank(item) {
   if (!item) return 0;
   const ts = item.trade_suggestion;
   const fund = item.fundamental;
-  if (!ts) return 0;
+  const isFlip = isRecentGoldFlip(item);
+  const flipBars = (item.gold_flip_bars !== undefined ? item.gold_flip_bars : (item.technical && item.technical.gold_flip_bars !== undefined ? item.technical.gold_flip_bars : 99));
+
+  if (!ts) {
+    // If no explicit trade suggestion, but fresh Gold Flip is present, give strong baseline
+    if (isFlip) {
+      const tierBonus = (item.tier === 'S' ? 800 : (item.tier === 'A' ? 500 : 200));
+      const freshBonus = flipBars <= 2 ? 1500 : (flipBars <= 5 ? 800 : 400);
+      return 6000 + freshBonus + tierBonus + ((item.spread_pct && item.spread_pct > 0) ? Math.min(item.spread_pct, 15) : 0);
+    }
+    return 0;
+  }
 
   let base = 0;
-  if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY' || ts.quantamental_tag === 'INSTITUTIONAL_ALPHA') {
+  if (ts.setup_type === 'GOLD_FLIP_MOMENTUM_BUY') {
+    base = 12000;
+  } else if (ts.setup_type === 'QUANTAMENTAL_ALPHA_BUY' || ts.quantamental_tag === 'INSTITUTIONAL_ALPHA') {
     base = 10000;
   } else if (ts.setup_type === 'QUALITY_HOLD_ACCUMULATION' || ts.quantamental_tag === 'CORE_QUALITY_HOLD') {
-    base = 8000;
+    base = 8500;
   } else if (ts.action === 'SPOT_BUY' && (ts.tier === 'A+' || ts.tier === 'A')) {
-    base = 7000;
+    base = 7500;
   } else if (ts.action === 'SPOT_BUY' && ts.tier === 'B') {
-    base = 5000;
+    base = 5500;
   } else if (ts.action === 'SPOT_BUY') {
     base = 4000;
   } else if (ts.action === 'TAKE_PROFIT') {
@@ -190,12 +203,24 @@ function getQuantamentalSetupRank(item) {
     base = 0;
   }
 
+  // Bonus for fresh Gold Flip
+  let flipBonus = 0;
+  if (isFlip) {
+    if (flipBars <= 2) flipBonus = 1500;
+    else if (flipBars <= 5) flipBonus = 800;
+    else flipBonus = 400;
+  }
+
+  // Quality Tier bonus
+  const tierBonus = (item.tier === 'S' || (ts && (ts.tier === 'S' || ts.tier === 'A+'))) ? 600 :
+                    (item.tier === 'A' || (ts && ts.tier === 'A')) ? 400 : 0;
+
   const scoreBonus = (ts.score || 0) * 10;
   const rrBonus = (ts.rr || 0) * 5;
   const upsideBonus = (fund && fund.upside_pct && fund.upside_pct > 0) ? Math.min(fund.upside_pct, 50) : 0;
   const spreadBonus = (item.spread_pct && item.spread_pct > 0) ? Math.min(item.spread_pct, 20) : 0;
 
-  return base + scoreBonus + rrBonus + upsideBonus + spreadBonus;
+  return base + flipBonus + tierBonus + scoreBonus + rrBonus + upsideBonus + spreadBonus;
 }
 
 // =============================================================================
@@ -1080,12 +1105,25 @@ function getFilteredSymbols() {
       const rankA = getQuantamentalSetupRank(a);
       const rankB = getQuantamentalSetupRank(b);
       if (rankB !== rankA) return rankB - rankA;
-      // Secondary sort: state (GOLD > NEUTRAL > BLUE)
+
+      // Secondary sort: Fresh Gold Flip priority
+      const flipA = isRecentGoldFlip(a) ? 1 : 0;
+      const flipB = isRecentGoldFlip(b) ? 1 : 0;
+      if (flipB !== flipA) return flipB - flipA;
+
+      // Tertiary sort: state (GOLD > NEUTRAL > BLUE)
       const stateRanks = { 'GOLD': 3, 'NEUTRAL': 2, 'BLUE': 1 };
       const sA = stateRanks[a.state] || 0;
       const sB = stateRanks[b.state] || 0;
       if (sB !== sA) return sB - sA;
-      // Tertiary sort: spread_pct
+
+      // Quaternary sort: Quality Tier (S > A > B > C)
+      const tierRanks = { 'S': 4, 'A': 3, 'B': 2, 'C': 1 };
+      const tA = tierRanks[a.tier] || 0;
+      const tB = tierRanks[b.tier] || 0;
+      if (tB !== tA) return tB - tA;
+
+      // Quinary sort: spread_pct
       return (b.spread_pct || 0) - (a.spread_pct || 0);
     });
   }
@@ -3520,7 +3558,6 @@ document.querySelectorAll('#mainNavTabs .nav-tab-btn').forEach(btn => {
 
 function renderQueueView() {
   const badge = document.getElementById('queueCountBadge');
-  if (badge) badge.textContent = pendingSetups.length;
 
   const container = document.getElementById('queueCardsGrid');
   if (!container) return;
@@ -3530,6 +3567,8 @@ function renderQueueView() {
   if (qClear) qClear.style.display = currentQueueSearch ? 'flex' : 'none';
 
   let filtered = pendingSetups.filter(s => {
+    // Exclude Tier C junk from the default view
+    if (currentQueueTier === 'ALL' && (s.tier === 'C' || s.tier === 'C-')) return false;
     const matchesPrio = (currentQueuePriority === 'ALL') || (s.priority === currentQueuePriority);
     const matchesTier = (currentQueueTier === 'ALL') || (s.tier === currentQueueTier);
     let matchesSearch = true;
@@ -3543,6 +3582,19 @@ function renderQueueView() {
     }
     return matchesPrio && matchesTier && matchesSearch;
   });
+
+  // Sort queue items: Priority (HIGH > MEDIUM > LOW), then Tier (S > A > B), then quality_score descending
+  const prioOrder = { 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
+  const tierOrder = { 'S': 4, 'A': 3, 'B': 2, 'C': 1 };
+  filtered.sort((a, b) => {
+    const pDiff = (prioOrder[b.priority] || 0) - (prioOrder[a.priority] || 0);
+    if (pDiff !== 0) return pDiff;
+    const tDiff = (tierOrder[b.tier] || 0) - (tierOrder[a.tier] || 0);
+    if (tDiff !== 0) return tDiff;
+    return (b.quality_score || 0) - (a.quality_score || 0);
+  });
+
+  if (badge) badge.textContent = filtered.length;
 
   if (qBadge) {
     if (currentQueueSearch) {
@@ -3576,7 +3628,10 @@ function renderQueueView() {
 
   const tierEmoji = { 'S': '💎 S', 'A': '⭐ A', 'B': '🔵 B', 'C': '⚪ C' };
 
-  container.innerHTML = filtered.map(s => {
+  const displayLimit = (window.showAllQueueItems || currentQueueSearch || filtered.length <= 24) ? filtered.length : 24;
+  const itemsToRender = filtered.slice(0, displayLimit);
+
+  let cardsHtml = itemsToRender.map(s => {
     const prioClass = s.priority === 'HIGH' ? 'queue-card-prio-high' : (s.priority === 'MEDIUM' ? 'queue-card-prio-med' : 'queue-card-prio-low');
     const prioBadgeClass = s.priority === 'HIGH' ? 'queue-prio-high' : (s.priority === 'MEDIUM' ? 'queue-prio-med' : 'queue-prio-low');
     const typeInfo = typeLabels[s.setup_type] || { emoji: '⚡', title: s.setup_type };
@@ -3668,6 +3723,19 @@ function renderQueueView() {
       </div>
     `;
   }).join('');
+
+  if (filtered.length > displayLimit) {
+    cardsHtml += `
+      <div style="grid-column: 1/-1; padding: 24px; text-align: center; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-color); margin-top: 10px;">
+        <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">Показани са Топ ${displayLimit} от ${filtered.length} високорейтингови очаквани сделки</div>
+        <button type="button" class="filter-btn filter-gold active" onclick="window.showAllQueueItems = true; renderQueueView();" style="padding: 10px 24px; font-weight: 600; cursor: pointer; border-radius: var(--radius-sm);">
+          📂 Покажи всички ${filtered.length} очаквани сделки
+        </button>
+      </div>
+    `;
+  }
+
+  container.innerHTML = cardsHtml;
 }
 
 document.querySelectorAll('#queuePriorityFilters .filter-btn').forEach(btn => {
