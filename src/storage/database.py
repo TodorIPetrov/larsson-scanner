@@ -1453,18 +1453,26 @@ class Database:
             WHERE symbol = ? AND setup_type = ? AND timeframe = ? AND status = 'ACTIVE'
             """, (now, now, symbol, setup_type, timeframe))
 
-    def expire_stale_setups(self, max_age_hours: int = 48):
-        """Expires setups that have been pending for too long without triggering."""
+    def expire_stale_setups(self, max_age_hours: int = 168, crypto_max_age_hours: int = 72):
+        """
+        Expires setups that have been pending for too long without triggering.
+        Crypto markets are 24/7 (72h default), while equities/indices/commodities
+        have weekend breaks and multi-day swing horizons (168h default).
+        """
         from datetime import timedelta
-        cutoff = (datetime.now(timezone.utc) - timedelta(hours=max_age_hours)).isoformat()
+        crypto_cutoff = (datetime.now(timezone.utc) - timedelta(hours=crypto_max_age_hours)).isoformat()
+        trad_cutoff = (datetime.now(timezone.utc) - timedelta(hours=max_age_hours)).isoformat()
         now = datetime.now(timezone.utc).isoformat()
         with self._get_connection() as conn:
             cur = conn.cursor()
             cur.execute("""
             UPDATE pending_setups
             SET status = 'EXPIRED', last_updated = ?
-            WHERE status = 'ACTIVE' AND last_updated < ?
-            """, (now, cutoff))
+            WHERE status = 'ACTIVE' AND (
+                (asset_class = 'crypto' AND last_updated < ?) OR
+                (asset_class != 'crypto' AND last_updated < ?)
+            )
+            """, (now, crypto_cutoff, trad_cutoff))
 
     def clear_triggered_setups(self):
         """Removes setups with status='TRIGGERED' older than 24 hours."""

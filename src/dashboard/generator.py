@@ -583,14 +583,20 @@ def export_dashboard_data(
     try:
         from src.alerts.formatter import get_tradingview_link
         if hasattr(db, "expire_stale_setups"):
-            db.expire_stale_setups(max_age_hours=48)
+            db.expire_stale_setups(max_age_hours=240, crypto_max_age_hours=72)
         if hasattr(db, "clear_triggered_setups"):
             db.clear_triggered_setups()
         raw_setups = db.get_active_pending_setups(exclude_tier_c=True)
-        # Curate to top 35-40 highest quality pending setups
-        if len(raw_setups) > 35:
-            raw_setups = raw_setups[:35]
-        for s in raw_setups:
+        # Curate a balanced institutional mix across all asset classes (Crypto, Equities, Macro)
+        crypto_setups = [s for s in raw_setups if s["asset_class"] == "crypto"][:15]
+        equity_setups = [s for s in raw_setups if s["asset_class"] in ("us_stocks", "ai_stocks", "intl_stocks", "crypto_stocks")][:15]
+        macro_setups = [s for s in raw_setups if s["asset_class"] in ("commodities", "indices")][:10]
+        curated_setups = crypto_setups + equity_setups + macro_setups
+        
+        prio_order = {"HIGH": 3, "MEDIUM": 2, "LOW": 1}
+        tier_order = {"S": 4, "A": 3, "B": 2, "C": 1}
+        curated_setups.sort(key=lambda s: (prio_order.get(s["priority"], 1), tier_order.get(s["tier"], 1), float(s["quality_score"] or 0)), reverse=True)
+        for s in curated_setups:
             sym = s["symbol"]
             s_name = names_map.get(sym)
             if not s_name:
