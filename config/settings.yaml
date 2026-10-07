@@ -36,3 +36,14 @@ trading:
   btc_safety_filter: true
   min_confluence_score: 60
   allowed_tiers: ["A+", "A", "B"]
+
+onchain:
+  enabled: true
+  source: "csv"                 # "csv" (reads data/blockhorizon/*.csv), "api", or "fallback"
+  data_dir: "data/blockhorizon"
+  api_key: ""                   # BlockHorizon API key if subscription includes API
+  base_url: "https://blockhorizon.io/api"
+  apply_to_confluence: true     # Apply cycle tailwind/headwind points to BTC trades
+  apply_to_sizing: true         # Scale position size by regime (0.3x to 1.25x)
+  apply_to_alts: true           # Gate altcoin longs when BTC is in Euphoria
+

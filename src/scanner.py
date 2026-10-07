@@ -269,6 +269,14 @@ class LarssonScanner:
 
             fund_profile = get_fundamental_profile(ticker)
 
+            btc_cycle = None
+            if asset_class == "crypto":
+                try:
+                    from src.engine.btc_cycle import BtcCycleEngine
+                    btc_cycle = BtcCycleEngine(self.db).evaluate_cycle()
+                except Exception:
+                    pass
+
             suggestion = generate_trade_suggestion(
                 current_price=current_price,
                 state=state.value,
@@ -292,6 +300,7 @@ class LarssonScanner:
                 asset_class=asset_class,
                 btc_relative=btc_relative,
                 options_flow=options_flow,
+                btc_cycle=btc_cycle,
             )
 
             self.db.upsert_trade_suggestion(
@@ -567,6 +576,7 @@ class LarssonScanner:
                         old_state=old_state,
                         new_state=current_state,
                         price=latest_price,
+                        tv_symbol=tv_symbol,
                         )
 
                 # Trigger interactive trade proposal if actionable setup exists (on transition or pullback/bounce)
@@ -793,6 +803,7 @@ class LarssonScanner:
                         old_state=old_state,
                         new_state=current_state,
                         price=latest_price,
+                        tv_symbol=tv_symbol,
                     )
 
                 # Trigger interactive trade proposal if actionable setup exists (on transition or pullback/bounce)

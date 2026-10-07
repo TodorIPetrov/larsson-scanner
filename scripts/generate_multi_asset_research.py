@@ -93,15 +93,15 @@ def generate_commodities_memo(db_data):
 
     # Commodity definitions and institutional marginal cost benchmarks
     commodities = [
-        {"name": "Злато (Gold)", "ticker": "GC=F", "cost": 1400.0, "cost_str": "$1,350 - $1,450/oz (AISC)", "theme": "Монетарно хеджиране / Де-доларизация"},
-        {"name": "Сребро (Silver)", "ticker": "SI=F", "cost": 24.0, "cost_str": "$22.00 - $25.00/oz", "theme": "Индустриален дефицит & AI/Солар"},
+        {"name": "Злато (Gold)", "ticker": "GC=F", "cost": 2150.0, "cost_str": "Монетарен резерв & TIPS реални лихви", "theme": "Монетарно хеджиране / Де-доларизация на централни банки (>1000 т/год)"},
+        {"name": "Сребро (Silver)", "ticker": "SI=F", "cost": 24.0, "cost_str": "$22.00 - $25.00/oz (Индустриален под)", "theme": "Индустриален дефицит & Солар/AI електроника"},
         {"name": "Петрол WTI (Crude)", "ticker": "CL=F", "cost": 72.0, "cost_str": "$70.00 - $74.00/bbl (Shale break-even)", "theme": "Геополитически спред & Ограничен свободен капацитет"},
         {"name": "Петрол Brent", "ticker": "BZ=F", "cost": 75.0, "cost_str": "$72.00 - $76.00/bbl (Deepwater)", "theme": "Ограничено предлагане от OPEC+"},
         {"name": "Мед (Copper)", "ticker": "HG=F", "cost": 4.00, "cost_str": "$3.80 - $4.20/lb (Incentive price)", "theme": "Суперцикъл на електрификацията & AI дата центрове"},
         {"name": "Природен газ (NatGas)", "ticker": "NG=F", "cost": 2.65, "cost_str": "$2.50 - $2.75/MMBtu (Cash cost)", "theme": "LNG експорт & Сезонен цикъл"},
         {"name": "Платина (Platinum)", "ticker": "PL=F", "cost": 1150.0, "cost_str": "$1,100 - $1,200/oz (Shaft cost)", "theme": "Водородни клетки & Автокатализатори"},
-        {"name": "Уран (Global X ETF)", "ticker": "URA", "cost": 32.0, "cost_str": "$85.00/lb U3O8 Term benchmark", "theme": "Ядрен ренесанс / 24/7 AI базова енергия"},
-        {"name": "Уран (Sprott Miners)", "ticker": "URNM", "cost": 38.0, "cost_str": "$85.00/lb U3O8 Term benchmark", "theme": "Дефицит на рудници & Договори за комунални услуги"},
+        {"name": "Уран (Global X ETF)", "ticker": "URA", "cost": None, "cost_str": "$85.00/lb U3O8 Минен бенчмарк", "theme": "Ядрен ренесанс / 24/7 AI базова енергия"},
+        {"name": "Уран (Sprott Miners)", "ticker": "URNM", "cost": None, "cost_str": "$85.00/lb U3O8 Минен бенчмарк", "theme": "Дефицит на рудници & Дългосрочни договори"},
     ]
 
     table_rows = []
@@ -112,14 +112,19 @@ def generate_commodities_memo(db_data):
         state_1w = get_tf_state(tk, "1W", db_data)
         v1, v2 = get_v_bands(tk, "1D", db_data)
 
-        # Quantitative margin over marginal cost
-        margin_pct = ((price - item["cost"]) / price * 100.0) if price > 0 else 0.0
+        # Quantitative margin over marginal cost (only where cost benchmark is physical)
+        if item["cost"] is not None and price > 0:
+            margin_pct = ((price - item["cost"]) / price * 100.0)
+            margin_str = f"{margin_pct:+.1f}%"
+        else:
+            margin_pct = 0.0
+            margin_str = "ETF кошница"
 
         # Institutional verdict
         if state_1d == "GOLD" and state_1w == "GOLD":
-            verdict = "🟢 **STRONG OVERWEIGHT**" if margin_pct > 30 else "🟢 **OVERWEIGHT**"
+            verdict = "🟢 **STRONG OVERWEIGHT**" if margin_pct > 25 else "🟢 **OVERWEIGHT**"
         elif state_1d == "BLUE" and state_1w == "BLUE":
-            if price <= item["cost"] * 1.15:
+            if item["cost"] is not None and price <= item["cost"] * 1.15:
                 verdict = "🟡 **ACCUMULATE AT COST LOWS**"
             else:
                 verdict = "🔴 **UNDERPERFORM / BEAR**"
@@ -132,7 +137,7 @@ def generate_commodities_memo(db_data):
         badge_1w = "🟢 GOLD" if state_1w == "GOLD" else ("🔴 BLUE" if state_1w == "BLUE" else "🟡 NEUTRAL")
 
         table_rows.append(
-            f"| **{item['name']}** | `{tk}` | **${price:,.2f}** | {badge_1d} | {badge_1w} | {item['cost_str']} | {margin_pct:+.1f}% | {verdict} |"
+            f"| **{item['name']}** | `{tk}` | **${price:,.2f}** | {badge_1d} | {badge_1w} | {item['cost_str']} | {margin_str} | {verdict} |"
         )
 
     content = f"""# ИНСТИТУЦИОНАЛЕН АНАЛИЗ НА СУРОВИНИТЕ И СУПЕРЦИКЛИТЕ (v2.0)
@@ -268,16 +273,16 @@ def generate_crypto_digital_assets_memo(db_data):
     filename = f"{RESEARCH_DIR}/CRYPTO_DIGITAL_ASSETS_MEMO.md"
 
     crypto_assets = [
-        {"name": "Bitcoin", "ticker": "BTCUSDT", "yf_symbol": "BTC-USD", "cost": 62000.0, "role": "Суверенен макроелектронен хедж & Институционален актив"},
-        {"name": "Ethereum", "ticker": "ETHUSDT", "yf_symbol": "ETH-USD", "cost": 1900.0, "role": "Децентрализиран компютър & L2 разплащания"},
-        {"name": "Solana", "ticker": "SOLUSDT", "yf_symbol": "SOL-USD", "cost": 65.0, "role": "Високоскоростен финансов слой & Ретейл ликвидност"},
-        {"name": "BNB", "ticker": "BNBUSDT", "yf_symbol": "BNB-USD", "cost": 450.0, "role": "Екосистема за обмен & Launchpool доходност"},
-        {"name": "Ripple", "ticker": "XRPUSDT", "yf_symbol": "XRP-USD", "cost": 0.65, "role": "Междубанкови трансгранични разплащания"},
-        {"name": "Sui", "ticker": "SUIUSDT", "yf_symbol": "SUI-USD", "cost": 0.45, "role": "L1 ново поколение с обектно-ориентиран Move език"},
-        {"name": "Chainlink", "ticker": "LINKUSDT", "yf_symbol": "LINK-USD", "cost": 8.50, "role": "Монополен оракул & Токенизация на реални активи (RWA)"},
-        {"name": "Dogecoin", "ticker": "DOGEUSDT", "yf_symbol": "DOGE-USD", "cost": 0.06, "role": "Мем актив & Спекулативна бета ликвидност"},
-        {"name": "Cardano", "ticker": "ADAUSDT", "yf_symbol": "ADA-USD", "cost": 0.18, "role": "Академичен PoS блокчейн"},
-        {"name": "Pax Gold", "ticker": "PAXGUSDT", "yf_symbol": "PAXG-USD", "cost": 1400.0, "role": "Токенизирано физическо злато в трезори на LBMA"},
+        {"name": "Bitcoin", "ticker": "BTCUSDT", "yf_symbol": "BTC-USD", "cost": 62000.0, "cost_desc": "$58,000 - $64,000 (PoW Miner Breakeven)", "role": "Суверенен макроелектронен хедж & Институционален актив"},
+        {"name": "Ethereum", "ticker": "ETHUSDT", "yf_symbol": "ETH-USD", "cost": None, "cost_desc": "Proof-of-Stake (3.2% Staking Yield)", "role": "Децентрализиран компютър & L2 разплащания"},
+        {"name": "Solana", "ticker": "SOLUSDT", "yf_symbol": "SOL-USD", "cost": None, "cost_desc": "Proof-of-Stake (Висока DEX скорост)", "role": "Високоскоростен финансов слой & Ретейл ликвидност"},
+        {"name": "BNB", "ticker": "BNBUSDT", "yf_symbol": "BNB-USD", "cost": None, "cost_desc": "PoSA Екосистема", "role": "Екосистема за обмен & Launchpool доходност"},
+        {"name": "Ripple", "ticker": "XRPUSDT", "yf_symbol": "XRP-USD", "cost": None, "cost_desc": "Federated Consensus", "role": "Междубанкови трансгранични разплащания"},
+        {"name": "Sui", "ticker": "SUIUSDT", "yf_symbol": "SUI-USD", "cost": None, "cost_desc": "Move Object-Centric L1", "role": "L1 ново поколение с обектно-ориентиран Move език"},
+        {"name": "Chainlink", "ticker": "LINKUSDT", "yf_symbol": "LINK-USD", "cost": None, "cost_desc": "Децентрализиран Оракул", "role": "Монополен оракул & Токенизация на реални активи (RWA)"},
+        {"name": "Dogecoin", "ticker": "DOGEUSDT", "yf_symbol": "DOGE-USD", "cost": None, "cost_desc": "AuxPoW Мем токен", "role": "Мем актив & Спекулативна бета ликвидност"},
+        {"name": "Cardano", "ticker": "ADAUSDT", "yf_symbol": "ADA-USD", "cost": None, "cost_desc": "Ouroboros PoS", "role": "Академичен PoS блокчейн"},
+        {"name": "Pax Gold", "ticker": "PAXGUSDT", "yf_symbol": "PAXG-USD", "cost": 2150.0, "cost_desc": "1:1 Физическо злато (LBMA)", "role": "Токенизирано физическо злато в трезори на LBMA"},
     ]
 
     table_rows = []
@@ -289,24 +294,24 @@ def generate_crypto_digital_assets_memo(db_data):
         state_4h = get_tf_state(tk, "4H", db_data)
         v1, v2 = get_v_bands(tk, "1D", db_data)
 
-        # 200D SMA Multiple Proxy
-        sma_mult = 1.10
+        # True 200D SMA Mayer Multiple
+        sma_mult = 1.0
         try:
             yf_t = yf.Ticker(item["yf_symbol"])
             hist = yf_t.history(period="1y")
-            if not hist.empty and len(hist) >= 150:
-                sma200 = float(hist["Close"].rolling(150).mean().iloc[-1])
+            if not hist.empty and len(hist) >= 120:
+                sma200 = float(hist["Close"].rolling(200, min_periods=100).mean().iloc[-1])
                 if sma200 > 0 and price > 0:
                     sma_mult = price / sma200
         except Exception:
             pass
 
         if sma_mult < 1.15:
-            valuation_status = f"MVRV/SMA Multiple: {sma_mult:.2f}x (Зона на натрупване)"
+            valuation_status = f"Mayer Multiple (200D SMA): {sma_mult:.2f}x (Зона на натрупване)"
         elif sma_mult < 1.80:
-            valuation_status = f"MVRV/SMA Multiple: {sma_mult:.2f}x (Здравословна експанзия)"
+            valuation_status = f"Mayer Multiple (200D SMA): {sma_mult:.2f}x (Здравословна експанзия)"
         else:
-            valuation_status = f"MVRV/SMA Multiple: {sma_mult:.2f}x (Прегряване / Еуфория)"
+            valuation_status = f"Mayer Multiple (200D SMA): {sma_mult:.2f}x (Прегряване / Еуфория)"
 
         badge_1d = "🟢 GOLD" if state_1d == "GOLD" else ("🔴 BLUE" if state_1d == "BLUE" else "🟡 NEUTRAL")
         badge_1w = "🟢 GOLD" if state_1w == "GOLD" else ("🔴 BLUE" if state_1w == "BLUE" else "🟡 NEUTRAL")

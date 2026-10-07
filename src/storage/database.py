@@ -480,6 +480,20 @@ class Database:
             """)
             cur.execute("CREATE INDEX IF NOT EXISTS idx_sbh_sector_ts ON sector_breadth_history(sector, timestamp);")
 
+            # Table for Bitcoin On-Chain Daily Metrics (BlockHorizon & On-Chain Cycles)
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS onchain_daily (
+                date TEXT NOT NULL,
+                metric TEXT NOT NULL,
+                value REAL NOT NULL,
+                source TEXT NOT NULL,
+                fetched_at TEXT NOT NULL,
+                PRIMARY KEY (date, metric)
+            );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_onchain_daily_date ON onchain_daily(date);")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_onchain_daily_metric ON onchain_daily(metric);")
+
 
     def restore_from_json_if_empty(self, json_path: Optional[str] = None) -> int:
         """
@@ -664,7 +678,7 @@ class Database:
         old_state: LarssonState,
         new_state: LarssonState,
         price: float,
-        tv_symbol: str,
+        tv_symbol: str = "",
         now_iso: Optional[str] = None,
     ):
         """Records an alert in the alert history table."""
@@ -1827,6 +1841,100 @@ class Database:
                     "timestamp": r["timestamp"],
                 }
             return out
+
+    # =========================================================================
+    # ON-CHAIN DAILY METRICS (BlockHorizon & On-Chain Cycles)
+    # =========================================================================
+
+    def record_onchain_metric(
+        self,
+        date: str,
+        metric: str,
+        value: float,
+        source: str = "blockhorizon",
+        fetched_at: Optional[str] = None,
+    ) -> None:
+        """Inserts or replaces a daily on-chain metric record."""
+        if not fetched_at:
+            fetched_at = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            INSERT INTO onchain_daily (date, metric, value, source, fetched_at)
+            VALUES (?, ?, ?, ?, ?)
+            ON CONFLICT(date, metric) DO UPDATE SET
+                value=excluded.value,
+                source=excluded.source,
+                fetched_at=excluded.fetched_at
+            """, (date, metric, float(value), source, fetched_at))
+
+    def record_onchain_metrics_bulk(self, records: List[Dict[str, Any]]) -> int:
+        """Bulk inserts or updates on-chain metric records."""
+        if not records:
+            return 0
+        now_iso = datetime.now(timezone.utc).isoformat()
+        count = 0
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            for r in records:
+                d = r["date"]
+                m = r["metric"]
+                val = float(r["value"])
+                src = r.get("source", "blockhorizon")
+                fat = r.get("fetched_at", now_iso)
+                cur.execute("""
+                INSERT INTO onchain_daily (date, metric, value, source, fetched_at)
+                VALUES (?, ?, ?, ?, ?)
+                ON CONFLICT(date, metric) DO UPDATE SET
+                    value=excluded.value,
+                    source=excluded.source,
+                    fetched_at=excluded.fetched_at
+                """, (d, m, val, src, fat))
+                count += 1
+        return count
+
+    def get_onchain_metrics(
+        self,
+        metric: Optional[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Retrieves historical on-chain metrics sorted by date ascending."""
+        query = "SELECT date, metric, value, source, fetched_at FROM onchain_daily WHERE 1=1"
+        params = []
+        if metric:
+            query += " AND metric = ?"
+            params.append(metric)
+        if start_date:
+            query += " AND date >= ?"
+            params.append(start_date)
+        if end_date:
+            query += " AND date <= ?"
+            params.append(end_date)
+        query += " ORDER BY date ASC, metric ASC"
+
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute(query, tuple(params))
+            return [dict(r) for r in cur.fetchall()]
+
+    def get_latest_onchain_metrics(self) -> Dict[str, float]:
+        """
+        Returns the most recent value for each available metric in onchain_daily.
+        """
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            SELECT metric, value, date, source
+            FROM onchain_daily
+            WHERE (metric, date) IN (
+                SELECT metric, MAX(date)
+                FROM onchain_daily
+                GROUP BY metric
+            )
+            """)
+            return {r["metric"]: float(r["value"]) for r in cur.fetchall()}
+
 
 
 

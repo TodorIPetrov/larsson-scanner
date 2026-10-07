@@ -75,6 +75,10 @@ class TradeSuggestion:
     base_rate_sample_size: Optional[int] = None
     base_rate_horizon: Optional[int] = 60
     htf_aligned: bool = True
+    # Bitcoin On-Chain Cycle Overlays (BlockHorizon)
+    btc_cycle_score: Optional[float] = None
+    btc_cycle_regime: Optional[str] = None
+    btc_cycle_sizing_mult: Optional[float] = 1.0
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -86,6 +90,7 @@ def calculate_leverage_matrix(
     position_size_usd: float = 300.0,
     max_leverage: int = 3,
     direction: str = "LONG",
+    btc_cycle: Optional[object] = None,
 ) -> list:
     """
     Computes comparative parameters (margin, risk, estimated liquidation)
@@ -95,6 +100,8 @@ def calculate_leverage_matrix(
         return []
 
     max_lev = max(1, min(3, max_leverage))
+    if btc_cycle:
+        max_lev = min(max_lev, getattr(btc_cycle, "max_leverage", max_lev))
     matrix = []
     is_long = direction.upper() != "SHORT"
 
@@ -111,12 +118,37 @@ def calculate_leverage_matrix(
             # 0.5% maintenance margin buffer
             if is_long:
                 liq_price = round(entry_price * (1.0 - (1.0 / lev) + 0.005), 4)
+                # Distance from stop loss to liquidation price (must be positive for safe long)
+                liq_gap_pct = round(((stop_loss - liq_price) / entry_price) * 100.0, 1) if (stop_loss and stop_loss > 0) else None
+                if stop_loss and stop_loss > 0 and liq_price >= stop_loss:
+                    is_safe = False
+                    safety_warning = "FATAL: Liquidation triggers before Stop-Loss!"
+                elif liq_gap_pct is not None and liq_gap_pct < 10.0:
+                    is_safe = False
+                    safety_warning = f"DANGER: Liq buffer only {liq_gap_pct:.1f}% under Stop-Loss (< 10%)"
+                else:
+                    is_safe = True
+                    safety_warning = ""
             else:
                 liq_price = round(entry_price * (1.0 + (1.0 / lev) - 0.005), 4)
+                # Distance from stop loss to liquidation price (must be positive for safe short)
+                liq_gap_pct = round(((liq_price - stop_loss) / entry_price) * 100.0, 1) if (stop_loss and stop_loss > 0) else None
+                if stop_loss and stop_loss > 0 and liq_price <= stop_loss:
+                    is_safe = False
+                    safety_warning = "FATAL: Liquidation triggers before Stop-Loss!"
+                elif liq_gap_pct is not None and liq_gap_pct < 10.0:
+                    is_safe = False
+                    safety_warning = f"DANGER: Liq buffer only {liq_gap_pct:.1f}% above Stop-Loss (< 10%)"
+                else:
+                    is_safe = True
+                    safety_warning = ""
             dist_to_liq_pct = round(abs(entry_price - liq_price) / entry_price * 100.0, 1)
         else:
             liq_price = None
             dist_to_liq_pct = None
+            liq_gap_pct = None
+            is_safe = True
+            safety_warning = ""
 
         if lev == 1:
             label = "Spot (1x)" if is_long else "Hedge 1x"
@@ -134,6 +166,9 @@ def calculate_leverage_matrix(
             "sl_pct_margin": sl_pct_margin,
             "liquidation_price": liq_price,
             "dist_to_liq_pct": dist_to_liq_pct,
+            "liq_gap_pct": liq_gap_pct,
+            "is_safe": is_safe,
+            "safety_warning": safety_warning,
         })
 
     return matrix
@@ -225,6 +260,9 @@ def calculate_confluence_score(
     current_price: Optional[float] = None,
     options_flow: Optional[dict] = None,
     force_technical_only: bool = False,
+    btc_cycle: Optional[object] = None,
+    ticker: Optional[str] = None,
+    direction: str = "LONG",
 ) -> Tuple[int, str]:
     """
     Calculates institutional confluence score (0 - 100) and assigns a quality tier.
@@ -233,6 +271,7 @@ def calculate_confluence_score(
     - Robust MoS & positive FV validation (MoS >= 15% required for equity bonus).
     - Strict moat normalization (Wide +5, Narrow +2, None/null +0).
     - Data-quality and sanity-band checked options flow boost.
+    - Bitcoin On-Chain Cycle Overlay (BlockHorizon): adds macro tailwind/headwind points.
     """
     score = 40  # baseline for valid directional setup
 
@@ -303,6 +342,31 @@ def calculate_confluence_score(
         if is_valid and options_flow.get("confluence_boost"):
             score += 5
 
+    # Bitcoin On-Chain Cycle Overlays (BlockHorizon)
+    if btc_cycle:
+        regime = getattr(btc_cycle, "regime", "MID_CYCLE")
+        t_clean = (ticker or "").upper()
+        is_btc = t_clean in ("BTC", "BTCUSDT", "BTC-USD", "BINANCE:BTCUSDT") or (t_clean.startswith("BTC") and not t_clean.startswith("BTCDOM"))
+
+        if is_btc:
+            if regime == "DEEP_VALUE":
+                score += 10
+            elif regime == "EARLY_BULL":
+                score += 5
+            elif regime == "LATE_CYCLE":
+                score -= 10
+            elif regime == "EUPHORIA":
+                if direction.upper() == "SHORT":
+                    score += 10
+                else:
+                    score -= 20
+        elif asset_class == "crypto":
+            # For altcoins: euphoria blow-off carries severe distribution risk
+            if regime == "EUPHORIA":
+                score -= 15
+            elif regime == "DEEP_VALUE":
+                score += 5
+
     score = max(0, min(100, score))
 
     if score >= 85:
@@ -331,6 +395,8 @@ def _enrich_trade_suggestion(
     asset_class: str = "crypto",
     timeframe: str = "1D",
     macro_1d_state: Optional[str] = None,
+    btc_cycle: Optional[object] = None,
+    ticker: Optional[str] = None,
 ) -> TradeSuggestion:
     """Enriches a TradeSuggestion with clear, distinct technical, fundamental, and BTC relative fields."""
     # 1. Technical Analysis Recommendation & Details
@@ -533,6 +599,37 @@ def _enrich_trade_suggestion(
     except Exception:
         pass
 
+    # 9. Bitcoin On-Chain Cycle Integration (BlockHorizon)
+    if btc_cycle:
+        s.btc_cycle_score = getattr(btc_cycle, "cycle_score", None)
+        s.btc_cycle_regime = getattr(btc_cycle, "regime", None)
+        s.btc_cycle_sizing_mult = getattr(btc_cycle, "sizing_multiplier", 1.0)
+
+        t_clean = (ticker or getattr(s, "ticker", "") or "").upper()
+        is_btc = t_clean in ("BTC", "BTCUSDT", "BTC-USD", "BINANCE:BTCUSDT") or (t_clean.startswith("BTC") and not t_clean.startswith("BTCDOM"))
+
+        if is_btc:
+            if s.btc_cycle_regime == "EUPHORIA":
+                s.max_leverage = 1
+                s.recommended_leverage = 1
+                if "Он-чейн Еуфория" not in s.reason_bg:
+                    s.reason_bg = f"{s.reason_bg} ⚠️ [On-Chain Euphoria] Оценка {s.btc_cycle_score:.0f}/100: Прегрят цикъл (0.3x размер, 1x ливъридж)."
+            elif s.btc_cycle_regime == "LATE_CYCLE":
+                s.max_leverage = min(s.max_leverage, 2)
+                s.recommended_leverage = min(s.recommended_leverage, 2)
+                if "Късен цикъл" not in s.reason_bg:
+                    s.reason_bg = f"{s.reason_bg} 🟠 [On-Chain Late Cycle] Оценка {s.btc_cycle_score:.0f}/100: Препоръчителен размер 0.6x."
+            elif s.btc_cycle_regime == "DEEP_VALUE":
+                if "Deep Value" not in s.reason_bg:
+                    s.reason_bg = f"{s.reason_bg} 💎 [On-Chain Deep Value] Оценка {s.btc_cycle_score:.0f}/100: Максимална акумулация (1.25x размер)."
+        elif asset_class == "crypto":
+            if s.btc_cycle_regime == "EUPHORIA" and not getattr(btc_cycle, "allow_alt_longs", True):
+                if s.direction == "LONG":
+                    s.action = "WAIT"
+                    s.synthesis_badge_bg = "🛑 CYCLE RISK"
+                    s.synthesis_label_bg = "Блокада на алткойн дълги позиции поради он-чейн еуфория на BTC"
+                    s.reason_bg = f"{s.reason_bg} 🛑 [BTC Euphoria Gate] Он-чейн еуфория на BTC ({s.btc_cycle_score:.0f}/100): Блокирани нови дълги позиции в алткойни!"
+
     return s
 
 
@@ -563,6 +660,7 @@ def _raw_generate_trade_suggestion(
     asset_class: str = "crypto",
     btc_relative: Optional[object] = None,
     options_flow: Optional[dict] = None,
+    btc_cycle: Optional[object] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion.
@@ -578,6 +676,15 @@ def _raw_generate_trade_suggestion(
     elif fund_profile and (getattr(fund_profile, "sector", None) or getattr(fund_profile, "model_type", None) or getattr(fund_profile, "shares", None)):
         if asset_class == "crypto":
             asset_class = "us_stocks"
+
+    _calc_confluence = globals()["calculate_confluence_score"]
+
+    def calculate_confluence_score(*args, **kwargs):
+        if "btc_cycle" not in kwargs and len(args) < 12:
+            kwargs["btc_cycle"] = btc_cycle
+        if "ticker" not in kwargs and len(args) < 13:
+            kwargs["ticker"] = eff_ticker
+        return _calc_confluence(*args, **kwargs)
 
     atr = max(atr, current_price * 0.005)
     atr_pct = (atr / current_price) * 100.0 if current_price > 0 else 0.0
@@ -1147,6 +1254,7 @@ def generate_trade_suggestion(
     asset_class: str = "crypto",
     btc_relative: Optional[object] = None,
     options_flow: Optional[dict] = None,
+    btc_cycle: Optional[object] = None,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion,
@@ -1189,6 +1297,7 @@ def generate_trade_suggestion(
         asset_class=asset_class,
         btc_relative=btc_relative,
         options_flow=options_flow,
+        btc_cycle=btc_cycle,
     )
     return _enrich_trade_suggestion(
         raw_s,
@@ -1204,6 +1313,8 @@ def generate_trade_suggestion(
         asset_class=asset_class,
         timeframe=timeframe,
         macro_1d_state=macro_1d_state,
+        btc_cycle=btc_cycle,
+        ticker=eff_ticker,
     )
 
 

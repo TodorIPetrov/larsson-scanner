@@ -115,8 +115,8 @@ class PaperTrader:
         is_crypto = ticker.endswith("USDT") or ticker.endswith("USDC")
         if is_crypto and self.btc_safety_filter and ticker != "BTCUSDT":
             btc_state_row = self.db.get_current_state("BTCUSDT", "1D")
+            btc_state = btc_state_row["current_state"] if btc_state_row else "NEUTRAL"
             if btc_state_row:
-                btc_state = btc_state_row["current_state"]
                 if direction == "LONG" and btc_state == "BLUE":
                     logger.info(f"[PaperTrader] BTC is in Bearish (BLUE) state on 1D. Skipping altcoin Long proposal {ticker}.")
                     return None
@@ -124,8 +124,19 @@ class PaperTrader:
                     logger.info(f"[PaperTrader] BTC is in Bullish (GOLD) state on 1D. Skipping altcoin Short proposal {ticker}.")
                     return None
 
+            # On-chain cycle gate: block altcoin longs during Euphoria top risk unless BTC is confirmed GOLD
+            try:
+                from src.engine.btc_cycle import BtcCycleEngine
+                cycle_profile = BtcCycleEngine(self.db).evaluate_cycle(btc_state=btc_state)
+                if direction == "LONG" and not cycle_profile.allow_alt_longs:
+                    logger.info(f"[PaperTrader] BTC On-Chain Cycle is in EUPHORIA. Skipping altcoin Long proposal {ticker}.")
+                    return None
+            except Exception as e:
+                logger.debug(f"[PaperTrader] On-chain cycle check error: {e}")
+
         balance = self.db.get_paper_balance(initial_balance=self.initial_balance)
-        pos_size_usd = self.default_position_size
+        sizing_mult = float(trade_suggestion.get("btc_cycle_sizing_mult") or 1.0)
+        pos_size_usd = round(self.default_position_size * sizing_mult, 2)
         max_leverage = trade_suggestion.get("max_leverage", 1)
         recommended_leverage = trade_suggestion.get("recommended_leverage", 1)
         margin_usd = round(pos_size_usd / max(1, recommended_leverage), 2)

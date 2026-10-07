@@ -432,7 +432,8 @@ class TelegramCommandListener:
             upside_str = f" (+{round(fund.upside_pct)}%)" if fund.upside_pct is not None else ""
             fund_block += f"• DCF Справедлива стойност: <b>${fund.fair_value:,.2f}</b>{upside_str} (MoS: {fund.mos_pct:.0f}%)\n"
             if fund.moat:
-                fund_block += f"• Икономически ров: <b>{fund.moat}</b> | Z-Score: <b>{fund.z_score:.2f}</b>\n"
+                z_score_str = f"{fund.z_score:.2f}" if fund.z_score is not None else "N/A"
+                fund_block += f"• Икономически ров: <b>{fund.moat}</b> | Z-Score: <b>{z_score_str}</b>\n"
         elif selected.get("ts_fair_value") or (selected.get("ts_fund_verdict") and selected.get("ts_fund_verdict") != "SPECULATIVE_NA"):
             fv = selected.get("ts_fair_value")
             fv_str = f"${fv:,.2f}" if fv else "N/A"
