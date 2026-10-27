@@ -14,8 +14,8 @@ let currentSetupFilter = 'ALL';
 let currentQueuePriority = 'ALL';
 let currentQueueTier = 'ALL';
 let currentSearch = '';
-let currentQueueSearch = '';
-let currentView = localStorage.getItem('larsson_view_mode') || (window.innerWidth <= 768 ? 'cards' : 'table');
+let savedView = localStorage.getItem('larsson_view_mode');
+let currentView = (savedView && savedView !== 'table') ? savedView : (window.innerWidth <= 768 ? 'cards' : 'split');
 let currentTab = localStorage.getItem('larsson_active_tab') || 'scanner';
 
 let currentSortColumn = null;
@@ -1251,6 +1251,15 @@ function renderCioDashboard(data) {
   if (deployableEl) deployableEl.textContent = `${deployable}%`;
   if (globalGoldPctEl) globalGoldPctEl.textContent = `${rb.global_gold_pct || 0}% Gold`;
 
+  const topMacroBadge = document.getElementById('cioTopMacroBadge');
+  if (topMacroBadge) {
+    topMacroBadge.textContent = `${macroRegime} (×${multiplier})`;
+  }
+  const topDeployable = document.getElementById('cioTopDeployable');
+  if (topDeployable) {
+    topDeployable.textContent = `${deployable}%`;
+  }
+
   function updateStackedBar(goldId, neutralId, blueId, ratioId, deltaId, g, n, b, delta) {
     const gEl = document.getElementById(goldId);
     const nEl = document.getElementById(neutralId);
@@ -1862,6 +1871,8 @@ function renderCards(filteredSymbols) {
 function applyViewMode() {
   const tableSec = document.getElementById('tableContainer');
   const cardsSec = document.getElementById('cardsContainer');
+  const chartSec = document.getElementById('liveChartSection');
+  const splitLayout = document.getElementById('scannerSplitLayout');
   const buttons = document.querySelectorAll('#viewToggle .toggle-btn');
 
   buttons.forEach(b => {
@@ -1872,13 +1883,39 @@ function applyViewMode() {
     }
   });
 
-  if (currentView === 'cards') {
-    tableSec.style.display = 'none';
-    cardsSec.style.display = 'block';
-  } else {
-    tableSec.style.display = 'block';
-    cardsSec.style.display = 'none';
+  if (splitLayout) {
+    splitLayout.classList.remove('mode-split', 'mode-table', 'mode-chart', 'mode-cards');
+    splitLayout.classList.add('mode-' + currentView);
   }
+
+  if (currentView === 'cards') {
+    if (tableSec) tableSec.style.display = 'none';
+    if (cardsSec) cardsSec.style.display = 'block';
+    if (chartSec) chartSec.style.display = 'none';
+  } else if (currentView === 'table') {
+    if (tableSec) tableSec.style.display = 'block';
+    if (cardsSec) cardsSec.style.display = 'none';
+    if (chartSec) chartSec.style.display = 'none';
+  } else if (currentView === 'chart') {
+    if (tableSec) tableSec.style.display = 'none';
+    if (cardsSec) cardsSec.style.display = 'none';
+    if (chartSec) chartSec.style.display = 'flex';
+  } else { // 'split'
+    if (tableSec) tableSec.style.display = 'block';
+    if (cardsSec) cardsSec.style.display = 'none';
+    if (chartSec) chartSec.style.display = 'flex';
+  }
+
+  // Auto-resize chart for split view container
+  setTimeout(() => {
+    const liveContainer = document.getElementById('liveChartCanvas');
+    if (liveActiveChart && liveContainer && liveContainer.clientWidth) {
+      liveActiveChart.applyOptions({ 
+        width: liveContainer.clientWidth,
+        height: liveContainer.clientHeight || 480
+      });
+    }
+  }, 60);
 }
 
 // =============================================================================
@@ -3436,6 +3473,7 @@ function switchTab(tabName, pushToHistory = true) {
   const tabMap = {
     'scanner': 'tabContentScanner',
     'queue': 'tabContentQueue',
+    'macro': 'tabContentMacro',
     'portfolio': 'tabContentPortfolio',
     'calculator': 'tabContentCalculator',
     'fundamentals': 'tabContentFundamentals',
@@ -3469,11 +3507,17 @@ function switchTab(tabName, pushToHistory = true) {
     }
   }
 
-  if (tabName === 'scanner' && liveActiveChart) {
-    const liveContainer = document.getElementById('liveChartCanvas');
-    if (liveContainer && liveContainer.clientWidth) {
-      liveActiveChart.applyOptions({ width: liveContainer.clientWidth });
-    }
+  if (tabName === 'scanner') {
+    applyViewMode();
+    setTimeout(() => {
+      const liveContainer = document.getElementById('liveChartCanvas');
+      if (liveActiveChart && liveContainer && liveContainer.clientWidth) {
+        liveActiveChart.applyOptions({ 
+          width: liveContainer.clientWidth,
+          height: liveContainer.clientHeight || 480
+        });
+      }
+    }, 60);
   }
 }
 
@@ -3481,6 +3525,7 @@ function updateNavBackButtons(fromTab) {
   const names = {
     'scanner': '(към Скенера)',
     'queue': '(към Очаквани Сделки)',
+    'macro': '(към Макро & Риск)',
     'portfolio': '(към Портфолиото)',
     'calculator': '(към Калкулатора)',
     'fundamentals': '(към Фундамент)',

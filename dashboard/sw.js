@@ -5,7 +5,7 @@
  * - Offline fallback with cached data and status signaling
  */
 
-const CACHE_NAME = 'larsson-v7';
+const CACHE_NAME = 'larsson-v8';
 const STATIC_ASSETS = [
   './',
   'index.html',
@@ -47,7 +47,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: Network-first for data/API, Cache-first for static assets
+// Fetch: Network-first for navigation & data/API, Cache-first with network fallback for static assets
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') {
@@ -55,6 +55,25 @@ self.addEventListener('fetch', (event) => {
   }
 
   const url = new URL(req.url);
+
+  // Navigation requests (HTML page): Network-first so dev updates load immediately
+  if (req.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname === '/' || url.pathname === '') {
+    event.respondWith(
+      fetch(req)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, responseClone));
+          }
+          return networkResponse;
+        })
+        .catch(async () => {
+          console.log('[SW] Offline navigation, falling back to cache');
+          return (await caches.match(req, { ignoreSearch: true })) || (await caches.match('index.html')) || (await caches.match('./'));
+        })
+    );
+    return;
+  }
 
   // Dynamic endpoints: /data.json, /data/ or /api/
   const isDataRequest = url.pathname.endsWith('data.json') || url.pathname.includes('/data/') || url.pathname.includes('/api/');
@@ -73,7 +92,7 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(async () => {
           console.log('[SW] Network failed, serving cached dynamic data:', req.url);
-          const cachedResponse = await caches.match(req);
+          const cachedResponse = await caches.match(req, { ignoreSearch: true });
           if (cachedResponse) {
             return cachedResponse;
           }
@@ -92,7 +111,7 @@ self.addEventListener('fetch', (event) => {
 
   // Static assets: Cache-first with network fallback & background cache update
   event.respondWith(
-    caches.match(req).then((cachedResponse) => {
+    caches.match(req, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) {
         // Fetch in background to update cache for subsequent visits
         fetch(req)
@@ -115,7 +134,7 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
-      });
+      }).catch(() => caches.match(req, { ignoreSearch: true }));
     })
   );
 });

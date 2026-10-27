@@ -3064,14 +3064,19 @@ h1 {
 
 .main-nav-tabs {
   display: flex;
-  gap: 10px;
-  background: rgba(15, 23, 42, 0.85);
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.92);
   border: 1px solid var(--border-color);
-  padding: 6px;
+  padding: 6px 10px;
   border-radius: var(--radius-md);
-  margin-bottom: 24px;
-  backdrop-filter: blur(12px);
+  margin-bottom: 20px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   flex-wrap: wrap;
+  position: sticky;
+  top: 8px;
+  z-index: 95;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .nav-tab-btn {
@@ -7476,4 +7481,156 @@ h1 {
   .live-hud-strip {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* =============================================================================
+   INSTITUTIONAL REDESIGN ADDITIONS (OPTION 1.A & 2.B)
+   ============================================================================= */
+
+/* 1. Discrete Topbar Macro Pill (Option 1.A) */
+.cio-topbar-macro-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.73rem;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 6px;
+}
+.cio-topbar-macro-pill:hover {
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.45);
+  transform: translateY(-1px);
+}
+.cio-topbar-macro-pill .text-gold {
+  color: #f59e0b;
+  font-weight: 700;
+}
+.cio-topbar-macro-pill .text-success {
+  color: #10b981;
+  font-weight: 700;
+}
+.cio-topbar-macro-pill .cio-macro-dot {
+  color: #475569;
+  font-size: 0.7rem;
+}
+.cio-topbar-macro-pill .cio-macro-arr {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+/* 2. Dedicated Macro & Risk Tab Header */
+.macro-header-section {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+.macro-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.macro-title-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.macro-title-badge h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+.macro-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* 3. Scanner Split Layout (Option 2.B) */
+.scanner-split-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+  align-items: start;
+  margin-top: 16px;
+}
+
+.scanner-table-pane {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scanner-chart-pane {
+  min-width: 0;
+  position: sticky;
+  top: 72px;
+  z-index: 30;
+}
+
+.scanner-chart-pane .live-chart-section {
+  margin-top: 0;
+  margin-bottom: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+}
+
+/* Split view modes (Split, Table Only, Chart Only, Cards) */
+.scanner-split-layout.mode-table {
+  grid-template-columns: 1fr;
+}
+.scanner-split-layout.mode-table .scanner-chart-pane {
+  display: none !important;
+}
+
+.scanner-split-layout.mode-chart {
+  grid-template-columns: 1fr;
+}
+.scanner-split-layout.mode-chart .scanner-table-pane {
+  display: none !important;
+}
+
+.scanner-split-layout.mode-cards {
+  grid-template-columns: 1fr;
+}
+.scanner-split-layout.mode-cards .scanner-chart-pane {
+  display: none !important;
+}
+
+/* Responsive adjustment for tablets & smaller viewports */
+@media (max-width: 1100px) {
+  .scanner-split-layout {
+    grid-template-columns: 1fr;
+  }
+  .scanner-chart-pane {
+    position: static;
+  }
+}
+
+/* Tabular numbers for all financial metrics */
+.assets-table td, 
+.assets-table th, 
+.live-price, 
+.stat-val, 
+.setup-metric strong, 
+.calc-out-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Clean active row highlight in table */
+.assets-table tr.row-active {
+  background: rgba(59, 130, 246, 0.14) !important;
+  border-left: 3px solid #3b82f6;
 }

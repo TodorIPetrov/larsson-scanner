@@ -7,7 +7,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20260928_01">
+  <link rel="stylesheet" href="style.css?v=20261012_02">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -26,6 +26,15 @@
         <span class="cio-health-item">Equities: <strong id="cioEquitiesLatency">1D ✓</strong></span>
         <span class="cio-health-sep">│</span>
         <span class="cio-health-item">Health Guard: <strong id="cioGuardStatus" class="text-success">ACTIVE</strong></span>
+        <span class="cio-health-sep">│</span>
+        <button type="button" class="cio-topbar-macro-pill" id="cioTopMacroBtn" onclick="switchTab('macro')" title="Кликнете за отваряне на пълен Макро Режим &amp; Риск Кокпит">
+          <span class="cio-macro-lbl">🏛️ Режим:</span>
+          <strong id="cioTopMacroBadge" class="text-gold">CONSOLIDATION_CHOP (×0.5)</strong>
+          <span class="cio-macro-dot">•</span>
+          <span class="cio-macro-lbl">Свободен Риск:</span>
+          <strong id="cioTopDeployable" class="text-success">1.8%</strong>
+          <span class="cio-macro-arr">↗</span>
+        </button>
       </div>
       <div class="cio-health-right" id="cioStaleAlert" style="display: none;">
         <span class="badge badge-warning">⚠ STALE FEEDS DETECTED - CARDS DIMMED</span>
@@ -65,160 +74,17 @@
       </div>
     </header>
 
-    <!-- CIO Component A: Regime Barometer (Hero Section) -->
-    <section class="cio-regime-hero-section" id="cioRegimeHeroSection">
-      <div class="cio-regime-header">
-        <div class="cio-regime-title-group">
-          <span class="cio-eyebrow">MACRO PERMISSION &amp; EXPOSURE MULTIPLIER</span>
-          <div class="cio-regime-badge-row">
-            <span class="cio-regime-label" id="cioMacroRegimeLabel">CONSOLIDATION_CHOP</span>
-            <span class="cio-exposure-multiplier" id="cioExposureMultiplier">EXPOSURE ×0.5</span>
-          </div>
-        </div>
-        <div class="cio-regime-summary-stats">
-          <span class="cio-stat-pill">Deployable: <strong id="cioDeployableStat">1.8%</strong></span>
-          <span class="cio-stat-pill">Global Breadth: <strong id="cioGlobalGoldPct">0.0% Gold</strong></span>
-        </div>
-      </div>
-
-      <!-- 100% Stacked Breadth Bars -->
-      <div class="cio-stacked-bars-container">
-        <!-- Row 1: Global -->
-        <div class="cio-breadth-row">
-          <div class="cio-row-label"><strong>GLOBAL</strong></div>
-          <div class="cio-stacked-bar">
-            <div class="cio-segment cio-gold" id="cioBarGlobalGold" style="width: 32%"></div>
-            <div class="cio-segment cio-neutral" id="cioBarGlobalNeutral" style="width: 41%"></div>
-            <div class="cio-segment cio-blue" id="cioBarGlobalBlue" style="width: 27%"></div>
-          </div>
-          <div class="cio-row-ratio" id="cioGlobalRatioText">32G / 41N / 27B</div>
-          <div class="cio-row-delta" id="cioGlobalDelta"><span class="delta-down">▼ 4% (7d)</span></div>
-        </div>
-        <!-- Row 2: Crypto -->
-        <div class="cio-breadth-row">
-          <div class="cio-row-label">CRYPTO</div>
-          <div class="cio-stacked-bar">
-            <div class="cio-segment cio-gold" id="cioBarCryptoGold" style="width: 20%"></div>
-            <div class="cio-segment cio-neutral" id="cioBarCryptoNeutral" style="width: 50%"></div>
-            <div class="cio-segment cio-blue" id="cioBarCryptoBlue" style="width: 30%"></div>
-          </div>
-          <div class="cio-row-ratio" id="cioCryptoRatioText">20G / 50N / 30B</div>
-          <div class="cio-row-delta" id="cioCryptoDelta"><span class="delta-down">▼ 9% (7d)</span></div>
-        </div>
-        <!-- Row 3: Equities -->
-        <div class="cio-breadth-row">
-          <div class="cio-row-label">EQUITIES</div>
-          <div class="cio-stacked-bar">
-            <div class="cio-segment cio-gold" id="cioBarEquitiesGold" style="width: 40%"></div>
-            <div class="cio-segment cio-neutral" id="cioBarEquitiesNeutral" style="width: 40%"></div>
-            <div class="cio-segment cio-blue" id="cioBarEquitiesBlue" style="width: 20%"></div>
-          </div>
-          <div class="cio-row-ratio" id="cioEquitiesRatioText">40G / 40N / 20B</div>
-          <div class="cio-row-delta" id="cioEquitiesDelta"><span class="delta-up">▲ 2% (7d)</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CIO Two-Column Cockpit: Risk Gauge & Cluster Opportunity Matrix -->
-    <div class="cio-cockpit-grid">
-      <!-- Left Column: Risk Budget Gauge -->
-      <div class="cio-cockpit-card">
-        <div class="cio-card-header">
-          <span class="cio-card-title">⚖️ RISK BUDGET GAUGE</span>
-          <span class="cio-card-sub" id="cioRiskBudgetDeployable">Deployable: 1.8%</span>
-        </div>
-        <div class="cio-risk-gauge-container">
-          <div class="cio-risk-labels">
-            <span>Portfolio Heat: <strong id="cioHeatValue">1.2 / 6.0%</strong></span>
-            <span class="cio-cap-label">Effective Cap: <strong id="cioEffectiveCap">3.0%</strong></span>
-          </div>
-          <div class="cio-risk-bar-track">
-            <div class="cio-risk-fill" id="cioRiskFill" style="width: 20%;"></div>
-            <div class="cio-risk-marker cap-marker" style="left: 50%;" title="Effective Cap: 3.0%"></div>
-            <div class="cio-risk-marker max-marker" style="left: 100%;" title="Absolute Cap: 6.0%"></div>
-          </div>
-          <div class="cio-cluster-risk-badges" id="cioClusterRiskBadges">
-            <span class="cio-cluster-chip">MEGA_TECH: 0.8% | Cap 2.0%</span>
-            <span class="cio-cluster-chip">CRYPTO_L1: 0.4% | Cap 2.0%</span>
-          </div>
-          <div class="cio-lockdown-banner" id="cioLockdownBanner" style="display: none;">
-            🔒 CAPITAL LOCKED (Broad Liquidity Drain - 0% Exposure)
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Cluster Opportunity Matrix -->
-      <div class="cio-cockpit-card cio-cockpit-matrix">
-        <div class="cio-card-header">
-          <span class="cio-card-title">🌐 CLUSTER OPPORTUNITY MATRIX</span>
-          <span class="cio-card-sub" id="cioActionableClusterCount">Actionable: 1</span>
-        </div>
-        <div class="cio-cluster-matrix-table-wrap">
-          <table class="cio-matrix-table">
-            <thead>
-              <tr>
-                <th>Cluster</th>
-                <th>1W</th>
-                <th>1D</th>
-                <th title="4H is an entry-timing sub-column, not a standalone signal">4H Timing</th>
-                <th>Base Rate</th>
-                <th>Leader</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="cioClusterMatrixBody">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Offline Fallback Banner -->
-    <div class="offline-banner" id="offlineDataBanner" style="display: none;">
-      <span class="offline-badge">CACHED DATA</span>
-      <span class="offline-text">Няма интернет връзка. Показват се последно запазените кеширани пазарни данни.</span>
-    </div>
-
-    <!-- Trade Approval Queue (Cleared by Regime & Risk Budget) -->
-    <section class="proposals-banner-section approval-queue-section" id="proposalsBannerSection">
-      <div class="proposals-banner-header">
-        <div class="proposals-title-group">
-          <span class="queue-status-dot"></span>
-          <h2>Trade Approval Queue</h2>
-          <span class="badge badge-slate" id="proposalsCountBadge">0 Pending</span>
-        </div>
-        <div class="proposals-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <button class="btn btn-toggle-section" id="btnToggleProposals" title="Toggle queue visibility" aria-expanded="true">
-            <span class="toggle-icon">▲</span> <span id="btnToggleProposalsTxt">Hide</span>
-          </button>
-          <button class="btn btn-undo-action" id="btnUndoProposal" style="display: none;" title="Undo previous review action">
-            <span class="undo-icon">↩</span> Undo (<span id="undoCount">0</span>)
-          </button>
-          <button class="btn btn-restore-action" id="btnRestoreRejected" style="display: none;" title="Restore rejected proposals">
-            <span>↺</span> Restore
-          </button>
-          <button class="btn btn-analyze-banner" id="btnBannerAnalyze" title="Scan setup candidates against risk budget">
-            <span class="analyze-icon">↻</span> Rescan
-          </button>
-        </div>
-      </div>
-      <p class="proposals-banner-subtitle">
-        Candidate setups cleared by Regime Barometer and Risk Budget headroom. Review trade expectancy and select sizing:
-      </p>
-      <div class="proposals-cards-grid" id="proposalsCardsGrid">
-        <!-- Rendered dynamically by app.js -->
-      </div>
-    </section>
-
-    <!-- Master Navigation Tabs -->
+    <!-- Master Navigation Tabs (Sticky Top Navigation) -->
     <nav class="main-nav-tabs" id="mainNavTabs">
       <button class="nav-tab-btn active" data-tab="scanner">
         <span class="tab-icon">📊</span> Скенер на Пазара
       </button>
       <button class="nav-tab-btn" data-tab="queue">
-        <span class="tab-icon">🔮</span> Очаквани Сделки (Queue)
+        <span class="tab-icon">⚡</span> Сделки &amp; Опашка
         <span class="tab-badge" id="queueCountBadge">0</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="macro" id="navTabMacro">
+        <span class="tab-icon">🏛️</span> Макро &amp; Риск
       </button>
       <button class="nav-tab-btn" data-tab="portfolio">
         <span class="tab-icon">💼</span> Портфолио &amp; Сделки
@@ -234,6 +100,12 @@
         <span class="tab-badge" id="ideasCountBadge">0</span>
       </button>
     </nav>
+
+    <!-- Offline Fallback Banner -->
+    <div class="offline-banner" id="offlineDataBanner" style="display: none;">
+      <span class="offline-badge">CACHED DATA</span>
+      <span class="offline-text">Няма интернет връзка. Показват се последно запазените кеширани пазарни данни.</span>
+    </div>
 
     <!-- Tab 1: Scanner View (Default) -->
     <div class="tab-content-panel active" id="tabContentScanner">
@@ -306,135 +178,178 @@
           </details>
 
           <div class="view-toggle" id="viewToggle">
-            <button class="toggle-btn active" data-view="table" title="Table View">Table</button>
-            <button class="toggle-btn" data-view="cards" title="Cards View">Cards</button>
+            <button class="toggle-btn active" data-view="split" title="Разделен екран: Таблица + Графика">Split</button>
+            <button class="toggle-btn" data-view="table" title="Пълна Таблица">Таблица</button>
+            <button class="toggle-btn" data-view="chart" title="Фокус Графика">Графика</button>
+            <button class="toggle-btn" data-view="cards" title="Изглед Карти">Карти</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Live Interactive Chart Showcase (Always Visible on Page) -->
-    <section class="live-chart-section" id="liveChartSection">
-      <div class="live-chart-header">
-        <div class="live-chart-title-area">
-          <div class="live-chart-badge-title">
-            <span class="live-pulse-dot"></span>
-            <span class="live-chart-heading">📈 ИНТЕРАКТИВНА ГРАФИКА НА ЖИВО</span>
-          </div>
-          <div class="live-chart-asset-info">
-            <span class="live-ticker" id="liveTicker">BTCUSDT</span>
-            <span class="class-badge" id="liveClassBadge">Crypto</span>
-            <span class="live-price" id="livePrice">$0.00</span>
-            <span class="badge badge-gold" id="liveStateBadge">🟡 GOLD</span>
-          </div>
-        </div>
+    <!-- Split Layout Workspace for Scanner (Option 2.B) -->
+    <div class="scanner-split-layout mode-split" id="scannerSplitLayout">
+      <!-- Left Column: Assets Directory (Table / Cards) -->
+      <div class="scanner-table-pane" id="scannerTablePane">
+        <!-- Assets Table View -->
+        <section class="table-container" id="tableContainer">
+          <table class="assets-table">
+            <thead>
+              <tr>
+                <th class="th-sortable" data-sort="ticker">⭐ Asset &amp; 4H Timing <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-sort="asset_class">Cluster <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-sort="price">Price <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable th-tech-header" data-sort="state">
+                  <div class="th-title-flex"><span class="pillar-indicator tech-glow"></span>Trend State (Ribbon) <span class="sort-icon">⇅</span></div>
+                </th>
+                <th class="th-sortable" data-sort="s1_dist">Support &amp; Stop <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable th-expectancy-header" data-sort="tier">
+                  <div class="th-title-flex"><span class="pillar-indicator expectancy-glow"></span>Expectancy &amp; Sizing (Institutional) <span class="sort-icon">⇅</span></div>
+                </th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="assetsTableBody">
+              <tr>
+                <td colspan="7" class="loading-state">Loading market data...</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-        <div class="live-chart-controls">
-          <!-- Quick Switcher for Popular Assets -->
-          <div class="live-quick-pills" id="liveQuickPills">
-            <button class="quick-pill active" data-ticker="BTCUSDT" data-tf="1D" data-class="crypto">🪙 BTC</button>
-            <button class="quick-pill" data-ticker="ETHUSDT" data-tf="1D" data-class="crypto">🪙 ETH</button>
-            <button class="quick-pill" data-ticker="SOLUSDT" data-tf="1D" data-class="crypto">🪙 SOL</button>
-            <button class="quick-pill" data-ticker="NVDA" data-tf="1D" data-class="ai_stocks">🤖 NVDA</button>
-            <button class="quick-pill" data-ticker="MSTR" data-tf="1D" data-class="crypto_stocks">⚡ MSTR</button>
-            <button class="quick-pill" data-ticker="NAKA" data-tf="1D" data-class="crypto_stocks">⚡ NAKA</button>
-            <button class="quick-pill" data-ticker="GC=F" data-tf="1D" data-class="commodities">⛏️ GOLD</button>
+        <!-- Assets Cards View (Mobile / Alternative View) -->
+        <section class="cards-container" id="cardsContainer" style="display: none;">
+          <div class="cards-grid" id="cardsGrid">
+            <!-- Rendered dynamically by app.js -->
           </div>
-
-          <div class="live-tf-group" id="liveTfGroup">
-            <button class="live-tf-btn active" data-tf="1D">1D</button>
-            <button class="live-tf-btn" data-tf="4H">4H</button>
-            <button class="live-tf-btn" data-tf="1W">1W</button>
-          </div>
-
-          <!-- BTC Relative Ratio Toggle (Crypto & Crypto Stocks) -->
-          <div class="live-ratio-group" id="liveRatioGroup" style="display: none;">
-            <button class="live-ratio-btn active" data-ratio="USD" title="Стандартна цена в USD">💵 USD</button>
-            <button class="live-ratio-btn" data-ratio="BTC" title="Съотношение спрямо Bitcoin (Asset/BTC)">₿ vs BTC</button>
-          </div>
-
-          <button class="btn-toggle-section" id="btnToggleLiveChart" title="Скрий или покажи графиката" aria-expanded="true">
-            <span class="toggle-icon">▲</span> <span id="btnToggleLiveChartTxt">Скрий графиката</span>
-          </button>
-
-          <button class="btn-expand-modal" id="liveExpandBtn" title="Отвори на цял екран с калкулатор">
-            ⛶ Цял Екран
-          </button>
-          <a href="#" target="_blank" rel="noopener" class="tv-link-btn" id="liveTvLink" title="Отвори в TradingView">TV ↗</a>
-          <a href="#" target="_blank" rel="noopener" class="tv-link-btn tv-btc-link" id="liveTvBtcLink" title="Отвори Asset/BTC Графика в TradingView" style="display: none; background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;">🪙 /BTC ↗</a>
-        </div>
+        </section>
       </div>
 
-      <!-- Compact 3-Pillar & BTC Relative Analysis Strip for the Active Chart -->
-      <div class="live-hud-strip">
-        <div class="live-hud-col live-hud-tech">
-          <span class="live-hud-tag">📐 ТЕХНИКА:</span>
-          <strong id="liveTechAction">🟢 BUY</strong>
-          <span class="live-hud-sub" id="liveTechSpread">Spread: +0.0%</span>
-        </div>
-        <div class="live-hud-col live-hud-fund" onclick="openFundamentalTab(liveTicker, 'chart')" title="🏢 Кликнете за пълен фундаментален анализ и DCF оценка" style="cursor: pointer;">
-          <span class="live-hud-tag">🏢 ФУНДАМЕНТ:</span>
-          <strong id="liveFundAction">⚪ МАКРО</strong>
-          <span class="live-hud-sub" id="liveFundMoat">Network Effect</span>
-        </div>
-        <div class="live-hud-col live-hud-synth">
-          <span class="live-hud-tag">🎯 СИНТЕЗ:</span>
-          <strong id="liveSynthBadge">⭐ ALPHA BUY</strong>
-          <span class="live-hud-sub" id="liveSynthLevels">Вход: $0.00</span>
-        </div>
-        <div class="live-hud-col live-hud-btc" id="liveHudBtc" style="display: none;">
-          <span class="live-hud-tag">₿ VS BITCOIN:</span>
-          <strong id="liveBtcBadge">⚡ ₿ ALPHA LEADER</strong>
-          <span class="live-hud-sub" id="liveBtcAlpha">Alpha 30d: +0.0%</span>
-        </div>
-      </div>
+      <!-- Right Column: Interactive Live Chart & Synthesis HUD -->
+      <div class="scanner-chart-pane" id="scannerChartPane">
+        <!-- Live Interactive Chart Showcase (Always Visible on Page) -->
+        <section class="live-chart-section" id="liveChartSection">
+          <div class="live-chart-header">
+            <div class="live-chart-title-area">
+              <div class="live-chart-badge-title">
+                <span class="live-pulse-dot"></span>
+                <span class="live-chart-heading">📈 ИНТЕРАКТИВНА ГРАФИКА НА ЖИВО</span>
+              </div>
+              <div class="live-chart-asset-info">
+                <span class="live-ticker" id="liveTicker">BTCUSDT</span>
+                <span class="class-badge" id="liveClassBadge">Crypto</span>
+                <span class="live-price" id="livePrice">$0.00</span>
+                <span class="badge badge-gold" id="liveStateBadge">🟡 GOLD</span>
+              </div>
+            </div>
 
-      <!-- Live Chart Canvas Container -->
-      <div class="live-chart-canvas-container" id="liveChartContainer">
-        <div id="liveChartCanvas"></div>
-        <div class="chart-loading-overlay" id="liveChartLoading" style="display: none;">
-          <div class="spinner"></div>
-          <span>Зареждане на пазарни данни...</span>
-        </div>
-      </div>
-    </section>
+            <div class="live-chart-controls">
+              <!-- Quick Switcher for Popular Assets -->
+              <div class="live-quick-pills" id="liveQuickPills">
+                <button class="quick-pill active" data-ticker="BTCUSDT" data-tf="1D" data-class="crypto">🪙 BTC</button>
+                <button class="quick-pill" data-ticker="ETHUSDT" data-tf="1D" data-class="crypto">🪙 ETH</button>
+                <button class="quick-pill" data-ticker="SOLUSDT" data-tf="1D" data-class="crypto">🪙 SOL</button>
+                <button class="quick-pill" data-ticker="NVDA" data-tf="1D" data-class="ai_stocks">🤖 NVDA</button>
+                <button class="quick-pill" data-ticker="MSTR" data-tf="1D" data-class="crypto_stocks">⚡ MSTR</button>
+                <button class="quick-pill" data-ticker="NAKA" data-tf="1D" data-class="crypto_stocks">⚡ NAKA</button>
+                <button class="quick-pill" data-ticker="GC=F" data-tf="1D" data-class="commodities">⛏️ GOLD</button>
+              </div>
 
-    <!-- Assets Table View -->
-    <section class="table-container" id="tableContainer">
-      <table class="assets-table">
-        <thead>
-          <tr>
-            <th class="th-sortable" data-sort="ticker">⭐ Asset &amp; 4H Timing <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="asset_class">Cluster <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable" data-sort="price">Price <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable th-tech-header" data-sort="state">
-              <div class="th-title-flex"><span class="pillar-indicator tech-glow"></span>Trend State (Ribbon) <span class="sort-icon">⇅</span></div>
-            </th>
-            <th class="th-sortable" data-sort="s1_dist">Support &amp; Stop <span class="sort-icon">⇅</span></th>
-            <th class="th-sortable th-expectancy-header" data-sort="tier">
-              <div class="th-title-flex"><span class="pillar-indicator expectancy-glow"></span>Expectancy &amp; Sizing (Institutional) <span class="sort-icon">⇅</span></div>
-            </th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="assetsTableBody">
-          <tr>
-            <td colspan="7" class="loading-state">Loading market data...</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+              <div class="live-tf-group" id="liveTfGroup">
+                <button class="live-tf-btn active" data-tf="1D">1D</button>
+                <button class="live-tf-btn" data-tf="4H">4H</button>
+                <button class="live-tf-btn" data-tf="1W">1W</button>
+              </div>
 
-    <!-- Assets Cards View (Mobile / Alternative View) -->
-    <section class="cards-container" id="cardsContainer" style="display: none;">
-      <div class="cards-grid" id="cardsGrid">
-        <!-- Rendered dynamically by app.js -->
+              <!-- BTC Relative Ratio Toggle (Crypto & Crypto Stocks) -->
+              <div class="live-ratio-group" id="liveRatioGroup" style="display: none;">
+                <button class="live-ratio-btn active" data-ratio="USD" title="Стандартна цена в USD">💵 USD</button>
+                <button class="live-ratio-btn" data-ratio="BTC" title="Съотношение спрямо Bitcoin (Asset/BTC)">₿ vs BTC</button>
+              </div>
+
+              <button class="btn-toggle-section" id="btnToggleLiveChart" title="Скрий или покажи графиката" aria-expanded="true">
+                <span class="toggle-icon">▲</span> <span id="btnToggleLiveChartTxt">Скрий графиката</span>
+              </button>
+
+              <button class="btn-expand-modal" id="liveExpandBtn" title="Отвори на цял екран с калкулатор">
+                ⛶ Цял Екран
+              </button>
+              <a href="#" target="_blank" rel="noopener" class="tv-link-btn" id="liveTvLink" title="Отвори в TradingView">TV ↗</a>
+              <a href="#" target="_blank" rel="noopener" class="tv-link-btn tv-btc-link" id="liveTvBtcLink" title="Отвори Asset/BTC Графика в TradingView" style="display: none; background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;">🪙 /BTC ↗</a>
+            </div>
+          </div>
+
+          <!-- Compact 3-Pillar & BTC Relative Analysis Strip for the Active Chart -->
+          <div class="live-hud-strip">
+            <div class="live-hud-col live-hud-tech">
+              <span class="live-hud-tag">📐 ТЕХНИКА:</span>
+              <strong id="liveTechAction">🟢 BUY</strong>
+              <span class="live-hud-sub" id="liveTechSpread">Spread: +0.0%</span>
+            </div>
+            <div class="live-hud-col live-hud-fund" onclick="openFundamentalTab(liveTicker, 'chart')" title="🏢 Кликнете за пълен фундаментален анализ и DCF оценка" style="cursor: pointer;">
+              <span class="live-hud-tag">🏢 ФУНДАМЕНТ:</span>
+              <strong id="liveFundAction">⚪ МАКРО</strong>
+              <span class="live-hud-sub" id="liveFundMoat">Network Effect</span>
+            </div>
+            <div class="live-hud-col live-hud-synth">
+              <span class="live-hud-tag">🎯 СИНТЕЗ:</span>
+              <strong id="liveSynthBadge">⭐ ALPHA BUY</strong>
+              <span class="live-hud-sub" id="liveSynthLevels">Вход: $0.00</span>
+            </div>
+            <div class="live-hud-col live-hud-btc" id="liveHudBtc" style="display: none;">
+              <span class="live-hud-tag">₿ VS BITCOIN:</span>
+              <strong id="liveBtcBadge">⚡ ₿ ALPHA LEADER</strong>
+              <span class="live-hud-sub" id="liveBtcAlpha">Alpha 30d: +0.0%</span>
+            </div>
+          </div>
+
+          <!-- Live Chart Canvas Container -->
+          <div class="live-chart-canvas-container" id="liveChartContainer">
+            <div id="liveChartCanvas"></div>
+            <div class="chart-loading-overlay" id="liveChartLoading" style="display: none;">
+              <div class="spinner"></div>
+              <span>Зареждане на пазарни данни...</span>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
     </div> <!-- End Tab 1: tabContentScanner -->
 
-    <!-- Tab 2: Pending Setups Queue -->
+    <!-- Tab 2: Pending Setups & Trade Approval Queue -->
     <div class="tab-content-panel" id="tabContentQueue" style="display: none;">
+      <!-- Part 1: Trade Approval Queue (Cleared by Regime & Risk Budget) -->
+      <section class="proposals-banner-section approval-queue-section" id="proposalsBannerSection">
+        <div class="proposals-banner-header">
+          <div class="proposals-title-group">
+            <span class="queue-status-dot"></span>
+            <h2>⚡ Одобрение на Сделки (Trade Approval Queue)</h2>
+            <span class="badge badge-slate" id="proposalsCountBadge">0 Pending</span>
+          </div>
+          <div class="proposals-header-actions" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-toggle-section" id="btnToggleProposals" title="Toggle queue visibility" aria-expanded="true">
+              <span class="toggle-icon">▲</span> <span id="btnToggleProposalsTxt">Hide</span>
+            </button>
+            <button class="btn btn-undo-action" id="btnUndoProposal" style="display: none;" title="Undo previous review action">
+              <span class="undo-icon">↩</span> Undo (<span id="undoCount">0</span>)
+            </button>
+            <button class="btn btn-restore-action" id="btnRestoreRejected" style="display: none;" title="Restore rejected proposals">
+              <span>↺</span> Restore
+            </button>
+            <button class="btn btn-analyze-banner" id="btnBannerAnalyze" title="Scan setup candidates against risk budget">
+              <span class="analyze-icon">↻</span> Rescan
+            </button>
+          </div>
+        </div>
+        <p class="proposals-banner-subtitle">
+          Кандидат-сделки, одобрени от Macro Regime Barometer и наличния Risk Budget капацитет. Изберете размер и левъридж:
+        </p>
+        <div class="proposals-cards-grid" id="proposalsCardsGrid">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+      </section>
+
+      <!-- Part 2: Pending Setups & Early Structures (1-3 bars ahead) -->
       <section class="queue-header-section">
         <div class="queue-intro">
           <div class="queue-title-badge">
@@ -477,6 +392,130 @@
         </div>
       </section>
     </div> <!-- End Tab 2: tabContentQueue -->
+
+    <!-- Tab 3: Dedicated Institutional Macro Regime & Risk Cockpit (Option 1.A) -->
+    <div class="tab-content-panel" id="tabContentMacro" style="display: none;">
+      <section class="macro-header-section">
+        <div class="macro-intro">
+          <div class="macro-title-badge">
+            <span class="live-pulse-dot"></span>
+            <h2>🏛️ Институционален Макро Режим &amp; Риск Кокпит</h2>
+          </div>
+          <p class="macro-subtitle">
+            Глобална ликвидност, пазарна ширина (Global Breadth), позволена експозиция и корелационна матрица на клъстерите.
+          </p>
+        </div>
+      </section>
+
+      <!-- CIO Component A: Regime Barometer (Hero Section) -->
+      <section class="cio-regime-hero-section" id="cioRegimeHeroSection">
+        <div class="cio-regime-header">
+          <div class="cio-regime-title-group">
+            <span class="cio-eyebrow">MACRO PERMISSION &amp; EXPOSURE MULTIPLIER</span>
+            <div class="cio-regime-badge-row">
+              <span class="cio-regime-label" id="cioMacroRegimeLabel">CONSOLIDATION_CHOP</span>
+              <span class="cio-exposure-multiplier" id="cioExposureMultiplier">EXPOSURE ×0.5</span>
+            </div>
+          </div>
+          <div class="cio-regime-summary-stats">
+            <span class="cio-stat-pill">Deployable: <strong id="cioDeployableStat">1.8%</strong></span>
+            <span class="cio-stat-pill">Global Breadth: <strong id="cioGlobalGoldPct">0.0% Gold</strong></span>
+          </div>
+        </div>
+
+        <!-- 100% Stacked Breadth Bars -->
+        <div class="cio-stacked-bars-container">
+          <!-- Row 1: Global -->
+          <div class="cio-breadth-row">
+            <div class="cio-row-label"><strong>GLOBAL</strong></div>
+            <div class="cio-stacked-bar">
+              <div class="cio-segment cio-gold" id="cioBarGlobalGold" style="width: 32%"></div>
+              <div class="cio-segment cio-neutral" id="cioBarGlobalNeutral" style="width: 41%"></div>
+              <div class="cio-segment cio-blue" id="cioBarGlobalBlue" style="width: 27%"></div>
+            </div>
+            <div class="cio-row-ratio" id="cioGlobalRatioText">32G / 41N / 27B</div>
+            <div class="cio-row-delta" id="cioGlobalDelta"><span class="delta-down">▼ 4% (7d)</span></div>
+          </div>
+          <!-- Row 2: Crypto -->
+          <div class="cio-breadth-row">
+            <div class="cio-row-label">CRYPTO</div>
+            <div class="cio-stacked-bar">
+              <div class="cio-segment cio-gold" id="cioBarCryptoGold" style="width: 20%"></div>
+              <div class="cio-segment cio-neutral" id="cioBarCryptoNeutral" style="width: 50%"></div>
+              <div class="cio-segment cio-blue" id="cioBarCryptoBlue" style="width: 30%"></div>
+            </div>
+            <div class="cio-row-ratio" id="cioCryptoRatioText">20G / 50N / 30B</div>
+            <div class="cio-row-delta" id="cioCryptoDelta"><span class="delta-down">▼ 9% (7d)</span></div>
+          </div>
+          <!-- Row 3: Equities -->
+          <div class="cio-breadth-row">
+            <div class="cio-row-label">EQUITIES</div>
+            <div class="cio-stacked-bar">
+              <div class="cio-segment cio-gold" id="cioBarEquitiesGold" style="width: 40%"></div>
+              <div class="cio-segment cio-neutral" id="cioBarEquitiesNeutral" style="width: 40%"></div>
+              <div class="cio-segment cio-blue" id="cioBarEquitiesBlue" style="width: 20%"></div>
+            </div>
+            <div class="cio-row-ratio" id="cioEquitiesRatioText">40G / 40N / 20B</div>
+            <div class="cio-row-delta" id="cioEquitiesDelta"><span class="delta-up">▲ 2% (7d)</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CIO Two-Column Cockpit: Risk Gauge & Cluster Opportunity Matrix -->
+      <div class="cio-cockpit-grid" id="cioCockpitGrid">
+        <!-- Left Column: Risk Budget Gauge -->
+        <div class="cio-cockpit-card">
+          <div class="cio-card-header">
+            <span class="cio-card-title">⚖️ RISK BUDGET GAUGE</span>
+            <span class="cio-card-sub" id="cioRiskBudgetDeployable">Deployable: 1.8%</span>
+          </div>
+          <div class="cio-risk-gauge-container">
+            <div class="cio-risk-labels">
+              <span>Portfolio Heat: <strong id="cioHeatValue">1.2 / 6.0%</strong></span>
+              <span class="cio-cap-label">Effective Cap: <strong id="cioEffectiveCap">3.0%</strong></span>
+            </div>
+            <div class="cio-risk-bar-track">
+              <div class="cio-risk-fill" id="cioRiskFill" style="width: 20%;"></div>
+              <div class="cio-risk-marker cap-marker" style="left: 50%;" title="Effective Cap: 3.0%"></div>
+              <div class="cio-risk-marker max-marker" style="left: 100%;" title="Absolute Cap: 6.0%"></div>
+            </div>
+            <div class="cio-cluster-risk-badges" id="cioClusterRiskBadges">
+              <span class="cio-cluster-chip">MEGA_TECH: 0.8% | Cap 2.0%</span>
+              <span class="cio-cluster-chip">CRYPTO_L1: 0.4% | Cap 2.0%</span>
+            </div>
+            <div class="cio-lockdown-banner" id="cioLockdownBanner" style="display: none;">
+              🔒 CAPITAL LOCKED (Broad Liquidity Drain - 0% Exposure)
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Cluster Opportunity Matrix -->
+        <div class="cio-cockpit-card cio-cockpit-matrix">
+          <div class="cio-card-header">
+            <span class="cio-card-title">🌐 CLUSTER OPPORTUNITY MATRIX</span>
+            <span class="cio-card-sub" id="cioActionableClusterCount">Actionable: 1</span>
+          </div>
+          <div class="cio-cluster-matrix-table-wrap">
+            <table class="cio-matrix-table">
+              <thead>
+                <tr>
+                  <th>Cluster</th>
+                  <th>1W</th>
+                  <th>1D</th>
+                  <th title="4H is an entry-timing sub-column, not a standalone signal">4H Timing</th>
+                  <th>Base Rate</th>
+                  <th>Leader</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="cioClusterMatrixBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> <!-- End Tab: tabContentMacro -->
 
     <!-- Tab 3: Portfolio & Trade Journal -->
     <div class="tab-content-panel port-mode-real" id="tabContentPortfolio" style="display: none;">
@@ -1368,7 +1407,7 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20261007_05"></script>
+  <script src="app.js?v=20261012_02"></script>
 
   <!-- Progressive Web App (PWA) Registration & Install Prompt Handler -->
   <script>
@@ -1427,6 +1466,8 @@
     window.addEventListener('online', checkPwaOnlineState);
     window.addEventListener('offline', checkPwaOnlineState);
     window.addEventListener('DOMContentLoaded', checkPwaOnlineState);
+  </script>
+
   <!-- CIO Strip 6: Live vs Backtest Accountability Strip (Opus Bottom Strip) -->
   <div class="cio-accountability-strip" id="cioAccountabilityStrip">
     <div class="cio-acc-content">
