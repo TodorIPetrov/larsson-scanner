@@ -36,6 +36,20 @@ trading:
   btc_safety_filter: true
   min_confluence_score: 60
   allowed_tiers: ["A+", "A", "B"]
+  partial_take_profit: true
+  trailing_stop_atr_mult: 2.5
+  volatility_sizing_enabled: true
+  slippage_model_enabled: true
+  risk_per_trade_pct: 0.015
+  max_crypto_positions: 3
+  slippage_pct_crypto: 0.0010
+  slippage_pct_equities: 0.0005
+
+x_monitor:
+  enabled: true
+  account: "NoLimitGains"
+  daily_scan_hour: 18
+  daily_scan_minute: 0
 
 onchain:
   enabled: true

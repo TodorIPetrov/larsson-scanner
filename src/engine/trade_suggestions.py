@@ -9,7 +9,7 @@ import math
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 import numpy as np
 
-from src.engine.asset_profiles import get_max_allowed_leverage
+from src.engine.asset_profiles import get_max_allowed_leverage, get_empirical_asset_profile
 from src.engine.consistency_guard import (
     is_pure_crypto,
     normalize_moat,
@@ -263,6 +263,9 @@ def calculate_confluence_score(
     btc_cycle: Optional[object] = None,
     ticker: Optional[str] = None,
     direction: str = "LONG",
+    htf_aligned: bool = True,
+    is_squeeze: bool = False,
+    volatility_regime: Optional[str] = None,
 ) -> Tuple[int, str]:
     """
     Calculates institutional confluence score (0 - 100) and assigns a quality tier.
@@ -277,6 +280,14 @@ def calculate_confluence_score(
 
     if is_mtf_aligned:
         score += 20
+    elif not htf_aligned:
+        score -= 15  # Counter-trend penalty against weekly regime
+
+    if is_squeeze:
+        score += 10  # Volatility squeeze breakout bonus
+    elif volatility_regime == "HIGH_VOL_SPIKE" and spread_expanding:
+        score -= 10  # Climax / overextension risk
+
     if near_support:
         score += 20
     if s1_touches >= 3:
@@ -433,9 +444,21 @@ def _enrich_trade_suggestion(
             s.tech_label_bg = "🔴 EXIT / STOP (Мечи тренд)"
             s.tech_thesis_bg = f"Мечи низходящ тренд (Blue, spread {spread_pct:+.1f}%) и/или загуба на ключова подкрепа S1."
     else:  # NEUTRAL
-        s.tech_action = "WAIT"
-        s.tech_label_bg = "⏳ WAIT (Консолидация)"
-        s.tech_thesis_bg = "Панделката е преплетена без ясна посока. Изчакайте разширяване и формиране на тренд."
+        emp_p = get_empirical_asset_profile(ticker)
+        if emp_p and emp_p.get("exit_on_neutral", False):
+            s.tech_action = "TAKE_PROFIT"
+            s.tech_label_bg = "💰 TAKE PROFIT (Fast Exit ДНК)"
+            tot_ret = emp_p.get("total_return_pct", 0)
+            s.tech_thesis_bg = f"Панделката е в Neutral. 5-годишният бектест на {ticker} (+{tot_ret:.0f}%) показва максимална печалба при бързо прибиране веднага след Gold!"
+        elif emp_p and not emp_p.get("exit_on_neutral", False) and emp_p.get("empirical_tier") in ["S", "A"]:
+            s.tech_action = "HOLD"
+            s.tech_label_bg = "🛡️ HOLD THROUGH NEUTRAL"
+            tot_ret = emp_p.get("total_return_pct", 0)
+            s.tech_thesis_bg = f"Панделката е в Neutral (консолидация). Историческото ДНК на {ticker} (+{tot_ret:.0f}%) изисква задържане през корекцията до синя лента (Blue)."
+        else:
+            s.tech_action = "WAIT"
+            s.tech_label_bg = "⏳ WAIT (Консолидация)"
+            s.tech_thesis_bg = "Панделката е преплетена без ясна посока. Изчакайте разширяване и формиране на тренд."
 
     # 2. Fundamental Analysis Recommendation & Details
     if is_pure_crypto(asset_class=asset_class, fund_profile=fund_profile):
@@ -668,6 +691,9 @@ def _raw_generate_trade_suggestion(
     options_flow: Optional[dict] = None,
     btc_cycle: Optional[object] = None,
     bars_since_flip: Optional[int] = None,
+    macro_1w_state: Optional[str] = None,
+    volatility_regime: Optional[str] = None,
+    is_squeeze: bool = False,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion.
@@ -691,11 +717,34 @@ def _raw_generate_trade_suggestion(
             kwargs["btc_cycle"] = btc_cycle
         if "ticker" not in kwargs and len(args) < 13:
             kwargs["ticker"] = eff_ticker
+        if "htf_aligned" not in kwargs:
+            kwargs["htf_aligned"] = htf_aligned
+        if "is_squeeze" not in kwargs:
+            kwargs["is_squeeze"] = is_squeeze
+        if "volatility_regime" not in kwargs:
+            kwargs["volatility_regime"] = volatility_regime
         return _calc_confluence(*args, **kwargs)
 
     atr = max(atr, current_price * 0.005)
     atr_pct = (atr / current_price) * 100.0 if current_price > 0 else 0.0
-    is_mtf_aligned = (macro_1d_state == "GOLD") if (macro_1d_state and timeframe != "1D") else (state == "GOLD")
+
+    # Multi-Timeframe Context (Point 1): 1D signals check 1W state
+    htf_aligned = True
+    if timeframe == "1D" and macro_1w_state:
+        if state == "GOLD" and macro_1w_state == "BLUE":
+            htf_aligned = False
+            is_mtf_aligned = False
+        elif state == "GOLD" and macro_1w_state == "GOLD":
+            htf_aligned = True
+            is_mtf_aligned = True
+        else:
+            is_mtf_aligned = (state == "GOLD")
+    elif macro_1d_state and timeframe != "1D":
+        is_mtf_aligned = (macro_1d_state == "GOLD")
+        htf_aligned = (macro_1d_state == "GOLD")
+    else:
+        is_mtf_aligned = (state == "GOLD")
+
     spread_expanding = spread_pct > 0.25
 
     # Extract fundamental metadata if present
@@ -1340,6 +1389,9 @@ def generate_trade_suggestion(
     options_flow: Optional[dict] = None,
     btc_cycle: Optional[object] = None,
     bars_since_flip: Optional[int] = None,
+    macro_1w_state: Optional[str] = None,
+    volatility_regime: Optional[str] = None,
+    is_squeeze: bool = False,
 ) -> TradeSuggestion:
     """
     Evaluates market conditions and returns an institutional TradeSuggestion,
@@ -1384,6 +1436,9 @@ def generate_trade_suggestion(
         options_flow=options_flow,
         btc_cycle=btc_cycle,
         bars_since_flip=bars_since_flip,
+        macro_1w_state=macro_1w_state,
+        volatility_regime=volatility_regime,
+        is_squeeze=is_squeeze,
     )
     return _enrich_trade_suggestion(
         raw_s,

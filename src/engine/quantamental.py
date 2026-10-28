@@ -71,11 +71,17 @@ class FundamentalProfile:
 
     @property
     def is_bullish(self) -> bool:
-        return any(k in self.verdict.upper() for k in ["STRONG BUY", "BUY", "OVERWEIGHT"])
+        if any(k in self.verdict.upper() for k in ["STRONG BUY", "BUY", "OVERWEIGHT", "ACCUMULATE"]):
+            return True
+        if self.action and any(k in self.action.upper() for k in ["STRONG BUY", "BUY", "ACCUMULATE"]):
+            return True
+        return False
 
     @property
     def is_bearish_or_distressed(self) -> bool:
         if any(k in self.verdict.upper() for k in ["REDUCE", "AVOID", "UNDERPERFORM", "DISTRESSED"]):
+            return True
+        if self.action and any(k in self.action.upper() for k in ["REDUCE", "AVOID", "SELL"]):
             return True
         # Standardized Universal Altman Z''-Score distress threshold: Z'' < 1.10
         if self.z_score is not None and self.z_score < 1.10:
@@ -255,6 +261,116 @@ _MULTI_ASSET_PROFILES: Dict[str, dict] = {
         "z_score": None,
         "upside_pct": 27.0,
         "thesis": "Електропреносен дефицит и ключов ресурс за AI дата центрове (25-40 тона/MW).",
+    },
+    "LTH=F": {
+        "name": "Lithium Hydroxide Futures",
+        "verdict": "BUY",
+        "target_price": 18.50,
+        "fair_value": 18.50,
+        "mos_pct": 25.0,
+        "moat": "Narrow",
+        "z_score": None,
+        "upside_pct": 35.0,
+        "thesis": "Цената е в 90-ия персентил на пределните разходи ($12-$14/kg); съкращения в предлагането подготвят ново равновесие.",
+    },
+    "LNIK.L": {
+        "name": "WisdomTree Nickel ETC",
+        "verdict": "HOLD",
+        "target_price": 13.50,
+        "fair_value": 13.50,
+        "mos_pct": 14.0,
+        "moat": "None",
+        "z_score": None,
+        "upside_pct": 16.0,
+        "thesis": "Индонезийският свръхкапацитет от HPAL и NPI поддържа структурен пазарен излишък.",
+    },
+    "ZNC=F": {
+        "name": "Zinc Futures",
+        "verdict": "BUY",
+        "target_price": 4250.0,
+        "fair_value": 4250.0,
+        "mos_pct": 10.0,
+        "moat": "Narrow",
+        "z_score": None,
+        "upside_pct": 8.0,
+        "thesis": "Затварянето на европейски топилни пещи и спадът в минния концентрат генерират дефицит на рафиниран цинк.",
+    },
+    "GDIG.MI": {
+        "name": "VanEck S&P Global Mining UCITS ETF",
+        "verdict": "BUY",
+        "target_price": 64.50,
+        "fair_value": 64.50,
+        "mos_pct": 16.6,
+        "moat": "Wide",
+        "z_score": 2.85,
+        "upside_pct": 19.9,
+        "thesis": "Глобална експозиция към първокласни производители на мед, желязо и злато (BHP, Rio Tinto, Glencore, Freeport).",
+    },
+    "ASWD.DE": {
+        "name": "HANetf Sprott Pure Play Copper Miners UCITS ETF",
+        "verdict": "STRONG BUY",
+        "target_price": 26.50,
+        "fair_value": 26.50,
+        "mos_pct": 26.8,
+        "moat": "Wide",
+        "z_score": 2.60,
+        "upside_pct": 36.6,
+        "thesis": "100% чиста фокусирана експозиция към медни добивни компании при структурен дефицит заради AI дата центрове.",
+    },
+    "COPR.MI": {
+        "name": "HANetf Sprott Pure Play Copper Miners (Milan)",
+        "verdict": "STRONG BUY",
+        "target_price": 26.50,
+        "fair_value": 26.50,
+        "mos_pct": 26.7,
+        "moat": "Wide",
+        "z_score": 2.60,
+        "upside_pct": 36.5,
+        "thesis": "Borsa Italiana листинг на чистия меден минен индекс; висока бета към цената на медта.",
+    },
+    "EXV6.DE": {
+        "name": "iShares STOXX Europe 600 Basic Resources UCITS ETF",
+        "verdict": "HOLD",
+        "target_price": 92.00,
+        "fair_value": 92.00,
+        "mos_pct": 13.7,
+        "moat": "Narrow",
+        "z_score": 2.45,
+        "upside_pct": 15.9,
+        "thesis": "Европейският ресурсен бенчмарк; атрактивен дивидентен поток (~4.2%), консолидиращ в стабилен рейндж.",
+    },
+    "BATE.DE": {
+        "name": "L&G Battery Value-Chain UCITS ETF",
+        "verdict": "HOLD",
+        "target_price": 28.00,
+        "fair_value": 28.00,
+        "mos_pct": 16.1,
+        "moat": "Narrow",
+        "z_score": 2.10,
+        "upside_pct": 19.1,
+        "thesis": "Екосистема за батерии и съхранение на енергия; циклична фаза на натрупване около дъното.",
+    },
+    "RARE.DE": {
+        "name": "WisdomTree Strategic Metals & Rare Earths",
+        "verdict": "HOLD",
+        "target_price": 52.00,
+        "fair_value": 52.00,
+        "mos_pct": 18.0,
+        "moat": "Narrow",
+        "z_score": 2.20,
+        "upside_pct": 21.9,
+        "thesis": "Стратегическа независимост от китайския монопол при редкоземните елементи (MP Materials, Lynas).",
+    },
+    "EXV5.DE": {
+        "name": "iShares STOXX Europe 600 Auto & Parts",
+        "verdict": "REDUCE",
+        "target_price": 31.50,
+        "fair_value": 31.50,
+        "mos_pct": -19.7,
+        "moat": "None",
+        "z_score": 1.85,
+        "upside_pct": -16.5,
+        "thesis": "Структурна компресия на маржовете в европейския автосектор: ценови натиск от Китай, EV преход и скъпа енергия.",
     },
     "URA": {
         "name": "Global X Uranium ETF",

@@ -314,6 +314,9 @@ def main():
     parser.add_argument("--export-dashboard", action="store_true", help="Export latest data.json for dashboard")
     parser.add_argument("--test-telegram", action="store_true", help="Send a test notification to Telegram")
     parser.add_argument("--digest", action="store_true", help="Dispatch daily market digest to Telegram")
+    parser.add_argument("--x-add-tickers", type=str, help="Batch add historical recommendations from X account (e.g. 'NVDA, TSLA, PLTR')")
+    parser.add_argument("--x-process-tweet", type=str, help="Process a raw tweet text from NoLimits and auto-extract/add tickers")
+    parser.add_argument("--x-account", type=str, default="NoLimits", help="X (Twitter) source account handle")
     parser.add_argument("--websocket", action="store_true", help="Run standalone Binance WebSocket listener")
     parser.add_argument("--backtest", action="store_true", help="Run institutional 5-year multi-asset backtest")
     parser.add_argument(
@@ -410,6 +413,34 @@ def main():
             for f in summary['failed']:
                 print(f"     - {f['ticker']}: {f['reason']}")
         print(f"\nДашбордът и базата данни са обновени.\n")
+    elif args.x_add_tickers:
+        from src.data.x_monitor import XMonitor
+        x_mon = XMonitor(db=db, notifier=notifier)
+        tickers = [t.strip() for t in args.x_add_tickers.split(",") if t.strip()]
+        print(f"\n📢 Добавяне на исторически предложения от {args.x_account} ({len(tickers)} актива)...")
+        res = x_mon.add_historical_recommendations(tickers, source_account=args.x_account)
+        print(f"✅ Добавени нови към скенера: {len(res['added'])}")
+        for it in res["added"]:
+            print(f"   + {it.get('ticker')}: {it.get('name', '')} ({it.get('asset_class')})")
+        print(f"ℹ️ Вече съществуващи в скенера: {len(res['already_tracked'])} ({', '.join(res['already_tracked'])})")
+        if res["failed"]:
+            print(f"❌ Неуспешни: {res['failed']}")
+        export_dashboard_data(db)
+        sync_dashboard_to_git()
+        print("\n✅ Базата и дашбордът са обновени.\n")
+    elif args.x_process_tweet:
+        from src.data.x_monitor import XMonitor
+        x_mon = XMonitor(db=db, notifier=notifier)
+        print(f"\n🔍 Анализиране на публикация от {args.x_account}...")
+        results = x_mon.process_tweet(args.x_process_tweet, source_account=args.x_account)
+        if not results:
+            print("❌ Не бяха открити борсови тикери в текста.")
+        for r in results:
+            st = "Добавен" if r['added_to_scanner'] else "Вече съществува или пропуснат"
+            print(f"   -> {r['ticker']}: {st} ({r['message']})")
+        export_dashboard_data(db)
+        sync_dashboard_to_git()
+        print("\n✅ Базата и дашбордът са обновени.\n")
     elif args.remove_asset:
         from src.data.asset_manager import AssetManager
         manager = AssetManager(db=db, binance_fetcher=b_fetcher, yf_fetcher=yf_fetcher)

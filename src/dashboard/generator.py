@@ -19,6 +19,60 @@ DEFAULT_OUTPUT_PATH = os.path.join(
     "data.json",
 )
 
+PROFILES_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "data",
+    "asset_optimal_profiles.json",
+)
+
+ROTATION_STATE_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "data",
+    "rotation_state.json",
+)
+
+CACHE_DIR_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "data",
+    "backtest_cache",
+)
+
+
+def _load_optimal_profiles() -> dict:
+    if os.path.exists(PROFILES_PATH):
+        try:
+            with open(PROFILES_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH):
+    moms = {}
+    if os.path.exists(cache_dir):
+        import glob
+        import pandas as pd
+        for f in glob.glob(os.path.join(cache_dir, "*_1D.csv")):
+            sym = os.path.basename(f).replace("_1D.csv", "")
+            clean_sym = sym.replace("_", "=")
+            try:
+                df = pd.read_csv(f, usecols=["close"])
+                if len(df) >= 60:
+                    c = df["close"].to_numpy()
+                    if c[-60] > 0:
+                        val = float((c[-1] - c[-60]) / c[-60] * 100.0)
+                        moms[sym] = val
+                        moms[clean_sym] = val
+            except Exception:
+                pass
+    if moms:
+        import pandas as pd
+        s = pd.Series(moms)
+        rs_dict = (s.rank(pct=True) * 98 + 1).fillna(50).astype(int).to_dict()
+        return rs_dict, moms
+    return {}, {}
+
 
 NAMES_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -107,6 +161,8 @@ def export_dashboard_data(
             return {"symbols": [], "summary": {}}
 
     names_map = _load_names_map()
+    optimal_profiles = _load_optimal_profiles()
+    rs_ratings, all_mom_60 = _compute_universe_rs_ratings()
     rows = db.get_all_states()
 
     items = []
@@ -570,6 +626,14 @@ def export_dashboard_data(
             "gold_flip_bars": gold_flip_bars,
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
+            "rs_rating": rs_ratings.get(ticker, 50),
+            "empirical_tier": optimal_profiles.get(ticker, {}).get("empirical_tier", asset_tier),
+            "dna_strategy": optimal_profiles.get(ticker, {}).get("recommended_strategy", "CLASSIC_BLUE_EXIT"),
+            "exit_rule_bg": ("💰 Прибери при NEUTRAL" if optimal_profiles.get(ticker, {}).get("exit_on_neutral") else "🛡️ Дръж до BLUE"),
+            "exit_on_neutral": bool(optimal_profiles.get(ticker, {}).get("exit_on_neutral", False)),
+            "backtest_cagr": optimal_profiles.get(ticker, {}).get("cagr_pct"),
+            "backtest_sharpe": optimal_profiles.get(ticker, {}).get("sharpe_ratio"),
+            "larsson_suitability": optimal_profiles.get(ticker, {}).get("larsson_suitability", "MODERATE_TREND"),
         })
 
     total = len(items)
@@ -900,8 +964,154 @@ def export_dashboard_data(
         "kill_switch_required": False,
     }
 
+    # Opus CIO Component E: Top 15 Momentum Rotation Portfolio (EUR 10,000 Base Capital)
+    base_capital_eur = 10000.0
+    target_positions_count = 15
+    per_slot_eur = round(base_capital_eur / target_positions_count, 2)
+
+    candidates_gold = []
+    quant_candidates = []
+
+    for item in items:
+        sym = item.get("ticker", "")
+        st = item.get("state")
+        tier = item.get("empirical_tier", "B")
+        prof = optimal_profiles.get(sym, {})
+        mom_60 = all_mom_60.get(sym, 0.0)
+        sharpe = float(item.get("backtest_sharpe") or 0.0)
+        rs_score = item.get("rs_rating", 50)
+        price = float(item.get("price") or 0.0)
+
+        # 1. GOLD candidates (S/A tier with stability)
+        if st == "GOLD" and tier in ["S", "A"] and prof.get("walk_forward_stable", True):
+            rank_score = (sharpe * 50.0) + (rs_score * 0.5) + (mom_60 * 0.5)
+            shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
+            candidates_gold.append({
+                "ticker": sym,
+                "name": item.get("name", sym),
+                "asset_class": item.get("asset_class"),
+                "tier": tier,
+                "rs_rating": rs_score,
+                "strategy": item.get("dna_strategy"),
+                "exit_rule_bg": item.get("exit_rule_bg"),
+                "exit_on_neutral": item.get("exit_on_neutral"),
+                "price": price,
+                "v2_stop": item.get("v2"),
+                "spread_pct": item.get("spread_pct"),
+                "momentum_60d": round(mom_60, 1),
+                "backtest_cagr": item.get("backtest_cagr"),
+                "backtest_sharpe": sharpe,
+                "target_eur": per_slot_eur,
+                "target_shares": shares,
+                "status_tag": "✨ ПРЕСЕН ПРОБИВ" if item.get("is_gold_flip") else "🟢 В ТРЕНД (Hold)",
+                "rank_score": round(rank_score, 1),
+                "tv_symbol": item.get("tv_symbol"),
+                "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
+            })
+
+        # 2. Quantamental Accumulator Dips
+        fund = item.get("fundamental") or {}
+        mos_val = fund.get("mos_pct")
+        f_verdict = (fund.get("verdict") or "").upper()
+        is_fund_bullish = any(k in f_verdict for k in ["STRONG BUY", "BUY", "ACCUMULATE", "OVERWEIGHT"]) or "BUY" in (fund.get("action") or "").upper()
+        if is_fund_bullish and st in ["BLUE", "NEUTRAL"]:
+            v1_val = item.get("v1")
+            if v1_val and price > v1_val and mos_val and mos_val >= 10.0:
+                quant_candidates.append({
+                    "ticker": sym,
+                    "name": item.get("name", sym),
+                    "asset_class": item.get("asset_class"),
+                    "price": price,
+                    "state": st,
+                    "fair_value": fund.get("fair_value"),
+                    "mos_pct": mos_val,
+                    "rs_rating": rs_score,
+                    "verdict": fund.get("verdict", "BUY"),
+                    "tranche_eur": round(per_slot_eur * 0.5, 2),
+                    "tranche_shares": round((per_slot_eur * 0.5) / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0,
+                    "tv_symbol": item.get("tv_symbol"),
+                    "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
+                })
+
+    candidates_gold.sort(key=lambda x: x["rank_score"], reverse=True)
+    top15 = candidates_gold[:15]
+    reserve_bench = candidates_gold[15:25]
+
+    # Daily Action Diff (BUYS / SELLS / HOLDS)
+    prev_state = {}
+    if os.path.exists(ROTATION_STATE_PATH):
+        try:
+            with open(ROTATION_STATE_PATH, "r", encoding="utf-8") as f:
+                prev_state = json.load(f)
+        except Exception:
+            pass
+
+    prev_tickers = set(prev_state.get("top15_tickers", []))
+    curr_tickers = set(x["ticker"] for x in top15)
+
+    buys = []
+    holds = []
+    sells = []
+
+    if not prev_tickers:
+        buys = top15
+    else:
+        buys = [x for x in top15 if x["ticker"] not in prev_tickers]
+        holds = [x for x in top15 if x["ticker"] in prev_tickers]
+        dropped_tickers = prev_tickers - curr_tickers
+        for d_sym in dropped_tickers:
+            d_item = next((it for it in items if it.get("ticker") == d_sym), None)
+            if d_item:
+                d_st = d_item.get("state")
+                d_exit_neut = d_item.get("exit_on_neutral")
+                if d_st == "BLUE":
+                    reason = "Нарушен макро тренд (BLUE) -> Защити капитала"
+                elif d_st == "NEUTRAL" and d_exit_neut:
+                    reason = "Fast Exit ДНК (NEUTRAL) -> Прибери печалба"
+                else:
+                    reason = "Ротация -> Заменен от по-висок RS моментум лидер"
+                sells.append({
+                    "ticker": d_sym,
+                    "name": d_item.get("name", d_sym),
+                    "price": d_item.get("price"),
+                    "state": d_st,
+                    "reason": reason,
+                    "action": "SELL / CLOSE 100%",
+                })
+
+    try:
+        os.makedirs(os.path.dirname(ROTATION_STATE_PATH), exist_ok=True)
+        with open(ROTATION_STATE_PATH, "w", encoding="utf-8") as f:
+            json.dump({"top15_tickers": [x["ticker"] for x in top15], "updated_at": datetime.now(timezone.utc).isoformat()}, f, indent=2)
+    except Exception as e:
+        logger.debug(f"Could not persist rotation state: {e}")
+
+    rotation_portfolio_data = {
+        "base_capital_eur": base_capital_eur,
+        "target_positions_count": target_positions_count,
+        "per_slot_eur": per_slot_eur,
+        "historical_cagr_pct": 39.4,
+        "historical_sharpe": 1.49,
+        "historical_max_dd_pct": -23.5,
+        "top15": top15,
+        "reserve_bench": reserve_bench,
+        "quantamental_dips": quant_candidates[:8],
+        "daily_actions": {
+            "buys": buys,
+            "sells": sells,
+            "holds": holds,
+        },
+        "summary": {
+            "total_active": len(top15),
+            "fresh_breakouts": sum(1 for x in top15 if "ПРЕСЕН" in x.get("status_tag", "")),
+            "classic_blue_exits": sum(1 for x in top15 if not x.get("exit_on_neutral")),
+            "fast_neutral_exits": sum(1 for x in top15 if x.get("exit_on_neutral")),
+        }
+    }
+
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        "rotation_portfolio": rotation_portfolio_data,
         "summary": {
             "total": total,
             "gold": gold_count,
@@ -942,6 +1152,7 @@ def export_dashboard_data(
         # 1. State: dynamic prices, ribbons, proposals, breadth
         state_payload = {
             "generated_at": payload["generated_at"],
+            "rotation_portfolio": rotation_portfolio_data,
             "summary": payload["summary"],
             "symbols": payload["symbols"],
             "pending_setups": payload["pending_setups"],

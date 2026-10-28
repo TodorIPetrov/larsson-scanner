@@ -94,6 +94,44 @@ us_stocks:
   tv_symbol: NYSE:PSUS
 - ticker: PS
   tv_symbol: NYSE:PS
+- ticker: BHP
+  tv_symbol: NYSE:BHP
+- ticker: RIO
+  tv_symbol: NYSE:RIO
+- ticker: FCX
+  tv_symbol: NYSE:FCX
+- ticker: ALB
+  tv_symbol: NYSE:ALB
+- ticker: SQM
+  tv_symbol: NYSE:SQM
+- ticker: MP
+  tv_symbol: NYSE:MP
+- ticker: SBSW
+  tv_symbol: NYSE:SBSW
+- ticker: QS
+  tv_symbol: NASDAQ:QS
+- ticker: BBAI
+  tv_symbol: NYSE:BBAI
+- ticker: OUST
+  tv_symbol: NASDAQ:OUST
+- ticker: PRCT
+  tv_symbol: NASDAQ:PRCT
+- ticker: STXS
+  tv_symbol: AMEX:STXS
+- ticker: QBTS
+  tv_symbol: NASDAQ:QBTS
+- ticker: EOSE
+  tv_symbol: NASDAQ:EOSE
+- ticker: POET
+  tv_symbol: NASDAQ:POET
+- ticker: ATKR
+  tv_symbol: NYSE:ATKR
+- ticker: OSCR
+  tv_symbol: NYSE:OSCR
+- ticker: ADMA
+  tv_symbol: NASDAQ:ADMA
+- ticker: LULU
+  tv_symbol: NASDAQ:LULU
 intl_stocks:
 - ticker: MC.PA
   tv_symbol: EURONEXT:MC
@@ -203,6 +241,56 @@ intl_stocks:
   tv_symbol: ASX:CBA
 - ticker: CSL.AX
   tv_symbol: ASX:CSL
+- ticker: GDIG.MI
+  tv_symbol: XETR:GDIG
+- ticker: ASWD.DE
+  tv_symbol: XETR:ASWD
+- ticker: COPR.MI
+  tv_symbol: MIL:COPR
+- ticker: EXV6.DE
+  tv_symbol: XETR:EXV6
+- ticker: BATE.DE
+  tv_symbol: XETR:BATE
+- ticker: BATT.MI
+  tv_symbol: MIL:BATT
+- ticker: RARE.DE
+  tv_symbol: XETR:RARE
+- ticker: BOL.ST
+  tv_symbol: OMXSTO:BOL
+- ticker: KGH.WA
+  tv_symbol: GPW:KGH
+- ticker: NDA.DE
+  tv_symbol: XETR:NDA
+- ticker: AMG.AS
+  tv_symbol: EURONEXT:AMG
+- ticker: ADG.DE
+  tv_symbol: XETR:ADG
+- ticker: UMI.BR
+  tv_symbol: EURONEXT:UMI
+- ticker: VUL.DE
+  tv_symbol: XETR:VUL
+- ticker: ERA.PA
+  tv_symbol: EURONEXT:ERA
+- ticker: GLEN.L
+  tv_symbol: LSE:GLEN
+- ticker: IVN.TO
+  tv_symbol: TSX:IVN
+- ticker: PLS.AX
+  tv_symbol: ASX:PLS
+- ticker: TLG.AX
+  tv_symbol: ASX:TLG
+- ticker: LYQL.DE
+  tv_symbol: XETR:LYQL
+- ticker: BXX.PA
+  tv_symbol: XETR:BXX
+- ticker: EXV5.DE
+  tv_symbol: XETR:EXV5
+- ticker: STLAM.MI
+  tv_symbol: MIL:STLAM
+- ticker: VOW3.DE
+  tv_symbol: XETR:VOW3
+- ticker: BMW.DE
+  tv_symbol: XETR:BMW
 commodities:
 - ticker: GC=F
   tv_symbol: COMEX:GC1!
@@ -224,6 +312,12 @@ commodities:
   tv_symbol: AMEX:URNM
 - ticker: CCJ
   tv_symbol: NYSE:CCJ
+- ticker: LTH=F
+  tv_symbol: COMEX:LTH1!
+- ticker: LNIK.L
+  tv_symbol: LME:NI1!
+- ticker: ZNC=F
+  tv_symbol: COMEX:ZNC1!
 indices:
 - ticker: ^GSPC
   tv_symbol: SP:SPX

@@ -48,6 +48,38 @@ class Database:
             conn.rollback()
             raise
 
+    def add_x_recommendation(
+        self,
+        source_account: str,
+        tweet_id: Optional[str],
+        tweet_text: str,
+        ticker: str,
+        created_at: Optional[str] = None,
+        added_to_scanner: int = 1,
+    ) -> bool:
+        """Records an extracted stock recommendation from X."""
+        if not created_at:
+            from datetime import datetime, timezone
+            created_at = datetime.now(timezone.utc).isoformat()
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            try:
+                cur.execute("""
+                INSERT OR IGNORE INTO x_recommendations
+                (source_account, tweet_id, tweet_text, ticker, created_at, added_to_scanner)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (source_account, tweet_id, tweet_text, ticker, created_at, added_to_scanner))
+                return cur.rowcount > 0
+            except Exception:
+                return False
+
+    def get_x_recommendations(self, limit: int = 100) -> List[sqlite3.Row]:
+        """Returns recent recommendations extracted from X."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM x_recommendations ORDER BY created_at DESC LIMIT ?", (limit,))
+            return cur.fetchall()
+
     def close(self):
         """Closes the thread-local database connection if active."""
         if hasattr(self._local, "conn") and self._local.conn is not None:
@@ -287,6 +319,10 @@ class Database:
                 ("notional_usd", "REAL"),
                 ("liquidation_price", "REAL"),
                 ("options_flow_json", "TEXT"),
+                ("confluence_score", "INTEGER"),
+                ("volatility_regime", "TEXT"),
+                ("htf_state", "TEXT"),
+                ("atr_at_entry", "REAL"),
             ]:
                 if col_name not in tp_cols:
                     cur.execute(f"ALTER TABLE trade_proposals ADD COLUMN {col_name} {col_type}")
@@ -332,6 +368,12 @@ class Database:
                 ("notional_usd", "REAL"),
                 ("liquidation_price", "REAL"),
                 ("funding_fee_usd", "REAL DEFAULT 0.0"),
+                ("highest_price_seen", "REAL"),
+                ("chandelier_stop", "REAL"),
+                ("partial_exit_done", "INTEGER DEFAULT 0"),
+                ("slippage_cost_usd", "REAL DEFAULT 0.0"),
+                ("confluence_score", "INTEGER"),
+                ("atr_at_entry", "REAL"),
             ]:
                 if col_name not in pp_cols:
                     cur.execute(f"ALTER TABLE paper_positions ADD COLUMN {col_name} {col_type}")
@@ -479,6 +521,21 @@ class Database:
             );
             """)
             cur.execute("CREATE INDEX IF NOT EXISTS idx_sbh_sector_ts ON sector_breadth_history(sector, timestamp);")
+
+            # Table for Social / X (Twitter) Recommendations
+            cur.execute("""
+            CREATE TABLE IF NOT EXISTS x_recommendations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                source_account TEXT NOT NULL,
+                tweet_id TEXT,
+                tweet_text TEXT NOT NULL,
+                ticker TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                added_to_scanner INTEGER DEFAULT 1,
+                UNIQUE(tweet_id, ticker)
+            );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_x_rec_ticker ON x_recommendations(ticker);")
 
             # Table for Bitcoin On-Chain Daily Metrics (BlockHorizon & On-Chain Cycles)
             cur.execute("""
@@ -1178,6 +1235,23 @@ class Database:
             cur = conn.cursor()
             cur.execute("SELECT * FROM paper_positions WHERE ticker = ? AND status = 'OPEN' LIMIT 1", (ticker,))
             return cur.fetchone()
+
+    def update_paper_position_trailing(
+        self,
+        position_id: str,
+        highest_price: float,
+        chandelier_stop: float,
+    ) -> bool:
+        """Updates highest price seen and trailing stop level for an open paper position."""
+        with self._get_connection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+            UPDATE paper_positions
+            SET highest_price_seen = ?,
+                chandelier_stop = ?
+            WHERE position_id = ? AND status = 'OPEN'
+            """, (highest_price, chandelier_stop, position_id))
+            return cur.rowcount > 0
 
     def close_paper_position(
         self,

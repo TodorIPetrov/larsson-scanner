@@ -94,8 +94,27 @@ class YFinanceFetcher:
                         highs = clean_df["High"].to_numpy(dtype=np.float64)
                         lows = clean_df["Low"].to_numpy(dtype=np.float64)
                         closes = clean_df["Close"].to_numpy(dtype=np.float64)
-                        latest_price = float(closes[-1])
 
+                        # Data Sanity Guard (Point 5): Validate non-positive ticks, NaNs, and anomalous 10x spikes
+                        if (highs <= 0).any() or (lows <= 0).any() or (closes <= 0).any() or np.isnan(closes).any():
+                            logger.warning(f"Corrupt/negative price data for {sym}. Skipping.")
+                            continue
+
+                        if (highs / np.maximum(lows, 1e-8) > 10.0).any():
+                            logger.warning(f"Extreme bad tick spike detected for {sym}. Skipping.")
+                            continue
+
+                        # Stale candle guard (traditional markets should have traded within 10 days)
+                        try:
+                            import time
+                            if hasattr(clean_df.index[-1], "timestamp"):
+                                age_days = (time.time() - clean_df.index[-1].timestamp()) / 86400
+                                if age_days > 10:
+                                    logger.warning(f"Stale data for {sym}: last bar is {age_days:.1f} days old.")
+                        except Exception:
+                            pass
+
+                        latest_price = float(closes[-1])
                         results[sym] = (highs, lows, closes, latest_price)
                     except Exception as e:
                         logger.debug(f"Could not parse ticker {sym} from batch: {e}")

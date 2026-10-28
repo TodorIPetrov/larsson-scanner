@@ -97,8 +97,27 @@ class BinanceFetcher:
             highs = np.array([float(k[2]) for k in raw_klines], dtype=np.float64)
             lows = np.array([float(k[3]) for k in raw_klines], dtype=np.float64)
             closes = np.array([float(k[4]) for k in raw_klines], dtype=np.float64)
-            latest_price = closes[-1]
 
+            # Data Sanity Guard (Point 5): Validate against NaNs, non-positive ticks, and bad spike anomalies
+            if (highs <= 0).any() or (lows <= 0).any() or (closes <= 0).any() or np.isnan(closes).any():
+                logger.warning(f"Corrupt/negative price data in klines for {symbol}. Rejecting.")
+                return None
+
+            if (highs / np.maximum(lows, 1e-8) > 10.0).any():
+                logger.warning(f"Extreme bad tick spike detected in klines for {symbol}. Rejecting.")
+                return None
+
+            # Staleness guard for crypto (should have fresh candles within 72h)
+            try:
+                import time
+                last_close_ms = int(raw_klines[-1][6])
+                age_hours = (time.time() * 1000 - last_close_ms) / (1000 * 3600)
+                if timeframe in ["1D", "4H"] and age_hours > 72:
+                    logger.warning(f"Stale crypto klines for {symbol}: last candle is {age_hours:.1f}h old.")
+            except Exception:
+                pass
+
+            latest_price = closes[-1]
             return highs, lows, closes, latest_price
         except Exception as e:
             logger.error(f"Error fetching klines for {symbol} [{timeframe}]: {e}")

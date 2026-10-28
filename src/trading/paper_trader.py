@@ -47,6 +47,13 @@ class PaperTrader:
         self.min_confluence_score = int(self.config.get("min_confluence_score", 60))
         self.allowed_tiers = self.config.get("allowed_tiers", ["A+", "A", "B"])
         self.partial_take_profit = bool(self.config.get("partial_take_profit", False))
+        self.trailing_stop_atr_mult = float(self.config.get("trailing_stop_atr_mult", 2.5))
+        self.volatility_sizing_enabled = bool(self.config.get("volatility_sizing_enabled", False))
+        self.slippage_model_enabled = bool(self.config.get("slippage_model_enabled", False))
+        self.risk_per_trade_pct = float(self.config.get("risk_per_trade_pct", 0.015))
+        self.max_crypto_positions = int(self.config.get("max_crypto_positions", 3))
+        self.slippage_pct_crypto = float(self.config.get("slippage_pct_crypto", 0.0010))
+        self.slippage_pct_equities = float(self.config.get("slippage_pct_equities", 0.0005))
 
         # Initialize account in DB if empty
         self.db.get_paper_balance(initial_balance=self.initial_balance)
@@ -136,14 +143,6 @@ class PaperTrader:
 
         balance = self.db.get_paper_balance(initial_balance=self.initial_balance)
         sizing_mult = float(trade_suggestion.get("btc_cycle_sizing_mult") or 1.0)
-        pos_size_usd = round(self.default_position_size * sizing_mult, 2)
-        max_leverage = trade_suggestion.get("max_leverage", 1)
-        recommended_leverage = trade_suggestion.get("recommended_leverage", 1)
-        margin_usd = round(pos_size_usd / max(1, recommended_leverage), 2)
-
-        if balance["available_cash"] < margin_usd:
-            logger.warning(f"[PaperTrader] Insufficient cash for {ticker}: {balance['available_cash']:.2f} < {margin_usd}")
-            return None
 
         entry_price = float(trade_suggestion.get("entry_price") or current_price)
         if entry_price <= 0:
@@ -153,6 +152,25 @@ class PaperTrader:
         tp1 = trade_suggestion.get("tp1")
         tp2 = trade_suggestion.get("tp2")
         reason = trade_suggestion.get("reason_bg") or trade_suggestion.get("setup_type", "Larsson Line Setup")
+
+        # Volatility-Adjusted Sizing (Fixed Fractional Risk)
+        account_equity = balance["available_cash"] + balance.get("invested_capital", 0.0)
+        if self.volatility_sizing_enabled and stop_loss and abs(entry_price - stop_loss) > 0:
+            target_risk_usd = account_equity * self.risk_per_trade_pct
+            risk_per_unit = abs(entry_price - stop_loss)
+            suggested_units = target_risk_usd / risk_per_unit
+            calc_size_usd = suggested_units * entry_price * sizing_mult
+            pos_size_usd = round(max(50.0, min(account_equity * 0.15, calc_size_usd)), 2)
+        else:
+            pos_size_usd = round(self.default_position_size * sizing_mult, 2)
+
+        max_leverage = trade_suggestion.get("max_leverage", 1)
+        recommended_leverage = trade_suggestion.get("recommended_leverage", 1)
+        margin_usd = round(pos_size_usd / max(1, recommended_leverage), 2)
+
+        if balance["available_cash"] < margin_usd:
+            logger.warning(f"[PaperTrader] Insufficient cash for {ticker}: {balance['available_cash']:.2f} < {margin_usd}")
+            return None
 
         units = round(pos_size_usd / entry_price, 6 if entry_price < 10 else 4)
         risk_usd = round(abs(entry_price - stop_loss) * units, 2) if stop_loss else None
@@ -441,14 +459,28 @@ class PaperTrader:
         if len(open_positions) >= self.max_active_positions:
             return {"success": False, "error": f"Достигнат е лимитът от {self.max_active_positions} отворени позиции."}
 
+        # Cluster / Sector Exposure Cap (Risk Guard)
+        is_crypto = ticker.endswith("USDT") or ticker.endswith("USDC")
+        if is_crypto:
+            open_crypto = [p for p in open_positions if p["ticker"].endswith("USDT") or p["ticker"].endswith("USDC")]
+            if len(open_crypto) >= self.max_crypto_positions:
+                return {"success": False, "error": f"Предел на секторна експозиция: вече имате {len(open_crypto)} активни крипто позиции (макс {self.max_crypto_positions})."}
+
+        # Realistic Execution: Slippage & Spread Model
+        if self.slippage_model_enabled:
+            slip_pct = self.slippage_pct_crypto if is_crypto else self.slippage_pct_equities
+            fill_price = round(entry_price * (1.0 + slip_pct) if direction == "LONG" else entry_price * (1.0 - slip_pct), 6 if entry_price < 10 else 4)
+        else:
+            fill_price = entry_price
+
         now_iso = datetime.now(timezone.utc).isoformat()
         position_id = f"pos_{ticker}_{int(time.time())}"
 
         if selected_leverage > 1:
             if direction == "SHORT":
-                liq_price = round(entry_price * (1.0 + (1.0 / selected_leverage) - 0.005), 4)
+                liq_price = round(fill_price * (1.0 + (1.0 / selected_leverage) - 0.005), 4)
             else:
-                liq_price = round(entry_price * (1.0 - (1.0 / selected_leverage) + 0.005), 4)
+                liq_price = round(fill_price * (1.0 - (1.0 / selected_leverage) + 0.005), 4)
         else:
             liq_price = None
 
@@ -457,7 +489,7 @@ class PaperTrader:
         self.db.open_paper_position(
             position_id=position_id,
             ticker=ticker,
-            entry_price=entry_price,
+            entry_price=fill_price,
             units=units,
             position_size_usd=pos_size,
             stop_loss=stop_loss,
@@ -592,10 +624,11 @@ class PaperTrader:
         self,
         prices: Dict[str, float],
         states: Optional[Dict[str, str]] = None,
+        v1_levels: Optional[Dict[str, float]] = None,
     ) -> List[dict]:
         """
-        Checks all open positions against latest market prices and indicator states.
-        Triggers Stop-Loss, Take-Profit 1, Take-Profit 2, or Signal Exit (BLUE).
+        Checks all open positions against latest market prices, indicator states, and dynamic trailing exits.
+        Triggers Stop-Loss, Chandelier Trailing Stop, Take-Profit 1, Take-Profit 2, SMMA 15 momentum loss, or Signal Exit.
         """
         closed_events = []
         open_positions = self.db.get_open_paper_positions()
@@ -603,6 +636,7 @@ class PaperTrader:
             return closed_events
 
         states = states or {}
+        v1_levels = v1_levels or {}
 
         for pos in open_positions:
             pos_id = pos["position_id"]
@@ -626,13 +660,26 @@ class PaperTrader:
             direction = pos["direction"] if "direction" in pos.keys() and pos["direction"] else "LONG"
             liq_price = pos["liquidation_price"] if "liquidation_price" in pos.keys() else None
 
+            # Dynamic Chandelier Trailing Stop Calculation
+            highest_seen = pos["highest_price_seen"] if ("highest_price_seen" in pos.keys() and pos["highest_price_seen"]) else entry_price
+            atr_val = pos["atr_at_entry"] if ("atr_at_entry" in pos.keys() and pos["atr_at_entry"]) else (entry_price * 0.02)
+            k_atr = self.trailing_stop_atr_mult
+
             if direction == "SHORT":
+                lowest_seen = min(highest_seen, current_price)
+                chandelier_stop = round(lowest_seen + (k_atr * atr_val), 4 if entry_price >= 1 else 6)
+                effective_stop = min(stop_loss if stop_loss else float("inf"), chandelier_stop)
+                try:
+                    self.db.update_paper_position_trailing(pos_id, lowest_seen, chandelier_stop)
+                except Exception:
+                    pass
+
                 if liq_price and current_price >= liq_price:
                     exit_reason = "LIQUIDATION"
                     exit_price = liq_price
-                elif stop_loss and current_price >= stop_loss:
-                    exit_reason = "STOP_LOSS"
-                    exit_price = stop_loss
+                elif effective_stop < float("inf") and current_price >= effective_stop:
+                    exit_reason = "CHANDELIER_TRAILING_STOP" if (stop_loss and effective_stop < stop_loss) else "STOP_LOSS"
+                    exit_price = effective_stop
                 elif tp2 and current_price <= tp2:
                     exit_reason = "TAKE_PROFIT_2"
                     exit_price = tp2
@@ -649,12 +696,20 @@ class PaperTrader:
                     exit_reason = "SIGNAL_GOLD"
                     exit_price = current_price
             else:
+                highest_seen = max(highest_seen, current_price)
+                chandelier_stop = round(highest_seen - (k_atr * atr_val), 4 if entry_price >= 1 else 6)
+                effective_stop = max(stop_loss if stop_loss else 0.0, chandelier_stop)
+                try:
+                    self.db.update_paper_position_trailing(pos_id, highest_seen, chandelier_stop)
+                except Exception:
+                    pass
+
                 if liq_price and current_price <= liq_price:
                     exit_reason = "LIQUIDATION"
                     exit_price = liq_price
-                elif stop_loss and current_price <= stop_loss:
-                    exit_reason = "STOP_LOSS"
-                    exit_price = stop_loss
+                elif effective_stop > 0 and current_price <= effective_stop:
+                    exit_reason = "CHANDELIER_TRAILING_STOP" if (stop_loss and effective_stop > stop_loss) else "STOP_LOSS"
+                    exit_price = effective_stop
                 elif tp2 and current_price >= tp2:
                     exit_reason = "TAKE_PROFIT_2"
                     exit_price = tp2
@@ -667,6 +722,9 @@ class PaperTrader:
                     else:
                         exit_reason = "TAKE_PROFIT_1"
                         exit_price = tp1
+                elif ticker in v1_levels and current_price < v1_levels[ticker] and current_price >= entry_price * 1.05:
+                    exit_reason = "MOMENTUM_SMMA15_EXIT"
+                    exit_price = current_price
                 elif current_state == "BLUE":
                     exit_reason = "SIGNAL_BLUE"
                     exit_price = current_price
@@ -786,7 +844,15 @@ class PaperTrader:
         leverage = position["leverage"] if "leverage" in position.keys() and position["leverage"] else 1
         margin = position["margin_usd"] if "margin_usd" in position.keys() and position["margin_usd"] else round(pos_size / max(1, leverage), 2)
 
-        fee_exit = round((units * exit_price) * (self.fee_pct / 100.0), 4)
+        # Realistic Execution: Slippage Model on Exit
+        is_crypto = ticker.endswith("USDT") or ticker.endswith("USDC")
+        if self.slippage_model_enabled:
+            slip_pct = self.slippage_pct_crypto if is_crypto else self.slippage_pct_equities
+            eff_exit_price = round(exit_price * (1.0 - slip_pct) if direction == "LONG" else exit_price * (1.0 + slip_pct), 6 if exit_price < 10 else 4)
+        else:
+            eff_exit_price = exit_price
+
+        fee_exit = round((units * eff_exit_price) * (self.fee_pct / 100.0), 4)
 
         if exit_reason == "LIQUIDATION":
             realized_pnl_usd = -margin
@@ -794,9 +860,9 @@ class PaperTrader:
             net_proceeds = 0.0
         else:
             if direction == "SHORT":
-                gross_pnl = round((entry_price - exit_price) * units, 4)
+                gross_pnl = round((entry_price - eff_exit_price) * units, 4)
             else:
-                gross_pnl = round((exit_price - entry_price) * units, 4)
+                gross_pnl = round((eff_exit_price - entry_price) * units, 4)
             net_pnl = round(gross_pnl - fee_exit, 2)
             realized_pnl_usd = net_pnl
             realized_pnl_pct = round((net_pnl / margin) * 100.0, 2) if margin > 0 else 0.0
@@ -818,6 +884,8 @@ class PaperTrader:
 
         reason_labels = {
             "STOP_LOSS": "🛑 УДАРЕН СТОП-ЛОС (SL)",
+            "CHANDELIER_TRAILING_STOP": "🛡️ ДИНАМИЧЕН ТРЕЙЛИНГ СТОП (Chandelier Exit)",
+            "MOMENTUM_SMMA15_EXIT": "⚠️ ЗАГУБА НА ИМПУЛС (Пробив под SMMA 15)",
             "TAKE_PROFIT_1": "🎯 ДОСТИГНАТ ТЕЙК-ПРОФИТ 1 (TP1)",
             "TAKE_PROFIT_2": "🚀 ДОСТИГНАТ ТЕЙК-ПРОФИТ 2 (TP2)",
             "SIGNAL_BLUE": "🔵 МЕЧИ СИГНАЛ ЗА ИЗХОД (Larsson Blue)",

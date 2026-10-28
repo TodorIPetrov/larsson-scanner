@@ -3,8 +3,45 @@ Asset-Class Specific Trading Profiles & Quality Tier System.
 Provides per-class risk parameters and assigns quality tiers to all monitored assets.
 """
 
+import json
+import logging
+import os
 from dataclasses import dataclass
 from typing import Dict, Optional
+
+logger = logging.getLogger(__name__)
+
+OPTIMAL_PROFILES_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+    "data",
+    "asset_optimal_profiles.json",
+)
+
+_OPTIMAL_PROFILES_CACHE: Optional[Dict[str, dict]] = None
+
+
+def load_optimal_profiles() -> Dict[str, dict]:
+    global _OPTIMAL_PROFILES_CACHE
+    if _OPTIMAL_PROFILES_CACHE is not None:
+        return _OPTIMAL_PROFILES_CACHE
+    if os.path.exists(OPTIMAL_PROFILES_FILE):
+        try:
+            with open(OPTIMAL_PROFILES_FILE, "r", encoding="utf-8") as f:
+                _OPTIMAL_PROFILES_CACHE = json.load(f)
+                return _OPTIMAL_PROFILES_CACHE
+        except Exception as e:
+            logger.warning(f"Could not load asset_optimal_profiles.json: {e}")
+    _OPTIMAL_PROFILES_CACHE = {}
+    return _OPTIMAL_PROFILES_CACHE
+
+
+def get_empirical_asset_profile(ticker: Optional[str]) -> Optional[dict]:
+    """Returns the empirical backtest profile (best strategy, tier, metrics) for a ticker."""
+    if not ticker:
+        return None
+    clean = ticker.split(":")[-1].strip().upper()
+    profiles = load_optimal_profiles()
+    return profiles.get(clean)
 
 @dataclass
 class AssetClassProfile:
@@ -313,8 +350,16 @@ def get_asset_profile(asset_class: str) -> AssetClassProfile:
     return ASSET_CLASS_PROFILES.get(asset_class, ASSET_CLASS_PROFILES['us_stocks'])
 
 def get_quality_tier(ticker: str) -> str:
-    """Returns the quality tier (S/A/B/C) for a ticker. Default is B."""
-    return QUALITY_TIERS.get(ticker, 'B')
+    """Returns the quality tier (S/A/B/C) for a ticker. Fallback to empirical backtest tier, then B."""
+    if not ticker:
+        return 'B'
+    clean = ticker.split(":")[-1].strip().upper()
+    if clean in QUALITY_TIERS:
+        return QUALITY_TIERS[clean]
+    emp = get_empirical_asset_profile(clean)
+    if emp and "empirical_tier" in emp:
+        return emp["empirical_tier"]
+    return 'B'
 
 def get_tier_emoji(tier: str) -> str:
     """Returns emoji for quality tier."""

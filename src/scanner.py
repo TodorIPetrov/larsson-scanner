@@ -244,6 +244,8 @@ class LarssonScanner:
         btc_relative: Optional[object] = None,
         options_flow: Optional[dict] = None,
         bars_since_flip: Optional[int] = None,
+        volatility_regime: Optional[str] = None,
+        is_squeeze: bool = False,
     ) -> Optional[dict]:
         try:
             from src.engine.trade_suggestions import generate_trade_suggestion
@@ -267,6 +269,13 @@ class LarssonScanner:
                 st_1d = self.db.get_current_state(ticker, "1D")
                 if st_1d:
                     macro_1d_state = st_1d["current_state"]
+
+            # MTF Check: Check macro 1W state for 1D and lower timeframes
+            macro_1w_state = None
+            if timeframe != "1W":
+                st_1w = self.db.get_current_state(ticker, "1W")
+                if st_1w:
+                    macro_1w_state = st_1w["current_state"]
 
             fund_profile = get_fundamental_profile(ticker)
 
@@ -303,6 +312,9 @@ class LarssonScanner:
                 options_flow=options_flow,
                 btc_cycle=btc_cycle,
                 bars_since_flip=bars_since_flip,
+                macro_1w_state=macro_1w_state,
+                volatility_regime=volatility_regime,
+                is_squeeze=is_squeeze,
             )
 
             self.db.upsert_trade_suggestion(
@@ -523,6 +535,18 @@ class LarssonScanner:
                         btc_closes=btc_c,
                     )
 
+                # Volatility Regime & Squeeze Detection
+                vol_regime = None
+                is_sqz = False
+                if len(closes) >= 50:
+                    try:
+                        from src.engine.volatility_regime import detect_volatility_regime
+                        vr = detect_volatility_regime(highs, lows, closes)
+                        vol_regime = vr.regime
+                        is_sqz = bool(vr.bb_width_percentile < 30.0)
+                    except Exception:
+                        pass
+
                 # Evaluate and record Trade Suggestion
                 trade_suggestion = self._evaluate_and_persist_trade_suggestion(
                     ticker=sym,
@@ -537,6 +561,8 @@ class LarssonScanner:
                     asset_class="crypto",
                     btc_relative=btc_rel,
                     bars_since_flip=bars_since_flip,
+                    volatility_regime=vol_regime,
+                    is_squeeze=is_sqz,
                 )
 
                 self.db.upsert_symbols([(sym, "crypto", tv_symbol)])
@@ -555,11 +581,12 @@ class LarssonScanner:
                     closes=list(closes),
                 )
 
-                # Evaluate open paper positions for this ticker (SL/TP/Blue exit)
+                # Evaluate open paper positions for this ticker (SL/TP/Trailing/SMMA15/Blue exit)
                 try:
                     self.paper_trader.evaluate_open_positions(
                         prices={sym: float(latest_price)},
                         states={sym: current_state.value},
+                        v1_levels={sym: float(v1[-1])},
                     )
                 except Exception as e:
                     logger.warning(f"Error evaluating paper positions for {sym}: {e}")
@@ -750,6 +777,17 @@ class LarssonScanner:
                         logger.debug(f"Options flow fetch failed for {sym}: {e}")
 
                 # Evaluate and record Trade Suggestion
+                vol_regime = None
+                is_sqz = False
+                if len(closes) >= 50:
+                    try:
+                        from src.engine.volatility_regime import detect_volatility_regime
+                        vr = detect_volatility_regime(highs, lows, closes)
+                        vol_regime = vr.regime
+                        is_sqz = bool(vr.bb_width_percentile < 30.0)
+                    except Exception:
+                        pass
+
                 trade_suggestion = self._evaluate_and_persist_trade_suggestion(
                     ticker=sym,
                     timeframe=timeframe,
@@ -764,6 +802,8 @@ class LarssonScanner:
                     btc_relative=btc_rel,
                     options_flow=options_flow,
                     bars_since_flip=bars_since_flip,
+                    volatility_regime=vol_regime,
+                    is_squeeze=is_sqz,
                 )
 
                 self.db.upsert_symbols([(sym, asset_class, tv_symbol)])
@@ -782,11 +822,12 @@ class LarssonScanner:
                     closes=list(closes),
                 )
 
-                # Evaluate open paper positions for this symbol (SL/TP/Blue exit)
+                # Evaluate open paper positions for this symbol (SL/TP/Trailing/SMMA15/Blue exit)
                 try:
                     self.paper_trader.evaluate_open_positions(
                         prices={sym: float(latest_price)},
                         states={sym: current_state.value},
+                        v1_levels={sym: float(v1[-1])},
                     )
                 except Exception as e:
                     logger.warning(f"Error evaluating paper positions for {sym}: {e}")

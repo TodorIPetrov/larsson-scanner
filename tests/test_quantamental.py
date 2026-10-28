@@ -44,7 +44,7 @@ def test_ticker_resolution_exchange_prefixes():
     aapl = get_fundamental_profile("NASDAQ:AAPL")
     assert aapl is not None
     assert aapl.ticker == "AAPL"
-    assert "REDUCE" in aapl.verdict
+    assert "REDUCE" in (aapl.action or "") or "REDUCE" in aapl.verdict
     assert aapl.is_bearish_or_distressed is True
 
     # BINANCE:BTCUSDT -> BTCUSDT
