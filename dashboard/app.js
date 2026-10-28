@@ -1693,6 +1693,8 @@ function renderTable(filteredSymbols) {
                 <span class="name-text" title="${item.name || ''}">${item.name || ''}</span>
                 ${timingBadgeHtml}
                 ${renderGoldFlipBadge(item)}
+                ${item.rs_rating ? `<span class="rs-pill ${item.rs_rating >= 90 ? 'rs-elite' : (item.rs_rating >= 75 ? 'rs-strong' : '')}" title="RS Rating: ${item.rs_rating}">RS ${item.rs_rating}</span>` : ''}
+                ${item.exit_rule_bg ? `<span class="dna-exit-tag">${item.exit_rule_bg}</span>` : ''}
               </div>
             </td>
             <td>
@@ -4851,13 +4853,23 @@ function syncLocalRealStorage() {
 }
 
 function initPortfolioController() {
+  const rotBtn = document.getElementById('portModeRotationBtn');
   const realBtn = document.getElementById('portModeRealBtn');
   const paperBtn = document.getElementById('portModePaperBtn');
+  if (rotBtn) {
+    rotBtn.addEventListener('click', () => switchPortfolioMode('ROTATION'));
+  }
   if (realBtn) {
     realBtn.addEventListener('click', () => switchPortfolioMode('REAL'));
   }
   if (paperBtn) {
     paperBtn.addEventListener('click', () => switchPortfolioMode('PAPER'));
+  }
+  const capInput = document.getElementById('rotationCapitalInput');
+  if (capInput) {
+    capInput.addEventListener('input', () => {
+      renderRotationPortfolio();
+    });
   }
 
   // Real Modal Open/Close Triggers
@@ -5138,8 +5150,28 @@ function switchPortfolioMode(mode) {
   localStorage.setItem('larsson_portfolio_mode', mode);
 
   const container = document.getElementById('tabContentPortfolio');
+  const rotBtn = document.getElementById('portModeRotationBtn');
   const realBtn = document.getElementById('portModeRealBtn');
   const paperBtn = document.getElementById('portModePaperBtn');
+  const rotSec = document.getElementById('portRotationSection');
+  const stdSec = document.getElementById('portStandardSection');
+  const banner = document.getElementById('portModeBanner');
+
+  if (rotBtn) rotBtn.classList.toggle('active', mode === 'ROTATION');
+  if (realBtn) realBtn.classList.toggle('active', mode === 'REAL');
+  if (paperBtn) paperBtn.classList.toggle('active', mode === 'PAPER');
+
+  if (mode === 'ROTATION') {
+    if (rotSec) rotSec.style.display = 'block';
+    if (stdSec) stdSec.style.display = 'none';
+    if (banner) banner.style.display = 'none';
+    renderRotationPortfolio();
+    return;
+  } else {
+    if (rotSec) rotSec.style.display = 'none';
+    if (stdSec) stdSec.style.display = 'block';
+    if (banner) banner.style.display = 'flex';
+  }
   const bannerBadge = document.getElementById('portBannerBadge');
   const bannerDesc = document.getElementById('portBannerDesc');
   const bannerActions = document.getElementById('portBannerActions');
@@ -7205,3 +7237,178 @@ window.quickAddIdea = quickAddIdea;
 
 
 
+
+/* ==========================================================================
+   Opus CIO: Top 15 Momentum Rotation Controller & View Logic
+   ========================================================================== */
+
+function renderRotationPortfolio() {
+  const rotData = (window.dashboardData && window.dashboardData.rotation_portfolio) || null;
+  const capInput = document.getElementById('rotationCapitalInput');
+  let totalCap = capInput ? (parseFloat(capInput.value) || 10000.0) : 10000.0;
+  const slotAmount = totalCap / 15.0;
+  const trancheAmount = slotAmount * 0.5;
+
+  const slotEl = document.getElementById('rotSlotAmount');
+  if (slotEl) slotEl.textContent = `${slotAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  const trancheEl = document.getElementById('rotTrancheVal');
+  if (trancheEl) trancheEl.textContent = `${trancheAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+
+  if (!rotData) return;
+
+  // 1. Render Daily Actions
+  const actionsList = document.getElementById('rotActionsList');
+  if (actionsList) {
+    const da = rotData.daily_actions || {};
+    const buys = da.buys || [];
+    const sells = da.sells || [];
+
+    if (buys.length === 0 && sells.length === 0) {
+      actionsList.innerHTML = `
+        <div class="rot-action-card action-hold" style="grid-column: 1 / -1;">
+          <div class="rot-action-hdr">
+            <span class="rot-action-ticker" style="color: #ffd700;">🟢 ВСИЧКИ 15 ПОЗИЦИИ СА В СТАБИЛЕН ТРЕНД (HOLD)</span>
+            <span class="rot-action-tag tag-hold">БЕЗ ДЕЙСТВИЕ</span>
+          </div>
+          <p class="rot-action-desc">Всички активи в Топ 15 запазват бичата структура. Не се налагат промени за днес. Остави позициите да работят.</p>
+        </div>
+      `;
+    } else {
+      let actHtml = '';
+      sells.forEach(s => {
+        actHtml += `
+          <div class="rot-action-card action-sell">
+            <div class="rot-action-hdr">
+              <span class="rot-action-ticker" style="color: #f85149;">🔴 ПРОДАЙ: ${s.ticker}</span>
+              <span class="rot-action-tag tag-sell">EXIT 100%</span>
+            </div>
+            <p class="rot-action-desc">${s.reason || 'Затвори позицията за защита на капитала.'}</p>
+            <div class="rot-action-meta"><span>Последна цена: $${Number(s.price || 0).toFixed(2)}</span></div>
+          </div>
+        `;
+      });
+      buys.forEach(b => {
+        const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotAmount / b.price).toFixed(4) : (slotAmount / b.price).toFixed(2)) : '0';
+        actHtml += `
+          <div class="rot-action-card action-buy">
+            <div class="rot-action-hdr">
+              <span class="rot-action-ticker" style="color: #3fb950;">🟢 КУПИ: ${b.ticker} (${b.name || ''})</span>
+              <span class="rot-action-tag tag-buy">НОВ ВХОД</span>
+            </div>
+            <p class="rot-action-desc">S/A-Tier лидер с RS ${b.rs_rating}. Правило за изход: ${b.exit_rule_bg}.</p>
+            <div class="rot-action-meta">
+              <span>Слот: ${slotAmount.toFixed(0)} € (~${shares} бр.)</span>
+              <span>Стоп v2: $${Number(b.v2_stop || 0).toFixed(2)}</span>
+            </div>
+          </div>
+        `;
+      });
+      actionsList.innerHTML = actHtml;
+    }
+  }
+
+  // 2. Render Top 15 Holdings Table
+  const top15Body = document.getElementById('rotTop15Body');
+  if (top15Body && rotData.top15) {
+    let rowsHtml = '';
+    rotData.top15.forEach((item, idx) => {
+      const shares = item.price > 0 ? (item.asset_class === 'crypto' ? (slotAmount / item.price).toFixed(4) : (slotAmount / item.price).toFixed(2)) : '0';
+      const rsClass = item.rs_rating >= 90 ? 'rs-elite' : (item.rs_rating >= 75 ? 'rs-strong' : '');
+      const statusCls = (item.status_tag || '').includes('ПРЕСЕН') ? 'text-gold' : 'text-success';
+
+      rowsHtml += `
+        <tr>
+          <td class="tabular-nums" style="font-weight: 700;">${idx + 1}</td>
+          <td>
+            <div style="display: flex; flex-direction: column;">
+              <a href="${item.tv_url}" target="_blank" rel="noopener" class="ticker-link" title="TradingView">
+                <strong>${item.ticker}</strong> ↗
+              </a>
+              <span style="font-size: 0.76rem; color: #8b949e;">${item.name || ''}</span>
+            </div>
+          </td>
+          <td><span class="cluster-sub-badge">${item.asset_class || ''}</span> <span class="tier-badge tier-${item.tier}">${item.tier}</span></td>
+          <td><span class="rs-pill ${rsClass}">RS ${item.rs_rating}</span></td>
+          <td><span style="font-size: 0.8rem; font-weight: 600;">${item.strategy || ''}</span></td>
+          <td><span class="dna-exit-tag">${item.exit_rule_bg || ''}</span></td>
+          <td class="tabular-nums" style="font-weight: 700;">$${Number(item.price || 0).toFixed(2)}</td>
+          <td class="tabular-nums" style="color: #f85149;">$${Number(item.v2_stop || 0).toFixed(2)}</td>
+          <td class="tabular-nums" style="color: #ffd700; font-weight: 700;">${slotAmount.toFixed(0)} €</td>
+          <td class="tabular-nums" style="font-weight: 700; color: #58a6ff;">${shares}</td>
+          <td><span class="${statusCls}" style="font-weight: 600; font-size: 0.8rem;">${item.status_tag || ''}</span></td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)})" title="Запиши директно в Моя Реален Портфейл">
+                ➕ Към Реални
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+    top15Body.innerHTML = rowsHtml;
+  }
+
+  // 3. Render Reserve Bench
+  const benchBody = document.getElementById('rotBenchBody');
+  if (benchBody && rotData.reserve_bench) {
+    let bHtml = '';
+    rotData.reserve_bench.forEach((item, idx) => {
+      const rsClass = item.rs_rating >= 90 ? 'rs-elite' : (item.rs_rating >= 75 ? 'rs-strong' : '');
+      bHtml += `
+        <tr>
+          <td class="tabular-nums">${idx + 1}</td>
+          <td><strong>${item.ticker}</strong></td>
+          <td><span class="tier-badge tier-${item.tier}">${item.tier}</span></td>
+          <td><span class="rs-pill ${rsClass}">RS ${item.rs_rating}</span></td>
+          <td style="font-size: 0.78rem;">${item.strategy || ''}</td>
+          <td class="tabular-nums" style="color: #3fb950;">+${item.momentum_60d}%</td>
+          <td class="tabular-nums" style="color: #ffd700;">${item.backtest_sharpe}</td>
+          <td><span style="font-size: 0.75rem; color: #8b949e;">Резерва #${idx + 1}</span></td>
+        </tr>
+      `;
+    });
+    benchBody.innerHTML = bHtml;
+  }
+
+  // 4. Render Quantamental Dips
+  const quantBody = document.getElementById('rotQuantBody');
+  if (quantBody && rotData.quantamental_dips) {
+    let qHtml = '';
+    rotData.quantamental_dips.forEach(q => {
+      const trancheShares = q.price > 0 ? (q.asset_class === 'crypto' ? (trancheAmount / q.price).toFixed(4) : (trancheAmount / q.price).toFixed(2)) : '0';
+      qHtml += `
+        <tr>
+          <td><a href="${q.tv_url}" target="_blank" rel="noopener" class="ticker-link"><strong>${q.ticker}</strong> ↗</a></td>
+          <td class="tabular-nums">$${Number(q.price || 0).toFixed(2)}</td>
+          <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">$${Number(q.fair_value || 0).toFixed(2)}</td>
+          <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">+${Number(q.mos_pct || 0).toFixed(0)}%</td>
+          <td><span class="badge badge-success">${q.verdict || 'BUY'}</span></td>
+          <td><span class="trend-state-pill state-${(q.state || '').toLowerCase()}">● ${q.state}</span></td>
+          <td class="tabular-nums" style="color: #58a6ff; font-weight: 700;">${trancheShares}</td>
+          <td>
+            <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${q.price}, ${trancheShares}, ${trancheAmount.toFixed(0)})">
+              📥 Купи 50%
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+    quantBody.innerHTML = qHtml || '<tr><td colspan="8">Няма подценени активи извън GOLD в момента.</td></tr>';
+  }
+}
+
+function openAddRealFromRotation(ticker, assetClass, price, units, sizeEur) {
+  const addModal = document.getElementById('addRealModal');
+  if (addModal) addModal.style.display = 'flex';
+  const tInput = document.getElementById('realTicker');
+  const acInput = document.getElementById('realAssetClass');
+  const epInput = document.getElementById('realEntryPrice');
+  const uInput = document.getElementById('realUnits');
+  const szInput = document.getElementById('realPositionSizeUsd');
+  if (tInput) tInput.value = ticker;
+  if (acInput) acInput.value = assetClass || 'us_stocks';
+  if (epInput) epInput.value = price;
+  if (uInput) uInput.value = units;
+  if (szInput) szInput.value = sizeEur;
+}

@@ -7634,3 +7634,285 @@ h1 {
   background: rgba(59, 130, 246, 0.14) !important;
   border-left: 3px solid #3b82f6;
 }
+
+/* ==========================================================================
+   Opus CIO: Top 15 Momentum Rotation & Cockpit Styles
+   ========================================================================== */
+
+.port-btn-rotation.active {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.22), rgba(255, 165, 0, 0.15)) !important;
+  border-color: #ffd700 !important;
+  color: #ffd700 !important;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.25) !important;
+}
+
+.dot-gold {
+  background-color: #ffd700 !important;
+  box-shadow: 0 0 8px #ffd700 !important;
+}
+
+.portfolio-rotation-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.rotation-cockpit-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: #151a21;
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.rotation-cockpit-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.rotation-capital-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotation-capital-control label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  letter-spacing: 0.3px;
+}
+
+.capital-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.input-capital-eur {
+  background: transparent;
+  border: none;
+  color: #58a6ff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  width: 110px;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.currency-tag {
+  font-size: 0.78rem;
+  color: #8b949e;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.rotation-sizing-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding-left: 18px;
+}
+
+.rotation-sizing-summary span {
+  font-size: 0.78rem;
+  color: #8b949e;
+}
+
+.rotation-sizing-summary strong {
+  font-size: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.sizing-note {
+  font-size: 0.72rem !important;
+  color: #64748b !important;
+}
+
+.rotation-kpis-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rot-kpi-pill {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.rot-kpi-pill .kpi-lbl {
+  color: #8b949e;
+}
+
+.rotation-actions-card {
+  background: #151a21;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.rot-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.rot-action-card {
+  background: #0d1117;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-left: 4px solid #30363d;
+}
+
+.rot-action-card.action-buy {
+  border-left-color: #2ea043;
+  background: linear-gradient(90deg, rgba(46, 160, 67, 0.12), transparent);
+}
+
+.rot-action-card.action-sell {
+  border-left-color: #f85149;
+  background: linear-gradient(90deg, rgba(248, 81, 73, 0.12), transparent);
+}
+
+.rot-action-card.action-hold {
+  border-left-color: #ffd700;
+  background: rgba(13, 17, 23, 0.6);
+}
+
+.rot-action-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rot-action-ticker {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.rot-action-tag {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.tag-buy {
+  background: #238636;
+  color: #ffffff;
+}
+
+.tag-sell {
+  background: #da3633;
+  color: #ffffff;
+}
+
+.tag-hold {
+  background: #21262d;
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
+.rot-action-desc {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.35;
+}
+
+.rot-action-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.76rem;
+  color: #8b949e;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.rot-subgrids-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+@media (max-width: 1024px) {
+  .rot-subgrids-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rs-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #21262d;
+  color: #8b949e;
+  border: 1px solid #30363d;
+}
+
+.rs-pill.rs-elite {
+  background: rgba(46, 160, 67, 0.2);
+  color: #3fb950;
+  border-color: #2ea043;
+}
+
+.rs-pill.rs-strong {
+  background: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.dna-exit-tag {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #1c2128;
+  color: #cbd5e1;
+  border: 1px solid #30363d;
+  white-space: nowrap;
+}
+
+.btn-add-real-inline {
+  background: #238636;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-add-real-inline:hover {
+  background: #2ea043;
+  transform: translateY(-1px);
+}
