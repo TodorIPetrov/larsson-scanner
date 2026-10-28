@@ -984,6 +984,24 @@ def export_dashboard_data(
 
         # 1. GOLD candidates (S/A tier with stability)
         if st == "GOLD" and tier in ["S", "A"] and prof.get("walk_forward_stable", True):
+            v2_stop = float(item.get("v2") or 0.0)
+            v1_pullback = float(item.get("v1") or v2_stop)
+            risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1) if price > 0 and v2_stop > 0 else 0.0
+            is_flip = bool(item.get("is_gold_flip"))
+
+            if is_flip or risk_to_v2_pct <= 10.0:
+                entry_zone_status = "PRIME_BUY"
+                entry_zone_label = "🟢 КУПИ 100% СЛОТ (Prime)"
+                rec_action_eur = per_slot_eur
+            elif risk_to_v2_pct <= 20.0:
+                entry_zone_status = "SPLIT_TRANCHE"
+                entry_zone_label = "🟡 50% ТРАНШ СЕГА + 50% НА v1"
+                rec_action_eur = round(per_slot_eur * 0.5, 2)
+            else:
+                entry_zone_status = "EXTENDED_WAIT_PULLBACK"
+                entry_zone_label = f"⏳ ЧАКАЙ ПУЛБЕК ДО v1 (${v1_pullback:,.2f})"
+                rec_action_eur = 0.0
+
             rank_score = (sharpe * 50.0) + (rs_score * 0.5) + (mom_60 * 0.5)
             shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
             candidates_gold.append({
@@ -996,14 +1014,19 @@ def export_dashboard_data(
                 "exit_rule_bg": item.get("exit_rule_bg"),
                 "exit_on_neutral": item.get("exit_on_neutral"),
                 "price": price,
-                "v2_stop": item.get("v2"),
+                "v2_stop": v2_stop,
+                "v1_pullback": round(v1_pullback, 2),
+                "risk_to_v2_pct": risk_to_v2_pct,
+                "entry_zone_status": entry_zone_status,
+                "entry_zone_label": entry_zone_label,
+                "rec_action_eur": rec_action_eur,
                 "spread_pct": item.get("spread_pct"),
                 "momentum_60d": round(mom_60, 1),
                 "backtest_cagr": item.get("backtest_cagr"),
                 "backtest_sharpe": sharpe,
                 "target_eur": per_slot_eur,
                 "target_shares": shares,
-                "status_tag": "✨ ПРЕСЕН ПРОБИВ" if item.get("is_gold_flip") else "🟢 В ТРЕНД (Hold)",
+                "status_tag": "✨ ПРЕСЕН ПРОБИВ" if is_flip else "🟢 В ТРЕНД (Hold)",
                 "rank_score": round(rank_score, 1),
                 "tv_symbol": item.get("tv_symbol"),
                 "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
