@@ -704,6 +704,8 @@ async function loadDashboardData() {
     }
     data = await res.json();
     window.lastLoadedDashboardData = data;
+    window.dashboardData = data;
+    window.rotationPortfolio = data.rotation_portfolio;
     allSymbols = data.symbols || [];
     fundamentalProfiles = data.fundamental_profiles || {};
     pendingSetups = data.pending_setups || [];
@@ -728,6 +730,7 @@ async function loadDashboardData() {
     renderProposalsBanner(pendingProposals);
     initPortfolioController();
     switchPortfolioMode(currentPortfolioMode);
+    renderRotationPortfolio();
     initPageCalculator();
     switchTab(currentTab);
     checkServerStatus();
@@ -7255,7 +7258,7 @@ window.quickAddIdea = quickAddIdea;
    ========================================================================== */
 
 function renderRotationPortfolio() {
-  const rotData = (window.dashboardData && window.dashboardData.rotation_portfolio) || null;
+  const rotData = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.rotation_portfolio) || (window.dashboardData && window.dashboardData.rotation_portfolio) || window.rotationPortfolio || null;
   const capInput = document.getElementById('rotationCapitalInput');
   let totalCap = capInput ? (parseFloat(capInput.value) || 10000.0) : 10000.0;
   const slotAmount = totalCap / 15.0;
