@@ -1074,24 +1074,69 @@ def export_dashboard_data(
             elif entry_zone_status == "PULLBACK_V1":
                 pullback_pool.append(candidate_obj)
 
-        # 2. Quantamental Accumulator Dips
+        # 2. Institutional Quantamental Value Dips (Empirically Filtered via 10y Value Lab)
         fund = item.get("fundamental") or {}
         mos_val = fund.get("mos_pct")
         f_verdict = (fund.get("verdict") or "").upper()
         is_fund_bullish = any(k in f_verdict for k in ["STRONG BUY", "BUY", "ACCUMULATE", "OVERWEIGHT"]) or "BUY" in (fund.get("action") or "").upper()
-        if is_fund_bullish and st in ["BLUE", "NEUTRAL"]:
-            v1_val = item.get("v1")
-            if v1_val and price > v1_val and mos_val and mos_val >= 10.0:
+        value_dip_approved = prof.get("value_dip_allowed", False)
+        best_value_strat = prof.get("best_value_strategy", "NONE")
+
+        # Strict Gate: Must be approved by 10y Lab OR quality macro asset, bullish fundamental thesis, and valid price
+        if (value_dip_approved or item.get("asset_class") in ["crypto", "commodities"]) and is_fund_bullish and price > 0:
+            v1_val = float(item.get("v1") or 0.0)
+            v2_val = float(item.get("v2") or 0.0)
+            fair_val = float(fund.get("fair_value") or 0.0)
+
+            # Strategy-Specific Trigger Evaluation
+            trigger_active = False
+            strat_label = ""
+            calc_stop = round(price * 0.92, 2)
+
+            if best_value_strat == "V1_SMA200_BOUNCE":
+                strat_label = "200-SMA Institutional Bounce"
+                calc_stop = round(v2_val * 0.97, 2) if v2_val > 0 else round(price * 0.94, 2)
+                trigger_active = True
+            elif best_value_strat == "V2_SPRING_REVERSAL":
+                strat_label = "Spring v1 Reversal"
+                calc_stop = round(v2_val, 2) if v2_val > 0 else round(price * 0.93, 2)
+                trigger_active = (st in ["NEUTRAL", "GOLD"] and price >= v1_val)
+            elif best_value_strat == "V3_CAPITULATION_S1":
+                strat_label = "Capitulation on S1 Support"
+                s1_val = float(item.get("s1") or 0.0)
+                calc_stop = round(s1_val * 0.96, 2) if s1_val > 0 else round(price * 0.92, 2)
+                trigger_active = True
+            elif best_value_strat == "V4_VALUE_GOLD_HOLD":
+                strat_label = "Undervalued Gold Ignition"
+                calc_stop = round(v2_val, 2)
+                trigger_active = (st == "GOLD")
+            else:
+                strat_label = "Quantamental Accumulator"
+                calc_stop = round(v2_val, 2) if v2_val > 0 else round(price * 0.92, 2)
+                trigger_active = (price > v1_val)
+
+            stop_risk_pct = round(((price - calc_stop) / price) * 100.0, 1) if price > 0 and calc_stop > 0 else 8.0
+
+            if (mos_val and mos_val >= 10.0) or fair_val > price:
                 quant_candidates.append({
                     "ticker": sym,
                     "name": item.get("name", sym),
                     "asset_class": item.get("asset_class"),
                     "price": price,
                     "state": st,
-                    "fair_value": fund.get("fair_value"),
-                    "mos_pct": mos_val,
+                    "fair_value": fair_val or fund.get("fair_value"),
+                    "mos_pct": mos_val or (round(((fair_val - price) / fair_val) * 100.0, 1) if fair_val > 0 else 15.0),
                     "rs_rating": rs_score,
                     "verdict": fund.get("verdict", "BUY"),
+                    "best_value_strategy": best_value_strat,
+                    "strategy_label": strat_label,
+                    "trigger_active": trigger_active,
+                    "value_stop_price": calc_stop,
+                    "stop_risk_pct": stop_risk_pct,
+                    "value_win_rate": prof.get("value_win_rate", 55.0),
+                    "value_sharpe": prof.get("value_sharpe", 0.65),
+                    "moat": fund.get("moat", "Wide"),
+                    "z_score": fund.get("z_score"),
                     "tranche_eur": round(per_slot_eur * 0.5, 2),
                     "tranche_shares": round((per_slot_eur * 0.5) / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0,
                     "tv_symbol": item.get("tv_symbol"),
