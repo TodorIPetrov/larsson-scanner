@@ -1083,8 +1083,13 @@ def export_dashboard_data(
         best_value_strat = prof.get("best_value_strategy", "NONE")
         is_equity = item.get("asset_class") not in ["commodities", "crypto"]
 
-        # Strict Gate 1: Must be corporate equity approved by 10y Lab, bullish fundamentals, price > 0
-        if is_equity and value_dip_approved and is_fund_bullish and price > 0:
+        # Strict Gate 1: Must be corporate equity approved by Value Lab, bullish fundamentals, price > 0
+        # Exclude GOLD (GOLD belongs in momentum rotation, NOT dips!) and exclude losing sectors (Defensive / Materials)
+        is_dip_state = bool(st in ["BLUE", "NEUTRAL"])
+        sector_val = item.get("sector") or prof.get("sector", "")
+        is_safe_sector = sector_val not in ["Consumer Defensive", "Basic Materials", "Базови материали"]
+
+        if is_equity and value_dip_approved and is_fund_bullish and price > 0 and is_dip_state and is_safe_sector:
             v1_val = float(item.get("v1") or 0.0)
             v2_val = float(item.get("v2") or 0.0)
             fair_val = float(fund.get("fair_value") or 0.0)
@@ -1150,6 +1155,7 @@ def export_dashboard_data(
                 "value_stop_price": calc_stop,
                 "stop_risk_pct": stop_risk_pct,
                 "value_win_rate": prof.get("value_win_rate", 55.0),
+                "value_trades": prof.get("value_trades", 0),
                 "value_sharpe": prof.get("value_sharpe", 0.65),
                 "moat": fund.get("moat", "Wide"),
                 "z_score": fund.get("z_score"),

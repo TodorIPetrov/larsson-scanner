@@ -1,15 +1,10 @@
 """
 Quantamental Value-Dip Lab & Multi-Year Backtester (2016-2026).
-Empirically tests 4 Institutional Value Entry Strategies across 393 audited equities:
-  V1: SMA200_BOUNCE - Institutional accumulation at 200-day moving average in secular uptrend.
-  V2: SPRING_REVERSAL - Stabilization crossover from BLUE to NEUTRAL above v1 with swing-low stop.
-  V3: CAPITULATION_S1 - Deep oversold capitulation (RSI < 30 -> 32) at S1 structural support.
-  V4: VALUE_GOLD_HOLD - Undervalued Gold Ignition with extended fundamental hold.
-
-Outputs:
-  - quantamental_value_backtest_results.csv
-  - research/QUANTAMENTAL_VALUE_REPORT.md
-  - Updates data/asset_optimal_profiles.json with value DNA.
+Fixed & Rigorous Institutional Value Architecture:
+1. Structural Quality Gate decouples business quality (Moat, ROIC, Solvency) from momentary valuation (today's MoS).
+2. Fixed V2_SPRING_REVERSAL logic: triggers on v1 crossover after sustained BLUE decline.
+3. Strict approval criteria: Win Rate >= 50.0%, Sharpe >= 0.45, CAGR >= 6.0%, Max DD <= 33.0%.
+4. Exports current technical indicators (SMA-200, RSI, ATR, Swing Low) for live trigger validation.
 """
 
 import concurrent.futures
@@ -17,7 +12,6 @@ import json
 import logging
 import os
 import sys
-import time
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
@@ -26,8 +20,6 @@ import pandas as pd
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
-
-from src.engine.quantamental import get_fundamental_profile
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("QuantValueLab")
@@ -38,7 +30,7 @@ PROFILES_PATH = os.path.join(BASE_DIR, "data", "asset_optimal_profiles.json")
 OUTPUT_CSV = os.path.join(BASE_DIR, "quantamental_value_backtest_results.csv")
 REPORT_MD = os.path.join(BASE_DIR, "research", "QUANTAMENTAL_VALUE_REPORT.md")
 
-COMMISSION_PCT = 0.001  # 0.10% broker commission + slippage
+COMMISSION_PCT = 0.001  # 0.10%
 
 
 def fast_compute_smma(src: np.ndarray, length: int) -> np.ndarray:
@@ -58,7 +50,6 @@ def fast_compute_sma(src: np.ndarray, length: int) -> np.ndarray:
     out = np.full(n, np.nan, dtype=np.float64)
     if n < length:
         return out
-    # Cumulative sum for fast rolling mean
     cumsum = np.cumsum(np.insert(src, 0, 0))
     out[length - 1:] = (cumsum[length:] - cumsum[:-length]) / length
     return out
@@ -148,7 +139,7 @@ def simulate_quantamental_strategy(
     cash = 10000.0
     entry_price = 0.0
     stop_loss = 0.0
-    position_stage = 0  # 1 = 50% tranche, 2 = 100% full
+    position_stage = 0  # 1 = 50%, 2 = 100%
     blue_bars_count = 0
     recent_swing_low = 0.0
 
@@ -208,10 +199,10 @@ def simulate_quantamental_strategy(
                         shares += add_shares
                         cash -= add_shares * curr_open * (1.0 + COMMISSION_PCT)
                         position_stage = 2
-                        stop_loss = prev_v2  # Trail stop to v2 on GOLD confirmation
+                        stop_loss = prev_v2
 
-                    # Exit on sustained BLUE break below SMA200
-                    if prev_state == -1 and prev_close < prev_sma * 0.96:
+                    # Exit on confirmed break below SMA200
+                    if prev_state == -1 and not np.isnan(prev_sma) and prev_close < prev_sma * 0.96:
                         exit_price = curr_open
                         exited = True
 
@@ -222,10 +213,10 @@ def simulate_quantamental_strategy(
                         shares += add_shares
                         cash -= add_shares * curr_open * (1.0 + COMMISSION_PCT)
                         position_stage = 2
-                        stop_loss = prev_v2  # Trail stop to v2 once in GOLD
+                        stop_loss = prev_v2
 
-                    # Exit if falls back to BLUE before GOLD, or BLUE after GOLD
-                    if prev_state == -1:
+                    # Exit if rolls over back to BLUE below entry price, or BLUE after GOLD
+                    if prev_state == -1 and (position_stage == 2 or prev_close < entry_price):
                         exit_price = curr_open
                         exited = True
 
@@ -238,8 +229,8 @@ def simulate_quantamental_strategy(
                         position_stage = 2
                         stop_loss = prev_v2
 
-                    # Exit if drops 15% from entry before trend develops
-                    if curr_close < entry_price * 0.85:
+                    # Exit if structural support breaks > 12% below entry
+                    if curr_close < entry_price * 0.88:
                         exit_price = curr_open
                         exited = True
                     elif position_stage == 2 and prev_state == -1:
@@ -247,7 +238,7 @@ def simulate_quantamental_strategy(
                         exited = True
 
                 elif strategy == "V4_VALUE_GOLD_HOLD":
-                    # Deep trend ride: only exit on BLUE if price is also below SMA200
+                    # Extended ride: exit on BLUE only if below SMA200
                     if prev_state == -1 and (np.isnan(prev_sma) or prev_close < prev_sma):
                         exit_price = curr_open
                         exited = True
@@ -271,14 +262,13 @@ def simulate_quantamental_strategy(
             calc_stop = 0.0
 
             if strategy == "BASELINE_LARSSON":
-                # Standard Gold Entry
                 if prev_state == 1:
                     should_enter = True
-                    initial_stage = 2  # 100% slot
+                    initial_stage = 2  # 100%
                     calc_stop = prev_v2
 
             elif strategy == "V1_SMA200_BOUNCE":
-                # Price tests SMA200 during BLUE or NEUTRAL while SMA200 has non-negative slope
+                # Price tests SMA200 during BLUE or NEUTRAL while SMA200 is not collapsing
                 sma_ok = not np.isnan(prev_sma) and (prev_sma >= sma200[max(0, i - 40)] * 0.98)
                 near_sma = abs(prev_close - prev_sma) / prev_sma <= 0.04 if sma_ok else False
                 bullish_bounce = (prev_close > prev_open) and (prev_close > lows[i - 2])
@@ -289,15 +279,15 @@ def simulate_quantamental_strategy(
                     calc_stop = prev_sma - (1.75 * prev_atr)
 
             elif strategy == "V2_SPRING_REVERSAL":
-                # Was in BLUE for at least 10 bars, now closes above v1 (NEUTRAL transition)
+                # Price crosses above v1 after at least 6 bars of decline
                 crossed_v1 = (prev_close > prev_v1) and (closes[i - 2] <= v1[i - 2])
-                if blue_bars_count >= 8 and crossed_v1 and prev_state in [0, 1]:
+                if blue_bars_count >= 6 and crossed_v1 and prev_close > prev_open:
                     should_enter = True
                     initial_stage = 1  # 50% tranche
-                    calc_stop = recent_swing_low if recent_swing_low > 0 else (prev_close * 0.93)
+                    calc_stop = recent_swing_low if (recent_swing_low > 0 and recent_swing_low < prev_close) else (prev_close * 0.93)
 
             elif strategy == "V3_CAPITULATION_S1":
-                # RSI oversold capitulation recovery (RSI crossed back above 32 from deep oversold)
+                # RSI oversold recovery: RSI crosses back above 32 from < 30
                 rsi_reversal = (prev_rsi >= 32.0) and (rsi[i - 2] < 30.0)
                 if rsi_reversal and prev_state in [-1, 0]:
                     should_enter = True
@@ -305,18 +295,22 @@ def simulate_quantamental_strategy(
                     calc_stop = curr_low - (1.5 * prev_atr)
 
             elif strategy == "V4_VALUE_GOLD_HOLD":
-                # Gold Flip on Undervalued Quality
+                # Fresh Gold Flip on Quality Stock
                 is_fresh_gold = (prev_state == 1) and (states[i - 2] != 1)
                 if is_fresh_gold:
                     should_enter = True
-                    initial_stage = 2  # 100% slot
+                    initial_stage = 2  # 100%
                     calc_stop = prev_v2
 
             if should_enter:
                 in_position = True
                 position_stage = initial_stage
                 entry_price = curr_open
+                # Guarantee stop loss invariant: stop MUST be strictly below entry price!
+                if calc_stop >= entry_price or calc_stop <= 0:
+                    calc_stop = entry_price * 0.93
                 stop_loss = calc_stop
+
                 allocation = 1.0 if position_stage == 2 else 0.5
                 alloc_cash = cash * allocation
                 shares = (alloc_cash * 0.999) / (curr_open * (1.0 + COMMISSION_PCT))
@@ -378,16 +372,13 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
     roic = verdict_item.get("roic_pct")
     wacc = verdict_item.get("wacc_pct")
     mos_pct = verdict_item.get("mos_pct")
-    action = (verdict_item.get("action") or "").upper()
-    verdict_text = (verdict_item.get("verdict") or "").upper()
 
-    # 1. Quality & Solvency Gate Check
+    # 1. Structural Quality Gate (Pure Business Quality & Solvency, NOT today's price!)
     is_quality_moat = (moat in ["Wide", "Narrow"]) or (roic is not None and wacc is not None and roic > wacc + 2.0)
     is_safe_solvency = (z_score is None) or (z_score >= 1.90)  # Safe Altman Z-Score
     is_clean_accounting = (m_score is None) or (m_score < -1.78)
-    has_value_discount = (mos_pct is not None and mos_pct >= 10.0) or ("BUY" in action) or ("BUY" in verdict_text)
 
-    passes_quality_gate = bool(is_quality_moat and is_safe_solvency and is_clean_accounting and has_value_discount)
+    passes_quality_gate = bool(is_quality_moat and is_safe_solvency and is_clean_accounting)
 
     # 2. Load historical OHLCV data from cache
     csv_candidates = [
@@ -421,6 +412,12 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
     atr = fast_compute_atr(highs, lows, closes, 14)
     rsi = fast_compute_rsi(closes, 14)
 
+    # Store latest technical levels for live trigger checks
+    latest_sma200 = float(sma200[-1]) if not np.isnan(sma200[-1]) else None
+    latest_rsi14 = float(rsi[-1]) if not np.isnan(rsi[-1]) else 50.0
+    latest_atr14 = float(atr[-1]) if not np.isnan(atr[-1]) else (closes[-1] * 0.02)
+    latest_swing_low_20d = float(np.min(lows[-20:])) if len(lows) >= 20 else float(closes[-1] * 0.93)
+
     # Test all 4 strategies + Baseline
     strat_results = {}
     strategies = [
@@ -451,8 +448,6 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
     base_res = strat_results["BASELINE_LARSSON"]
     value_strats = ["V1_SMA200_BOUNCE", "V2_SPRING_REVERSAL", "V3_CAPITULATION_S1", "V4_VALUE_GOLD_HOLD"]
 
-    # Evaluate best value strategy:
-    # Requires: Quality gate passed, positive CAGR, Sharpe >= 0.50, Win rate >= 50%
     best_st = None
     best_score = -999.0
     best_metrics = None
@@ -460,8 +455,8 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
     for st in value_strats:
         m = strat_results[st]
         if m["trades"] >= 3:
-            # Score balances Sharpe, CAGR, and Win Rate with Drawdown penalty
-            score = (m["sharpe"] * 40.0) + (m["cagr_pct"] * 1.0) + (m["win_rate"] * 0.5) - (m["max_dd_pct"] * 0.5)
+            # Score favors high Win Rate, strong Sharpe and CAGR with Drawdown penalty
+            score = (m["sharpe"] * 45.0) + (m["cagr_pct"] * 1.0) + (m["win_rate"] * 0.6) - (m["max_dd_pct"] * 0.5)
             if score > best_score:
                 best_score = score
                 best_st = st
@@ -469,8 +464,8 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
 
     value_dip_allowed = False
     if passes_quality_gate and best_metrics:
-        # Must have profitable track record and manageable risk
-        if best_metrics["cagr_pct"] > 5.0 and best_metrics["sharpe"] >= 0.40 and best_metrics["max_dd_pct"] <= 35.0:
+        # Strict Empirical Guard: Win Rate >= 50.0%, Sharpe >= 0.45, CAGR >= 6.0%, Max DD <= 33.0%
+        if best_metrics["win_rate"] >= 50.0 and best_metrics["sharpe"] >= 0.45 and best_metrics["cagr_pct"] >= 6.0 and best_metrics["max_dd_pct"] <= 33.0:
             value_dip_allowed = True
 
     return {
@@ -494,12 +489,16 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
         "base_cagr_pct": base_res["cagr_pct"],
         "base_win_rate": base_res["win_rate"],
         "base_max_dd_pct": base_res["max_dd_pct"],
+        "latest_sma200": latest_sma200,
+        "latest_rsi14": latest_rsi14,
+        "latest_atr14": latest_atr14,
+        "latest_swing_low_20d": latest_swing_low_20d,
         "all_metrics": strat_results,
     }
 
 
 def main():
-    logger.info("Initializing Quantamental Value-Dip Lab...")
+    logger.info("Initializing Quantamental Value-Dip Lab (Strict Remediated Architecture)...")
 
     if not os.path.exists(VERDICTS_PATH):
         logger.error(f"Verdicts file not found: {VERDICTS_PATH}")
@@ -512,7 +511,6 @@ def main():
     logger.info(f"Loaded {len(verdicts)} fundamental verdicts.")
 
     results = []
-    # Parallel simulation across CPU cores
     with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count() or 4) as executor:
         futures = {executor.submit(evaluate_asset_value_dna, v): v for v in verdicts}
         for future in concurrent.futures.as_completed(futures):
@@ -522,7 +520,6 @@ def main():
 
     logger.info(f"Successfully simulated {len(results)} equities.")
 
-    # Convert to DataFrame
     rows = []
     for r in results:
         rows.append({
@@ -551,7 +548,6 @@ def main():
     df_out.to_csv(OUTPUT_CSV, index=False)
     logger.info(f"Saved results to {OUTPUT_CSV}")
 
-    # Summary Statistics
     allowed = df_out[df_out["value_dip_allowed"] == True]
     forbidden = df_out[df_out["value_dip_allowed"] == False]
 
@@ -577,25 +573,28 @@ def main():
         prof["value_win_rate"] = r["value_win_rate"]
         prof["value_max_dd_pct"] = r["value_max_dd_pct"]
         prof["value_quality_gate"] = r["quality_gate"]
+        prof["latest_sma200"] = r["latest_sma200"]
+        prof["latest_rsi14"] = r["latest_rsi14"]
+        prof["latest_atr14"] = r["latest_atr14"]
+        prof["latest_swing_low_20d"] = r["latest_swing_low_20d"]
 
     with open(PROFILES_PATH, "w", encoding="utf-8") as f:
         json.dump(existing_profiles, f, indent=2, ensure_ascii=False)
-    logger.info(f"Updated {PROFILES_PATH} with Value DNA profiles.")
+    logger.info(f"Updated {PROFILES_PATH} with Value DNA profiles and technical levels.")
 
     # Generate Markdown Report
     strat_breakdown = allowed["best_value_strategy"].value_counts().to_dict()
-    sector_breakdown = allowed["sector"].value_counts().to_dict()
 
     top_allowed_md = ""
-    for idx, row in allowed.head(20).iterrows():
+    for idx, row in allowed.head(25).iterrows():
         top_allowed_md += f"| **{row['ticker']}** | {row['name']} | {row['sector']} | `{row['best_value_strategy']}` | **{row['value_win_rate']}%** | **{row['value_sharpe']}** | +{row['value_cagr_pct']}% | -{row['value_max_dd_pct']}% |\n"
 
     top_forbidden_md = ""
     for idx, row in forbidden.head(15).iterrows():
-        reason = "Ниска рентабилност/Без ров" if not row['quality_gate'] else "Прекалено дълбок мечи спад в миналото"
+        reason = "Ниска рентабилност/Без ров" if not row['quality_gate'] else "Исторически Win Rate < 50% или неустойчив спад"
         top_forbidden_md += f"| **{row['ticker']}** | {row['name']} | {row['sector']} | **🚫 ЗАБРАНЕН** | {reason} |\n"
 
-    report_content = f"""# 🔬 Доклад: Quantamental Value-Dip Лаборатория (2016–2026)
+    report_content = f"""# 🔬 Доклад: Quantamental Value-Dip Лаборатория (2016–2026) — Прецизирана Версия
 
 ## 1. Резюме на Изследването
 - **Тествани активи:** {len(df_out)} корпоративни акции с институционални DCF/EVA профили.
@@ -617,7 +616,7 @@ def main():
 
 ---
 
-## 3. Топ 20 Одобрени Компании за Покупка на Спад (с най-висок Sharpe & Win Rate)
+## 3. Топ 25 Одобрени Компании за Покупка на Спад (с доказана Value ДНК)
 
 | Тикер | Име | Сектор | Оптимална Value Стратегия | Win Rate % | Sharpe | CAGR % | Max DD % |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: |

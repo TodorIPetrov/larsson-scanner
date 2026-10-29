@@ -7571,9 +7571,13 @@ function renderRotationPortfolio() {
       const isOwned = realHeldTickers.has(q.ticker.toUpperCase());
       const trancheShares = q.price > 0 ? (q.asset_class === 'crypto' ? (trancheAmount / q.price).toFixed(4) : (trancheAmount / q.price).toFixed(2)) : '0';
       const stratName = q.strategy_label || q.best_value_strategy || 'Value Accumulator';
-      const winRate = q.value_win_rate ? `${q.value_win_rate}% Win` : 'Одобрен';
+      const nTrades = q.value_trades ? `${q.value_trades} сд.` : 'WF Тест';
+      const winRate = q.value_win_rate ? `${q.value_win_rate}% Win (${nTrades})` : 'Одобрен';
       const stopPrice = Number(q.value_stop_price || (q.price * 0.92)).toFixed(2);
       const stopRisk = q.stop_risk_pct || 8.0;
+      const triggerBadge = q.trigger_active !== false 
+        ? '<span class="badge badge-success" style="font-size:0.65rem; padding:1px 5px; margin-left:4px; font-weight:700;">🚨 СИГНАЛ ДНЕС</span>' 
+        : '<span class="badge" style="background:rgba(139,148,158,0.2); color:#8b949e; font-size:0.65rem; padding:1px 5px; margin-left:4px;">⏳ ЧАКА НИВО</span>';
 
       qHtml += `
         <tr>
@@ -7582,6 +7586,7 @@ function renderRotationPortfolio() {
               <div style="display: flex; align-items: center; gap: 6px;">
                 <a href="${q.tv_url}" target="_blank" rel="noopener" class="ticker-link"><strong>${q.ticker}</strong> ↗</a>
                 <span class="trend-state-pill state-${(q.state || '').toLowerCase()}" style="font-size:0.68rem; padding: 1px 5px;">● ${q.state}</span>
+                ${triggerBadge}
               </div>
               <span style="font-size: 0.74rem; color: #8b949e;">${q.name || ''}</span>
             </div>
