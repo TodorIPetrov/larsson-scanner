@@ -356,6 +356,7 @@ def export_dashboard_data(
             "r1_touches": _row_val(r, "r1_touches", 0),
             "is_gold_flip": is_gold_flip,
             "gold_flip_bars": gold_flip_bars,
+            "bars_since_flip": _row_val(r, "bars_since_flip"),
         }
 
         # ---------------------------------------------------------------------
@@ -624,6 +625,7 @@ def export_dashboard_data(
             "tier_emoji": tier_emoji,
             "is_gold_flip": is_gold_flip,
             "gold_flip_bars": gold_flip_bars,
+            "bars_since_flip": _row_val(r, "bars_since_flip"),
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
             "rs_rating": rs_ratings.get(ticker, 50),
@@ -970,9 +972,16 @@ def export_dashboard_data(
     per_slot_eur = round(base_capital_eur / target_positions_count, 2)
 
     candidates_gold = []
+    fresh_flips_pool = []
+    pullback_pool = []
+    broken_leaders = []
     quant_candidates = []
 
     for item in items:
+        # Gate 1: Strict 1D Timeframe filter for rotation portfolio
+        if item.get("timeframe") != "1D":
+            continue
+
         sym = item.get("ticker", "")
         st = item.get("state")
         tier = item.get("empirical_tier", "B")
@@ -986,25 +995,51 @@ def export_dashboard_data(
         if st == "GOLD" and tier in ["S", "A"] and prof.get("walk_forward_stable", True):
             v2_stop = float(item.get("v2") or 0.0)
             v1_pullback = float(item.get("v1") or v2_stop)
-            risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1) if price > 0 and v2_stop > 0 else 0.0
-            is_flip = bool(item.get("is_gold_flip"))
 
-            if is_flip or risk_to_v2_pct <= 10.0:
-                entry_zone_status = "PRIME_BUY"
-                entry_zone_label = "🟢 КУПИ 100% СЛОТ (Prime)"
+            # Gate 2: Broken Stop-Loss Protection (Price <= v2_stop)
+            # NEVER buy when price is below the stop loss line!
+            if price <= v2_stop or price <= 0 or v2_stop <= 0:
+                broken_leaders.append({
+                    "ticker": sym,
+                    "name": item.get("name", sym),
+                    "price": price,
+                    "v2_stop": v2_stop,
+                    "loss_pct": round(((price - v2_stop) / v2_stop) * 100.0, 1) if v2_stop > 0 else 0.0
+                })
+                continue
+
+            risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1)
+            dist_to_v1_pct = round(((price - v1_pullback) / price) * 100.0, 1)
+            bars = item.get("bars_since_flip")
+            if bars is None:
+                bars = 999
+            else:
+                try:
+                    bars = int(bars)
+                except Exception:
+                    bars = 999
+
+            # Gate 3: 4 Strict Quantitative Categories
+            if bars <= 5 and price >= v1_pullback * 0.995 and 0.0 < risk_to_v2_pct <= 12.0:
+                entry_zone_status = "FRESH_FLIP"
+                entry_zone_label = f"🟢 СВЕЖ ПРОБИВ (Ден {bars + 1})"
                 rec_action_eur = per_slot_eur
-            elif risk_to_v2_pct <= 20.0:
-                entry_zone_status = "SPLIT_TRANCHE"
-                entry_zone_label = "🟡 50% ТРАНШ СЕГА + 50% НА v1"
+            elif bars > 5 and v2_stop < price <= (v1_pullback * 1.025) and 0.0 < risk_to_v2_pct <= 6.0:
+                entry_zone_status = "PULLBACK_V1"
+                entry_zone_label = f"🔵 ВХОД НА ПОДКРЕПА v1 (Ден {bars + 1})"
+                rec_action_eur = per_slot_eur
+            elif bars > 5 and price > (v1_pullback * 1.025) and risk_to_v2_pct <= 18.0:
+                entry_zone_status = "MATURE_HOLD"
+                entry_zone_label = f"🛡️ В ТРЕНД (Ден {bars + 1}) — Лимит на v1"
                 rec_action_eur = round(per_slot_eur * 0.5, 2)
             else:
                 entry_zone_status = "EXTENDED_WAIT_PULLBACK"
-                entry_zone_label = f"⏳ ЧАКАЙ ПУЛБЕК ДО v1 (${v1_pullback:,.2f})"
+                entry_zone_label = f"⏳ ПРЕРАЗТЕГЛЕН (Ден {bars + 1}) — Чакай v1 (${v1_pullback:,.2f})"
                 rec_action_eur = 0.0
 
             rank_score = (sharpe * 50.0) + (rs_score * 0.5) + (mom_60 * 0.5)
             shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
-            candidates_gold.append({
+            candidate_obj = {
                 "ticker": sym,
                 "name": item.get("name", sym),
                 "asset_class": item.get("asset_class"),
@@ -1017,6 +1052,8 @@ def export_dashboard_data(
                 "v2_stop": v2_stop,
                 "v1_pullback": round(v1_pullback, 2),
                 "risk_to_v2_pct": risk_to_v2_pct,
+                "dist_to_v1_pct": dist_to_v1_pct,
+                "bars_since_flip": bars,
                 "entry_zone_status": entry_zone_status,
                 "entry_zone_label": entry_zone_label,
                 "rec_action_eur": rec_action_eur,
@@ -1026,11 +1063,16 @@ def export_dashboard_data(
                 "backtest_sharpe": sharpe,
                 "target_eur": per_slot_eur,
                 "target_shares": shares,
-                "status_tag": "✨ ПРЕСЕН ПРОБИВ" if is_flip else "🟢 В ТРЕНД (Hold)",
+                "status_tag": f"✨ ПРОБИВ (Ден {bars + 1})" if bars <= 5 else f"🟢 Ден {bars + 1} в GOLD",
                 "rank_score": round(rank_score, 1),
                 "tv_symbol": item.get("tv_symbol"),
                 "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
-            })
+            }
+            candidates_gold.append(candidate_obj)
+            if entry_zone_status == "FRESH_FLIP":
+                fresh_flips_pool.append(candidate_obj)
+            elif entry_zone_status == "PULLBACK_V1":
+                pullback_pool.append(candidate_obj)
 
         # 2. Quantamental Accumulator Dips
         fund = item.get("fundamental") or {}
@@ -1133,6 +1175,9 @@ def export_dashboard_data(
         "historical_cagr_pct": 39.4,
         "historical_sharpe": 1.49,
         "historical_max_dd_pct": -23.5,
+        "fresh_flips": fresh_flips_pool,
+        "pullback_entries": pullback_pool,
+        "broken_leaders": broken_leaders,
         "top15": top15,
         "reserve_bench": reserve_bench,
         "quantamental_dips": quant_candidates[:8],
