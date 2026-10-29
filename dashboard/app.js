@@ -7292,6 +7292,13 @@ function renderRotationPortfolio() {
   if (!rotData) {
     if (isDataLoading) {
       setTimeout(renderRotationPortfolio, 300);
+    } else {
+      const actionsList = document.getElementById('rotActionsList');
+      if (actionsList) actionsList.innerHTML = '<div style="padding:15px; color:#8b949e; text-align:center;">Няма намерени ротационни данни. Натиснете Refresh или презаредете страницата (Ctrl+F5).</div>';
+      const top15Body = document.getElementById('rotTop15Body');
+      if (top15Body) top15Body.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px; color:#8b949e;">Няма заредени позиции за ротацията. Моля натиснете Refresh горе вдясно или натиснете Ctrl+F5.</td></tr>';
+      const benchBody = document.getElementById('rotBenchBody');
+      if (benchBody) benchBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px; color:#8b949e;">Няма резерви.</td></tr>';
     }
     return;
   }
