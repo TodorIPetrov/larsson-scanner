@@ -1056,9 +1056,26 @@ def export_dashboard_data(
                     "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
                 })
 
+    # Deduplicate candidates by ticker (preferring highest rank_score)
     candidates_gold.sort(key=lambda x: x["rank_score"], reverse=True)
+    seen_gold = set()
+    unique_gold = []
+    for c in candidates_gold:
+        if c["ticker"] not in seen_gold:
+            seen_gold.add(c["ticker"])
+            unique_gold.append(c)
+    candidates_gold = unique_gold
+
     top15 = candidates_gold[:15]
     reserve_bench = candidates_gold[15:25]
+
+    seen_quant = set()
+    unique_quant = []
+    for q in quant_candidates:
+        if q["ticker"] not in seen_quant:
+            seen_quant.add(q["ticker"])
+            unique_quant.append(q)
+    quant_candidates = unique_quant
 
     # Daily Action Diff (BUYS / SELLS / HOLDS)
     prev_state = {}
