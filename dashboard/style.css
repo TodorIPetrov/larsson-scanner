@@ -7927,3 +7927,200 @@ h1 {
   border: 1px solid rgba(255, 215, 0, 0.3);
   white-space: nowrap;
 }
+
+/* =============================================================================
+   Dedicated Proposal Dossier & Backtest Strategy View
+   ============================================================================= */
+
+.dossier-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+}
+
+.dossier-top-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-dossier-back {
+  background: #21262d;
+  color: #58a6ff;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-dossier-back:hover {
+  background: #30363d;
+  color: #79c0ff;
+  border-color: #58a6ff;
+  transform: translateX(-2px);
+}
+
+.dossier-title-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dossier-ticker {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: #f0f6fc;
+  letter-spacing: -0.5px;
+}
+
+.dossier-name {
+  font-size: 0.95rem;
+  color: #8b949e;
+}
+
+.dossier-top-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dossier-price-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dossier-price-lbl {
+  font-size: 0.8rem;
+  color: #8b949e;
+}
+
+.dossier-price-val {
+  font-size: 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  color: #f0f6fc;
+}
+
+/* Rationale & Narrative */
+.dossier-rationale-card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.dossier-narrative-text {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #e6edf3;
+  background: rgba(56, 139, 253, 0.08);
+  border-left: 4px solid #58a6ff;
+  padding: 12px 18px;
+  border-radius: 0 6px 6px 0;
+  margin: 12px 0 16px 0;
+}
+
+.dossier-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 960px) {
+  .dossier-pillars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dossier-pillar-card {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.pillar-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #21262d;
+}
+
+.pillar-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.pillar-tag.tag-tech { color: #58a6ff; }
+.pillar-tag.tag-dna { color: #ffd700; }
+.pillar-tag.tag-fund { color: #d2a8ff; }
+
+.pillar-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.pillar-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pillar-metrics div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.pillar-metrics .lbl {
+  color: #8b949e;
+}
+
+.pillar-metrics strong {
+  font-family: 'JetBrains Mono', monospace;
+  color: #f0f6fc;
+}
+
+/* Charts & Comparison Cards */
+.dossier-chart-card,
+.dossier-comparison-card,
+.dossier-trades-section {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.equity-chart-section {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.row-winner {
+  background: rgba(255, 215, 0, 0.08) !important;
+  border-left: 3px solid #ffd700;
+}

@@ -59,6 +59,7 @@ def run_portfolio_simulation():
                     v2 = fast_compute_smma(hl2, 29)
                     states = evaluate_larsson_states(v1, m1, m2, v2)
                     df["state"] = states
+                    df["v2"] = v2
                     datasets[sym] = df
             except Exception:
                 pass
@@ -81,9 +82,17 @@ def run_portfolio_simulation():
     equity_curve = []
     trades = []
 
+    last_known_close: Dict[str, float] = {}
+
     for day_idx, date in enumerate(calendar):
         if day_idx < 60:
             continue
+
+        # Update latest known closing prices for all assets that traded today
+        for sym, df in datasets.items():
+            idx = date_to_idx[sym].get(date)
+            if idx is not None:
+                last_known_close[sym] = df["close"].iloc[idx]
 
         # 1. Manage exits
         closed_today = []
@@ -99,6 +108,12 @@ def run_portfolio_simulation():
                 if exit_on_neutral and prev_state != 1:
                     should_exit = True
                 elif not exit_on_neutral and prev_state == -1:
+                    should_exit = True
+
+                # Strict Stop-Loss Invariant: Exit immediately if price breached below v2 line
+                prev_close = df["close"].iloc[idx - 1]
+                prev_v2 = df["v2"].iloc[idx - 1]
+                if prev_close <= prev_v2 and prev_v2 > 0:
                     should_exit = True
 
                 if should_exit:
@@ -120,9 +135,12 @@ def run_portfolio_simulation():
                     idx = date_to_idx[sym].get(date)
                     if idx is not None and idx >= 60:
                         prev_state = df["state"].iloc[idx - 1]
-                        if prev_state == 1:
+                        prev_close = df["close"].iloc[idx - 1]
+                        prev_v2 = df["v2"].iloc[idx - 1]
+                        # Only enter if in GOLD and price strictly above stop loss v2
+                        if prev_state == 1 and (prev_v2 <= 0 or prev_close > prev_v2):
                             # 60-day momentum score
-                            p_curr = df["close"].iloc[idx - 1]
+                            p_curr = prev_close
                             p_past = df["close"].iloc[idx - 60]
                             mom = (p_curr - p_past) / p_past if p_past > 0 else 0.0
                             sharpe = optimal_profiles[sym].get("sharpe_ratio", 0.0)
@@ -132,11 +150,10 @@ def run_portfolio_simulation():
             # Sort by highest momentum & Sharpe score
             candidates.sort(key=lambda c: c[1], reverse=True)
 
-            # Reallocate freed cash into available slots
+            # Reallocate freed cash into available slots based on true mark-to-market valuation
             current_portfolio_val = cash + sum(
-                pos["shares"] * datasets[s]["close"].iloc[date_to_idx[s].get(date, -1)]
+                pos["shares"] * last_known_close.get(s, pos["entry_price"])
                 for s, pos in open_positions.items()
-                if date_to_idx[s].get(date) is not None
             )
             target_slot_val = current_portfolio_val / max_positions
 
@@ -153,14 +170,11 @@ def run_portfolio_simulation():
                         "entry_date": date,
                     }
 
-        # 3. Mark to market daily equity
-        pos_val = 0.0
-        for sym, pos in open_positions.items():
-            idx = date_to_idx[sym].get(date)
-            if idx is not None:
-                pos_val += pos["shares"] * datasets[sym]["close"].iloc[idx]
-            else:
-                pos_val += pos["shares"] * pos["entry_price"]
+        # 3. Mark to market daily equity with forward-fill for closed weekend markets
+        pos_val = sum(
+            pos["shares"] * last_known_close.get(sym, pos["entry_price"])
+            for sym, pos in open_positions.items()
+        )
 
         daily_equity = cash + pos_val
         equity_curve.append({"date": date, "equity": daily_equity})

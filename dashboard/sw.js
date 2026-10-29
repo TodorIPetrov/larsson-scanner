@@ -5,7 +5,7 @@
  * - Offline fallback with cached data and status signaling
  */
 
-const CACHE_NAME = 'larsson-v13';
+const CACHE_NAME = 'larsson-v14';
 const STATIC_ASSETS = [
   './',
   'index.html',

@@ -7,7 +7,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20261029_05">
+  <link rel="stylesheet" href="style.css?v=20261029_06">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -80,14 +80,14 @@
         <span class="tab-icon">📊</span> Скенер на Пазара
       </button>
       <button class="nav-tab-btn" data-tab="queue">
-        <span class="tab-icon">⚡</span> Сделки &amp; Опашка
+        <span class="tab-icon">⚡</span> Сделки (Swing Опашка)
         <span class="tab-badge" id="queueCountBadge">0</span>
       </button>
       <button class="nav-tab-btn" data-tab="macro" id="navTabMacro">
         <span class="tab-icon">🏛️</span> Макро &amp; Риск
       </button>
       <button class="nav-tab-btn" data-tab="portfolio">
-        <span class="tab-icon">💼</span> Портфолио &amp; Сделки
+        <span class="tab-icon">🏆</span> Топ 15 Моментум Портфолио
       </button>
       <button class="nav-tab-btn" data-tab="calculator">
         <span class="tab-icon">🧮</span> Калкулатор на Сделки
@@ -560,10 +560,10 @@
             </div>
           </div>
           <div class="rotation-kpis-right">
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Бектест CAGR:</span> <strong class="text-success">+39.4%</strong></div>
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Sharpe:</span> <strong class="text-gold">1.49</strong></div>
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Max Drawdown:</span> <strong class="text-info">-23.5%</strong></div>
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Win Rate:</span> <strong>42.9%</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Бектест CAGR:</span> <strong class="text-success">+49.6%</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Sharpe:</span> <strong class="text-gold">1.72</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Max Drawdown:</span> <strong class="text-info">-31.2%</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Win Rate:</span> <strong>35.2%</strong></div>
           </div>
         </section>
 
@@ -1078,6 +1078,217 @@
       </section>
     </div> <!-- End Tab 6: tabContentIdeas -->
 
+    <!-- ======================================================================= -->
+    <!-- Tab 7: Dedicated Proposal Dossier & Backtest Strategy View               -->
+    <!-- ======================================================================= -->
+    <div class="tab-content-panel" id="tabContentProposalDossier" style="display: none;">
+      <!-- Dossier Header Strip -->
+      <section class="dossier-top-bar">
+        <div class="dossier-top-left">
+          <button type="button" class="btn-dossier-back" id="btnDossierBack" onclick="closeProposalDossier()">
+            ⬅️ Назад към Моментум Портфолиото
+          </button>
+          <div class="dossier-title-box">
+            <span class="dossier-ticker" id="dossierTicker">NVDA</span>
+            <span class="dossier-name" id="dossierName">NVIDIA Corporation</span>
+            <span class="tier-badge" id="dossierTierBadge">S-Tier</span>
+            <span class="cluster-sub-badge" id="dossierSectorBadge">Technology</span>
+          </div>
+        </div>
+        <div class="dossier-top-right">
+          <div class="dossier-price-box">
+            <span class="dossier-price-lbl">Текуща цена:</span>
+            <strong class="dossier-price-val" id="dossierPrice">$0.00</strong>
+            <span class="trend-state-pill" id="dossierStateBadge">● GOLD</span>
+          </div>
+          <button type="button" class="btn-exec-real btn-sm" id="btnDossierExecReal" onclick="executeFromDossier()">
+            ➕ Изпълни Сделката
+          </button>
+        </div>
+      </section>
+
+      <!-- Section 1: Detailed Proposal Rationale Strip -->
+      <section class="dossier-rationale-card">
+        <div class="section-title-bar">
+          <div class="section-title-left">
+            <span class="title-accent-dot dot-gold"></span>
+            <h3 id="dossierRationaleTitle">🎯 Обосновка на Предложението: Защо този актив и какъв е планът за вход днес?</h3>
+          </div>
+          <span class="badge badge-gold" id="dossierSignalTypeBadge">Свеж Пробив</span>
+        </div>
+        <div class="dossier-rationale-body">
+          <p class="dossier-narrative-text" id="dossierNarrative">
+            Зареждане на обосновката...
+          </p>
+          <!-- 3-Pillar KPI Metrics Grid -->
+          <div class="dossier-pillars-grid">
+            <!-- Pillar 1: Technical Structure -->
+            <div class="dossier-pillar-card">
+              <div class="pillar-hdr">
+                <span class="pillar-tag tag-tech">📐 ТЕХНИЧЕСКА СТРУКТУРА</span>
+                <span class="pillar-status" id="dossierTechState">GOLD (Ден 3)</span>
+              </div>
+              <div class="pillar-metrics">
+                <div><span class="lbl">RS Рейтинг (1–99):</span> <strong id="dossierRsScore">RS 92</strong></div>
+                <div><span class="lbl">Ниво на Вход:</span> <strong id="dossierEntryLevel">$0.00</strong></div>
+                <div><span class="lbl">Подкрепа v1 (SMMA 15):</span> <strong id="dossierV1Level">$0.00</strong></div>
+                <div><span class="lbl">Стоп v2 (SMMA 29):</span> <strong class="text-danger" id="dossierV2Stop">$0.00</strong></div>
+                <div><span class="lbl">Риск до стопа:</span> <strong class="text-danger" id="dossierRiskPct">-5.2%</strong></div>
+                <div><span class="lbl">200-SMA институционална:</span> <strong id="dossierSma200">$0.00</strong></div>
+              </div>
+            </div>
+
+            <!-- Pillar 2: Empirical Backtest DNA -->
+            <div class="dossier-pillar-card">
+              <div class="pillar-hdr">
+                <span class="pillar-tag tag-dna">🧬 ДОКАЗАНО БЕКТЕСТ ДНК</span>
+                <span class="pillar-status text-gold" id="dossierDnaWinnerBadge">Класически Larsson</span>
+              </div>
+              <div class="pillar-metrics">
+                <div><span class="lbl">Победила Стратегия:</span> <strong id="dossierStratName">CLASSIC_BLUE_EXIT</strong></div>
+                <div><span class="lbl">Исторически CAGR:</span> <strong class="text-success" id="dossierCagr">+42.8%</strong></div>
+                <div><span class="lbl">Sharpe Ratio:</span> <strong class="text-gold" id="dossierSharpe">1.49</strong></div>
+                <div><span class="lbl">Успеваемост (Win Rate):</span> <strong id="dossierWinRate">75.0% (4 сд.)</strong></div>
+                <div><span class="lbl">Profit Factor:</span> <strong id="dossierPf">6.40</strong></div>
+                <div><span class="lbl">ДНК Правило за Изход:</span> <strong id="dossierExitRule">🛡️ Дръж до BLUE</strong></div>
+              </div>
+            </div>
+
+            <!-- Pillar 3: Fundamental & DCF Profile -->
+            <div class="dossier-pillar-card">
+              <div class="pillar-hdr">
+                <span class="pillar-tag tag-fund">🏢 ФУНДАМЕНТ & DCF ОЦЕНКА</span>
+                <span class="pillar-status" id="dossierMoatBadge">Wide Moat</span>
+              </div>
+              <div class="pillar-metrics">
+                <div><span class="lbl">DCF Справедлива стойност:</span> <strong id="dossierFairValue">$0.00</strong></div>
+                <div><span class="lbl">Margin of Safety (MoS):</span> <strong id="dossierMos">+24.5%</strong></div>
+                <div><span class="lbl">Икономически ров (Moat):</span> <strong id="dossierMoat">Wide Moat</strong></div>
+                <div><span class="lbl">ROIC vs WACC:</span> <strong id="dossierRoic">28.5% / 8.2%</strong></div>
+                <div><span class="lbl">Altman Z-Score здраве:</span> <strong id="dossierZScore">4.12</strong></div>
+                <div><span class="lbl">Институционална присъда:</span> <strong id="dossierVerdict">BUY</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Interactive Candlestick Chart with Ribbon & Trade Markers -->
+      <section class="dossier-chart-card" style="margin-top: 18px;">
+        <div class="section-title-bar">
+          <div class="section-title-left">
+            <span class="title-accent-dot dot-success"></span>
+            <h3>📈 Свещна Графика с Larsson Панделка и Маркери на Сделките от Бектеста</h3>
+          </div>
+          <div class="dossier-chart-actions" style="display: flex; gap: 8px;">
+            <button type="button" class="btn-sm btn-subtab active" id="btnDossierViewInteractive" onclick="switchDossierChartView('interactive')">📊 Интерактивна Larsson Графика</button>
+            <button type="button" class="btn-sm btn-subtab" id="btnDossierViewTv" onclick="switchDossierChartView('tradingview')">🌐 TradingView</button>
+          </div>
+        </div>
+
+        <div class="chart-canvas-container" id="dossierPriceChartWrapper" style="height: 480px; position: relative;">
+          <div id="dossierPriceChartCanvas" style="width: 100%; height: 100%;"></div>
+          <div id="dossierTvContainer" style="width: 100%; height: 100%; display: none;"></div>
+          <div class="chart-loading-overlay" id="dossierChartLoading" style="display: none;">
+            <div class="spinner"></div>
+            <span>Зареждане на исторически данни и сделки...</span>
+          </div>
+        </div>
+
+        <div class="chart-modal-footer">
+          <div class="ribbon-legend">
+            <span><b>Larsson Ribbon:</b></span>
+            <span class="legend-chip smma-15">v1 (SMMA 15)</span>
+            <span class="legend-chip smma-19">m1 (SMMA 19)</span>
+            <span class="legend-chip smma-25">m2 (SMMA 25)</span>
+            <span class="legend-chip smma-29">v2 (SMMA 29 - Стоп)</span>
+            <span class="legend-chip" style="color: #cbd5e1; border-color: #64748b;">SMA 200</span>
+          </div>
+          <div class="sr-legend">
+            <span class="legend-chip" style="color: #10b981; border-color: #10b981;">🟢 BUY Маркер</span>
+            <span class="legend-chip" style="color: #ef4444; border-color: #ef4444;">🔴 EXIT Маркер</span>
+            <span class="legend-chip legend-sl">🛑 Стоп Ниво ($v2)</span>
+            <span class="legend-chip" style="color: #c084fc; border-color: #c084fc;">🎯 DCF Fair Value</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Visual Equity Curve Comparison & Strategy Head-to-Head Table -->
+      <section class="dossier-comparison-card" style="margin-top: 18px;">
+        <div class="section-title-bar">
+          <div class="section-title-left">
+            <span class="title-accent-dot dot-purple"></span>
+            <h3>🏆 Сравнение на Бектест Стратегиите за Този Актив (Начален Капитал 10,000 €)</h3>
+          </div>
+          <span class="badge badge-gold" id="dossierWinnerBadgeTop">Победител</span>
+        </div>
+
+        <!-- Equity Curves Chart -->
+        <div class="equity-chart-section">
+          <div style="font-size: 0.85rem; color: #8b949e; margin-bottom: 8px;">
+            Растеж на портфейла от 10,000 € във времето: <strong style="color: #ffd700;">Победила Стратегия</strong> спрямо алтернативните подходи и <strong style="color: #8b949e;">Купи и Дръж (Buy & Hold)</strong>.
+          </div>
+          <div class="chart-canvas-container" id="dossierEquityChartWrapper" style="height: 320px; position: relative;">
+            <div id="dossierEquityChartCanvas" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Head-to-Head Strategies Table -->
+        <div class="table-container" style="margin-top: 16px;">
+          <table class="assets-table">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Стратегия за Този Актив</th>
+                <th>Обща Доходност (%)</th>
+                <th>Краен Капитал (€)</th>
+                <th>CAGR (%)</th>
+                <th>Sharpe Ratio</th>
+                <th>Win Rate % (Сделки)</th>
+                <th>Profit Factor</th>
+                <th>Макс. Спад (Max DD)</th>
+                <th>Статус</th>
+              </tr>
+            </thead>
+            <tbody id="dossierStrategiesTableBody">
+              <tr><td colspan="10" class="loading-state">Зареждане на сравнението...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 4: Full Trade Log of the Winning Strategy -->
+      <section class="dossier-trades-section" style="margin-top: 18px; margin-bottom: 30px;">
+        <div class="section-title-bar">
+          <div class="section-title-left">
+            <span class="title-accent-dot dot-blue"></span>
+            <h3>📜 Пълен Журнал на Историческите Сделки (Trade-by-Trade Log на Победителя)</h3>
+          </div>
+          <span class="badge" id="dossierTradesCountBadge">0 Сделки</span>
+        </div>
+        <div class="table-container">
+          <table class="assets-table">
+            <thead>
+              <tr>
+                <th>Сделка №</th>
+                <th>Дата на Вход</th>
+                <th>Цена Вход</th>
+                <th>Дата на Изход</th>
+                <th>Цена Изход</th>
+                <th>Дни в Сделка</th>
+                <th>Причина за Изход</th>
+                <th>Резултат (%)</th>
+                <th>Резултат (€ от 10,000 €)</th>
+              </tr>
+            </thead>
+            <tbody id="dossierTradesLogBody">
+              <tr><td colspan="9" class="loading-state">Зареждане на сделките...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
     <footer class="site-footer">
       <p>Larsson Line Scanner • 100% Free & Open Source Stack • <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></p>
     </footer>
@@ -1554,7 +1765,7 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20261029_05"></script>
+  <script src="app.js?v=20261029_06"></script>
 
   <!-- Progressive Web App (PWA) Registration & Install Prompt Handler -->
   <script>

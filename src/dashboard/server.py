@@ -79,6 +79,8 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/api/status":
             self.handle_api_status()
+        elif self.path == "/api/portfolio/sync":
+            self.handle_get_portfolio_sync()
         elif self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
             self.handle_api_scan()
         elif self.path == "/api/state":
@@ -115,6 +117,8 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
             self.handle_api_scan()
+        elif self.path == "/api/portfolio/sync":
+            self.handle_post_portfolio_sync()
         else:
             self.send_error(404, "Not Found")
 
@@ -248,6 +252,39 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
                 IS_SCANNING = False
                 SCAN_START_TIME = None
 
+
+
+    def handle_get_portfolio_sync(self):
+        sync_file = os.path.join(PROJECT_ROOT, "data", "portfolio_user_sync.json")
+        data = {"real": {}, "paper": {}}
+        if os.path.exists(sync_file):
+            try:
+                with open(sync_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:
+                pass
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        self.end_headers()
+        self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+
+    def handle_post_portfolio_sync(self):
+        try:
+            content_length = int(self.headers.get("Content-Length", 0))
+            body = self.rfile.read(content_length).decode("utf-8")
+            payload = json.loads(body)
+            sync_file = os.path.join(PROJECT_ROOT, "data", "portfolio_user_sync.json")
+            os.makedirs(os.path.dirname(sync_file), exist_ok=True)
+            with open(sync_file, "w", encoding="utf-8") as f:
+                json.dump(payload, f, indent=2, ensure_ascii=False)
+            res = {"success": True, "message": "Portfolio backup persisted to server disk"}
+        except Exception as e:
+            res = {"success": False, "error": str(e)}
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(json.dumps(res).encode("utf-8"))
 
 def run_server(port=8080):
     server_address = ("0.0.0.0", port)

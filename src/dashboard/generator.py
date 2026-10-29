@@ -1241,9 +1241,9 @@ def export_dashboard_data(
         "base_capital_eur": base_capital_eur,
         "target_positions_count": target_positions_count,
         "per_slot_eur": per_slot_eur,
-        "historical_cagr_pct": 39.4,
-        "historical_sharpe": 1.49,
-        "historical_max_dd_pct": -23.5,
+        "historical_cagr_pct": 49.6,
+        "historical_sharpe": 1.72,
+        "historical_max_dd_pct": -31.2,
         "fresh_flips": fresh_flips_pool,
         "pullback_entries": pullback_pool,
         "broken_leaders": broken_leaders,
@@ -1338,6 +1338,13 @@ def export_dashboard_data(
         }
         with open(os.path.join(data_dir, "history.json"), "w", encoding="utf-8") as f:
             json.dump(history_payload, f, indent=2, allow_nan=False)
+
+        # 4. Generate asset dossiers for momentum rotation portfolio
+        try:
+            from scripts.generate_asset_dossiers import generate_dossiers_for_rotation_assets
+            generate_dossiers_for_rotation_assets()
+        except Exception as e:
+            logger.warning(f"Error generating asset dossiers: {e}")
 
     except Exception as e:
         logger.warning(f"Error exporting split data payloads: {e}")
