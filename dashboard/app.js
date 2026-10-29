@@ -7563,21 +7563,50 @@ function renderRotationPortfolio() {
     rotData.quantamental_dips.forEach(q => {
       const isOwned = realHeldTickers.has(q.ticker.toUpperCase());
       const trancheShares = q.price > 0 ? (q.asset_class === 'crypto' ? (trancheAmount / q.price).toFixed(4) : (trancheAmount / q.price).toFixed(2)) : '0';
+      const stratName = q.strategy_label || q.best_value_strategy || 'Value Accumulator';
+      const winRate = q.value_win_rate ? `${q.value_win_rate}% Win` : 'Одобрен';
+      const stopPrice = Number(q.value_stop_price || (q.price * 0.92)).toFixed(2);
+      const stopRisk = q.stop_risk_pct || 8.0;
+
       qHtml += `
         <tr>
-          <td><a href="${q.tv_url}" target="_blank" rel="noopener" class="ticker-link"><strong>${q.ticker}</strong> ↗</a></td>
-          <td class="tabular-nums">$${Number(q.price || 0).toFixed(2)}</td>
+          <td>
+            <div style="display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <a href="${q.tv_url}" target="_blank" rel="noopener" class="ticker-link"><strong>${q.ticker}</strong> ↗</a>
+                <span class="trend-state-pill state-${(q.state || '').toLowerCase()}" style="font-size:0.68rem; padding: 1px 5px;">● ${q.state}</span>
+              </div>
+              <span style="font-size: 0.74rem; color: #8b949e;">${q.name || ''}</span>
+            </div>
+          </td>
+          <td class="tabular-nums" style="font-weight: 700;">$${Number(q.price || 0).toFixed(2)}</td>
           <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">$${Number(q.fair_value || 0).toFixed(2)}</td>
           <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">+${Number(q.mos_pct || 0).toFixed(0)}%</td>
-          <td><span class="badge badge-success">${q.verdict || 'BUY'}</span></td>
-          <td><span class="trend-state-pill state-${(q.state || '').toLowerCase()}">● ${q.state}</span></td>
-          <td class="tabular-nums" style="color: #58a6ff; font-weight: 700;">${trancheShares}</td>
           <td>
-            ${isOwned ? '<span style="color:#3fb950; font-weight:600; font-size:0.75rem;">✅ Притежавана</span>' : `
-              <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${q.price}, ${trancheShares}, ${trancheAmount.toFixed(0)})">
-                📥 Купи 50%
-              </button>
-            `}
+            <span class="badge" style="background: rgba(163, 113, 247, 0.15); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.35); font-size: 0.72rem; white-space: nowrap;">
+              ${stratName} (${winRate})
+            </span>
+          </td>
+          <td class="tabular-nums">
+            <span style="color: #f85149; font-weight:700;">$${stopPrice}</span>
+            <span style="font-size:0.72rem; color:#8b949e;">(-${stopRisk}%)</span>
+          </td>
+          <td class="tabular-nums">
+            <strong style="color: #ffd700;">${trancheAmount.toFixed(0)} €</strong>
+            <span style="font-size:0.75rem; color:#58a6ff;">(~${trancheShares})</span>
+          </td>
+          <td>
+            ${isOwned ? '<span style="color:#3fb950; font-weight:600; font-size:0.75rem;">✅ Притежавана</span>' : (
+              q.trigger_active !== false ? `
+                <button type="button" class="btn-add-real-inline" style="background: #238636;" onclick="openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${q.price}, ${trancheShares}, ${trancheAmount.toFixed(0)})" title="Влез с 50% транш">
+                  📥 Купи 50%
+                </button>
+              ` : `
+                <button type="button" class="btn-add-real-inline" style="background: #30363d; opacity: 0.8;" onclick="openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${stopPrice}, ${trancheShares}, ${trancheAmount.toFixed(0)})" title="Чакай тригер / Постави лимит">
+                  ⏳ Лимит
+                </button>
+              `
+            )}
           </td>
         </tr>
       `;
