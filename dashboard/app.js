@@ -4,7 +4,7 @@ let pendingProposals = [];
 let portfolioData = {};
 let portfolioPaperData = {};
 let portfolioRealData = {};
-let currentPortfolioMode = localStorage.getItem('larsson_portfolio_mode') || 'REAL';
+let currentPortfolioMode = localStorage.getItem('larsson_portfolio_mode') || 'ROTATION';
 let currentFilter = 'ALL';
 let currentClass = 'ALL';
 let currentTfFilter = 'ALL';
@@ -3509,6 +3509,14 @@ function switchTab(tabName, pushToHistory = true) {
   if (tabName === 'ideas') {
     if (typeof renderIdeasView === 'function') {
       renderIdeasView();
+    }
+  }
+
+  if (tabName === 'portfolio') {
+    if (currentPortfolioMode === 'ROTATION') {
+      renderRotationPortfolio();
+    } else {
+      renderPortfolioView();
     }
   }
 
@@ -7281,7 +7289,12 @@ function renderRotationPortfolio() {
     noteEl.innerHTML = `(Заети позиции: <strong style="color:#ffd700;">${occupiedSlots} / 15</strong> | Свободни слотове за покупка: <strong style="color:#3fb950;">${freeSlots}</strong> — <strong>${(freeSlots * slotAmount).toFixed(0)} €</strong> свободен капитал)`;
   }
 
-  if (!rotData) return;
+  if (!rotData) {
+    if (isDataLoading) {
+      setTimeout(renderRotationPortfolio, 300);
+    }
+    return;
+  }
 
   // 2. Render Daily Actions (Intelligent entry & exit dispatch)
   const actionsList = document.getElementById('rotActionsList');

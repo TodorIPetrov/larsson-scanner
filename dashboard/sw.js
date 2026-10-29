@@ -5,7 +5,7 @@
  * - Offline fallback with cached data and status signaling
  */
 
-const CACHE_NAME = 'larsson-v8';
+const CACHE_NAME = 'larsson-v10';
 const STATIC_ASSETS = [
   './',
   'index.html',
@@ -76,6 +76,23 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Dynamic endpoints: /data.json, /data/ or /api/
+  // Application scripts and styles: Network-first to always deliver the newest code
+  const isCodeAsset = url.pathname.endsWith('app.js') || url.pathname.endsWith('style.css');
+  if (isCodeAsset) {
+    event.respondWith(
+      fetch(req)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, responseClone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(req))
+    );
+    return;
+  }
+
   const isDataRequest = url.pathname.endsWith('data.json') || url.pathname.includes('/data/') || url.pathname.includes('/api/');
 
   if (isDataRequest) {
