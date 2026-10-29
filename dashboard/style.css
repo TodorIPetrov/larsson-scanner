@@ -7916,3 +7916,14 @@ h1 {
   background: #2ea043;
   transform: translateY(-1px);
 }
+
+.badge-days-gold {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(255, 215, 0, 0.12);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  white-space: nowrap;
+}

@@ -7308,13 +7308,25 @@ function renderRotationPortfolio() {
       if (symObj) {
         const isBlue = (symObj.state === 'BLUE');
         const isNeutExit = (symObj.state === 'NEUTRAL' && symObj.exit_on_neutral);
-        if (isBlue || isNeutExit) {
-          const reason = isBlue ? 'Нарушен тренд (BLUE) -> Затвори за защита на капитала!' : 'Fast Exit ДНК (NEUTRAL) -> Прибери печалба!';
+        const isBrokenStop = (Number(symObj.price || 0) <= Number(symObj.v2 || 0) && Number(symObj.v2 || 0) > 0);
+
+        if (isBlue || isNeutExit || isBrokenStop) {
+          let reason = '';
+          let tagText = 'EXIT 100%';
+          if (isBrokenStop) {
+            reason = `Цената ($${Number(symObj.price || 0).toFixed(2)}) проби стопа $v2 ($${Number(symObj.v2 || 0).toFixed(2)}) -> Затвори за защита на капитала!`;
+            tagText = 'STOP BROKEN';
+          } else if (isBlue) {
+            reason = 'Нарушен тренд (BLUE) -> Затвори за защита на капитала!';
+          } else {
+            reason = 'Fast Exit ДНК (NEUTRAL) -> Прибери печалба!';
+          }
+
           actHtml += `
             <div class="rot-action-card action-sell">
               <div class="rot-action-hdr">
                 <span class="rot-action-ticker" style="color: #f85149;">🔴 ПРОДАЙ ДНЕС: ${sym}</span>
-                <span class="rot-action-tag tag-sell">EXIT 100%</span>
+                <span class="rot-action-tag tag-sell">${tagText}</span>
               </div>
               <p class="rot-action-desc">${reason}</p>
               <div class="rot-action-meta"><span>Последна цена: $${Number(symObj.price || 0).toFixed(2)}</span></div>
@@ -7324,69 +7336,100 @@ function renderRotationPortfolio() {
       }
     });
 
-    // B. If user has free slots (> 0), propose the best NEW BUYS from unowned candidates
+    // B. Propose REAL NEW BUYS if user has free slots (> 0)
     if (freeSlots > 0) {
       const allCandidates = [...(rotData.top15 || []), ...(rotData.reserve_bench || [])];
       const unownedCandidates = allCandidates.filter(c => !realHeldTickers.has(c.ticker.toUpperCase()));
 
-      // 1. Prime Buys (Fresh breakouts / tight stop risk <= 10%)
-      const primeBuys = unownedCandidates.filter(c => c.entry_zone_status === 'PRIME_BUY').slice(0, Math.min(3, freeSlots));
+      // 1. FRESH GOLD FLIPS (bars <= 5, true breakouts today)
+      const freshPool = (rotData.fresh_flips || []).filter(c => !realHeldTickers.has(c.ticker.toUpperCase()));
+      const primeBuys = (freshPool.length > 0 ? freshPool : unownedCandidates.filter(c => c.entry_zone_status === 'FRESH_FLIP')).slice(0, Math.min(3, freeSlots));
+
       primeBuys.forEach(b => {
         const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotAmount / b.price).toFixed(4) : (slotAmount / b.price).toFixed(2)) : '0';
+        const dayNum = Number(b.bars_since_flip !== undefined ? b.bars_since_flip : 0) + 1;
         actHtml += `
           <div class="rot-action-card action-buy">
             <div class="rot-action-hdr">
-              <span class="rot-action-ticker" style="color: #3fb950;">🟢 КУПИ ДНЕС (100% Слот): ${b.ticker} (${b.name || ''})</span>
-              <span class="rot-action-tag tag-buy">PRIME BUY</span>
+              <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ (КУПИ 100%): ${b.ticker} (${b.name || ''})</span>
+              <span class="rot-action-tag tag-buy">ДЕН ${dayNum} FLIP</span>
             </div>
-            <p class="rot-action-desc">S/A-Tier лидер с RS ${b.rs_rating}. Нисък риск до стопа (${b.risk_to_v2_pct}% до $v2). ДНК изход: ${b.exit_rule_bg}.</p>
+            <p class="rot-action-desc">Нов Gold Flip от Ден ${dayNum}. Нисък риск до стопа (${b.risk_to_v2_pct}% до $v2 = $${Number(b.v2_stop || 0).toFixed(2)}). ДНК изход: ${b.exit_rule_bg || 'По ДНК'}.</p>
             <div class="rot-action-meta">
               <span>Слот: ${slotAmount.toFixed(0)} € (~${shares} бр.)</span>
               <span>Стоп v2: $${Number(b.v2_stop || 0).toFixed(2)}</span>
             </div>
             <div style="margin-top: 8px;">
               <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${slotAmount.toFixed(0)})">
-                ➕ Изпълни и Запиши в Реални
+                ➕ Изпълни Свеж Вход
               </button>
             </div>
           </div>
         `;
       });
 
-      // 2. Split Tranches (Moderate extension 10% - 20%)
-      const splitBuys = unownedCandidates.filter(c => c.entry_zone_status === 'SPLIT_TRANCHE').slice(0, 2);
-      splitBuys.forEach(s => {
-        const halfShares = s.price > 0 ? (s.asset_class === 'crypto' ? (trancheAmount / s.price).toFixed(4) : (trancheAmount / s.price).toFixed(2)) : '0';
+      // 2. PULLBACK TO V1/V2 SUPPORT (Mature leaders bouncing on ribbon with tight risk <= 6%)
+      const pullbackPool = (rotData.pullback_entries || []).filter(c => !realHeldTickers.has(c.ticker.toUpperCase()));
+      const pullbacks = (pullbackPool.length > 0 ? pullbackPool : unownedCandidates.filter(c => c.entry_zone_status === 'PULLBACK_V1')).slice(0, 2);
+
+      pullbacks.forEach(s => {
+        const shares = s.price > 0 ? (s.asset_class === 'crypto' ? (slotAmount / s.price).toFixed(4) : (slotAmount / s.price).toFixed(2)) : '0';
+        const dayNum = Number(s.bars_since_flip !== undefined ? s.bars_since_flip : 0) + 1;
         actHtml += `
-          <div class="rot-action-card action-buy" style="border-left-color: #ffd700;">
+          <div class="rot-action-card action-buy" style="border-left-color: #58a6ff;">
             <div class="rot-action-hdr">
-              <span class="rot-action-ticker" style="color: #ffd700;">🟡 ВЛЕЗ С 50% ТРАНШ: ${s.ticker} (${s.name || ''})</span>
-              <span class="rot-action-tag tag-hold">50% TRANCHE</span>
+              <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА ПОДКРЕПА v1: ${s.ticker} (${s.name || ''})</span>
+              <span class="rot-action-tag tag-hold" style="background: rgba(88,166,255,0.2); color: #58a6ff;">ТЕСТ v1 (ДЕН ${dayNum})</span>
             </div>
-            <p class="rot-action-desc">Умерено напреднал тренд (${s.risk_to_v2_pct}% над стопа). Влез с 50% сега (${trancheAmount.toFixed(0)} €) и сложи лимит поръчка на $v1 ($${Number(s.v1_pullback || 0).toFixed(2)}).</p>
+            <p class="rot-action-desc">Зрял лидер (Ден ${dayNum} в тренд), тестващ лентата на подкрепа ($v1/$v2). Ултра-плътен стоп $v2 ($${Number(s.v2_stop || 0).toFixed(2)}) с риск само ${s.risk_to_v2_pct}%.</p>
             <div class="rot-action-meta">
-              <span>Транш: ${trancheAmount.toFixed(0)} € (~${halfShares} бр.)</span>
-              <span>Пулбек лимит v1: $${Number(s.v1_pullback || 0).toFixed(2)}</span>
+              <span>Слот: ${slotAmount.toFixed(0)} € (~${shares} бр.)</span>
+              <span>Стоп v2: $${Number(s.v2_stop || 0).toFixed(2)}</span>
             </div>
             <div style="margin-top: 8px;">
-              <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${halfShares}, ${trancheAmount.toFixed(0)})">
-                ➕ Запиши 50% Транш
+              <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${slotAmount.toFixed(0)})">
+                ➕ Влез на Подкрепа
               </button>
             </div>
           </div>
         `;
       });
 
-      // 3. Extended Winners Warnings (Over 20% extension)
-      const extendedWarns = unownedCandidates.filter(c => c.entry_zone_status === 'EXTENDED_WAIT_PULLBACK').slice(0, 2);
+      // 3. MATURE TRENDS (Limit Orders on v1 - Do NOT Chase Market Price!)
+      const matureBuys = unownedCandidates.filter(c => c.entry_zone_status === 'MATURE_HOLD').slice(0, 2);
+      matureBuys.forEach(m => {
+        const halfShares = m.v1_pullback > 0 ? (m.asset_class === 'crypto' ? (trancheAmount / m.v1_pullback).toFixed(4) : (trancheAmount / m.v1_pullback).toFixed(2)) : '0';
+        const dayNum = Number(m.bars_since_flip !== undefined ? m.bars_since_flip : 0) + 1;
+        actHtml += `
+          <div class="rot-action-card action-hold" style="border-left-color: #ffd700;">
+            <div class="rot-action-hdr">
+              <span class="rot-action-ticker" style="color: #ffd700;">📝 ЗАДАЙ ЛИМИТ НА v1: ${m.ticker} (${m.name || ''})</span>
+              <span class="rot-action-tag tag-hold">В ТРЕНД (ДЕН ${dayNum})</span>
+            </div>
+            <p class="rot-action-desc">Активът е в напреднал тренд (Ден ${dayNum}, +${m.dist_to_v1_pct || 5}% над v1). Не купувай по пазарна цена! Постави чакаща лимит поръчка на линията $v1 ($${Number(m.v1_pullback || 0).toFixed(2)}).</p>
+            <div class="rot-action-meta">
+              <span>Лимит цена v1: $${Number(m.v1_pullback || 0).toFixed(2)}</span>
+              <span>Транш (50%): ${trancheAmount.toFixed(0)} €</span>
+            </div>
+            <div style="margin-top: 8px;">
+              <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="openAddRealFromRotation('${m.ticker}', '${m.asset_class}', ${m.v1_pullback}, ${halfShares}, ${trancheAmount.toFixed(0)})">
+                📝 Запиши Лимит на v1
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      // 4. EXTENDED WARNINGS (> 18% above v2)
+      const extendedWarns = unownedCandidates.filter(c => c.entry_zone_status === 'EXTENDED_WAIT_PULLBACK').slice(0, 1);
       extendedWarns.forEach(w => {
         actHtml += `
           <div class="rot-action-card action-hold">
             <div class="rot-action-hdr">
-              <span class="rot-action-ticker" style="color: #cbd5e1;">⏳ НЕ ГОНИ ВЪРХА ДНЕС: ${w.ticker}</span>
+              <span class="rot-action-ticker" style="color: #cbd5e1;">⏳ НЕ ГОНИ ВЪРХА: ${w.ticker}</span>
               <span class="rot-action-tag tag-hold">ЧАКАЙ ПУЛБЕК</span>
             </div>
-            <p class="rot-action-desc">Активът е скочил твърде рязко (+${w.momentum_60d}% за 60д, спред над v2 ${w.risk_to_v2_pct}%). Понеже нямаш позиция днес, не купувай на пазарна цена. Задай лимит поръчка на линията v1 ($${Number(w.v1_pullback || 0).toFixed(2)}) или избери лидерите от Приоритет 1.</p>
+            <p class="rot-action-desc">Активът е напреднал твърде много над $v2 (${w.risk_to_v2_pct}% риск). Чакай тест на $v1 ($${Number(w.v1_pullback || 0).toFixed(2)}) или избери лидерите от Свеж Пробив.</p>
           </div>
         `;
       });
@@ -7397,11 +7440,10 @@ function renderRotationPortfolio() {
             <span class="rot-action-ticker" style="color: #3fb950;">🛡️ ВСИЧКИ 15 СЛОТА СА ЗАЕТИ В ПОРТФЕЙЛА ТИ</span>
             <span class="rot-action-tag tag-hold">HOLD</span>
           </div>
-          <p class="rot-action-desc">Всички притежавани активи остават в бичи тренд. Няма наложителни продажби днес. Остави капитала да работи.</p>
+          <p class="rot-action-desc">Всички притежавани активи остават в бичи тренд над своите стопове. Няма наложителни продажби днес.</p>
         </div>
       `;
     }
-
     actionsList.innerHTML = actHtml;
   }
 
@@ -7421,19 +7463,26 @@ function renderRotationPortfolio() {
         statusBadge = `<span class="badge badge-success" style="font-weight:700;">🛡️ В Портфейла (Hold)</span>`;
         actionBtn = `<span style="font-size:0.78rem; color:#3fb950; font-weight:700;">✅ Следи се</span>`;
       } else {
-        if (item.entry_zone_status === 'PRIME_BUY') {
-          statusBadge = `<span class="text-success" style="font-weight:700; font-size:0.8rem;">🟢 КУПИ ВЕДНАГА</span>`;
+        const dayNum = Number(item.bars_since_flip !== undefined ? item.bars_since_flip : 0) + 1;
+        if (item.entry_zone_status === 'FRESH_FLIP') {
+          statusBadge = `<span class="text-success" style="font-weight:700; font-size:0.8rem;">🟢 Свеж Пробив (Ден ${dayNum})</span>`;
           actionBtn = `
             <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)})" title="Купи пълен слот">
               ➕ Купи (667 €)
             </button>
           `;
-        } else if (item.entry_zone_status === 'SPLIT_TRANCHE') {
-          statusBadge = `<span class="text-gold" style="font-weight:700; font-size:0.8rem;">🟡 50% Транш</span>`;
-          const halfShares = item.price > 0 ? (item.asset_class === 'crypto' ? (trancheAmount / item.price).toFixed(4) : (trancheAmount / item.price).toFixed(2)) : '0';
+        } else if (item.entry_zone_status === 'PULLBACK_V1') {
+          statusBadge = `<span class="text-info" style="font-weight:700; font-size:0.8rem;">🔵 Вход на v1 (Ден ${dayNum})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${halfShares}, ${trancheAmount.toFixed(0)})" title="Купи 50% транш">
-              ➕ 50% (333 €)
+            <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)})" title="Влез на подкрепа v1">
+              ➕ Влез на v1
+            </button>
+          `;
+        } else if (item.entry_zone_status === 'MATURE_HOLD') {
+          statusBadge = `<span style="color:#58a6ff; font-weight:600; font-size:0.8rem;">🛡️ В Тренд (Лимит v1)</span>`;
+          actionBtn = `
+            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)})" title="Лимит поръчка на v1">
+              📝 Лимит на v1
             </button>
           `;
         } else {
@@ -7451,9 +7500,12 @@ function renderRotationPortfolio() {
           <td class="tabular-nums" style="font-weight: 700;">${idx + 1}</td>
           <td>
             <div style="display: flex; flex-direction: column;">
-              <a href="${item.tv_url}" target="_blank" rel="noopener" class="ticker-link" title="TradingView">
-                <strong>${item.ticker}</strong> ↗
-              </a>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <a href="${item.tv_url}" target="_blank" rel="noopener" class="ticker-link" title="TradingView">
+                  <strong>${item.ticker}</strong> ↗
+                </a>
+                <span class="badge-days-gold" title="Възраст на тренда">Ден ${Number(item.bars_since_flip !== undefined ? item.bars_since_flip : 0) + 1}</span>
+              </div>
               <span style="font-size: 0.76rem; color: #8b949e;">${item.name || ''}</span>
             </div>
           </td>
