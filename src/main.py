@@ -78,6 +78,14 @@ def run_scan(
         f"Changes: {len(res['state_changes'])}"
     )
 
+    # Automatically audit and onboard any newly discovered assets (1D scan)
+    if timeframe == "1D":
+        try:
+            from src.engine.lifecycle_sync import sync_new_assets_lifecycle
+            sync_new_assets_lifecycle(scanner.db)
+        except Exception as e:
+            logger.warning(f"Lifecycle sync warning: {e}")
+
     # Export latest data for dashboard
     export_dashboard_data(scanner.db)
 
@@ -135,6 +143,19 @@ def _safe_scan(scanner: LarssonScanner, asset_class: str, timeframe: str, limit:
         run_scan(scanner, asset_class=asset_class, timeframe=timeframe, limit=limit)
     except Exception as e:
         logger.error(f"Scheduled scan failed for asset class '{asset_class}' [{timeframe}]: {e}", exc_info=True)
+
+
+def _safe_fundamental_refresh(db: Database):
+    """Executes weekly fundamental valuation refresh with isolation."""
+    try:
+        from src.engine.lifecycle_sync import refresh_existing_fundamentals
+        logger.info("=== Starting Weekly Fundamental Valuation Refresh ===")
+        res = refresh_existing_fundamentals(max_age_days=7, limit=40)
+        logger.info(f"Fundamental refresh complete: {res['refreshed_count']} equities updated.")
+        export_dashboard_data(db)
+        sync_dashboard_to_git()
+    except Exception as e:
+        logger.error(f"Weekly fundamental refresh failed: {e}", exc_info=True)
 
 
 def _scan_traditional_markets(scanner: LarssonScanner, timeframe: str):
@@ -207,6 +228,14 @@ def start_scheduler(scanner: LarssonScanner):
         trigger=CronTrigger(hour=md_hour, minute=md_minute, timezone=md_tz),
         id="daily_digest",
         name=f"Daily Morning Digest ({md_hour:02d}:{md_minute:02d} {md_tz})",
+    )
+
+    # Weekly Fundamental Refresh: Every Saturday at 08:00 UTC
+    sched.add_job(
+        func=lambda: _safe_fundamental_refresh(scanner.db),
+        trigger=CronTrigger(day_of_week="sat", hour=8, minute=0, timezone="UTC"),
+        id="weekly_fundamental_refresh",
+        name="Weekly Fundamental DCF & Forensic Refresh (Sat 08:00 UTC)",
     )
 
     logger.info("Scheduler started with cron jobs:")
@@ -319,6 +348,8 @@ def main():
     parser.add_argument("--x-account", type=str, default="NoLimits", help="X (Twitter) source account handle")
     parser.add_argument("--websocket", action="store_true", help="Run standalone Binance WebSocket listener")
     parser.add_argument("--backtest", action="store_true", help="Run institutional 5-year multi-asset backtest")
+    parser.add_argument("--refresh-fundamentals", action="store_true", help="Refresh corporate DCF/Forensic models with latest public filings")
+    parser.add_argument("--sync-new-assets", action="store_true", help="Audit universe and onboard any missing assets (DCF, DNA backtest, dossier)")
     parser.add_argument(
         "--mode",
         type=str,
@@ -464,6 +495,24 @@ def main():
                 print("✅ Тестовото известие беше изпратено успешно! Провери си Telegram.\n")
             else:
                 print("❌ Грешка при изпращане. Провери дали bot_token и chat_id са точни.\n")
+    elif args.refresh_fundamentals:
+        from src.engine.lifecycle_sync import refresh_existing_fundamentals
+        print("\n\U0001f504 Стартиране на обновяване на фундаменталните оценки (DCF/Forensics)...")
+        res = refresh_existing_fundamentals(max_age_days=7 if not args.force else 0, force=args.force)
+        print(f"✅ Обновени {res['refreshed_count']} актива: {', '.join(res['tickers']) if res['tickers'] else 'Всички са актуални'}")
+        export_dashboard_data(db)
+        sync_dashboard_to_git()
+        print("✅ Дашбордът е експортиран и синхронизиран.\n")
+    elif args.sync_new_assets:
+        from src.engine.lifecycle_sync import sync_new_assets_lifecycle
+        print("\n\U0001f680 Проверка на вселената и онбординг на нови активи...")
+        res = sync_new_assets_lifecycle(db)
+        print(f"✅ Прегледани {res['universe_size']} актива. Добавени/онборднати: {res['onboarded_count']}")
+        if res['onboarded_tickers']:
+            print(f"   Тикери: {', '.join(res['onboarded_tickers'])}")
+        export_dashboard_data(db)
+        sync_dashboard_to_git()
+        print("✅ Дашбордът е експортиран и синхронизиран.\n")
     elif args.scan:
         run_scan(scanner, asset_class=args.asset_class, timeframe=args.timeframe, limit=args.limit)
     elif args.status:

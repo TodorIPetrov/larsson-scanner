@@ -507,6 +507,9 @@ class LarssonScanner:
                     results["neutral_count"] += 1
 
                 bars_since_flip = calculate_bars_since_flip(states)
+                mom_60 = None
+                if timeframe == "1D" and len(closes) >= 60 and closes[-60] > 0:
+                    mom_60 = float(((closes[-1] - closes[-60]) / closes[-60]) * 100.0)
 
                 # Update database and check for transition
                 state_changed, old_state = self.db.update_state(
@@ -519,6 +522,7 @@ class LarssonScanner:
                     new_state=current_state,
                     price=float(latest_price),
                     bars_since_flip=bars_since_flip,
+                    momentum_60d=mom_60,
                 )
 
                 # Compute BTC Relative Strength (Asset / BTC Ratio)
@@ -738,6 +742,9 @@ class LarssonScanner:
 
                 tv_symbol = self.get_tv_symbol(sym, asset_class)
                 bars_since_flip = calculate_bars_since_flip(states)
+                mom_60 = None
+                if timeframe == "1D" and len(closes) >= 60 and closes[-60] > 0:
+                    mom_60 = float(((closes[-1] - closes[-60]) / closes[-60]) * 100.0)
 
                 state_changed, old_state = self.db.update_state(
                     ticker=sym,
@@ -749,6 +756,7 @@ class LarssonScanner:
                     new_state=current_state,
                     price=float(latest_price),
                     bars_since_flip=bars_since_flip,
+                    momentum_60d=mom_60,
                 )
 
                 # Compute BTC Relative Strength for crypto stocks (e.g. NAKA, MSTR, COIN)

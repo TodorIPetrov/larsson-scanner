@@ -137,6 +137,8 @@ class Database:
             ss_cols = {col[1] for col in cur.fetchall()}
             if "bars_since_flip" not in ss_cols:
                 cur.execute("ALTER TABLE symbol_states ADD COLUMN bars_since_flip INTEGER")
+            if "momentum_60d" not in ss_cols:
+                cur.execute("ALTER TABLE symbol_states ADD COLUMN momentum_60d REAL")
 
 
             # Table for recording alert history
@@ -646,7 +648,7 @@ class Database:
             cur = conn.cursor()
             cur.execute("""
             SELECT s.ticker, s.asset_class, s.tv_symbol, st.timeframe, st.v1, st.m1, st.m2, st.v2,
-                   st.current_state, st.last_price, st.last_state_change, st.updated_at, st.bars_since_flip,
+                   st.current_state, st.last_price, st.last_state_change, st.updated_at, st.bars_since_flip, st.momentum_60d,
                    sr.s1, sr.s1_touches, sr.s1_dist_pct, sr.r1, sr.r1_touches, sr.r1_dist_pct,
                    sr.context_flag, sr.context_desc,
                    ts.action AS ts_action, ts.direction AS ts_direction, ts.setup_type AS ts_setup_type,
@@ -685,6 +687,7 @@ class Database:
         price: float,
         now_iso: Optional[str] = None,
         bars_since_flip: Optional[int] = None,
+        momentum_60d: Optional[float] = None,
     ) -> Tuple[bool, Optional[LarssonState]]:
         """
         Updates the state of a symbol.
@@ -702,9 +705,9 @@ class Database:
                 # First time seeing this symbol/timeframe
                 cur.execute("""
                 INSERT INTO symbol_states
-                (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at, bars_since_flip)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (ticker, timeframe, v1, m1, m2, v2, new_state.value, price, now_iso, now_iso, bars_since_flip))
+                (ticker, timeframe, v1, m1, m2, v2, current_state, last_price, last_state_change, updated_at, bars_since_flip, momentum_60d)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (ticker, timeframe, v1, m1, m2, v2, new_state.value, price, now_iso, now_iso, bars_since_flip, momentum_60d))
                 return False, None
 
             old_state_str = row["current_state"]
@@ -719,12 +722,20 @@ class Database:
                 else:
                     eff_bars = row["bars_since_flip"]
 
-            cur.execute("""
-            UPDATE symbol_states
-            SET v1 = ?, m1 = ?, m2 = ?, v2 = ?, current_state = ?, last_price = ?,
-                last_state_change = ?, updated_at = ?, bars_since_flip = ?
-            WHERE ticker = ? AND timeframe = ?
-            """, (v1, m1, m2, v2, new_state.value, price, last_change, now_iso, eff_bars, ticker, timeframe))
+            if momentum_60d is not None:
+                cur.execute("""
+                UPDATE symbol_states
+                SET v1 = ?, m1 = ?, m2 = ?, v2 = ?, current_state = ?, last_price = ?,
+                    last_state_change = ?, updated_at = ?, bars_since_flip = ?, momentum_60d = ?
+                WHERE ticker = ? AND timeframe = ?
+                """, (v1, m1, m2, v2, new_state.value, price, last_change, now_iso, eff_bars, momentum_60d, ticker, timeframe))
+            else:
+                cur.execute("""
+                UPDATE symbol_states
+                SET v1 = ?, m1 = ?, m2 = ?, v2 = ?, current_state = ?, last_price = ?,
+                    last_state_change = ?, updated_at = ?, bars_since_flip = ?
+                WHERE ticker = ? AND timeframe = ?
+                """, (v1, m1, m2, v2, new_state.value, price, last_change, now_iso, eff_bars, ticker, timeframe))
 
             return state_changed, old_state
 

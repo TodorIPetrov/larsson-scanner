@@ -48,7 +48,7 @@ def _load_optimal_profiles() -> dict:
     return {}
 
 
-def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH):
+def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH, db_rows: Optional[List] = None):
     moms = {}
     if os.path.exists(cache_dir):
         import glob
@@ -66,6 +66,19 @@ def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH):
                         moms[clean_sym] = val
             except Exception:
                 pass
+
+    # Enrich / fallback with live momentum_60d persisted in database
+    if db_rows:
+        for r in db_rows:
+            sym = r["ticker"] if isinstance(r, dict) or hasattr(r, "__getitem__") else None
+            tf = r["timeframe"] if isinstance(r, dict) or hasattr(r, "__getitem__") else None
+            mom = r["momentum_60d"] if "momentum_60d" in r.keys() else None
+            if sym and tf == "1D" and mom is not None:
+                try:
+                    moms[sym] = float(mom)
+                except Exception:
+                    pass
+
     if moms:
         import pandas as pd
         s = pd.Series(moms)
@@ -162,8 +175,8 @@ def export_dashboard_data(
 
     names_map = _load_names_map()
     optimal_profiles = _load_optimal_profiles()
-    rs_ratings, all_mom_60 = _compute_universe_rs_ratings()
     rows = db.get_all_states()
+    rs_ratings, all_mom_60 = _compute_universe_rs_ratings(db_rows=rows)
 
     items = []
     gold_count = 0
@@ -198,7 +211,7 @@ def export_dashboard_data(
         v2_val = round(v2_clean, 4) if v2_clean is not None else 0.0
         spread_pct = round(((v1_val - v2_val) / v2_val) * 100, 2) if v2_val > 0 else 0.0
 
-        # Fundamental Profile lookup
+        # Fundamental Profile lookup with Live Mark-to-Market Adaptation
         try:
             from src.engine.quantamental import get_fundamental_profile
             fund = get_fundamental_profile(ticker)
@@ -207,18 +220,46 @@ def export_dashboard_data(
 
         fund_data = None
         if fund:
+            last_px = _clean_float(r["last_price"])
+            fv = _clean_float(fund.fair_value)
+
+            live_mos = _clean_float(fund.mos_pct)
+            live_upside = _clean_float(fund.upside_pct)
+            live_verdict = fund.verdict
+            live_action = fund.action or ("BUY" if "BUY" in (fund.verdict or "") else ("HOLD" if "HOLD" in (fund.verdict or "") else "REDUCE"))
+
+            if fv and last_px and last_px > 0 and fv > 0:
+                live_mos = round(((fv - last_px) / fv) * 100.0, 1)
+                live_upside = round(((fv - last_px) / last_px) * 100.0, 1)
+
+                # Institutional Dynamic Mark-to-Market Verdict Adaptation for Quality Assets
+                if not fund.is_bearish_or_distressed:
+                    if live_mos >= 20.0:
+                        live_verdict = "STRONG BUY" if fund.moat == "Wide" else "BUY / ACCUMULATE"
+                        live_action = "BUY"
+                    elif live_mos >= 5.0:
+                        live_verdict = "BUY / ACCUMULATE"
+                        live_action = "BUY"
+                    elif live_mos >= -15.0:
+                        live_verdict = "HOLD / FAIRLY VALUED"
+                        live_action = "HOLD"
+                    else:
+                        live_verdict = "HOLD / SENSITIVITY REVIEW" if fund.moat == "Wide" else "REDUCE / OVERVALUED"
+                        live_action = "HOLD" if fund.moat == "Wide" else "REDUCE"
+
             fund_data = {
-                "verdict": fund.verdict,
-                "fair_value": _clean_float(fund.fair_value),
-                "target_price": _clean_float(fund.target_price),
-                "mos_pct": _clean_float(fund.mos_pct),
+                "verdict": live_verdict,
+                "action": live_action,
+                "fair_value": fv,
+                "target_price": _clean_float(fund.target_price) or fv,
+                "mos_pct": live_mos,
                 "moat": fund.moat,
                 "roic_pct": _clean_float(fund.roic_pct),
                 "wacc_pct": _clean_float(fund.wacc_pct),
                 "z_score": _clean_float(fund.z_score),
                 "m_score": _clean_float(fund.m_score),
                 "tata": _clean_float(fund.tata),
-                "upside_pct": _clean_float(fund.upside_pct),
+                "upside_pct": live_upside,
                 "thesis": fund.thesis,
                 "sector": fund.sector,
                 "industry": fund.industry,
@@ -1188,7 +1229,8 @@ def export_dashboard_data(
     unique_quant.sort(key=lambda x: (x.get("trigger_active", False), x.get("value_sharpe", 0), x.get("mos_pct", 0)), reverse=True)
     quant_candidates = unique_quant
 
-    # Daily Action Diff (BUYS / SELLS / HOLDS)
+    # Daily Action Diff (BUYS / SELLS / HOLDS) with Trading Day Baseline Persistence
+    today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     prev_state = {}
     if os.path.exists(ROTATION_STATE_PATH):
         try:
@@ -1197,19 +1239,26 @@ def export_dashboard_data(
         except Exception:
             pass
 
-    prev_tickers = set(prev_state.get("top15_tickers", []))
+    saved_date = prev_state.get("trading_date")
     curr_tickers = set(x["ticker"] for x in top15)
+
+    if saved_date != today_str:
+        # New calendar trading day: baseline is yesterday's final top15
+        baseline_tickers = set(prev_state.get("current_top15_tickers", prev_state.get("top15_tickers", [])))
+    else:
+        # Same trading day: keep the stable morning baseline so intraday re-scans preserve BUYS and SELLS!
+        baseline_tickers = set(prev_state.get("baseline_top15_tickers", prev_state.get("top15_tickers", [])))
 
     buys = []
     holds = []
     sells = []
 
-    if not prev_tickers:
+    if not baseline_tickers:
         buys = top15
     else:
-        buys = [x for x in top15 if x["ticker"] not in prev_tickers]
-        holds = [x for x in top15 if x["ticker"] in prev_tickers]
-        dropped_tickers = prev_tickers - curr_tickers
+        buys = [x for x in top15 if x["ticker"] not in baseline_tickers]
+        holds = [x for x in top15 if x["ticker"] in baseline_tickers]
+        dropped_tickers = baseline_tickers - curr_tickers
         for d_sym in dropped_tickers:
             d_item = next((it for it in items if it.get("ticker") == d_sym), None)
             if d_item:
@@ -1233,7 +1282,13 @@ def export_dashboard_data(
     try:
         os.makedirs(os.path.dirname(ROTATION_STATE_PATH), exist_ok=True)
         with open(ROTATION_STATE_PATH, "w", encoding="utf-8") as f:
-            json.dump({"top15_tickers": [x["ticker"] for x in top15], "updated_at": datetime.now(timezone.utc).isoformat()}, f, indent=2)
+            json.dump({
+                "trading_date": today_str,
+                "baseline_top15_tickers": list(baseline_tickers) if baseline_tickers else [x["ticker"] for x in top15],
+                "current_top15_tickers": [x["ticker"] for x in top15],
+                "top15_tickers": [x["ticker"] for x in top15],
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }, f, indent=2)
     except Exception as e:
         logger.debug(f"Could not persist rotation state: {e}")
 
@@ -1295,8 +1350,14 @@ def export_dashboard_data(
     }
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
+    tmp_out = output_path + ".tmp"
+    with open(tmp_out, "w", encoding="utf-8") as f:
         json.dump(payload, f, indent=2, allow_nan=False)
+    try:
+        os.replace(tmp_out, output_path)
+    except Exception:
+        import time; time.sleep(0.1)
+        os.replace(tmp_out, output_path)
 
     # Split JSON files into dashboard/data/ directory (Task 2)
     try:

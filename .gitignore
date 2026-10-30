@@ -9,5 +9,7 @@ config/settings.local.yaml
 .env
 /data/*
 !/data/base_rates.json
+!/data/asset_optimal_profiles.json
+!/data/rotation_state.json
 scratch/
 .agents/

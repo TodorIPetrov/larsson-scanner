@@ -12,6 +12,9 @@ on:
     # 3) Monday to Friday at 21:05 UTC (shortly after US stock market close at 21:00 UTC)
     #    Scans traditional assets (US stocks, crypto stocks, international stocks, commodities, indices)
     - cron: '5 21 * * 1-5'
+    # 4) Weekly on Saturday at 08:00 UTC
+    #    Refreshes corporate fundamentals (DCF/Forensics) and optimal backtest DNA profiles
+    - cron: '0 8 * * 6'
 
   workflow_dispatch:
     inputs:
@@ -28,6 +31,11 @@ on:
           - crypto_stocks
           - commodities
           - indices
+      refresh_fundamentals:
+        description: 'Refresh corporate fundamentals (DCF/Forensics)'
+        required: false
+        default: false
+        type: boolean
       send_digest:
         description: 'Send Daily Digest to Telegram'
         required: false
@@ -41,7 +49,7 @@ jobs:
   scan-and-alert:
     name: 🔍 Scan Markets & Dispatch Telegram Alerts
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     env:
       TELEGRAM_ENABLED: "false"
@@ -69,6 +77,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 🔄 Refresh Corporate Fundamentals (Weekly or on-demand)
+        run: |
+          REFRESH_FUND="${{ github.event.inputs.refresh_fundamentals }}"
+          DAY_OF_WEEK=$(date -u +%u)
+          if [ "$REFRESH_FUND" = "true" ] || [ "$DAY_OF_WEEK" = "6" ]; then
+            echo "Executing weekly fundamental refresh for corporate equities..."
+            python src/main.py --refresh-fundamentals || echo "Warning: fundamental refresh had issues, continuing..."
+          fi
 
       - name: 🚀 Run Market Scanner (1D)
         run: |
@@ -104,14 +121,14 @@ jobs:
             echo "Outside morning digest window (UTC hour: $CURRENT_HOUR). Skipping daily digest."
           fi
 
-      - name: 💾 Commit & Push Updated Dashboard Data
+      - name: 💾 Commit & Push Updated Dashboard & State Data
         run: |
-          git add dashboard/
+          git add dashboard/ data/asset_optimal_profiles.json data/rotation_state.json research/verdicts.json || true
           if ! git diff --cached --quiet; then
             git commit -m "chore(data): auto-update market scanner data [skip ci]"
             git pull --no-rebase -X ours origin master || true
             git push origin master || echo "Push warning: unable to push, verify repository Settings -> Actions -> General -> Workflow permissions have Read and write permissions."
-            echo "✅ Dashboard data successfully pushed to GitHub Pages!"
+            echo "✅ Dashboard and state data successfully pushed to GitHub Pages!"
           else
             echo "ℹ️ No market state changes to commit."
           fi
