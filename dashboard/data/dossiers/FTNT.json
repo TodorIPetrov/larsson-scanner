@@ -4,16 +4,16 @@
   "sector": "Technology",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-10-29",
-  "backtest_years": 4.5,
-  "backtest_total_bars": 1146,
-  "current_price": 139.1,
+  "backtest_end_date": "2026-10-30",
+  "backtest_years": 4.6,
+  "backtest_total_bars": 1147,
+  "current_price": 135.79,
   "state": "GOLD",
-  "v1": 174.35,
-  "v2": 169.71,
-  "sma200": 128.09,
-  "rsi14": 27.6,
-  "atr14": 9.97,
+  "v1": 171.84,
+  "v2": 168.57,
+  "sma200": 128.38,
+  "rsi14": 26.5,
+  "atr14": 9.59,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -32,11 +32,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 9.9,
-      "cagr_pct": 2.1,
-      "sharpe_ratio": 0.25,
+      "total_return_pct": 7.3,
+      "cagr_pct": 1.6,
+      "sharpe_ratio": 0.23,
       "win_rate_pct": 14.3,
-      "profit_factor": 1.17,
+      "profit_factor": 1.13,
       "max_drawdown_pct": 46.4,
       "total_trades": 14
     },
@@ -44,11 +44,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 54.8,
-      "cagr_pct": 10.1,
-      "sharpe_ratio": 0.48,
+      "total_return_pct": 51.2,
+      "cagr_pct": 9.5,
+      "sharpe_ratio": 0.46,
       "win_rate_pct": 25.0,
-      "profit_factor": 2.26,
+      "profit_factor": 2.18,
       "max_drawdown_pct": 34.3,
       "total_trades": 16
     },
@@ -56,11 +56,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 10.6,
-      "cagr_pct": 2.2,
-      "sharpe_ratio": 0.24,
+      "total_return_pct": 8.0,
+      "cagr_pct": 1.7,
+      "sharpe_ratio": 0.22,
       "win_rate_pct": 19.2,
-      "profit_factor": 1.46,
+      "profit_factor": 1.41,
       "max_drawdown_pct": 43.7,
       "total_trades": 26
     },
@@ -80,11 +80,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 54.6,
-      "cagr_pct": 10.0,
-      "sharpe_ratio": 0.46,
+      "total_return_pct": 50.9,
+      "cagr_pct": 9.5,
+      "sharpe_ratio": 0.45,
       "win_rate_pct": 33.3,
-      "profit_factor": 7.23,
+      "profit_factor": 6.81,
       "max_drawdown_pct": 38.5,
       "total_trades": 6
     },
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 107.0,
-      "cagr_pct": 17.3,
-      "sharpe_ratio": 0.59,
+      "total_return_pct": 102.1,
+      "cagr_pct": 16.7,
+      "sharpe_ratio": 0.58,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.79,
+      "profit_factor": 2.66,
       "max_drawdown_pct": 38.3,
       "total_trades": 1
     }
@@ -16154,6 +16154,20 @@
       "v2": 169.71,
       "sma200": 128.09,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-10-30",
+      "open": 137.01,
+      "high": 138.79,
+      "low": 134.55,
+      "close": 135.79,
+      "volume": 2405177.0,
+      "v1": 171.84,
+      "m1": 171.51,
+      "m2": 169.99,
+      "v2": 168.57,
+      "sma200": 128.38,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -20803,6 +20817,10 @@
         {
           "time": "2026-10-29",
           "value": 10022.9
+        },
+        {
+          "time": "2026-10-30",
+          "value": 10022.9
         }
       ]
     },
@@ -25394,6 +25412,10 @@
         {
           "time": "2026-10-29",
           "value": 15472.82
+        },
+        {
+          "time": "2026-10-30",
+          "value": 15105.41
         }
       ]
     },
@@ -29985,6 +30007,10 @@
         {
           "time": "2026-10-29",
           "value": 15499.0
+        },
+        {
+          "time": "2026-10-30",
+          "value": 15130.97
         }
       ]
     },
@@ -34576,6 +34602,10 @@
         {
           "time": "2026-10-29",
           "value": 20721.26
+        },
+        {
+          "time": "2026-10-30",
+          "value": 20228.92
         }
       ]
     }
@@ -34632,17 +34662,17 @@
   ],
   "smart_money": {
     "symbol": "FTNT",
-    "smart_money_score": 46.0,
+    "smart_money_score": 47.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.10, P/C: 1.85).",
-    "cmf_20d": 0.099,
-    "up_down_vol_ratio": 0.5,
-    "absorption_5d_pct": 71.6,
-    "vol_shock_ratio": 4.32,
+    "cmf_20d": 0.104,
+    "up_down_vol_ratio": 0.43,
+    "absorption_5d_pct": 57.8,
+    "vol_shock_ratio": 0.51,
     "put_call_ratio": 1.85,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 139.0,
+    "gamma_wall": 130.0,
     "max_pain": 160.0,
     "unusual_call_sweep": false
   }

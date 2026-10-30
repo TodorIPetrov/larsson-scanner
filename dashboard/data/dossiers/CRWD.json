@@ -4,26 +4,26 @@
   "sector": "Technology",
   "asset_class": "ai_stocks",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-10-27",
-  "backtest_years": 4.5,
-  "backtest_total_bars": 1144,
-  "current_price": 268.02,
+  "backtest_end_date": "2026-10-30",
+  "backtest_years": 4.6,
+  "backtest_total_bars": 1147,
+  "current_price": 253.27,
   "state": "GOLD",
-  "v1": 247.24,
-  "v2": 234.52,
-  "sma200": 165.1,
-  "rsi14": 60.3,
-  "atr14": 12.58,
+  "v1": 249.94,
+  "v2": 237.25,
+  "sma200": 167.26,
+  "rsi14": 51.4,
+  "atr14": 12.77,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 273.0,
-    "cagr_pct": 33.6,
-    "sharpe_ratio": 0.94,
+    "total_return_pct": 252.5,
+    "cagr_pct": 31.9,
+    "sharpe_ratio": 0.91,
     "win_rate_pct": 66.7,
-    "profit_factor": 14.47,
+    "profit_factor": 13.46,
     "max_drawdown_pct": 41.1,
     "total_trades": 6
   },
@@ -32,11 +32,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 75.3,
-      "cagr_pct": 13.2,
-      "sharpe_ratio": 0.51,
+      "total_return_pct": 65.7,
+      "cagr_pct": 11.7,
+      "sharpe_ratio": 0.48,
       "win_rate_pct": 20.0,
-      "profit_factor": 2.17,
+      "profit_factor": 2.02,
       "max_drawdown_pct": 66.4,
       "total_trades": 15
     },
@@ -44,11 +44,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 75.3,
-      "cagr_pct": 13.2,
-      "sharpe_ratio": 0.51,
+      "total_return_pct": 65.6,
+      "cagr_pct": 11.7,
+      "sharpe_ratio": 0.48,
       "win_rate_pct": 28.6,
-      "profit_factor": 1.94,
+      "profit_factor": 1.82,
       "max_drawdown_pct": 65.6,
       "total_trades": 21
     },
@@ -56,11 +56,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 98.9,
-      "cagr_pct": 16.3,
-      "sharpe_ratio": 0.6,
+      "total_return_pct": 87.9,
+      "cagr_pct": 14.9,
+      "sharpe_ratio": 0.56,
       "win_rate_pct": 26.1,
-      "profit_factor": 3.05,
+      "profit_factor": 2.87,
       "max_drawdown_pct": 44.3,
       "total_trades": 23
     },
@@ -68,11 +68,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 109.5,
-      "cagr_pct": 17.7,
-      "sharpe_ratio": 0.77,
+      "total_return_pct": 98.0,
+      "cagr_pct": 16.2,
+      "sharpe_ratio": 0.72,
       "win_rate_pct": 50.0,
-      "profit_factor": 8.21,
+      "profit_factor": 7.6,
       "max_drawdown_pct": 28.2,
       "total_trades": 6
     },
@@ -80,11 +80,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 273.0,
-      "cagr_pct": 33.6,
-      "sharpe_ratio": 0.94,
+      "total_return_pct": 252.5,
+      "cagr_pct": 31.9,
+      "sharpe_ratio": 0.91,
       "win_rate_pct": 66.7,
-      "profit_factor": 14.47,
+      "profit_factor": 13.46,
       "max_drawdown_pct": 41.1,
       "total_trades": 6
     },
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 403.4,
-      "cagr_pct": 42.8,
-      "sharpe_ratio": 0.95,
+      "total_return_pct": 375.7,
+      "cagr_pct": 40.9,
+      "sharpe_ratio": 0.93,
       "win_rate_pct": 100.0,
-      "profit_factor": 6.67,
+      "profit_factor": 6.21,
       "max_drawdown_pct": 60.5,
       "total_trades": 1
     }
@@ -16119,12 +16119,54 @@
       "high": 271.06,
       "low": 260.25,
       "close": 268.02,
-      "volume": 7294200.0,
+      "volume": 7310500.0,
       "v1": 247.24,
       "m1": 243.96,
       "m2": 238.39,
       "v2": 234.52,
       "sma200": 165.1,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-10-28",
+      "open": 270.46,
+      "high": 272.29,
+      "low": 263.73,
+      "close": 266.66,
+      "volume": 7562400.0,
+      "v1": 248.63,
+      "m1": 245.23,
+      "m2": 239.57,
+      "v2": 235.68,
+      "sma200": 165.85,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-10-29",
+      "open": 254.34,
+      "high": 268.6,
+      "low": 250.1,
+      "close": 261.15,
+      "volume": 9371500.0,
+      "v1": 249.34,
+      "m1": 245.97,
+      "m2": 240.36,
+      "v2": 236.49,
+      "sma200": 166.57,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-10-30",
+      "open": 261.06,
+      "high": 264.9,
+      "low": 251.78,
+      "close": 253.27,
+      "volume": 3801035.0,
+      "v1": 249.94,
+      "m1": 246.62,
+      "m2": 241.08,
+      "v2": 237.25,
+      "sma200": 167.26,
       "state": "GOLD"
     }
   ],
@@ -16207,11 +16249,11 @@
       "text": "BUY #6 @ $124.79"
     },
     {
-      "time": "2026-10-27",
+      "time": "2026-10-30",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +114.34% ($19886.38 €)"
+      "text": "EXIT +102.55% ($17835.52 €)"
     }
   ],
   "equity_curves": [
@@ -20795,6 +20837,18 @@
         {
           "time": "2026-10-27",
           "value": 37333.24
+        },
+        {
+          "time": "2026-10-28",
+          "value": 37143.89
+        },
+        {
+          "time": "2026-10-29",
+          "value": 36376.75
+        },
+        {
+          "time": "2026-10-30",
+          "value": 35280.33
         }
       ]
     },
@@ -25378,6 +25432,18 @@
         {
           "time": "2026-10-27",
           "value": 20974.76
+        },
+        {
+          "time": "2026-10-28",
+          "value": 20868.35
+        },
+        {
+          "time": "2026-10-29",
+          "value": 20437.23
+        },
+        {
+          "time": "2026-10-30",
+          "value": 19821.07
         }
       ]
     },
@@ -29961,6 +30027,18 @@
         {
           "time": "2026-10-27",
           "value": 19905.39
+        },
+        {
+          "time": "2026-10-28",
+          "value": 19804.41
+        },
+        {
+          "time": "2026-10-29",
+          "value": 19395.31
+        },
+        {
+          "time": "2026-10-30",
+          "value": 18810.61
         }
       ]
     },
@@ -34544,6 +34622,18 @@
         {
           "time": "2026-10-27",
           "value": 50392.07
+        },
+        {
+          "time": "2026-10-28",
+          "value": 50136.37
+        },
+        {
+          "time": "2026-10-29",
+          "value": 49100.4
+        },
+        {
+          "time": "2026-10-30",
+          "value": 47619.77
         }
       ]
     }
@@ -34613,28 +34703,28 @@
       "num": 6,
       "entry_date": "2026-05-08",
       "entry_price": 124.79,
-      "exit_date": "2026-10-27",
-      "exit_price": 268.02,
-      "holding_days": 118,
-      "pnl_pct": 114.34,
-      "pnl_eur": 19886.38,
+      "exit_date": "2026-10-30",
+      "exit_price": 253.27,
+      "holding_days": 121,
+      "pnl_pct": 102.55,
+      "pnl_eur": 17835.52,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "CRWD",
-    "smart_money_score": 67.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.95) с Gamma стена на $262.50. Залог за рязък отскок.",
-    "cmf_20d": -0.049,
-    "up_down_vol_ratio": 1.05,
-    "absorption_5d_pct": 69.1,
-    "vol_shock_ratio": 0.85,
+    "smart_money_score": 37.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: 0.95).",
+    "cmf_20d": -0.071,
+    "up_down_vol_ratio": 0.64,
+    "absorption_5d_pct": 50.5,
+    "vol_shock_ratio": 0.44,
     "put_call_ratio": 0.95,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 262.5,
+    "gamma_wall": 250.0,
     "max_pain": 250.0,
     "unusual_call_sweep": false
   }

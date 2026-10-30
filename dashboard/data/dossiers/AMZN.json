@@ -4,16 +4,16 @@
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-10-29",
-  "backtest_years": 4.5,
-  "backtest_total_bars": 1146,
-  "current_price": 243.79,
-  "state": "NEUTRAL",
-  "v1": 253.84,
-  "v2": 254.01,
-  "sma200": 243.38,
-  "rsi14": 40.7,
-  "atr14": 6.7,
+  "backtest_end_date": "2026-10-30",
+  "backtest_years": 4.6,
+  "backtest_total_bars": 1147,
+  "current_price": 239.57,
+  "state": "BLUE",
+  "v1": 252.57,
+  "v2": 253.34,
+  "sma200": 243.4,
+  "rsi14": 37.7,
+  "atr14": 7.26,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -32,12 +32,12 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -8.3,
-      "cagr_pct": -1.9,
-      "sharpe_ratio": 0.05,
+      "total_return_pct": -13.2,
+      "cagr_pct": -3.1,
+      "sharpe_ratio": -0.0,
       "win_rate_pct": 16.7,
-      "profit_factor": 0.87,
-      "max_drawdown_pct": 39.7,
+      "profit_factor": 0.81,
+      "max_drawdown_pct": 43.0,
       "total_trades": 12
     },
     {
@@ -56,12 +56,12 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 5.4,
-      "cagr_pct": 1.2,
-      "sharpe_ratio": 0.17,
+      "total_return_pct": 2.7,
+      "cagr_pct": 0.6,
+      "sharpe_ratio": 0.14,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.96,
-      "max_drawdown_pct": 38.2,
+      "profit_factor": 0.93,
+      "max_drawdown_pct": 39.7,
       "total_trades": 28
     },
     {
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 50.5,
-      "cagr_pct": 9.4,
-      "sharpe_ratio": 0.44,
+      "total_return_pct": 47.9,
+      "cagr_pct": 9.0,
+      "sharpe_ratio": 0.43,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.04,
+      "profit_factor": 0.99,
       "max_drawdown_pct": 48.5,
       "total_trades": 1
     }
@@ -16154,6 +16154,20 @@
       "v2": 254.01,
       "sma200": 243.38,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-10-30",
+      "open": 232.53,
+      "high": 240.21,
+      "low": 229.36,
+      "close": 239.57,
+      "volume": 44824561.0,
+      "v1": 252.57,
+      "m1": 253.02,
+      "m2": 253.33,
+      "v2": 253.34,
+      "sma200": 243.4,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -20817,6 +20831,10 @@
         {
           "time": "2026-10-29",
           "value": 9048.45
+        },
+        {
+          "time": "2026-10-30",
+          "value": 9048.45
         }
       ]
     },
@@ -25408,6 +25426,10 @@
         {
           "time": "2026-10-29",
           "value": 10543.86
+        },
+        {
+          "time": "2026-10-30",
+          "value": 10274.79
         }
       ]
     },
@@ -29999,6 +30021,10 @@
         {
           "time": "2026-10-29",
           "value": 9177.29
+        },
+        {
+          "time": "2026-10-30",
+          "value": 8677.59
         }
       ]
     },
@@ -34590,6 +34616,10 @@
         {
           "time": "2026-10-29",
           "value": 15066.22
+        },
+        {
+          "time": "2026-10-30",
+          "value": 14805.43
         }
       ]
     }
@@ -34658,17 +34688,17 @@
   ],
   "smart_money": {
     "symbol": "AMZN",
-    "smart_money_score": 65.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.48) с Gamma стена на $245.00. Залог за рязък отскок.",
-    "cmf_20d": -0.011,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 55.8,
-    "vol_shock_ratio": 2.35,
+    "smart_money_score": 84.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 0.76x). Силна скрита подкрепа.",
+    "cmf_20d": 0.047,
+    "up_down_vol_ratio": 0.76,
+    "absorption_5d_pct": 65.9,
+    "vol_shock_ratio": 1.18,
     "put_call_ratio": 0.48,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 245.0,
+    "gamma_wall": 240.0,
     "max_pain": 280.0,
     "unusual_call_sweep": false
   }

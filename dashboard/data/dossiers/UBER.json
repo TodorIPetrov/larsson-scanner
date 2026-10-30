@@ -4,16 +4,16 @@
   "sector": "Technology",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-10-29",
-  "backtest_years": 4.5,
-  "backtest_total_bars": 1146,
-  "current_price": 65.74,
+  "backtest_end_date": "2026-10-30",
+  "backtest_years": 4.6,
+  "backtest_total_bars": 1147,
+  "current_price": 65.34,
   "state": "BLUE",
-  "v1": 69.07,
-  "v2": 70.55,
-  "sma200": 73.43,
-  "rsi14": 37.2,
-  "atr14": 1.73,
+  "v1": 68.82,
+  "v2": 70.36,
+  "sma200": 73.34,
+  "rsi14": 36.0,
+  "atr14": 1.69,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 93.8,
-      "cagr_pct": 15.7,
+      "total_return_pct": 92.6,
+      "cagr_pct": 15.5,
       "sharpe_ratio": 0.56,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.38,
+      "profit_factor": 2.35,
       "max_drawdown_pct": 39.5,
       "total_trades": 1
     }
@@ -16154,6 +16154,20 @@
       "v2": 70.55,
       "sma200": 73.43,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-10-30",
+      "open": 65.61,
+      "high": 65.8,
+      "low": 64.67,
+      "close": 65.34,
+      "volume": 4165984.0,
+      "v1": 68.82,
+      "m1": 69.38,
+      "m2": 70.02,
+      "v2": 70.36,
+      "sma200": 73.34,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -20845,6 +20859,10 @@
         {
           "time": "2026-10-29",
           "value": 13798.56
+        },
+        {
+          "time": "2026-10-30",
+          "value": 13798.56
         }
       ]
     },
@@ -25435,6 +25453,10 @@
         },
         {
           "time": "2026-10-29",
+          "value": 12143.45
+        },
+        {
+          "time": "2026-10-30",
           "value": 12143.45
         }
       ]
@@ -30027,6 +30049,10 @@
         {
           "time": "2026-10-29",
           "value": 13929.81
+        },
+        {
+          "time": "2026-10-30",
+          "value": 13929.81
         }
       ]
     },
@@ -34618,6 +34644,10 @@
         {
           "time": "2026-10-29",
           "value": 19398.69
+        },
+        {
+          "time": "2026-10-30",
+          "value": 19280.65
         }
       ]
     }
@@ -34710,14 +34740,14 @@
   ],
   "smart_money": {
     "symbol": "UBER",
-    "smart_money_score": 50.0,
+    "smart_money_score": 55.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 0.54).",
-    "cmf_20d": 0.029,
-    "up_down_vol_ratio": 0.55,
-    "absorption_5d_pct": 44.1,
-    "vol_shock_ratio": 1.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: 0.54).",
+    "cmf_20d": 0.011,
+    "up_down_vol_ratio": 0.46,
+    "absorption_5d_pct": 53.7,
+    "vol_shock_ratio": 0.26,
     "put_call_ratio": 0.54,
     "options_sentiment": "BULLISH",
     "gamma_wall": 66.0,

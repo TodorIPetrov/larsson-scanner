@@ -4,16 +4,16 @@
   "sector": "Communication Services",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-10-29",
-  "backtest_years": 4.5,
-  "backtest_total_bars": 1146,
-  "current_price": 62.05,
+  "backtest_end_date": "2026-10-30",
+  "backtest_years": 4.6,
+  "backtest_total_bars": 1147,
+  "current_price": 62.79,
   "state": "BLUE",
-  "v1": 68.85,
-  "v2": 71.68,
-  "sma200": 81.73,
-  "rsi14": 30.5,
-  "atr14": 2.0,
+  "v1": 68.42,
+  "v2": 71.36,
+  "sma200": 81.6,
+  "rsi14": 33.5,
+  "atr14": 1.95,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -81,7 +81,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 116.9,
-      "cagr_pct": 18.6,
+      "cagr_pct": 18.5,
       "sharpe_ratio": 0.82,
       "win_rate_pct": 40.0,
       "profit_factor": 4.33,
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 65.5,
-      "cagr_pct": 11.7,
-      "sharpe_ratio": 0.49,
+      "total_return_pct": 67.5,
+      "cagr_pct": 12.0,
+      "sharpe_ratio": 0.5,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.19,
+      "profit_factor": 1.23,
       "max_drawdown_pct": 54.8,
       "total_trades": 1
     }
@@ -16154,6 +16154,20 @@
       "v2": 71.68,
       "sma200": 81.73,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-10-30",
+      "open": 62.65,
+      "high": 63.05,
+      "low": 61.68,
+      "close": 62.79,
+      "volume": 17022144.0,
+      "v1": 68.42,
+      "m1": 69.42,
+      "m2": 70.65,
+      "v2": 71.36,
+      "sma200": 81.6,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -20859,6 +20873,10 @@
         {
           "time": "2026-10-29",
           "value": 30239.81
+        },
+        {
+          "time": "2026-10-30",
+          "value": 30239.81
         }
       ]
     },
@@ -25449,6 +25467,10 @@
         },
         {
           "time": "2026-10-29",
+          "value": 31220.43
+        },
+        {
+          "time": "2026-10-30",
           "value": 31220.43
         }
       ]
@@ -30041,6 +30063,10 @@
         {
           "time": "2026-10-29",
           "value": 21690.25
+        },
+        {
+          "time": "2026-10-30",
+          "value": 21690.25
         }
       ]
     },
@@ -34632,6 +34658,10 @@
         {
           "time": "2026-10-29",
           "value": 16567.67
+        },
+        {
+          "time": "2026-10-30",
+          "value": 16766.59
         }
       ]
     }
@@ -34736,14 +34766,14 @@
   ],
   "smart_money": {
     "symbol": "NFLX",
-    "smart_money_score": 32.0,
+    "smart_money_score": 60.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.43) с Gamma стена на $63.00. Залог за рязък отскок.",
-    "cmf_20d": -0.066,
-    "up_down_vol_ratio": 0.68,
-    "absorption_5d_pct": 28.6,
-    "vol_shock_ratio": 1.03,
+    "cmf_20d": -0.036,
+    "up_down_vol_ratio": 0.77,
+    "absorption_5d_pct": 44.2,
+    "vol_shock_ratio": 0.39,
     "put_call_ratio": 0.43,
     "options_sentiment": "BULLISH",
     "gamma_wall": 63.0,
