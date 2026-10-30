@@ -7381,7 +7381,11 @@ function renderRotationPortfolio() {
     secPills.innerHTML = sHtml;
   }
 
-  // 2. Render Daily Actions (Intelligent entry & exit dispatch)
+    // 2. Render Daily Actions (Intelligent entry & exit dispatch)
+  const actionsDateEl = document.getElementById('rotActionsDate');
+  if (actionsDateEl) {
+    actionsDateEl.textContent = '30 Окт 2026 (Актуална сесия)';
+  }
   const actionsList = document.getElementById('rotActionsList');
   if (actionsList) {
     let actHtml = '';
