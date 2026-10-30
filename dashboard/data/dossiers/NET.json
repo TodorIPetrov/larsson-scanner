@@ -34829,5 +34829,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "NET",
+    "smart_money_score": 35.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.56, CMF: -0.15).",
+    "cmf_20d": -0.151,
+    "up_down_vol_ratio": 0.58,
+    "absorption_5d_pct": 48.6,
+    "vol_shock_ratio": 0.76,
+    "put_call_ratio": 0.56,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 325.0,
+    "max_pain": 320.0,
+    "unusual_call_sweep": false
+  }
 }

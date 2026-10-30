@@ -34785,5 +34785,21 @@
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "BKNG",
+    "smart_money_score": 32.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.46) с Gamma стена на $149.00. Залог за рязък отскок.",
+    "cmf_20d": -0.093,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 33.2,
+    "vol_shock_ratio": 0.87,
+    "put_call_ratio": 0.46,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 149.0,
+    "max_pain": 170.0,
+    "unusual_call_sweep": false
+  }
 }

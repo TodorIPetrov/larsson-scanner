@@ -34621,5 +34621,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "CRWD",
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.95) с Gamma стена на $262.50. Залог за рязък отскок.",
+    "cmf_20d": -0.049,
+    "up_down_vol_ratio": 1.05,
+    "absorption_5d_pct": 69.1,
+    "vol_shock_ratio": 0.85,
+    "put_call_ratio": 0.95,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 262.5,
+    "max_pain": 250.0,
+    "unusual_call_sweep": false
+  }
 }

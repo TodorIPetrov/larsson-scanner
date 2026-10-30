@@ -34595,5 +34595,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "WMT",
+    "smart_money_score": 77.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.86x). Силна скрита подкрепа.",
+    "cmf_20d": 0.042,
+    "up_down_vol_ratio": 1.86,
+    "absorption_5d_pct": 54.9,
+    "vol_shock_ratio": 0.74,
+    "put_call_ratio": 0.73,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 122.0,
+    "max_pain": 115.0,
+    "unusual_call_sweep": false
+  }
 }

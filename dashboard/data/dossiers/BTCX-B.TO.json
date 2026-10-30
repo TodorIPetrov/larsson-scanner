@@ -34565,5 +34565,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "BTCX-B.TO",
+    "smart_money_score": 65.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": -0.049,
+    "up_down_vol_ratio": 1.65,
+    "absorption_5d_pct": 52.0,
+    "vol_shock_ratio": 0.32,
+    "put_call_ratio": null,
+    "options_sentiment": "N/A",
+    "gamma_wall": null,
+    "max_pain": null,
+    "unusual_call_sweep": false
+  }
 }

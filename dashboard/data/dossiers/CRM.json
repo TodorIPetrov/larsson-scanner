@@ -34733,5 +34733,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "CRM",
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.77) с Gamma стена на $232.50. Залог за рязък отскок.",
+    "cmf_20d": 0.083,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": 55.9,
+    "vol_shock_ratio": 1.06,
+    "put_call_ratio": 0.77,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 232.5,
+    "max_pain": 240.0,
+    "unusual_call_sweep": false
+  }
 }

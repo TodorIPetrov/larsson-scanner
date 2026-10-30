@@ -34617,5 +34617,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "ETHX-B.TO",
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
+    "cmf_20d": -0.176,
+    "up_down_vol_ratio": 0.58,
+    "absorption_5d_pct": 54.1,
+    "vol_shock_ratio": 0.16,
+    "put_call_ratio": null,
+    "options_sentiment": "N/A",
+    "gamma_wall": null,
+    "max_pain": null,
+    "unusual_call_sweep": false
+  }
 }

@@ -34569,5 +34569,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "AMD",
+    "smart_money_score": 74.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.98) с Gamma стена на $570.00. Залог за рязък отскок.",
+    "cmf_20d": 0.073,
+    "up_down_vol_ratio": 0.92,
+    "absorption_5d_pct": 65.4,
+    "vol_shock_ratio": 1.07,
+    "put_call_ratio": 0.98,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 570.0,
+    "max_pain": 150.0,
+    "unusual_call_sweep": false
+  }
 }

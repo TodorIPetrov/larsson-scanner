@@ -34629,5 +34629,21 @@
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "FTNT",
+    "smart_money_score": 46.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.10, P/C: 1.85).",
+    "cmf_20d": 0.099,
+    "up_down_vol_ratio": 0.5,
+    "absorption_5d_pct": 71.6,
+    "vol_shock_ratio": 4.32,
+    "put_call_ratio": 1.85,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 139.0,
+    "max_pain": 160.0,
+    "unusual_call_sweep": false
+  }
 }

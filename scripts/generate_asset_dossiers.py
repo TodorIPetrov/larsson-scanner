@@ -23,6 +23,7 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
+from src.engine.smart_money import analyze_smart_money
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
@@ -620,6 +621,14 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
         "markers": markers,
         "equity_curves": curves_data,
         "winning_trades_log": winner["trades"],
+        "smart_money": analyze_smart_money(
+            ticker,
+            df["high"],
+            df["low"],
+            df["close"],
+            df["volume"],
+            optimal_profile.get("ribbon_state", "UNKNOWN")
+        ),
     }
 
     return dossier

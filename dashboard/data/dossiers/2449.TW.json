@@ -33249,5 +33249,21 @@
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "2449.TW",
+    "smart_money_score": 35.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
+    "cmf_20d": -0.124,
+    "up_down_vol_ratio": 0.88,
+    "absorption_5d_pct": 43.8,
+    "vol_shock_ratio": 0.48,
+    "put_call_ratio": null,
+    "options_sentiment": "N/A",
+    "gamma_wall": null,
+    "max_pain": null,
+    "unusual_call_sweep": false
+  }
 }

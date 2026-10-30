@@ -7358,10 +7358,27 @@ function renderRotationPortfolio() {
       if (actionsList) actionsList.innerHTML = '<div style="padding:15px; color:#8b949e; text-align:center;">Няма намерени ротационни данни. Натиснете Refresh или презаредете страницата (Ctrl+F5).</div>';
       const top15Body = document.getElementById('rotTop15Body');
       if (top15Body) top15Body.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px; color:#8b949e;">Няма заредени позиции за ротацията. Моля натиснете Refresh горе вдясно или натиснете Ctrl+F5.</td></tr>';
-      const benchBody = document.getElementById('rotBenchBody');
+  const benchBody = document.getElementById('rotBenchBody');
       if (benchBody) benchBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px; color:#8b949e;">Няма резерви.</td></tr>';
     }
     return;
+  }
+
+    // Render Sector Smart Money Rotation Flow Strip
+  const secPills = document.getElementById('sectorSmartMoneyPills');
+  if (secPills && rotData && rotData.sector_money_flow) {
+    let sHtml = '';
+    rotData.sector_money_flow.forEach(s => {
+      const isPos = s.cmf_20d > 0.05;
+      const isNeg = s.cmf_20d < -0.05;
+      const cls = isPos ? 'sector-flow-inflow' : (isNeg ? 'sector-flow-outflow' : 'sector-flow-neutral');
+      const arrow = isPos ? '▲' : (isNeg ? '▼' : '►');
+      const sign = s.cmf_20d > 0 ? '+' : '';
+      sHtml += `<span class="sector-flow-pill ${cls}" title="${s.name} (${s.status_bg}) | CMF: ${sign}${s.cmf_20d}">
+        <strong>${s.ticker}</strong> ${s.name} <span style="font-size:0.75rem; opacity:0.9;">${arrow} ${sign}${s.cmf_20d}</span>
+      </span>`;
+    });
+    secPills.innerHTML = sHtml;
   }
 
   // 2. Render Daily Actions (Intelligent entry & exit dispatch)
@@ -7690,6 +7707,13 @@ function renderRotationPortfolio() {
             <span style="font-size:0.75rem; color:#58a6ff;">(~${trancheShares})</span>
           </td>
           <td>
+            ${q.smart_money ? `
+              <span class="badge" style="background: ${q.smart_money.score >= 60 ? 'rgba(46, 160, 67, 0.15)' : 'rgba(139, 148, 158, 0.1)'}; color: ${q.smart_money.score >= 60 ? '#3fb950' : '#8b949e'}; border: 1px solid ${q.smart_money.score >= 60 ? 'rgba(63, 185, 80, 0.4)' : 'rgba(139, 148, 158, 0.3)'}; font-size: 0.72rem; white-space: nowrap;" title="CMF: ${q.smart_money.metrics && q.smart_money.metrics.cmf_20d >= 0 ? '+' : ''}${q.smart_money.metrics ? q.smart_money.metrics.cmf_20d : 0} | P/C: ${q.smart_money.metrics && q.smart_money.metrics.options ? q.smart_money.metrics.options.put_call_ratio : 'N/A'}">
+                ${q.smart_money.flow_label_bg} (${q.smart_money.score})
+              </span>
+            ` : '<span style="color:#8b949e; font-size:0.75rem;">-</span>'}
+          </td>
+          <td>
             <div style="display: flex; gap: 6px; align-items: center;">
               ${isOwned ? '<span style="color:#3fb950; font-weight:600; font-size:0.75rem;">✅ Притежавана</span>' : (
                 q.trigger_active !== false ? `
@@ -7945,7 +7969,53 @@ function renderProposalDossier(d, ctx) {
   const zEl = document.getElementById('dossierZScore');
   if (zEl) zEl.textContent = fundData.z_score ? `${fundData.z_score}` : '3.20 (Safe)';
   const vrdEl = document.getElementById('dossierVerdict');
-  if (vrdEl) vrdEl.textContent = fundData.verdict || 'BUY / ACCUMULATE';
+    if (vrdEl) vrdEl.textContent = fundData.verdict || 'BUY / ACCUMULATE';
+
+  // 3.4. Populate Pillar 4: Smart Money & Options Whales
+  const sm = d.smart_money || {};
+  const smMetrics = sm.metrics || {};
+  const smOpt = smMetrics.options || {};
+
+  const smVrdEl = document.getElementById('dossierSmVerdict');
+  if (smVrdEl) smVrdEl.textContent = sm.flow_label_bg || 'НЕУТРАЛЕН ПОТОК';
+  const smCmfEl = document.getElementById('dossierSmCmf');
+  if (smCmfEl) {
+    const cmfVal = smMetrics.cmf_20d !== undefined ? smMetrics.cmf_20d : 0;
+    const cmfSign = cmfVal > 0 ? '+' : '';
+    smCmfEl.textContent = `${cmfSign}${cmfVal}`;
+    smCmfEl.style.color = cmfVal > 0.05 ? '#3fb950' : (cmfVal < -0.05 ? '#f85149' : '#8b949e');
+  }
+  const smVolEl = document.getElementById('dossierSmVolRatio');
+  if (smVolEl) {
+    const vr = smMetrics.up_down_vol_ratio !== undefined ? smMetrics.up_down_vol_ratio : 1.0;
+    smVolEl.textContent = `${vr}x`;
+    smVolEl.style.color = vr >= 1.0 ? '#3fb950' : '#f85149';
+  }
+  const smAbsEl = document.getElementById('dossierSmAbsorption');
+  if (smAbsEl) {
+    const ab = smMetrics.absorption_5d_pct !== undefined ? smMetrics.absorption_5d_pct : 0;
+    smAbsEl.textContent = `${ab}%`;
+    smAbsEl.style.color = ab >= 50.0 ? '#3fb950' : '#8b949e';
+  }
+  const smPcrEl = document.getElementById('dossierSmPcr');
+  if (smPcrEl) {
+    const pcr = smOpt.put_call_ratio !== undefined ? smOpt.put_call_ratio : 'N/A';
+    const sent = smOpt.net_sentiment || 'NEUTRAL';
+    smPcrEl.textContent = `${pcr} (${sent})`;
+    smPcrEl.style.color = pcr < 0.7 ? '#3fb950' : (pcr > 1.0 ? '#f85149' : '#8b949e');
+  }
+  const smGwEl = document.getElementById('dossierSmGammaWall');
+  if (smGwEl) {
+    const gw = smOpt.gamma_wall ? `$${smOpt.gamma_wall}` : 'N/A';
+    const mp = smOpt.max_pain ? `$${smOpt.max_pain}` : 'N/A';
+    smGwEl.textContent = `${gw} / ${mp}`;
+  }
+  const smScrEl = document.getElementById('dossierSmScore');
+  if (smScrEl) {
+    const sc = sm.score !== undefined ? sm.score : 50;
+    smScrEl.textContent = `${sc}/100 🐋`;
+    smScrEl.style.color = sc >= 60 ? '#3fb950' : (sc <= 40 ? '#f85149' : '#ffd700');
+  }
 
   const topWinBadge = document.getElementById('dossierWinnerBadgeTop');
   if (topWinBadge) topWinBadge.textContent = `🏆 Победител: ${d.winning_strategy_name} (CAGR +${d.winning_metrics.cagr_pct}%)`;

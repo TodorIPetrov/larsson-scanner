@@ -34543,5 +34543,21 @@
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "XOM",
+    "smart_money_score": 95.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.24, Up/Dn Vol: 2.21x). Силна скрита подкрепа.",
+    "cmf_20d": 0.241,
+    "up_down_vol_ratio": 2.21,
+    "absorption_5d_pct": 63.3,
+    "vol_shock_ratio": 1.25,
+    "put_call_ratio": 0.39,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 185.0,
+    "max_pain": 202.5,
+    "unusual_call_sweep": false
+  }
 }

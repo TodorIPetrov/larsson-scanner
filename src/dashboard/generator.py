@@ -1,3 +1,5 @@
+import logging
+logger = logging.getLogger(__name__)
 """
 Dashboard Data Generator.
 Exports SQLite states into a clean JSON structure suitable for the web dashboard.
@@ -12,6 +14,7 @@ from typing import Dict, List, Optional
 from src.storage.database import Database
 from src.engine.asset_profiles import get_quality_tier, get_tier_emoji
 from src.engine.btc_relative import get_tradingview_ratio_symbol, get_tradingview_ratio_link
+from src.engine.smart_money import analyze_smart_money, compute_sector_smart_money_flow
 
 DEFAULT_OUTPUT_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -1185,6 +1188,7 @@ def export_dashboard_data(
             stop_risk_pct = round(((price - calc_stop) / price) * 100.0, 1)
 
             calculated_mos = mos_val if mos_val is not None else (round(((fair_val - price) / fair_val) * 100.0, 1) if fair_val > price else 15.0)
+            sm_flow = analyze_smart_money(sym, ribbon_state=st)
 
             quant_candidates.append({
                 "ticker": sym,
@@ -1210,6 +1214,7 @@ def export_dashboard_data(
                 "tranche_shares": round((per_slot_eur * 0.5) / price, 2) if price > 0 else 0,
                 "tv_symbol": item.get("tv_symbol"),
                 "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
+                "smart_money": sm_flow,
             })
 
     # Deduplicate candidates by ticker (preferring highest rank_score)
@@ -1311,6 +1316,7 @@ def export_dashboard_data(
         "top15": top15,
         "reserve_bench": reserve_bench,
         "quantamental_dips": quant_candidates[:12],
+        "sector_money_flow": compute_sector_smart_money_flow(),
         "daily_actions": {
             "buys": buys,
             "sells": sells,

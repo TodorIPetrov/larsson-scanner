@@ -34647,5 +34647,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "ARKW",
+    "smart_money_score": 83.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.04, Up/Dn Vol: 1.28x). Силна скрита подкрепа.",
+    "cmf_20d": -0.04,
+    "up_down_vol_ratio": 1.28,
+    "absorption_5d_pct": 52.1,
+    "vol_shock_ratio": 2.47,
+    "put_call_ratio": 0.16,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 155.0,
+    "max_pain": 180.0,
+    "unusual_call_sweep": false
+  }
 }

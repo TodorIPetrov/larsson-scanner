@@ -34621,5 +34621,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "MSTR",
+    "smart_money_score": 40.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.12, P/C: 0.63).",
+    "cmf_20d": -0.124,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": 52.0,
+    "vol_shock_ratio": 0.55,
+    "put_call_ratio": 0.63,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 142.0,
+    "max_pain": 152.5,
+    "unusual_call_sweep": false
+  }
 }

@@ -34707,5 +34707,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "MRVL",
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.57) с Gamma стена на $220.00. Залог за рязък отскок.",
+    "cmf_20d": -0.027,
+    "up_down_vol_ratio": 0.94,
+    "absorption_5d_pct": 64.6,
+    "vol_shock_ratio": 2.04,
+    "put_call_ratio": 0.57,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 220.0,
+    "max_pain": 235.0,
+    "unusual_call_sweep": false
+  }
 }

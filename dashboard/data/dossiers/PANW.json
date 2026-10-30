@@ -34759,5 +34759,21 @@
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "PANW",
+    "smart_money_score": 36.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.54, CMF: -0.11).",
+    "cmf_20d": -0.113,
+    "up_down_vol_ratio": 0.96,
+    "absorption_5d_pct": 63.4,
+    "vol_shock_ratio": 1.41,
+    "put_call_ratio": 1.54,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 382.5,
+    "max_pain": 325.0,
+    "unusual_call_sweep": false
+  }
 }

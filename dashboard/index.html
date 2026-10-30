@@ -616,6 +616,20 @@
         </section>
 
         <!-- Reserve Bench & Quantamental Dips Grid -->
+        <!-- Sector Smart Money Rotation Flow Strip -->
+        <div id="sectorSmartMoneyContainer" style="margin-bottom: 16px; background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.1rem;">🌊</span>
+              <strong style="color: #f0f6fc; font-size: 0.9rem;">Секторен Поток на Умните Пари (20D ETF Chaikin Money Flow)</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: #8b949e;">Зелено: Институционален Входящ Поток | Червено: Изходящ Капитал</span>
+          </div>
+          <div id="sectorSmartMoneyPills" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
         <div class="rot-subgrids-row">
           <!-- 1. Reserve Bench -->
           <section class="portfolio-positions-section rot-subgrid-col">
@@ -670,6 +684,7 @@
                     <th>Доказана Value ДНК</th>
                     <th>Стоп ($)</th>
                     <th>Транш (€)</th>
+                    <th>🐋 Smart Money</th>
                     <th>Действие</th>
                   </tr>
                 </thead>
@@ -1167,6 +1182,22 @@
                 <div><span class="lbl">ROIC vs WACC:</span> <strong id="dossierRoic">28.5% / 8.2%</strong></div>
                 <div><span class="lbl">Altman Z-Score здраве:</span> <strong id="dossierZScore">4.12</strong></div>
                 <div><span class="lbl">Институционална присъда:</span> <strong id="dossierVerdict">BUY</strong></div>
+              </div>
+            </div>
+
+            <!-- Pillar 4: Smart Money & Options Whales -->
+            <div class="dossier-pillar-card">
+              <div class="pillar-hdr">
+                <span class="pillar-tag tag-whale">🐋 Поток на Умните Пари & Опциони</span>
+                <span class="pillar-status" id="dossierSmVerdict">Скрита Акумулация</span>
+              </div>
+              <div class="pillar-metrics">
+                <div><span class="lbl">Chaikin Money Flow (20D):</span> <strong id="dossierSmCmf">+0.185</strong></div>
+                <div><span class="lbl">Up/Down Volume Ratio:</span> <strong id="dossierSmVolRatio">1.24x</strong></div>
+                <div><span class="lbl">5-дневен Dip Absorption:</span> <strong id="dossierSmAbsorption">55.8%</strong></div>
+                <div><span class="lbl">Options Put/Call Ratio:</span> <strong id="dossierSmPcr">0.32</strong></div>
+                <div><span class="lbl">Gamma Wall / Max Pain:</span> <strong id="dossierSmGammaWall">$285 / $280</strong></div>
+                <div><span class="lbl">Smart Money Score (0-100):</span> <strong class="text-gold" id="dossierSmScore">88/100 🐋</strong></div>
               </div>
             </div>
           </div>

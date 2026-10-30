@@ -33249,5 +33249,21 @@
       "exit_reason": "Изход след Златен Вход",
       "is_win": true
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "1513.TW",
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
+    "cmf_20d": -0.183,
+    "up_down_vol_ratio": 1.18,
+    "absorption_5d_pct": 29.5,
+    "vol_shock_ratio": 0.75,
+    "put_call_ratio": null,
+    "options_sentiment": "N/A",
+    "gamma_wall": null,
+    "max_pain": null,
+    "unusual_call_sweep": false
+  }
 }

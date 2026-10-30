@@ -34655,5 +34655,21 @@
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "SE",
+    "smart_money_score": 48.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.36) с Gamma стена на $78.00. Залог за рязък отскок.",
+    "cmf_20d": -0.228,
+    "up_down_vol_ratio": 0.49,
+    "absorption_5d_pct": 58.6,
+    "vol_shock_ratio": 1.16,
+    "put_call_ratio": 0.36,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 78.0,
+    "max_pain": 80.0,
+    "unusual_call_sweep": false
+  }
 }

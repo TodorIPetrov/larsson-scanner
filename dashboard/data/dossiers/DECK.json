@@ -34681,5 +34681,21 @@
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     }
-  ]
+  ],
+  "smart_money": {
+    "symbol": "DECK",
+    "smart_money_score": 82.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.21, Up/Dn Vol: 0.83x). Силна скрита подкрепа.",
+    "cmf_20d": 0.212,
+    "up_down_vol_ratio": 0.83,
+    "absorption_5d_pct": 74.0,
+    "vol_shock_ratio": 0.79,
+    "put_call_ratio": 0.82,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 83.0,
+    "max_pain": 79.0,
+    "unusual_call_sweep": false
+  }
 }
