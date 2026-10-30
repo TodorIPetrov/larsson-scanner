@@ -7950,6 +7950,24 @@ function renderProposalDossier(d, ctx) {
   const topWinBadge = document.getElementById('dossierWinnerBadgeTop');
   if (topWinBadge) topWinBadge.textContent = `🏆 Победител: ${d.winning_strategy_name} (CAGR +${d.winning_metrics.cagr_pct}%)`;
 
+  const candleRangeBadge = document.getElementById('dossierCandleRangeBadge');
+  if (candleRangeBadge) {
+    if (d.backtest_start_date && d.backtest_end_date) {
+      candleRangeBadge.textContent = `📅 Период: ${d.backtest_start_date} – ${d.backtest_end_date} (~${d.backtest_years || 4.5} год., ${d.candles ? d.candles.length : d.backtest_total_bars} бара)`;
+    } else {
+      candleRangeBadge.textContent = `📅 2021 – 2026 (4.5+ години)`;
+    }
+  }
+
+  const equityRangeBadge = document.getElementById('dossierEquityRangeBadge');
+  if (equityRangeBadge) {
+    if (d.backtest_start_date && d.backtest_end_date) {
+      equityRangeBadge.textContent = `📅 Хоризонт: ${d.backtest_start_date} – ${d.backtest_end_date} (~${d.backtest_years || 4.5} год.)`;
+    } else {
+      equityRangeBadge.textContent = `📅 2021 – 2026 (Пълен бектест)`;
+    }
+  }
+
   // 4. Render Candlestick Chart with Ribbon & Trade Markers
   renderDossierCandleChart(d);
 

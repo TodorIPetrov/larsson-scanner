@@ -464,7 +464,7 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
     atr = fast_compute_atr(highs, lows, closes, 14)
     rsi = fast_compute_rsi(closes, 14)
 
-    start_idx = max(50, len(df) - 350)  # Last 350 bars for detailed visualization
+    start_idx = min(150, max(30, len(df) // 4))  # Full multi-year backtest horizon (~1,100+ bars)
 
     # Simulate all strategies
     strats = [
@@ -491,7 +491,7 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
             atr=atr,
             rsi=rsi,
             dates=dates,
-            start_idx=150,
+            start_idx=start_idx,
         )
         sim_results.append(res)
 
@@ -560,7 +560,7 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
             "strategy": s["strategy"],
             "name_bg": s["name_bg"],
             "is_winner": s.get("is_winner", False),
-            "curve": s["equity_curve"][-250:],  # Last 250 bars
+            "curve": s["equity_curve"],  # Full multi-year equity curve (~1,100+ bars)
         })
 
     dossier = {
@@ -568,6 +568,10 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
         "name": verdict_item.get("name", ticker),
         "sector": verdict_item.get("sector", optimal_profile.get("sector", "Equities")),
         "asset_class": optimal_profile.get("asset_class", "us_stocks"),
+        "backtest_start_date": dates[start_idx] if len(dates) > start_idx else "2021-09-01",
+        "backtest_end_date": dates[-1] if dates else "2026-10-30",
+        "backtest_years": round((len(df) - start_idx) / 252.0, 1),
+        "backtest_total_bars": len(df) - start_idx,
         "current_price": round(float(closes[-1]), 2),
         "state": "GOLD" if states[-1] == 1 else ("BLUE" if states[-1] == -1 else "NEUTRAL"),
         "v1": round(float(v1[-1]), 2) if not np.isnan(v1[-1]) else None,
@@ -675,3 +679,4 @@ def generate_dossiers_for_rotation_assets():
 
 if __name__ == "__main__":
     generate_dossiers_for_rotation_assets()
+
