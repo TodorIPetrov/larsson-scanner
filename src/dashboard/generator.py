@@ -1047,73 +1047,73 @@ def export_dashboard_data(
                     "v2_stop": v2_stop,
                     "loss_pct": round(((price - v2_stop) / v2_stop) * 100.0, 1) if v2_stop > 0 else 0.0
                 })
-                continue
-
-            risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1)
-            dist_to_v1_pct = round(((price - v1_pullback) / price) * 100.0, 1)
-            bars = item.get("bars_since_flip")
-            if bars is None:
-                bars = 999
             else:
-                try:
-                    bars = int(bars)
-                except Exception:
+    
+                risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1)
+                dist_to_v1_pct = round(((price - v1_pullback) / price) * 100.0, 1)
+                bars = item.get("bars_since_flip")
+                if bars is None:
                     bars = 999
-
-            # Gate 3: 4 Strict Quantitative Categories
-            if bars <= 5 and price >= v1_pullback * 0.995 and 0.0 < risk_to_v2_pct <= 12.0:
-                entry_zone_status = "FRESH_FLIP"
-                entry_zone_label = f"🟢 СВЕЖ ПРОБИВ (Ден {bars + 1})"
-                rec_action_eur = per_slot_eur
-            elif bars > 5 and v2_stop < price <= (v1_pullback * 1.025) and 0.0 < risk_to_v2_pct <= 6.0:
-                entry_zone_status = "PULLBACK_V1"
-                entry_zone_label = f"🔵 ВХОД НА ПОДКРЕПА v1 (Ден {bars + 1})"
-                rec_action_eur = per_slot_eur
-            elif bars > 5 and price > (v1_pullback * 1.025) and risk_to_v2_pct <= 18.0:
-                entry_zone_status = "MATURE_HOLD"
-                entry_zone_label = f"🛡️ В ТРЕНД (Ден {bars + 1}) — Лимит на v1"
-                rec_action_eur = round(per_slot_eur * 0.5, 2)
-            else:
-                entry_zone_status = "EXTENDED_WAIT_PULLBACK"
-                entry_zone_label = f"⏳ ПРЕРАЗТЕГЛЕН (Ден {bars + 1}) — Чакай v1 (${v1_pullback:,.2f})"
-                rec_action_eur = 0.0
-
-            rank_score = (sharpe * 50.0) + (rs_score * 0.5) + (mom_60 * 0.5)
-            shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
-            candidate_obj = {
-                "ticker": sym,
-                "name": item.get("name", sym),
-                "asset_class": item.get("asset_class"),
-                "tier": tier,
-                "rs_rating": rs_score,
-                "strategy": item.get("dna_strategy"),
-                "exit_rule_bg": item.get("exit_rule_bg"),
-                "exit_on_neutral": item.get("exit_on_neutral"),
-                "price": price,
-                "v2_stop": v2_stop,
-                "v1_pullback": round(v1_pullback, 2),
-                "risk_to_v2_pct": risk_to_v2_pct,
-                "dist_to_v1_pct": dist_to_v1_pct,
-                "bars_since_flip": bars,
-                "entry_zone_status": entry_zone_status,
-                "entry_zone_label": entry_zone_label,
-                "rec_action_eur": rec_action_eur,
-                "spread_pct": item.get("spread_pct"),
-                "momentum_60d": round(mom_60, 1),
-                "backtest_cagr": item.get("backtest_cagr"),
-                "backtest_sharpe": sharpe,
-                "target_eur": per_slot_eur,
-                "target_shares": shares,
-                "status_tag": f"✨ ПРОБИВ (Ден {bars + 1})" if bars <= 5 else f"🟢 Ден {bars + 1} в GOLD",
-                "rank_score": round(rank_score, 1),
-                "tv_symbol": item.get("tv_symbol"),
-                "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
-            }
-            candidates_gold.append(candidate_obj)
-            if entry_zone_status == "FRESH_FLIP":
-                fresh_flips_pool.append(candidate_obj)
-            elif entry_zone_status == "PULLBACK_V1":
-                pullback_pool.append(candidate_obj)
+                else:
+                    try:
+                        bars = int(bars)
+                    except Exception:
+                        bars = 999
+    
+                # Gate 3: 4 Strict Quantitative Categories
+                if bars <= 5 and price >= v1_pullback * 0.995 and 0.0 < risk_to_v2_pct <= 12.0:
+                    entry_zone_status = "FRESH_FLIP"
+                    entry_zone_label = f"🟢 СВЕЖ ПРОБИВ (Ден {bars + 1})"
+                    rec_action_eur = per_slot_eur
+                elif bars > 5 and v2_stop < price <= (v1_pullback * 1.025) and 0.0 < risk_to_v2_pct <= 6.0:
+                    entry_zone_status = "PULLBACK_V1"
+                    entry_zone_label = f"🔵 ВХОД НА ПОДКРЕПА v1 (Ден {bars + 1})"
+                    rec_action_eur = per_slot_eur
+                elif bars > 5 and price > (v1_pullback * 1.025) and risk_to_v2_pct <= 18.0:
+                    entry_zone_status = "MATURE_HOLD"
+                    entry_zone_label = f"🛡️ В ТРЕНД (Ден {bars + 1}) — Лимит на v1"
+                    rec_action_eur = round(per_slot_eur * 0.5, 2)
+                else:
+                    entry_zone_status = "EXTENDED_WAIT_PULLBACK"
+                    entry_zone_label = f"⏳ ПРЕРАЗТЕГЛЕН (Ден {bars + 1}) — Чакай v1 (${v1_pullback:,.2f})"
+                    rec_action_eur = 0.0
+    
+                rank_score = (sharpe * 50.0) + (rs_score * 0.5) + (mom_60 * 0.5)
+                shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
+                candidate_obj = {
+                    "ticker": sym,
+                    "name": item.get("name", sym),
+                    "asset_class": item.get("asset_class"),
+                    "tier": tier,
+                    "rs_rating": rs_score,
+                    "strategy": item.get("dna_strategy"),
+                    "exit_rule_bg": item.get("exit_rule_bg"),
+                    "exit_on_neutral": item.get("exit_on_neutral"),
+                    "price": price,
+                    "v2_stop": v2_stop,
+                    "v1_pullback": round(v1_pullback, 2),
+                    "risk_to_v2_pct": risk_to_v2_pct,
+                    "dist_to_v1_pct": dist_to_v1_pct,
+                    "bars_since_flip": bars,
+                    "entry_zone_status": entry_zone_status,
+                    "entry_zone_label": entry_zone_label,
+                    "rec_action_eur": rec_action_eur,
+                    "spread_pct": item.get("spread_pct"),
+                    "momentum_60d": round(mom_60, 1),
+                    "backtest_cagr": item.get("backtest_cagr"),
+                    "backtest_sharpe": sharpe,
+                    "target_eur": per_slot_eur,
+                    "target_shares": shares,
+                    "status_tag": f"✨ ПРОБИВ (Ден {bars + 1})" if bars <= 5 else f"🟢 Ден {bars + 1} в GOLD",
+                    "rank_score": round(rank_score, 1),
+                    "tv_symbol": item.get("tv_symbol"),
+                    "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
+                }
+                candidates_gold.append(candidate_obj)
+                if entry_zone_status == "FRESH_FLIP":
+                    fresh_flips_pool.append(candidate_obj)
+                elif entry_zone_status == "PULLBACK_V1":
+                    pullback_pool.append(candidate_obj)
 
         # 2. Institutional Quantamental Value Dips (Empirically Filtered via 10y Value Lab)
         fund = item.get("fundamental") or {}
@@ -1126,7 +1126,7 @@ def export_dashboard_data(
 
         # Strict Gate 1: Must be corporate equity approved by Value Lab, bullish fundamentals, price > 0
         # Exclude GOLD (GOLD belongs in momentum rotation, NOT dips!) and exclude losing sectors (Defensive / Materials)
-        is_dip_state = bool(st in ["BLUE", "NEUTRAL"])
+        is_dip_state = bool(st in ["BLUE", "NEUTRAL"] or (st == "GOLD" and best_value_strat in ["V1_SMA200_BOUNCE", "V4_VALUE_GOLD_HOLD"]))
         sector_val = item.get("sector") or prof.get("sector", "")
         is_safe_sector = sector_val not in ["Consumer Defensive", "Basic Materials", "Базови материали"]
 
@@ -1148,7 +1148,7 @@ def export_dashboard_data(
             if best_value_strat == "V1_SMA200_BOUNCE":
                 strat_label = "200-SMA Institutional Bounce"
                 near_sma = bool(latest_sma and (abs(price - latest_sma) / latest_sma <= 0.04))
-                trigger_active = bool(near_sma and st in ["BLUE", "NEUTRAL"])
+                trigger_active = bool(near_sma)
                 calc_stop = round(latest_sma * 0.96, 2) if (latest_sma and latest_sma < price) else round(price * 0.93, 2)
 
             elif best_value_strat == "V2_SPRING_REVERSAL":
@@ -1159,8 +1159,14 @@ def export_dashboard_data(
             elif best_value_strat == "V3_CAPITULATION_S1":
                 strat_label = "Capitulation on S1 Support"
                 near_s1 = bool(s1_val > 0 and (abs(price - s1_val) / price <= 0.045))
-                trigger_active = bool(near_s1 or latest_rsi <= 35.0)
-                calc_stop = round(s1_val * 0.96, 2) if (s1_val and 0 < s1_val < price) else round(price * 0.92, 2)
+                near_swing = bool(latest_swing and 0 <= (price - latest_swing) / price <= 0.045)
+                trigger_active = bool(near_s1 or latest_rsi <= 35.0 or near_swing)
+                if s1_val and 0 < s1_val < price:
+                    calc_stop = round(s1_val * 0.96, 2)
+                elif latest_swing and 0 < latest_swing < price:
+                    calc_stop = round(latest_swing * 0.96, 2)
+                else:
+                    calc_stop = round(price * 0.92, 2)
 
             elif best_value_strat == "V4_VALUE_GOLD_HOLD":
                 strat_label = "Undervalued Gold Ignition"
@@ -1304,7 +1310,7 @@ def export_dashboard_data(
         "broken_leaders": broken_leaders,
         "top15": top15,
         "reserve_bench": reserve_bench,
-        "quantamental_dips": quant_candidates[:8],
+        "quantamental_dips": quant_candidates[:12],
         "daily_actions": {
             "buys": buys,
             "sells": sells,
