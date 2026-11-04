@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 263.78812472505103,
+    "target_price": 263.78812472505103,
+    "entry_price": 211.03049978004083,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 8.7,
     "mos_pct": 8.7,
     "moat": "Narrow",
     "roic_pct": 10.44,
     "wacc_pct": 9.573646451608825,
     "z_score": 1.83,
-    "verdict": "BUY / ACCUMULATE"
+    "m_score": -3.01,
+    "tata": -0.067,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "BUY / ACCUMULATE",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34766,17 +34774,17 @@
   ],
   "smart_money": {
     "symbol": "CRM",
-    "smart_money_score": 67.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 1.10) с Gamma стена на $240.00. Залог за рязък отскок.",
+    "smart_money_score": 75.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 0.85x). Силна скрита подкрепа.",
     "cmf_20d": 0.117,
     "up_down_vol_ratio": 0.85,
     "absorption_5d_pct": 50.6,
     "vol_shock_ratio": 0.21,
-    "put_call_ratio": 1.1,
+    "put_call_ratio": 1.07,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 240.0,
+    "gamma_wall": 230.0,
     "max_pain": 205.0,
     "unusual_call_sweep": false
   }

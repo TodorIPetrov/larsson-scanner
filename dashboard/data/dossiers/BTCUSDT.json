@@ -1,7 +1,7 @@
 {
   "ticker": "BTCUSDT",
-  "name": "BTCUSDT",
-  "sector": "Equities",
+  "name": "Bitcoin",
+  "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
   "backtest_end_date": "2026-09-16",
@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "mos_pct": null,
-    "moat": "None",
+    "fair_value": 120000.0,
+    "target_price": 120000.0,
+    "entry_price": null,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 25.0,
+    "mos_pct": 25.0,
+    "moat": "Wide",
     "roic_pct": null,
     "wacc_pct": null,
     "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Multi-Asset Evaluation",
+    "verdict": "STRONG BUY",
+    "model_type": "Он-чейн пазарен модел"
   },
   "candles": [
     {

@@ -1,7 +1,7 @@
 {
   "ticker": "BZ=F",
-  "name": "BZ=F",
-  "sector": "Equities",
+  "name": "Brent Crude Oil",
+  "sector": "Суровини",
   "asset_class": "commodities",
   "backtest_start_date": "2022-04-06",
   "backtest_end_date": "2026-10-28",
@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "mos_pct": null,
-    "moat": "None",
+    "fair_value": 92.0,
+    "target_price": 92.0,
+    "entry_price": null,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 15.0,
+    "mos_pct": 15.0,
+    "moat": "Narrow",
     "roic_pct": null,
     "wacc_pct": null,
     "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Multi-Asset Evaluation",
+    "verdict": "BUY",
+    "model_type": "Макро себестоен модел"
   },
   "candles": [
     {

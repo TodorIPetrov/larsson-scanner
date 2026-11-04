@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 85.24103853446991,
+    "target_price": 85.24103853446991,
+    "entry_price": 61.37354774481833,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -214.4,
     "mos_pct": -214.4,
     "moat": "Narrow",
     "roic_pct": 74.67,
     "wacc_pct": 10.77900004196167,
     "z_score": 2.06,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": -3.32,
+    "tata": -0.16,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "High-Growth EV/Revenue Multiple Model"
   },
   "candles": [
     {
@@ -34717,14 +34725,14 @@
     "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: 0.81).",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: 0.88).",
     "cmf_20d": -0.071,
     "up_down_vol_ratio": 0.64,
     "absorption_5d_pct": 50.5,
     "vol_shock_ratio": 0.44,
-    "put_call_ratio": 0.81,
+    "put_call_ratio": 0.88,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 262.5,
+    "gamma_wall": 250.0,
     "max_pain": 260.0,
     "unusual_call_sweep": false
   }

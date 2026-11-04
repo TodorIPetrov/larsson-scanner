@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 1150.0,
+    "target_price": 1150.0,
+    "entry_price": 977.5,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -11.5,
     "mos_pct": -11.5,
     "moat": "Wide",
     "roic_pct": 28.5,
     "wacc_pct": 7.8,
     "z_score": 6.2,
-    "verdict": "HOLD / QUALITY COMPOUNDER"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Investment Grade",
+    "verdict": "HOLD / QUALITY COMPOUNDER",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34601,14 +34609,14 @@
     "smart_money_score": 27.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 3.10, CMF: -0.14).",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 3.09, CMF: -0.14).",
     "cmf_20d": -0.138,
     "up_down_vol_ratio": 1.5,
     "absorption_5d_pct": 42.9,
     "vol_shock_ratio": 0.8,
-    "put_call_ratio": 3.1,
+    "put_call_ratio": 3.09,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 1420.0,
+    "gamma_wall": 1450.0,
     "max_pain": 610.0,
     "unusual_call_sweep": false
   }

@@ -103,12 +103,20 @@
   ],
   "fundamental": {
     "fair_value": null,
+    "target_price": null,
+    "entry_price": null,
+    "required_mos_pct": null,
+    "actual_discount_pct": null,
     "mos_pct": null,
     "moat": "None",
     "roic_pct": null,
     "wacc_pct": null,
     "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": null,
+    "verdict": "FAIRLY VALUED",
+    "model_type": null
   },
   "candles": [
     {
@@ -34892,9 +34900,9 @@
     "up_down_vol_ratio": 1.19,
     "absorption_5d_pct": 71.0,
     "vol_shock_ratio": 1.75,
-    "put_call_ratio": 0.34,
+    "put_call_ratio": 0.31,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 146.0,
+    "gamma_wall": 139.0,
     "max_pain": 160.0,
     "unusual_call_sweep": false
   }

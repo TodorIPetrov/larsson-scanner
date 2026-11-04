@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 4250.0,
+    "target_price": 4250.0,
+    "entry_price": 3825.0,
+    "required_mos_pct": 10.0,
+    "actual_discount_pct": 7.2,
     "mos_pct": 7.2,
     "moat": "Narrow",
     "roic_pct": 15.0,
     "wacc_pct": 9.0,
     "z_score": null,
-    "verdict": "BUY / ACCUMULATE"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Physical Commodity Market",
+    "verdict": "BUY / ACCUMULATE",
+    "model_type": "Smelter Capacity & Mine Supply Model"
   },
   "candles": [
     {

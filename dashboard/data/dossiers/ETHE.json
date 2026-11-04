@@ -103,12 +103,20 @@
   ],
   "fundamental": {
     "fair_value": null,
+    "target_price": null,
+    "entry_price": null,
+    "required_mos_pct": null,
+    "actual_discount_pct": null,
     "mos_pct": null,
     "moat": "None",
     "roic_pct": null,
     "wacc_pct": null,
     "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": null,
+    "verdict": "FAIRLY VALUED",
+    "model_type": null
   },
   "candles": [
     {
@@ -34705,12 +34713,12 @@
     "smart_money_score": 48.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.11) с Gamma стена на $18.00. Залог за рязък отскок.",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.12) с Gamma стена на $18.00. Залог за рязък отскок.",
     "cmf_20d": -0.133,
     "up_down_vol_ratio": 0.56,
     "absorption_5d_pct": 54.6,
     "vol_shock_ratio": 0.41,
-    "put_call_ratio": 0.11,
+    "put_call_ratio": 0.12,
     "options_sentiment": "BULLISH",
     "gamma_wall": 18.0,
     "max_pain": 20.0,

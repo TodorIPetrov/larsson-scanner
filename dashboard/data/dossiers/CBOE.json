@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 84.50937271118164,
+    "target_price": 84.50937271118164,
+    "entry_price": 71.8329668045044,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -284.2,
     "mos_pct": -284.2,
     "moat": "Wide",
     "roic_pct": 21.41,
     "wacc_pct": 7.76600004196167,
     "z_score": 5.13,
-    "verdict": "HOLD / SENSITIVITY REVIEW"
+    "m_score": -3.45,
+    "tata": -0.07,
+    "solvency_type": "Financial TCE Capital Ratio (6.9%)",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "Residual Income (RIM) & Justified P/TBV"
   },
   "candles": [
     {
@@ -34528,9 +34536,9 @@
     "up_down_vol_ratio": 2.69,
     "absorption_5d_pct": 61.8,
     "vol_shock_ratio": 0.7,
-    "put_call_ratio": 0.92,
+    "put_call_ratio": 0.91,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 337.5,
+    "gamma_wall": 340.0,
     "max_pain": 340.0,
     "unusual_call_sweep": false
   }

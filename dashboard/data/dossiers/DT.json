@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 48.991824664544694,
+    "target_price": 48.991824664544694,
+    "entry_price": 39.193459731635755,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -30.1,
     "mos_pct": -30.1,
     "moat": "Narrow",
     "roic_pct": 12.78,
     "wacc_pct": 8.379800594280121,
     "z_score": 3.08,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": -3.05,
+    "tata": -0.09,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34658,10 +34666,10 @@
     "up_down_vol_ratio": 1.82,
     "absorption_5d_pct": 49.3,
     "vol_shock_ratio": 1.0,
-    "put_call_ratio": 0.29,
+    "put_call_ratio": 0.38,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 60.0,
-    "max_pain": 65.0,
+    "gamma_wall": 45.0,
+    "max_pain": 80.0,
     "unusual_call_sweep": false
   }
 }

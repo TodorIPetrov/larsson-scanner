@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 1854.5464920539814,
+    "target_price": 1854.5464920539814,
+    "entry_price": 1446.5462638021056,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -340.5,
     "mos_pct": -340.5,
     "moat": "Wide",
     "roic_pct": 150.0,
     "wacc_pct": 12.5,
     "z_score": 5.42,
-    "verdict": "HOLD / SENSITIVITY REVIEW"
+    "m_score": -1.32,
+    "tata": 0.173,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {

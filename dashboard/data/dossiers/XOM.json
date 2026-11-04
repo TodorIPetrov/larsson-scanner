@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 140.0,
+    "target_price": 140.0,
+    "entry_price": 119.0,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -28.5,
     "mos_pct": -28.5,
     "moat": "Narrow",
     "roic_pct": 17.5,
     "wacc_pct": 8.2,
     "z_score": 5.4,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Investment Grade",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {
@@ -34644,10 +34652,10 @@
     "up_down_vol_ratio": 2.1,
     "absorption_5d_pct": 46.4,
     "vol_shock_ratio": 0.43,
-    "put_call_ratio": 0.57,
+    "put_call_ratio": 0.47,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 187.5,
-    "max_pain": 205.0,
+    "gamma_wall": 172.5,
+    "max_pain": 195.0,
     "unusual_call_sweep": false
   }
 }

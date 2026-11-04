@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 145.29,
+    "target_price": 145.29,
+    "entry_price": 108.97,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": 47.3,
     "mos_pct": 47.3,
     "moat": "None",
     "roic_pct": 17.7,
     "wacc_pct": 10.72,
     "z_score": 2.42,
-    "verdict": "STRONG BUY"
+    "m_score": -2.59,
+    "tata": -0.117,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "STRONG BUY",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34691,12 +34699,12 @@
     "smart_money_score": 47.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.23, P/C: 0.56).",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.23, P/C: 0.53).",
     "cmf_20d": -0.227,
     "up_down_vol_ratio": 0.5,
     "absorption_5d_pct": 64.6,
     "vol_shock_ratio": 0.18,
-    "put_call_ratio": 0.56,
+    "put_call_ratio": 0.53,
     "options_sentiment": "BULLISH",
     "gamma_wall": 75.0,
     "max_pain": 75.0,

@@ -11,13 +11,14 @@ let currentTfFilter = 'ALL';
 let currentTechFilter = 'ALL';
 let currentFundFilter = 'ALL';
 let currentSetupFilter = 'ALL';
+let currentAiScenarioFilter = 'ALL';
 let currentQueuePriority = 'ALL';
 let currentQueueTier = 'ALL';
 let currentQueueSearch = '';
 let currentSearch = '';
 let savedView = localStorage.getItem('larsson_view_mode');
 let currentView = (savedView && savedView !== 'table') ? savedView : (window.innerWidth <= 768 ? 'cards' : 'split');
-let currentTab = localStorage.getItem('larsson_active_tab') || 'scanner';
+let currentTab = (location.hash ? location.hash.replace('#', '').split('?')[0] : null) || localStorage.getItem('larsson_active_tab') || 'scanner';
 
 let currentSortColumn = null;
 let currentSortDir = 'asc';
@@ -602,6 +603,7 @@ function updateDiagnosticsModalUI() {
     if (currentTechFilter !== 'ALL') activeFilters.push({ label: `Техника: ${currentTechFilter}`, type: 'tech' });
     if (currentFundFilter !== 'ALL') activeFilters.push({ label: `Фундамент: ${currentFundFilter}`, type: 'fund' });
     if (currentSetupFilter !== 'ALL') activeFilters.push({ label: `Синтез: ${currentSetupFilter}`, type: 'setup' });
+    if (currentAiScenarioFilter !== 'ALL') activeFilters.push({ label: `AI Сценарий: ${currentAiScenarioFilter}`, type: 'ai' });
 
     if (activeFilters.length === 0) {
       chipsContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.8rem;">Няма активни филтри — показват се всички активи.</span>';
@@ -670,6 +672,7 @@ function getZeroStateHtml() {
   if (currentTechFilter !== 'ALL') activeTags.push(`Техника: ${currentTechFilter}`);
   if (currentFundFilter !== 'ALL') activeTags.push(`Фундамент: ${currentFundFilter}`);
   if (currentSetupFilter !== 'ALL') activeTags.push(`Синтез: ${currentSetupFilter}`);
+  if (currentAiScenarioFilter !== 'ALL') activeTags.push(`AI Сценарий: ${currentAiScenarioFilter}`);
 
   const tagsHtml = activeTags.map(t => `<span class="zero-state-tag">${t}</span>`).join('');
 
@@ -759,6 +762,29 @@ async function loadDashboardData() {
   try {
     renderAllViews();
     initLiveChart();
+
+    // Initialize or refresh browser live stream engine
+    try {
+      if (!window._marketLiveStream) {
+        import('./modules/live_stream.js').then(module => {
+          window._marketLiveStream = new module.LiveMarketStream({
+            onPriceUpdate: () => {
+              // Throttled render on live price changes
+              if (!window._liveRenderTimer) {
+                window._liveRenderTimer = setTimeout(() => {
+                  window._liveRenderTimer = null;
+                  renderAllViews();
+                }, 1000);
+              }
+            }
+          });
+          window._marketLiveStream.init(allSymbols);
+        }).catch(e => console.debug('LiveMarketStream module load error:', e));
+      } else {
+        window._marketLiveStream.symbols = allSymbols;
+      }
+    } catch(e) {}
+
   } catch (renderErr) {
     console.error('Error rendering dashboard views:', renderErr);
     document.getElementById('assetsTableBody').innerHTML = `
@@ -1040,7 +1066,17 @@ function getFilteredSymbols() {
                      (ts && (ts.action === 'SPOT_BUY' || (ts.setup_type && ts.setup_type.includes('BUY'))));
     }
 
-    if (!matchesClass || !matchesTf || !matchesTech || !matchesFund || !matchesSetup) {
+    let matchesAi = true;
+    if (currentAiScenarioFilter !== 'ALL') {
+      const scenarios = item.ai_scenarios || [];
+      if (currentAiScenarioFilter === 'ALL_WEATHER') {
+        matchesAi = scenarios.length >= 2;
+      } else {
+        matchesAi = scenarios.includes(currentAiScenarioFilter);
+      }
+    }
+
+    if (!matchesClass || !matchesTf || !matchesTech || !matchesFund || !matchesSetup || !matchesAi) {
       continue;
     }
 
@@ -1605,6 +1641,12 @@ function renderTable(filteredSymbols) {
     clusterBuckets.get(cid).push(item);
   });
 
+  for (const cid of clusterBuckets.keys()) {
+    if (!clusterOrder.includes(cid)) {
+      clusterOrder.push(cid);
+    }
+  }
+
   let fullHtml = '';
 
   for (const cid of clusterOrder) {
@@ -1612,13 +1654,14 @@ function renderTable(filteredSymbols) {
     const meta = clusterMetaMap.get(cid);
     const isActionable = meta ? meta.is_actionable : false;
 
-    // Filter by cluster scope
-    if (currentClusterScope === 'ACTIONABLE' && !isActionable) {
+    // Filter by cluster scope (bypass when searching so any symbol can be found)
+    const isSearching = Boolean(currentSearch && currentSearch.trim());
+    if (currentClusterScope === 'ACTIONABLE' && !isActionable && !isSearching) {
       continue;
     }
     if (members.length === 0) continue;
 
-    const isCollapsed = window.collapsedClusterSet.has(cid);
+    const isCollapsed = isSearching ? false : (window.collapsedClusterSet ? window.collapsedClusterSet.has(cid) : false);
     const clusterName = meta ? meta.name : cid.replace(/_/g, ' ');
     const leader = meta ? meta.leader : (members[0] ? members[0].ticker : '');
     const wState = meta ? meta.state_1w : '—';
@@ -1717,6 +1760,9 @@ function renderTable(filteredSymbols) {
                 <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')" title="Interactive chart & S/R levels">
                   📊 S/R
                 </button>
+                <button class="btn-view-chart btn-view-dossier" onclick="event.stopPropagation(); openDossierModal('${item.ticker}')" style="background: rgba(88, 166, 255, 0.15); border-color: #58a6ff; color: #58a6ff;" title="Отвори Пълно Досие & 10-годишен Бектест">
+                  📑 Досие
+                </button>
                 <a href="${tvUrl}" target="_blank" rel="noopener" class="tv-link-btn" onclick="event.stopPropagation()" title="Open TradingView">
                   TV ↗
                 </a>
@@ -1772,8 +1818,10 @@ function renderCards(filteredSymbols) {
     }
   });
 
-  // Filter if ACTIONABLE scope
+  // Filter if ACTIONABLE scope (bypass when searching)
+  const isSearchingCards = Boolean(currentSearch && currentSearch.trim());
   const displayItems = primarySymbols.filter(item => {
+    if (isSearchingCards) return true;
     if (currentClusterScope !== 'ACTIONABLE') return true;
     const cid = getClusterIdForAsset(item);
     const meta = clusterMetaMap.get(cid);
@@ -1861,8 +1909,9 @@ function renderCards(filteredSymbols) {
 
         <div class="card-footer" style="margin-top: 8px;">
           <span class="card-change">Updated: ${item.last_change ? new Date(item.last_change).toLocaleDateString() : 'Active'}</span>
-          <div style="display: flex; gap: 6px; align-items: center;">
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
             <button class="btn-view-chart" onclick="event.stopPropagation(); openChartModal('${item.ticker}', '${item.timeframe}', '${item.asset_class}')">📊 S/R</button>
+            <button class="btn-view-chart btn-view-dossier" onclick="event.stopPropagation(); openDossierModal('${item.ticker}')" style="background: rgba(88, 166, 255, 0.15); border-color: #58a6ff; color: #58a6ff;" title="Отвори Пълно Досие & 10-годишен Бектест">📑 Досие</button>
             <a href="${tvUrl}" target="_blank" rel="noopener" class="card-chart-btn" onclick="event.stopPropagation()">TV ↗</a>
             ${hasBtcRatio ? `
             <a href="${tvRatioUrl}" target="_blank" rel="noopener" class="card-chart-btn" style="background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;" onclick="event.stopPropagation()" title="Open ${tvRatioSym} in TradingView">/BTC ↗</a>` : ''}
@@ -2053,6 +2102,7 @@ function renderTradingViewIframe(container, tvSymbol, timeframe) {
 }
 
 function renderLightweightChart(container, candles, item, height = 480, isRatio = false) {
+  const LC = window.LightweightCharts || { LineStyle: { Solid: 0, Dotted: 1, Dashed: 2, LargeDashed: 3 } };
   container.innerHTML = '';
   if (isRatio && item) {
     const banner = document.createElement('div');
@@ -2495,6 +2545,9 @@ async function openChartModal(ticker, timeframe, assetClass) {
   activeTicker = ticker;
   activeTf = timeframe || '1D';
   activeClass = assetClass || 'crypto';
+  window.activeTicker = activeTicker;
+  window.activeTf = activeTf;
+  window.activeClass = activeClass;
 
   const modal = document.getElementById('chartModal');
   const loading = document.getElementById('chartLoading');
@@ -3241,8 +3294,9 @@ document.querySelectorAll('#stateFilters .filter-btn').forEach(btn => {
 document.querySelectorAll('#tfFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#tfFilters .filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentTfFilter = e.target.dataset.tf;
+    const b = e.currentTarget;
+    b.classList.add('active');
+    currentTfFilter = b.dataset.tf;
     renderOverview();
     renderAllViews();
   });
@@ -3251,8 +3305,9 @@ document.querySelectorAll('#tfFilters .filter-btn').forEach(btn => {
 document.querySelectorAll('#techFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#techFilters .filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentTechFilter = e.target.dataset.tech;
+    const b = e.currentTarget;
+    b.classList.add('active');
+    currentTechFilter = b.dataset.tech;
     renderAllViews();
   });
 });
@@ -3260,8 +3315,9 @@ document.querySelectorAll('#techFilters .filter-btn').forEach(btn => {
 document.querySelectorAll('#fundFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#fundFilters .filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentFundFilter = e.target.dataset.fund;
+    const b = e.currentTarget;
+    b.classList.add('active');
+    currentFundFilter = b.dataset.fund;
     renderAllViews();
   });
 });
@@ -3269,8 +3325,19 @@ document.querySelectorAll('#fundFilters .filter-btn').forEach(btn => {
 document.querySelectorAll('#setupFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#setupFilters .filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentSetupFilter = e.target.dataset.setup;
+    const b = e.currentTarget;
+    b.classList.add('active');
+    currentSetupFilter = b.dataset.setup;
+    renderAllViews();
+  });
+});
+
+document.querySelectorAll('#aiScenarioFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#aiScenarioFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    const b = e.currentTarget;
+    b.classList.add('active');
+    currentAiScenarioFilter = b.dataset.aiScenario || 'ALL';
     renderAllViews();
   });
 });
@@ -3307,6 +3374,7 @@ function resetAllFilters() {
   document.querySelectorAll('#techFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tech === 'ALL'));
   document.querySelectorAll('#fundFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.fund === 'ALL'));
   document.querySelectorAll('#setupFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.setup === 'ALL'));
+  document.querySelectorAll('#aiScenarioFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.aiScenario === 'ALL'));
 
   const input = document.getElementById('searchInput');
   if (input) input.value = '';
@@ -3484,7 +3552,8 @@ function switchTab(tabName, pushToHistory = true) {
     'calculator': 'tabContentCalculator',
     'fundamentals': 'tabContentFundamentals',
     'ideas': 'tabContentIdeas',
-    'proposal-dossier': 'tabContentProposalDossier'
+    'proposal-dossier': 'tabContentProposalDossier',
+    'ai-map': 'tabContentAiMap'
   };
 
   Object.keys(tabMap).forEach(key => {
@@ -3503,6 +3572,9 @@ function switchTab(tabName, pushToHistory = true) {
   updateNavBackButtons(prevTab);
 
   if (tabName === 'fundamentals') {
+    if (typeof initFundamentalScreener === 'function') {
+      initFundamentalScreener();
+    }
     if (currentFundTicker) {
       renderFundamentalDossier(currentFundTicker);
     }
@@ -3511,6 +3583,12 @@ function switchTab(tabName, pushToHistory = true) {
   if (tabName === 'ideas') {
     if (typeof renderIdeasView === 'function') {
       renderIdeasView();
+    }
+  }
+
+  if (tabName === 'ai-map') {
+    if (typeof renderAiCompanyMapView === 'function') {
+      renderAiCompanyMapView();
     }
   }
 
@@ -3544,7 +3622,8 @@ function updateNavBackButtons(fromTab) {
     'portfolio': '(към Портфолиото)',
     'calculator': '(към Калкулатора)',
     'fundamentals': '(към Фундамент)',
-    'ideas': '(към Моите Идеи)'
+    'ideas': '(към Моите Идеи)',
+    'ai-map': '(към AI Карта)'
   };
   const calcTarget = document.getElementById('calcBackTargetText');
   if (calcTarget) {
@@ -3593,7 +3672,7 @@ window.addEventListener('popstate', (e) => {
     isNavigatingHistory = false;
   } else if (location.hash) {
     const hashTab = location.hash.replace('#', '').split('?')[0];
-    if (['scanner', 'queue', 'portfolio', 'calculator', 'fundamentals'].includes(hashTab)) {
+    if (['scanner', 'queue', 'macro', 'portfolio', 'calculator', 'fundamentals', 'ideas', 'ai-map'].includes(hashTab)) {
       isNavigatingHistory = true;
       switchTab(hashTab, false);
       isNavigatingHistory = false;
@@ -6785,6 +6864,215 @@ function openCalculatorForTicker(ticker) {
 }
 
 // =============================================================================
+// TAB 5: FUNDAMENTAL SCREENER OVERVIEW TABLE CONTROLLER
+// =============================================================================
+
+let allFundamentalVerdicts = [];
+let fundamentalScreenerInitialized = false;
+let fundScreenerSortCol = 'mos_pct';
+let fundScreenerSortDir = 'desc';
+
+async function initFundamentalScreener() {
+  if (allFundamentalVerdicts.length === 0) {
+    try {
+      const res = await fetch('fundamental_verdicts.json?t=' + new Date().getTime());
+      if (res.ok) {
+        const data = await res.json();
+        allFundamentalVerdicts = data.verdicts || [];
+      }
+    } catch (e) {
+      console.warn('Could not load fundamental_verdicts.json directly:', e);
+    }
+
+    // Fallback: extract from fundamentalProfiles if JSON fetch fails
+    if (allFundamentalVerdicts.length === 0 && Object.keys(fundamentalProfiles).length > 0) {
+      allFundamentalVerdicts = Object.values(fundamentalProfiles);
+    }
+  }
+
+  // Populate Sector Select options if not yet populated
+  const sectorSel = document.getElementById('fundScreenerSectorFilter');
+  if (sectorSel && sectorSel.options.length <= 1) {
+    const sectors = new Set();
+    allFundamentalVerdicts.forEach(v => {
+      if (v.sector) sectors.add(v.sector);
+    });
+    Array.from(sectors).sort().forEach(sec => {
+      const opt = document.createElement('option');
+      opt.value = sec;
+      opt.textContent = sec;
+      sectorSel.appendChild(opt);
+    });
+  }
+
+  if (!fundamentalScreenerInitialized) {
+    fundamentalScreenerInitialized = true;
+
+    const searchInput = document.getElementById('fundScreenerSearch');
+    if (searchInput) {
+      searchInput.addEventListener('input', renderFundamentalScreenerTable);
+    }
+
+    if (sectorSel) {
+      sectorSel.addEventListener('change', renderFundamentalScreenerTable);
+    }
+
+    const moatSel = document.getElementById('fundScreenerMoatFilter');
+    if (moatSel) {
+      moatSel.addEventListener('change', renderFundamentalScreenerTable);
+    }
+
+    const aiSel = document.getElementById('fundScreenerAiFilter');
+    if (aiSel) {
+      aiSel.addEventListener('change', renderFundamentalScreenerTable);
+    }
+
+    document.querySelectorAll('.fund-screener-table th.th-sortable').forEach(th => {
+      th.addEventListener('click', (e) => {
+        const col = th.dataset.fundCol;
+        if (!col) return;
+        if (fundScreenerSortCol === col) {
+          fundScreenerSortDir = fundScreenerSortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+          fundScreenerSortCol = col;
+          fundScreenerSortDir = (col === 'ticker' || col === 'name' || col === 'sector') ? 'asc' : 'desc';
+        }
+        renderFundamentalScreenerTable();
+      });
+    });
+  }
+
+  renderFundamentalScreenerTable();
+}
+window.initFundamentalScreener = initFundamentalScreener;
+
+function renderFundamentalScreenerTable() {
+  const tbody = document.getElementById('fundScreenerTableBody');
+  const countBadge = document.getElementById('fundScreenerCountBadge');
+  if (!tbody) return;
+
+  const q = (document.getElementById('fundScreenerSearch')?.value || '').toLowerCase().trim();
+  const secFilter = document.getElementById('fundScreenerSectorFilter')?.value || 'ALL';
+  const moatFilter = document.getElementById('fundScreenerMoatFilter')?.value || 'ALL';
+  const aiFilter = document.getElementById('fundScreenerAiFilter')?.value || 'ALL';
+
+  let list = allFundamentalVerdicts.filter(item => {
+    if (secFilter !== 'ALL' && item.sector !== secFilter) return false;
+    if (moatFilter !== 'ALL' && item.moat !== moatFilter) return false;
+    if (aiFilter !== 'ALL') {
+      const sym = allSymbols.find(s => s.ticker === item.ticker);
+      const sc = sym ? (sym.ai_scenarios || []) : [];
+      if (aiFilter === 'ALL_WEATHER') {
+        if (sc.length < 2) return false;
+      } else {
+        if (!sc.includes(aiFilter)) return false;
+      }
+    }
+    if (q) {
+      const t = (item.ticker || '').toLowerCase();
+      const n = (item.name || '').toLowerCase();
+      const s = (item.sector || '').toLowerCase();
+      if (!t.includes(q) && !n.includes(q) && !s.includes(q)) return false;
+    }
+    return true;
+  });
+
+  // Update sort headers
+  document.querySelectorAll('.fund-screener-table th.th-sortable').forEach(th => {
+    th.classList.remove('th-sort-asc', 'th-sort-desc');
+    const icon = th.querySelector('.sort-icon');
+    if (icon) icon.textContent = '⇅';
+    if (th.dataset.fundCol === fundScreenerSortCol) {
+      th.classList.add(fundScreenerSortDir === 'asc' ? 'th-sort-asc' : 'th-sort-desc');
+      if (icon) icon.textContent = fundScreenerSortDir === 'asc' ? '▲' : '▼';
+    }
+  });
+
+  // Sort
+  list.sort((a, b) => {
+    let va = a[fundScreenerSortCol];
+    let vb = b[fundScreenerSortCol];
+    if (fundScreenerSortCol === 'fair_value_base') {
+      va = a.fair_value_base || a.target_price || 0;
+      vb = b.fair_value_base || b.target_price || 0;
+    } else if (fundScreenerSortCol === 'mos_pct') {
+      va = a.mos_pct !== undefined ? a.mos_pct : (a.actual_discount_pct !== undefined ? a.actual_discount_pct : -999);
+      vb = b.mos_pct !== undefined ? b.mos_pct : (b.actual_discount_pct !== undefined ? b.actual_discount_pct : -999);
+    }
+
+    if (typeof va === 'string') {
+      const cmp = va.localeCompare(vb || '');
+      return fundScreenerSortDir === 'asc' ? cmp : -cmp;
+    }
+    va = va !== null && va !== undefined ? Number(va) : -999999;
+    vb = vb !== null && vb !== undefined ? Number(vb) : -999999;
+    return fundScreenerSortDir === 'asc' ? va - vb : vb - va;
+  });
+
+  if (countBadge) {
+    countBadge.textContent = `${list.length} от ${allFundamentalVerdicts.length}`;
+  }
+
+  if (list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--text-muted); padding: 24px;">Няма намерени компании по избраните критерии.</td></tr>`;
+    return;
+  }
+
+  const rows = list.map(v => {
+    const fv = v.fair_value_base || v.target_price || v.fair_value;
+    const fvFmt = fv ? `$${Number(fv).toFixed(2)}` : 'N/A';
+    const priceFmt = v.price ? `$${Number(v.price).toFixed(2)}` : '—';
+    const mos = v.mos_pct !== undefined ? v.mos_pct : v.actual_discount_pct;
+    const mosSign = (mos && mos > 0) ? '+' : '';
+    const mosColor = (mos && mos > 15) ? '#3fb950' : ((mos && mos < -15) ? '#f85149' : '#ffd700');
+    const mosFmt = mos !== undefined ? `${mosSign}${Number(mos).toFixed(1)}%` : 'N/A';
+
+    const zScore = v.z_score !== undefined && v.z_score !== null ? Number(v.z_score).toFixed(2) : 'N/A';
+    const zColor = (v.z_score && v.z_score >= 2.99) ? '#3fb950' : ((v.z_score && v.z_score < 1.81) ? '#f85149' : '#e3b341');
+
+    const mScore = v.m_score !== undefined && v.m_score !== null ? Number(v.m_score).toFixed(2) : 'N/A';
+    const mColor = (v.m_score && v.m_score <= -2.22) ? '#3fb950' : ((v.m_score && v.m_score > -1.78) ? '#f85149' : '#8b949e');
+
+    const moatColor = v.moat === 'Wide' ? '#3fb950' : (v.moat === 'Narrow' ? '#58a6ff' : '#8b949e');
+
+    return `
+      <tr class="asset-row" style="cursor: pointer;" onclick="openFundamentalTab('${v.ticker}')" title="Кликнете за преглед на детайлното досие">
+        <td>
+          <span style="font-weight: 700; color: #58a6ff; font-family: 'JetBrains Mono', monospace;">${v.ticker}</span>
+        </td>
+        <td>
+          <span style="font-weight: 600; color: #f0f6fc;">${escapeHtml(v.name || v.ticker)}</span>
+        </td>
+        <td>
+          <span class="cluster-sub-badge">${escapeHtml(v.sector || 'Equities')}</span>
+        </td>
+        <td class="tabular-nums">${priceFmt}</td>
+        <td class="tabular-nums" style="color: #60a5fa; font-weight: 600;">${fvFmt}</td>
+        <td class="tabular-nums" style="color: ${mosColor}; font-weight: 700;">${mosFmt}</td>
+        <td>
+          <span style="color: ${moatColor}; font-weight: 600;">${escapeHtml(v.moat || 'None')}</span>
+        </td>
+        <td class="tabular-nums" style="color: ${zColor}; font-weight: 600;">${zScore}</td>
+        <td class="tabular-nums" style="color: ${mColor}; font-weight: 600;">${mScore}</td>
+        <td>
+          <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn-sm btn-subtab" onclick="event.stopPropagation(); openFundamentalTab('${v.ticker}');" style="min-height: 32px; padding: 4px 10px; font-size: 0.8rem; display: inline-flex; align-items: center; cursor: pointer;">
+              🏢 Анализ
+            </button>
+            <button type="button" class="btn-sm btn-subtab" onclick="event.stopPropagation(); openDossierModal('${v.ticker}');" style="min-height: 32px; padding: 4px 10px; font-size: 0.8rem; background: rgba(88, 166, 255, 0.15); border-color: #58a6ff; color: #58a6ff; display: inline-flex; align-items: center; cursor: pointer;">
+              📑 Досие
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.innerHTML = rows;
+}
+window.renderFundamentalScreenerTable = renderFundamentalScreenerTable;
+
+// =============================================================================
 // PERSONAL RADAR & TRADE IDEAS CONTROLLER (Моите Идеи за сделки)
 // =============================================================================
 
@@ -7767,9 +8055,27 @@ let dossierEquityChartInstance = null;
 let currentDossierData = null;
 let currentDossierTicker = null;
 let currentDossierContext = null;
+let dossierPreviousTab = 'portfolio';
+
+window.openDossierModal = window.showProposalDossier = function(ticker, context) {
+  const chartModal = document.getElementById('chartModal');
+  if (chartModal && chartModal.style.display !== 'none') {
+    closeChartModal();
+  }
+  openProposalDossier(ticker, context);
+};
+
+window.openDossierFromActiveChart = function() {
+  if (typeof activeTicker !== 'undefined' && activeTicker) {
+    openDossierModal(activeTicker);
+  }
+};
 
 async function openProposalDossier(ticker, proposalContext) {
   if (!ticker) return;
+  if (currentTab && currentTab !== 'proposal-dossier') {
+    dossierPreviousTab = currentTab;
+  }
   currentDossierTicker = ticker;
   currentDossierContext = proposalContext || {};
 
@@ -7794,7 +8100,7 @@ async function openProposalDossier(ticker, proposalContext) {
   // Fallback: build synthetic dossier from loaded symbols if JSON missing
   if (!dossierData) {
     const symObj = allSymbols.find(s => s.ticker === ticker) || {};
-    const fund = symObj.fundamental || {};
+    const fund = symObj.fundamental || (typeof fundamentalProfiles !== 'undefined' ? fundamentalProfiles[ticker] : null) || {};
     dossierData = {
       ticker: ticker,
       name: symObj.name || ticker,
@@ -7838,7 +8144,7 @@ async function openProposalDossier(ticker, proposalContext) {
 }
 
 function closeProposalDossier() {
-  switchTab('portfolio');
+  switchTab(dossierPreviousTab || 'scanner');
 }
 
 function renderProposalDossier(d, ctx) {
@@ -7972,51 +8278,71 @@ function renderProposalDossier(d, ctx) {
   if (roicEl) roicEl.textContent = fundData.roic_pct ? `${fundData.roic_pct}% / ${fundData.wacc_pct || 8.0}%` : 'N/A';
   const zEl = document.getElementById('dossierZScore');
   if (zEl) zEl.textContent = fundData.z_score ? `${fundData.z_score}` : '3.20 (Safe)';
+  const mEl = document.getElementById('dossierMScore');
+  if (mEl) {
+    if (fundData.m_score !== undefined && fundData.m_score !== null) {
+      const ms = Number(fundData.m_score);
+      mEl.textContent = ms <= -2.22 ? `${ms.toFixed(2)} (Безопасен)` : `${ms.toFixed(2)} (Внимание)`;
+      mEl.style.color = ms <= -2.22 ? '#3fb950' : '#f85149';
+    } else {
+      mEl.textContent = 'N/A';
+      mEl.style.color = '#8b949e';
+    }
+  }
   const vrdEl = document.getElementById('dossierVerdict');
-    if (vrdEl) vrdEl.textContent = fundData.verdict || 'BUY / ACCUMULATE';
+  if (vrdEl) vrdEl.textContent = fundData.verdict || 'BUY / ACCUMULATE';
 
   // 3.4. Populate Pillar 4: Smart Money & Options Whales
   const sm = d.smart_money || {};
-  const smMetrics = sm.metrics || {};
-  const smOpt = smMetrics.options || {};
 
   const smVrdEl = document.getElementById('dossierSmVerdict');
   if (smVrdEl) smVrdEl.textContent = sm.flow_label_bg || 'НЕУТРАЛЕН ПОТОК';
   const smCmfEl = document.getElementById('dossierSmCmf');
   if (smCmfEl) {
-    const cmfVal = smMetrics.cmf_20d !== undefined ? smMetrics.cmf_20d : 0;
+    const cmfVal = sm.cmf_20d !== undefined ? sm.cmf_20d : (sm.metrics && sm.metrics.cmf_20d !== undefined ? sm.metrics.cmf_20d : 0);
     const cmfSign = cmfVal > 0 ? '+' : '';
     smCmfEl.textContent = `${cmfSign}${cmfVal}`;
     smCmfEl.style.color = cmfVal > 0.05 ? '#3fb950' : (cmfVal < -0.05 ? '#f85149' : '#8b949e');
   }
   const smVolEl = document.getElementById('dossierSmVolRatio');
   if (smVolEl) {
-    const vr = smMetrics.up_down_vol_ratio !== undefined ? smMetrics.up_down_vol_ratio : 1.0;
+    const vr = sm.up_down_vol_ratio !== undefined ? sm.up_down_vol_ratio : (sm.metrics && sm.metrics.up_down_vol_ratio !== undefined ? sm.metrics.up_down_vol_ratio : 1.0);
     smVolEl.textContent = `${vr}x`;
     smVolEl.style.color = vr >= 1.0 ? '#3fb950' : '#f85149';
   }
   const smAbsEl = document.getElementById('dossierSmAbsorption');
   if (smAbsEl) {
-    const ab = smMetrics.absorption_5d_pct !== undefined ? smMetrics.absorption_5d_pct : 0;
+    const ab = sm.absorption_5d_pct !== undefined ? sm.absorption_5d_pct : (sm.metrics && sm.metrics.absorption_5d_pct !== undefined ? sm.metrics.absorption_5d_pct : 0);
     smAbsEl.textContent = `${ab}%`;
     smAbsEl.style.color = ab >= 50.0 ? '#3fb950' : '#8b949e';
   }
   const smPcrEl = document.getElementById('dossierSmPcr');
   if (smPcrEl) {
-    const pcr = smOpt.put_call_ratio !== undefined ? smOpt.put_call_ratio : 'N/A';
-    const sent = smOpt.net_sentiment || 'NEUTRAL';
-    smPcrEl.textContent = `${pcr} (${sent})`;
-    smPcrEl.style.color = pcr < 0.7 ? '#3fb950' : (pcr > 1.0 ? '#f85149' : '#8b949e');
+    const rawPcr = (sm.put_call_ratio !== null && sm.put_call_ratio !== undefined)
+      ? sm.put_call_ratio
+      : (sm.metrics && sm.metrics.options && sm.metrics.options.put_call_ratio !== null && sm.metrics.options.put_call_ratio !== undefined ? sm.metrics.options.put_call_ratio : 'N/A');
+    const sent = sm.options_sentiment || (sm.metrics && sm.metrics.options && sm.metrics.options.net_sentiment) || 'NEUTRAL';
+    const hasPcr = rawPcr !== 'N/A' && rawPcr !== null && typeof rawPcr === 'number';
+    smPcrEl.textContent = hasPcr ? `${rawPcr.toFixed(2)} (${sent})` : 'N/A';
+    smPcrEl.style.color = hasPcr ? (rawPcr < 0.7 ? '#3fb950' : (rawPcr > 1.0 ? '#f85149' : '#8b949e')) : '#8b949e';
   }
   const smGwEl = document.getElementById('dossierSmGammaWall');
   if (smGwEl) {
-    const gw = smOpt.gamma_wall ? `$${smOpt.gamma_wall}` : 'N/A';
-    const mp = smOpt.max_pain ? `$${smOpt.max_pain}` : 'N/A';
-    smGwEl.textContent = `${gw} / ${mp}`;
+    const gw = (sm.gamma_wall !== null && sm.gamma_wall !== undefined) ? `$${sm.gamma_wall}` : ((sm.metrics && sm.metrics.options && sm.metrics.options.gamma_wall) ? `$${sm.metrics.options.gamma_wall}` : null);
+    const mp = (sm.max_pain !== null && sm.max_pain !== undefined) ? `$${sm.max_pain}` : ((sm.metrics && sm.metrics.options && sm.metrics.options.max_pain) ? `$${sm.metrics.options.max_pain}` : null);
+    if (gw && mp) {
+      smGwEl.textContent = `${gw} / ${mp}`;
+    } else if (gw) {
+      smGwEl.textContent = `${gw} (Wall)`;
+    } else if (mp) {
+      smGwEl.textContent = `${mp} (Pain)`;
+    } else {
+      smGwEl.textContent = 'N/A';
+    }
   }
   const smScrEl = document.getElementById('dossierSmScore');
   if (smScrEl) {
-    const sc = sm.score !== undefined ? sm.score : 50;
+    const sc = sm.smart_money_score !== undefined ? sm.smart_money_score : (sm.score !== undefined ? sm.score : 50);
     smScrEl.textContent = `${sc}/100 🐋`;
     smScrEl.style.color = sc >= 60 ? '#3fb950' : (sc <= 40 ? '#f85149' : '#ffd700');
   }
@@ -8356,3 +8682,605 @@ function executeFromDossier() {
   const shares = (slotEur / currentDossierData.current_price).toFixed(currentDossierData.current_price >= 1 ? 2 : 4);
   openAddRealFromRotation(currentDossierData.ticker, currentDossierData.asset_class, currentDossierData.current_price, shares, slotEur);
 }
+
+
+// =============================================================================
+// AI COMPANY MAP (3 SCENARIOS) CONTROLLER & VIEWS
+// =============================================================================
+
+let currentAiMapSubtab = 'ALL';
+let aiMapLanguage = 'BOTH'; // 'BOTH' or 'EN'
+let aiMapSearchQuery = '';
+let aiMapStateFilter = 'ALL';
+let activeAiMenuOverlay = null;
+
+function setAiMapSubtab(subtab) {
+  currentAiMapSubtab = subtab;
+  document.querySelectorAll('#aiMapSubtabs .scope-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.subtab === subtab);
+  });
+  renderAiCompanyMapContent();
+}
+
+function toggleAiMapLanguage() {
+  aiMapLanguage = (aiMapLanguage === 'BOTH') ? 'EN' : 'BOTH';
+  const labelEl = document.getElementById('aiMapLangLabel');
+  if (labelEl) {
+    labelEl.textContent = (aiMapLanguage === 'BOTH') ? 'BG + EN (Двуезичен)' : 'EN (Оригинален)';
+  }
+  renderAiCompanyMapView();
+}
+
+function handleAiMapSearch(q) {
+  aiMapSearchQuery = (q || '').toLowerCase().trim();
+  const clearBtn = document.getElementById('aiMapSearchClear');
+  if (clearBtn) {
+    clearBtn.style.display = aiMapSearchQuery ? 'inline-block' : 'none';
+  }
+  renderAiCompanyMapContent();
+}
+
+function clearAiMapSearch() {
+  const input = document.getElementById('aiMapSearchInput');
+  if (input) input.value = '';
+  handleAiMapSearch('');
+}
+
+function handleAiMapStateFilter(state) {
+  aiMapStateFilter = state || 'ALL';
+  renderAiCompanyMapContent();
+}
+
+function getAiCompanyMapData() {
+  if (typeof window !== 'undefined' && window.dashboardData && window.dashboardData.ai_company_map) {
+    return window.dashboardData.ai_company_map;
+  }
+  if (typeof window !== 'undefined' && window.lastLoadedDashboardData && window.lastLoadedDashboardData.ai_company_map) {
+    return window.lastLoadedDashboardData.ai_company_map;
+  }
+  return null;
+}
+
+function renderAiCompanyMapView() {
+  const mapData = getAiCompanyMapData();
+  if (!mapData) {
+    const cont = document.getElementById('aiMapContentSection');
+    if (cont) {
+      cont.innerHTML = `
+        <div class="zero-state-banner">
+          <div class="zero-state-icon">⏳</div>
+          <div class="zero-state-content">
+            <h4>Зареждане на AI Компания Картата...</h4>
+            <p>Моля изчакайте пазарните данни да се синхронизират.</p>
+          </div>
+        </div>
+      `;
+    }
+    return;
+  }
+
+  renderAiCompanyMapBarometer(mapData);
+  renderAiCompanyMapContent();
+}
+
+function renderAiCompanyMapBarometer(mapData) {
+  const grid = document.getElementById('aiBarometerGrid');
+  if (!grid) return;
+
+  const breadth = mapData.scenarios_breadth || {};
+  const s01 = breadth['S01'] || {};
+  const s02 = breadth['S02'] || {};
+  const s03 = breadth['S03'] || {};
+  const allWeather = mapData.all_weather_leaders || [];
+
+  // Calculate All-Weather breadth
+  const awListed = allWeather.filter(x => x.status === 'LISTED');
+  const awGold = awListed.filter(x => x.state === 'GOLD').length;
+  const awGoldPct = awListed.length > 0 ? ((awGold / awListed.length) * 100).toFixed(0) : 0;
+  const awTopLeader = allWeather[0] ? `${allWeather[0].name} (${allWeather[0].ticker})` : 'NVDA';
+
+  grid.innerHTML = `
+    <!-- S01 Barometer -->
+    <div class="ai-barometer-card card-s01" onclick="setAiMapSubtab('S01')">
+      <div class="ai-barometer-header">
+        <span class="ai-barometer-title">🏢 01: Data-Center AI</span>
+        <span class="ai-barometer-badge">${(s01.total_listed || s01.total_companies) || 23} компании</span>
+      </div>
+      <div class="ai-barometer-metrics">
+        <div class="ai-breadth-stats-row">
+          <span>Gold Ширина: <strong class="ai-breadth-val" style="color: #f59e0b;">${s01.gold_pct || 0}%</strong></span>
+          <span>Среден RS: <strong>${(s01.avg_rs || s01.avg_rs_rating) || 0}</strong></span>
+        </div>
+        <div class="ai-breadth-bar-wrap">
+          <div class="ai-breadth-fill-gold" style="width: ${s01.gold_pct || 0}%;"></div>
+          <div class="ai-breadth-fill-blue" style="width: ${100 - (s01.gold_pct || 0)}%;"></div>
+        </div>
+      </div>
+      <div class="ai-barometer-leader">
+        <span>Топ Лидер:</span>
+        <span class="ai-leader-chip">${escapeHtml(s01.top_leader || 'N/A')}</span>
+      </div>
+    </div>
+
+    <!-- S02 Barometer -->
+    <div class="ai-barometer-card card-s02" onclick="setAiMapSubtab('S02')">
+      <div class="ai-barometer-header">
+        <span class="ai-barometer-title">💻 02: Local AI</span>
+        <span class="ai-barometer-badge">${(s02.total_listed || s02.total_companies) || 18} компании</span>
+      </div>
+      <div class="ai-barometer-metrics">
+        <div class="ai-breadth-stats-row">
+          <span>Gold Ширина: <strong class="ai-breadth-val" style="color: #f59e0b;">${s02.gold_pct || 0}%</strong></span>
+          <span>Среден RS: <strong>${(s02.avg_rs || s02.avg_rs_rating) || 0}</strong></span>
+        </div>
+        <div class="ai-breadth-bar-wrap">
+          <div class="ai-breadth-fill-gold" style="width: ${s02.gold_pct || 0}%;"></div>
+          <div class="ai-breadth-fill-blue" style="width: ${100 - (s02.gold_pct || 0)}%;"></div>
+        </div>
+      </div>
+      <div class="ai-barometer-leader">
+        <span>Топ Лидер:</span>
+        <span class="ai-leader-chip">${escapeHtml(s02.top_leader || 'N/A')}</span>
+      </div>
+    </div>
+
+    <!-- S03 Barometer -->
+    <div class="ai-barometer-card card-s03" onclick="setAiMapSubtab('S03')">
+      <div class="ai-barometer-header">
+        <span class="ai-barometer-title">🤖 03: Physical AI & Autonomy</span>
+        <span class="ai-barometer-badge">${(s03.total_listed || s03.total_companies) || 12} компании</span>
+      </div>
+      <div class="ai-barometer-metrics">
+        <div class="ai-breadth-stats-row">
+          <span>Gold Ширина: <strong class="ai-breadth-val" style="color: #f59e0b;">${s03.gold_pct || 0}%</strong></span>
+          <span>Среден RS: <strong>${(s03.avg_rs || s03.avg_rs_rating) || 0}</strong></span>
+        </div>
+        <div class="ai-breadth-bar-wrap">
+          <div class="ai-breadth-fill-gold" style="width: ${s03.gold_pct || 0}%;"></div>
+          <div class="ai-breadth-fill-blue" style="width: ${100 - (s03.gold_pct || 0)}%;"></div>
+        </div>
+      </div>
+      <div class="ai-barometer-leader">
+        <span>Топ Лидер:</span>
+        <span class="ai-leader-chip">${escapeHtml(s03.top_leader || 'N/A')}</span>
+      </div>
+    </div>
+
+    <!-- All-Weather Cross Scenario Card -->
+    <div class="ai-barometer-card card-all-weather" onclick="setAiMapSubtab('ALL_WEATHER')">
+      <div class="ai-barometer-header">
+        <span class="ai-barometer-title">⭐ All-Weather Лидери</span>
+        <span class="ai-barometer-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">2+ Сценария (${allWeather.length})</span>
+      </div>
+      <div class="ai-barometer-metrics">
+        <div class="ai-breadth-stats-row">
+          <span>Gold Ширина: <strong class="ai-breadth-val" style="color: #f59e0b;">${awGoldPct}%</strong></span>
+          <span>Кросс-лидери: <strong>${allWeather.length}</strong></span>
+        </div>
+        <div class="ai-breadth-bar-wrap">
+          <div class="ai-breadth-fill-gold" style="width: ${awGoldPct}%;"></div>
+          <div class="ai-breadth-fill-blue" style="width: ${100 - awGoldPct}%;"></div>
+        </div>
+      </div>
+      <div class="ai-barometer-leader">
+        <span>Топ All-Weather:</span>
+        <span class="ai-leader-chip" style="color: #c084fc; background: rgba(168, 85, 247, 0.15);">${escapeHtml(awTopLeader)}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderAiCompanyMapContent() {
+  const container = document.getElementById('aiMapContentSection');
+  if (!container) return;
+
+  const mapData = getAiCompanyMapData();
+  if (!mapData || !mapData.scenarios) return;
+
+  let scenariosToRender = [];
+  if (currentAiMapSubtab === 'ALL') {
+    scenariosToRender = mapData.scenarios;
+  } else if (currentAiMapSubtab === 'ALL_WEATHER') {
+    scenariosToRender = [];
+  } else {
+    scenariosToRender = mapData.scenarios.filter(s => (s.code === currentAiMapSubtab || s.id === currentAiMapSubtab));
+  }
+
+  let html = '';
+
+  // 1. Render Specific Scenarios
+  for (const sc of scenariosToRender) {
+    const scCode = sc.code || (sc.id === 'scenario_01' ? 'S01' : (sc.id === 'scenario_02' ? 'S02' : 'S03'));
+    const scColorClass = scCode === 'S01' ? 'border-s01' : (scCode === 'S02' ? 'border-s02' : 'border-s03');
+    const scTagClass = scCode === 'S01' ? 'tag-s01' : (scCode === 'S02' ? 'tag-s02' : 'tag-s03');
+
+    // Filter categories based on search and state filter
+    const filteredCategories = [];
+    for (const cat of sc.categories) {
+      let filteredComps = cat.companies;
+
+      // Filter by state
+      if (aiMapStateFilter !== 'ALL') {
+        filteredComps = filteredComps.filter(c => c.state === aiMapStateFilter);
+      }
+
+      // Filter by search query
+      if (aiMapSearchQuery) {
+        const catMatch = ((cat.name_en || cat.name) || '').toLowerCase().includes(aiMapSearchQuery) ||
+                         (cat.name_bg || '').toLowerCase().includes(aiMapSearchQuery) ||
+                         ((cat.benefit_en || cat.benefit) || '').toLowerCase().includes(aiMapSearchQuery) ||
+                         (cat.benefit_bg || '').toLowerCase().includes(aiMapSearchQuery);
+
+        const compMatch = filteredComps.some(c => 
+          (c.name || '').toLowerCase().includes(aiMapSearchQuery) ||
+          (c.ticker || '').toLowerCase().includes(aiMapSearchQuery)
+        );
+
+        if (!catMatch && !compMatch) {
+          continue;
+        }
+
+        if (!catMatch && compMatch) {
+          filteredComps = filteredComps.filter(c => 
+            (c.name || '').toLowerCase().includes(aiMapSearchQuery) ||
+            (c.ticker || '').toLowerCase().includes(aiMapSearchQuery)
+          );
+        }
+      }
+
+      if (filteredComps.length > 0 || !aiMapSearchQuery) {
+        filteredCategories.push({ cat, comps: filteredComps });
+      }
+    }
+
+    if (filteredCategories.length === 0 && (aiMapSearchQuery || aiMapStateFilter !== 'ALL')) {
+      continue;
+    }
+
+    html += `
+      <div class="ai-scenario-panel">
+        <div class="ai-scenario-banner">
+          <div class="ai-scenario-banner-left">
+            <span class="ai-scenario-num-tag ${scTagClass}">${escapeHtml(scCode)}</span>
+            <div>
+              <h3 class="ai-scenario-heading">${aiMapLanguage === 'BOTH' ? `${escapeHtml(sc.title_bg)} (${escapeHtml(sc.title)})` : escapeHtml(sc.title)}</h3>
+              <span class="ai-scenario-subtext">${aiMapLanguage === 'BOTH' ? `${escapeHtml(sc.subtitle_bg)} — <em>${escapeHtml(sc.subtitle)}</em>` : escapeHtml(sc.subtitle)}</span>
+            </div>
+          </div>
+          <div>
+            <span class="badge badge-info">${filteredCategories.length} категории</span>
+          </div>
+        </div>
+
+        <div class="table-container" style="overflow-x: auto;">
+          <table class="ai-category-table">
+            <thead>
+              <tr>
+                <th style="width: 220px;">КАТЕГОРИЯ / CATEGORY</th>
+                <th>КОМПАНИИ / COMPANIES</th>
+                <th style="width: 38%;">ПОЛЗА &amp; СТАТУС / HOW THEY BENEFIT</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filteredCategories.map(({ cat, comps }) => `
+                <tr class="ai-category-row">
+                  <td class="ai-cat-col ${scColorClass}">
+                    <div>${aiMapLanguage === 'BOTH' ? escapeHtml(cat.name_bg) : escapeHtml((cat.name_en || cat.name))}</div>
+                    ${aiMapLanguage === 'BOTH' ? `<span class="ai-cat-secondary">${escapeHtml((cat.name_en || cat.name))}</span>` : ''}
+                  </td>
+                  <td class="ai-companies-col">
+                    <div class="ai-companies-wrap">
+                      ${comps.map(comp => renderAiCompanyChipHtml(comp)).join('')}
+                    </div>
+                  </td>
+                  <td class="ai-benefit-col">
+                    <div>${aiMapLanguage === 'BOTH' ? escapeHtml(cat.benefit_bg) : escapeHtml((cat.benefit_en || cat.benefit))}</div>
+                    ${aiMapLanguage === 'BOTH' ? `<span class="ai-benefit-secondary">${escapeHtml((cat.benefit_en || cat.benefit))}</span>` : ''}
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        ${sc.footer_note ? `
+          <div class="ai-scenario-footer">
+            📌 ${aiMapLanguage === 'BOTH' ? `${escapeHtml(sc.footer_note_bg)} (${escapeHtml(sc.footer_note)})` : escapeHtml(sc.footer_note)}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  // 2. Render All-Weather Cross-Scenario Leaders (if subtab is ALL or ALL_WEATHER)
+  if (currentAiMapSubtab === 'ALL' || currentAiMapSubtab === 'ALL_WEATHER') {
+    const allWeather = mapData.all_weather_leaders || [];
+    let filteredAw = allWeather;
+
+    if (aiMapStateFilter !== 'ALL') {
+      filteredAw = filteredAw.filter(c => c.state === aiMapStateFilter);
+    }
+    if (aiMapSearchQuery) {
+      filteredAw = filteredAw.filter(c => 
+        (c.name || '').toLowerCase().includes(aiMapSearchQuery) ||
+        (c.ticker || '').toLowerCase().includes(aiMapSearchQuery)
+      );
+    }
+
+    html += `
+      <div class="ai-scenario-panel">
+        <div class="ai-scenario-banner">
+          <div class="ai-scenario-banner-left">
+            <span class="ai-scenario-num-tag tag-all-weather">⭐ ALL-WEATHER</span>
+            <div>
+              <h3 class="ai-scenario-heading">Кросс-Сценарийни Победители (Устойчиви при всеки AI сценарий)</h3>
+              <span class="ai-scenario-subtext">Компании с критична експозиция в 2 или всички 3 сценария (Data-Center + Local + Physical AI).</span>
+            </div>
+          </div>
+          <div>
+            <span class="badge badge-info" style="background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4);">
+              ${filteredAw.length} All-Weather компании
+            </span>
+          </div>
+        </div>
+
+        <div class="table-container" style="overflow-x: auto;">
+          <table class="ai-category-table ai-leaders-table">
+            <thead>
+              <tr>
+                <th style="width: 220px;">Компания &amp; Тикер</th>
+                <th style="width: 140px;">Сценарии</th>
+                <th style="width: 130px;">Тренд &amp; Цена</th>
+                <th style="width: 110px;">RS Рейтинг</th>
+                <th style="width: 130px;">DCF MoS &amp; Moat</th>
+                <th>Категории на влияние</th>
+                <th style="width: 130px; text-align: right;">Бързи Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filteredAw.map(comp => `
+                <tr class="ai-category-row">
+                  <td class="ai-cat-col border-all-weather">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span class="ai-trend-dot ${getDotClass(comp.state)}"></span>
+                      <div>
+                        <strong>${escapeHtml(comp.name)}</strong>
+                        <div style="font-size: 0.78rem; color: #58a6ff; font-weight: 700;">${escapeHtml(comp.ticker)}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                      ${(comp.scenarios || []).map(scId => `<span class="ai-scenario-num-tag ${scId === 'S01' ? 'tag-s01' : (scId === 'S02' ? 'tag-s02' : 'tag-s03')}" style="font-size: 0.68rem; padding: 2px 5px;">${scId}</span>`).join('')}
+                    </div>
+                  </td>
+                  <td>
+                    <div style="font-weight: 700; color: var(--text-primary);">$${comp.price ? comp.price.toFixed(2) : '-'}</div>
+                    <span class="badge ${getStateBadgeClass(comp.state)}" style="font-size: 0.7rem; padding: 1px 6px;">${comp.state || 'N/A'}</span>
+                  </td>
+                  <td>
+                    <div style="font-weight: 700; color: ${comp.rs_rating >= 70 ? '#3fb950' : (comp.rs_rating <= 40 ? '#f85149' : '#f59e0b')};">
+                      ${comp.rs_rating || '-'}
+                    </div>
+                    <span style="font-size: 0.72rem; color: var(--text-muted);">Tier ${comp.empirical_tier || 'C'}</span>
+                  </td>
+                  <td>
+                    <div style="font-weight: 600; color: ${comp.mos_pct > 0 ? '#3fb950' : '#f85149'};">
+                      ${comp.mos_pct !== null ? `${comp.mos_pct.toFixed(1)}%` : '-'}
+                    </div>
+                    <span style="font-size: 0.72rem; color: var(--text-secondary);">${comp.moat || 'None'} Moat</span>
+                  </td>
+                  <td style="font-size: 0.8rem; color: var(--text-secondary);">
+                    ${(comp.categories || []).map(c => `<span style="display: inline-block; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; margin: 2px 4px 2px 0;">${escapeHtml(c)}</span>`).join('')}
+                  </td>
+                  <td style="text-align: right; vertical-align: middle;">
+                    <div style="display: flex; gap: 4px; justify-content: flex-end;">
+                      <button type="button" class="btn btn-sm btn-outline-primary" style="padding: 2px 6px; font-size: 0.75rem;" onclick="openChartModal('${comp.ticker}', '1D', 'ai_stocks')" title="S/R Нива и Графика">📊 S/R</button>
+                      <button type="button" class="btn btn-sm btn-outline-info" style="padding: 2px 6px; font-size: 0.75rem;" onclick="dossierPreviousTab='ai-map'; openProposalDossier('${comp.ticker}')" title="Пълно Институционално Досие">📑 Досие</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+
+  if (!html) {
+    html = `
+      <div class="zero-state-banner">
+        <div class="zero-state-icon">🔍</div>
+        <div class="zero-state-content">
+          <h4>Няма намерени компании за филтъра</h4>
+          <p>Опитайте да изчистите търсенето или да промените филтъра за тренд (Gold/Neutral/Blue).</p>
+        </div>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+}
+
+function renderAiCompanyChipHtml(comp) {
+  const isListed = comp.status === 'LISTED';
+  const dotClass = getDotClass(comp.state);
+  const chipStateClass = comp.state === 'GOLD' ? 'chip-gold' : (comp.state === 'BLUE' ? 'chip-blue' : (comp.state === 'NEUTRAL' ? 'chip-neutral' : 'chip-unlisted'));
+  
+  if (isListed) {
+    const prStr = comp.price ? `$${comp.price.toFixed(2)}` : '';
+    const safeNote = escapeHtml(comp.notes || '');
+    return `
+      <span class="ai-company-chip ${chipStateClass}" 
+            onclick="showAiCompanyActionMenu(event, '${escapeHtml(comp.ticker)}', '${escapeHtml(comp.status)}', '${escapeHtml(comp.name)}', '${safeNote}')"
+            title="${escapeHtml(comp.name)} (${escapeHtml(comp.ticker)}) | Тренд: ${comp.state || 'N/A'}${comp.rs_rating ? ` | RS: ${comp.rs_rating}` : ''}">
+        <span class="ai-trend-dot ${dotClass}"></span>
+        <span class="ai-chip-name"><strong>${escapeHtml(comp.name)}</strong></span>
+        ${comp.ticker ? `<span class="ai-chip-ticker" style="color: #58a6ff;">${escapeHtml(comp.ticker)}</span>` : ''}
+        ${prStr ? `<span class="ai-chip-price">${prStr}</span>` : ''}
+      </span>
+    `;
+  }
+
+  // Unlisted / Private
+  let badgeClass = 'badge-private';
+  let badgeText = '🔒 PRIVATE';
+  if (comp.status === 'PENDING_IPO') {
+    badgeClass = 'badge-pending';
+    badgeText = '⏳ IPO 5 NOV';
+  } else if (comp.status === 'UNLISTED_SUBSIDIARY') {
+    badgeClass = 'badge-subsidiary';
+    badgeText = '🏢 HYUNDAI';
+  } else if (comp.status === 'LIMITED_CONNECT') {
+    badgeClass = 'badge-star';
+    badgeText = '🏛️ STAR 688836';
+  }
+
+  const safeNotes = escapeHtml(comp.notes || '');
+  const proxyTick = escapeHtml(comp.ticker || '');
+  return `
+    <span class="ai-company-chip chip-unlisted" 
+          onclick="showAiUnlistedModal('${escapeHtml(comp.name)}', '${safeNotes}', '${escapeHtml(comp.status)}', '${proxyTick}')"
+          title="${escapeHtml(comp.name)}: ${safeNotes}">
+      <span class="ai-trend-dot dot-unlisted"></span>
+      <span class="ai-chip-name"><strong>${escapeHtml(comp.name)}</strong></span>
+      <span class="ai-status-badge ${badgeClass}">${badgeText}</span>
+    </span>
+  `;
+}
+
+function getDotClass(state) {
+  if (state === 'GOLD') return 'dot-gold';
+  if (state === 'BLUE') return 'dot-blue';
+  if (state === 'NEUTRAL') return 'dot-neutral';
+  return 'dot-unlisted';
+}
+
+function getStateBadgeClass(state) {
+  if (state === 'GOLD') return 'badge-gold';
+  if (state === 'BLUE') return 'badge-blue';
+  return 'badge-neutral';
+}
+
+function closeAiMenuOverlay() {
+  if (activeAiMenuOverlay) {
+    activeAiMenuOverlay.remove();
+    activeAiMenuOverlay = null;
+  }
+}
+
+function showAiCompanyActionMenu(e, ticker, status, name, notes) {
+  e.stopPropagation();
+  closeAiMenuOverlay();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'ai-chip-menu-overlay';
+  overlay.onclick = closeAiMenuOverlay;
+
+  const menu = document.createElement('div');
+  menu.className = 'ai-chip-action-menu';
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  menu.style.top = `${rect.bottom + window.scrollY + 4}px`;
+  menu.style.left = `${Math.min(rect.left + window.scrollX, window.innerWidth - 200)}px`;
+
+  const symItem = allSymbols.find(s => s.ticker === ticker) || {};
+  const tvUrl = symItem.tv_symbol ? `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(symItem.tv_symbol)}` : `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(ticker)}`;
+  const isSaved = (typeof isTradeIdea === 'function' && isTradeIdea(ticker));
+
+  menu.innerHTML = `
+    <div style="padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.78rem;">
+      <strong style="color: #f0f6fc;">${escapeHtml(name)}</strong>
+      <span style="color: #58a6ff; font-weight: 700; margin-left: 4px;">${escapeHtml(ticker)}</span>
+    </div>
+    <button type="button" class="ai-chip-action-item" onclick="closeAiMenuOverlay(); openChartModal('${ticker}', '1D', 'ai_stocks');">
+      <span>📊</span> S/R Нива &amp; Графика
+    </button>
+    <button type="button" class="ai-chip-action-item" onclick="closeAiMenuOverlay(); dossierPreviousTab='ai-map'; openProposalDossier('${ticker}');">
+      <span>📑</span> Институционално Досие
+    </button>
+    <button type="button" class="ai-chip-action-item" onclick="closeAiMenuOverlay(); switchTab('fundamentals'); renderFundamentalDossier('${ticker}');">
+      <span>🏢</span> DCF Оценка &amp; Фундамент
+    </button>
+    <button type="button" class="ai-chip-action-item" onclick="closeAiMenuOverlay(); toggleTradeIdea('${ticker}');">
+      <span>${isSaved ? '★' : '☆'}</span> ${isSaved ? 'Премахни от Радара' : 'Запази в Моите Идеи'}
+    </button>
+    <a href="${tvUrl}" target="_blank" rel="noopener noreferrer" class="ai-chip-action-item" style="text-decoration: none;">
+      <span>📈</span> TradingView Графика ↗
+    </a>
+  `;
+
+  overlay.appendChild(menu);
+  document.body.appendChild(overlay);
+  activeAiMenuOverlay = overlay;
+}
+
+function showAiUnlistedModal(name, notes, status, proxyTicker) {
+  closeAiMenuOverlay();
+
+  let statusBadge = '<span class="ai-status-badge badge-private">🔒 Частна Компания (Unlisted)</span>';
+  if (status === 'PENDING_IPO') {
+    statusBadge = '<span class="ai-status-badge badge-pending">⏳ Предстоящо IPO</span>';
+  } else if (status === 'UNLISTED_SUBSIDIARY') {
+    statusBadge = '<span class="ai-status-badge badge-subsidiary">🏢 Дъщерна Компания на Публичен Конгломерат</span>';
+  } else if (status === 'LIMITED_CONNECT') {
+    statusBadge = '<span class="ai-status-badge badge-star">🏛️ STAR Market 688836 (Ограничен Достъп)</span>';
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'ai-chip-menu-overlay';
+  overlay.style.background = 'rgba(0,0,0,0.7)';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+
+  const box = document.createElement('div');
+  box.style.background = '#161b22';
+  box.style.border = '1px solid #30363d';
+  box.style.borderRadius = '12px';
+  box.style.padding = '24px';
+  box.style.maxWidth = '460px';
+  box.style.width = '90%';
+  box.style.boxShadow = '0 16px 36px rgba(0,0,0,0.7)';
+
+  box.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+      <h3 style="margin: 0; color: #f0f6fc; font-size: 1.2rem;">${escapeHtml(name)}</h3>
+      <button type="button" style="background: none; border: none; color: #8b949e; font-size: 1.2rem; cursor: pointer;" onclick="closeAiMenuOverlay()">✕</button>
+    </div>
+    <div style="margin-bottom: 14px;">${statusBadge}</div>
+    <p style="color: #c9d1d9; font-size: 0.9rem; line-height: 1.5; margin-bottom: 18px;">
+      ${escapeHtml(notes)}
+    </p>
+    ${proxyTicker ? `
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px; margin-bottom: 18px;">
+        <div style="font-size: 0.78rem; color: #8b949e; margin-bottom: 4px;">Свързан публичен инструмент за инвестиция:</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <strong style="color: #58a6ff; font-size: 0.95rem;">${escapeHtml(proxyTicker)}</strong>
+          <button type="button" class="btn btn-sm btn-primary" onclick="closeAiMenuOverlay(); openChartModal('${proxyTicker}', '1D', 'ai_stocks');">
+            📊 Отвори Графика
+          </button>
+        </div>
+      </div>
+    ` : ''}
+    <div style="display: flex; justify-content: flex-end;">
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeAiMenuOverlay()">Затвори</button>
+    </div>
+  `;
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  activeAiMenuOverlay = overlay;
+}
+
+// Expose globals for onclick bindings
+window.setAiMapSubtab = setAiMapSubtab;
+window.toggleAiMapLanguage = toggleAiMapLanguage;
+window.handleAiMapSearch = handleAiMapSearch;
+window.clearAiMapSearch = clearAiMapSearch;
+window.handleAiMapStateFilter = handleAiMapStateFilter;
+window.renderAiCompanyMapView = renderAiCompanyMapView;
+window.showAiCompanyActionMenu = showAiCompanyActionMenu;
+window.showAiUnlistedModal = showAiUnlistedModal;
+window.closeAiMenuOverlay = closeAiMenuOverlay;

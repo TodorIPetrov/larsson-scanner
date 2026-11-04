@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 310.0,
+    "target_price": 310.0,
+    "entry_price": 263.5,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -15.0,
     "mos_pct": -15.0,
     "moat": "Narrow",
     "roic_pct": 14.8,
     "wacc_pct": 10.5,
     "z_score": 8.1,
-    "verdict": "HOLD / QUALITY COMPOUNDER"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Investment Grade",
+    "verdict": "HOLD / QUALITY COMPOUNDER",
+    "model_type": "Mid-Cycle Normalized DCF & Option Value"
   },
   "candles": [
     {
@@ -34792,18 +34800,18 @@
   ],
   "smart_money": {
     "symbol": "TSLA",
-    "smart_money_score": 82.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 0.88x). Силна скрита подкрепа.",
+    "smart_money_score": 74.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 1.19) с Gamma стена на $380.00. Залог за рязък отскок.",
     "cmf_20d": 0.123,
     "up_down_vol_ratio": 0.88,
     "absorption_5d_pct": 65.8,
     "vol_shock_ratio": 0.4,
-    "put_call_ratio": 0.74,
+    "put_call_ratio": 1.19,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 400.0,
-    "max_pain": 455.0,
+    "gamma_wall": 380.0,
+    "max_pain": 402.5,
     "unusual_call_sweep": false
   }
 }

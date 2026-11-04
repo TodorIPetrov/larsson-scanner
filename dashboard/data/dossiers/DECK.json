@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 203.46729864104296,
+    "target_price": 203.46729864104296,
+    "entry_price": 172.9472038448865,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": 60.4,
     "mos_pct": 60.4,
     "moat": "Wide",
     "roic_pct": 88.56,
     "wacc_pct": 10.065942188215576,
     "z_score": 10.14,
-    "verdict": "STRONG BUY"
+    "m_score": -3.13,
+    "tata": -0.043,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "STRONG BUY",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34692,10 +34700,10 @@
     "up_down_vol_ratio": 0.83,
     "absorption_5d_pct": 74.0,
     "vol_shock_ratio": 0.79,
-    "put_call_ratio": 0.8,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 82.0,
-    "max_pain": 80.0,
+    "put_call_ratio": 0.64,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 87.0,
+    "max_pain": 72.0,
     "unusual_call_sweep": false
   }
 }

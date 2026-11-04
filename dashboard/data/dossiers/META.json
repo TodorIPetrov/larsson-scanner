@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 780.0,
+    "target_price": 780.0,
+    "entry_price": 663.0,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 14.1,
     "mos_pct": 14.1,
     "moat": "Wide",
     "roic_pct": 32.5,
     "wacc_pct": 8.9,
     "z_score": 9.4,
-    "verdict": "BUY / ACCUMULATE"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Investment Grade",
+    "verdict": "BUY / ACCUMULATE",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34766,17 +34774,17 @@
   ],
   "smart_money": {
     "symbol": "META",
-    "smart_money_score": 43.0,
+    "smart_money_score": 35.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.37) с Gamma стена на $615.00. Залог за рязък отскок.",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.50) с Gamma стена на $650.00. Залог за рязък отскок.",
     "cmf_20d": -0.222,
     "up_down_vol_ratio": 0.41,
     "absorption_5d_pct": 37.6,
     "vol_shock_ratio": 0.31,
-    "put_call_ratio": 0.37,
+    "put_call_ratio": 0.5,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 615.0,
+    "gamma_wall": 650.0,
     "max_pain": 650.0,
     "unusual_call_sweep": false
   }

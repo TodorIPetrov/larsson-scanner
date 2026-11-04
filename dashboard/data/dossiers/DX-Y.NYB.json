@@ -1,7 +1,7 @@
 {
   "ticker": "DX-Y.NYB",
-  "name": "DX-Y.NYB",
-  "sector": "Equities",
+  "name": "US Dollar Index",
+  "sector": "Макро индекси",
   "asset_class": "indices",
   "backtest_start_date": "2022-04-06",
   "backtest_end_date": "2026-10-28",
@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "mos_pct": null,
+    "fair_value": 96.0,
+    "target_price": 96.0,
+    "entry_price": null,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 0.0,
+    "mos_pct": 0.0,
     "moat": "None",
     "roic_pct": null,
     "wacc_pct": null,
     "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Multi-Asset Evaluation",
+    "verdict": "REDUCE",
+    "model_type": "Макро себестоен модел"
   },
   "candles": [
     {

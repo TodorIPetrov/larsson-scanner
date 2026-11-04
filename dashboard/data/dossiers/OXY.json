@@ -1,7 +1,7 @@
 {
   "ticker": "OXY",
-  "name": "OXY",
-  "sector": "Equities",
+  "name": "Occidental Petroleum Corporatio",
+  "sector": "Energy",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
   "backtest_end_date": "2026-10-27",
@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "mos_pct": null,
+    "fair_value": 41.54,
+    "target_price": 41.54,
+    "entry_price": 31.16,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": -46.2,
+    "mos_pct": -46.2,
     "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "roic_pct": 7.4,
+    "wacc_pct": 8.0,
+    "z_score": 1.89,
+    "m_score": -2.91,
+    "tata": -0.097,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "UNDERPERFORM / CAPITAL EROSION",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {
@@ -34684,9 +34692,9 @@
     "up_down_vol_ratio": 1.85,
     "absorption_5d_pct": 48.7,
     "vol_shock_ratio": 0.83,
-    "put_call_ratio": 0.34,
+    "put_call_ratio": 0.39,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 64.0,
+    "gamma_wall": 59.0,
     "max_pain": 65.0,
     "unusual_call_sweep": false
   }

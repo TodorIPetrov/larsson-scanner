@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 137.6060562904435,
+    "target_price": 137.6060562904435,
+    "entry_price": 110.08484503235479,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -113.3,
     "mos_pct": -113.3,
     "moat": "Narrow",
     "roic_pct": 14.17,
     "wacc_pct": 7.76600004196167,
     "z_score": 2.0,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": -3.04,
+    "tata": -0.001,
+    "solvency_type": "Financial TCE Capital Ratio (0.0%)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Residual Income (RIM) & Justified P/TBV"
   },
   "candles": [
     {
@@ -34606,9 +34614,9 @@
     "up_down_vol_ratio": 2.43,
     "absorption_5d_pct": 54.8,
     "vol_shock_ratio": 0.82,
-    "put_call_ratio": 0.82,
+    "put_call_ratio": 0.93,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 305.0,
+    "gamma_wall": 297.5,
     "max_pain": 297.5,
     "unusual_call_sweep": false
   }

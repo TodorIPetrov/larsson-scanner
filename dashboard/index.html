@@ -7,11 +7,24 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20261029_06">
+  <link rel="stylesheet" href="style.css?v=20261104_04">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+  <script>
+    // Automatic PWA Cache Cleaner for Localhost & Updates
+    if ('serviceWorker' in navigator && typeof caches !== 'undefined') {
+      caches.keys().then(keys => {
+        keys.forEach(k => {
+          if (k !== 'larsson-v17') {
+            console.log('[Dev] Purging obsolete cache:', k);
+            caches.delete(k);
+          }
+        });
+      });
+    }
+  </script>
 </head>
 <body>
   <div class="container">
@@ -95,6 +108,9 @@
       <button class="nav-tab-btn" data-tab="fundamentals" id="navTabFundamentals">
         <span class="tab-icon">🏢</span> Фундамент &amp; DCF
       </button>
+      <button class="nav-tab-btn" data-tab="ai-map" id="navTabAiMap">
+        <span class="tab-icon">🗺️</span> AI Карта (3 Сценария)
+      </button>
       <button class="nav-tab-btn" data-tab="ideas" id="navTabIdeas">
         <span class="tab-icon">💡</span> Моите Идеи &amp; Радар
         <span class="tab-badge" id="ideasCountBadge">0</span>
@@ -160,19 +176,48 @@
                 </div>
               </div>
 
-              <div class="filter-subgroup" id="tfFilters" style="display: none;">
-                <button class="filter-btn active" data-tf="ALL">All TF</button>
-                <button class="filter-btn" data-tf="1D">1D</button>
-                <button class="filter-btn" data-tf="4H">4H</button>
-                <button class="filter-btn" data-tf="1W">1W</button>
+              <div class="filter-subgroup" id="tfFilters">
+                <span class="filter-subgroup-title">Времева Рамка</span>
+                <div class="filter-chip-row">
+                  <button class="filter-btn active" data-tf="ALL">All TF</button>
+                  <button class="filter-btn" data-tf="1D">1D (Daily)</button>
+                  <button class="filter-btn" data-tf="4H">4H (Timing)</button>
+                  <button class="filter-btn" data-tf="1W">1W (Weekly)</button>
+                </div>
               </div>
 
-              <div class="filter-subgroup" id="fundFilters" style="display: none;">
-                <button class="filter-btn active" data-fund="ALL">All</button>
+              <div class="filter-subgroup" id="fundFilters">
+                <span class="filter-subgroup-title">Фундамент &amp; Оценка</span>
+                <div class="filter-chip-row">
+                  <button class="filter-btn active" data-fund="ALL">Всички</button>
+                  <button class="filter-btn" data-fund="UNDERVALUED">💎 Подценени (MoS &gt; 0%)</button>
+                  <button class="filter-btn" data-fund="WIDE_MOAT">🏰 Wide Moat</button>
+                  <button class="filter-btn" data-fund="OVERVALUED">⚠️ Надценени</button>
+                  <button class="filter-btn" data-fund="SPECULATIVE">⚡ Спекулативни</button>
+                </div>
               </div>
 
-              <div class="filter-subgroup" id="setupFilters" style="display: none;">
-                <button class="filter-btn active" data-setup="ALL">All</button>
+              <div class="filter-subgroup" id="setupFilters">
+                <span class="filter-subgroup-title">Quantamental Сетъпи</span>
+                <div class="filter-chip-row">
+                  <button class="filter-btn active" data-setup="ALL">Всички</button>
+                  <button class="filter-btn" data-setup="QUANTAMENTAL_ALPHA">⭐ Alpha Buy</button>
+                  <button class="filter-btn" data-setup="QUALITY_HOLD">💎 Quality Hold</button>
+                  <button class="filter-btn" data-setup="SPOT_BUY">🟢 Spot Buy</button>
+                  <button class="filter-btn" data-setup="BTC_ALPHA">₿ vs BTC Leader</button>
+                  <button class="filter-btn" data-setup="VALUE_TRAP">⚠️ Value Trap</button>
+                </div>
+              </div>
+
+              <div class="filter-subgroup" id="aiScenarioFilters">
+                <span class="filter-subgroup-title">AI Сценарий (Карта)</span>
+                <div class="filter-chip-row">
+                  <button class="filter-btn active" data-ai-scenario="ALL">Всички</button>
+                  <button class="filter-btn" data-ai-scenario="S01" title="Data-center AI dominates">🏢 S01: Data-Center</button>
+                  <button class="filter-btn" data-ai-scenario="S02" title="Local AI dominates">💻 S02: Local AI</button>
+                  <button class="filter-btn" data-ai-scenario="S03" title="Physical AI &amp; autonomy">🤖 S03: Physical AI</button>
+                  <button class="filter-btn" data-ai-scenario="ALL_WEATHER" title="Present across multiple scenarios">⭐ All-Weather (2+)</button>
+                </div>
               </div>
             </div>
           </details>
@@ -1050,7 +1095,58 @@
         <div class="fund-loading-placeholder">
           <div class="fund-empty-icon">🏢</div>
           <h3>Фундаментален Анализ &amp; DCF Оценка</h3>
-          <p>Изберете актив от предложенията, скенера или лентата за бърз избор горе за пълен институционален анализ.</p>
+          <p>Изберете актив от таблицата по-долу, предложенията или лентата за бърз избор горе за подробен институционален анализ.</p>
+        </div>
+      </section>
+
+      <!-- Fundamental Screener Overview Table (All Audited Equities from fundamental_verdicts.json) -->
+      <section class="fund-screener-section" id="fundScreenerSection" style="margin-top: 24px;">
+        <div class="section-title-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
+          <div class="section-title-left" style="display: flex; align-items: center; gap: 10px;">
+            <span class="title-accent-dot dot-info"></span>
+            <h3 style="margin: 0; font-size: 1.15rem; color: #f0f6fc;">📊 Институционален Фундаментален Скрийнър (Одитирани DCF Компании)</h3>
+            <span class="badge badge-info" id="fundScreenerCountBadge">Зареждане...</span>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="fundScreenerSearch" placeholder="Търси по тикер, име или сектор..." style="background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; padding: 6px 12px; font-size: 0.85rem; min-width: 250px;">
+            <select id="fundScreenerSectorFilter" style="background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; padding: 6px 10px; font-size: 0.85rem;">
+              <option value="ALL">Всички Сектори</option>
+            </select>
+            <select id="fundScreenerMoatFilter" style="background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; padding: 6px 10px; font-size: 0.85rem;">
+              <option value="ALL">Всички Moats</option>
+              <option value="Wide">Wide Moat</option>
+              <option value="Narrow">Narrow Moat</option>
+              <option value="None">None</option>
+            </select>
+            <select id="fundScreenerAiFilter" style="background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; padding: 6px 10px; font-size: 0.85rem;">
+              <option value="ALL">Всички AI Сценарии</option>
+              <option value="S01">🏢 S01: Data-Center AI</option>
+              <option value="S02">💻 S02: Local AI</option>
+              <option value="S03">🤖 S03: Physical AI &amp; Autonomy</option>
+              <option value="ALL_WEATHER">⭐ Cross-Scenario All-Weather (2+)</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-container" style="max-height: 520px; overflow-y: auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px;">
+          <table class="assets-table fund-screener-table">
+            <thead>
+              <tr>
+                <th class="th-sortable" data-fund-col="ticker">Тикер <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="name">Компания <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="sector">Сектор <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="price">Цена <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="fair_value_base">Fair Value (DCF) <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="mos_pct">Margin of Safety % <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="moat">Moat <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="z_score">Altman Z-Score <span class="sort-icon">⇅</span></th>
+                <th class="th-sortable" data-fund-col="m_score">Beneish M-Score <span class="sort-icon">⇅</span></th>
+                <th>Действие</th>
+              </tr>
+            </thead>
+            <tbody id="fundScreenerTableBody">
+              <tr><td colspan="10" class="loading-state">Зареждане на фундаменталните оценки...</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </div> <!-- End Tab 5: tabContentFundamentals -->
@@ -1092,6 +1188,68 @@
         </div>
       </section>
     </div> <!-- End Tab 6: tabContentIdeas -->
+
+    <!-- ======================================================================= -->
+    <!-- Tab: AI Company Map (3 Scenarios)                                       -->
+    <!-- ======================================================================= -->
+    <div class="tab-content-panel" id="tabContentAiMap" style="display: none;">
+      <!-- Hero Header & Intro Strip -->
+      <section class="ai-map-header-section">
+        <div class="ai-map-intro">
+          <div class="ai-map-title-row">
+            <div class="ai-map-title-wrap">
+              <h2 id="aiMapMainTitle">🗺️ AI Карта на Акциите: 3-те Сценария (AI Company Map)</h2>
+              <span class="ai-badge-live">LIVE СВЪРЗАНИ ПАЗАРНИ ДАННИ</span>
+            </div>
+            <div class="ai-map-lang-toggle">
+              <button type="button" class="btn btn-sm btn-outline-secondary" id="aiMapLangToggle" onclick="toggleAiMapLanguage()">
+                🌐 Език: <span id="aiMapLangLabel">BG + EN (Двуезичен)</span>
+              </button>
+            </div>
+          </div>
+          <p class="ai-map-subtitle" id="aiMapSubtitleText">
+            Интерактивна матрица на 3-те възможни сценария за доминация в AI революцията (Data-Center AI, Local AI, Physical AI &amp; Autonomy). 
+            Всяка публична компания следи жив Larsson Ribbon тренд статус, S/R нива, RS рейтинг и бързи връзки към Досие и DCF. 
+            Частните и предстоящи IPO компании са маркирани с точен статусен маркер.
+          </p>
+        </div>
+
+        <!-- Scenario Barometer Cards (Live Breadth & Regime) -->
+        <div class="ai-barometer-grid" id="aiBarometerGrid">
+          <!-- Populated dynamically by renderAiCompanyMapView -->
+        </div>
+
+        <!-- Controls Bar: Sub-tabs + Search + State Filter -->
+        <div class="ai-map-controls-bar">
+          <div class="ai-map-subtabs" id="aiMapSubtabs">
+            <button class="scope-btn active" data-subtab="ALL" onclick="setAiMapSubtab('ALL')">🌐 Всички 3 Сценария</button>
+            <button class="scope-btn" data-subtab="S01" onclick="setAiMapSubtab('S01')">🏢 S01: Data-Center AI</button>
+            <button class="scope-btn" data-subtab="S02" onclick="setAiMapSubtab('S02')">💻 S02: Local AI</button>
+            <button class="scope-btn" data-subtab="S03" onclick="setAiMapSubtab('S03')">🤖 S03: Physical AI &amp; Autonomy</button>
+            <button class="scope-btn" data-subtab="ALL_WEATHER" onclick="setAiMapSubtab('ALL_WEATHER')">⭐ All-Weather Лидери (2+)</button>
+          </div>
+
+          <div class="ai-map-filter-group">
+            <div class="search-box ai-search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="aiMapSearchInput" placeholder="Търси компания, тикер, категория..." oninput="handleAiMapSearch(this.value)">
+              <button type="button" class="search-clear-btn" id="aiMapSearchClear" onclick="clearAiMapSearch()" style="display: none;">✕</button>
+            </div>
+            <select id="aiMapStateFilter" class="ai-select-filter" onchange="handleAiMapStateFilter(this.value)">
+              <option value="ALL">Всички Трендове</option>
+              <option value="GOLD">🟡 Само Gold Trend</option>
+              <option value="NEUTRAL">⚪ Само Neutral</option>
+              <option value="BLUE">🔵 Само Blue Downtrend</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Scenario Tables Container -->
+      <section class="ai-map-content-section" id="aiMapContentSection">
+        <!-- Rendered dynamically by renderAiCompanyMapView -->
+      </section>
+    </div>
 
     <!-- ======================================================================= -->
     <!-- Tab 7: Dedicated Proposal Dossier & Backtest Strategy View               -->
@@ -1181,6 +1339,7 @@
                 <div><span class="lbl">Икономически ров (Moat):</span> <strong id="dossierMoat">Wide Moat</strong></div>
                 <div><span class="lbl">ROIC vs WACC:</span> <strong id="dossierRoic">28.5% / 8.2%</strong></div>
                 <div><span class="lbl">Altman Z-Score здраве:</span> <strong id="dossierZScore">4.12</strong></div>
+                <div><span class="lbl">Beneish M-Score манипулация:</span> <strong id="dossierMScore">—</strong></div>
                 <div><span class="lbl">Институционална присъда:</span> <strong id="dossierVerdict">BUY</strong></div>
               </div>
             </div>
@@ -1359,6 +1518,9 @@
           <span class="badge badge-gold" id="modalStateBadge">🟡 GOLD</span>
         </div>
         <div class="chart-modal-actions" style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-dossier-nav-btn" id="modalDossierBtn" onclick="openDossierFromActiveChart()" style="background: rgba(88, 166, 255, 0.18); border: 1px solid #58a6ff; color: #58a6ff; border-radius: 6px; padding: 6px 12px; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;" title="Отвори Пълно Досие &amp; 10-годишен Бектест за този актив">
+            📑 Пълно Досие &amp; Бектест
+          </button>
           <button type="button" class="btn btn-modal-back" id="btnModalBack" title="Върни се назад (Esc)" onclick="closeChartModal()">
             ⬅️ Назад
           </button>
@@ -1798,14 +1960,14 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20261029_06"></script>
+  <script src="app.js?v=20261104_04"></script>
 
   <!-- Progressive Web App (PWA) Registration & Install Prompt Handler -->
   <script>
     // 1. Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('sw.js?v=20261104_04')
           .then((reg) => {
             console.log('[PWA] Service Worker registered with scope:', reg.scope);
             try { reg.update(); } catch(e) {}

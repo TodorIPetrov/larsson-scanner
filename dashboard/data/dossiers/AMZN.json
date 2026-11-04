@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 285.0,
+    "target_price": 285.0,
+    "entry_price": 57.57378485450905,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -210.7,
     "mos_pct": 14.5,
     "moat": "Wide",
     "roic_pct": 9.58,
     "wacc_pct": 11.059127273175472,
     "z_score": 2.8,
-    "verdict": "BUY / 200-SMA SUPPORT"
+    "m_score": -3.05,
+    "tata": -0.076,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "BUY / 200-SMA SUPPORT",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -34688,18 +34696,18 @@
   ],
   "smart_money": {
     "symbol": "AMZN",
-    "smart_money_score": 84.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 0.76x). Силна скрита подкрепа.",
+    "smart_money_score": 74.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.61) с Gamma стена на $270.00. Залог за рязък отскок.",
     "cmf_20d": 0.047,
     "up_down_vol_ratio": 0.76,
     "absorption_5d_pct": 65.9,
     "vol_shock_ratio": 1.18,
-    "put_call_ratio": 0.54,
+    "put_call_ratio": 0.61,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 242.5,
-    "max_pain": 260.0,
+    "gamma_wall": 270.0,
+    "max_pain": 262.5,
     "unusual_call_sweep": false
   }
 }

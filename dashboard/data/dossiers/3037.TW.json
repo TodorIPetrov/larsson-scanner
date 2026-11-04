@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 247.3684210526316,
+    "target_price": 247.3684210526316,
+    "entry_price": 178.10526315789474,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": -344.7,
     "mos_pct": -344.7,
     "moat": "None",
     "roic_pct": 15.0,
     "wacc_pct": 15.770000041961667,
     "z_score": 2.35,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": -2.97,
+    "tata": -0.032,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "High-Growth EV/Revenue Multiple Model"
   },
   "candles": [
     {

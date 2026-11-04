@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 5503.564985814868,
+    "target_price": 5503.564985814868,
+    "entry_price": 4402.851988651894,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 28.1,
     "mos_pct": 28.1,
     "moat": "Narrow",
     "roic_pct": 15.77,
     "wacc_pct": 8.231376044727764,
     "z_score": 3.34,
-    "verdict": "BUY"
+    "m_score": -3.8,
+    "tata": -0.145,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "BUY",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {

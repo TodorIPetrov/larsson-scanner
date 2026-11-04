@@ -1,7 +1,7 @@
 {
   "ticker": "PAXGUSDT",
-  "name": "PAXGUSDT",
-  "sector": "Equities",
+  "name": "Pax Gold",
+  "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
   "backtest_end_date": "2026-10-28",
@@ -17,7 +17,7 @@
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
-  "winning_strategy_name": "Value \u0422\u0440\u0435\u043d\u0434 (\u0414\u044a\u0440\u0436\u0430\u043d\u0435 \u043d\u0430\u0434 200-SMA)",
+  "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 132.3,
     "cagr_pct": 13.0,
@@ -30,7 +30,7 @@
   "all_strategies": [
     {
       "strategy": "CLASSIC_BLUE_EXIT",
-      "name_bg": "\u041a\u043b\u0430\u0441\u0438\u0447\u0435\u0441\u043a\u0438 Larsson (\u0418\u0437\u0445\u043e\u0434 \u043d\u0430 BLUE)",
+      "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 130.0,
       "cagr_pct": 12.9,
@@ -42,7 +42,7 @@
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
-      "name_bg": "\u0411\u044a\u0440\u0437 \u0418\u0437\u0445\u043e\u0434 (\u041f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043f\u0440\u0438 NEUTRAL)",
+      "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 109.8,
       "cagr_pct": 11.4,
@@ -54,7 +54,7 @@
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
-      "name_bg": "\u0412\u0445\u043e\u0434 \u043d\u0430 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430 v1 (\u0414\u0432\u0443\u0441\u0442\u0435\u043f\u0435\u043d\u0435\u043d)",
+      "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 125.5,
       "cagr_pct": 12.5,
@@ -66,7 +66,7 @@
     },
     {
       "strategy": "V3_CAPITULATION_S1",
-      "name_bg": "Value \u041a\u0430\u043f\u0438\u0442\u0443\u043b\u0430\u0446\u0438\u044f \u043d\u0430 S1 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430",
+      "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": 135.7,
       "cagr_pct": 13.3,
@@ -78,7 +78,7 @@
     },
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
-      "name_bg": "Value \u0422\u0440\u0435\u043d\u0434 (\u0414\u044a\u0440\u0436\u0430\u043d\u0435 \u043d\u0430\u0434 200-SMA)",
+      "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 132.3,
       "cagr_pct": 13.0,
@@ -90,7 +90,7 @@
     },
     {
       "strategy": "BUY_AND_HOLD",
-      "name_bg": "\u041a\u0443\u043f\u0438 \u0438 \u0414\u0440\u044a\u0436 (\u0411\u0435\u043d\u0447\u043c\u0430\u0440\u043a)",
+      "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": 125.1,
       "cagr_pct": 12.5,
@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "mos_pct": null,
-    "moat": "None",
+    "fair_value": 4800.0,
+    "target_price": 4800.0,
+    "entry_price": null,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 15.0,
+    "mos_pct": 15.0,
+    "moat": "Wide",
     "roic_pct": null,
     "wacc_pct": null,
     "z_score": null,
-    "verdict": "FAIRLY VALUED"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Multi-Asset Evaluation",
+    "verdict": "STRONG BUY",
+    "model_type": "Он-чейн пазарен модел"
   },
   "candles": [
     {
@@ -24401,7 +24409,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +8.38% ($836.88 \u20ac)"
+      "text": "EXIT +8.38% ($836.88 €)"
     },
     {
       "time": "2023-10-24",
@@ -24415,7 +24423,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +132.46% ($14340.12 \u20ac)"
+      "text": "EXIT +132.46% ($14340.12 €)"
     },
     {
       "time": "2026-08-22",
@@ -24429,13 +24437,13 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -7.75% ($-1950.14 \u20ac)"
+      "text": "EXIT -7.75% ($-1950.14 €)"
     }
   ],
   "equity_curves": [
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
-      "name_bg": "Value \u0422\u0440\u0435\u043d\u0434 (\u0414\u044a\u0440\u0436\u0430\u043d\u0435 \u043d\u0430\u0434 200-SMA)",
+      "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "curve": [
         {
@@ -31378,7 +31386,7 @@
     },
     {
       "strategy": "CLASSIC_BLUE_EXIT",
-      "name_bg": "\u041a\u043b\u0430\u0441\u0438\u0447\u0435\u0441\u043a\u0438 Larsson (\u0418\u0437\u0445\u043e\u0434 \u043d\u0430 BLUE)",
+      "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "curve": [
         {
@@ -38321,7 +38329,7 @@
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
-      "name_bg": "\u0411\u044a\u0440\u0437 \u0418\u0437\u0445\u043e\u0434 (\u041f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043f\u0440\u0438 NEUTRAL)",
+      "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "curve": [
         {
@@ -45264,7 +45272,7 @@
     },
     {
       "strategy": "BUY_AND_HOLD",
-      "name_bg": "\u041a\u0443\u043f\u0438 \u0438 \u0414\u0440\u044a\u0436 (\u0411\u0435\u043d\u0447\u043c\u0430\u0440\u043a)",
+      "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "curve": [
         {
@@ -52216,7 +52224,7 @@
       "holding_days": 217,
       "pnl_pct": 8.38,
       "pnl_eur": 836.88,
-      "exit_reason": "\u041f\u0440\u043e\u0431\u0438\u0432 \u043f\u043e\u0434 200-SMA",
+      "exit_reason": "Пробив под 200-SMA",
       "is_win": true
     },
     {
@@ -52228,7 +52236,7 @@
       "holding_days": 919,
       "pnl_pct": 132.46,
       "pnl_eur": 14340.12,
-      "exit_reason": "\u041f\u0440\u043e\u0431\u0438\u0432 \u043f\u043e\u0434 200-SMA",
+      "exit_reason": "Пробив под 200-SMA",
       "is_win": true
     },
     {
@@ -52240,7 +52248,7 @@
       "holding_days": 25,
       "pnl_pct": -7.75,
       "pnl_eur": -1950.14,
-      "exit_reason": "\u0422\u0432\u044a\u0440\u0434 \u0421\u0442\u043e\u043f-\u041b\u043e\u0441",
+      "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     }
   ],
@@ -52248,8 +52256,8 @@
     "symbol": "PAXGUSDT",
     "smart_money_score": 47.0,
     "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "\u26aa \u041d\u0415\u0423\u0422\u0420\u0410\u041b\u0415\u041d / \u0421\u041c\u0415\u0421\u0415\u041d \u041f\u041e\u0422\u041e\u041a",
-    "flow_desc_bg": "\u0411\u0430\u043b\u0430\u043d\u0441\u0438\u0440\u0430\u043d\u0438 \u0434\u0432\u0443\u043f\u043e\u0441\u043e\u0447\u043d\u0438 \u043e\u0431\u0435\u043c\u0438 (CMF: -0.24, P/C: N/A).",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.24, P/C: N/A).",
     "cmf_20d": -0.237,
     "up_down_vol_ratio": 0.81,
     "absorption_5d_pct": 68.7,

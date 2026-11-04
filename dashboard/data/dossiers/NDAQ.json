@@ -17,7 +17,7 @@
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
-  "winning_strategy_name": "Value \u041a\u0430\u043f\u0438\u0442\u0443\u043b\u0430\u0446\u0438\u044f \u043d\u0430 S1 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430",
+  "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 116.5,
     "cagr_pct": 18.6,
@@ -30,7 +30,7 @@
   "all_strategies": [
     {
       "strategy": "CLASSIC_BLUE_EXIT",
-      "name_bg": "\u041a\u043b\u0430\u0441\u0438\u0447\u0435\u0441\u043a\u0438 Larsson (\u0418\u0437\u0445\u043e\u0434 \u043d\u0430 BLUE)",
+      "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 17.6,
       "cagr_pct": 3.6,
@@ -42,7 +42,7 @@
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
-      "name_bg": "\u0411\u044a\u0440\u0437 \u0418\u0437\u0445\u043e\u0434 (\u041f\u0440\u0438\u0431\u0438\u0440\u0430\u043d\u0435 \u043f\u0440\u0438 NEUTRAL)",
+      "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 6.9,
       "cagr_pct": 1.5,
@@ -54,7 +54,7 @@
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
-      "name_bg": "\u0412\u0445\u043e\u0434 \u043d\u0430 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430 v1 (\u0414\u0432\u0443\u0441\u0442\u0435\u043f\u0435\u043d\u0435\u043d)",
+      "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 15.5,
       "cagr_pct": 3.2,
@@ -66,7 +66,7 @@
     },
     {
       "strategy": "V3_CAPITULATION_S1",
-      "name_bg": "Value \u041a\u0430\u043f\u0438\u0442\u0443\u043b\u0430\u0446\u0438\u044f \u043d\u0430 S1 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430",
+      "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 116.5,
       "cagr_pct": 18.6,
@@ -78,7 +78,7 @@
     },
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
-      "name_bg": "Value \u0422\u0440\u0435\u043d\u0434 (\u0414\u044a\u0440\u0436\u0430\u043d\u0435 \u043d\u0430\u0434 200-SMA)",
+      "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 32.0,
       "cagr_pct": 6.3,
@@ -90,7 +90,7 @@
     },
     {
       "strategy": "BUY_AND_HOLD",
-      "name_bg": "\u041a\u0443\u043f\u0438 \u0438 \u0414\u0440\u044a\u0436 (\u0411\u0435\u043d\u0447\u043c\u0430\u0440\u043a)",
+      "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": 84.4,
       "cagr_pct": 14.4,
@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 44.28,
+    "target_price": 44.28,
+    "entry_price": 33.21,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": -139.9,
     "mos_pct": -139.9,
     "moat": "None",
     "roic_pct": 8.9,
     "wacc_pct": 8.73,
     "z_score": 2.22,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": -2.59,
+    "tata": -0.015,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
@@ -16141,7 +16149,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -6.71% ($-335.4 \u20ac)"
+      "text": "EXIT -6.71% ($-335.4 €)"
     },
     {
       "time": "2022-05-18",
@@ -16155,7 +16163,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +22.19% ($1952.15 \u20ac)"
+      "text": "EXIT +22.19% ($1952.15 €)"
     },
     {
       "time": "2023-03-17",
@@ -16169,7 +16177,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -5.72% ($-307.25 \u20ac)"
+      "text": "EXIT -5.72% ($-307.25 €)"
     },
     {
       "time": "2023-09-28",
@@ -16183,7 +16191,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -2.66% ($-138.75 \u20ac)"
+      "text": "EXIT -2.66% ($-138.75 €)"
     },
     {
       "time": "2023-10-05",
@@ -16197,7 +16205,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +55.33% ($5443.48 \u20ac)"
+      "text": "EXIT +55.33% ($5443.48 €)"
     },
     {
       "time": "2025-04-10",
@@ -16211,7 +16219,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +21.64% ($3087.38 \u20ac)"
+      "text": "EXIT +21.64% ($3087.38 €)"
     },
     {
       "time": "2026-02-25",
@@ -16225,7 +16233,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +6.96% ($1148.31 \u20ac)"
+      "text": "EXIT +6.96% ($1148.31 €)"
     },
     {
       "time": "2026-07-01",
@@ -16239,13 +16247,13 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +30.94% ($5114.27 \u20ac)"
+      "text": "EXIT +30.94% ($5114.27 €)"
     }
   ],
   "equity_curves": [
     {
       "strategy": "V3_CAPITULATION_S1",
-      "name_bg": "Value \u041a\u0430\u043f\u0438\u0442\u0443\u043b\u0430\u0446\u0438\u044f \u043d\u0430 S1 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430",
+      "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "curve": [
         {
@@ -20828,7 +20836,7 @@
     },
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
-      "name_bg": "Value \u0422\u0440\u0435\u043d\u0434 (\u0414\u044a\u0440\u0436\u0430\u043d\u0435 \u043d\u0430\u0434 200-SMA)",
+      "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "curve": [
         {
@@ -25411,7 +25419,7 @@
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
-      "name_bg": "\u0412\u0445\u043e\u0434 \u043d\u0430 \u041f\u043e\u0434\u043a\u0440\u0435\u043f\u0430 v1 (\u0414\u0432\u0443\u0441\u0442\u0435\u043f\u0435\u043d\u0435\u043d)",
+      "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "curve": [
         {
@@ -29994,7 +30002,7 @@
     },
     {
       "strategy": "BUY_AND_HOLD",
-      "name_bg": "\u041a\u0443\u043f\u0438 \u0438 \u0414\u0440\u044a\u0436 (\u0411\u0435\u043d\u0447\u043c\u0430\u0440\u043a)",
+      "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "curve": [
         {
@@ -34586,7 +34594,7 @@
       "holding_days": 5,
       "pnl_pct": -6.71,
       "pnl_eur": -335.4,
-      "exit_reason": "\u0422\u0432\u044a\u0440\u0434 \u0421\u0442\u043e\u043f-\u041b\u043e\u0441",
+      "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     },
     {
@@ -34598,7 +34606,7 @@
       "holding_days": 178,
       "pnl_pct": 22.19,
       "pnl_eur": 1952.15,
-      "exit_reason": "\u0418\u0437\u0445\u043e\u0434 \u0441\u043b\u0435\u0434 \u0417\u043b\u0430\u0442\u0435\u043d \u0412\u0445\u043e\u0434",
+      "exit_reason": "Изход след Златен Вход",
       "is_win": true
     },
     {
@@ -34610,7 +34618,7 @@
       "holding_days": 59,
       "pnl_pct": -5.72,
       "pnl_eur": -307.25,
-      "exit_reason": "\u0422\u0432\u044a\u0440\u0434 \u0421\u0442\u043e\u043f-\u041b\u043e\u0441",
+      "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     },
     {
@@ -34622,7 +34630,7 @@
       "holding_days": 3,
       "pnl_pct": -2.66,
       "pnl_eur": -138.75,
-      "exit_reason": "\u0422\u0432\u044a\u0440\u0434 \u0421\u0442\u043e\u043f-\u041b\u043e\u0441",
+      "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     },
     {
@@ -34634,7 +34642,7 @@
       "holding_days": 362,
       "pnl_pct": 55.33,
       "pnl_eur": 5443.48,
-      "exit_reason": "\u0418\u0437\u0445\u043e\u0434 \u0441\u043b\u0435\u0434 \u0417\u043b\u0430\u0442\u0435\u043d \u0412\u0445\u043e\u0434",
+      "exit_reason": "Изход след Златен Вход",
       "is_win": true
     },
     {
@@ -34646,7 +34654,7 @@
       "holding_days": 140,
       "pnl_pct": 21.64,
       "pnl_eur": 3087.38,
-      "exit_reason": "\u0418\u0437\u0445\u043e\u0434 \u0441\u043b\u0435\u0434 \u0417\u043b\u0430\u0442\u0435\u043d \u0412\u0445\u043e\u0434",
+      "exit_reason": "Изход след Златен Вход",
       "is_win": true
     },
     {
@@ -34658,7 +34666,7 @@
       "holding_days": 67,
       "pnl_pct": 6.96,
       "pnl_eur": 1148.31,
-      "exit_reason": "\u0422\u0432\u044a\u0440\u0434 \u0421\u0442\u043e\u043f-\u041b\u043e\u0441",
+      "exit_reason": "Твърд Стоп-Лос",
       "is_win": true
     },
     {
@@ -34670,7 +34678,7 @@
       "holding_days": 82,
       "pnl_pct": 30.94,
       "pnl_eur": 5114.27,
-      "exit_reason": "\u041a\u0440\u0430\u0439 \u043d\u0430 \u0411\u0435\u043a\u0442\u0435\u0441\u0442\u0430 (\u041e\u0442\u0432\u043e\u0440\u0435\u043d\u0430)",
+      "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
@@ -34678,16 +34686,16 @@
     "symbol": "NDAQ",
     "smart_money_score": 66.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "\ud83d\udfe2 \u041e\u041f\u0426\u0418\u041e\u041d\u041d\u0418 \u041a\u0418\u0422\u041e\u0412\u0415 (Call Buying)",
-    "flow_desc_bg": "\u0410\u0433\u0440\u0435\u0441\u0438\u0432\u043d\u0438 \u043f\u043e\u043a\u0443\u043f\u043a\u0438 \u043d\u0430 Call \u043e\u043f\u0446\u0438\u0438 (P/C: 4.02) \u0441 Gamma \u0441\u0442\u0435\u043d\u0430 \u043d\u0430 $107.00. \u0417\u0430\u043b\u043e\u0433 \u0437\u0430 \u0440\u044f\u0437\u044a\u043a \u043e\u0442\u0441\u043a\u043e\u043a.",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 5.10) с Gamma стена на $105.00. Залог за рязък отскок.",
     "cmf_20d": 0.08,
     "up_down_vol_ratio": 1.5,
     "absorption_5d_pct": 69.9,
     "vol_shock_ratio": 1.15,
-    "put_call_ratio": 4.02,
+    "put_call_ratio": 5.1,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 107.0,
-    "max_pain": 103.0,
+    "gamma_wall": 105.0,
+    "max_pain": 106.0,
     "unusual_call_sweep": false
   }
 }

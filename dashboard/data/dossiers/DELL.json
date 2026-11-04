@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 176.02811813354492,
+    "target_price": 176.02811813354492,
+    "entry_price": 137.30193214416505,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -185.2,
     "mos_pct": -185.2,
     "moat": "Wide",
     "roic_pct": 38.76,
     "wacc_pct": 10.95463829741842,
     "z_score": 0.35,
-    "verdict": "HOLD / SENSITIVITY REVIEW"
+    "m_score": -2.68,
+    "tata": -0.052,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {
@@ -34627,15 +34635,15 @@
     "smart_money_score": 50.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: 0.76).",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: 0.88).",
     "cmf_20d": -0.021,
     "up_down_vol_ratio": 0.9,
     "absorption_5d_pct": 48.6,
     "vol_shock_ratio": 0.99,
-    "put_call_ratio": 0.76,
+    "put_call_ratio": 0.88,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 457.5,
-    "max_pain": 457.5,
+    "gamma_wall": 400.0,
+    "max_pain": 400.0,
     "unusual_call_sweep": false
   }
 }

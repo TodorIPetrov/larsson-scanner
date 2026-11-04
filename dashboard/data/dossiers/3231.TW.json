@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 378.0311299023874,
+    "target_price": 378.0311299023874,
+    "entry_price": 279.7430361277667,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 48.5,
     "mos_pct": 48.5,
     "moat": "Narrow",
     "roic_pct": 19.93,
     "wacc_pct": 8.5,
     "z_score": 2.17,
-    "verdict": "BUY"
+    "m_score": -1.49,
+    "tata": 0.121,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "BUY",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {

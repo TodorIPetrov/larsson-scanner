@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 210.0,
+    "target_price": 210.0,
+    "entry_price": 178.5,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 5.4,
     "mos_pct": 5.4,
     "moat": "Wide",
     "roic_pct": 34.0,
     "wacc_pct": 9.8,
     "z_score": 12.5,
-    "verdict": "BUY / ACCUMULATE"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Investment Grade",
+    "verdict": "BUY / ACCUMULATE",
+    "model_type": "High-Growth EV/Revenue & Rule of 40 Compounder"
   },
   "candles": [
     {
@@ -34670,9 +34678,9 @@
     "up_down_vol_ratio": 0.9,
     "absorption_5d_pct": 56.3,
     "vol_shock_ratio": 0.38,
-    "put_call_ratio": 0.86,
+    "put_call_ratio": 1.04,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 185.0,
+    "gamma_wall": 170.0,
     "max_pain": 100.0,
     "unusual_call_sweep": false
   }

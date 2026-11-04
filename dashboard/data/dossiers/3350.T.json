@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 120.20202020202021,
+    "target_price": 120.20202020202021,
+    "entry_price": 90.15151515151516,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": -126.3,
     "mos_pct": -126.3,
     "moat": "None",
     "roic_pct": 2.0,
     "wacc_pct": 7.5,
     "z_score": 9.48,
-    "verdict": "REDUCE / OVERVALUED"
+    "m_score": -2.75,
+    "tata": -0.201,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {

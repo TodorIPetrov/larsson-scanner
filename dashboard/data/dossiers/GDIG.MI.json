@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 64.5,
+    "target_price": 64.5,
+    "entry_price": 54.8,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": 17.9,
     "mos_pct": 17.9,
     "moat": "Wide",
     "roic_pct": 14.2,
     "wacc_pct": 9.5,
     "z_score": 2.85,
-    "verdict": "BUY / ACCUMULATE"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "ETF Fund Structure",
+    "verdict": "BUY / ACCUMULATE",
+    "model_type": "Asset-Backed NAV / Holdings Model"
   },
   "candles": [
     {

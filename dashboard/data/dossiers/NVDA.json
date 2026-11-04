@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 195.0,
+    "target_price": 195.0,
+    "entry_price": 165.75,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -8.8,
     "mos_pct": -8.8,
     "moat": "Wide",
     "roic_pct": 82.5,
     "wacc_pct": 10.2,
     "z_score": 14.2,
-    "verdict": "HOLD / QUALITY COMPOUNDER"
+    "m_score": null,
+    "tata": null,
+    "solvency_type": "Investment Grade",
+    "verdict": "HOLD / QUALITY COMPOUNDER",
+    "model_type": "High-Growth DCF & EVA / Rule of 40 Compounder"
   },
   "candles": [
     {
@@ -34688,18 +34696,18 @@
   ],
   "smart_money": {
     "symbol": "NVDA",
-    "smart_money_score": 27.0,
+    "smart_money_score": 17.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.33, CMF: -0.15).",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.12, CMF: -0.15).",
     "cmf_20d": -0.155,
     "up_down_vol_ratio": 0.55,
     "absorption_5d_pct": 44.2,
     "vol_shock_ratio": 0.39,
-    "put_call_ratio": 1.33,
+    "put_call_ratio": 1.12,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 205.0,
-    "max_pain": 190.0,
-    "unusual_call_sweep": true
+    "max_pain": 215.0,
+    "unusual_call_sweep": false
   }
 }

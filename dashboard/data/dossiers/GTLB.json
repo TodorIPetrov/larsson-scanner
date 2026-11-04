@@ -102,13 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
+    "fair_value": 49.881509894934595,
+    "target_price": 49.881509894934595,
+    "entry_price": 35.91468712435291,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -13.9,
     "mos_pct": -13.9,
     "moat": "Narrow",
     "roic_pct": 85.0,
     "wacc_pct": 9.56920004196167,
     "z_score": 2.75,
-    "verdict": "HOLD / FAIRLY VALUED"
+    "m_score": -3.54,
+    "tata": -0.168,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "HOLD / FAIRLY VALUED",
+    "model_type": "High-Growth EV/Revenue Multiple Model"
   },
   "candles": [
     {
@@ -33758,9 +33766,9 @@
     "up_down_vol_ratio": 2.74,
     "absorption_5d_pct": 54.9,
     "vol_shock_ratio": 0.46,
-    "put_call_ratio": 0.15,
+    "put_call_ratio": 0.17,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 57.0,
+    "gamma_wall": 50.0,
     "max_pain": 57.0,
     "unusual_call_sweep": false
   }
