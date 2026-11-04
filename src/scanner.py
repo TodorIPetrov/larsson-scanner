@@ -45,6 +45,39 @@ def calculate_bars_since_flip(states: List[LarssonState]) -> Optional[int]:
     return len(states)
 
 
+
+CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "backtest_cache")
+
+def _update_symbol_daily_cache(ticker: str, highs: np.ndarray, lows: np.ndarray, closes: np.ndarray, volumes: Optional[np.ndarray] = None):
+    """Updates data/backtest_cache/{TICKER}_1D.csv with freshly fetched candles."""
+    try:
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        clean_sym = ticker.replace("=", "_").replace("^", "_").replace(":", "_").replace("/", "_")
+        csv_path = os.path.join(CACHE_DIR, f"{clean_sym}_1D.csv")
+        n = len(closes)
+        if n < 15:
+            return
+        import pandas as pd
+        from datetime import datetime, timedelta, timezone
+        dates = []
+        now_dt = datetime.now(timezone.utc).date()
+        for idx in range(n):
+            d = now_dt - timedelta(days=(n - 1 - idx))
+            dates.append(str(d))
+        
+        df = pd.DataFrame({
+            "date": dates,
+            "open": closes,  # approximation for open if missing
+            "high": highs,
+            "low": lows,
+            "close": closes,
+            "volume": volumes if volumes is not None and len(volumes) == n else np.zeros(n),
+        })
+        df.to_csv(csv_path, index=False)
+    except Exception as e:
+        logger.debug(f"Failed to update cache for {ticker}: {e}")
+
+
 class LarssonScanner:
     def __init__(
         self,
@@ -507,6 +540,9 @@ class LarssonScanner:
                     results["neutral_count"] += 1
 
                 bars_since_flip = calculate_bars_since_flip(states)
+                # Update daily backtest cache on 1D scan
+                if timeframe == "1D":
+                    _update_symbol_daily_cache(sym, highs, lows, closes)
                 mom_60 = None
                 if timeframe == "1D" and len(closes) >= 60 and closes[-60] > 0:
                     mom_60 = float(((closes[-1] - closes[-60]) / closes[-60]) * 100.0)

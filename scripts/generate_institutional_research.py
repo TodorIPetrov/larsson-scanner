@@ -93,6 +93,92 @@ def fetch_dynamic_macro_rates():
 
 RF_RATE = fetch_dynamic_macro_rates()
 
+FX_RATES_CACHE: dict = {}
+
+def get_fx_rate(from_curr: str, to_curr: str) -> float:
+    """Retrieves live or cached exchange rate from from_curr to to_curr."""
+    if not from_curr or not to_curr or from_curr.upper() == to_curr.upper():
+        return 1.0
+    pair = f"{from_curr.upper()}{to_curr.upper()}=X"
+    if pair in FX_RATES_CACHE:
+        return FX_RATES_CACHE[pair]
+    
+    # Try direct pair
+    try:
+        t = yf.Ticker(pair)
+        rate = t.fast_info.get("lastPrice") or t.info.get("regularMarketPrice") or 0.0
+        if rate > 0:
+            FX_RATES_CACHE[pair] = float(rate)
+            return float(rate)
+    except Exception:
+        pass
+    
+    # Try inverse pair
+    inv_pair = f"{to_curr.upper()}{from_curr.upper()}=X"
+    try:
+        t = yf.Ticker(inv_pair)
+        inv_rate = t.fast_info.get("lastPrice") or t.info.get("regularMarketPrice") or 0.0
+        if inv_rate > 0:
+            rate = 1.0 / inv_rate
+            FX_RATES_CACHE[pair] = float(rate)
+            return float(rate)
+    except Exception:
+        pass
+    
+    # Common currency fallback approximations
+    fallbacks = {
+        ("TWD", "USD"): 1.0 / 32.5,
+        ("USD", "TWD"): 32.5,
+        ("KRW", "USD"): 1.0 / 1380.0,
+        ("USD", "KRW"): 1380.0,
+        ("JPY", "USD"): 1.0 / 152.0,
+        ("USD", "JPY"): 152.0,
+        ("EUR", "USD"): 1.08,
+        ("USD", "EUR"): 1.0 / 1.08,
+        ("GBP", "USD"): 1.30,
+        ("USD", "GBP"): 1.0 / 1.30,
+        ("CNY", "USD"): 1.0 / 7.20,
+        ("USD", "CNY"): 7.20,
+        ("HKD", "USD"): 1.0 / 7.78,
+        ("USD", "HKD"): 7.78,
+    }
+    return fallbacks.get((from_curr.upper(), to_curr.upper()), 1.0)
+
+
+def build_ttm_statement(annual_df, quarterly_df, is_balance_sheet: bool = False):
+    """
+    Constructs a statement where column 0 represents Trailing Twelve Months (TTM)
+    for income/cashflow, or latest quarter for balance sheet, followed by prior annual years.
+    """
+    if quarterly_df is None or quarterly_df.empty:
+        return annual_df
+    if annual_df is None or annual_df.empty:
+        return quarterly_df
+    
+    try:
+        import pandas as pd
+        if is_balance_sheet:
+            # Latest quarterly balance sheet is column 0
+            latest_q = quarterly_df.iloc[:, [0]].copy()
+            latest_col = f"Latest ({latest_q.columns[0]})"
+            latest_q.columns = [latest_col]
+            combined = pd.concat([latest_q, annual_df], axis=1)
+            return combined
+        else:
+            # Trailing Twelve Months: sum of last 4 quarters (or available 2-4 quarters)
+            n_q = min(4, len(quarterly_df.columns))
+            if n_q >= 2:
+                q_subset = quarterly_df.iloc[:, :n_q]
+                # Scale up to 12m if only 2 or 3 quarters are available
+                annualization_factor = 4.0 / n_q
+                ttm_col = q_subset.sum(axis=1) * annualization_factor
+                ttm_df = pd.DataFrame({"TTM": ttm_col})
+                combined = pd.concat([ttm_df, annual_df], axis=1)
+                return combined
+    except Exception as e:
+        logger.debug(f"Failed to build TTM statement: {e}")
+    return annual_df
+
 def compute_synthetic_kd(ebit, int_exp, rf_rate, tax_rate=DEFAULT_TAX_RATE):
     """
     Computes synthetic rating and cost of debt based on Interest Coverage Ratio (Damodaran model).
@@ -925,9 +1011,29 @@ def analyze_company_with_proper_model(ticker):
         industry = info.get("industry") or "Diversified"
         beta = info.get("beta") or 1.0
 
-        fin = t.financials
-        bs = t.balance_sheet
-        cf = t.cashflow
+        # Extract annual and quarterly statements
+        fin_annual = t.financials
+        bs_annual = t.balance_sheet
+        cf_annual = t.cashflow
+
+        try:
+            fin_q = t.quarterly_financials
+            bs_q = t.quarterly_balance_sheet
+            cf_q = t.quarterly_cashflow
+        except Exception:
+            fin_q, bs_q, cf_q = None, None, None
+
+        # Build TTM & Latest Statement series
+        fin = build_ttm_statement(fin_annual, fin_q, is_balance_sheet=False)
+        bs = build_ttm_statement(bs_annual, bs_q, is_balance_sheet=True)
+        cf = build_ttm_statement(cf_annual, cf_q, is_balance_sheet=False)
+
+        # Record date/tag of latest statement
+        latest_filing_str = ""
+        if bs_q is not None and not bs_q.empty:
+            latest_filing_str = f"{str(bs_q.columns[0])[:10]} (10-Q TTM)"
+        elif fin is not None and not fin.empty:
+            latest_filing_str = f"{str(fin.columns[0])[:10]}"
 
         # Verify minimal financial statements exist
         if fin is None or bs is None or fin.empty or bs.empty:
@@ -964,16 +1070,28 @@ def analyze_company_with_proper_model(ticker):
                 "data_quality": "INSUFFICIENT"
             }
 
-        # Check for Foreign Currency / ADR mismatches
+        # Check for Foreign Currency / ADR mismatches & convert statements to trading currency
         fin_curr = info.get("financialCurrency") or "USD"
         list_curr = fast.get("currency") or info.get("currency") or "USD"
-        if fin_curr != list_curr and fin_curr != "USD":
-            # If ticker is in known ADR list, we know its ADR conversion
-            if ticker in ADR_RATIOS:
-                adr_mult = ADR_RATIOS[ticker]
-                # Note: ADR ratios adjust shares representation
-            else:
-                logger.info(f"{ticker}: Financials in {fin_curr} vs listing in {list_curr}. Requires audited currency reconciliation.")
+        if fin_curr and list_curr and fin_curr.upper() != list_curr.upper():
+            fx_rate = get_fx_rate(fin_curr, list_curr)
+            if fx_rate > 0 and abs(fx_rate - 1.0) > 0.001:
+                logger.info(f"{ticker}: Converting financial statements from {fin_curr} to {list_curr} at rate {fx_rate:.4f}")
+                try:
+                    fin = fin * fx_rate
+                    bs = bs * fx_rate
+                    if cf is not None and not cf.empty:
+                        cf = cf * fx_rate
+                except Exception as e:
+                    logger.debug(f"FX conversion adjustment error for {ticker}: {e}")
+
+        # ADR Multiplier adjustments
+        if ticker in ADR_RATIOS:
+            adr_mult = ADR_RATIOS[ticker]
+            # Shares in US ADR representation
+            if adr_mult > 1.0 and shares > 5e9:
+                shares = shares / adr_mult
+                mcap = price * shares
 
         # CLASSIFICATION LOGIC
         is_depository_bank = ("Bank" in industry or "Savings" in industry) and sector in ["Financial Services", "Financials"]
@@ -1059,6 +1177,8 @@ def analyze_company_with_proper_model(ticker):
         col0_fin = fin.columns[0]
         actual_rev_b = safe_get(fin, "Total Revenue", col0_fin, info.get("totalRevenue") or 0.0) / 1e9
         actual_ebit_b = safe_get(fin, "Operating Income", col0_fin, safe_get(fin, "EBIT", col0_fin, info.get("operatingIncome") or 0.0)) / 1e9
+        if actual_ebit_b <= 0 and actual_rev_b > 0 and info.get("operatingMargins"):
+            actual_ebit_b = actual_rev_b * float(info.get("operatingMargins"))
 
         return {
             "ticker": ticker,
@@ -1089,6 +1209,7 @@ def analyze_company_with_proper_model(ticker):
             "upside_pct": upside_pct,
             "verdict": verdict,
             "action": action,
+            "latest_filing_date": latest_filing_str,
             "data_quality": "HIGH"
         }
     except Exception as e:

@@ -74,7 +74,14 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")
+                self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Accept")
         super().end_headers()
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.end_headers()
 
     def do_GET(self):
         if self.path == "/api/status":
@@ -119,6 +126,8 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_api_scan()
         elif self.path == "/api/portfolio/sync":
             self.handle_post_portfolio_sync()
+        elif self.path == "/api/refresh-fundamentals":
+            self.handle_api_refresh_fundamentals()
         else:
             self.send_error(404, "Not Found")
 
@@ -187,7 +196,20 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             logger.info("⚡ [API Trigger] Running market analysis for actionable trade proposals...")
             db = Database()
 
-            # 1. Run paper trader evaluation across current states
+            # 1. Execute live market scan across top assets to fetch real quotes
+            try:
+                from src.scanner import LarssonScanner
+                from src.data.binance_fetch import BinanceFetcher
+                from src.data.yfinance_fetch import YFinanceFetcher
+                scanner = LarssonScanner(db=db, binance_fetcher=BinanceFetcher(), yf_fetcher=YFinanceFetcher())
+                # Fast targeted 1D scan for top crypto & priority watchlists
+                scanner.scan_top_crypto(limit=30, timeframe="1D")
+                scanner.scan_yfinance_assets(asset_class="us_stocks", timeframe="1D")
+                scanner.scan_yfinance_assets(asset_class="crypto_stocks", timeframe="1D")
+            except Exception as scan_err:
+                logger.warning(f"Live market fetch notice during API scan: {scan_err}")
+
+            # 2. Run paper trader evaluation across current states
             from src.trading.paper_trader import PaperTrader
             paper_trader = PaperTrader(db=db)
 
@@ -253,6 +275,49 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
                 SCAN_START_TIME = None
 
 
+
+    
+    def handle_api_live_quotes(self):
+        """Returns lightweight live quotes and current state for fast client polling."""
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.end_headers()
+        try:
+            db = Database()
+            states = db.get_all_states()
+            quotes = []
+            for r in states:
+                quotes.append({
+                    "ticker": r["ticker"],
+                    "timeframe": r["timeframe"],
+                    "price": r["last_price"],
+                    "state": r["current_state"],
+                    "v1": round(r["v1"], 4),
+                    "v2": round(r["v2"], 4),
+                    "spread_pct": round(((r["v1"] - r["v2"]) / r["v2"]) * 100.0, 2) if r["v2"] > 0 else 0.0,
+                    "updated_at": r["updated_at"],
+                })
+            res = {"success": True, "count": len(quotes), "quotes": quotes, "timestamp": datetime.now(timezone.utc).isoformat()}
+            self.wfile.write(json.dumps(res).encode("utf-8"))
+        except Exception as e:
+            self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
+
+    def handle_api_refresh_fundamentals(self):
+        """Triggers asynchronous or immediate corporate fundamentals refresh."""
+        try:
+            from src.engine.lifecycle_sync import refresh_existing_fundamentals
+            res = refresh_existing_fundamentals(max_age_days=0, force=True, limit=20)
+            db = Database()
+            export_dashboard_data(db)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": True, "refreshed_count": res.get("refreshed_count", 0), "tickers": res.get("tickers", [])}).encode("utf-8"))
+        except Exception as e:
+            self.send_response(500)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
 
     def handle_get_portfolio_sync(self):
         sync_file = os.path.join(PROJECT_ROOT, "data", "portfolio_user_sync.json")

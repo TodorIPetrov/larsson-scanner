@@ -15,6 +15,7 @@ from src.storage.database import Database
 from src.engine.asset_profiles import get_quality_tier, get_tier_emoji
 from src.engine.btc_relative import get_tradingview_ratio_symbol, get_tradingview_ratio_link
 from src.engine.smart_money import analyze_smart_money, compute_sector_smart_money_flow
+from src.engine.ai_company_map import get_ticker_ai_scenarios, build_ai_company_map_payload
 
 DEFAULT_OUTPUT_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -406,40 +407,39 @@ def export_dashboard_data(
         # ---------------------------------------------------------------------
         # 2. FUNDAMENTAL ANALYSIS BLOCK (DCF Valuation & Moat)
         # ---------------------------------------------------------------------
-        fund_act = _row_val(r, "ts_fund_action")
-        fund_lbl = _row_val(r, "ts_fund_label_bg")
-        fund_the = _row_val(r, "ts_fund_thesis_bg")
+        if fund_data and fund_data.get("verdict") and fund_data.get("verdict") != "SPECULATIVE_NA":
+            v = fund_data["verdict"].upper()
+            mos = fund_data.get("mos_pct")
+            mos_txt = f"{mos:+.0f}%" if mos is not None else ""
+            fv = fund_data.get("fair_value")
+            fv_txt = f"${fv:,.2f}" if fv else "N/A"
+            moat_txt = f", {fund_data['moat']} Moat" if fund_data.get("moat") and fund_data["moat"] != "None" else ""
 
-        if not fund_act:
-            if fund_data and fund_data.get("verdict"):
-                v = fund_data["verdict"].upper()
-                mos = fund_data.get("mos_pct")
-                mos_txt = f"{mos:+.0f}%" if mos is not None else ""
-                fv = fund_data.get("fair_value")
-                fv_txt = f"${fv:,.2f}" if fv else "N/A"
-                moat_txt = f", {fund_data['moat']} Moat" if fund_data.get("moat") and fund_data["moat"] != "None" else ""
-
-                if "STRONG BUY" in v:
-                    fund_act = "STRONG_BUY"
-                    fund_lbl = f"🟢 СИЛНО ПОДЦЕНЕН ({mos_txt} MoS)"
-                    fund_the = f"DCF Стойност: {fv_txt} (MoS: {mos_txt}{moat_txt}). {fund_data.get('thesis', '')}".strip()
-                elif "BUY" in v or "OVERWEIGHT" in v:
-                    fund_act = "BUY"
-                    fund_lbl = f"🟢 ПОДЦЕНЕН ({mos_txt} MoS)"
-                    fund_the = f"DCF Стойност: {fv_txt} (MoS: {mos_txt}{moat_txt}). {fund_data.get('thesis', '')}".strip()
-                elif "HOLD" in v or "NEUTRAL" in v:
-                    fund_act = "HOLD"
-                    fund_lbl = "🟡 СПРАВЕДЛИВА ЦЕНА (Hold)"
-                    fund_the = f"Търгува се около DCF цена {fv_txt}{moat_txt}.".strip()
-                elif "REDUCE" in v or "AVOID" in v or "UNDERPERFORM" in v:
-                    fund_act = "REDUCE"
-                    fund_lbl = "🔴 НАДЦЕНЕН (Reduce)"
-                    fund_the = f"Надценен спрямо DCF парични потоци ({fv_txt}).".strip()
-                else:
-                    fund_act = "HOLD"
-                    fund_lbl = f"⚪ {fund_data['verdict']}"
-                    fund_the = f"DCF: {fv_txt}{moat_txt}."
+            if "STRONG BUY" in v:
+                fund_act = "STRONG_BUY"
+                fund_lbl = f"🟢 СИЛНО ПОДЦЕНЕН ({mos_txt} MoS)"
+                fund_the = f"DCF Стойност: {fv_txt} (MoS: {mos_txt}{moat_txt}). {fund_data.get('thesis', '')}".strip()
+            elif "BUY" in v or "OVERWEIGHT" in v:
+                fund_act = "BUY"
+                fund_lbl = f"🟢 ПОДЦЕНЕН ({mos_txt} MoS)"
+                fund_the = f"DCF Стойност: {fv_txt} (MoS: {mos_txt}{moat_txt}). {fund_data.get('thesis', '')}".strip()
+            elif "HOLD" in v or "NEUTRAL" in v:
+                fund_act = "HOLD"
+                fund_lbl = "🟡 СПРАВЕДЛИВА ЦЕНА (Hold)"
+                fund_the = f"Търгува се около DCF цена {fv_txt}{moat_txt}.".strip()
+            elif "REDUCE" in v or "AVOID" in v or "UNDERPERFORM" in v:
+                fund_act = "REDUCE"
+                fund_lbl = "🔴 НАДЦЕНЕН (Reduce)"
+                fund_the = f"Надценен спрямо DCF парични потоци ({fv_txt}).".strip()
             else:
+                fund_act = "HOLD"
+                fund_lbl = f"⚪ {fund_data['verdict']}"
+                fund_the = f"DCF: {fv_txt}{moat_txt}."
+        else:
+            fund_act = _row_val(r, "ts_fund_action")
+            fund_lbl = _row_val(r, "ts_fund_label_bg")
+            fund_the = _row_val(r, "ts_fund_thesis_bg")
+            if not fund_act:
                 fund_act = "SPECULATIVE_NA"
                 fund_lbl = "⚪ МАКРО / СПЕКУЛАТИВЕН"
                 fund_the = "Крипто/суровинен актив без корпоративен DCF модел. Движи се от ликвидност и моментум."
@@ -680,6 +680,7 @@ def export_dashboard_data(
             "backtest_cagr": optimal_profiles.get(ticker, {}).get("cagr_pct"),
             "backtest_sharpe": optimal_profiles.get(ticker, {}).get("sharpe_ratio"),
             "larsson_suitability": optimal_profiles.get(ticker, {}).get("larsson_suitability", "MODERATE_TREND"),
+            "ai_scenarios": get_ticker_ai_scenarios(ticker),
         })
 
     total = len(items)
@@ -1330,9 +1331,12 @@ def export_dashboard_data(
         }
     }
 
+    ai_company_map_data = build_ai_company_map_payload(items)
+
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "rotation_portfolio": rotation_portfolio_data,
+        "ai_company_map": ai_company_map_data,
         "summary": {
             "total": total,
             "gold": gold_count,
@@ -1380,6 +1384,7 @@ def export_dashboard_data(
         state_payload = {
             "generated_at": payload["generated_at"],
             "rotation_portfolio": rotation_portfolio_data,
+            "ai_company_map": ai_company_map_data,
             "summary": payload["summary"],
             "symbols": payload["symbols"],
             "pending_setups": payload["pending_setups"],

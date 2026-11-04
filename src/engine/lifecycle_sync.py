@@ -229,6 +229,7 @@ def onboard_single_asset(
             else:
                 tier = "C"
 
+            bnh_pct = round(((closes[-1] - closes[s_idx]) / closes[s_idx]) * 100.0, 1) if closes[s_idx] > 0 else 0.0
             profiles[ticker] = {
                 "symbol": ticker,
                 "asset_class": asset_class,
@@ -244,8 +245,8 @@ def onboard_single_asset(
                 "profit_factor": best["profit_factor"],
                 "win_rate_pct": best["win_rate_pct"],
                 "total_trades": best["total_trades"],
-                "buy_and_hold_pct": best["buy_and_hold_pct"],
-                "alpha_vs_bnh": round(best["total_return_pct"] - best["buy_and_hold_pct"], 1),
+                "buy_and_hold_pct": best.get("buy_and_hold_pct", bnh_pct),
+                "alpha_vs_bnh": round(best["total_return_pct"] - best.get("buy_and_hold_pct", bnh_pct), 1),
             }
             _save_optimal_profiles(profiles)
             logger.info(f"✅ Backtest DNA profile generated for {ticker}: Tier={tier}, Best={best['strategy']}, Sharpe={sharpe:.2f}, CAGR={cagr:.1f}%")

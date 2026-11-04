@@ -21,13 +21,13 @@ import os
 import sys
 from typing import Dict, List, Optional, Tuple
 
-import numpy as np
-import pandas as pd
-from src.engine.smart_money import analyze_smart_money
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
+
+import numpy as np
+import pandas as pd
+from src.engine.smart_money import analyze_smart_money
 
 CACHE_DIR = os.path.join(BASE_DIR, "data", "backtest_cache")
 PROFILES_PATH = os.path.join(BASE_DIR, "data", "asset_optimal_profiles.json")
@@ -564,6 +564,13 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
             "curve": s["equity_curve"],  # Full multi-year equity curve (~1,100+ bars)
         })
 
+    # Determine fallback required_mos_pct if missing
+    moat_val = verdict_item.get("moat_rating") or verdict_item.get("moat", "None")
+    req_mos_default = 15.0 if moat_val == "Wide" else (20.0 if moat_val == "Narrow" else 25.0)
+    req_mos = verdict_item.get("required_mos_pct")
+    if req_mos is None and (verdict_item.get("fair_value_base") or verdict_item.get("target_price") or verdict_item.get("fair_value")):
+        req_mos = req_mos_default
+
     dossier = {
         "ticker": ticker,
         "name": verdict_item.get("name", ticker),
@@ -609,13 +616,21 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
             for s in sim_results
         ],
         "fundamental": {
-            "fair_value": verdict_item.get("intrinsic_value") or verdict_item.get("fair_value"),
-            "mos_pct": verdict_item.get("margin_of_safety_pct") or verdict_item.get("mos_pct"),
-            "moat": verdict_item.get("moat_rating") or verdict_item.get("moat", "None"),
+            "fair_value": verdict_item.get("fair_value_base") or verdict_item.get("target_price") or verdict_item.get("intrinsic_value") or verdict_item.get("fair_value"),
+            "target_price": verdict_item.get("target_price") or verdict_item.get("fair_value_base"),
+            "entry_price": verdict_item.get("entry_price"),
+            "required_mos_pct": req_mos,
+            "actual_discount_pct": verdict_item.get("actual_discount_pct") if verdict_item.get("actual_discount_pct") is not None else verdict_item.get("mos_pct"),
+            "mos_pct": verdict_item.get("mos_pct") if verdict_item.get("mos_pct") is not None else (verdict_item.get("actual_discount_pct") or verdict_item.get("margin_of_safety_pct")),
+            "moat": moat_val,
             "roic_pct": verdict_item.get("roic_pct"),
             "wacc_pct": verdict_item.get("wacc_pct"),
             "z_score": verdict_item.get("z_score"),
+            "m_score": verdict_item.get("m_score"),
+            "tata": verdict_item.get("tata"),
+            "solvency_type": verdict_item.get("solvency_type"),
             "verdict": verdict_item.get("verdict", "FAIRLY VALUED"),
+            "model_type": verdict_item.get("model_type"),
         },
         "candles": candles,
         "markers": markers,
@@ -637,12 +652,14 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
 def generate_dossiers_for_rotation_assets():
     logger.info("Generating asset dossiers for Momentum Rotation Portfolio...")
 
-    # Load data.json to identify active rotation assets
+    # Load data.json to identify active rotation assets and fundamental profiles
     rotation_tickers = set()
+    fundamental_profiles = {}
     if os.path.exists(DATA_JSON_PATH):
         try:
             with open(DATA_JSON_PATH, "r", encoding="utf-8") as f:
                 d = json.load(f)
+                fundamental_profiles = d.get("fundamental_profiles", {})
                 rot = d.get("rotation_portfolio", {})
                 for k in ["top15", "reserve_bench", "fresh_flips", "pullback_entries", "quantamental_dips", "broken_leaders"]:
                     for item in rot.get(k, []):
@@ -655,6 +672,20 @@ def generate_dossiers_for_rotation_assets():
     core_watchlist = ["NVDA", "AAPL", "MSFT", "GOOGL", "2330.TW", "ALV.DE", "1513.TW", "2345.TW", "DECK", "0700.HK", "TSLA", "BTCUSDT", "ETHUSDT"]
     for t in core_watchlist:
         rotation_tickers.add(t)
+
+    # Also include existing dossier tickers from DOSSIERS_DIR so all dossiers are kept up to date
+    if os.path.exists(DOSSIERS_DIR):
+        for fn in os.listdir(DOSSIERS_DIR):
+            if fn.endswith(".json"):
+                fpath = os.path.join(DOSSIERS_DIR, fn)
+                try:
+                    with open(fpath, "r", encoding="utf-8") as f:
+                        d_existing = json.load(f)
+                        t_existing = d_existing.get("ticker")
+                        if t_existing:
+                            rotation_tickers.add(t_existing)
+                except Exception:
+                    pass
 
     logger.info(f"Target rotation universe: {len(rotation_tickers)} assets.")
 
@@ -674,7 +705,7 @@ def generate_dossiers_for_rotation_assets():
     generated = 0
     for ticker in sorted(rotation_tickers):
         prof = optimal_profiles.get(ticker, {})
-        verd = verdicts_map.get(ticker, {})
+        verd = verdicts_map.get(ticker) or fundamental_profiles.get(ticker, {})
         dossier = generate_single_asset_dossier(ticker, prof, verd)
         if dossier:
             out_fn = f"{safe_ticker_filename(ticker)}.json"

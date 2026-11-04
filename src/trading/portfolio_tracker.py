@@ -179,6 +179,7 @@ class PortfolioTracker:
             details.append({
                 "position_id": pos["position_id"],
                 "symbol": ticker,
+                "ticker": ticker,
                 "direction": direction,
                 "leverage": leverage,
                 "margin_usd": margin,

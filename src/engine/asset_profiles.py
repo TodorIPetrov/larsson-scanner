@@ -203,6 +203,7 @@ QUALITY_TIERS: Dict[str, str] = {
     'SMCI': 'B', 'SNOW': 'B', 'CEG': 'B', 'VST': 'B', 'TLN': 'B', 'NEE': 'A', 'SO': 'A',
     'EQIX': 'A', 'DLR': 'B', 'AMT': 'A', 'ANET': 'A', 'BIDU': 'B', 'MDB': 'A',
     'ESTC': 'B', 'DDOG': 'A', 'DT': 'B', 'GTLB': 'B', 'AI': 'C', 'SOUN': 'C', 'SERV': 'C',
+    'CRWV': 'A', 'IBM': 'A', '1810.HK': 'A', '9880.HK': 'B', '9660.HK': 'B', '9888.HK': 'A', '9988.HK': 'A', '005380.KS': 'A', '688836.SS': 'B', 'CCXI': 'B',
     
     # === CRYPTO STOCKS ===
     'HOOD': 'B', 'MARA': 'B', 'RIOT': 'B', 'CLSK': 'B', 'HUT': 'B', 'HIVE': 'B',
@@ -294,6 +295,9 @@ ASSET_CLASS_REGISTRY: Dict[str, str] = {
     'BIDU': 'ai_stocks', 'MDB': 'ai_stocks', 'ESTC': 'ai_stocks', 'DDOG': 'ai_stocks',
     'DT': 'ai_stocks', 'GTLB': 'ai_stocks', 'AI': 'ai_stocks', 'SOUN': 'ai_stocks',
     'SERV': 'ai_stocks',
+    'CRWV': 'ai_stocks', 'IBM': 'ai_stocks', '1810.HK': 'ai_stocks', '9880.HK': 'ai_stocks',
+    '9660.HK': 'ai_stocks', '9888.HK': 'ai_stocks', '9988.HK': 'ai_stocks', '005380.KS': 'ai_stocks',
+    '688836.SS': 'ai_stocks', 'CCXI': 'ai_stocks',
     
     # === CRYPTO STOCKS (Equities / ETFs, NOT Pure Crypto) ===
     'HOOD': 'crypto_stocks', 'MARA': 'crypto_stocks', 'RIOT': 'crypto_stocks',

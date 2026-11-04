@@ -200,6 +200,14 @@ def start_scheduler(scanner: LarssonScanner):
         name="Crypto Weekly Scan (Mon 00:05 UTC)",
     )
 
+    # Intraday Stocks/Commodities/AI: Mon-Fri during active US/EU sessions (every 2 hours between 08:00 and 20:00 UTC)
+    sched.add_job(
+        func=lambda: _scan_traditional_markets(scanner, timeframe="1D"),
+        trigger=CronTrigger(day_of_week="mon-fri", hour="8,10,12,14,16,18,20", minute=5, timezone="UTC"),
+        id="stocks_intraday",
+        name="Traditional Markets Intraday Scan (Mon-Fri 08-20 UTC)",
+    )
+
     # Daily Stocks/Commodities/Indices/AI: Monday-Friday at 21:05 UTC (after NYSE close at 21:00 UTC)
     sched.add_job(
         func=lambda: _scan_traditional_markets(scanner, timeframe="1D"),
@@ -293,12 +301,10 @@ def start_scheduler(scanner: LarssonScanner):
     if port_env:
         try:
             port = int(port_env)
-            from http.server import HTTPServer, SimpleHTTPRequestHandler
-            import functools
+            from http.server import ThreadingHTTPServer
+            from src.dashboard.server import DashboardRequestHandler
 
-            dashboard_dir = os.path.join(PROJECT_ROOT, "dashboard")
-            handler_class = functools.partial(SimpleHTTPRequestHandler, directory=dashboard_dir)
-            httpd = HTTPServer(("0.0.0.0", port), handler_class)
+            httpd = ThreadingHTTPServer(("0.0.0.0", port), DashboardRequestHandler)
             http_thread = threading.Thread(target=httpd.serve_forever, daemon=True, name="CloudHTTPServer")
             http_thread.start()
             logger.info(f"Cloud Dashboard & Healthcheck server listening on 0.0.0.0:{port}")

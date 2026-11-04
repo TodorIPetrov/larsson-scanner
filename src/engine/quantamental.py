@@ -652,25 +652,51 @@ class QuantamentalRegistry:
 
         return count
 
-    def get_profile(self, ticker: str) -> Optional[FundamentalProfile]:
+    def get_profile(self, ticker: str, current_price: Optional[float] = None) -> Optional[FundamentalProfile]:
         """
         Retrieves fundamental profile for a ticker.
         Handles exchange suffixes (e.g. 'NASDAQ:AAPL' -> 'AAPL').
+        If current_price is provided, dynamically calculates live mark-to-market
+        MoS %, upside %, and adjusts verdict.
         """
         if not ticker:
             return None
 
         clean_ticker = ticker.split(":")[-1].strip().upper()
-        if clean_ticker in self.profiles:
-            return self.profiles[clean_ticker]
+        prof = self.profiles.get(clean_ticker) or self.profiles.get(ticker.strip().upper())
+        if prof is None:
+            return None
 
-        raw_upper = ticker.strip().upper()
-        if raw_upper in self.profiles:
-            return self.profiles[raw_upper]
+        if current_price is not None and current_price > 0 and prof.fair_value and prof.fair_value > 0:
+            fv = prof.fair_value
+            live_mos = round(((fv - current_price) / fv) * 100.0, 1)
+            live_upside = round(((fv - current_price) / current_price) * 100.0, 1)
+            
+            # Create a dynamic copy with live price & MoS
+            live_prof = FundamentalProfile(**asdict(prof))
+            live_prof.price = current_price
+            live_prof.mos_pct = live_mos
+            live_prof.actual_discount_pct = live_mos
+            live_prof.upside_pct = live_upside
+            
+            if not live_prof.is_bearish_or_distressed:
+                if live_mos >= 20.0:
+                    live_prof.verdict = "STRONG BUY" if live_prof.moat == "Wide" else "BUY / ACCUMULATE"
+                    live_prof.action = "BUY"
+                elif live_mos >= 5.0:
+                    live_prof.verdict = "BUY / ACCUMULATE"
+                    live_prof.action = "BUY"
+                elif live_mos >= -15.0:
+                    live_prof.verdict = "HOLD / FAIRLY VALUED"
+                    live_prof.action = "HOLD"
+                else:
+                    live_prof.verdict = "HOLD / SENSITIVITY REVIEW" if live_prof.moat == "Wide" else "REDUCE / OVERVALUED"
+                    live_prof.action = "HOLD" if live_prof.moat == "Wide" else "REDUCE"
+            return live_prof
 
-        return None
+        return prof
 
 
-def get_fundamental_profile(ticker: str) -> Optional[FundamentalProfile]:
-    """Helper function to fetch profile from global registry."""
-    return QuantamentalRegistry.get_instance().get_profile(ticker)
+def get_fundamental_profile(ticker: str, current_price: Optional[float] = None) -> Optional[FundamentalProfile]:
+    """Helper function to fetch profile from global registry with optional live price."""
+    return QuantamentalRegistry.get_instance().get_profile(ticker, current_price=current_price)
