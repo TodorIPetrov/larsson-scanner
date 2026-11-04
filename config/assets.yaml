@@ -132,13 +132,27 @@ us_stocks:
   tv_symbol: NASDAQ:ADMA
 - ticker: LULU
   tv_symbol: NASDAQ:LULU
-- UBER
-- BKNG
-- SE
-- NVO
-- MPWR
-- TEAM
+- ticker: UBER
+  tv_symbol: NYSE:UBER
+- ticker: BKNG
+  tv_symbol: NASDAQ:BKNG
+- ticker: SE
+  tv_symbol: NYSE:SE
+- ticker: NVO
+  tv_symbol: NYSE:NVO
+- ticker: MPWR
+  tv_symbol: NASDAQ:MPWR
+- ticker: TEAM
+  tv_symbol: NASDAQ:TEAM
+- ticker: BWXT
+  tv_symbol: NYSE:BWXT
+- ticker: RYCEY
+  tv_symbol: OTC:RYCEY
+- ticker: LEU
+  tv_symbol: AMEX:LEU
 intl_stocks:
+- ticker: ABEC.DE
+  tv_symbol: XETR:ABEC
 - ticker: MC.PA
   tv_symbol: EURONEXT:MC
 - ticker: RMS.PA
@@ -297,6 +311,10 @@ intl_stocks:
   tv_symbol: XETR:VOW3
 - ticker: BMW.DE
   tv_symbol: XETR:BMW
+- ticker: RR.L
+  tv_symbol: LSE:RR.
+- ticker: NUKL.DE
+  tv_symbol: XETR:NUKL
 commodities:
 - ticker: GC=F
   tv_symbol: COMEX:GC1!
@@ -726,6 +744,30 @@ ai_stocks:
   tv_symbol: NYSE:SMR
 - ticker: OKLO
   tv_symbol: NYSE:OKLO
+- ticker: CRWV
+  tv_symbol: NASDAQ:CRWV
+- ticker: IBM
+  tv_symbol: NYSE:IBM
+- ticker: 1810.HK
+  tv_symbol: HKEX:1810
+- ticker: 9880.HK
+  tv_symbol: HKEX:9880
+- ticker: 9660.HK
+  tv_symbol: HKEX:9660
+- ticker: 9888.HK
+  tv_symbol: HKEX:9888
+- ticker: 9988.HK
+  tv_symbol: HKEX:9988
+- ticker: 005380.KS
+  tv_symbol: KRX:005380
+- ticker: 688836.SS
+  tv_symbol: SSE:688836
+- ticker: CCXI
+  tv_symbol: NASDAQ:CCXI
+- ticker: XE
+  tv_symbol: NASDAQ:XE
+- ticker: NNE
+  tv_symbol: NASDAQ:NNE
 crypto_stocks:
 - ticker: 3350.T
   tv_symbol: TSE:3350
