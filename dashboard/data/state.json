@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-04T14:48:31.540692+00:00",
+  "generated_at": "2026-11-04T15:08:26.531163+00:00",
   "rotation_portfolio": {
     "base_capital_eur": 10000.0,
     "target_positions_count": 15,
@@ -1461,14 +1461,14 @@
           "smart_money_score": 35.0,
           "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
           "flow_label_bg": "\ud83d\udfe2 \u041e\u041f\u0426\u0418\u041e\u041d\u041d\u0418 \u041a\u0418\u0422\u041e\u0412\u0415 (Call Buying)",
-          "flow_desc_bg": "\u0410\u0433\u0440\u0435\u0441\u0438\u0432\u043d\u0438 \u043f\u043e\u043a\u0443\u043f\u043a\u0438 \u043d\u0430 Call \u043e\u043f\u0446\u0438\u0438 (P/C: 0.50) \u0441 Gamma \u0441\u0442\u0435\u043d\u0430 \u043d\u0430 $650.00. \u0417\u0430\u043b\u043e\u0433 \u0437\u0430 \u0440\u044f\u0437\u044a\u043a \u043e\u0442\u0441\u043a\u043e\u043a.",
+          "flow_desc_bg": "\u0410\u0433\u0440\u0435\u0441\u0438\u0432\u043d\u0438 \u043f\u043e\u043a\u0443\u043f\u043a\u0438 \u043d\u0430 Call \u043e\u043f\u0446\u0438\u0438 (P/C: 0.50) \u0441 Gamma \u0441\u0442\u0435\u043d\u0430 \u043d\u0430 $635.00. \u0417\u0430\u043b\u043e\u0433 \u0437\u0430 \u0440\u044f\u0437\u044a\u043a \u043e\u0442\u0441\u043a\u043e\u043a.",
           "cmf_20d": -0.222,
           "up_down_vol_ratio": 0.41,
           "absorption_5d_pct": 37.6,
           "vol_shock_ratio": 0.31,
           "put_call_ratio": 0.5,
           "options_sentiment": "BULLISH",
-          "gamma_wall": 650.0,
+          "gamma_wall": 635.0,
           "max_pain": 650.0,
           "unusual_call_sweep": false
         }
@@ -1550,7 +1550,7 @@
           "vol_shock_ratio": 0.42,
           "put_call_ratio": 1.04,
           "options_sentiment": "NEUTRAL",
-          "gamma_wall": 250.0,
+          "gamma_wall": 255.0,
           "max_pain": 240.0,
           "unusual_call_sweep": false
         }
@@ -1581,10 +1581,10 @@
         "tv_url": "https://www.tradingview.com/chart/?symbol=NASDAQ:AMZN&interval=1D",
         "smart_money": {
           "symbol": "AMZN",
-          "smart_money_score": 74.0,
-          "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-          "flow_label_bg": "\ud83d\udfe2 \u041e\u041f\u0426\u0418\u041e\u041d\u041d\u0418 \u041a\u0418\u0422\u041e\u0412\u0415 (Call Buying)",
-          "flow_desc_bg": "\u0410\u0433\u0440\u0435\u0441\u0438\u0432\u043d\u0438 \u043f\u043e\u043a\u0443\u043f\u043a\u0438 \u043d\u0430 Call \u043e\u043f\u0446\u0438\u0438 (P/C: 0.61) \u0441 Gamma \u0441\u0442\u0435\u043d\u0430 \u043d\u0430 $270.00. \u0417\u0430\u043b\u043e\u0433 \u0437\u0430 \u0440\u044f\u0437\u044a\u043a \u043e\u0442\u0441\u043a\u043e\u043a.",
+          "smart_money_score": 84.0,
+          "flow_verdict": "STEALTH_ACCUMULATION",
+          "flow_label_bg": "\ud83d\udc0b \u0421\u041a\u0420\u0418\u0422\u0410 \u0410\u041a\u0423\u041c\u0423\u041b\u0410\u0426\u0418\u042f",
+          "flow_desc_bg": "\u0418\u043d\u0441\u0442\u0438\u0442\u0443\u0446\u0438\u0438\u0442\u0435 \u0442\u0438\u0445\u043e\u043c\u044a\u043b\u043a\u043e\u043c \u043a\u0443\u043f\u0443\u0432\u0430\u0442 (CMF: +0.05, Up/Dn Vol: 0.76x). \u0421\u0438\u043b\u043d\u0430 \u0441\u043a\u0440\u0438\u0442\u0430 \u043f\u043e\u0434\u043a\u0440\u0435\u043f\u0430.",
           "cmf_20d": 0.047,
           "up_down_vol_ratio": 0.76,
           "absorption_5d_pct": 65.9,
@@ -1593,7 +1593,7 @@
           "options_sentiment": "BULLISH",
           "gamma_wall": 270.0,
           "max_pain": 262.5,
-          "unusual_call_sweep": false
+          "unusual_call_sweep": true
         }
       },
       {
@@ -1707,14 +1707,14 @@
           "smart_money_score": 50.0,
           "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
           "flow_label_bg": "\ud83d\udfe2 \u041e\u041f\u0426\u0418\u041e\u041d\u041d\u0418 \u041a\u0418\u0422\u041e\u0412\u0415 (Call Buying)",
-          "flow_desc_bg": "\u0410\u0433\u0440\u0435\u0441\u0438\u0432\u043d\u0438 \u043f\u043e\u043a\u0443\u043f\u043a\u0438 \u043d\u0430 Call \u043e\u043f\u0446\u0438\u0438 (P/C: 0.32) \u0441 Gamma \u0441\u0442\u0435\u043d\u0430 \u043d\u0430 $290.00. \u0417\u0430\u043b\u043e\u0433 \u0437\u0430 \u0440\u044f\u0437\u044a\u043a \u043e\u0442\u0441\u043a\u043e\u043a.",
+          "flow_desc_bg": "\u0410\u0433\u0440\u0435\u0441\u0438\u0432\u043d\u0438 \u043f\u043e\u043a\u0443\u043f\u043a\u0438 \u043d\u0430 Call \u043e\u043f\u0446\u0438\u0438 (P/C: 0.32) \u0441 Gamma \u0441\u0442\u0435\u043d\u0430 \u043d\u0430 $295.00. \u0417\u0430\u043b\u043e\u0433 \u0437\u0430 \u0440\u044f\u0437\u044a\u043a \u043e\u0442\u0441\u043a\u043e\u043a.",
           "cmf_20d": -0.117,
           "up_down_vol_ratio": 0.72,
           "absorption_5d_pct": 49.8,
           "vol_shock_ratio": 0.76,
           "put_call_ratio": 0.32,
           "options_sentiment": "BULLISH",
-          "gamma_wall": 290.0,
+          "gamma_wall": 295.0,
           "max_pain": 300.0,
           "unusual_call_sweep": false
         }
@@ -1837,7 +1837,7 @@
           "vol_shock_ratio": 0.18,
           "put_call_ratio": 0.53,
           "options_sentiment": "BULLISH",
-          "gamma_wall": 75.0,
+          "gamma_wall": 81.0,
           "max_pain": 75.0,
           "unusual_call_sweep": false
         }
@@ -2591,18 +2591,6 @@
                 "flow_label_bg": null
               },
               {
-                "name": "SpaceX",
-                "ticker": null,
-                "alt_tickers": [],
-                "status": "PRIVATE",
-                "is_chinese": false,
-                "note": "\u0427\u0430\u0441\u0442\u043d\u0430 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f (xAI compute / Starlink)",
-                "has_live_data": false,
-                "state": "UNTRACKED",
-                "price": null,
-                "rs_rating": null
-              },
-              {
                 "name": "Oracle",
                 "ticker": "ORCL",
                 "alt_tickers": [],
@@ -2821,12 +2809,12 @@
                 "rs_rating": null
               },
               {
-                "name": "SpaceX",
+                "name": "xAI",
                 "ticker": null,
                 "alt_tickers": [],
                 "status": "PRIVATE",
                 "is_chinese": false,
-                "note": "\u0427\u0430\u0441\u0442\u043d\u0430 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f (xAI / Grok \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f)",
+                "note": "\u0427\u0430\u0441\u0442\u043d\u0430 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f (Grok \u043c\u043e\u0434\u0435\u043b\u043d\u043e \u0441\u0435\u043c\u0435\u0439\u0441\u0442\u0432\u043e / Colossus \u043a\u043b\u044a\u0441\u0442\u0435\u0440)",
                 "has_live_data": false,
                 "state": "UNTRACKED",
                 "price": null,

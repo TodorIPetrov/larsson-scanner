@@ -38,7 +38,6 @@ AI_COMPANY_MAP_SPEC = [
                 "companies": [
                     {"name": "CoreWeave", "ticker": "CRWV", "alt_tickers": [], "status": "LISTED", "is_chinese": False},
                     {"name": "Nebius", "ticker": "NBIS", "alt_tickers": [], "status": "LISTED", "is_chinese": False},
-                    {"name": "SpaceX", "ticker": None, "alt_tickers": [], "status": "PRIVATE", "is_chinese": False, "note": "Частна компания (xAI compute / Starlink)"},
                     {"name": "Oracle", "ticker": "ORCL", "alt_tickers": [], "status": "LISTED", "is_chinese": False},
                     {"name": "Microsoft", "ticker": "MSFT", "alt_tickers": [], "status": "LISTED", "is_chinese": False},
                     {"name": "Alphabet", "ticker": "GOOGL", "alt_tickers": ["GOOG", "ABEC.DE"], "status": "LISTED", "is_chinese": False},
@@ -57,7 +56,7 @@ AI_COMPANY_MAP_SPEC = [
                 "companies": [
                     {"name": "Anthropic", "ticker": None, "alt_tickers": [], "status": "PRIVATE", "is_chinese": False, "note": "Частна компания (Claude моделно семейство)"},
                     {"name": "OpenAI", "ticker": None, "alt_tickers": [], "status": "PRIVATE", "is_chinese": False, "note": "Частна компания (GPT / o-series модели)"},
-                    {"name": "SpaceX", "ticker": None, "alt_tickers": [], "status": "PRIVATE", "is_chinese": False, "note": "Частна компания (xAI / Grok интеграция)"},
+                    {"name": "xAI", "ticker": None, "alt_tickers": [], "status": "PRIVATE", "is_chinese": False, "note": "Частна компания (Grok моделно семейство / Colossus клъстер)"},
                     {"name": "Microsoft", "ticker": "MSFT", "alt_tickers": [], "status": "LISTED", "is_chinese": False},
                     {"name": "Alphabet", "ticker": "GOOGL", "alt_tickers": ["GOOG", "ABEC.DE"], "status": "LISTED", "is_chinese": False},
                     {"name": "Baidu", "ticker": "BIDU", "alt_tickers": ["9888.HK"], "status": "LISTED", "is_chinese": True},

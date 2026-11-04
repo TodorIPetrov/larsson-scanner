@@ -34696,10 +34696,10 @@
   ],
   "smart_money": {
     "symbol": "AMZN",
-    "smart_money_score": 74.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.61) с Gamma стена на $270.00. Залог за рязък отскок.",
+    "smart_money_score": 84.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 0.76x). Силна скрита подкрепа.",
     "cmf_20d": 0.047,
     "up_down_vol_ratio": 0.76,
     "absorption_5d_pct": 65.9,
@@ -34708,6 +34708,6 @@
     "options_sentiment": "BULLISH",
     "gamma_wall": 270.0,
     "max_pain": 262.5,
-    "unusual_call_sweep": false
+    "unusual_call_sweep": true
   }
 }
