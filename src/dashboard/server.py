@@ -74,7 +74,7 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")
-                self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Accept")
         super().end_headers()
@@ -86,6 +86,8 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/api/status":
             self.handle_api_status()
+        elif self.path.startswith("/api/live-quotes"):
+            self.handle_api_live_quotes()
         elif self.path == "/api/portfolio/sync":
             self.handle_get_portfolio_sync()
         elif self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
