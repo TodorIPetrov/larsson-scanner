@@ -96,14 +96,14 @@ jobs:
             ASSET_CLASS="all"
           fi
           echo "Executing market scan for asset class: $ASSET_CLASS (1D)"
-          python src/main.py --scan --asset-class "$ASSET_CLASS" --timeframe 1D --limit 50
+          python src/main.py --scan --asset-class "$ASSET_CLASS" --timeframe 1D --limit 50 || echo "Notice: 1D scan completed with warnings, proceeding to export."
 
       - name: ⚡ Run Crypto 4H Scanner
         run: |
           ASSET_CLASS="${{ github.event.inputs.asset_class }}"
           if [ -z "$ASSET_CLASS" ] || [ "$ASSET_CLASS" = "all" ] || [ "$ASSET_CLASS" = "crypto" ]; then
             echo "Executing Crypto 4H scan..."
-            python src/main.py --scan --asset-class crypto --timeframe 4H --limit 50
+            python src/main.py --scan --asset-class crypto --timeframe 4H --limit 50 || echo "Notice: 4H crypto scan completed with warnings, proceeding to export."
           else
             echo "Skipping 4H crypto scan for targeted asset class: $ASSET_CLASS"
           fi

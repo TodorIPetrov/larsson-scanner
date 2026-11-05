@@ -23903,5 +23903,41 @@
     "total_trades": 8,
     "buy_and_hold_pct": 98.3,
     "alpha_vs_bnh": -4.7
+  },
+  "PSUS": {
+    "symbol": "PSUS",
+    "asset_class": "us_stocks",
+    "recommended_strategy": "CLASSIC_BLUE_EXIT",
+    "exit_on_neutral": false,
+    "empirical_tier": "C",
+    "larsson_suitability": "MODERATE_TREND",
+    "walk_forward_stable": false,
+    "total_return_pct": 0.0,
+    "cagr_pct": 0.0,
+    "max_drawdown_pct": 0.0,
+    "sharpe_ratio": 0.0,
+    "profit_factor": 1.0,
+    "win_rate_pct": 0.0,
+    "total_trades": 0,
+    "buy_and_hold_pct": -2.8,
+    "alpha_vs_bnh": 2.8
+  },
+  "PS": {
+    "symbol": "PS",
+    "asset_class": "us_stocks",
+    "recommended_strategy": "CLASSIC_BLUE_EXIT",
+    "exit_on_neutral": false,
+    "empirical_tier": "S",
+    "larsson_suitability": "STRONG_TREND",
+    "walk_forward_stable": true,
+    "total_return_pct": 42.1,
+    "cagr_pct": 101.9,
+    "max_drawdown_pct": 26.1,
+    "sharpe_ratio": 1.79,
+    "profit_factor": 99.0,
+    "win_rate_pct": 100.0,
+    "total_trades": 1,
+    "buy_and_hold_pct": 63.8,
+    "alpha_vs_bnh": -21.7
   }
 }
