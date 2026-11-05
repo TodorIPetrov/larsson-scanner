@@ -4,15 +4,15 @@
   "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-10-28",
+  "backtest_end_date": "2026-11-05",
   "backtest_years": 6.9,
-  "backtest_total_bars": 1734,
+  "backtest_total_bars": 1735,
   "current_price": 0.08,
   "state": "BLUE",
   "v1": 0.08,
   "v2": 0.08,
   "sma200": 0.09,
-  "rsi14": 44.1,
+  "rsi14": 37.6,
   "atr14": 0.0,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -92,9 +92,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -43.3,
-      "cagr_pct": -7.9,
-      "sharpe_ratio": 0.25,
+      "total_return_pct": -45.6,
+      "cagr_pct": -8.5,
+      "sharpe_ratio": 0.24,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 85.2,
@@ -24394,6 +24394,20 @@
       "v2": 0.08,
       "sma200": 0.09,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-05",
+      "open": 0.08,
+      "high": 0.08,
+      "low": 0.07,
+      "close": 0.08,
+      "volume": 247818335.0,
+      "v1": 0.08,
+      "m1": 0.08,
+      "m2": 0.08,
+      "v2": 0.08,
+      "sma200": 0.09,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -31521,6 +31535,10 @@
         {
           "time": "2026-10-28",
           "value": 5361.02
+        },
+        {
+          "time": "2026-11-05",
+          "value": 5361.02
         }
       ]
     },
@@ -38463,6 +38481,10 @@
         },
         {
           "time": "2026-10-28",
+          "value": 6761.05
+        },
+        {
+          "time": "2026-11-05",
           "value": 6761.05
         }
       ]
@@ -45407,6 +45429,10 @@
         {
           "time": "2026-10-28",
           "value": 4066.29
+        },
+        {
+          "time": "2026-11-05",
+          "value": 4066.29
         }
       ]
     },
@@ -52350,6 +52376,10 @@
         {
           "time": "2026-10-28",
           "value": 5675.59
+        },
+        {
+          "time": "2026-11-05",
+          "value": 5441.9
         }
       ]
     }
@@ -52518,10 +52548,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.167,
-    "up_down_vol_ratio": 0.68,
-    "absorption_5d_pct": 74.8,
-    "vol_shock_ratio": 0.42,
+    "cmf_20d": 0.15,
+    "up_down_vol_ratio": 0.58,
+    "absorption_5d_pct": 77.3,
+    "vol_shock_ratio": 0.46,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
