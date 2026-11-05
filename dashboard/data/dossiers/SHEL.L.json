@@ -1,7 +1,7 @@
 {
   "ticker": "SHEL.L",
-  "name": "SHEL.L",
-  "sector": "Equities",
+  "name": "SHELL PLC ORD EUR0.07",
+  "sector": "Energy",
   "asset_class": "intl_stocks",
   "backtest_start_date": "2022-04-04",
   "backtest_end_date": "2026-10-28",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "target_price": null,
-    "entry_price": null,
-    "required_mos_pct": null,
-    "actual_discount_pct": null,
-    "mos_pct": null,
-    "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": null,
-    "verdict": "FAIRLY VALUED",
-    "model_type": null
+    "fair_value": 7400.88,
+    "target_price": 7400.88,
+    "entry_price": 5550.66,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": 48.9,
+    "mos_pct": 48.9,
+    "moat": "Narrow",
+    "roic_pct": 13.4,
+    "wacc_pct": 8.0,
+    "z_score": 3.58,
+    "m_score": -2.09,
+    "tata": -0.06,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "STRONG BUY",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {

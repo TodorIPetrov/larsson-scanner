@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": 147.766988016003,
-    "target_price": 147.766988016003,
-    "entry_price": 125.60193981360256,
+    "fair_value": 405.0,
+    "target_price": 405.0,
+    "entry_price": 344.25,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -111.8,
-    "mos_pct": -111.8,
+    "actual_discount_pct": 17.9,
+    "mos_pct": 17.9,
     "moat": "Wide",
-    "roic_pct": 32.36,
-    "wacc_pct": 9.82680004196167,
-    "z_score": 7.2,
-    "m_score": -2.95,
-    "tata": -0.025,
-    "solvency_type": "Financial TCE Capital Ratio (9.5%)",
-    "verdict": "HOLD / SENSITIVITY REVIEW",
-    "model_type": "Residual Income (RIM) & Justified P/TBV"
+    "roic_pct": 19.1,
+    "wacc_pct": 8.86,
+    "z_score": 0.43,
+    "m_score": -2.49,
+    "tata": -0.017,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "AVOID / FORENSIC RED FLAG",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {

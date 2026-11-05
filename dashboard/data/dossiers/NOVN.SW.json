@@ -1,7 +1,7 @@
 {
   "ticker": "NOVN.SW",
-  "name": "NOVN.SW",
-  "sector": "Equities",
+  "name": "NOVARTIS N",
+  "sector": "Healthcare",
   "asset_class": "intl_stocks",
   "backtest_start_date": "2022-04-01",
   "backtest_end_date": "2026-10-30",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "target_price": null,
-    "entry_price": null,
-    "required_mos_pct": null,
-    "actual_discount_pct": null,
-    "mos_pct": null,
-    "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": null,
-    "verdict": "FAIRLY VALUED",
-    "model_type": null
+    "fair_value": 112.2,
+    "target_price": 112.2,
+    "entry_price": 89.76,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -19.3,
+    "mos_pct": -19.3,
+    "moat": "Narrow",
+    "roic_pct": 13.0,
+    "wacc_pct": 7.5,
+    "z_score": 2.2,
+    "m_score": -2.91,
+    "tata": -0.062,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {

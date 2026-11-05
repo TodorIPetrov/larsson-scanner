@@ -1,7 +1,7 @@
 {
   "ticker": "IBE.MC",
-  "name": "IBE.MC",
-  "sector": "Equities",
+  "name": "ACCIONES IBERDROLA",
+  "sector": "Utilities",
   "asset_class": "intl_stocks",
   "backtest_start_date": "2022-04-01",
   "backtest_end_date": "2026-10-28",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "target_price": null,
-    "entry_price": null,
-    "required_mos_pct": null,
-    "actual_discount_pct": null,
-    "mos_pct": null,
-    "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": null,
-    "verdict": "FAIRLY VALUED",
-    "model_type": null
+    "fair_value": 10.98,
+    "target_price": 10.98,
+    "entry_price": 8.79,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": -107.6,
+    "mos_pct": -107.6,
+    "moat": "Narrow",
+    "roic_pct": 3.0,
+    "wacc_pct": 7.88,
+    "z_score": 6.08,
+    "m_score": -2.54,
+    "tata": -0.028,
+    "solvency_type": "Regulated Interest Coverage (7.6x)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Utilities RAB & Dividend Discount Model"
   },
   "candles": [
     {

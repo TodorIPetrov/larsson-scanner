@@ -1,7 +1,7 @@
 {
   "ticker": "NET",
-  "name": "NET",
-  "sector": "Equities",
+  "name": "Cloudflare, Inc.",
+  "sector": "Technology",
   "asset_class": "ai_stocks",
   "backtest_start_date": "2022-04-06",
   "backtest_end_date": "2026-10-27",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "target_price": null,
-    "entry_price": null,
-    "required_mos_pct": null,
-    "actual_discount_pct": null,
-    "mos_pct": null,
-    "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": null,
-    "verdict": "FAIRLY VALUED",
-    "model_type": null
+    "fair_value": 106.63,
+    "target_price": 106.63,
+    "entry_price": 76.78,
+    "required_mos_pct": 28.0,
+    "actual_discount_pct": -150.0,
+    "mos_pct": -150.0,
+    "moat": "Narrow",
+    "roic_pct": 72.6,
+    "wacc_pct": 10.5,
+    "z_score": 1.61,
+    "m_score": -2.84,
+    "tata": -0.13,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "High-Growth EV/Revenue Multiple Model"
   },
   "candles": [
     {

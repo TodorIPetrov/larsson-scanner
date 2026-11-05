@@ -1,6 +1,6 @@
 {
   "ticker": "JPM",
-  "name": "JPMorgan Chase & Co.",
+  "name": "JP Morgan Chase & Co.",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": 320.0,
-    "target_price": 320.0,
-    "entry_price": 272.0,
-    "required_mos_pct": 20.0,
-    "actual_discount_pct": -4.9,
-    "mos_pct": -4.9,
+    "fair_value": 261.84,
+    "target_price": 261.84,
+    "entry_price": 222.56,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -34.5,
+    "mos_pct": -34.5,
     "moat": "Wide",
-    "roic_pct": 18.5,
-    "wacc_pct": 8.5,
-    "z_score": 3.8,
+    "roic_pct": 19.1,
+    "wacc_pct": 9.56,
+    "z_score": 4.21,
     "m_score": null,
-    "tata": null,
-    "solvency_type": "Investment Grade",
-    "verdict": "HOLD / QUALITY COMPOUNDER",
-    "model_type": "Financials Residual Income Model (RIM)"
+    "tata": 0.0,
+    "solvency_type": "Financial TCE Capital Ratio (5.8%)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Residual Income (RIM) & Justified P/TBV"
   },
   "candles": [
     {

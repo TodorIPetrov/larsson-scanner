@@ -1,7 +1,7 @@
 {
   "ticker": "MRVL",
-  "name": "MRVL",
-  "sector": "Equities",
+  "name": "Marvell Technology, Inc.",
+  "sector": "Technology",
   "asset_class": "ai_stocks",
   "backtest_start_date": "2022-04-06",
   "backtest_end_date": "2026-10-29",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "target_price": null,
-    "entry_price": null,
-    "required_mos_pct": null,
-    "actual_discount_pct": null,
-    "mos_pct": null,
+    "fair_value": 63.92,
+    "target_price": 63.92,
+    "entry_price": 47.94,
+    "required_mos_pct": 25.0,
+    "actual_discount_pct": -150.0,
+    "mos_pct": -150.0,
     "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": null,
-    "verdict": "FAIRLY VALUED",
-    "model_type": null
+    "roic_pct": 6.8,
+    "wacc_pct": 12.5,
+    "z_score": 4.02,
+    "m_score": -2.31,
+    "tata": 0.016,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "Mid-Cycle Normalized DCF"
   },
   "candles": [
     {

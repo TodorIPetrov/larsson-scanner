@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": 88.0,
-    "target_price": 98.0,
-    "entry_price": 71.79,
+    "fair_value": 43.77,
+    "target_price": 43.77,
+    "entry_price": 37.21,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 29.0,
-    "mos_pct": 29.0,
+    "actual_discount_pct": -51.7,
+    "mos_pct": -51.7,
     "moat": "Wide",
-    "roic_pct": 25.5,
-    "wacc_pct": 8.9,
-    "z_score": 4.5,
-    "m_score": -2.8,
-    "tata": -0.04,
-    "solvency_type": "Altman Z-Score (Safe Zone)",
-    "verdict": "STRONG BUY",
-    "model_type": "Normalized Free Cash Flow & Multi-Tier DCF"
+    "roic_pct": 28.6,
+    "wacc_pct": 10.99,
+    "z_score": 5.97,
+    "m_score": -2.48,
+    "tata": 0.042,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "REDUCE / OVERVALUED",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {

@@ -1,7 +1,7 @@
 {
   "ticker": "PLTR",
   "name": "Palantir Technologies Inc.",
-  "sector": "Information Technology",
+  "sector": "Technology",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
   "backtest_end_date": "2026-10-30",
@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": 210.0,
-    "target_price": 210.0,
-    "entry_price": 178.5,
-    "required_mos_pct": 20.0,
-    "actual_discount_pct": 5.4,
-    "mos_pct": 5.4,
+    "fair_value": 68.68,
+    "target_price": 68.68,
+    "entry_price": 58.38,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -150.0,
+    "mos_pct": -150.0,
     "moat": "Wide",
-    "roic_pct": 34.0,
-    "wacc_pct": 9.8,
-    "z_score": 12.5,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": "Investment Grade",
-    "verdict": "BUY / ACCUMULATE",
-    "model_type": "High-Growth EV/Revenue & Rule of 40 Compounder"
+    "roic_pct": 34.1,
+    "wacc_pct": 11.37,
+    "z_score": 12.61,
+    "m_score": -2.01,
+    "tata": -0.032,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {

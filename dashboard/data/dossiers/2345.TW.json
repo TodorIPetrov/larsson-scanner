@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": 2277.117680540494,
-    "target_price": 2277.117680540494,
-    "entry_price": 1821.6941444323952,
-    "required_mos_pct": 20.0,
-    "actual_discount_pct": 20.3,
-    "mos_pct": 20.3,
-    "moat": "Narrow",
-    "roic_pct": 56.41,
-    "wacc_pct": 7.739360626562555,
-    "z_score": 4.94,
-    "m_score": -2.46,
-    "tata": -0.059,
+    "fair_value": 897.0,
+    "target_price": 897.0,
+    "entry_price": 627.9,
+    "required_mos_pct": 30.0,
+    "actual_discount_pct": -53.8,
+    "mos_pct": -53.8,
+    "moat": "None",
+    "roic_pct": 0.0,
+    "wacc_pct": 8.27,
+    "z_score": 4.59,
+    "m_score": -1.52,
+    "tata": 0.18,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "BUY",
-    "model_type": "Corporate FCFF DCF & EVA"
+    "verdict": "REDUCE / DISTRESSED CASH BURN",
+    "model_type": "Distressed / Negative FCF Model"
   },
   "candles": [
     {

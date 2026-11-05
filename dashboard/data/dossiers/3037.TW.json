@@ -102,21 +102,21 @@
     }
   ],
   "fundamental": {
-    "fair_value": 247.3684210526316,
-    "target_price": 247.3684210526316,
-    "entry_price": 178.10526315789474,
-    "required_mos_pct": 25.0,
-    "actual_discount_pct": -344.7,
-    "mos_pct": -344.7,
-    "moat": "None",
-    "roic_pct": 15.0,
-    "wacc_pct": 15.770000041961667,
-    "z_score": 2.35,
-    "m_score": -2.97,
-    "tata": -0.032,
+    "fair_value": 320.0,
+    "target_price": 320.0,
+    "entry_price": 272.0,
+    "required_mos_pct": 15.0,
+    "actual_discount_pct": -150.0,
+    "mos_pct": -150.0,
+    "moat": "Wide",
+    "roic_pct": 27.2,
+    "wacc_pct": 12.5,
+    "z_score": 3.16,
+    "m_score": -2.32,
+    "tata": 0.019,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
-    "model_type": "High-Growth EV/Revenue Multiple Model"
+    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "model_type": "Corporate FCFF DCF & EVA"
   },
   "candles": [
     {
