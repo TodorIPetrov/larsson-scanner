@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-05T15:45:26.832084+00:00",
+  "generated_at": "2026-11-05T15:48:43.681926+00:00",
   "rotation_portfolio": {
     "trading_date": "2026-11-05",
-    "updated_at": "2026-11-05T15:45:26.749775+00:00",
+    "updated_at": "2026-11-05T15:48:43.603359+00:00",
     "base_capital_eur": 10000.0,
     "target_positions_count": 15,
     "per_slot_eur": 666.67,
@@ -1720,7 +1720,7 @@
           "vol_shock_ratio": 0.31,
           "put_call_ratio": 0.72,
           "options_sentiment": "NEUTRAL",
-          "gamma_wall": 590.0,
+          "gamma_wall": 600.0,
           "max_pain": 515.0,
           "unusual_call_sweep": false
         }
@@ -2132,10 +2132,10 @@
       ],
       "sells": [
         {
-          "ticker": "GTLB",
-          "name": "GitLab Inc (DevOps/AI)",
-          "price": 52.369998931884766,
-          "state": "GOLD",
+          "ticker": "PLTR",
+          "name": "Palantir Technologies Inc.",
+          "price": 171.69000244140625,
+          "state": "NEUTRAL",
           "reason": "\u0420\u043e\u0442\u0430\u0446\u0438\u044f -> \u0417\u0430\u043c\u0435\u043d\u0435\u043d \u043e\u0442 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a RS \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c \u043b\u0438\u0434\u0435\u0440",
           "action": "SELL / CLOSE 100%"
         },
@@ -2143,6 +2143,14 @@
           "ticker": "3711.TW",
           "name": "ASE Technology (OSAT Packaging)",
           "price": 572.0,
+          "state": "GOLD",
+          "reason": "\u0420\u043e\u0442\u0430\u0446\u0438\u044f -> \u0417\u0430\u043c\u0435\u043d\u0435\u043d \u043e\u0442 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a RS \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c \u043b\u0438\u0434\u0435\u0440",
+          "action": "SELL / CLOSE 100%"
+        },
+        {
+          "ticker": "8996.TW",
+          "name": "Kaori Heat Treatment (Cooling)",
+          "price": 1290.0,
           "state": "GOLD",
           "reason": "\u0420\u043e\u0442\u0430\u0446\u0438\u044f -> \u0417\u0430\u043c\u0435\u043d\u0435\u043d \u043e\u0442 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a RS \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c \u043b\u0438\u0434\u0435\u0440",
           "action": "SELL / CLOSE 100%"
@@ -2156,25 +2164,17 @@
           "action": "SELL / CLOSE 100%"
         },
         {
-          "ticker": "3443.TW",
-          "name": "Global Unichip (GUC ASIC)",
-          "price": 6405.0,
+          "ticker": "GTLB",
+          "name": "GitLab Inc (DevOps/AI)",
+          "price": 52.369998931884766,
           "state": "GOLD",
           "reason": "\u0420\u043e\u0442\u0430\u0446\u0438\u044f -> \u0417\u0430\u043c\u0435\u043d\u0435\u043d \u043e\u0442 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a RS \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c \u043b\u0438\u0434\u0435\u0440",
           "action": "SELL / CLOSE 100%"
         },
         {
-          "ticker": "PLTR",
-          "name": "Palantir Technologies Inc.",
-          "price": 171.69000244140625,
-          "state": "NEUTRAL",
-          "reason": "\u0420\u043e\u0442\u0430\u0446\u0438\u044f -> \u0417\u0430\u043c\u0435\u043d\u0435\u043d \u043e\u0442 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a RS \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c \u043b\u0438\u0434\u0435\u0440",
-          "action": "SELL / CLOSE 100%"
-        },
-        {
-          "ticker": "8996.TW",
-          "name": "Kaori Heat Treatment (Cooling)",
-          "price": 1290.0,
+          "ticker": "3443.TW",
+          "name": "Global Unichip (GUC ASIC)",
+          "price": 6405.0,
           "state": "GOLD",
           "reason": "\u0420\u043e\u0442\u0430\u0446\u0438\u044f -> \u0417\u0430\u043c\u0435\u043d\u0435\u043d \u043e\u0442 \u043f\u043e-\u0432\u0438\u0441\u043e\u043a RS \u043c\u043e\u043c\u0435\u043d\u0442\u0443\u043c \u043b\u0438\u0434\u0435\u0440",
           "action": "SELL / CLOSE 100%"
