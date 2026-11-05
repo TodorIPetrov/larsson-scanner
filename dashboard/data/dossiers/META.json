@@ -34774,18 +34774,18 @@
   ],
   "smart_money": {
     "symbol": "META",
-    "smart_money_score": 35.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.50) с Gamma стена на $635.00. Залог за рязък отскок.",
+    "smart_money_score": 25.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.22).",
     "cmf_20d": -0.222,
     "up_down_vol_ratio": 0.41,
     "absorption_5d_pct": 37.6,
     "vol_shock_ratio": 0.31,
-    "put_call_ratio": 0.5,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 635.0,
-    "max_pain": 650.0,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 100.0,
+    "max_pain": 100.0,
     "unusual_call_sweep": false
   }
 }

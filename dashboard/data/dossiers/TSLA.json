@@ -34800,7 +34800,7 @@
   ],
   "smart_money": {
     "symbol": "TSLA",
-    "smart_money_score": 84.0,
+    "smart_money_score": 82.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
     "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 0.88x). Силна скрита подкрепа.",
@@ -34808,10 +34808,10 @@
     "up_down_vol_ratio": 0.88,
     "absorption_5d_pct": 65.8,
     "vol_shock_ratio": 0.4,
-    "put_call_ratio": 1.19,
+    "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 390.0,
-    "max_pain": 402.5,
-    "unusual_call_sweep": true
+    "gamma_wall": 50.0,
+    "max_pain": 50.0,
+    "unusual_call_sweep": false
   }
 }

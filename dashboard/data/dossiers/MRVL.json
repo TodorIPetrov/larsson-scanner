@@ -34718,18 +34718,18 @@
   ],
   "smart_money": {
     "symbol": "MRVL",
-    "smart_money_score": 72.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.51) с Gamma стена на $170.00. Залог за рязък отскок.",
+    "smart_money_score": 62.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: 1.00).",
     "cmf_20d": -0.027,
     "up_down_vol_ratio": 0.94,
     "absorption_5d_pct": 64.6,
     "vol_shock_ratio": 2.04,
-    "put_call_ratio": 0.51,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 170.0,
-    "max_pain": 180.0,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 130.0,
+    "max_pain": 130.0,
     "unusual_call_sweep": false
   }
 }

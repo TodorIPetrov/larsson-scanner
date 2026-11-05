@@ -34684,18 +34684,18 @@
   ],
   "smart_money": {
     "symbol": "NDAQ",
-    "smart_money_score": 66.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 5.10) с Gamma стена на $106.00. Залог за рязък отскок.",
+    "smart_money_score": 84.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.08, Up/Dn Vol: 1.5x). Силна скрита подкрепа.",
     "cmf_20d": 0.08,
     "up_down_vol_ratio": 1.5,
     "absorption_5d_pct": 69.9,
     "vol_shock_ratio": 1.15,
-    "put_call_ratio": 5.1,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 106.0,
-    "max_pain": 106.0,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 88.0,
+    "max_pain": 88.0,
     "unusual_call_sweep": false
   }
 }

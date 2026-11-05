@@ -34696,18 +34696,18 @@
   ],
   "smart_money": {
     "symbol": "NVDA",
-    "smart_money_score": 17.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.12, CMF: -0.15).",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.15).",
     "cmf_20d": -0.155,
     "up_down_vol_ratio": 0.55,
     "absorption_5d_pct": 44.2,
     "vol_shock_ratio": 0.39,
-    "put_call_ratio": 1.12,
+    "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 205.0,
-    "max_pain": 215.0,
+    "gamma_wall": 50.0,
+    "max_pain": 50.0,
     "unusual_call_sweep": false
   }
 }

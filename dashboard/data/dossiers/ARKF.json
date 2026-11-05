@@ -34632,18 +34632,18 @@
   ],
   "smart_money": {
     "symbol": "ARKF",
-    "smart_money_score": 73.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.34) с Gamma стена на $50.00. Залог за рязък отскок.",
+    "smart_money_score": 83.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.03, Up/Dn Vol: 0.83x). Силна скрита подкрепа.",
     "cmf_20d": -0.03,
     "up_down_vol_ratio": 0.83,
     "absorption_5d_pct": 54.7,
     "vol_shock_ratio": 1.45,
-    "put_call_ratio": 0.34,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 50.0,
-    "max_pain": 50.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 40.0,
+    "max_pain": 40.0,
+    "unusual_call_sweep": true
   }
 }

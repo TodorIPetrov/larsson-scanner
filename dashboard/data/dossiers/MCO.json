@@ -34632,18 +34632,18 @@
   ],
   "smart_money": {
     "symbol": "MCO",
-    "smart_money_score": 77.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.06, Up/Dn Vol: 0.85x). Силна скрита подкрепа.",
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.66) с Gamma стена на $640.00. Залог за рязък отскок.",
     "cmf_20d": 0.057,
     "up_down_vol_ratio": 0.85,
     "absorption_5d_pct": 59.5,
     "vol_shock_ratio": 0.95,
-    "put_call_ratio": 0.42,
+    "put_call_ratio": 0.66,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 530.0,
-    "max_pain": 530.0,
+    "gamma_wall": 640.0,
+    "max_pain": 640.0,
     "unusual_call_sweep": false
   }
 }
