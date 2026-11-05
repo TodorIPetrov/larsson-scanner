@@ -7,7 +7,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20261104_04">
+  <link rel="stylesheet" href="style.css?v=20261105_05">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1960,14 +1960,14 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20261104_04"></script>
+  <script src="app.js?v=20261105_05"></script>
 
   <!-- Progressive Web App (PWA) Registration & Install Prompt Handler -->
   <script>
     // 1. Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=20261104_04')
+        navigator.serviceWorker.register('sw.js?v=20261105_05')
           .then((reg) => {
             console.log('[PWA] Service Worker registered with scope:', reg.scope);
             try { reg.update(); } catch(e) {}
