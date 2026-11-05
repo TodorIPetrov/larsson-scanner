@@ -34710,18 +34710,18 @@
   ],
   "smart_money": {
     "symbol": "KHC",
-    "smart_money_score": 62.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 1.00).",
+    "smart_money_score": 80.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.03, Up/Dn Vol: 0.89x). Силна скрита подкрепа.",
     "cmf_20d": 0.031,
     "up_down_vol_ratio": 0.89,
     "absorption_5d_pct": 40.9,
     "vol_shock_ratio": 0.68,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 15.0,
-    "max_pain": 15.0,
+    "put_call_ratio": 0.14,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 25.0,
+    "max_pain": 25.0,
     "unusual_call_sweep": false
   }
 }

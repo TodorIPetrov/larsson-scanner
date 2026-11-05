@@ -4,16 +4,16 @@
   "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-10-28",
+  "backtest_end_date": "2026-11-05",
   "backtest_years": 6.9,
-  "backtest_total_bars": 1734,
-  "current_price": 4051.05,
+  "backtest_total_bars": 1735,
+  "current_price": 4061.47,
   "state": "BLUE",
-  "v1": 4132.02,
-  "v2": 4193.23,
-  "sma200": 4331.11,
-  "rsi14": 39.0,
-  "atr14": 50.6,
+  "v1": 4123.08,
+  "v2": 4186.5,
+  "sma200": 4328.13,
+  "rsi14": 40.9,
+  "atr14": 56.9,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 125.1,
+      "total_return_pct": 125.7,
       "cagr_pct": 12.5,
       "sharpe_ratio": 0.81,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.46,
+      "profit_factor": 4.48,
       "max_drawdown_pct": 28.1,
       "total_trades": 1
     }
@@ -24394,6 +24394,20 @@
       "v2": 4193.23,
       "sma200": 4331.11,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-05",
+      "open": 3946.4,
+      "high": 4067.43,
+      "low": 3928.63,
+      "close": 4061.47,
+      "volume": 545.0,
+      "v1": 4123.08,
+      "m1": 4146.12,
+      "m2": 4172.8,
+      "v2": 4186.5,
+      "sma200": 4328.13,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -31381,6 +31395,10 @@
         {
           "time": "2026-10-28",
           "value": 23226.87
+        },
+        {
+          "time": "2026-11-05",
+          "value": 23226.87
         }
       ]
     },
@@ -38323,6 +38341,10 @@
         },
         {
           "time": "2026-10-28",
+          "value": 23001.43
+        },
+        {
+          "time": "2026-11-05",
           "value": 23001.43
         }
       ]
@@ -45267,6 +45289,10 @@
         {
           "time": "2026-10-28",
           "value": 20979.16
+        },
+        {
+          "time": "2026-11-05",
+          "value": 20979.16
         }
       ]
     },
@@ -52210,6 +52236,10 @@
         {
           "time": "2026-10-28",
           "value": 22533.4
+        },
+        {
+          "time": "2026-11-05",
+          "value": 22591.36
         }
       ]
     }
@@ -52254,14 +52284,14 @@
   ],
   "smart_money": {
     "symbol": "PAXGUSDT",
-    "smart_money_score": 47.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.24, P/C: N/A).",
-    "cmf_20d": -0.237,
-    "up_down_vol_ratio": 0.81,
-    "absorption_5d_pct": 68.7,
-    "vol_shock_ratio": 0.19,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.29, P/C: N/A).",
+    "cmf_20d": -0.286,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 71.4,
+    "vol_shock_ratio": 0.2,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -34632,18 +34632,18 @@
   ],
   "smart_money": {
     "symbol": "OUST",
-    "smart_money_score": 62.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 1.00).",
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.54) с Gamma стена на $30.00. Залог за рязък отскок.",
     "cmf_20d": -0.005,
     "up_down_vol_ratio": 0.94,
     "absorption_5d_pct": 64.2,
     "vol_shock_ratio": 1.18,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 20.0,
-    "max_pain": 20.0,
+    "put_call_ratio": 0.54,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 30.0,
+    "max_pain": 42.0,
     "unusual_call_sweep": false
   }
 }

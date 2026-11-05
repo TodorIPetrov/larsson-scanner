@@ -34800,18 +34800,18 @@
   ],
   "smart_money": {
     "symbol": "TSLA",
-    "smart_money_score": 82.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 0.88x). Силна скрита подкрепа.",
+    "smart_money_score": 64.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.12, P/C: 1.48).",
     "cmf_20d": 0.123,
     "up_down_vol_ratio": 0.88,
     "absorption_5d_pct": 65.8,
     "vol_shock_ratio": 0.4,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 50.0,
-    "max_pain": 50.0,
+    "put_call_ratio": 1.48,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 360.0,
+    "max_pain": 240.0,
     "unusual_call_sweep": false
   }
 }

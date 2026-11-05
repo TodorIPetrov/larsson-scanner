@@ -34670,18 +34670,18 @@
   ],
   "smart_money": {
     "symbol": "FTNT",
-    "smart_money_score": 65.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 1.00) с Gamma стена на $95.00. Залог за рязък отскок.",
+    "smart_money_score": 75.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.10, Up/Dn Vol: 0.43x). Силна скрита подкрепа.",
     "cmf_20d": 0.104,
     "up_down_vol_ratio": 0.43,
     "absorption_5d_pct": 57.8,
     "vol_shock_ratio": 0.51,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 95.0,
-    "max_pain": 95.0,
+    "put_call_ratio": 0.57,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 125.0,
+    "max_pain": 137.0,
     "unusual_call_sweep": false
   }
 }

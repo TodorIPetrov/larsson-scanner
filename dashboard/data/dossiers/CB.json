@@ -34632,18 +34632,18 @@
   ],
   "smart_money": {
     "symbol": "CB",
-    "smart_money_score": 95.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.2x). Силна скрита подкрепа.",
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.89) с Gamma стена на $380.00. Залог за рязък отскок.",
     "cmf_20d": 0.038,
     "up_down_vol_ratio": 1.2,
     "absorption_5d_pct": 52.1,
     "vol_shock_ratio": 1.06,
-    "put_call_ratio": 0.0,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 450.0,
-    "max_pain": 210.0,
-    "unusual_call_sweep": true
+    "put_call_ratio": 0.89,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 380.0,
+    "max_pain": 370.0,
+    "unusual_call_sweep": false
   }
 }
