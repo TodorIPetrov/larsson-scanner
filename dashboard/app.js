@@ -7672,7 +7672,17 @@ function renderRotationPortfolio() {
     // 2. Render Daily Actions (Intelligent entry & exit dispatch)
   const actionsDateEl = document.getElementById('rotActionsDate');
   if (actionsDateEl) {
-    actionsDateEl.textContent = '30 Окт 2026 (Актуална сесия)';
+    const rawDate = (rotData && rotData.trading_date) ||
+                    (rotData && rotData.updated_at ? rotData.updated_at.split('T')[0] : null) ||
+                    (window.dashboardData && window.dashboardData.generated_at ? window.dashboardData.generated_at.split('T')[0] : null);
+    let dateObj = new Date();
+    if (rawDate && /^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+      const parts = rawDate.split('-').map(Number);
+      dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+    const bgMonths = ['Яну', 'Фев', 'Мар', 'Апр', 'Май', 'Юни', 'Юли', 'Авг', 'Сеп', 'Окт', 'Ное', 'Дек'];
+    const formattedDate = `${dateObj.getDate()} ${bgMonths[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+    actionsDateEl.textContent = `${formattedDate} (Актуална сесия)`;
   }
   const actionsList = document.getElementById('rotActionsList');
   if (actionsList) {
