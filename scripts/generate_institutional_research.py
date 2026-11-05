@@ -96,12 +96,21 @@ RF_RATE = fetch_dynamic_macro_rates()
 FX_RATES_CACHE: dict = {}
 
 def get_fx_rate(from_curr: str, to_curr: str) -> float:
-    """Retrieves live or cached exchange rate from from_curr to to_curr."""
-    if not from_curr or not to_curr or from_curr.upper() == to_curr.upper():
+    """Retrieves live or cached exchange rate from from_curr to to_curr (handles GBp pence)."""
+    if not from_curr or not to_curr:
         return 1.0
+    scale = 1.0
+    if from_curr == "GBp":
+        scale *= 0.01
+        from_curr = "GBP"
+    if to_curr == "GBp":
+        scale *= 100.0
+        to_curr = "GBP"
+    if from_curr.upper() == to_curr.upper():
+        return scale
     pair = f"{from_curr.upper()}{to_curr.upper()}=X"
     if pair in FX_RATES_CACHE:
-        return FX_RATES_CACHE[pair]
+        return FX_RATES_CACHE[pair] * scale
     
     # Try direct pair
     try:
@@ -109,7 +118,7 @@ def get_fx_rate(from_curr: str, to_curr: str) -> float:
         rate = t.fast_info.get("lastPrice") or t.info.get("regularMarketPrice") or 0.0
         if rate > 0:
             FX_RATES_CACHE[pair] = float(rate)
-            return float(rate)
+            return float(rate) * scale
     except Exception:
         pass
     
@@ -121,7 +130,7 @@ def get_fx_rate(from_curr: str, to_curr: str) -> float:
         if inv_rate > 0:
             rate = 1.0 / inv_rate
             FX_RATES_CACHE[pair] = float(rate)
-            return float(rate)
+            return float(rate) * scale
     except Exception:
         pass
     
@@ -142,7 +151,7 @@ def get_fx_rate(from_curr: str, to_curr: str) -> float:
         ("HKD", "USD"): 1.0 / 7.78,
         ("USD", "HKD"): 7.78,
     }
-    return fallbacks.get((from_curr.upper(), to_curr.upper()), 1.0)
+    return fallbacks.get((from_curr.upper(), to_curr.upper()), 1.0) * scale
 
 
 def build_ttm_statement(annual_df, quarterly_df, is_balance_sheet: bool = False):
@@ -158,26 +167,77 @@ def build_ttm_statement(annual_df, quarterly_df, is_balance_sheet: bool = False)
     try:
         import pandas as pd
         if is_balance_sheet:
-            # Latest quarterly balance sheet is column 0
             latest_q = quarterly_df.iloc[:, [0]].copy()
             latest_col = f"Latest ({latest_q.columns[0]})"
             latest_q.columns = [latest_col]
             combined = pd.concat([latest_q, annual_df], axis=1)
+            if len(combined.columns) >= 2:
+                combined.iloc[:, 0] = combined.iloc[:, 0].fillna(combined.iloc[:, 1])
             return combined
         else:
-            # Trailing Twelve Months: sum of last 4 quarters (or available 2-4 quarters)
             n_q = min(4, len(quarterly_df.columns))
             if n_q >= 2:
                 q_subset = quarterly_df.iloc[:, :n_q]
-                # Scale up to 12m if only 2 or 3 quarters are available
-                annualization_factor = 4.0 / n_q
-                ttm_col = q_subset.sum(axis=1) * annualization_factor
+                valid_counts = q_subset.notna().sum(axis=1)
+                ttm_col = q_subset.mean(axis=1, skipna=True) * 4.0
                 ttm_df = pd.DataFrame({"TTM": ttm_col})
                 combined = pd.concat([ttm_df, annual_df], axis=1)
+                if len(combined.columns) >= 2:
+                    for idx in combined.index:
+                        vc = valid_counts.get(idx, 0) if idx in valid_counts.index else 0
+                        if vc < 2 or pd.isna(combined.loc[idx, "TTM"]) or (combined.loc[idx, "TTM"] == 0 and combined.iloc[:, 1].get(idx, 0) != 0):
+                            combined.loc[idx, "TTM"] = combined.iloc[:, 1].get(idx, 0.0)
                 return combined
     except Exception as e:
         logger.debug(f"Failed to build TTM statement: {e}")
     return annual_df
+
+
+def extract_ebit(fin, col, info=None, revenue_val: float = 0.0) -> float:
+    """Robustly extracts Operating Income / EBIT across US GAAP, IFRS, and Asian accounting standards."""
+    if fin is not None and not fin.empty and col in fin.columns:
+        op_inc = safe_get(fin, "Operating Income", col, 0.0)
+        ebit_val = safe_get(fin, "EBIT", col, 0.0)
+        op_rep = safe_get(fin, "Total Operating Income As Reported", col, 0.0)
+        candidates = [v for v in (op_inc, ebit_val, op_rep) if v > 0]
+        if candidates:
+            # Prefer Operating Income unless it's anomalously depressed (<50% of EBIT) by one-time charges
+            if op_inc > 0 and (ebit_val <= 0 or op_inc >= 0.55 * ebit_val):
+                return op_inc
+            return max(candidates)
+        for v in (op_inc, ebit_val, op_rep):
+            if v != 0.0:
+                return v
+        pretax = safe_get(fin, "Pretax Income", col, 0.0)
+        int_exp = abs(safe_get(fin, "Interest Expense", col, safe_get(fin, "Interest Expense Non Operating", col, 0.0)))
+        if pretax != 0.0:
+            return pretax + int_exp
+        gp = safe_get(fin, "Gross Profit", col, 0.0)
+        opex = abs(safe_get(fin, "Operating Expense", col, 0.0))
+        if gp > 0 and opex > 0:
+            return gp - opex
+    if info and revenue_val > 0 and info.get("operatingMargins"):
+        return float(info.get("operatingMargins")) * revenue_val
+    return 0.0
+
+
+def extract_bs_capital(bs, info, shares: float, revenue_val: float = 0.0):
+    """Extracts book_equity, total_debt, cash, and bounded invested_capital from balance sheet."""
+    book_equity = (info.get("bookValue") or 1.0) * shares if info else shares
+    total_debt = 0.0
+    cash = 0.0
+    ta0 = 0.0
+    if bs is not None and not bs.empty:
+        col = bs.columns[0]
+        ta0 = safe_get(bs, "Total Assets", col, 0.0)
+        book_equity = safe_get(bs, "Stockholders Equity", col, safe_get(bs, "Common Stock Equity", col, safe_get(bs, "Total Equity Gross Minority Interest", col, book_equity)))
+        total_debt = safe_get(bs, "Total Debt", col, safe_get(bs, "Long Term Debt", col, 0.0))
+        cash = safe_get(bs, "Cash Cash Equivalents And Short Term Investments", col, safe_get(bs, "Cash And Cash Equivalents", col, 0.0))
+    # Damodaran invested capital floor: prevent excess cash from collapsing invested capital to zero
+    gross_cap = max(1e7, book_equity + total_debt)
+    operating_cash_deduction = min(cash, gross_cap * 0.45)
+    invested_capital = max(ta0 * 0.30, gross_cap * 0.55, revenue_val * 0.25, gross_cap - operating_cash_deduction)
+    return book_equity, total_debt, cash, invested_capital
 
 def compute_synthetic_kd(ebit, int_exp, rf_rate, tax_rate=DEFAULT_TAX_RATE):
     """
@@ -248,7 +308,8 @@ def load_universe():
 def safe_get(df, key, col, default=0.0):
     """Safely extracts a numeric float value from a DataFrame row index and column."""
     if df is not None and not df.empty and key in df.index:
-        val = df.loc[key, col]
+        actual_col = col if col in df.columns else df.columns[0]
+        val = df.loc[key, actual_col]
         if isinstance(val, (int, float)) and not (isinstance(val, float) and (val != val)):
             return float(val)
     return default
@@ -428,7 +489,8 @@ def compute_forensics(fin, bs, cf, info, shares, price, mcap, sector="", industr
             0.327 * lvgi
         )
         m_score = max(-5.0, min(1.5, m_score))
-        is_m_flagged = (m_score > -1.78 and tata > 0.05)
+        cfo_conv = (cfo0 / max(1.0, net_inc0)) if net_inc0 > 0 else 1.0
+        is_m_flagged = (m_score > -1.78 and tata > 0.08 and cfo_conv < 0.55 and (z_score is None or z_score < 4.5))
 
     is_flagged = is_distressed or is_m_flagged
 
@@ -684,24 +746,23 @@ def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta
     """
     model_type = "Mid-Cycle Normalized DCF"
 
-    revenue = info.get("totalRevenue") or 0.0
-    total_debt = info.get("totalDebt") or 0.0
-    cash = info.get("totalCash") or 0.0
-    book_equity = (info.get("bookValue") or 1.0) * shares
-    fcf = info.get("freeCashflow") or 0.0
+    revenue = 0.0
+    fcf = 0.0
 
     # Multi-Year Median EBIT Margin Extraction (up to 4 years)
     hist_margins = []
     hist_revs = []
     if fin is not None and not fin.empty and "Total Revenue" in fin.index:
         col0 = fin.columns[0]
-        revenue = safe_get(fin, "Total Revenue", col0, revenue)
+        revenue = safe_get(fin, "Total Revenue", col0, 0.0)
         for col in fin.columns[:4]:
             r_val = safe_get(fin, "Total Revenue", col)
-            e_val = safe_get(fin, "Operating Income", col, safe_get(fin, "EBIT", col))
+            e_val = extract_ebit(fin, col, info, r_val)
             if r_val > 0:
                 hist_margins.append(e_val / r_val)
                 hist_revs.append(r_val)
+
+    book_equity, total_debt, cash, invested_capital = extract_bs_capital(bs, info, shares, revenue)
 
     if revenue <= 0:
         return None  # Cannot evaluate without real revenue data
@@ -728,17 +789,20 @@ def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta
     else:
         bench_margin = 0.12
 
-    # Company-Specific Multi-Year Median Blend
+    # Company-Specific Multi-Year Median Blend (preserve secular Wide-Moat semi margins)
     if len(hist_margins) >= 2:
         med_m = float(np.median(hist_margins))
-        mid_cycle_ebit_margin = 0.65 * max(0.03, min(0.60, med_m)) + 0.35 * bench_margin
+        cur_m = hist_margins[0]
+        if med_m > 0.35 and cur_m > 0.35:
+            mid_cycle_ebit_margin = 0.85 * min(0.65, max(med_m, cur_m * 0.85)) + 0.15 * bench_margin
+        else:
+            mid_cycle_ebit_margin = 0.65 * max(0.03, min(0.60, med_m)) + 0.35 * bench_margin
     else:
         mid_cycle_ebit_margin = bench_margin
 
     normalized_ebit = revenue * mid_cycle_ebit_margin
     normalized_nopat = normalized_ebit * (1 - DEFAULT_TAX_RATE)
-    invested_capital = max(1e7, book_equity + total_debt - cash)
-    normalized_roic = normalized_nopat / invested_capital
+    normalized_roic = min(0.85, max(0.02, normalized_nopat / max(1e7, invested_capital)))
 
     # 3Y CAGR for Secular vs Commodity Cyclical distinction
     if len(hist_revs) >= 3 and hist_revs[-1] > 0:
@@ -758,11 +822,15 @@ def evaluate_cyclicals(ticker, name, sector, industry, price, shares, mcap, beta
     wacc = max(0.080, min(0.125, we * ke + wd * kd_aftertax))
 
     # Real FCF conversion ratio
-    fcf_conv = min(0.95, max(0.40, fcf / max(1.0, normalized_nopat))) if fcf > 0 else 0.65
-    normalized_fcf = max(1e6, normalized_nopat * fcf_conv)
+    fcf_conv = min(1.00, max(0.50, fcf / max(1.0, normalized_nopat))) if fcf > 0 else 0.70
+    normalized_fcf = max(1e6, max(fcf * 0.90, normalized_nopat * fcf_conv))
 
-    # Growth fading smoothly to LONG_TERM_G over 10 years
-    cycle_g = max(0.025, min(0.14, 0.40 * max(0.02, cagr_3y) + 0.60 * 0.035))
+    # Growth fading smoothly to LONG_TERM_G over 10 years (secular AI leaders get higher initial runway)
+    if normalized_roic > 0.25 and mid_cycle_ebit_margin > 0.35:
+        wacc = min(wacc, 0.105)
+        cycle_g = max(0.05, min(0.22, 0.65 * max(0.05, cagr_3y) + 0.35 * 0.10))
+    else:
+        cycle_g = max(0.025, min(0.14, 0.40 * max(0.02, cagr_3y) + 0.60 * 0.035))
 
     pv_fcff = 0.0
     fcf_t = normalized_fcf
@@ -815,13 +883,10 @@ def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta
     Normalized FCFF DCF with Capitalized R&D + EVA.
     Restricts High-Growth model strictly to companies with high growth (>15% CAGR) & high margin (>50% GM).
     """
-    revenue = info.get("totalRevenue") or 0.0
-    ebit = info.get("operatingIncome") or 0.0
-    total_debt = info.get("totalDebt") or 0.0
-    cash = info.get("totalCash") or 0.0
-    book_equity = (info.get("bookValue") or 1.0) * shares
-    fcf = info.get("freeCashflow") or 0.0
-    cfo = info.get("operatingCashflow") or 0.0
+    revenue = 0.0
+    ebit = 0.0
+    fcf = 0.0
+    cfo = 0.0
     capex = 0.0
     rnd = 0.0
 
@@ -829,8 +894,8 @@ def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta
     hist_revs = []
     if fin is not None and not fin.empty:
         col0 = fin.columns[0]
-        revenue = safe_get(fin, "Total Revenue", col0, revenue)
-        ebit = safe_get(fin, "Operating Income", col0, safe_get(fin, "EBIT", col0, ebit))
+        revenue = safe_get(fin, "Total Revenue", col0, 0.0)
+        ebit = extract_ebit(fin, col0, info, revenue)
         rnd = safe_get(fin, "Research And Development", col0, 0.0)
         for col in fin.columns:
             rv = safe_get(fin, "Total Revenue", col)
@@ -840,10 +905,16 @@ def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta
     if revenue <= 0:
         return None  # Missing critical revenue data
 
+    book_equity, total_debt, cash, base_invested_cap = extract_bs_capital(bs, info, shares, revenue)
+
     if cf is not None and not cf.empty:
         col0 = cf.columns[0]
-        fcf = safe_get(cf, "Free Cash Flow", col0, fcf)
-        capex = abs(safe_get(cf, "Capital Expenditure", col0, capex))
+        cfo = safe_get(cf, "Operating Cash Flow", col0, 0.0)
+        fcf = safe_get(cf, "Free Cash Flow", col0, 0.0)
+        capex = abs(safe_get(cf, "Capital Expenditure", col0, 0.0))
+        if (fcf <= 0 or fcf < 0.25 * cfo) and ebit > 0 and cfo > 0:
+            norm_capex = min(capex, revenue * 0.08) if capex > 0 else revenue * 0.04
+            fcf = max(cfo - norm_capex, ebit * (1 - DEFAULT_TAX_RATE) * 0.65)
 
     # 3Y Revenue CAGR
     if len(hist_revs) >= 3 and hist_revs[-1] > 0:
@@ -917,8 +988,8 @@ def evaluate_corporate(ticker, name, sector, industry, price, shares, mcap, beta
     model_type = "Corporate FCFF DCF & EVA"
     adjusted_ebit = ebit + (rnd * 0.25)
     nopat = adjusted_ebit * (1 - DEFAULT_TAX_RATE)
-    invested_capital = max(1e7, book_equity + total_debt - cash + (rnd * 2.0))
-    raw_roic = max(0.02, nopat / invested_capital)
+    invested_capital = max(1e7, base_invested_cap + (rnd * 2.0))
+    raw_roic = min(0.85, max(0.02, nopat / invested_capital))
 
     # Moat classification
     op_margin = ebit / revenue
@@ -996,16 +1067,16 @@ def analyze_company_with_proper_model(ticker):
             logger.warning(f"Skipping {ticker}: No valid price found.")
             return None
 
+        mcap_raw = info.get("marketCap") or fast.get("marketCap") or 0.0
         shares = fast.get("shares") or info.get("sharesOutstanding") or 0
-        if shares <= 0:
-            mcap_raw = info.get("marketCap") or 0.0
-            if mcap_raw > 0 and price > 0:
-                shares = mcap_raw / price
-            else:
-                logger.warning(f"Skipping {ticker}: No valid share count or market cap.")
-                return None
-
-        mcap = price * shares
+        if mcap_raw > 0 and price > 0:
+            shares = mcap_raw / price
+            mcap = float(mcap_raw)
+        elif shares > 0:
+            mcap = price * shares
+        else:
+            logger.warning(f"Skipping {ticker}: No valid share count or market cap.")
+            return None
         name = info.get("shortName") or info.get("longName") or ticker
         sector = info.get("sector") or "General Corporate"
         industry = info.get("industry") or "Diversified"
@@ -1085,11 +1156,10 @@ def analyze_company_with_proper_model(ticker):
                 except Exception as e:
                     logger.debug(f"FX conversion adjustment error for {ticker}: {e}")
 
-        # ADR Multiplier adjustments
-        if ticker in ADR_RATIOS:
+        # ADR Multiplier adjustments (only if marketCap was unavailable and raw ordinary shares were returned)
+        if ticker in ADR_RATIOS and not mcap_raw:
             adr_mult = ADR_RATIOS[ticker]
-            # Shares in US ADR representation
-            if adr_mult > 1.0 and shares > 5e9:
+            if adr_mult > 1.0 and shares > 15e9:
                 shares = shares / adr_mult
                 mcap = price * shares
 
@@ -1175,10 +1245,13 @@ def analyze_company_with_proper_model(ticker):
             action = "REDUCE"
 
         col0_fin = fin.columns[0]
-        actual_rev_b = safe_get(fin, "Total Revenue", col0_fin, info.get("totalRevenue") or 0.0) / 1e9
-        actual_ebit_b = safe_get(fin, "Operating Income", col0_fin, safe_get(fin, "EBIT", col0_fin, info.get("operatingIncome") or 0.0)) / 1e9
-        if actual_ebit_b <= 0 and actual_rev_b > 0 and info.get("operatingMargins"):
-            actual_ebit_b = actual_rev_b * float(info.get("operatingMargins"))
+        usd_fx = get_fx_rate(list_curr, "USD") if list_curr and list_curr.upper() != "USD" else 1.0
+        raw_rev = safe_get(fin, "Total Revenue", col0_fin, 0.0)
+        raw_ebit = extract_ebit(fin, col0_fin, info, raw_rev)
+        actual_rev_b = (raw_rev * usd_fx) / 1e9
+        actual_ebit_b = (raw_ebit * usd_fx) / 1e9
+        mcap_usd_b = (mcap * usd_fx) / 1e9
+        nopat_usd_b = eval_res["nopat_b"] * usd_fx
 
         return {
             "ticker": ticker,
@@ -1188,11 +1261,11 @@ def analyze_company_with_proper_model(ticker):
             "model_type": eval_res["model_type"],
             "price": price,
             "shares": shares,
-            "mcap_b": mcap / 1e9,
+            "mcap_b": round(mcap_usd_b, 2),
             "beta": beta,
             "revenue_b": round(actual_rev_b, 2),
             "ebit_b": round(actual_ebit_b, 2),
-            "nopat_b": round(eval_res["nopat_b"], 2),
+            "nopat_b": round(nopat_usd_b, 2),
             "roic_pct": round(eval_res["roic_pct"], 1),
             "wacc_pct": round(eval_res["wacc_pct"], 2),
             "moat": eval_res["moat"],

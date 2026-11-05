@@ -196,3 +196,19 @@ class YFinanceFetcher:
             logger.debug(f"Direct chart API fetch failed for {ticker}: {e}")
             return None
 
+    def fetch_live_quotes(self, tickers: List[str]) -> Dict[str, dict]:
+        """Fetches fast intraday quotes (price, high, low, volume) for a list of tickers."""
+        if not tickers:
+            return {}
+        quotes: Dict[str, dict] = {}
+        try:
+            batch = self.fetch_batch(tickers, timeframe="1D")
+            for sym, (highs, lows, closes, latest_price) in batch.items():
+                quotes[sym] = {
+                    "price": float(latest_price),
+                    "high": float(highs[-1]) if len(highs) > 0 else float(latest_price),
+                    "low": float(lows[-1]) if len(lows) > 0 else float(latest_price),
+                }
+        except Exception as e:
+            logger.debug(f"fetch_live_quotes error: {e}")
+        return quotes

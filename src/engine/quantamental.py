@@ -61,6 +61,7 @@ class FundamentalProfile:
     solvency_type: Optional[str] = None
     production_cost: Optional[float] = None
     mvrv_ratio: Optional[float] = None
+    latest_filing_date: Optional[str] = None
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -640,6 +641,7 @@ class QuantamentalRegistry:
                         entry_price=_clean_float(item.get("entry_price")),
                         action=item.get("action"),
                         solvency_type=item.get("solvency_type"),
+                        latest_filing_date=item.get("latest_filing_date"),
                     )
                     self.profiles[ticker.upper()] = profile
                     count += 1

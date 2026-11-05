@@ -278,6 +278,7 @@ def export_dashboard_data(
                 "solvency_type": fund.solvency_type,
                 "production_cost": _clean_float(fund.production_cost),
                 "mvrv_ratio": _clean_float(fund.mvrv_ratio),
+                "latest_filing_date": getattr(fund, "latest_filing_date", None),
             }
         elif _row_val(r, "ts_fund_verdict"):
             fund_data = {
@@ -306,6 +307,7 @@ def export_dashboard_data(
                 "solvency_type": None,
                 "production_cost": None,
                 "mvrv_ratio": None,
+                "latest_filing_date": None,
             }
 
         # ---------------------------------------------------------------------

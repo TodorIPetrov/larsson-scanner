@@ -49,7 +49,7 @@ def calculate_bars_since_flip(states: List[LarssonState]) -> Optional[int]:
 CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "backtest_cache")
 
 def _update_symbol_daily_cache(ticker: str, highs: np.ndarray, lows: np.ndarray, closes: np.ndarray, volumes: Optional[np.ndarray] = None):
-    """Updates data/backtest_cache/{TICKER}_1D.csv with freshly fetched candles."""
+    """Updates data/backtest_cache/{TICKER}_1D.csv with freshly fetched candles while preserving historical volume."""
     try:
         os.makedirs(CACHE_DIR, exist_ok=True)
         clean_sym = ticker.replace("=", "_").replace("^", "_").replace(":", "_").replace("/", "_")
@@ -59,15 +59,40 @@ def _update_symbol_daily_cache(ticker: str, highs: np.ndarray, lows: np.ndarray,
             return
         import pandas as pd
         from datetime import datetime, timedelta, timezone
+        now_str = str(datetime.now(timezone.utc).date())
+        if os.path.exists(csv_path):
+            try:
+                existing_df = pd.read_csv(csv_path)
+                if len(existing_df) >= 30 and "close" in existing_df.columns:
+                    last_vol = float(volumes[-1]) if (volumes is not None and len(volumes) > 0 and volumes[-1] > 0) else float(existing_df["volume"].iloc[-1] if "volume" in existing_df.columns and len(existing_df) > 0 else 0.0)
+                    if str(existing_df["date"].iloc[-1])[:10] == now_str:
+                        existing_df.loc[existing_df.index[-1], "high"] = float(highs[-1])
+                        existing_df.loc[existing_df.index[-1], "low"] = float(lows[-1])
+                        existing_df.loc[existing_df.index[-1], "close"] = float(closes[-1])
+                        if last_vol > 0:
+                            existing_df.loc[existing_df.index[-1], "volume"] = last_vol
+                    else:
+                        new_row = pd.DataFrame([{
+                            "date": now_str,
+                            "open": float(closes[-2]) if len(closes) >= 2 else float(closes[-1]),
+                            "high": float(highs[-1]),
+                            "low": float(lows[-1]),
+                            "close": float(closes[-1]),
+                            "volume": last_vol,
+                        }])
+                        existing_df = pd.concat([existing_df, new_row], ignore_index=True)
+                    existing_df.to_csv(csv_path, index=False)
+                    return
+            except Exception:
+                pass
         dates = []
         now_dt = datetime.now(timezone.utc).date()
         for idx in range(n):
             d = now_dt - timedelta(days=(n - 1 - idx))
             dates.append(str(d))
-        
         df = pd.DataFrame({
             "date": dates,
-            "open": closes,  # approximation for open if missing
+            "open": closes,
             "high": highs,
             "low": lows,
             "close": closes,
@@ -310,7 +335,7 @@ class LarssonScanner:
                 if st_1w:
                     macro_1w_state = st_1w["current_state"]
 
-            fund_profile = get_fundamental_profile(ticker)
+            fund_profile = get_fundamental_profile(ticker, current_price=float(current_price) if current_price else None)
 
             btc_cycle = None
             if asset_class == "crypto":
