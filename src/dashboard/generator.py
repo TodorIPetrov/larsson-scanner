@@ -1307,6 +1307,8 @@ def export_dashboard_data(
         logger.debug(f"Could not persist rotation state: {e}")
 
     rotation_portfolio_data = {
+        "trading_date": today_str,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
         "base_capital_eur": base_capital_eur,
         "target_positions_count": target_positions_count,
         "per_slot_eur": per_slot_eur,
