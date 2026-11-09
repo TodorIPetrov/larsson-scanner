@@ -34722,18 +34722,18 @@
   ],
   "smart_money": {
     "symbol": "CRWD",
-    "smart_money_score": 37.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: 0.88).",
+    "smart_money_score": 29.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.18, CMF: -0.07).",
     "cmf_20d": -0.071,
     "up_down_vol_ratio": 0.64,
     "absorption_5d_pct": 50.5,
     "vol_shock_ratio": 0.44,
-    "put_call_ratio": 0.88,
+    "put_call_ratio": 1.18,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 220.0,
-    "max_pain": 260.0,
+    "gamma_wall": 217.5,
+    "max_pain": 225.0,
     "unusual_call_sweep": false
   }
 }

@@ -34684,18 +34684,18 @@
   ],
   "smart_money": {
     "symbol": "HPQ",
-    "smart_money_score": 66.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 2.01) с Gamma стена на $30.00. Залог за рязък отскок.",
+    "smart_money_score": 94.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.07, Up/Dn Vol: 1.46x). Силна скрита подкрепа.",
     "cmf_20d": 0.065,
     "up_down_vol_ratio": 1.46,
     "absorption_5d_pct": 71.0,
     "vol_shock_ratio": 0.96,
-    "put_call_ratio": 2.01,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 30.0,
-    "max_pain": 28.0,
+    "put_call_ratio": 0.41,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 28.5,
+    "max_pain": 30.0,
     "unusual_call_sweep": false
   }
 }

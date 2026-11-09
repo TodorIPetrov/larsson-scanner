@@ -4,15 +4,15 @@
   "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-05",
+  "backtest_end_date": "2026-11-09",
   "backtest_years": 6.9,
-  "backtest_total_bars": 1735,
-  "current_price": 0.2,
+  "backtest_total_bars": 1736,
+  "current_price": 0.18,
   "state": "NEUTRAL",
   "v1": 0.22,
   "v2": 0.22,
   "sma200": 0.21,
-  "rsi14": 32.8,
+  "rsi14": 24.9,
   "atr14": 0.01,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -92,9 +92,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -81.2,
-      "cagr_pct": -21.6,
-      "sharpe_ratio": 0.01,
+      "total_return_pct": -83.3,
+      "cagr_pct": -22.9,
+      "sharpe_ratio": -0.01,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 88.3,
@@ -24408,6 +24408,20 @@
       "v2": 0.22,
       "sma200": 0.21,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-09",
+      "open": 0.18,
+      "high": 0.18,
+      "low": 0.17,
+      "close": 0.18,
+      "volume": 17279815.0,
+      "v1": 0.22,
+      "m1": 0.22,
+      "m2": 0.22,
+      "v2": 0.22,
+      "sma200": 0.21,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -31581,6 +31595,10 @@
         {
           "time": "2026-11-05",
           "value": 19022.2
+        },
+        {
+          "time": "2026-11-09",
+          "value": 19022.2
         }
       ]
     },
@@ -38527,6 +38545,10 @@
         },
         {
           "time": "2026-11-05",
+          "value": 10018.0
+        },
+        {
+          "time": "2026-11-09",
           "value": 10018.0
         }
       ]
@@ -45475,6 +45497,10 @@
         {
           "time": "2026-11-05",
           "value": 8687.37
+        },
+        {
+          "time": "2026-11-09",
+          "value": 8687.37
         }
       ]
     },
@@ -52422,6 +52448,10 @@
         {
           "time": "2026-11-05",
           "value": 1878.96
+        },
+        {
+          "time": "2026-11-09",
+          "value": 1669.44
         }
       ]
     }
@@ -52622,14 +52652,14 @@
   ],
   "smart_money": {
     "symbol": "ADAUSDT",
-    "smart_money_score": 52.0,
+    "smart_money_score": 64.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: N/A).",
-    "cmf_20d": 0.03,
-    "up_down_vol_ratio": 0.74,
-    "absorption_5d_pct": 67.9,
-    "vol_shock_ratio": 0.2,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: N/A).",
+    "cmf_20d": 0.052,
+    "up_down_vol_ratio": 0.56,
+    "absorption_5d_pct": 69.5,
+    "vol_shock_ratio": 0.21,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

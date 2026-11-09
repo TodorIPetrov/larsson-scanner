@@ -4,26 +4,26 @@
   "sector": "Equities",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-05",
+  "backtest_end_date": "2026-11-09",
   "backtest_years": 6.9,
-  "backtest_total_bars": 1737,
-  "current_price": 204.15,
+  "backtest_total_bars": 1738,
+  "current_price": 194.9,
   "state": "GOLD",
-  "v1": 195.06,
-  "v2": 171.41,
-  "sma200": 94.99,
-  "rsi14": 53.3,
-  "atr14": 22.71,
+  "v1": 195.21,
+  "v2": 172.31,
+  "sma200": 95.59,
+  "rsi14": 49.7,
+  "atr14": 22.02,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 380.1,
-    "cagr_pct": 25.6,
-    "sharpe_ratio": 0.64,
+    "total_return_pct": 358.4,
+    "cagr_pct": 24.7,
+    "sharpe_ratio": 0.63,
     "win_rate_pct": 35.7,
-    "profit_factor": 9.81,
+    "profit_factor": 9.39,
     "max_drawdown_pct": 60.6,
     "total_trades": 14
   },
@@ -32,11 +32,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -5.4,
-      "cagr_pct": -0.8,
-      "sharpe_ratio": 0.25,
+      "total_return_pct": -9.7,
+      "cagr_pct": -1.5,
+      "sharpe_ratio": 0.24,
       "win_rate_pct": 17.4,
-      "profit_factor": 0.94,
+      "profit_factor": 0.89,
       "max_drawdown_pct": 83.9,
       "total_trades": 23
     },
@@ -44,11 +44,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -1.0,
-      "cagr_pct": -0.1,
-      "sharpe_ratio": 0.25,
+      "total_return_pct": -5.4,
+      "cagr_pct": -0.8,
+      "sharpe_ratio": 0.24,
       "win_rate_pct": 23.1,
-      "profit_factor": 0.99,
+      "profit_factor": 0.94,
       "max_drawdown_pct": 79.3,
       "total_trades": 26
     },
@@ -56,11 +56,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -52.8,
-      "cagr_pct": -10.3,
-      "sharpe_ratio": -0.05,
+      "total_return_pct": -54.9,
+      "cagr_pct": -10.9,
+      "sharpe_ratio": -0.06,
       "win_rate_pct": 24.2,
-      "profit_factor": 0.81,
+      "profit_factor": 0.78,
       "max_drawdown_pct": 85.2,
       "total_trades": 62
     },
@@ -68,11 +68,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 380.1,
-      "cagr_pct": 25.6,
-      "sharpe_ratio": 0.64,
+      "total_return_pct": 358.4,
+      "cagr_pct": 24.7,
+      "sharpe_ratio": 0.63,
       "win_rate_pct": 35.7,
-      "profit_factor": 9.81,
+      "profit_factor": 9.39,
       "max_drawdown_pct": 60.6,
       "total_trades": 14
     },
@@ -80,11 +80,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 68.2,
-      "cagr_pct": 7.8,
-      "sharpe_ratio": 0.38,
+      "total_return_pct": 60.6,
+      "cagr_pct": 7.1,
+      "sharpe_ratio": 0.36,
       "win_rate_pct": 20.0,
-      "profit_factor": 2.43,
+      "profit_factor": 2.27,
       "max_drawdown_pct": 71.3,
       "total_trades": 10
     },
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 110.0,
-      "cagr_pct": 11.4,
+      "total_return_pct": 100.5,
+      "cagr_pct": 10.6,
       "sharpe_ratio": 0.49,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.5,
+      "profit_factor": 1.37,
       "max_drawdown_pct": 73.4,
       "total_trades": 1
     }
@@ -24436,6 +24436,20 @@
       "v2": 171.41,
       "sma200": 94.99,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-09",
+      "open": 196.17,
+      "high": 203.65,
+      "low": 191.09,
+      "close": 194.9,
+      "volume": 47109.0,
+      "v1": 195.21,
+      "m1": 189.38,
+      "m2": 179.09,
+      "v2": 172.31,
+      "sma200": 95.59,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -24629,11 +24643,11 @@
       "text": "BUY #14 @ $58.87"
     },
     {
-      "time": "2026-11-05",
+      "time": "2026-11-09",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +246.09% ($34132.5 €)"
+      "text": "EXIT +230.41% ($31957.51 €)"
     }
   ],
   "equity_curves": [
@@ -31589,6 +31603,10 @@
         {
           "time": "2026-11-05",
           "value": 48058.16
+        },
+        {
+          "time": "2026-11-09",
+          "value": 45881.0
         }
       ]
     },
@@ -38544,6 +38562,10 @@
         {
           "time": "2026-11-05",
           "value": 16839.0
+        },
+        {
+          "time": "2026-11-09",
+          "value": 16076.29
         }
       ]
     },
@@ -45499,6 +45521,10 @@
         {
           "time": "2026-11-05",
           "value": 9914.05
+        },
+        {
+          "time": "2026-11-09",
+          "value": 9465.0
         }
       ]
     },
@@ -52454,6 +52480,10 @@
         {
           "time": "2026-11-05",
           "value": 21025.35
+        },
+        {
+          "time": "2026-11-09",
+          "value": 20072.69
         }
       ]
     }
@@ -52619,11 +52649,11 @@
       "num": 14,
       "entry_date": "2026-08-20",
       "entry_price": 58.87,
-      "exit_date": "2026-11-05",
-      "exit_price": 204.15,
-      "holding_days": 72,
-      "pnl_pct": 246.09,
-      "pnl_eur": 34132.5,
+      "exit_date": "2026-11-09",
+      "exit_price": 194.9,
+      "holding_days": 73,
+      "pnl_pct": 230.41,
+      "pnl_eur": 31957.51,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -52633,11 +52663,11 @@
     "smart_money_score": 30.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.22).",
-    "cmf_20d": -0.217,
-    "up_down_vol_ratio": 0.63,
-    "absorption_5d_pct": 55.2,
-    "vol_shock_ratio": 0.57,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.19).",
+    "cmf_20d": -0.193,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 57.8,
+    "vol_shock_ratio": 0.58,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

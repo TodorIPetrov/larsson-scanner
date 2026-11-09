@@ -4,15 +4,15 @@
   "sector": "Equities",
   "asset_class": "us_stocks",
   "backtest_start_date": "2025-10-01",
-  "backtest_end_date": "2026-11-05",
+  "backtest_end_date": "2026-11-09",
   "backtest_years": 1.6,
-  "backtest_total_bars": 396,
+  "backtest_total_bars": 397,
   "current_price": 1.0,
   "state": "BLUE",
   "v1": 1.0,
   "v2": 1.0,
   "sma200": 1.0,
-  "rsi14": 43.4,
+  "rsi14": 33.0,
   "atr14": 0.0,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -33,35 +33,35 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -4.9,
-      "cagr_pct": -3.1,
-      "sharpe_ratio": -3.74,
+      "cagr_pct": -3.2,
+      "sharpe_ratio": -3.83,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 4.8,
+      "max_drawdown_pct": 4.9,
       "total_trades": 21
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -6.2,
+      "total_return_pct": -6.3,
       "cagr_pct": -4.0,
-      "sharpe_ratio": -4.42,
+      "sharpe_ratio": -4.49,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 6.2,
+      "max_drawdown_pct": 6.3,
       "total_trades": 27
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -10.5,
+      "total_return_pct": -10.6,
       "cagr_pct": -6.8,
-      "sharpe_ratio": -7.54,
+      "sharpe_ratio": -7.59,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 10.4,
+      "max_drawdown_pct": 10.6,
       "total_trades": 61
     },
     {
@@ -93,8 +93,8 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": -0.2,
-      "cagr_pct": -0.1,
-      "sharpe_ratio": 0.01,
+      "cagr_pct": -0.2,
+      "sharpe_ratio": -0.08,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 0.3,
@@ -5662,6 +5662,20 @@
       "v2": 1.0,
       "sma200": 1.0,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-09",
+      "open": 1.0,
+      "high": 1.0,
+      "low": 1.0,
+      "close": 1.0,
+      "volume": 63029523.0,
+      "v1": 1.0,
+      "m1": 1.0,
+      "m2": 1.0,
+      "v2": 1.0,
+      "sma200": 1.0,
+      "state": "BLUE"
     }
   ],
   "markers": [],
@@ -7254,6 +7268,10 @@
         {
           "time": "2026-11-05",
           "value": 10000.0
+        },
+        {
+          "time": "2026-11-09",
+          "value": 10000.0
         }
       ]
     },
@@ -8844,6 +8862,10 @@
         },
         {
           "time": "2026-11-05",
+          "value": 9790.28
+        },
+        {
+          "time": "2026-11-09",
           "value": 9790.28
         }
       ]
@@ -10436,6 +10458,10 @@
         {
           "time": "2026-11-05",
           "value": 9523.38
+        },
+        {
+          "time": "2026-11-09",
+          "value": 9507.69
         }
       ]
     },
@@ -12027,6 +12053,10 @@
         {
           "time": "2026-11-05",
           "value": 9992.3
+        },
+        {
+          "time": "2026-11-09",
+          "value": 9985.3
         }
       ]
     }
@@ -12034,13 +12064,13 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "USD1USDT",
-    "smart_money_score": 77.0,
+    "smart_money_score": 79.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.09, Up/Dn Vol: 1.42x). Силна скрита подкрепа.",
-    "cmf_20d": 0.091,
-    "up_down_vol_ratio": 1.42,
-    "absorption_5d_pct": 55.3,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 1.19x). Силна скрита подкрепа.",
+    "cmf_20d": 0.051,
+    "up_down_vol_ratio": 1.19,
+    "absorption_5d_pct": 60.7,
     "vol_shock_ratio": 0.48,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
