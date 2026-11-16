@@ -34800,18 +34800,18 @@
   ],
   "smart_money": {
     "symbol": "PANW",
-    "smart_money_score": 42.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.12, P/C: 1.05).",
+    "smart_money_score": 70.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.03) с Gamma стена на $750.00. Залог за рязък отскок.",
     "cmf_20d": -0.115,
     "up_down_vol_ratio": 0.84,
     "absorption_5d_pct": 46.0,
     "vol_shock_ratio": 0.31,
-    "put_call_ratio": 1.05,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 317.5,
-    "max_pain": 290.0,
-    "unusual_call_sweep": false
+    "put_call_ratio": 0.03,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 750.0,
+    "max_pain": 750.0,
+    "unusual_call_sweep": true
   }
 }

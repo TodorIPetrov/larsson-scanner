@@ -4,16 +4,16 @@
   "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-09",
+  "backtest_end_date": "2026-11-11",
   "backtest_years": 6.7,
-  "backtest_total_bars": 1694,
-  "current_price": 685.21,
+  "backtest_total_bars": 1695,
+  "current_price": 680.58,
   "state": "GOLD",
-  "v1": 699.3,
-  "v2": 670.78,
-  "sma200": 627.64,
-  "rsi14": 44.8,
-  "atr14": 25.41,
+  "v1": 698.11,
+  "v2": 671.14,
+  "sma200": 627.88,
+  "rsi14": 43.6,
+  "atr14": 25.21,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -32,11 +32,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -29.0,
-      "cagr_pct": -5.0,
+      "total_return_pct": -29.5,
+      "cagr_pct": -5.1,
       "sharpe_ratio": 0.03,
       "win_rate_pct": 21.1,
-      "profit_factor": 0.69,
+      "profit_factor": 0.68,
       "max_drawdown_pct": 60.2,
       "total_trades": 19
     },
@@ -44,11 +44,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 13.5,
-      "cagr_pct": 1.9,
-      "sharpe_ratio": 0.23,
+      "total_return_pct": 12.7,
+      "cagr_pct": 1.8,
+      "sharpe_ratio": 0.22,
       "win_rate_pct": 14.3,
-      "profit_factor": 1.12,
+      "profit_factor": 1.11,
       "max_drawdown_pct": 66.0,
       "total_trades": 28
     },
@@ -56,11 +56,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -15.8,
-      "cagr_pct": -2.5,
+      "total_return_pct": -16.4,
+      "cagr_pct": -2.6,
       "sharpe_ratio": 0.06,
       "win_rate_pct": 14.3,
-      "profit_factor": 0.95,
+      "profit_factor": 0.94,
       "max_drawdown_pct": 56.6,
       "total_trades": 63
     },
@@ -80,8 +80,8 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -12.8,
-      "cagr_pct": -2.0,
+      "total_return_pct": -13.4,
+      "cagr_pct": -2.1,
       "sharpe_ratio": 0.04,
       "win_rate_pct": 9.1,
       "profit_factor": 0.8,
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 77.2,
-      "cagr_pct": 8.9,
+      "total_return_pct": 76.0,
+      "cagr_pct": 8.8,
       "sharpe_ratio": 0.41,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.33,
+      "profit_factor": 1.31,
       "max_drawdown_pct": 58.2,
       "total_trades": 1
     }
@@ -23834,6 +23834,20 @@
       "v2": 670.78,
       "sma200": 627.64,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-11",
+      "open": 691.44,
+      "high": 692.64,
+      "low": 670.06,
+      "close": 680.58,
+      "volume": 56064.0,
+      "v1": 698.11,
+      "m1": 689.45,
+      "m2": 677.67,
+      "v2": 671.14,
+      "sma200": 627.88,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -30759,6 +30773,10 @@
         {
           "time": "2026-11-09",
           "value": 7345.3
+        },
+        {
+          "time": "2026-11-11",
+          "value": 7345.3
         }
       ]
     },
@@ -37542,6 +37560,10 @@
         {
           "time": "2026-11-09",
           "value": 11356.78
+        },
+        {
+          "time": "2026-11-11",
+          "value": 11280.12
         }
       ]
     },
@@ -44325,6 +44347,10 @@
         {
           "time": "2026-11-09",
           "value": 8726.44
+        },
+        {
+          "time": "2026-11-11",
+          "value": 8667.53
         }
       ]
     },
@@ -51108,6 +51134,10 @@
         {
           "time": "2026-11-09",
           "value": 17738.4
+        },
+        {
+          "time": "2026-11-11",
+          "value": 17618.54
         }
       ]
     }
@@ -51236,13 +51266,13 @@
   ],
   "smart_money": {
     "symbol": "BNBUSDT",
-    "smart_money_score": 60.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: N/A).",
-    "cmf_20d": 0.013,
-    "up_down_vol_ratio": 1.12,
-    "absorption_5d_pct": 53.3,
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 0.032,
+    "up_down_vol_ratio": 1.16,
+    "absorption_5d_pct": 56.0,
     "vol_shock_ratio": 0.42,
     "put_call_ratio": null,
     "options_sentiment": "N/A",

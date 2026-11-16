@@ -34632,18 +34632,18 @@
   ],
   "smart_money": {
     "symbol": "MSTR",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.12, P/C: 0.68).",
+    "smart_money_score": 68.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.09) с Gamma стена на $40.00. Залог за рязък отскок.",
     "cmf_20d": -0.124,
     "up_down_vol_ratio": 0.75,
     "absorption_5d_pct": 52.0,
     "vol_shock_ratio": 0.55,
-    "put_call_ratio": 0.68,
+    "put_call_ratio": 0.09,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 129.0,
-    "max_pain": 133.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 40.0,
+    "max_pain": 40.0,
+    "unusual_call_sweep": true
   }
 }

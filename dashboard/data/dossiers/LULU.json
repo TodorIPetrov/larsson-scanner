@@ -34632,18 +34632,18 @@
   ],
   "smart_money": {
     "symbol": "LULU",
-    "smart_money_score": 75.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.11, Up/Dn Vol: 0.94x). Силна скрита подкрепа.",
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 8.65) с Gamma стена на $65.00. Залог за рязък отскок.",
     "cmf_20d": 0.113,
     "up_down_vol_ratio": 0.94,
     "absorption_5d_pct": 57.6,
     "vol_shock_ratio": 0.84,
-    "put_call_ratio": 0.84,
+    "put_call_ratio": 8.65,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 111.0,
-    "max_pain": 110.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 65.0,
+    "max_pain": 60.0,
+    "unusual_call_sweep": true
   }
 }

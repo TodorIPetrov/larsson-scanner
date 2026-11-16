@@ -34606,18 +34606,18 @@
   ],
   "smart_money": {
     "symbol": "JPM",
-    "smart_money_score": 60.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: 0.92).",
+    "smart_money_score": 88.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.04, Up/Dn Vol: 1.55x). Силна скрита подкрепа.",
     "cmf_20d": -0.04,
     "up_down_vol_ratio": 1.55,
     "absorption_5d_pct": 49.8,
     "vol_shock_ratio": 0.65,
-    "put_call_ratio": 0.92,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 335.0,
-    "max_pain": 320.0,
-    "unusual_call_sweep": false
+    "put_call_ratio": 0.0,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 465.0,
+    "max_pain": 255.0,
+    "unusual_call_sweep": true
   }
 }

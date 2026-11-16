@@ -4,15 +4,15 @@
   "sector": "Крипто активи",
   "asset_class": "crypto",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-09",
+  "backtest_end_date": "2026-11-11",
   "backtest_years": 6.9,
-  "backtest_total_bars": 1736,
-  "current_price": 1.11,
+  "backtest_total_bars": 1737,
+  "current_price": 1.06,
   "state": "NEUTRAL",
-  "v1": 1.34,
-  "v2": 1.35,
+  "v1": 1.32,
+  "v2": 1.34,
   "sma200": 1.28,
-  "rsi14": 24.7,
+  "rsi14": 21.8,
   "atr14": 0.07,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -92,11 +92,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 81.8,
-      "cagr_pct": 9.1,
-      "sharpe_ratio": 0.45,
+      "total_return_pct": 72.5,
+      "cagr_pct": 8.2,
+      "sharpe_ratio": 0.44,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.14,
+      "profit_factor": 1.01,
       "max_drawdown_pct": 72.0,
       "total_trades": 1
     }
@@ -24422,6 +24422,20 @@
       "v2": 1.35,
       "sma200": 1.28,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-11",
+      "open": 1.1,
+      "high": 1.11,
+      "low": 1.03,
+      "close": 1.06,
+      "volume": 34455944.0,
+      "v1": 1.32,
+      "m1": 1.33,
+      "m2": 1.34,
+      "v2": 1.34,
+      "sma200": 1.28,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -31515,6 +31529,10 @@
         {
           "time": "2026-11-09",
           "value": 6665.99
+        },
+        {
+          "time": "2026-11-11",
+          "value": 6665.99
         }
       ]
     },
@@ -38465,6 +38483,10 @@
         },
         {
           "time": "2026-11-09",
+          "value": 7435.37
+        },
+        {
+          "time": "2026-11-11",
           "value": 7435.37
         }
       ]
@@ -45417,6 +45439,10 @@
         {
           "time": "2026-11-09",
           "value": 3409.96
+        },
+        {
+          "time": "2026-11-11",
+          "value": 3409.96
         }
       ]
     },
@@ -52368,6 +52394,10 @@
         {
           "time": "2026-11-09",
           "value": 18195.14
+        },
+        {
+          "time": "2026-11-11",
+          "value": 17268.38
         }
       ]
     }
@@ -52496,13 +52526,13 @@
   ],
   "smart_money": {
     "symbol": "XRPUSDT",
-    "smart_money_score": 79.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.08, Up/Dn Vol: 1.03x). Силна скрита подкрепа.",
-    "cmf_20d": 0.076,
-    "up_down_vol_ratio": 1.03,
-    "absorption_5d_pct": 60.7,
+    "smart_money_score": 62.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: N/A).",
+    "cmf_20d": 0.066,
+    "up_down_vol_ratio": 0.93,
+    "absorption_5d_pct": 49.0,
     "vol_shock_ratio": 0.46,
     "put_call_ratio": null,
     "options_sentiment": "N/A",

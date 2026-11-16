@@ -34710,7 +34710,7 @@
   ],
   "smart_money": {
     "symbol": "FCX",
-    "smart_money_score": 90.0,
+    "smart_money_score": 95.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
     "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.15, Up/Dn Vol: 0.67x). Силна скрита подкрепа.",
@@ -34718,10 +34718,10 @@
     "up_down_vol_ratio": 0.67,
     "absorption_5d_pct": 65.1,
     "vol_shock_ratio": 1.05,
-    "put_call_ratio": 0.29,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 60.0,
-    "max_pain": 63.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 120.0,
+    "max_pain": 120.0,
+    "unusual_call_sweep": true
   }
 }

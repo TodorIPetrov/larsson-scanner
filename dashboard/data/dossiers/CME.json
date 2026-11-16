@@ -34606,7 +34606,7 @@
   ],
   "smart_money": {
     "symbol": "CME",
-    "smart_money_score": 85.0,
+    "smart_money_score": 95.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
     "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.25, Up/Dn Vol: 2.43x). Силна скрита подкрепа.",
@@ -34614,10 +34614,10 @@
     "up_down_vol_ratio": 2.43,
     "absorption_5d_pct": 54.8,
     "vol_shock_ratio": 0.82,
-    "put_call_ratio": 0.88,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 307.5,
-    "max_pain": 300.0,
-    "unusual_call_sweep": false
+    "put_call_ratio": 0.0,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 360.0,
+    "max_pain": 250.0,
+    "unusual_call_sweep": true
   }
 }

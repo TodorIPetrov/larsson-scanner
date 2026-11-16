@@ -9,7 +9,7 @@ import json
 import os
 import sqlite3
 import threading
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from src.engine.smma import LarssonState
 

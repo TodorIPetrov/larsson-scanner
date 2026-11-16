@@ -34606,18 +34606,18 @@
   ],
   "smart_money": {
     "symbol": "LLY",
-    "smart_money_score": 27.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.35, CMF: -0.14).",
+    "smart_money_score": 73.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.05) с Gamma стена на $1720.00. Залог за рязък отскок.",
     "cmf_20d": -0.138,
     "up_down_vol_ratio": 1.5,
     "absorption_5d_pct": 42.9,
     "vol_shock_ratio": 0.8,
-    "put_call_ratio": 2.35,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 1125.0,
-    "max_pain": 640.0,
-    "unusual_call_sweep": false
+    "put_call_ratio": 0.05,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 1720.0,
+    "max_pain": 860.0,
+    "unusual_call_sweep": true
   }
 }
