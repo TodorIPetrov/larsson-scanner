@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T09:42:24.469622+00:00",
+  "generated_at": "2026-11-16T14:19:25.202291+00:00",
   "fundamental_profiles": {
     "BTCUSDT": {
       "ticker": "BTCUSDT",
@@ -18833,6 +18833,43 @@
       "is_bullish": false,
       "is_bearish_or_distressed": true,
       "is_hold": false
+    },
+    "IFX.DE": {
+      "ticker": "IFX.DE",
+      "name": "INFINEON TECHNOLOGIES AG      N",
+      "verdict": "HOLD / SENSITIVITY REVIEW",
+      "target_price": 19.72,
+      "fair_value": 19.72,
+      "mos_pct": -150.0,
+      "required_mos_pct": 25.0,
+      "actual_discount_pct": -150.0,
+      "moat": "None",
+      "roic_pct": 8.7,
+      "wacc_pct": 11.83,
+      "z_score": 3.53,
+      "m_score": -3.1,
+      "upside_pct": -60.0,
+      "thesis": "\u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442 $19.72 (-60.0%). \u0420\u043e\u0432: None, ROIC: 8.7%, Z-Score: 3.53.",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "model_type": "Mid-Cycle Normalized DCF",
+      "price": 49.29499816894531,
+      "shares": 1300655330.02477,
+      "mcap_b": 70.63,
+      "beta": 1.947,
+      "revenue_b": 17.11,
+      "ebit_b": 2.12,
+      "nopat_b": 2.26,
+      "tata": -0.065,
+      "entry_price": 14.79,
+      "action": "HOLD",
+      "solvency_type": "Altman Z''-Score (Universal Model)",
+      "production_cost": null,
+      "mvrv_ratio": null,
+      "latest_filing_date": "2026-06-30 (10-Q TTM)",
+      "is_bullish": false,
+      "is_bearish_or_distressed": false,
+      "is_hold": true
     }
   }
 }
