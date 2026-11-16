@@ -4,16 +4,16 @@
   "sector": "Equities",
   "asset_class": "us_stocks",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-13",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1157,
-  "current_price": 3.68,
+  "backtest_total_bars": 1158,
+  "current_price": 3.44,
   "state": "BLUE",
-  "v1": 4.3,
-  "v2": 4.68,
-  "sma200": 6.35,
-  "rsi14": 37.3,
-  "atr14": 0.31,
+  "v1": 4.25,
+  "v2": 4.64,
+  "sma200": 6.32,
+  "rsi14": 33.8,
+  "atr14": 0.3,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -45,7 +45,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -52.5,
-      "cagr_pct": -15.0,
+      "cagr_pct": -14.9,
       "sharpe_ratio": -0.06,
       "win_rate_pct": 20.0,
       "profit_factor": 0.31,
@@ -92,12 +92,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -81.6,
-      "cagr_pct": -30.8,
-      "sharpe_ratio": -0.01,
+      "total_return_pct": -82.8,
+      "cagr_pct": -31.8,
+      "sharpe_ratio": -0.03,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 82.0,
+      "max_drawdown_pct": 82.2,
       "total_trades": 1
     }
   ],
@@ -16316,6 +16316,20 @@
       "v2": 4.68,
       "sma200": 6.35,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-16",
+      "open": 3.55,
+      "high": 3.6,
+      "low": 3.44,
+      "close": 3.44,
+      "volume": 8728549.0,
+      "v1": 4.25,
+      "m1": 4.35,
+      "m2": 4.52,
+      "v2": 4.64,
+      "sma200": 6.32,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21093,6 +21107,10 @@
         {
           "time": "2026-11-13",
           "value": 15688.79
+        },
+        {
+          "time": "2026-11-16",
+          "value": 15688.79
         }
       ]
     },
@@ -25727,6 +25745,10 @@
         },
         {
           "time": "2026-11-13",
+          "value": 6175.26
+        },
+        {
+          "time": "2026-11-16",
           "value": 6175.26
         }
       ]
@@ -30363,6 +30385,10 @@
         {
           "time": "2026-11-13",
           "value": 5256.68
+        },
+        {
+          "time": "2026-11-16",
+          "value": 5256.68
         }
       ]
     },
@@ -34998,6 +35024,10 @@
         {
           "time": "2026-11-13",
           "value": 1840.92
+        },
+        {
+          "time": "2026-11-16",
+          "value": 1721.36
         }
       ]
     }
@@ -35126,14 +35156,14 @@
   ],
   "smart_money": {
     "symbol": "QS",
-    "smart_money_score": 43.0,
+    "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.17) с Gamma стена на $4.00. Залог за рязък отскок.",
     "cmf_20d": -0.15,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 42.1,
-    "vol_shock_ratio": 1.02,
+    "up_down_vol_ratio": 0.7,
+    "absorption_5d_pct": 27.2,
+    "vol_shock_ratio": 0.54,
     "put_call_ratio": 0.17,
     "options_sentiment": "BULLISH",
     "gamma_wall": 4.0,
