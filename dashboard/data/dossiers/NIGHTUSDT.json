@@ -2,7 +2,8 @@
   "ticker": "NIGHTUSDT",
   "name": "NIGHTUSDT",
   "sector": "Equities",
-  "asset_class": "us_stocks",
+  "asset_class": "crypto",
+  "generated_at": "2026-11-17T15:36:59.715289+00:00",
   "backtest_start_date": "2026-05-08",
   "backtest_end_date": "2026-10-30",
   "backtest_years": 0.7,
@@ -116,7 +117,9 @@
     "tata": null,
     "solvency_type": null,
     "verdict": "FAIRLY VALUED",
-    "model_type": null
+    "model_type": null,
+    "latest_filing_date": null,
+    "last_fundamental_update": null
   },
   "candles": [
     {

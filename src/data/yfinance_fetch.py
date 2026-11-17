@@ -22,6 +22,7 @@ TIMEFRAME_TO_YF_PARAMS = {
 class YFinanceFetcher:
     def __init__(self, chunk_size: int = 50, session=None):
         self.chunk_size = chunk_size
+        self.last_batch_ohlcv: Dict[str, dict] = {}
         if session is not None:
             self.session = session
         else:
@@ -116,6 +117,23 @@ class YFinanceFetcher:
 
                         latest_price = float(closes[-1])
                         results[sym] = (highs, lows, closes, latest_price)
+
+                        # Store rich OHLCV payload alongside 4-tuple for cache & volume sync
+                        try:
+                            opens = clean_df["Open"].to_numpy(dtype=np.float64) if "Open" in clean_df else closes
+                            volumes = clean_df["Volume"].fillna(0).to_numpy(dtype=np.float64) if "Volume" in clean_df else np.zeros(len(closes))
+                            date_fmt = "%Y-%m-%d %H:%M" if timeframe == "4H" else "%Y-%m-%d"
+                            dates = [pd.Timestamp(idx).strftime(date_fmt) for idx in clean_df.index]
+                            self.last_batch_ohlcv[sym] = {
+                                "dates": dates,
+                                "opens": opens,
+                                "highs": highs,
+                                "lows": lows,
+                                "closes": closes,
+                                "volumes": volumes,
+                            }
+                        except Exception:
+                            pass
                     except Exception as e:
                         logger.debug(f"Could not parse ticker {sym} from batch: {e}")
             except Exception as e:
@@ -178,19 +196,45 @@ class YFinanceFetcher:
             if not result:
                 return None
             quotes = result[0].get("indicators", {}).get("quote", [{}])[0]
+            timestamps_raw = result[0].get("timestamp", [])
+            opens_raw = quotes.get("open", [])
             highs_raw = quotes.get("high", [])
             lows_raw = quotes.get("low", [])
             closes_raw = quotes.get("close", [])
+            vols_raw = quotes.get("volume", [])
 
             # Filter valid points
-            valid = [(h, l, c) for h, l, c in zip(highs_raw, lows_raw, closes_raw) if h is not None and l is not None and c is not None]
+            valid = []
+            for idx_pt, (h, l, c) in enumerate(zip(highs_raw, lows_raw, closes_raw)):
+                if h is not None and l is not None and c is not None:
+                    o = opens_raw[idx_pt] if idx_pt < len(opens_raw) and opens_raw[idx_pt] is not None else c
+                    v = vols_raw[idx_pt] if idx_pt < len(vols_raw) and vols_raw[idx_pt] is not None else 0.0
+                    ts = timestamps_raw[idx_pt] if idx_pt < len(timestamps_raw) else None
+                    valid.append((ts, o, h, l, c, v))
             if len(valid) < 30:
                 return None
 
-            highs = np.array([v[0] for v in valid], dtype=np.float64)
-            lows = np.array([v[1] for v in valid], dtype=np.float64)
-            closes = np.array([v[2] for v in valid], dtype=np.float64)
+            highs = np.array([v[2] for v in valid], dtype=np.float64)
+            lows = np.array([v[3] for v in valid], dtype=np.float64)
+            closes = np.array([v[4] for v in valid], dtype=np.float64)
             latest_price = float(closes[-1])
+            try:
+                from datetime import datetime, timezone
+                date_fmt = "%Y-%m-%d %H:%M" if timeframe == "4H" else "%Y-%m-%d"
+                dates = [
+                    datetime.fromtimestamp(v[0], tz=timezone.utc).strftime(date_fmt) if v[0] else ""
+                    for v in valid
+                ]
+                self.last_batch_ohlcv[ticker] = {
+                    "dates": dates if all(dates) else None,
+                    "opens": np.array([v[1] for v in valid], dtype=np.float64),
+                    "highs": highs,
+                    "lows": lows,
+                    "closes": closes,
+                    "volumes": np.array([v[5] for v in valid], dtype=np.float64),
+                }
+            except Exception:
+                pass
             return highs, lows, closes, latest_price
         except Exception as e:
             logger.debug(f"Direct chart API fetch failed for {ticker}: {e}")

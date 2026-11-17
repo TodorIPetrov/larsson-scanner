@@ -273,9 +273,20 @@ def analyze_smart_money(
 def compute_sector_smart_money_flow() -> List[Dict]:
     """
     Computes 20D Smart Money Flow across the 13 major US sector ETFs.
+    Automatically refreshes stale ETF caches so sector flows stay current.
     Returns list sorted by Chaikin Money Flow (highest accumulation first).
     """
+    from datetime import datetime, timezone
     results = []
+    weekday = datetime.now(timezone.utc).weekday()  # 0=Mon, 5=Sat, 6=Sun
+    max_stale = 3 if weekday in (0, 5, 6) else 1
+
+    dm = None
+    try:
+        from src.backtest.data_manager import BacktestDataManager
+        dm = BacktestDataManager()
+    except Exception:
+        dm = None
 
     for etf_sym, etf_name in SECTOR_ETFS.items():
         cache_f = os.path.join(CACHE_DIR, f"{etf_sym}_1D.csv")
@@ -285,13 +296,11 @@ def compute_sector_smart_money_flow() -> List[Dict]:
         daily_flow_b = 0.5
         last_price = 0.0
 
-        if not os.path.exists(cache_f):
+        if dm is not None:
             try:
-                from src.backtest.data_manager import BacktestDataManager
-                dm = BacktestDataManager()
-                dm.get_symbol_data(etf_sym, asset_class="indices", force_refresh=True)
+                dm.get_symbol_data(etf_sym, asset_class="indices", max_stale_days=max_stale)
             except Exception as e:
-                logger.debug(f"Could not fetch ETF data for {etf_sym}: {e}")
+                logger.debug(f"Could not fetch/refresh ETF data for {etf_sym}: {e}")
 
         if os.path.exists(cache_f):
             try:

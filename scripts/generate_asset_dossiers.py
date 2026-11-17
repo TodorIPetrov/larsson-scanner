@@ -431,19 +431,47 @@ def simulate_strategy_full(
     }
 
 
-def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_item: dict) -> Optional[dict]:
+def generate_single_asset_dossier(
+    ticker: str,
+    optimal_profile: dict,
+    verdict_item: dict,
+    dm=None,
+    asset_class: str = "us_stocks",
+    auto_fetch_if_missing: bool = False,
+    max_stale_days: Optional[int] = None,
+) -> Optional[dict]:
     csv_candidates = [
         os.path.join(CACHE_DIR, f"{ticker}_1D.csv"),
-        os.path.join(CACHE_DIR, f"{ticker.replace('=', '_')}_1D.csv"),
+        os.path.join(CACHE_DIR, f"{ticker.replace('=', '_').replace('/', '_').replace(':', '_')}_1D.csv"),
+        os.path.join(CACHE_DIR, f"{safe_ticker_filename(ticker)}_1D.csv"),
     ]
     csv_path = next((p for p in csv_candidates if os.path.exists(p)), None)
-    if not csv_path:
-        return None
 
-    try:
-        df = pd.read_csv(csv_path)
-    except Exception:
-        return None
+    df = None
+    if dm is not None and (max_stale_days is not None or (not csv_path and auto_fetch_if_missing)):
+        try:
+            df_live = dm.get_symbol_data(
+                ticker,
+                asset_class=asset_class,
+                timeframe="1D",
+                max_stale_days=max_stale_days,
+            )
+            if df_live is not None and not df_live.empty:
+                df = df_live.copy()
+        except Exception as e:
+            logger.debug(f"Dossier live/stale fetch skipped for {ticker}: {e}")
+
+    if df is None:
+        if not csv_path:
+            return None
+        try:
+            df = pd.read_csv(csv_path)
+        except Exception:
+            return None
+
+    df.columns = [str(c).lower() for c in df.columns]
+    if "date" not in df.columns and "timestamp" in df.columns:
+        df["date"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.strftime("%Y-%m-%d")
 
     if len(df) < 200:
         return None
@@ -571,17 +599,22 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
     if req_mos is None and (verdict_item.get("fair_value_base") or verdict_item.get("target_price") or verdict_item.get("fair_value")):
         req_mos = req_mos_default
 
+    from datetime import datetime as _dt, timezone as _tz
+    live_state = "GOLD" if states[-1] == 1 else ("BLUE" if states[-1] == -1 else "NEUTRAL")
+    generated_at = _dt.now(_tz.utc).isoformat()
+
     dossier = {
         "ticker": ticker,
         "name": verdict_item.get("name", ticker),
         "sector": verdict_item.get("sector", optimal_profile.get("sector", "Equities")),
-        "asset_class": optimal_profile.get("asset_class", "us_stocks"),
+        "asset_class": optimal_profile.get("asset_class", asset_class or "us_stocks"),
+        "generated_at": generated_at,
         "backtest_start_date": dates[start_idx] if len(dates) > start_idx else "2021-09-01",
         "backtest_end_date": dates[-1] if dates else "2026-10-30",
         "backtest_years": round((len(df) - start_idx) / 252.0, 1),
         "backtest_total_bars": len(df) - start_idx,
         "current_price": round(float(closes[-1]), 2),
-        "state": "GOLD" if states[-1] == 1 else ("BLUE" if states[-1] == -1 else "NEUTRAL"),
+        "state": live_state,
         "v1": round(float(v1[-1]), 2) if not np.isnan(v1[-1]) else None,
         "v2": round(float(v2[-1]), 2) if not np.isnan(v2[-1]) else None,
         "sma200": round(float(sma200[-1]), 2) if not np.isnan(sma200[-1]) else None,
@@ -631,6 +664,8 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
             "solvency_type": verdict_item.get("solvency_type"),
             "verdict": verdict_item.get("verdict", "FAIRLY VALUED"),
             "model_type": verdict_item.get("model_type"),
+            "latest_filing_date": verdict_item.get("latest_filing_date"),
+            "last_fundamental_update": verdict_item.get("last_fundamental_update"),
         },
         "candles": candles,
         "markers": markers,
@@ -642,17 +677,33 @@ def generate_single_asset_dossier(ticker: str, optimal_profile: dict, verdict_it
             df["low"],
             df["close"],
             df["volume"],
-            optimal_profile.get("ribbon_state", "UNKNOWN")
+            live_state,
         ),
     }
 
     return dossier
 
 
-def generate_dossiers_for_rotation_assets():
-    logger.info("Generating asset dossiers for Momentum Rotation Portfolio...")
+def _infer_dossier_asset_class(ticker: str, optimal_profile: dict) -> str:
+    cls = optimal_profile.get("asset_class")
+    if cls:
+        return cls
+    if ticker.endswith("USDT") or ticker.endswith("USD") and "-" in ticker:
+        return "crypto"
+    if "=F" in ticker:
+        return "commodities"
+    if ticker.startswith("^"):
+        return "indices"
+    if "." in ticker:
+        return "intl_stocks"
+    return "us_stocks"
 
-    # Load data.json to identify active rotation assets and fundamental profiles
+
+def generate_dossiers_for_rotation_assets():
+    logger.info("Generating asset dossiers for Momentum Rotation Portfolio & Watchlist...")
+    os.makedirs(DOSSIERS_DIR, exist_ok=True)
+
+    # Load data.json to identify active rotation assets, portfolios, watchlist, and fundamental profiles
     rotation_tickers = set()
     fundamental_profiles = {}
     if os.path.exists(DATA_JSON_PATH):
@@ -661,15 +712,47 @@ def generate_dossiers_for_rotation_assets():
                 d = json.load(f)
                 fundamental_profiles = d.get("fundamental_profiles", {})
                 rot = d.get("rotation_portfolio", {})
-                for k in ["top15", "reserve_bench", "fresh_flips", "pullback_entries", "quantamental_dips", "broken_leaders"]:
+                for k in ["top15", "reserve_bench", "fresh_flips", "pullback_entries", "quantamental_dips", "broken_leaders", "crypto_top", "equities_top", "commodities_top"]:
                     for item in rot.get(k, []):
                         if isinstance(item, dict) and "ticker" in item:
                             rotation_tickers.add(item["ticker"])
+                for key in ["watchlist", "pending_proposals"]:
+                    for item in d.get(key, []):
+                        if isinstance(item, dict) and item.get("ticker"):
+                            rotation_tickers.add(item["ticker"])
+                        elif isinstance(item, str) and item:
+                            rotation_tickers.add(item)
+                for pkey in ["portfolio", "real_portfolio", "paper_portfolio"]:
+                    pobj = d.get(pkey, {})
+                    if isinstance(pobj, dict):
+                        for item in pobj.get("positions", []):
+                            if isinstance(item, dict) and item.get("ticker"):
+                                rotation_tickers.add(item["ticker"])
         except Exception as e:
             logger.warning(f"Could not read rotation tickers from data.json: {e}")
 
-    # Also add standard mega caps if missing
-    core_watchlist = ["NVDA", "AAPL", "MSFT", "GOOGL", "2330.TW", "ALV.DE", "1513.TW", "2345.TW", "DECK", "0700.HK", "TSLA", "BTCUSDT", "ETHUSDT"]
+    # Also pull live REAL/PAPER/Suggestion positions directly from state.db
+    try:
+        from src.storage.database import Database
+        _db = Database()
+        for pos in (_db.get_real_positions() or []):
+            if pos.get("ticker"):
+                rotation_tickers.add(pos["ticker"])
+        for pos in (_db.get_paper_positions() or []):
+            if pos.get("ticker"):
+                rotation_tickers.add(pos["ticker"])
+        for sug in (_db.get_open_suggestions() or []):
+            if sug.get("ticker"):
+                rotation_tickers.add(sug["ticker"])
+    except Exception as e:
+        logger.debug(f"Could not read live DB positions for dossiers: {e}")
+
+    # Core global & EU watchlisted leaders
+    core_watchlist = [
+        "NVDA", "AAPL", "MSFT", "GOOGL", "ABEC.DE", "NVD.DE",
+        "2330.TW", "ALV.DE", "1513.TW", "2345.TW", "DECK", "0700.HK",
+        "TSLA", "BTCUSDT", "ETHUSDT",
+    ]
     for t in core_watchlist:
         rotation_tickers.add(t)
 
@@ -687,7 +770,7 @@ def generate_dossiers_for_rotation_assets():
                 except Exception:
                     pass
 
-    logger.info(f"Target rotation universe: {len(rotation_tickers)} assets.")
+    logger.info(f"Target dossier universe: {len(rotation_tickers)} assets.")
 
     # Load profiles and verdicts
     optimal_profiles = {}
@@ -702,17 +785,52 @@ def generate_dossiers_for_rotation_assets():
             for v in v_data.get("verdicts", []):
                 verdicts_map[v.get("ticker", "")] = v
 
+    dm = None
+    try:
+        from src.backtest.data_manager import BacktestDataManager
+        dm = BacktestDataManager()
+    except Exception as e:
+        logger.warning(f"BacktestDataManager unavailable during dossier generation: {e}")
+
     generated = 0
+    import time as _time
     for ticker in sorted(rotation_tickers):
-        prof = optimal_profiles.get(ticker, {})
-        verd = verdicts_map.get(ticker) or fundamental_profiles.get(ticker, {})
-        dossier = generate_single_asset_dossier(ticker, prof, verd)
-        if dossier:
-            out_fn = f"{safe_ticker_filename(ticker)}.json"
-            out_path = os.path.join(DOSSIERS_DIR, out_fn)
-            with open(out_path, "w", encoding="utf-8") as f:
-                json.dump(dossier, f, indent=2, ensure_ascii=False)
-            generated += 1
+        try:
+            prof = optimal_profiles.get(ticker, {})
+            verd = verdicts_map.get(ticker) or fundamental_profiles.get(ticker, {})
+            asset_cls = _infer_dossier_asset_class(ticker, prof)
+            dossier = generate_single_asset_dossier(
+                ticker,
+                prof,
+                verd,
+                dm=dm,
+                asset_class=asset_cls,
+                auto_fetch_if_missing=True,
+                max_stale_days=1,
+            )
+            if dossier:
+                out_fn = f"{safe_ticker_filename(ticker)}.json"
+                out_path = os.path.join(DOSSIERS_DIR, out_fn)
+                tmp_path = f"{out_path}.tmp.{os.getpid()}"
+                with open(tmp_path, "w", encoding="utf-8") as f:
+                    json.dump(dossier, f, indent=2, ensure_ascii=False)
+                for attempt in range(5):
+                    try:
+                        os.replace(tmp_path, out_path)
+                        break
+                    except PermissionError:
+                        if attempt == 4:
+                            with open(out_path, "w", encoding="utf-8") as f:
+                                json.dump(dossier, f, indent=2, ensure_ascii=False)
+                            try:
+                                os.remove(tmp_path)
+                            except Exception:
+                                pass
+                        else:
+                            _time.sleep(0.05 * (attempt + 1))
+                generated += 1
+        except Exception as ticker_err:
+            logger.warning(f"Skipping dossier error for {ticker}: {ticker_err}")
 
     logger.info(f"Successfully generated {generated} asset dossier files in {DOSSIERS_DIR}.")
 

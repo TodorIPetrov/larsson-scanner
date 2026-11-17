@@ -5,7 +5,7 @@
  * - Offline fallback with cached data and status signaling
  */
 
-const CACHE_NAME = 'larsson-v19';
+const CACHE_NAME = 'larsson-v20';
 const STATIC_ASSETS = [
   './',
   'index.html',
@@ -75,12 +75,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Dynamic endpoints: /data.json, /data/ or /api/
-  // Application scripts and styles: Network-first to always deliver the newest code
-  const isCodeAsset = url.pathname.endsWith('app.js') || url.pathname.endsWith('style.css');
+  // Dynamic endpoints: /data.json, /data/, /dossiers/, fundamental_verdicts.json or /api/
+  // Application scripts, modules and styles: Network-first to always deliver the newest code
+  const isCodeAsset = url.pathname.endsWith('app.js') || url.pathname.endsWith('style.css') || url.pathname.endsWith('index.html') || url.pathname.includes('/modules/');
   if (isCodeAsset) {
     event.respondWith(
-      fetch(req)
+      fetch(req, { cache: 'no-cache' })
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const responseClone = networkResponse.clone();
@@ -88,16 +88,22 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         })
-        .catch(() => caches.match(req))
+        .catch(() => caches.match(req, { ignoreSearch: true }))
     );
     return;
   }
 
-  const isDataRequest = url.pathname.endsWith('data.json') || url.pathname.includes('/data/') || url.pathname.includes('/api/');
+  const isDataRequest = (
+    url.pathname.endsWith('data.json') ||
+    url.pathname.endsWith('fundamental_verdicts.json') ||
+    url.pathname.includes('/data/') ||
+    url.pathname.includes('/dossiers/') ||
+    url.pathname.includes('/api/')
+  );
 
   if (isDataRequest) {
     event.respondWith(
-      fetch(req)
+      fetch(req, { cache: 'no-store' })
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const responseClone = networkResponse.clone();

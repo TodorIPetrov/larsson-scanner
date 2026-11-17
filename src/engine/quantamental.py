@@ -62,6 +62,7 @@ class FundamentalProfile:
     production_cost: Optional[float] = None
     mvrv_ratio: Optional[float] = None
     latest_filing_date: Optional[str] = None
+    last_fundamental_update: Optional[str] = None
 
     def to_dict(self) -> dict:
         d = asdict(self)
@@ -506,6 +507,7 @@ class QuantamentalRegistry:
 
     def __init__(self, verdicts_path: Optional[str] = None):
         self.profiles: Dict[str, FundamentalProfile] = {}
+        self._verdicts_mtime: Optional[float] = None
         if not verdicts_path:
             v_dashboard = os.path.join(
                 os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -523,14 +525,28 @@ class QuantamentalRegistry:
 
         self.load_profiles()
 
+    def _reload_if_stale(self) -> None:
+        """Automatically reloads profiles if verdicts_path was updated on disk."""
+        if not self.verdicts_path or not os.path.exists(self.verdicts_path):
+            return
+        try:
+            curr_mtime = os.path.getmtime(self.verdicts_path)
+            if self._verdicts_mtime is None or curr_mtime != self._verdicts_mtime:
+                self.load_profiles()
+        except Exception:
+            pass
+
     @classmethod
     def get_instance(cls, verdicts_path: Optional[str] = None) -> "QuantamentalRegistry":
         if cls._instance is None:
             cls._instance = cls(verdicts_path)
+        else:
+            cls._instance._reload_if_stale()
         return cls._instance
 
     def load_profiles(self) -> int:
         """Loads multi-asset research profiles and merges with dynamic verdicts.json."""
+        self.profiles = {}
         count = 0
         # 1. Load pure multi-asset profiles (Crypto, Commodities, Macro)
         for ticker, data in _MULTI_ASSET_PROFILES.items():
@@ -642,10 +658,15 @@ class QuantamentalRegistry:
                         action=item.get("action"),
                         solvency_type=item.get("solvency_type"),
                         latest_filing_date=item.get("latest_filing_date"),
+                        last_fundamental_update=item.get("last_fundamental_update"),
                     )
                     self.profiles[ticker.upper()] = profile
                     count += 1
 
+                try:
+                    self._verdicts_mtime = os.path.getmtime(self.verdicts_path)
+                except Exception:
+                    pass
                 logger.info(f"Loaded {len(self.profiles)} fundamental profiles (including {len(data.get('verdicts', []))} equities).")
             except Exception as e:
                 logger.error(f"Failed to load fundamental verdicts from {self.verdicts_path}: {e}")
@@ -664,6 +685,7 @@ class QuantamentalRegistry:
         if not ticker:
             return None
 
+        self._reload_if_stale()
         clean_ticker = ticker.split(":")[-1].strip().upper()
         prof = self.profiles.get(clean_ticker) or self.profiles.get(ticker.strip().upper())
         if prof is None:

@@ -23,6 +23,7 @@ class BinanceFetcher:
     def __init__(self, base_url: str = BINANCE_BASE_URL, timeout: int = 10):
         self.base_url = base_url
         self.timeout = timeout
+        self.last_klines_ohlcv: Dict[str, dict] = {}
         self.session = requests.Session()
         self.session.headers.update({
             "User-Agent": "LarssonLineScanner/1.0",
@@ -118,6 +119,22 @@ class BinanceFetcher:
                 pass
 
             latest_price = closes[-1]
+            try:
+                from datetime import datetime, timezone
+                date_fmt = "%Y-%m-%d %H:%M" if timeframe == "4H" else "%Y-%m-%d"
+                dates = [datetime.fromtimestamp(int(k[0]) / 1000.0, tz=timezone.utc).strftime(date_fmt) for k in raw_klines]
+                opens = np.array([float(k[1]) for k in raw_klines], dtype=np.float64)
+                volumes = np.array([float(k[5]) for k in raw_klines], dtype=np.float64)
+                self.last_klines_ohlcv[symbol] = {
+                    "dates": dates,
+                    "opens": opens,
+                    "highs": highs,
+                    "lows": lows,
+                    "closes": closes,
+                    "volumes": volumes,
+                }
+            except Exception:
+                pass
             return highs, lows, closes, latest_price
         except Exception as e:
             logger.error(f"Error fetching klines for {symbol} [{timeframe}]: {e}")

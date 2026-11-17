@@ -407,7 +407,7 @@ async function checkServerStatus() {
       // If server was scanning and just finished, reload dashboard data automatically!
       if (window._wasScanning && !serverHealth.isScanning) {
         window._wasScanning = false;
-        loadDashboardData();
+        loadDashboardData({ force: true, forceFundamentals: true, userTriggered: true });
       }
       if (serverHealth.isScanning) {
         window._wasScanning = true;
@@ -698,15 +698,157 @@ function renderTradeSuggestionCell(ts, item) {
   return renderSynthesisCell(item ? item.synthesis : null, ts, item);
 }
 
-async function loadDashboardData() {
+function refreshLivePriceViews() {
+  renderAllViews();
+  if (window.dashboardData) {
+    renderOverview(window.dashboardData);
+  }
+  if (currentPortfolioMode && currentPortfolioMode !== 'ROTATION' && currentTab === 'portfolio') {
+    renderPortfolioView();
+  }
+  if (liveTicker) {
+    const liveItem = allSymbols.find(s => s.ticker === liveTicker && s.timeframe === liveTf) ||
+                     allSymbols.find(s => s.ticker === liveTicker) || {};
+    updateLiveChartHud(liveItem, liveTicker, liveTf, liveClass);
+    if (liveActiveChart && liveActiveChart._candleSeries && liveActiveChart._lastCandle && !liveActiveChart._isRatio && liveItem.price) {
+      try {
+        const lastBar = Object.assign({}, liveActiveChart._lastCandle);
+        const p = Number(liveItem.price);
+        if (p > 0) {
+          lastBar.close = p;
+          if (p > lastBar.high) lastBar.high = p;
+          if (p < lastBar.low) lastBar.low = p;
+          liveActiveChart._lastCandle = lastBar;
+          liveActiveChart._candleSeries.update(lastBar);
+        }
+      } catch (e) {}
+    }
+  }
+  const modal = document.getElementById('chartModal');
+  if (modal && modal.style.display === 'flex' && activeTicker) {
+    const modalItem = allSymbols.find(s => s.ticker === activeTicker && s.timeframe === activeTf) ||
+                      allSymbols.find(s => s.ticker === activeTicker);
+    if (modalItem && modalItem.price) {
+      const mpEl = document.getElementById('modalPrice');
+      const p = Number(modalItem.price);
+      if (mpEl && p > 0) {
+        const sym = ((activeTicker || '').match(/\.(DE|PA|MI|AS|MC|VI|BR)$/i)) ? '€' : '$';
+        mpEl.textContent = p >= 1000
+          ? `${sym}${p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `${sym}${p.toFixed(p >= 1 ? 2 : 5)}`;
+      }
+      if (activeChart && activeChart._candleSeries && activeChart._lastCandle && !activeChart._isRatio) {
+        try {
+          const mBar = Object.assign({}, activeChart._lastCandle);
+          mBar.close = p;
+          if (p > mBar.high) mBar.high = p;
+          if (p < mBar.low) mBar.low = p;
+          activeChart._lastCandle = mBar;
+          activeChart._candleSeries.update(mBar);
+        } catch (e) {}
+      }
+    }
+  }
+}
+
+async function refreshAllAppSystems(data, opts = {}) {
+  const { isInitial = false, versionChanged = true, forceFundamentals = false } = opts;
+
+  renderOverview(data);
+  renderCioDashboard(data);
+  renderQueueView();
+  renderProposalsBanner(pendingProposals);
+
+  if (isInitial) {
+    initPortfolioController();
+    switchPortfolioMode(currentPortfolioMode);
+    initPageCalculator();
+    switchTab(currentTab, false);
+  } else {
+    if (currentPortfolioMode === 'ROTATION') {
+      renderRotationPortfolio();
+    } else {
+      renderPortfolioView();
+    }
+    if (typeof calculatePageTrade === 'function') {
+      const activeEl = document.activeElement;
+      if (!activeEl || !activeEl.closest('#tabContentCalculator')) {
+        try { calculatePageTrade(); } catch (e) {}
+      }
+    }
+  }
+
+  if (typeof renderIdeasView === 'function') {
+    renderIdeasView();
+  }
+  if ((versionChanged || currentTab === 'ai-map') && typeof renderAiCompanyMapView === 'function') {
+    try { renderAiCompanyMapView(); } catch (e) {}
+  }
+
+  renderAllViews();
+
+  if (isInitial) {
+    initLiveChart();
+  } else {
+    const liveItem = allSymbols.find(s => s.ticker === liveTicker && s.timeframe === liveTf) ||
+                     allSymbols.find(s => s.ticker === liveTicker) || {};
+    updateLiveChartHud(liveItem, liveTicker, liveTf, liveClass);
+    updateActiveRowHighlight();
+    if (versionChanged && liveTicker) {
+      selectLiveAsset(liveTicker, liveTf, liveClass);
+    }
+  }
+
+  // Refresh open chart modal if data changed
+  const chartModal = document.getElementById('chartModal');
+  if (!isInitial && chartModal && chartModal.style.display === 'flex' && activeTicker) {
+    const mItem = allSymbols.find(s => s.ticker === activeTicker && s.timeframe === activeTf) ||
+                  allSymbols.find(s => s.ticker === activeTicker) || {};
+    if (mItem.price) {
+      updateModalTradeSuggestionStrip(mItem.trade_suggestion, mItem);
+    }
+    if (versionChanged) {
+      const mContainer = document.getElementById('modalChartContainer');
+      if (mContainer) {
+        loadChart(mContainer, activeTicker, activeTf, activeClass, mContainer.clientHeight || 480, modalRatioMode)
+          .then(c => { activeChart = c; })
+          .catch(() => {});
+      }
+    }
+  }
+
+  // Refresh Fundamental Screener & active Fundamental Dossier when new data/filings arrive
+  if ((isInitial || versionChanged || forceFundamentals) && typeof initFundamentalScreener === 'function') {
+    await initFundamentalScreener(true);
+    if (currentTab === 'fundamentals' && currentFundTicker && typeof renderFundamentalDossier === 'function') {
+      renderFundamentalDossier(currentFundTicker);
+    }
+  } else if (currentTab === 'fundamentals' && currentFundTicker && typeof renderFundamentalDossier === 'function') {
+    renderFundamentalDossier(currentFundTicker);
+  }
+
+  // Refresh open Proposal Dossier silently without jarring scroll or duplicate history entry
+  if (!isInitial && versionChanged && currentTab === 'proposal-dossier' && currentDossierTicker && typeof openProposalDossier === 'function') {
+    openProposalDossier(currentDossierTicker, currentDossierContext, { silent: true });
+  }
+}
+
+async function loadDashboardData(options = {}) {
+  if (isDataLoading && !options.force) return;
   let data;
   isDataLoading = true;
   try {
-    const res = await fetch('data.json?t=' + new Date().getTime());
+    const res = await fetch('data.json?t=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) {
       throw new Error(`Failed to load data.json: ${res.statusText}`);
     }
     data = await res.json();
+    const isInitial = !window._initialDashboardLoaded;
+    const newVersion = `${data.generated_at || ''}::${data.summary?.total || 0}::${(data.pending_proposals || []).length}::${(data.symbols || []).length}`;
+    const versionChanged = isInitial || (window._lastDashboardVersion !== newVersion);
+    window._initialDashboardLoaded = true;
+    window._lastDashboardVersion = newVersion;
+
     window.lastLoadedDashboardData = data;
     window.dashboardData = data;
     window.rotationPortfolio = data.rotation_portfolio;
@@ -725,19 +867,18 @@ async function loadDashboardData() {
     syncLocalRealStorage();
     if (typeof loadTradeIdeas === 'function') {
       loadTradeIdeas(data.watchlist);
-      renderIdeasView();
     }
 
-    renderOverview(data);
-    renderCioDashboard(data);
-    renderQueueView();
-    renderProposalsBanner(pendingProposals);
-    initPortfolioController();
-    switchPortfolioMode(currentPortfolioMode);
-    renderRotationPortfolio();
-    initPageCalculator();
-    switchTab(currentTab);
-    checkServerStatus();
+    await refreshAllAppSystems(data, {
+      isInitial,
+      versionChanged,
+      forceFundamentals: Boolean(options.forceFundamentals),
+      userTriggered: Boolean(options.userTriggered),
+    });
+
+    if (isInitial || options.userTriggered) {
+      checkServerStatus();
+    }
   } catch (err) {
     isDataLoading = false;
     console.error('Error loading data.json:', err);
@@ -760,20 +901,17 @@ async function loadDashboardData() {
   }
 
   try {
-    renderAllViews();
-    initLiveChart();
-
-    // Initialize or refresh browser live stream engine
+    // Initialize or update browser live stream engine
     try {
       if (!window._marketLiveStream) {
         import('./modules/live_stream.js').then(module => {
           window._marketLiveStream = new module.LiveMarketStream({
             onPriceUpdate: () => {
-              // Throttled render on live price changes
+              // Throttled atomic refresh of visible prices, HUD, open portfolio & live candles
               if (!window._liveRenderTimer) {
                 window._liveRenderTimer = setTimeout(() => {
                   window._liveRenderTimer = null;
-                  renderAllViews();
+                  refreshLivePriceViews();
                 }, 1000);
               }
             }
@@ -787,13 +925,16 @@ async function loadDashboardData() {
 
   } catch (renderErr) {
     console.error('Error rendering dashboard views:', renderErr);
-    document.getElementById('assetsTableBody').innerHTML = `
-      <tr>
-        <td colspan="14" class="loading-state" style="color: #ef4444;">
-          ⚠️ Rendering error: ${renderErr.message}
-        </td>
-      </tr>
-    `;
+    const tbody = document.getElementById('assetsTableBody');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="14" class="loading-state" style="color: #ef4444;">
+            ⚠️ Rendering error: ${renderErr.message}
+          </td>
+        </tr>
+      `;
+    }
   }
 }
 
@@ -1322,18 +1463,21 @@ function renderCioDashboard(data) {
   }
 
   // Row 1: Global
-  const gGold = rb.global_gold_pct || (data.summary ? data.summary.bullish_pct : 32);
-  const gBlue = rb.global_blue_pct || (data.summary ? data.summary.bearish_pct : 27);
-  const gNeut = rb.global_neutral_pct || (data.summary ? data.summary.neutral_pct : 41);
-  updateStackedBar('cioBarGlobalGold', 'cioBarGlobalNeutral', 'cioBarGlobalBlue', 'cioGlobalRatioText', 'cioGlobalDelta', gGold, gNeut, gBlue, rb.delta_7d_gold_pct || -4.0);
+  const gGold = rb.global_gold_pct !== undefined ? rb.global_gold_pct : (data.summary ? data.summary.bullish_pct : 32);
+  const gBlue = rb.global_blue_pct !== undefined ? rb.global_blue_pct : (data.summary ? data.summary.bearish_pct : 27);
+  const gNeut = rb.global_neutral_pct !== undefined ? rb.global_neutral_pct : (data.summary ? data.summary.neutral_pct : 41);
+  updateStackedBar('cioBarGlobalGold', 'cioBarGlobalNeutral', 'cioBarGlobalBlue', 'cioGlobalRatioText', 'cioGlobalDelta', gGold, gNeut, gBlue, rb.delta_7d_gold_pct !== undefined ? rb.delta_7d_gold_pct : null);
 
   // Sector Bars
   const sectors = rb.sectors || {};
   const cryptoSec = sectors['Crypto'] || { gold_pct: 20, neutral_pct: 50, blue_pct: 30 };
   const eqSec = sectors['US Equities'] || sectors['AI & Tech'] || { gold_pct: 40, neutral_pct: 40, blue_pct: 20 };
 
-  updateStackedBar('cioBarCryptoGold', 'cioBarCryptoNeutral', 'cioBarCryptoBlue', 'cioCryptoRatioText', 'cioCryptoDelta', cryptoSec.gold_pct, cryptoSec.neutral_pct, cryptoSec.blue_pct, -9.0);
-  updateStackedBar('cioBarEquitiesGold', 'cioBarEquitiesNeutral', 'cioBarEquitiesBlue', 'cioEquitiesRatioText', 'cioEquitiesDelta', eqSec.gold_pct, eqSec.neutral_pct, eqSec.blue_pct, 2.0);
+  const cryptoDelta = rb.delta_7d_crypto_pct !== undefined ? rb.delta_7d_crypto_pct : (cryptoSec.delta_7d_pct !== undefined ? cryptoSec.delta_7d_pct : null);
+  const eqDelta = rb.delta_7d_equities_pct !== undefined ? rb.delta_7d_equities_pct : (eqSec.delta_7d_pct !== undefined ? eqSec.delta_7d_pct : null);
+
+  updateStackedBar('cioBarCryptoGold', 'cioBarCryptoNeutral', 'cioBarCryptoBlue', 'cioCryptoRatioText', 'cioCryptoDelta', cryptoSec.gold_pct, cryptoSec.neutral_pct, cryptoSec.blue_pct, cryptoDelta);
+  updateStackedBar('cioBarEquitiesGold', 'cioBarEquitiesNeutral', 'cioBarEquitiesBlue', 'cioEquitiesRatioText', 'cioEquitiesDelta', eqSec.gold_pct, eqSec.neutral_pct, eqSec.blue_pct, eqDelta);
 
   // 3. CIO Component B: Risk Budget Gauge
   const heatValEl = document.getElementById('cioHeatValue');
@@ -1341,8 +1485,9 @@ function renderCioDashboard(data) {
   const rkDepEl = document.getElementById('cioRiskBudgetDeployable');
   const rkFillEl = document.getElementById('cioRiskFill');
   const lockdownBanner = document.getElementById('cioLockdownBanner');
+  const clusterBadgesEl = document.getElementById('cioClusterRiskBadges');
 
-  const openRisk = rk.current_open_risk_pct !== undefined ? rk.current_open_risk_pct : 1.2;
+  const openRisk = rk.current_open_risk_pct !== undefined ? rk.current_open_risk_pct : 0.0;
   const maxPortRisk = rk.max_portfolio_risk_pct || 6.0;
   const effCap = rk.effective_cap_pct !== undefined ? rk.effective_cap_pct : 3.0;
 
@@ -1352,6 +1497,17 @@ function renderCioDashboard(data) {
   if (rkFillEl) {
     const fillWidth = Math.min(100, Math.round((openRisk / maxPortRisk) * 100));
     rkFillEl.style.width = `${fillWidth}%`;
+  }
+  if (clusterBadgesEl && Array.isArray(rk.cluster_allocations)) {
+    if (rk.cluster_allocations.length > 0) {
+      clusterBadgesEl.innerHTML = rk.cluster_allocations.map(ca => {
+        const cName = ca.cluster || ca.cluster_id || 'OTHER';
+        const cHeat = ca.open_risk_pct !== undefined ? ca.open_risk_pct : (ca.heat_pct || 0);
+        return `<span class="cio-cluster-chip">${escapeHtml(cName)}: ${cHeat}% | Cap ${ca.cap_pct}%</span>`;
+      }).join('');
+    } else {
+      clusterBadgesEl.innerHTML = `<span class="cio-cluster-chip">0.0% Active Heat | Max Cap ${effCap}%</span>`;
+    }
   }
   if (lockdownBanner) {
     lockdownBanner.style.display = rk.is_lockdown ? 'block' : 'none';
@@ -1407,16 +1563,29 @@ function renderCioDashboard(data) {
   const accExpRetEl = document.getElementById('cioAccExpRet');
   const killSwitchBanner = document.getElementById('cioKillSwitchBanner');
 
-  if (accTradesEl) accTradesEl.textContent = ltr.closed_trades !== undefined ? ltr.closed_trades : 12;
-  if (accLiveRetEl) accLiveRetEl.textContent = `+${ltr.live_return_pct || 2.1}%`;
-  if (accExpRetEl) accExpRetEl.textContent = `+${ltr.backtest_expected_return_pct || 3.4}%`;
+  if (accTradesEl) accTradesEl.textContent = ltr.closed_trades !== undefined ? ltr.closed_trades : 0;
+  if (accLiveRetEl) {
+    const lr = ltr.live_return_pct !== undefined ? ltr.live_return_pct : 0;
+    accLiveRetEl.textContent = `${lr >= 0 ? '+' : ''}${lr}%`;
+  }
+  if (accExpRetEl) {
+    const er = ltr.backtest_expected_return_pct !== undefined ? ltr.backtest_expected_return_pct : 0;
+    accExpRetEl.textContent = `${er >= 0 ? '+' : ''}${er}%`;
+  }
   if (killSwitchBanner) {
     killSwitchBanner.style.display = ltr.kill_switch_required ? 'block' : 'none';
+  }
+
+  // Refresh open expectancy drawer dynamically if currently visible
+  const openDrawer = document.getElementById('cioExpectancyDrawer');
+  if (openDrawer && openDrawer.style.display === 'flex' && window._activeExpectancyClusterId) {
+    openExpectancyDrawer(window._activeExpectancyClusterId);
   }
 }
 window.renderCioDashboard = renderCioDashboard;
 
 function openExpectancyDrawer(clusterId) {
+  window._activeExpectancyClusterId = clusterId;
   const drawer = document.getElementById('cioExpectancyDrawer');
   if (!drawer) return;
 
@@ -2270,6 +2439,9 @@ function renderLightweightChart(container, candles, item, height = 480, isRatio 
   }
 
   chart.timeScale().fitContent();
+  chart._candleSeries = candleSeries;
+  chart._lastCandle = candles[candles.length - 1];
+  chart._isRatio = isRatio;
   return chart;
 }
 
@@ -2279,6 +2451,7 @@ async function loadChart(container, ticker, timeframe, assetClass, height = 500,
   const isCrypto = assetClass === 'crypto' || (ticker && ticker.endsWith('USDT'));
   const isCryptoStock = assetClass === 'crypto_stocks';
   const isBtcSelf = ticker === 'BTCUSDT' || ticker === 'BTC-USD' || ticker === 'BTC';
+  const safeTicker = (ticker || '').replace(/\//g, '_').replace(/\^/g, '_').replace(/:/g, '_');
 
   let chartInstance = null;
   let candles = [];
@@ -2321,26 +2494,74 @@ async function loadChart(container, ticker, timeframe, assetClass, height = 500,
     }
   }
 
-  // Standard USD Mode:
+  // Standard USD / Local Currency Mode:
   const tvSym = getTvSymbol(item, ticker, assetClass);
-  if (isCrypto && window.LightweightCharts) {
-    const binanceInterval = (timeframe || '1D').toLowerCase();
-    try {
-      const url = `https://api.binance.com/api/v3/klines?symbol=${ticker}&interval=${binanceInterval}&limit=180`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const raw = await res.json();
-        candles = raw.map(k => ({
-          time: Math.floor(k[0] / 1000),
-          open: parseFloat(k[1]),
-          high: parseFloat(k[2]),
-          low: parseFloat(k[3]),
-          close: parseFloat(k[4]),
-          volume: parseFloat(k[5]),
-        }));
+  if (window.LightweightCharts) {
+    if (isCrypto) {
+      const binanceInterval = (timeframe || '1D').toLowerCase();
+      try {
+        const url = `https://api.binance.com/api/v3/klines?symbol=${ticker}&interval=${binanceInterval}&limit=250`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const raw = await res.json();
+          candles = raw.map(k => ({
+            time: Math.floor(k[0] / 1000),
+            open: parseFloat(k[1]),
+            high: parseFloat(k[2]),
+            low: parseFloat(k[3]),
+            close: parseFloat(k[4]),
+            volume: parseFloat(k[5]),
+          }));
+        }
+      } catch (e) {
+        console.warn(`Binance klines fetch failed for ${ticker}:`, e);
       }
-    } catch (e) {
-      console.warn(`Binance klines fetch failed for ${ticker}:`, e);
+    }
+
+    // For Equities / Indices / Commodities (or Binance fallback): try live /api/candles first, then static dossier 1D candles
+    if (candles.length <= 30 && !window._candlesApiUnavailable && window.location.protocol !== 'file:') {
+      try {
+        const apiRes = await fetch(
+          `/api/candles?ticker=${encodeURIComponent(ticker)}&timeframe=${encodeURIComponent(timeframe || '1D')}&t=${Date.now()}`,
+          { cache: 'no-store' }
+        );
+        if (apiRes.status === 404 || apiRes.status === 405) {
+          if (apiRes.status === 405) window._candlesApiUnavailable = true;
+          const ct = apiRes.headers.get('content-type') || '';
+          if (!ct.includes('application/json')) window._candlesApiUnavailable = true;
+        } else if (apiRes.ok) {
+          const payload = await apiRes.json();
+          if (payload.success && Array.isArray(payload.candles) && payload.candles.length > 30) {
+            candles = payload.candles.map(c => ({
+              time: c.time,
+              open: Number(c.open),
+              high: Number(c.high),
+              low: Number(c.low),
+              close: Number(c.close),
+            }));
+          }
+        }
+      } catch (e) {
+        console.debug(`/api/candles skipped for ${ticker}:`, e);
+      }
+    }
+
+    if (candles.length <= 30 && (timeframe || '1D').toUpperCase() === '1D' && safeTicker) {
+      try {
+        const dosRes = await fetch(`data/dossiers/${safeTicker}.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (dosRes.ok) {
+          const dJson = await dosRes.json();
+          if (Array.isArray(dJson.candles) && dJson.candles.length > 30) {
+            candles = dJson.candles.slice(-280).map(c => ({
+              time: c.time,
+              open: Number(c.open),
+              high: Number(c.high),
+              low: Number(c.low),
+              close: Number(c.close),
+            }));
+          }
+        }
+      } catch (e) {}
     }
   }
 
@@ -2533,6 +2754,9 @@ function initLiveChart() {
     }
     selectLiveAsset(liveTicker, liveTf, liveClass);
   } else {
+    const item = allSymbols.find(s => s.ticker === liveTicker && s.timeframe === liveTf) ||
+                 allSymbols.find(s => s.ticker === liveTicker) || {};
+    updateLiveChartHud(item, liveTicker, liveTf, liveClass);
     updateActiveRowHighlight();
   }
 }
@@ -3511,11 +3735,27 @@ document.querySelectorAll('#riskPresets .risk-btn').forEach(btn => {
 });
 
 document.getElementById('refreshBtn').addEventListener('click', () => {
-  loadDashboardData();
+  loadDashboardData({ force: true, forceFundamentals: true, userTriggered: true });
 });
 
-// Auto-refresh every 60 seconds
-setInterval(loadDashboardData, 60000);
+// Auto-refresh every 60 seconds + instant reactive check on tab focus
+setInterval(() => loadDashboardData({ background: true }), 60000);
+window.addEventListener('focus', () => {
+  const now = Date.now();
+  if (!window._lastFocusRefresh || now - window._lastFocusRefresh > 15000) {
+    window._lastFocusRefresh = now;
+    loadDashboardData({ background: true });
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    const now = Date.now();
+    if (!window._lastFocusRefresh || now - window._lastFocusRefresh > 15000) {
+      window._lastFocusRefresh = now;
+      loadDashboardData({ background: true });
+    }
+  }
+});
 
 // =============================================================================
 // MASTER TAB NAVIGATION & SPECIALIZED VIEWS
@@ -3573,11 +3813,15 @@ function switchTab(tabName, pushToHistory = true) {
 
   if (tabName === 'fundamentals') {
     if (typeof initFundamentalScreener === 'function') {
-      initFundamentalScreener();
+      initFundamentalScreener(false);
     }
     if (currentFundTicker) {
       renderFundamentalDossier(currentFundTicker);
     }
+  }
+
+  if (tabName === 'macro' && window.lastLoadedDashboardData && typeof renderCioDashboard === 'function') {
+    renderCioDashboard(window.lastLoadedDashboardData);
   }
 
   if (tabName === 'ideas') {
@@ -4854,12 +5098,12 @@ async function runNewTradeAnalysis() {
     }
 
     if (apiSuccess) {
-      await loadDashboardData();
+      await loadDashboardData({ force: true, forceFundamentals: true, userTriggered: true });
       showAnalysisToast(`✅ ${apiMsg}`, 'success', 5000);
     } else {
       // Reload freshest remote/local market data first so prices and indicators are 100% current
       try {
-        await loadDashboardData();
+        await loadDashboardData({ force: true, forceFundamentals: true, userTriggered: true });
       } catch (loadErr) {
         console.warn('Could not re-fetch data.json before synthesis, using currently loaded symbols:', loadErr);
       }
@@ -5403,7 +5647,7 @@ function renderPortfolioView() {
     }
     const uPct = margin > 0 ? (uPnl / margin * 100) : 0;
 
-    pos.current_value = notional;
+    pos.current_value = curP * units;
     pos.unrealized_pnl = uPnl;
     pos.unrealized_pnl_pct = uPct;
 
@@ -5497,6 +5741,8 @@ function renderPortfolioView() {
         const isShort = (dir === 'SHORT');
         const notional = p.position_size_usd || (p.entry_price * p.units);
         const margin = p.margin_usd || (notional / lev);
+        const symCode = (p.symbol || p.ticker || '').toUpperCase();
+        const curSym = (symCode.match(/\.(DE|PA|MI|AS|MC|VI|BR)$/) || p.currency === 'EUR') ? '€' : '$';
 
         let dirBadge = '';
         if (!isShort) {
@@ -5508,11 +5754,11 @@ function renderPortfolioView() {
           else dirBadge = `<span class="badge-dir-short-1x">🔴 1x HEDGE</span>`;
         }
 
-        const slText = p.stop_loss ? `$${formatShortPrice(p.stop_loss)}` : '<span style="color:var(--text-muted)">Няма</span>';
-        const tpText = p.tp1 ? `$${formatShortPrice(p.tp1)}` : '<span style="color:var(--text-muted)">Няма</span>';
+        const slText = p.stop_loss ? `${curSym}${formatShortPrice(p.stop_loss)}` : '<span style="color:var(--text-muted)">Няма</span>';
+        const tpText = p.tp1 ? `${curSym}${formatShortPrice(p.tp1)}` : '<span style="color:var(--text-muted)">Няма</span>';
         const liqP = p.liquidation_price || (lev > 1 ? (isShort ? p.entry_price * (1.0 + 1.0/lev - 0.005) : p.entry_price * (1.0 - 1.0/lev + 0.005)) : null);
         const liqDisplay = liqP 
-          ? `<div style="font-size:0.75rem; color:#f87171;">Liq: $${formatShortPrice(liqP)}</div>`
+          ? `<div style="font-size:0.75rem; color:#f87171;">Liq: ${curSym}${formatShortPrice(liqP)}</div>`
           : `<div style="font-size:0.7rem; color:#34d399;">🛡️ Без Liq</div>`;
 
         const actionBtns = isReal ? `
@@ -5552,14 +5798,14 @@ function renderPortfolioView() {
             <td>
               <span class="${brokerClass}">${broker}</span>
             </td>
-            <td><strong>$${formatShortPrice(p.entry_price)}</strong></td>
-            <td><strong>$${formatShortPrice(p.current_price)}</strong></td>
+            <td><strong>${curSym}${formatShortPrice(p.entry_price)}</strong></td>
+            <td><strong>${curSym}${formatShortPrice(p.current_price)}</strong></td>
             <td>
               <div>${unitsFormatted} бр.</div>
-              <small style="color: var(--text-muted);">Ноц: $${formatShortPrice(notional)}</small>
+              <small style="color: var(--text-muted);">Ноц: ${curSym}${formatShortPrice(p.current_value || notional)}</small>
             </td>
             <td>
-              <strong style="color: #60a5fa;">$${formatShortPrice(margin)}</strong>
+              <strong style="color: #60a5fa;">${curSym}${formatShortPrice(margin)}</strong>
               <div style="font-size: 0.7rem; color: var(--text-muted);">${(100 / lev).toFixed(0)}% Колатерал</div>
             </td>
             <td>
@@ -5568,7 +5814,7 @@ function renderPortfolioView() {
             </td>
             <td><strong style="color: #34d399;">${tpText}</strong></td>
             <td>
-              <strong style="color: ${uColor};">${uSign}$${(p.unrealized_pnl || 0).toFixed(2)}</strong>
+              <strong style="color: ${uColor};">${uSign}${curSym}${(p.unrealized_pnl || 0).toFixed(2)}</strong>
               <div style="font-size: 0.75rem; color: ${uColor};">(${uSign}${(p.unrealized_pnl_pct || 0).toFixed(2)}%)</div>
             </td>
             <td>${actionBtns}</td>
@@ -6554,10 +6800,15 @@ function renderFundamentalDossier(ticker) {
             <span class="fund-meta-chip">📁 Сектор: ${escapeHtml(prof.sector || 'Финансови пазари')}</span>
             <span class="fund-meta-chip">🏭 Индустрия: ${escapeHtml(prof.industry || 'Инфраструктура')}</span>
             <span class="fund-meta-chip">📐 Модел: ${escapeHtml(prof.model_type || 'Тристепенен DCF')}</span>
+            ${prof.latest_filing_date ? `<span class="fund-meta-chip">📄 Отчет: ${escapeHtml(String(prof.latest_filing_date))}</span>` : ''}
+            ${prof.last_fundamental_update ? `<span class="fund-meta-chip">🕒 Обновен: ${escapeHtml(String(prof.last_fundamental_update))}</span>` : ''}
           </div>
         </div>
       </div>
-      <div class="fund-header-right">
+      <div class="fund-header-right" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <button type="button" class="btn btn-sm btn-outline-info" onclick="triggerFundamentalsRefresh('${escapeHtml(prof.ticker)}')" title="Провери за нов отчет/оценка и обнови" style="padding: 5px 10px; font-size: 0.78rem; cursor: pointer;">
+          🔄 Обнови Фундамент
+        </button>
         ${moatBadge}
       </div>
     </div>
@@ -6872,13 +7123,32 @@ let fundamentalScreenerInitialized = false;
 let fundScreenerSortCol = 'mos_pct';
 let fundScreenerSortDir = 'desc';
 
-async function initFundamentalScreener() {
-  if (allFundamentalVerdicts.length === 0) {
+async function initFundamentalScreener(forceReload = false) {
+  if (forceReload || allFundamentalVerdicts.length === 0) {
     try {
-      const res = await fetch('fundamental_verdicts.json?t=' + new Date().getTime());
+      const res = await fetch('fundamental_verdicts.json?t=' + Date.now(), { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         allFundamentalVerdicts = data.verdicts || [];
+
+        const updBadge = document.getElementById('fundScreenerUpdatedBadge');
+        if (updBadge) {
+          const genStr = (data.generated_at || '').slice(0, 16).replace('T', ' ');
+          updBadge.textContent = genStr ? `Обновен: ${genStr} UTC` : `Актуален`;
+        }
+
+        // Sync fresh verdicts + filing dates back into fundamentalProfiles so Dossier and Screener never diverge
+        allFundamentalVerdicts.forEach(v => {
+          const tk = (v.ticker || '').toUpperCase();
+          if (!tk) return;
+          const existing = fundamentalProfiles[tk] || {};
+          fundamentalProfiles[tk] = Object.assign({}, existing, v, {
+            fair_value: v.fair_value_base || v.target_price || existing.fair_value,
+            target_price: v.target_price || v.fair_value_base || existing.target_price,
+            latest_filing_date: v.latest_filing_date || existing.latest_filing_date,
+            last_fundamental_update: v.last_fundamental_update || existing.last_fundamental_update,
+          });
+        });
       }
     } catch (e) {
       console.warn('Could not load fundamental_verdicts.json directly:', e);
@@ -6890,19 +7160,24 @@ async function initFundamentalScreener() {
     }
   }
 
-  // Populate Sector Select options if not yet populated
+  // Populate Sector Select options cleanly without losing selected value
   const sectorSel = document.getElementById('fundScreenerSectorFilter');
-  if (sectorSel && sectorSel.options.length <= 1) {
+  if (sectorSel) {
+    const prevVal = sectorSel.value || 'ALL';
     const sectors = new Set();
     allFundamentalVerdicts.forEach(v => {
       if (v.sector) sectors.add(v.sector);
     });
+    const existingOpts = new Set(Array.from(sectorSel.options).map(o => o.value));
     Array.from(sectors).sort().forEach(sec => {
-      const opt = document.createElement('option');
-      opt.value = sec;
-      opt.textContent = sec;
-      sectorSel.appendChild(opt);
+      if (!existingOpts.has(sec)) {
+        const opt = document.createElement('option');
+        opt.value = sec;
+        opt.textContent = sec;
+        sectorSel.appendChild(opt);
+      }
     });
+    sectorSel.value = prevVal;
   }
 
   if (!fundamentalScreenerInitialized) {
@@ -6945,6 +7220,52 @@ async function initFundamentalScreener() {
   renderFundamentalScreenerTable();
 }
 window.initFundamentalScreener = initFundamentalScreener;
+
+async function triggerFundamentalsRefresh(targetTicker = null) {
+  const btn = document.getElementById('btnRefreshFundScreener');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = '⏳ Проверявам...';
+  }
+  try {
+    let usedApi = false;
+    if (!serverHealth.isCloud && window.location.protocol !== 'file:') {
+      try {
+        const url = targetTicker
+          ? `/api/refresh-fundamentals?ticker=${encodeURIComponent(targetTicker)}&force=true`
+          : `/api/refresh-fundamentals?limit=40`;
+        const res = await fetch(url, { method: 'POST', cache: 'no-store' });
+        if (res.ok) {
+          const payload = await res.json();
+          if (payload.success) {
+            usedApi = true;
+            await loadDashboardData({ force: true, forceFundamentals: true, userTriggered: true });
+            const msg = payload.refreshed_count > 0
+              ? `✅ Обновени фундаментални данни (${payload.refreshed_count}): ${(payload.tickers || []).join(', ')}`
+              : '✅ Всички фундаментални отчети са актуални.';
+            showAnalysisToast(msg, 'success', 4500);
+          }
+        }
+      } catch (apiErr) {
+        console.debug('Local /api/refresh-fundamentals skipped:', apiErr);
+      }
+    }
+
+    if (!usedApi) {
+      await loadDashboardData({ force: true, forceFundamentals: true, userTriggered: true });
+      if (currentTab === 'fundamentals' && currentFundTicker) {
+        renderFundamentalDossier(currentFundTicker);
+      }
+      showAnalysisToast('✅ Фундаменталните данни са презаредени без кеш.', 'success', 3500);
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '🔄 Обнови Фундамент';
+    }
+  }
+}
+window.triggerFundamentalsRefresh = triggerFundamentalsRefresh;
 
 function renderFundamentalScreenerTable() {
   const tbody = document.getElementById('fundScreenerTableBody');
@@ -8081,25 +8402,27 @@ window.openDossierFromActiveChart = function() {
   }
 };
 
-async function openProposalDossier(ticker, proposalContext) {
+async function openProposalDossier(ticker, proposalContext, options = {}) {
   if (!ticker) return;
-  if (currentTab && currentTab !== 'proposal-dossier') {
-    dossierPreviousTab = currentTab;
-  }
-  currentDossierTicker = ticker;
-  currentDossierContext = proposalContext || {};
+  if (!options.silent) {
+    if (currentTab && currentTab !== 'proposal-dossier') {
+      dossierPreviousTab = currentTab;
+    }
+    currentDossierTicker = ticker;
+    currentDossierContext = proposalContext || {};
 
-  switchTab('proposal-dossier');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    switchTab('proposal-dossier');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   const loadingEl = document.getElementById('dossierChartLoading');
-  if (loadingEl) loadingEl.style.display = 'flex';
+  if (loadingEl && !options.silent) loadingEl.style.display = 'flex';
 
   const safeTicker = ticker.replace(/\//g, '_').replace(/\^/g, '_').replace(/:/g, '_');
   let dossierData = null;
 
   try {
-    const res = await fetch(`data/dossiers/${safeTicker}.json?t=` + new Date().getTime());
+    const res = await fetch(`data/dossiers/${safeTicker}.json?t=` + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       dossierData = await res.json();
     }

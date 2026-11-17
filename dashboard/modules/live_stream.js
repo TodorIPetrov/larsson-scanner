@@ -155,12 +155,20 @@ export class LiveMarketStream {
    */
   startBackgroundPoller() {
     if (this.pollTimer) clearInterval(this.pollTimer);
+    if (this.apiUnavailable) return;
     this.pollTimer = setInterval(async () => {
       try {
         // Try local or cloud API first if available
         let apiQuotes = null;
         try {
           const res = await fetch('/api/live-quotes', { cache: 'no-store' });
+          if (res.status === 404 || res.status === 405) {
+            // Static host (e.g. GitHub Pages): disable repeated 404 polling, rely on WS + periodic data.json reload
+            this.apiUnavailable = true;
+            clearInterval(this.pollTimer);
+            this.pollTimer = null;
+            return;
+          }
           if (res.ok) {
             const data = await res.json();
             if (data.success && data.quotes) {

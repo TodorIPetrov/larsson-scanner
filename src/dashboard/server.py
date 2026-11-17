@@ -15,6 +15,7 @@ import threading
 import time
 from datetime import datetime, timezone
 from typing import Optional
+from urllib.parse import parse_qs, urlparse
 
 if sys.platform == "win32":
     try:
@@ -84,19 +85,25 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path == "/api/status":
+        parsed = urlparse(self.path)
+        path_only = parsed.path
+        qs = parse_qs(parsed.query)
+
+        if path_only == "/api/status":
             self.handle_api_status()
-        elif self.path.startswith("/api/live-quotes"):
+        elif path_only == "/api/live-quotes":
             self.handle_api_live_quotes()
-        elif self.path == "/api/portfolio/sync":
+        elif path_only == "/api/candles":
+            self.handle_api_candles(qs)
+        elif path_only == "/api/portfolio/sync":
             self.handle_get_portfolio_sync()
-        elif self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
+        elif path_only in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
             self.handle_api_scan()
-        elif self.path == "/api/state":
+        elif path_only == "/api/state":
             self.handle_serve_file(os.path.join(DASHBOARD_DIR, "data", "state.json"), fallback="data.json")
-        elif self.path == "/api/fundamentals":
+        elif path_only == "/api/fundamentals":
             self.handle_serve_file(os.path.join(DASHBOARD_DIR, "data", "fundamentals.json"))
-        elif self.path == "/api/history":
+        elif path_only == "/api/history":
             self.handle_serve_file(os.path.join(DASHBOARD_DIR, "data", "history.json"))
         else:
             super().do_GET()
@@ -124,12 +131,16 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(500, f"Error reading file: {e}")
 
     def do_POST(self):
-        if self.path in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
+        parsed = urlparse(self.path)
+        path_only = parsed.path
+        qs = parse_qs(parsed.query)
+
+        if path_only in ("/api/scan", "/api/analyze-proposals", "/api/refresh"):
             self.handle_api_scan()
-        elif self.path == "/api/portfolio/sync":
+        elif path_only == "/api/portfolio/sync":
             self.handle_post_portfolio_sync()
-        elif self.path == "/api/refresh-fundamentals":
-            self.handle_api_refresh_fundamentals()
+        elif path_only == "/api/refresh-fundamentals":
+            self.handle_api_refresh_fundamentals(qs=qs)
         else:
             self.send_error(404, "Not Found")
 
@@ -198,22 +209,28 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
             logger.info("⚡ [API Trigger] Running market analysis for actionable trade proposals...")
             db = Database()
 
-            # 1. Execute live market scan across top assets to fetch real quotes
+            # 1. Execute live market scan across all asset classes
             try:
                 from src.scanner import LarssonScanner
                 from src.data.binance_fetch import BinanceFetcher
                 from src.data.yfinance_fetch import YFinanceFetcher
+                from src.engine.lifecycle_sync import sync_new_assets_lifecycle
                 scanner = LarssonScanner(db=db, binance_fetcher=BinanceFetcher(), yf_fetcher=YFinanceFetcher())
-                # Fast targeted 1D scan for top crypto & priority watchlists
-                scanner.scan_top_crypto(limit=30, timeframe="1D")
-                scanner.scan_yfinance_assets(asset_class="us_stocks", timeframe="1D")
-                scanner.scan_yfinance_assets(asset_class="crypto_stocks", timeframe="1D")
+                scanner.scan_top_crypto(limit=40, timeframe="1D")
+                for ac in ["us_stocks", "crypto_stocks", "intl_stocks", "ai_stocks", "commodities", "indices"]:
+                    scanner.scan_yfinance_assets(asset_class=ac, timeframe="1D")
+                sync_new_assets_lifecycle(db)
             except Exception as scan_err:
                 logger.warning(f"Live market fetch notice during API scan: {scan_err}")
 
-            # 2. Run paper trader evaluation across current states
+            # 2. Run paper trader evaluation across current open positions & states
             from src.trading.paper_trader import PaperTrader
             paper_trader = PaperTrader(db=db)
+            if hasattr(paper_trader, "update_all_open_positions"):
+                try:
+                    paper_trader.update_all_open_positions()
+                except Exception as pt_err:
+                    logger.warning(f"Paper position mark-to-market notice: {pt_err}")
 
             # Evaluate top assets for proposals
             states = db.get_all_states()
@@ -304,17 +321,176 @@ class DashboardRequestHandler(http.server.SimpleHTTPRequestHandler):
         except Exception as e:
             self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
 
-    def handle_api_refresh_fundamentals(self):
-        """Triggers asynchronous or immediate corporate fundamentals refresh."""
+    def handle_api_candles(self, qs: dict):
+        """Returns OHLCV candles + Larsson SMMA overlays for any ticker/timeframe."""
+        ticker = ((qs or {}).get("ticker") or [""])[0].strip()
+        timeframe = ((qs or {}).get("timeframe") or ["1D"])[0].strip().upper()
+        if not ticker:
+            self.send_response(400)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": False, "error": "Missing ticker parameter"}).encode("utf-8"))
+            return
+
         try:
+            import numpy as np
+            import pandas as pd
+            from src.backtest.data_manager import BacktestDataManager
+            from src.engine.smma import compute_larsson_series
+
+            asset_cls = "crypto" if ticker.endswith("USDT") else ("commodities" if "=F" in ticker else ("indices" if ticker.startswith("^") else "us_stocks"))
+            df = None
+            source = "cache"
+
+            if timeframe == "1D":
+                dm = BacktestDataManager()
+                df = dm.get_symbol_data(ticker, asset_class=asset_cls, timeframe="1D", max_stale_days=1)
+                source = "backtest_manager"
+            elif asset_cls == "crypto":
+                from src.data.binance_fetch import BinanceFetcher
+                bf = BinanceFetcher()
+                highs, lows, closes, _ = bf.fetch_klines(ticker, timeframe=timeframe, limit=300)
+                ohlcv = getattr(bf, "last_klines_ohlcv", {}).get(ticker)
+                if ohlcv and ohlcv.get("closes"):
+                    df = pd.DataFrame({
+                        "date": ohlcv.get("dates"),
+                        "open": ohlcv.get("opens"),
+                        "high": ohlcv.get("highs"),
+                        "low": ohlcv.get("lows"),
+                        "close": ohlcv.get("closes"),
+                        "volume": ohlcv.get("volumes"),
+                    })
+                    source = "binance_live"
+            else:
+                from src.data.yfinance_fetch import YFinanceFetcher
+                yf_fetch = YFinanceFetcher()
+                yf_fetch.fetch_via_chart_api(ticker, period="1y" if timeframe == "4H" else "2y", interval="1d" if timeframe == "1D" else "1h")
+                ohlcv = getattr(yf_fetch, "last_batch_ohlcv", {}).get(ticker)
+                if ohlcv and ohlcv.get("closes"):
+                    df = pd.DataFrame({
+                        "date": ohlcv.get("dates"),
+                        "open": ohlcv.get("opens"),
+                        "high": ohlcv.get("highs"),
+                        "low": ohlcv.get("lows"),
+                        "close": ohlcv.get("closes"),
+                        "volume": ohlcv.get("volumes"),
+                    })
+                    source = "yfinance_live"
+
+            if df is None or df.empty:
+                self.send_response(404)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(json.dumps({"success": False, "error": f"No candles found for {ticker} ({timeframe})"}).encode("utf-8"))
+                return
+
+            df = df.copy()
+            df.columns = [str(c).lower() for c in df.columns]
+            if "date" not in df.columns and "timestamp" in df.columns:
+                df["date"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.strftime("%Y-%m-%d")
+            if "open" not in df.columns:
+                df["open"] = df["close"]
+
+            highs = df["high"].to_numpy(dtype=np.float64)
+            lows = df["low"].to_numpy(dtype=np.float64)
+            opens = df["open"].to_numpy(dtype=np.float64)
+            closes = df["close"].to_numpy(dtype=np.float64)
+            dates = df["date"].astype(str).tolist() if "date" in df.columns else [str(i) for i in range(len(df))]
+            v1, _m1, _m2, v2, states = compute_larsson_series(highs, lows)
+
+            tail_start = max(0, len(closes) - 360)
+            candles = []
+            for i in range(tail_start, len(closes)):
+                t_val = str(dates[i])[:10] if timeframe == "1D" else str(dates[i])
+                candles.append({
+                    "time": t_val,
+                    "open": round(float(opens[i]), 4),
+                    "high": round(float(highs[i]), 4),
+                    "low": round(float(lows[i]), 4),
+                    "close": round(float(closes[i]), 4),
+                    "v1": round(float(v1[i]), 4) if not np.isnan(v1[i]) else None,
+                    "v2": round(float(v2[i]), 4) if not np.isnan(v2[i]) else None,
+                    "state": states[i].value,
+                })
+
+            payload = {
+                "success": True,
+                "ticker": ticker,
+                "timeframe": timeframe,
+                "source": source,
+                "state": states[-1].value if states else "NEUTRAL",
+                "v1": round(float(v1[-1]), 4) if len(v1) and not np.isnan(v1[-1]) else None,
+                "v2": round(float(v2[-1]), 4) if len(v2) and not np.isnan(v2[-1]) else None,
+                "candles": candles,
+            }
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+            self.end_headers()
+            self.wfile.write(json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+        except Exception as e:
+            logger.error(f"Error serving candles for {ticker}: {e}", exc_info=True)
+            self.send_response(500)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": False, "error": str(e)}).encode("utf-8"))
+
+    def handle_api_refresh_fundamentals(self, qs: Optional[dict] = None):
+        """Triggers filing-aware or targeted corporate fundamentals refresh and cascades to dashboard."""
+        try:
+            body_params = {}
+            content_len = int(self.headers.get("Content-Length", 0) or 0)
+            if content_len > 0:
+                try:
+                    raw = self.rfile.read(content_len)
+                    parsed_body = json.loads(raw.decode("utf-8"))
+                    if isinstance(parsed_body, dict):
+                        body_params = parsed_body
+                except Exception:
+                    pass
+
+            qs = qs or {}
+            ticker_arg = (qs.get("ticker") or [body_params.get("ticker") or ""])[0] if qs.get("ticker") else (body_params.get("ticker") or "")
+            tickers_arg = body_params.get("tickers")
+            target_tickers = None
+            if ticker_arg:
+                target_tickers = [t.strip() for t in str(ticker_arg).split(",") if t.strip()]
+            elif isinstance(tickers_arg, list) and tickers_arg:
+                target_tickers = [str(t).strip() for t in tickers_arg if str(t).strip()]
+
+            force_raw = (qs.get("force") or [body_params.get("force")])[0] if qs.get("force") else body_params.get("force")
+            force = str(force_raw).lower() in ("1", "true", "yes") if force_raw is not None else bool(target_tickers)
+            limit_raw = (qs.get("limit") or [body_params.get("limit")])[0] if qs.get("limit") else body_params.get("limit")
+            try:
+                limit = int(limit_raw) if limit_raw is not None else (len(target_tickers) if target_tickers else 40)
+            except Exception:
+                limit = 40
+
             from src.engine.lifecycle_sync import refresh_existing_fundamentals
-            res = refresh_existing_fundamentals(max_age_days=0, force=True, limit=20)
+            from src.engine.quantamental import QuantamentalRegistry
+
             db = Database()
+            res = refresh_existing_fundamentals(
+                max_age_days=0 if force else 7,
+                force=force,
+                limit=limit,
+                target_tickers=target_tickers,
+                db=db,
+                check_filings=True,
+            )
+            QuantamentalRegistry.get_instance().load_profiles()
             export_dashboard_data(db)
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
             self.end_headers()
-            self.wfile.write(json.dumps({"success": True, "refreshed_count": res.get("refreshed_count", 0), "tickers": res.get("tickers", [])}).encode("utf-8"))
+            self.wfile.write(json.dumps({
+                "success": True,
+                "refreshed_count": res.get("refreshed_count", 0),
+                "changed_count": res.get("changed_count", 0),
+                "tickers": res.get("tickers", []),
+                "changed_tickers": res.get("changed_tickers", []),
+            }).encode("utf-8"))
         except Exception as e:
             self.send_response(500)
             self.send_header("Content-Type", "application/json; charset=utf-8")

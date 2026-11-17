@@ -7,7 +7,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <title>Larsson Line Market Scanner</title>
-  <link rel="stylesheet" href="style.css?v=20261105_06">
+  <link rel="stylesheet" href="style.css?v=20261117_01">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     if ('serviceWorker' in navigator && typeof caches !== 'undefined') {
       caches.keys().then(keys => {
         keys.forEach(k => {
-          if (k !== 'larsson-v17') {
+          if (k !== 'larsson-v20') {
             console.log('[Dev] Purging obsolete cache:', k);
             caches.delete(k);
           }
@@ -1102,10 +1102,14 @@
       <!-- Fundamental Screener Overview Table (All Audited Equities from fundamental_verdicts.json) -->
       <section class="fund-screener-section" id="fundScreenerSection" style="margin-top: 24px;">
         <div class="section-title-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
-          <div class="section-title-left" style="display: flex; align-items: center; gap: 10px;">
+          <div class="section-title-left" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             <span class="title-accent-dot dot-info"></span>
             <h3 style="margin: 0; font-size: 1.15rem; color: #f0f6fc;">📊 Институционален Фундаментален Скрийнър (Одитирани DCF Компании)</h3>
             <span class="badge badge-info" id="fundScreenerCountBadge">Зареждане...</span>
+            <span class="badge badge-neutral" id="fundScreenerUpdatedBadge" style="font-size: 0.72rem; opacity: 0.85;">—</span>
+            <button type="button" class="btn btn-sm btn-outline-info" id="btnRefreshFundScreener" onclick="triggerFundamentalsRefresh()" title="Провери за нови 10-Q/10-K отчети и презареди фундамента" style="padding: 4px 10px; font-size: 0.78rem; cursor: pointer;">
+              🔄 Обнови Фундамент
+            </button>
           </div>
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <input type="text" id="fundScreenerSearch" placeholder="Търси по тикер, име или сектор..." style="background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; padding: 6px 12px; font-size: 0.85rem; min-width: 250px;">
@@ -1960,14 +1964,14 @@
   <!-- Global Analysis Feedback Toast -->
   <div id="analysisToast" class="analysis-toast" style="display: none;"></div>
 
-  <script src="app.js?v=20261105_06"></script>
+  <script src="app.js?v=20261117_01"></script>
 
   <!-- Progressive Web App (PWA) Registration & Install Prompt Handler -->
   <script>
     // 1. Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js?v=20261105_06')
+        navigator.serviceWorker.register('sw.js?v=20261117_01')
           .then((reg) => {
             console.log('[PWA] Service Worker registered with scope:', reg.scope);
             try { reg.update(); } catch(e) {}

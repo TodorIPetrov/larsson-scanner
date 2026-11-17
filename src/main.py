@@ -53,6 +53,8 @@ def run_scan(
     asset_class: str = "all",
     timeframe: str = "1D",
     limit: int = 50,
+    export_dashboard: bool = True,
+    git_sync: bool = True,
 ):
     """Executes a market scan for specified asset class and timeframe."""
     logger.info(f"=== Starting scan [Asset Class: {asset_class.upper()} | TF: {timeframe}] ===")
@@ -86,11 +88,13 @@ def run_scan(
         except Exception as e:
             logger.warning(f"Lifecycle sync warning: {e}")
 
-    # Export latest data for dashboard
-    export_dashboard_data(scanner.db)
+    # Export latest data for dashboard unless explicitly deferred
+    if export_dashboard:
+        export_dashboard_data(scanner.db)
 
-    # Sync to GitHub Pages repository if configured
-    sync_dashboard_to_git()
+    # Sync to GitHub Pages repository if enabled and outside GitHub Actions
+    if git_sync and os.getenv("GITHUB_ACTIONS", "").lower() != "true":
+        sync_dashboard_to_git()
 
     # Send heartbeat ping to Healthchecks.io if configured
     hc_url = scanner.config.get("monitoring", {}).get("healthcheck_url")
@@ -146,16 +150,22 @@ def _safe_scan(scanner: LarssonScanner, asset_class: str, timeframe: str, limit:
 
 
 def _safe_fundamental_refresh(db: Database):
-    """Executes weekly fundamental valuation refresh with isolation."""
+    """Executes daily filing-aware fundamental valuation refresh with isolation."""
     try:
         from src.engine.lifecycle_sync import refresh_existing_fundamentals
-        logger.info("=== Starting Weekly Fundamental Valuation Refresh ===")
-        res = refresh_existing_fundamentals(max_age_days=7, limit=40)
-        logger.info(f"Fundamental refresh complete: {res['refreshed_count']} equities updated.")
+        from src.engine.quantamental import QuantamentalRegistry
+        logger.info("=== Starting Filing-Aware Fundamental Valuation Refresh ===")
+        res = refresh_existing_fundamentals(max_age_days=7, limit=60, db=db, check_filings=True)
+        QuantamentalRegistry.get_instance().load_profiles()
+        logger.info(
+            f"Fundamental refresh complete: {res['refreshed_count']} equities updated "
+            f"(filing/verdict changes: {res.get('changed_count', 0)})."
+        )
         export_dashboard_data(db)
-        sync_dashboard_to_git()
+        if os.getenv("GITHUB_ACTIONS", "").lower() != "true":
+            sync_dashboard_to_git()
     except Exception as e:
-        logger.error(f"Weekly fundamental refresh failed: {e}", exc_info=True)
+        logger.error(f"Fundamental refresh failed: {e}", exc_info=True)
 
 
 def _scan_traditional_markets(scanner: LarssonScanner, timeframe: str):
@@ -238,12 +248,12 @@ def start_scheduler(scanner: LarssonScanner):
         name=f"Daily Morning Digest ({md_hour:02d}:{md_minute:02d} {md_tz})",
     )
 
-    # Weekly Fundamental Refresh: Every Saturday at 08:00 UTC
+    # Daily Filing-Aware Fundamental Refresh: Every day at 06:15 UTC
     sched.add_job(
         func=lambda: _safe_fundamental_refresh(scanner.db),
-        trigger=CronTrigger(day_of_week="sat", hour=8, minute=0, timezone="UTC"),
-        id="weekly_fundamental_refresh",
-        name="Weekly Fundamental DCF & Forensic Refresh (Sat 08:00 UTC)",
+        trigger=CronTrigger(hour=6, minute=15, timezone="UTC"),
+        id="daily_fundamental_refresh",
+        name="Daily Filing-Aware Fundamental DCF & Forensic Refresh (06:15 UTC)",
     )
 
     logger.info("Scheduler started with cron jobs:")
@@ -365,6 +375,8 @@ def main():
     )
     parser.add_argument("--capital", type=float, default=100000.0, help="Initial capital for backtest simulation")
     parser.add_argument("--force-refresh", action="store_true", help="Force redownloading historical market data")
+    parser.add_argument("--no-export", action="store_true", help="Skip exporting dashboard JSON/dossiers during this command")
+    parser.add_argument("--no-git-sync", action="store_true", help="Skip automatic git commit/push sync during this command")
 
     args = parser.parse_args()
     if args.asset_class == "true" or not args.asset_class:
@@ -503,12 +515,27 @@ def main():
                 print("❌ Грешка при изпращане. Провери дали bot_token и chat_id са точни.\n")
     elif args.refresh_fundamentals:
         from src.engine.lifecycle_sync import refresh_existing_fundamentals
-        print("\n\U0001f504 Стартиране на обновяване на фундаменталните оценки (DCF/Forensics)...")
-        res = refresh_existing_fundamentals(max_age_days=7 if not args.force else 0, force=args.force)
-        print(f"✅ Обновени {res['refreshed_count']} актива: {', '.join(res['tickers']) if res['tickers'] else 'Всички са актуални'}")
-        export_dashboard_data(db)
-        sync_dashboard_to_git()
-        print("✅ Дашбордът е експортиран и синхронизиран.\n")
+        from src.engine.quantamental import QuantamentalRegistry
+        print("\n\U0001f504 Стартиране на обновяване на фундаменталните оценки (DCF/Forensics + SEC/Earnings)...")
+        fund_limit = args.limit if "--limit" in sys.argv else 60
+        res = refresh_existing_fundamentals(
+            max_age_days=7 if not args.force else 0,
+            force=args.force,
+            limit=fund_limit,
+            db=db,
+            check_filings=True,
+        )
+        QuantamentalRegistry.get_instance().load_profiles()
+        print(
+            f"✅ Обновени {res['refreshed_count']} актива "
+            f"(нови отчети/оценки: {res.get('changed_count', 0)}): "
+            f"{', '.join(res['tickers']) if res['tickers'] else 'Всички са актуални'}"
+        )
+        if not args.no_export:
+            export_dashboard_data(db)
+        if not args.no_git_sync and os.getenv("GITHUB_ACTIONS", "").lower() != "true":
+            sync_dashboard_to_git()
+        print("✅ Дашбордът е синхронизиран.\n")
     elif args.sync_new_assets:
         from src.engine.lifecycle_sync import sync_new_assets_lifecycle
         print("\n\U0001f680 Проверка на вселената и онбординг на нови активи...")
@@ -516,17 +543,27 @@ def main():
         print(f"✅ Прегледани {res['universe_size']} актива. Добавени/онборднати: {res['onboarded_count']}")
         if res['onboarded_tickers']:
             print(f"   Тикери: {', '.join(res['onboarded_tickers'])}")
-        export_dashboard_data(db)
-        sync_dashboard_to_git()
+        if not args.no_export:
+            export_dashboard_data(db)
+        if not args.no_git_sync and os.getenv("GITHUB_ACTIONS", "").lower() != "true":
+            sync_dashboard_to_git()
         print("✅ Дашбордът е експортиран и синхронизиран.\n")
     elif args.scan:
-        run_scan(scanner, asset_class=args.asset_class, timeframe=args.timeframe, limit=args.limit)
+        run_scan(
+            scanner,
+            asset_class=args.asset_class,
+            timeframe=args.timeframe,
+            limit=args.limit,
+            export_dashboard=not args.no_export,
+            git_sync=not args.no_git_sync,
+        )
     elif args.status:
         print_status(db, asset_class=args.asset_class)
     elif args.export_dashboard:
         data = export_dashboard_data(db)
         print(f"Exported dashboard data: {data['summary']['total']} symbols to dashboard/data.json")
-        sync_dashboard_to_git()
+        if not args.no_git_sync and os.getenv("GITHUB_ACTIONS", "").lower() != "true":
+            sync_dashboard_to_git()
     elif args.digest:
         if not notifier.is_configured:
             print("\n❌ Telegram все още НЕ е конфигуриран!")

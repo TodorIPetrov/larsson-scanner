@@ -178,6 +178,14 @@ def export_dashboard_data(
             return {"symbols": [], "summary": {}}
 
     names_map = _load_names_map()
+    if output_path == DEFAULT_OUTPUT_PATH:
+        try:
+            from src.engine.lifecycle_sync import refresh_active_technical_profiles, sync_verdicts_mark_to_market
+            refresh_active_technical_profiles(db=db)
+            sync_verdicts_mark_to_market(db=db)
+        except Exception as e:
+            logger.debug(f"Pre-export lifecycle sync notice: {e}")
+
     optimal_profiles = _load_optimal_profiles()
     rows = db.get_all_states()
     rs_ratings, all_mom_60 = _compute_universe_rs_ratings(db_rows=rows)
@@ -863,25 +871,37 @@ def export_dashboard_data(
     except Exception as e:
         logger.debug(f"Could not compute performance attribution: {e}")
 
-    # Portfolio Correlation Matrix (Task 7)
+    # Portfolio Correlation Matrix (Task 7) - built from real historical CSV closes
     correlation_data = {}
     try:
-        from src.engine.correlation import compute_correlation_matrix
+        import numpy as np
         import pandas as pd
+        from src.engine.correlation import compute_correlation_matrix
+
+        all_open_pos = (portfolio_paper_data.get("positions", []) or []) + (portfolio_real_data.get("positions", []) or [])
         active_symbols = list({
-            p["ticker"] for p in (portfolio_paper_data.get("positions", []) + portfolio_real_data.get("positions", []))
-            if p.get("ticker")
+            (p.get("ticker") or p.get("symbol"))
+            for p in all_open_pos
+            if (p.get("ticker") or p.get("symbol"))
         })
         if active_symbols:
             price_map = {}
-            for item in items:
-                sym = item.get("ticker")
-                lp = float(item.get("price") or 100.0)
-                if sym in active_symbols:
-                    np_rng = np.random.default_rng(hash(sym) % 10000)
-                    rets = np_rng.normal(0.001, 0.02, 40)
-                    prices = lp * np.cumprod(1.0 + rets[::-1])
-                    price_map[sym] = pd.Series(prices)
+            item_lookup = {it.get("ticker"): it for it in items if it.get("ticker")}
+            for sym in active_symbols:
+                clean_sym = sym.replace("=", "_").replace("^", "_").replace(":", "_").replace("/", "_")
+                csv_f = os.path.join(CACHE_DIR_PATH, f"{clean_sym}_1D.csv")
+                loaded = False
+                if os.path.exists(csv_f):
+                    try:
+                        cdf = pd.read_csv(csv_f, usecols=["close"]).dropna()
+                        if len(cdf) >= 15:
+                            price_map[sym] = cdf["close"].tail(60).reset_index(drop=True)
+                            loaded = True
+                    except Exception:
+                        pass
+                if not loaded and sym in item_lookup:
+                    lp = float(item_lookup[sym].get("price") or 100.0)
+                    price_map[sym] = pd.Series([lp] * 30)
             correlation_data = compute_correlation_matrix(active_symbols, price_map, window=30)
     except Exception as e:
         logger.debug(f"Could not compute correlation matrix: {e}")
@@ -909,36 +929,94 @@ def export_dashboard_data(
         hist_snaps = breadth_engine.load_history(limit=30)
         snap = breadth_engine.compute_snapshot(items, historical_snapshots=hist_snaps)
         regime_breadth_data = asdict(snap)
+        # Compute per-sector 7d deltas cleanly from history when available
+        if hist_snaps:
+            from datetime import timedelta
+            target_dt = datetime.now(timezone.utc) - timedelta(days=7)
+            best_snap = min(
+                hist_snaps,
+                key=lambda s: abs((datetime.strptime(s.timestamp[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc) - target_dt).total_seconds()),
+                default=None,
+            )
+            if best_snap and getattr(best_snap, "sectors", None):
+                c_now = regime_breadth_data.get("sectors", {}).get("Crypto", {}).get("gold_pct")
+                c_old = best_snap.sectors.get("Crypto").gold_pct if "Crypto" in best_snap.sectors else None
+                if c_now is not None and c_old is not None:
+                    regime_breadth_data["delta_7d_crypto_pct"] = round(c_now - c_old, 1)
+                e_now = regime_breadth_data.get("sectors", {}).get("US Equities", {}).get("gold_pct")
+                e_old = best_snap.sectors.get("US Equities").gold_pct if "US Equities" in best_snap.sectors else None
+                if e_now is not None and e_old is not None:
+                    regime_breadth_data["delta_7d_equities_pct"] = round(e_now - e_old, 1)
         macro_regime_label = snap.macro_regime
         breadth_engine.save_snapshot(snap)
     except Exception as e:
         logger.debug(f"Could not compute regime breadth snapshot: {e}")
 
-    # Opus CIO Component B: Institutional Risk Budgeting
+    # Opus CIO Component B: Institutional Risk Budgeting (Dynamic from Live Positions)
     risk_budget_data = {
         "max_portfolio_risk_pct": 6.0,
         "max_cluster_risk_pct": 2.0,
         "max_trade_risk_pct": 1.0,
         "effective_cap_pct": 3.0,
-        "current_open_risk_pct": 1.2,
-        "deployable_pct": 1.8,
+        "current_open_risk_pct": 0.0,
+        "deployable_pct": 3.0,
         "macro_regime": macro_regime_label,
         "multiplier": 0.5,
         "is_lockdown": False,
-        "cluster_allocations": [
-            {"cluster": "MEGA_TECH", "open_risk_pct": 0.8, "cap_pct": 2.0},
-            {"cluster": "CRYPTO_L1", "open_risk_pct": 0.4, "cap_pct": 2.0},
-        ],
+        "cluster_allocations": [],
     }
     try:
         from src.engine.risk_budget import PortfolioRiskManager
         risk_mgr = PortfolioRiskManager()
         eff_cap = risk_mgr.get_effective_portfolio_cap(macro_regime_label)
         mult = risk_mgr.regime_exposure_multipliers.get(macro_regime_label.upper(), 0.5)
+
+        def _pos_cluster(ac_str):
+            if ac_str == "crypto":
+                return "CRYPTO_L1"
+            if ac_str == "crypto_stocks":
+                return "CRYPTO_EQUITIES"
+            if ac_str == "ai_stocks":
+                return "MEGA_TECH"
+            if ac_str == "intl_stocks":
+                return "INTERNATIONAL"
+            if ac_str == "commodities":
+                return "COMMODITIES"
+            return "US_CORE_EQUITIES"
+
+        paper_eq = float((portfolio_paper_data.get("summary") or {}).get("total_equity") or 10000.0)
+        real_pos = portfolio_real_data.get("positions") or []
+        paper_pos = portfolio_paper_data.get("positions") or []
+        real_inv = sum(float(p.get("margin_usd") or p.get("position_size_usd") or 0.0) for p in real_pos)
+        real_eq = max(float((portfolio_real_data.get("summary") or {}).get("total_equity") or 0.0), real_inv, 10000.0)
+
+        cluster_risk_map: Dict[str, float] = {}
+        total_open_risk_pct = 0.0
+        for is_r, pos_list, ref_eq in [(True, real_pos, real_eq), (False, paper_pos, max(paper_eq, 1000.0))]:
+            for pos in pos_list:
+                entry = float(pos.get("entry_price") or 0.0)
+                sl = pos.get("stop_loss")
+                units = float(pos.get("units") or 0.0)
+                margin = float(pos.get("margin_usd") or pos.get("position_size_usd") or 0.0)
+                if entry > 0 and sl and float(sl) > 0 and units > 0:
+                    risk_amt = abs(entry - float(sl)) * units
+                else:
+                    # Without explicit hard SL, treat 7% tail risk of position margin as risk budget consumption
+                    risk_amt = margin * 0.07
+                r_pct = (risk_amt / ref_eq) * 100.0 if ref_eq > 0 else 0.0
+                cid = _pos_cluster(pos.get("asset_class", "us_stocks"))
+                cluster_risk_map[cid] = cluster_risk_map.get(cid, 0.0) + r_pct
+                total_open_risk_pct += r_pct
+
+        risk_budget_data["current_open_risk_pct"] = round(total_open_risk_pct, 2)
         risk_budget_data["effective_cap_pct"] = eff_cap
         risk_budget_data["multiplier"] = mult
         risk_budget_data["is_lockdown"] = eff_cap <= 0.0
-        risk_budget_data["deployable_pct"] = max(0.0, round(eff_cap - risk_budget_data["current_open_risk_pct"], 2))
+        risk_budget_data["deployable_pct"] = max(0.0, round(eff_cap - total_open_risk_pct, 2))
+        risk_budget_data["cluster_allocations"] = [
+            {"cluster": cid, "open_risk_pct": round(val, 2), "cap_pct": risk_budget_data["max_cluster_risk_pct"]}
+            for cid, val in sorted(cluster_risk_map.items())
+        ]
     except Exception as e:
         logger.debug(f"Could not compute risk budget summary: {e}")
 
@@ -995,22 +1073,57 @@ def export_dashboard_data(
     except Exception as e:
         logger.debug(f"Could not compute cluster matrix: {e}")
 
-    # Opus CIO Component D: Data Health & Live Accountability
+    # Opus CIO Component D: Data Health & Live Accountability (Computed from Live DB)
+    def _format_age(seconds: float) -> str:
+        if seconds < 60:
+            return f"{max(1, int(seconds))}s"
+        if seconds < 3600:
+            return f"{int(seconds // 60)}m"
+        if seconds < 86400:
+            return f"{int(seconds // 3600)}h"
+        return f"{int(seconds // 86400)}d"
+
+    now_utc = datetime.now(timezone.utc)
+    crypto_ages = []
+    equity_ages = []
+    for it in items:
+        upd = it.get("updated_at")
+        if not upd:
+            continue
+        try:
+            u_dt = datetime.fromisoformat(str(upd).replace("Z", "+00:00"))
+            if u_dt.tzinfo is None:
+                u_dt = u_dt.replace(tzinfo=timezone.utc)
+            age_s = max(0.0, (now_utc - u_dt).total_seconds())
+            if it.get("asset_class") == "crypto":
+                crypto_ages.append(age_s)
+            else:
+                equity_ages.append(age_s)
+        except Exception:
+            pass
+
+    c_min_age = min(crypto_ages) if crypto_ages else 0.0
+    e_min_age = min(equity_ages) if equity_ages else 0.0
+    is_health_ok = (c_min_age < 12 * 3600 if crypto_ages else True) and (e_min_age < 5 * 86400 if equity_ages else True)
+
     data_health_data = {
-        "status": "OK",
-        "crypto_latency": "4m",
-        "equities_latency": "1D ✓",
-        "commodities_latency": "fresh",
-        "is_healthy": True,
+        "status": "OK" if is_health_ok else "DEGRADED",
+        "crypto_latency": _format_age(c_min_age) if crypto_ages else "N/A",
+        "equities_latency": f"{_format_age(e_min_age)} {'✓' if e_min_age < 5 * 86400 else '⚠️'}" if equity_ages else "N/A",
+        "commodities_latency": _format_age(e_min_age) if equity_ages else "N/A",
+        "is_healthy": is_health_ok,
         "guard_active": True,
     }
 
+    closed_hist = (portfolio_paper_data.get("history") or []) + (portfolio_real_data.get("history") or [])
+    realized_pct_vals = [float(h.get("pnl_pct") or 0.0) for h in closed_hist if h.get("pnl_pct") is not None]
+    live_avg_ret = round(sum(realized_pct_vals) / len(realized_pct_vals), 2) if realized_pct_vals else 0.0
     live_track_record = {
-        "closed_trades": 12,
-        "live_return_pct": 2.1,
+        "closed_trades": len(closed_hist),
+        "live_return_pct": live_avg_ret,
         "backtest_expected_return_pct": 3.4,
-        "in_confidence_band": True,
-        "kill_switch_required": False,
+        "in_confidence_band": len(closed_hist) == 0 or live_avg_ret >= -5.0,
+        "kill_switch_required": len(closed_hist) >= 10 and live_avg_ret < -10.0,
     }
 
     # Opus CIO Component E: Top 15 Momentum Rotation Portfolio (EUR 10,000 Base Capital)
@@ -1384,12 +1497,28 @@ def export_dashboard_data(
         data_dir = os.path.join(os.path.dirname(output_path), "data")
         os.makedirs(data_dir, exist_ok=True)
 
+        def _atomic_dump(path_str: str, obj: dict):
+            tmp_p = path_str + ".tmp"
+            with open(tmp_p, "w", encoding="utf-8") as f:
+                json.dump(obj, f, indent=2, allow_nan=False)
+            try:
+                os.replace(tmp_p, path_str)
+            except Exception:
+                import time
+                time.sleep(0.05)
+                os.replace(tmp_p, path_str)
+
         # 1. State: dynamic prices, ribbons, proposals, breadth
         state_payload = {
             "generated_at": payload["generated_at"],
             "rotation_portfolio": rotation_portfolio_data,
             "ai_company_map": ai_company_map_data,
             "summary": payload["summary"],
+            "regime_breadth": payload["regime_breadth"],
+            "risk_budget": payload["risk_budget"],
+            "cluster_matrix": payload["cluster_matrix"],
+            "data_health": payload["data_health"],
+            "live_track_record": payload["live_track_record"],
             "symbols": payload["symbols"],
             "pending_setups": payload["pending_setups"],
             "pending_proposals": payload["pending_proposals"],
@@ -1400,33 +1529,32 @@ def export_dashboard_data(
             "portfolio_paper": payload["portfolio_paper"],
             "portfolio_real": payload["portfolio_real"],
         }
-        with open(os.path.join(data_dir, "state.json"), "w", encoding="utf-8") as f:
-            json.dump(state_payload, f, indent=2, allow_nan=False)
+        _atomic_dump(os.path.join(data_dir, "state.json"), state_payload)
 
-        # 2. Fundamentals: static DCF profiles and valuation models
+        # 2. Fundamentals: static + live mark-to-market DCF profiles and valuation models
         fundamentals_payload = {
             "generated_at": payload["generated_at"],
             "fundamental_profiles": profiles_registry,
         }
-        with open(os.path.join(data_dir, "fundamentals.json"), "w", encoding="utf-8") as f:
-            json.dump(fundamentals_payload, f, indent=2, allow_nan=False)
+        _atomic_dump(os.path.join(data_dir, "fundamentals.json"), fundamentals_payload)
 
         # 3. History: trade journal, attribution, and correlation matrix
+        raw_tlog = [dict(r) for r in db.get_trade_history(limit=100)] if hasattr(db, "get_trade_history") else []
         history_payload = {
             "generated_at": payload["generated_at"],
             "performance_attribution": attribution_data,
             "correlation": correlation_data,
-            "trade_log": [dict(r) for r in db.get_trade_history(limit=100)] if hasattr(db, "get_trade_history") else [],
+            "trade_log": _clean_dict_floats(raw_tlog),
         }
-        with open(os.path.join(data_dir, "history.json"), "w", encoding="utf-8") as f:
-            json.dump(history_payload, f, indent=2, allow_nan=False)
+        _atomic_dump(os.path.join(data_dir, "history.json"), history_payload)
 
-        # 4. Generate asset dossiers for momentum rotation portfolio
-        try:
-            from scripts.generate_asset_dossiers import generate_dossiers_for_rotation_assets
-            generate_dossiers_for_rotation_assets()
-        except Exception as e:
-            logger.warning(f"Error generating asset dossiers: {e}")
+        # 4. Generate asset dossiers for momentum rotation, portfolio & core assets (only on production export)
+        if output_path == DEFAULT_OUTPUT_PATH:
+            try:
+                from scripts.generate_asset_dossiers import generate_dossiers_for_rotation_assets
+                generate_dossiers_for_rotation_assets()
+            except Exception as e:
+                logger.warning(f"Error generating asset dossiers: {e}")
 
     except Exception as e:
         logger.warning(f"Error exporting split data payloads: {e}")

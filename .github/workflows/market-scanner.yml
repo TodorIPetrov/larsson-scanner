@@ -80,13 +80,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: 🔄 Refresh Corporate Fundamentals (Weekly or on-demand)
+      - name: 🔄 Refresh Corporate Fundamentals (Daily Filing-Aware Check)
         run: |
           REFRESH_FUND="${{ github.event.inputs.refresh_fundamentals }}"
           DAY_OF_WEEK=$(date -u +%u)
-          if [ "$REFRESH_FUND" = "true" ] || [ "$DAY_OF_WEEK" = "6" ]; then
-            echo "Executing weekly fundamental refresh for corporate equities..."
-            python src/main.py --refresh-fundamentals || echo "Warning: fundamental refresh had issues, continuing..."
+          CURRENT_HOUR=$(date -u +%H)
+          if [ "$REFRESH_FUND" = "true" ]; then
+            echo "Executing forced fundamental refresh across corporate equities..."
+            python src/main.py --refresh-fundamentals --force --limit 100 --no-export --no-git-sync || echo "Warning: forced fundamental refresh had issues, continuing..."
+          elif [ "$DAY_OF_WEEK" = "6" ]; then
+            echo "Executing weekly full rotation fundamental refresh..."
+            python src/main.py --refresh-fundamentals --limit 90 --no-export --no-git-sync || echo "Warning: weekly fundamental refresh had issues, continuing..."
+          elif [ "$CURRENT_HOUR" = "06" ] || [ "$CURRENT_HOUR" = "07" ] || [ "$CURRENT_HOUR" = "21" ] || [ "$CURRENT_HOUR" = "22" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Executing daily filing-aware & oldest-checked fundamental check..."
+            python src/main.py --refresh-fundamentals --limit 60 --no-export --no-git-sync || echo "Warning: daily fundamental check had issues, continuing..."
+          else
+            echo "Running fast priority fundamental check..."
+            python src/main.py --refresh-fundamentals --limit 25 --no-export --no-git-sync || echo "Warning: lightweight fundamental check had issues, continuing..."
           fi
 
       - name: 🚀 Run Market Scanner (1D)
@@ -96,21 +106,21 @@ jobs:
             ASSET_CLASS="all"
           fi
           echo "Executing market scan for asset class: $ASSET_CLASS (1D)"
-          python src/main.py --scan --asset-class "$ASSET_CLASS" --timeframe 1D --limit 50 || echo "Notice: 1D scan completed with warnings, proceeding to export."
+          python src/main.py --scan --asset-class "$ASSET_CLASS" --timeframe 1D --limit 50 --no-export --no-git-sync || echo "Notice: 1D scan completed with warnings, proceeding..."
 
       - name: ⚡ Run Crypto 4H Scanner
         run: |
           ASSET_CLASS="${{ github.event.inputs.asset_class }}"
           if [ -z "$ASSET_CLASS" ] || [ "$ASSET_CLASS" = "all" ] || [ "$ASSET_CLASS" = "crypto" ]; then
             echo "Executing Crypto 4H scan..."
-            python src/main.py --scan --asset-class crypto --timeframe 4H --limit 50 || echo "Notice: 4H crypto scan completed with warnings, proceeding to export."
+            python src/main.py --scan --asset-class crypto --timeframe 4H --limit 50 --no-export --no-git-sync || echo "Notice: 4H crypto scan completed with warnings, proceeding..."
           else
             echo "Skipping 4H crypto scan for targeted asset class: $ASSET_CLASS"
           fi
 
-      - name: 📊 Export Dashboard JSON
+      - name: 📊 Export Dashboard JSON & Dossiers
         run: |
-          python src/main.py --export-dashboard
+          python src/main.py --export-dashboard --no-git-sync
 
       - name: 📰 Dispatch Daily Digest (if scheduled or requested)
         run: |

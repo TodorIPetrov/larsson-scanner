@@ -34,7 +34,7 @@ class BacktestDataManager:
         self.session.headers.update({"User-Agent": "LarssonBacktest/1.0"})
 
     def get_cache_path(self, symbol: str, timeframe: str = "1D") -> str:
-        clean_sym = symbol.replace("=", "_").replace("^", "_")
+        clean_sym = symbol.replace("=", "_").replace("^", "_").replace(":", "_").replace("/", "_")
         return os.path.join(self.cache_dir, f"{clean_sym}_{timeframe}.csv")
 
     def fetch_binance_history(
@@ -171,17 +171,41 @@ class BacktestDataManager:
         start_date: str = "2021-09-01",
         timeframe: str = "1D",
         force_refresh: bool = False,
+        max_stale_days: Optional[int] = None,
     ) -> pd.DataFrame:
         """
-        Loads data from local disk cache if present; otherwise downloads and caches it.
+        Loads data from local disk cache if present and fresh enough; otherwise downloads/extends and caches it.
         """
         cache_file = self.get_cache_path(symbol, timeframe)
+        existing_df = pd.DataFrame()
 
         if not force_refresh and os.path.exists(cache_file):
             try:
-                df = pd.read_csv(cache_file)
-                if len(df) >= 200:
-                    return df
+                existing_df = pd.read_csv(cache_file)
+                if len(existing_df) >= 200:
+                    if max_stale_days is None:
+                        return existing_df
+                    # Check freshness of last bar
+                    last_date_str = str(existing_df["date"].iloc[-1])[:10]
+                    try:
+                        last_dt = datetime.strptime(last_date_str, "%Y-%m-%d").date()
+                        age_days = (datetime.now(timezone.utc).date() - last_dt).days
+                        if age_days <= max_stale_days:
+                            return existing_df
+                        # Incremental tail fetch starting slightly before last_dt to keep continuity
+                        inc_start = str(last_dt - timedelta(days=7))
+                        if asset_class == "crypto":
+                            tail_df = self.fetch_binance_history(symbol, start_date=inc_start, timeframe=timeframe)
+                        else:
+                            tail_df = self.fetch_yfinance_history(symbol, start_date=inc_start, timeframe=timeframe)
+                        if not tail_df.empty:
+                            merged = pd.concat([existing_df, tail_df], ignore_index=True)
+                            merged = merged.drop_duplicates(subset=["date"], keep="last").sort_values("date").reset_index(drop=True)
+                            merged.to_csv(cache_file, index=False)
+                            return merged
+                        return existing_df
+                    except Exception:
+                        return existing_df
             except Exception as e:
                 logger.warning(f"Could not read cache for {symbol}: {e}")
 
@@ -194,8 +218,9 @@ class BacktestDataManager:
         if not df.empty and len(df) >= 30:
             df.to_csv(cache_file, index=False)
             logger.info(f"Cached {len(df)} candles for {symbol} to {cache_file}")
+            return df
 
-        return df
+        return existing_df if not existing_df.empty else df
 
     def load_universe(
         self,

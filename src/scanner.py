@@ -48,8 +48,16 @@ def calculate_bars_since_flip(states: List[LarssonState]) -> Optional[int]:
 
 CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "backtest_cache")
 
-def _update_symbol_daily_cache(ticker: str, highs: np.ndarray, lows: np.ndarray, closes: np.ndarray, volumes: Optional[np.ndarray] = None):
-    """Updates data/backtest_cache/{TICKER}_1D.csv with freshly fetched candles while preserving historical volume."""
+def _update_symbol_daily_cache(
+    ticker: str,
+    highs: np.ndarray,
+    lows: np.ndarray,
+    closes: np.ndarray,
+    volumes: Optional[np.ndarray] = None,
+    opens: Optional[np.ndarray] = None,
+    dates: Optional[List[str]] = None,
+):
+    """Updates data/backtest_cache/{TICKER}_1D.csv with freshly fetched candles while preserving 5y history and volume."""
     try:
         os.makedirs(CACHE_DIR, exist_ok=True)
         clean_sym = ticker.replace("=", "_").replace("^", "_").replace(":", "_").replace("/", "_")
@@ -59,46 +67,72 @@ def _update_symbol_daily_cache(ticker: str, highs: np.ndarray, lows: np.ndarray,
             return
         import pandas as pd
         from datetime import datetime, timedelta, timezone
-        now_str = str(datetime.now(timezone.utc).date())
+
+        now_dt = datetime.now(timezone.utc).date()
+        now_str = str(now_dt)
+
+        has_real_dates = bool(dates and len(dates) == n and all(isinstance(d, str) and len(d) >= 10 for d in dates))
+        if has_real_dates:
+            use_dates = [d[:10] for d in dates]
+        else:
+            use_dates = [str(now_dt - timedelta(days=(n - 1 - idx))) for idx in range(n)]
+
+        use_opens = opens if (opens is not None and len(opens) == n) else closes
+        use_vols = volumes if (volumes is not None and len(volumes) == n) else np.zeros(n, dtype=np.float64)
+
+        fresh_df = pd.DataFrame({
+            "date": use_dates,
+            "open": np.asarray(use_opens, dtype=np.float64),
+            "high": np.asarray(highs, dtype=np.float64),
+            "low": np.asarray(lows, dtype=np.float64),
+            "close": np.asarray(closes, dtype=np.float64),
+            "volume": np.asarray(use_vols, dtype=np.float64),
+        })
+
         if os.path.exists(csv_path):
             try:
                 existing_df = pd.read_csv(csv_path)
-                if len(existing_df) >= 30 and "close" in existing_df.columns:
-                    last_vol = float(volumes[-1]) if (volumes is not None and len(volumes) > 0 and volumes[-1] > 0) else float(existing_df["volume"].iloc[-1] if "volume" in existing_df.columns and len(existing_df) > 0 else 0.0)
-                    if str(existing_df["date"].iloc[-1])[:10] == now_str:
-                        existing_df.loc[existing_df.index[-1], "high"] = float(highs[-1])
-                        existing_df.loc[existing_df.index[-1], "low"] = float(lows[-1])
-                        existing_df.loc[existing_df.index[-1], "close"] = float(closes[-1])
-                        if last_vol > 0:
-                            existing_df.loc[existing_df.index[-1], "volume"] = last_vol
+                if ((has_real_dates and len(existing_df) >= 1) or len(existing_df) >= 30) and "close" in existing_df.columns and "date" in existing_df.columns:
+                    if has_real_dates:
+                        existing_df["date"] = existing_df["date"].astype(str).str[:10]
+                        if "volume" not in existing_df.columns:
+                            existing_df["volume"] = 0.0
+                        # Preserve positive historical volumes if fresh batch lacked volume for older dates
+                        existing_vols = dict(zip(existing_df["date"], existing_df["volume"]))
+                        for i_row in range(len(fresh_df)):
+                            if fresh_df.at[i_row, "volume"] <= 0:
+                                prev_v = existing_vols.get(fresh_df.at[i_row, "date"], 0.0)
+                                if prev_v and prev_v > 0:
+                                    fresh_df.at[i_row, "volume"] = float(prev_v)
+                        merged = pd.concat([existing_df, fresh_df], ignore_index=True)
+                        merged = merged.drop_duplicates(subset=["date"], keep="last").sort_values("date").reset_index(drop=True)
+                        merged.to_csv(csv_path, index=False)
+                        return
                     else:
-                        new_row = pd.DataFrame([{
-                            "date": now_str,
-                            "open": float(closes[-2]) if len(closes) >= 2 else float(closes[-1]),
-                            "high": float(highs[-1]),
-                            "low": float(lows[-1]),
-                            "close": float(closes[-1]),
-                            "volume": last_vol,
-                        }])
-                        existing_df = pd.concat([existing_df, new_row], ignore_index=True)
-                    existing_df.to_csv(csv_path, index=False)
-                    return
+                        last_vol = float(use_vols[-1]) if use_vols[-1] > 0 else float(existing_df["volume"].iloc[-1] if "volume" in existing_df.columns and len(existing_df) > 0 else 0.0)
+                        if str(existing_df["date"].iloc[-1])[:10] == now_str:
+                            existing_df.loc[existing_df.index[-1], "high"] = float(highs[-1])
+                            existing_df.loc[existing_df.index[-1], "low"] = float(lows[-1])
+                            existing_df.loc[existing_df.index[-1], "close"] = float(closes[-1])
+                            if last_vol > 0:
+                                existing_df.loc[existing_df.index[-1], "volume"] = last_vol
+                        else:
+                            new_row = pd.DataFrame([{
+                                "date": now_str,
+                                "open": float(closes[-2]) if len(closes) >= 2 else float(closes[-1]),
+                                "high": float(highs[-1]),
+                                "low": float(lows[-1]),
+                                "close": float(closes[-1]),
+                                "volume": last_vol,
+                            }])
+                            existing_df = pd.concat([existing_df, new_row], ignore_index=True)
+                        existing_df.to_csv(csv_path, index=False)
+                        return
             except Exception:
                 pass
-        dates = []
-        now_dt = datetime.now(timezone.utc).date()
-        for idx in range(n):
-            d = now_dt - timedelta(days=(n - 1 - idx))
-            dates.append(str(d))
-        df = pd.DataFrame({
-            "date": dates,
-            "open": closes,
-            "high": highs,
-            "low": lows,
-            "close": closes,
-            "volume": volumes if volumes is not None and len(volumes) == n else np.zeros(n),
-        })
-        df.to_csv(csv_path, index=False)
+
+        fresh_df = fresh_df.drop_duplicates(subset=["date"], keep="last").sort_values("date").reset_index(drop=True)
+        fresh_df.to_csv(csv_path, index=False)
     except Exception as e:
         logger.debug(f"Failed to update cache for {ticker}: {e}")
 
@@ -565,9 +599,21 @@ class LarssonScanner:
                     results["neutral_count"] += 1
 
                 bars_since_flip = calculate_bars_since_flip(states)
-                # Update daily backtest cache on 1D scan
+                # Update daily backtest cache on 1D scan (using closed candles)
                 if timeframe == "1D":
-                    _update_symbol_daily_cache(sym, highs, lows, closes)
+                    rich_k = getattr(self.binance_fetcher, "last_klines_ohlcv", {}).get(sym)
+                    if rich_k and len(rich_k.get("closes", [])) == len(closes_raw):
+                        _update_symbol_daily_cache(
+                            sym,
+                            highs,
+                            lows,
+                            closes,
+                            volumes=rich_k["volumes"][:-1],
+                            opens=rich_k["opens"][:-1],
+                            dates=rich_k["dates"][:-1],
+                        )
+                    else:
+                        _update_symbol_daily_cache(sym, highs, lows, closes)
                 mom_60 = None
                 if timeframe == "1D" and len(closes) >= 60 and closes[-60] > 0:
                     mom_60 = float(((closes[-1] - closes[-60]) / closes[-60]) * 100.0)
@@ -803,6 +849,20 @@ class LarssonScanner:
 
                 tv_symbol = self.get_tv_symbol(sym, asset_class)
                 bars_since_flip = calculate_bars_since_flip(states)
+                if timeframe == "1D":
+                    rich_yf = getattr(self.yf_fetcher, "last_batch_ohlcv", {}).get(sym)
+                    if rich_yf and len(rich_yf.get("closes", [])) == len(closes):
+                        _update_symbol_daily_cache(
+                            sym,
+                            highs,
+                            lows,
+                            closes,
+                            volumes=rich_yf.get("volumes"),
+                            opens=rich_yf.get("opens"),
+                            dates=rich_yf.get("dates"),
+                        )
+                    else:
+                        _update_symbol_daily_cache(sym, highs, lows, closes)
                 mom_60 = None
                 if timeframe == "1D" and len(closes) >= 60 and closes[-60] > 0:
                     mom_60 = float(((closes[-1] - closes[-60]) / closes[-60]) * 100.0)

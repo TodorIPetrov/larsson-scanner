@@ -3,25 +3,26 @@
   "name": "Sui Network",
   "sector": "Крипто активи",
   "asset_class": "crypto",
+  "generated_at": "2026-11-17T15:37:22.819075+00:00",
   "backtest_start_date": "2023-09-30",
-  "backtest_end_date": "2026-11-11",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 4.5,
-  "backtest_total_bars": 1128,
-  "current_price": 0.82,
-  "state": "NEUTRAL",
-  "v1": 0.97,
-  "v2": 0.95,
+  "backtest_total_bars": 1144,
+  "current_price": 0.72,
+  "state": "BLUE",
+  "v1": 0.87,
+  "v2": 0.9,
   "sma200": 0.86,
-  "rsi14": 31.1,
-  "atr14": 0.07,
+  "rsi14": 32.0,
+  "atr14": 0.06,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 724.6,
-    "cagr_pct": 60.2,
-    "sharpe_ratio": 1.08,
+    "cagr_pct": 59.2,
+    "sharpe_ratio": 1.07,
     "win_rate_pct": 36.4,
     "profit_factor": 5.36,
     "max_drawdown_pct": 48.9,
@@ -32,36 +33,36 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 100.7,
-      "cagr_pct": 16.8,
-      "sharpe_ratio": 0.55,
+      "total_return_pct": 85.1,
+      "cagr_pct": 14.5,
+      "sharpe_ratio": 0.52,
       "win_rate_pct": 11.8,
-      "profit_factor": 1.19,
-      "max_drawdown_pct": 81.5,
+      "profit_factor": 1.16,
+      "max_drawdown_pct": 82.9,
       "total_trades": 17
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 86.4,
-      "cagr_pct": 14.9,
-      "sharpe_ratio": 0.52,
+      "total_return_pct": 103.7,
+      "cagr_pct": 17.0,
+      "sharpe_ratio": 0.55,
       "win_rate_pct": 11.8,
-      "profit_factor": 1.2,
-      "max_drawdown_pct": 78.5,
+      "profit_factor": 1.26,
+      "max_drawdown_pct": 77.2,
       "total_trades": 17
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 105.8,
-      "cagr_pct": 17.5,
-      "sharpe_ratio": 0.56,
+      "total_return_pct": 101.7,
+      "cagr_pct": 16.7,
+      "sharpe_ratio": 0.55,
       "win_rate_pct": 18.8,
-      "profit_factor": 1.63,
-      "max_drawdown_pct": 74.0,
+      "profit_factor": 1.61,
+      "max_drawdown_pct": 74.5,
       "total_trades": 32
     },
     {
@@ -69,8 +70,8 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 724.6,
-      "cagr_pct": 60.2,
-      "sharpe_ratio": 1.08,
+      "cagr_pct": 59.2,
+      "sharpe_ratio": 1.07,
       "win_rate_pct": 36.4,
       "profit_factor": 5.36,
       "max_drawdown_pct": 48.9,
@@ -80,23 +81,23 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 130.7,
-      "cagr_pct": 20.5,
-      "sharpe_ratio": 0.6,
+      "total_return_pct": 112.7,
+      "cagr_pct": 18.1,
+      "sharpe_ratio": 0.57,
       "win_rate_pct": 28.6,
-      "profit_factor": 1.52,
-      "max_drawdown_pct": 74.8,
+      "profit_factor": 1.42,
+      "max_drawdown_pct": 76.7,
       "total_trades": 7
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 71.6,
-      "cagr_pct": 12.8,
-      "sharpe_ratio": 0.57,
+      "total_return_pct": 49.9,
+      "cagr_pct": 9.3,
+      "sharpe_ratio": 0.53,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.82,
+      "profit_factor": 0.57,
       "max_drawdown_pct": 87.7,
       "total_trades": 1
     }
@@ -116,7 +117,9 @@
     "tata": null,
     "solvency_type": "Multi-Asset Evaluation",
     "verdict": "BUY",
-    "model_type": "Он-чейн пазарен модел"
+    "model_type": "Он-чейн пазарен модел",
+    "latest_filing_date": null,
+    "last_fundamental_update": null
   },
   "candles": [
     {
@@ -15858,24 +15861,24 @@
     {
       "time": "2026-10-28",
       "open": 0.93,
-      "high": 0.95,
-      "low": 0.93,
+      "high": 0.96,
+      "low": 0.92,
       "close": 0.94,
-      "volume": 10843361.0,
+      "volume": 35219967.0,
       "v1": 1.0,
       "m1": 0.99,
-      "m2": 0.97,
+      "m2": 0.98,
       "v2": 0.96,
       "sma200": 0.87,
       "state": "GOLD"
     },
     {
-      "time": "2026-11-05",
-      "open": 0.89,
+      "time": "2026-10-29",
+      "open": 0.94,
       "high": 0.96,
       "low": 0.86,
-      "close": 0.93,
-      "volume": 10843361.0,
+      "close": 0.87,
+      "volume": 69795387.0,
       "v1": 0.99,
       "m1": 0.99,
       "m2": 0.97,
@@ -15884,12 +15887,12 @@
       "state": "GOLD"
     },
     {
-      "time": "2026-11-09",
-      "open": 0.86,
-      "high": 0.86,
-      "low": 0.8,
-      "close": 0.82,
-      "volume": 10843361.0,
+      "time": "2026-10-30",
+      "open": 0.87,
+      "high": 0.91,
+      "low": 0.83,
+      "close": 0.91,
+      "volume": 53534618.0,
       "v1": 0.98,
       "m1": 0.98,
       "m2": 0.97,
@@ -15898,18 +15901,242 @@
       "state": "GOLD"
     },
     {
-      "time": "2026-11-11",
-      "open": 0.85,
-      "high": 0.85,
-      "low": 0.8,
-      "close": 0.82,
-      "volume": 10843361.0,
+      "time": "2026-10-31",
+      "open": 0.91,
+      "high": 0.91,
+      "low": 0.89,
+      "close": 0.9,
+      "volume": 16880732.0,
+      "v1": 0.98,
+      "m1": 0.98,
+      "m2": 0.97,
+      "v2": 0.96,
+      "sma200": 0.87,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-01",
+      "open": 0.9,
+      "high": 0.91,
+      "low": 0.89,
+      "close": 0.9,
+      "volume": 19511907.0,
+      "v1": 0.97,
+      "m1": 0.97,
+      "m2": 0.96,
+      "v2": 0.95,
+      "sma200": 0.87,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-02",
+      "open": 0.9,
+      "high": 0.91,
+      "low": 0.86,
+      "close": 0.87,
+      "volume": 24636840.0,
       "v1": 0.97,
       "m1": 0.97,
       "m2": 0.96,
       "v2": 0.95,
       "sma200": 0.86,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-03",
+      "open": 0.87,
+      "high": 0.9,
+      "low": 0.86,
+      "close": 0.89,
+      "volume": 26036367.0,
+      "v1": 0.96,
+      "m1": 0.96,
+      "m2": 0.96,
+      "v2": 0.95,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-04",
+      "open": 0.89,
+      "high": 0.96,
+      "low": 0.86,
+      "close": 0.93,
+      "volume": 54860451.0,
+      "v1": 0.96,
+      "m1": 0.96,
+      "m2": 0.95,
+      "v2": 0.95,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-05",
+      "open": 0.93,
+      "high": 0.94,
+      "low": 0.83,
+      "close": 0.84,
+      "volume": 52624308.0,
+      "v1": 0.95,
+      "m1": 0.96,
+      "m2": 0.95,
+      "v2": 0.95,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-06",
+      "open": 0.84,
+      "high": 0.88,
+      "low": 0.84,
+      "close": 0.87,
+      "volume": 28765163.0,
+      "v1": 0.95,
+      "m1": 0.95,
+      "m2": 0.95,
+      "v2": 0.94,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-07",
+      "open": 0.87,
+      "high": 0.87,
+      "low": 0.85,
+      "close": 0.86,
+      "volume": 12385060.0,
+      "v1": 0.94,
+      "m1": 0.95,
+      "m2": 0.94,
+      "v2": 0.94,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-08",
+      "open": 0.86,
+      "high": 0.86,
+      "low": 0.8,
+      "close": 0.82,
+      "volume": 25592124.0,
+      "v1": 0.93,
+      "m1": 0.94,
+      "m2": 0.94,
+      "v2": 0.94,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-09",
+      "open": 0.82,
+      "high": 0.87,
+      "low": 0.81,
+      "close": 0.85,
+      "volume": 33305381.0,
+      "v1": 0.93,
+      "m1": 0.93,
+      "m2": 0.94,
+      "v2": 0.93,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-10",
+      "open": 0.85,
+      "high": 0.85,
+      "low": 0.8,
+      "close": 0.82,
+      "volume": 32635214.0,
+      "v1": 0.92,
+      "m1": 0.93,
+      "m2": 0.93,
+      "v2": 0.93,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-11",
+      "open": 0.82,
+      "high": 0.85,
+      "low": 0.81,
+      "close": 0.82,
+      "volume": 24524974.0,
+      "v1": 0.91,
+      "m1": 0.92,
+      "m2": 0.93,
+      "v2": 0.93,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-12",
+      "open": 0.82,
+      "high": 0.83,
+      "low": 0.78,
+      "close": 0.81,
+      "volume": 31739064.0,
+      "v1": 0.91,
+      "m1": 0.92,
+      "m2": 0.92,
+      "v2": 0.92,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-13",
+      "open": 0.81,
+      "high": 0.83,
+      "low": 0.77,
+      "close": 0.8,
+      "volume": 41937488.0,
+      "v1": 0.9,
+      "m1": 0.91,
+      "m2": 0.92,
+      "v2": 0.92,
+      "sma200": 0.86,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-14",
+      "open": 0.8,
+      "high": 0.8,
+      "low": 0.68,
+      "close": 0.7,
+      "volume": 61775192.0,
+      "v1": 0.89,
+      "m1": 0.9,
+      "m2": 0.91,
+      "v2": 0.91,
+      "sma200": 0.86,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-15",
+      "open": 0.7,
+      "high": 0.74,
+      "low": 0.68,
+      "close": 0.74,
+      "volume": 43594868.0,
+      "v1": 0.88,
+      "m1": 0.89,
+      "m2": 0.9,
+      "v2": 0.9,
+      "sma200": 0.86,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-16",
+      "open": 0.74,
+      "high": 0.74,
+      "low": 0.71,
+      "close": 0.72,
+      "volume": 23435974.0,
+      "v1": 0.87,
+      "m1": 0.88,
+      "m2": 0.9,
+      "v2": 0.9,
+      "sma200": 0.86,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -20575,7 +20802,47 @@
           "value": 82458.72
         },
         {
+          "time": "2026-10-29",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-10-30",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-10-31",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-01",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-02",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-03",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-04",
+          "value": 82458.72
+        },
+        {
           "time": "2026-11-05",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-06",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-07",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-08",
           "value": 82458.72
         },
         {
@@ -20583,7 +20850,31 @@
           "value": 82458.72
         },
         {
+          "time": "2026-11-10",
+          "value": 82458.72
+        },
+        {
           "time": "2026-11-11",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-12",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-13",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-14",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-15",
+          "value": 82458.72
+        },
+        {
+          "time": "2026-11-16",
           "value": 82458.72
         }
       ]
@@ -25091,19 +25382,83 @@
         },
         {
           "time": "2026-10-28",
-          "value": 26420.63
+          "value": 26431.83
         },
         {
-          "time": "2026-11-05",
+          "time": "2026-10-29",
+          "value": 24366.2
+        },
+        {
+          "time": "2026-10-30",
+          "value": 25365.43
+        },
+        {
+          "time": "2026-10-31",
+          "value": 25203.09
+        },
+        {
+          "time": "2026-11-01",
+          "value": 25239.47
+        },
+        {
+          "time": "2026-11-02",
+          "value": 24461.36
+        },
+        {
+          "time": "2026-11-03",
+          "value": 25046.34
+        },
+        {
+          "time": "2026-11-04",
           "value": 26037.18
         },
         {
-          "time": "2026-11-09",
+          "time": "2026-11-05",
+          "value": 23582.49
+        },
+        {
+          "time": "2026-11-06",
+          "value": 24355.0
+        },
+        {
+          "time": "2026-11-07",
+          "value": 24013.53
+        },
+        {
+          "time": "2026-11-08",
           "value": 23011.5
         },
         {
-          "time": "2026-11-11",
+          "time": "2026-11-09",
+          "value": 23694.45
+        },
+        {
+          "time": "2026-11-10",
           "value": 23089.87
+        },
+        {
+          "time": "2026-11-11",
+          "value": 23045.09
+        },
+        {
+          "time": "2026-11-12",
+          "value": 22580.46
+        },
+        {
+          "time": "2026-11-13",
+          "value": 22314.56
+        },
+        {
+          "time": "2026-11-14",
+          "value": 21268.52
+        },
+        {
+          "time": "2026-11-15",
+          "value": 21268.52
+        },
+        {
+          "time": "2026-11-16",
+          "value": 21268.52
         }
       ]
     },
@@ -29610,19 +29965,83 @@
         },
         {
           "time": "2026-10-28",
-          "value": 22378.47
+          "value": 22383.17
+        },
+        {
+          "time": "2026-10-29",
+          "value": 20928.25
+        },
+        {
+          "time": "2026-10-30",
+          "value": 21336.29
+        },
+        {
+          "time": "2026-10-31",
+          "value": 21266.66
+        },
+        {
+          "time": "2026-11-01",
+          "value": 21282.27
+        },
+        {
+          "time": "2026-11-02",
+          "value": 20948.55
+        },
+        {
+          "time": "2026-11-03",
+          "value": 21199.44
+        },
+        {
+          "time": "2026-11-04",
+          "value": 21624.39
         },
         {
           "time": "2026-11-05",
-          "value": 22209.56
+          "value": 20571.62
+        },
+        {
+          "time": "2026-11-06",
+          "value": 20902.94
+        },
+        {
+          "time": "2026-11-07",
+          "value": 20756.49
+        },
+        {
+          "time": "2026-11-08",
+          "value": 20168.52
         },
         {
           "time": "2026-11-09",
-          "value": 20559.25
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-10",
+          "value": 20168.52
         },
         {
           "time": "2026-11-11",
-          "value": 20593.5
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-12",
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-13",
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-14",
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-15",
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-16",
+          "value": 20168.52
         }
       ]
     },
@@ -34129,19 +34548,83 @@
         },
         {
           "time": "2026-10-28",
-          "value": 19656.87
+          "value": 19665.21
         },
         {
-          "time": "2026-11-05",
+          "time": "2026-10-29",
+          "value": 18126.68
+        },
+        {
+          "time": "2026-10-30",
+          "value": 18870.93
+        },
+        {
+          "time": "2026-10-31",
+          "value": 18750.01
+        },
+        {
+          "time": "2026-11-01",
+          "value": 18777.11
+        },
+        {
+          "time": "2026-11-02",
+          "value": 18197.56
+        },
+        {
+          "time": "2026-11-03",
+          "value": 18633.27
+        },
+        {
+          "time": "2026-11-04",
           "value": 19371.26
         },
         {
-          "time": "2026-11-09",
+          "time": "2026-11-05",
+          "value": 17542.96
+        },
+        {
+          "time": "2026-11-06",
+          "value": 18118.34
+        },
+        {
+          "time": "2026-11-07",
+          "value": 17864.0
+        },
+        {
+          "time": "2026-11-08",
           "value": 17117.67
         },
         {
-          "time": "2026-11-11",
+          "time": "2026-11-09",
+          "value": 17626.35
+        },
+        {
+          "time": "2026-11-10",
           "value": 17176.05
+        },
+        {
+          "time": "2026-11-11",
+          "value": 17142.69
+        },
+        {
+          "time": "2026-11-12",
+          "value": 16796.63
+        },
+        {
+          "time": "2026-11-13",
+          "value": 16598.58
+        },
+        {
+          "time": "2026-11-14",
+          "value": 14616.0
+        },
+        {
+          "time": "2026-11-15",
+          "value": 15374.84
+        },
+        {
+          "time": "2026-11-16",
+          "value": 15007.93
         }
       ]
     }
@@ -34282,14 +34765,14 @@
   ],
   "smart_money": {
     "symbol": "SUIUSDT",
-    "smart_money_score": 52.0,
+    "smart_money_score": 45.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: N/A).",
-    "cmf_20d": -0.002,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 63.1,
-    "vol_shock_ratio": 0.29,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
+    "cmf_20d": -0.043,
+    "up_down_vol_ratio": 0.71,
+    "absorption_5d_pct": 51.3,
+    "vol_shock_ratio": 0.65,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
