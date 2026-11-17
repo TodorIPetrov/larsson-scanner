@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-11-17 13:06:08",
-  "total_audited": 484,
+  "timestamp": "2026-11-17 15:11:32",
+  "total_audited": 485,
   "verdicts": [
     {
       "ticker": "BKKT",
@@ -15134,6 +15134,39 @@
       "verdict": "AVOID / FORENSIC RED FLAG",
       "action": "AVOID",
       "latest_filing_date": "2026-03-31 (10-Q TTM)",
+      "data_quality": "HIGH",
+      "last_fundamental_update": "2026-11-17"
+    },
+    {
+      "ticker": "RIO.L",
+      "name": "RIO TINTO PLC ORD 10P",
+      "sector": "Basic Materials",
+      "industry": "Other Industrial Metals & Mining",
+      "model_type": "Mid-Cycle Normalized DCF",
+      "price": 6089.5,
+      "shares": 16264973.515723787,
+      "mcap_b": 1.31,
+      "beta": 0.709,
+      "revenue_b": 57.64,
+      "ebit_b": 15.45,
+      "nopat_b": 10.51,
+      "roic_pct": 13.3,
+      "wacc_pct": 8.0,
+      "moat": "Narrow",
+      "z_score": 3.42,
+      "m_score": -1.99,
+      "tata": -0.051,
+      "solvency_type": "Altman Z''-Score (Universal Model)",
+      "target_price": 13396.9,
+      "fair_value_base": 13396.9,
+      "required_mos_pct": 25.0,
+      "actual_discount_pct": 54.5,
+      "mos_pct": 54.5,
+      "entry_price": 10047.68,
+      "upside_pct": 120.0,
+      "verdict": "HOLD / SENSITIVITY REVIEW",
+      "action": "HOLD",
+      "latest_filing_date": "2026-06-30 (10-Q TTM)",
       "data_quality": "HIGH",
       "last_fundamental_update": "2026-11-17"
     }
