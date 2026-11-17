@@ -3,29 +3,29 @@
   "name": "Atlas Copco AB ser. A",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:35:54.016990+00:00",
+  "generated_at": "2026-11-17T23:30:33.745777+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 189.2,
+  "backtest_total_bars": 374,
+  "current_price": 191.9,
   "state": "BLUE",
-  "v1": 192.01,
-  "v2": 194.47,
-  "sma200": 188.04,
-  "rsi14": 46.4,
-  "atr14": 4.88,
+  "v1": 192.16,
+  "v2": 194.63,
+  "sma200": 188.01,
+  "rsi14": 49.9,
+  "atr14": 4.98,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 2.1,
-    "cagr_pct": 1.4,
-    "sharpe_ratio": 0.59,
+    "total_return_pct": 2.8,
+    "cagr_pct": 1.9,
+    "sharpe_ratio": 0.81,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
-    "max_drawdown_pct": 1.4,
+    "max_drawdown_pct": 1.2,
     "total_trades": 1
   },
   "all_strategies": [
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 2.1,
-      "cagr_pct": 1.4,
-      "sharpe_ratio": 0.59,
+      "total_return_pct": 2.8,
+      "cagr_pct": 1.9,
+      "sharpe_ratio": 0.81,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 1.4,
+      "max_drawdown_pct": 1.2,
       "total_trades": 1
     },
     {
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -16.7,
-      "cagr_pct": -11.5,
+      "cagr_pct": -11.6,
       "sharpe_ratio": -0.72,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 20.4,
-      "cagr_pct": 13.3,
-      "sharpe_ratio": 0.63,
+      "total_return_pct": 22.1,
+      "cagr_pct": 14.4,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.05,
+      "profit_factor": 1.14,
       "max_drawdown_pct": 19.5,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 74.01,
     "entry_price": 55.51,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -155.6,
-    "mos_pct": -155.6,
+    "actual_discount_pct": -159.3,
+    "mos_pct": -159.3,
     "moat": "Narrow",
     "roic_pct": 19.0,
     "wacc_pct": 9.49,
@@ -5357,20 +5357,6 @@
       "v2": 194.63,
       "sma200": 188.01,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 190.15,
-      "high": 191.5,
-      "low": 188.35,
-      "close": 189.2,
-      "volume": 4665828.0,
-      "v1": 192.01,
-      "m1": 193.04,
-      "m2": 194.08,
-      "v2": 194.47,
-      "sma200": 188.04,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5382,11 +5368,11 @@
       "text": "BUY #1 @ $181.35"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-16",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.12% ($205.8 €)"
+      "text": "EXIT +5.61% ($280.02 €)"
     }
   ],
   "equity_curves": [
@@ -6890,10 +6876,6 @@
         {
           "time": "2026-11-16",
           "value": 10285.3
-        },
-        {
-          "time": "2026-11-17",
-          "value": 10211.01
         }
       ]
     },
@@ -8396,10 +8378,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 9296.24
-        },
-        {
-          "time": "2026-11-17",
           "value": 9296.24
         }
       ]
@@ -9904,10 +9882,6 @@
         {
           "time": "2026-11-16",
           "value": 8412.11
-        },
-        {
-          "time": "2026-11-17",
-          "value": 8412.11
         }
       ]
     },
@@ -11411,10 +11385,6 @@
         {
           "time": "2026-11-16",
           "value": 12225.03
-        },
-        {
-          "time": "2026-11-17",
-          "value": 12053.03
         }
       ]
     }
@@ -11424,11 +11394,11 @@
       "num": 1,
       "entry_date": "2026-10-27",
       "entry_price": 181.35,
-      "exit_date": "2026-11-17",
-      "exit_price": 189.2,
-      "holding_days": 15,
-      "pnl_pct": 4.12,
-      "pnl_eur": 205.8,
+      "exit_date": "2026-11-16",
+      "exit_price": 191.9,
+      "holding_days": 14,
+      "pnl_pct": 5.61,
+      "pnl_eur": 280.02,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11438,11 +11408,11 @@
     "smart_money_score": 62.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.08, P/C: N/A).",
-    "cmf_20d": 0.078,
-    "up_down_vol_ratio": 0.89,
-    "absorption_5d_pct": 45.1,
-    "vol_shock_ratio": 0.79,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.09, P/C: N/A).",
+    "cmf_20d": 0.085,
+    "up_down_vol_ratio": 0.87,
+    "absorption_5d_pct": 46.4,
+    "vol_shock_ratio": 0.89,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

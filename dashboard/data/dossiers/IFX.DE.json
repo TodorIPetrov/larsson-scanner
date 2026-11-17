@@ -3,26 +3,26 @@
   "name": "INFINEON TECHNOLOGIES AG      N",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:36:04.535852+00:00",
+  "generated_at": "2026-11-17T23:30:45.523614+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 380,
-  "current_price": 48.69,
+  "backtest_total_bars": 379,
+  "current_price": 49.24,
   "state": "BLUE",
-  "v1": 52.01,
-  "v2": 54.61,
-  "sma200": 57.61,
-  "rsi14": 42.3,
-  "atr14": 2.77,
+  "v1": 52.25,
+  "v2": 54.82,
+  "sma200": 57.57,
+  "rsi14": 43.4,
+  "atr14": 2.88,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 65.1,
-    "cagr_pct": 39.5,
-    "sharpe_ratio": 1.04,
+    "cagr_pct": 39.6,
+    "sharpe_ratio": 1.05,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 38.1,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 37.1,
-      "cagr_pct": 23.3,
+      "cagr_pct": 23.4,
       "sharpe_ratio": 0.72,
       "win_rate_pct": 20.0,
       "profit_factor": 2.93,
@@ -70,8 +70,8 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 65.1,
-      "cagr_pct": 39.5,
-      "sharpe_ratio": 1.04,
+      "cagr_pct": 39.6,
+      "sharpe_ratio": 1.05,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 38.1,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 39.1,
-      "cagr_pct": 24.5,
+      "cagr_pct": 24.6,
       "sharpe_ratio": 0.72,
       "win_rate_pct": 50.0,
       "profit_factor": 5.03,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 41.1,
-      "cagr_pct": 25.6,
-      "sharpe_ratio": 0.77,
+      "total_return_pct": 42.7,
+      "cagr_pct": 26.7,
+      "sharpe_ratio": 0.78,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.86,
+      "profit_factor": 0.89,
       "max_drawdown_pct": 48.0,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 19.72,
     "entry_price": 14.79,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -146.9,
-    "mos_pct": -146.9,
+    "actual_discount_pct": -149.7,
+    "mos_pct": -149.7,
     "moat": "None",
     "roic_pct": 8.7,
     "wacc_pct": 11.83,
@@ -5427,20 +5427,6 @@
       "v2": 54.82,
       "sma200": 57.57,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 48.76,
-      "high": 49.42,
-      "low": 48.08,
-      "close": 48.69,
-      "volume": 4714077.0,
-      "v1": 52.01,
-      "m1": 52.83,
-      "m2": 53.96,
-      "v2": 54.61,
-      "sma200": 57.61,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6980,10 +6966,6 @@
         {
           "time": "2026-11-16",
           "value": 16513.3
-        },
-        {
-          "time": "2026-11-17",
-          "value": 16513.3
         }
       ]
     },
@@ -8507,10 +8489,6 @@
         {
           "time": "2026-11-16",
           "value": 13913.89
-        },
-        {
-          "time": "2026-11-17",
-          "value": 13913.89
         }
       ]
     },
@@ -9489,7 +9467,7 @@
         },
         {
           "time": "2026-05-08",
-          "value": 15006.35
+          "value": 15006.36
         },
         {
           "time": "2026-05-11",
@@ -10033,10 +10011,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 13712.86
-        },
-        {
-          "time": "2026-11-17",
           "value": 13712.86
         }
       ]
@@ -11561,10 +11535,6 @@
         {
           "time": "2026-11-16",
           "value": 14283.03
-        },
-        {
-          "time": "2026-11-17",
-          "value": 14122.05
         }
       ]
     }
@@ -11585,14 +11555,14 @@
   ],
   "smart_money": {
     "symbol": "IFX.DE",
-    "smart_money_score": 30.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.19).",
-    "cmf_20d": -0.194,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 52.5,
-    "vol_shock_ratio": 0.96,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
+    "cmf_20d": -0.177,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 44.0,
+    "vol_shock_ratio": 1.1,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

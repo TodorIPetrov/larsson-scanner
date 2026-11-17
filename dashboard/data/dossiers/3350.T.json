@@ -3,18 +3,18 @@
   "name": "METAPLANET INC",
   "sector": "Financial Services",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T17:35:50.013219+00:00",
+  "generated_at": "2026-11-17T23:30:29.223228+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.4,
-  "backtest_total_bars": 364,
-  "current_price": 204.0,
+  "backtest_total_bars": 365,
+  "current_price": 197.0,
   "state": "BLUE",
-  "v1": 250.35,
-  "v2": 257.27,
-  "sma200": 290.52,
-  "rsi14": 32.7,
-  "atr14": 16.98,
+  "v1": 246.92,
+  "v2": 255.26,
+  "sma200": 288.94,
+  "rsi14": 31.0,
+  "atr14": 16.41,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -17.0,
-      "cagr_pct": -12.1,
+      "cagr_pct": -12.0,
       "sharpe_ratio": -0.24,
       "win_rate_pct": 14.3,
       "profit_factor": 0.25,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -78.2,
-      "cagr_pct": -65.1,
-      "sharpe_ratio": -0.56,
+      "total_return_pct": -78.9,
+      "cagr_pct": -65.9,
+      "sharpe_ratio": -0.58,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 89.6,
@@ -107,8 +107,8 @@
     "target_price": 103.6,
     "entry_price": 77.7,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -96.9,
-    "mos_pct": -96.9,
+    "actual_discount_pct": -90.2,
+    "mos_pct": -90.2,
     "moat": "None",
     "roic_pct": 2.0,
     "wacc_pct": 7.66,
@@ -5217,6 +5217,20 @@
       "v2": 257.27,
       "sma200": 290.52,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 198.0,
+      "high": 203.0,
+      "low": 195.0,
+      "close": 197.0,
+      "volume": 16471000.0,
+      "v1": 246.92,
+      "m1": 250.48,
+      "m2": 253.69,
+      "v2": 255.26,
+      "sma200": 288.94,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6738,6 +6752,10 @@
         {
           "time": "2026-11-16",
           "value": 8225.9
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8225.9
         }
       ]
     },
@@ -8200,6 +8218,10 @@
         },
         {
           "time": "2026-11-16",
+          "value": 8028.06
+        },
+        {
+          "time": "2026-11-17",
           "value": 8028.06
         }
       ]
@@ -9664,6 +9686,10 @@
         {
           "time": "2026-11-16",
           "value": 8303.98
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8303.98
         }
       ]
     },
@@ -11127,6 +11153,10 @@
         {
           "time": "2026-11-16",
           "value": 2184.31
+        },
+        {
+          "time": "2026-11-17",
+          "value": 2109.36
         }
       ]
     }
@@ -11186,11 +11216,11 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.195,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.24).",
+    "cmf_20d": -0.239,
     "up_down_vol_ratio": 0.34,
-    "absorption_5d_pct": 45.0,
-    "vol_shock_ratio": 0.92,
+    "absorption_5d_pct": 44.3,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

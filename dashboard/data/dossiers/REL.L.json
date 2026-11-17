@@ -3,7 +3,7 @@
   "name": "RELX PLC ORD 14 51/116P",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:36:16.339388+00:00",
+  "generated_at": "2026-11-17T23:30:57.186943+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
@@ -129,7 +129,7 @@
       "low": 4080.72,
       "close": 4127.71,
       "volume": 4655086.0,
-      "v1": 3987.41,
+      "v1": 3987.42,
       "m1": 3967.49,
       "m2": 3945.06,
       "v2": 3933.07,
@@ -5434,7 +5434,7 @@
       "high": 3067.0,
       "low": 2984.0,
       "close": 2984.0,
-      "volume": 2509291.0,
+      "volume": 3959291.0,
       "v1": 2920.93,
       "m1": 2882.71,
       "m2": 2835.32,
@@ -6939,7 +6939,7 @@
         },
         {
           "time": "2026-10-22",
-          "value": 10193.47
+          "value": 10193.48
         },
         {
           "time": "2026-10-23",
@@ -6951,7 +6951,7 @@
         },
         {
           "time": "2026-10-27",
-          "value": 9894.13
+          "value": 9894.14
         },
         {
           "time": "2026-10-28",
@@ -7962,7 +7962,7 @@
         },
         {
           "time": "2026-04-24",
-          "value": 9957.13
+          "value": 9957.14
         },
         {
           "time": "2026-04-27",
@@ -8677,7 +8677,7 @@
         },
         {
           "time": "2025-07-07",
-          "value": 9481.69
+          "value": 9481.7
         },
         {
           "time": "2025-07-08",
@@ -9833,7 +9833,7 @@
         },
         {
           "time": "2026-08-26",
-          "value": 8347.22
+          "value": 8347.23
         },
         {
           "time": "2026-08-27",
@@ -11637,14 +11637,14 @@
   ],
   "smart_money": {
     "symbol": "REL.L",
-    "smart_money_score": 72.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.05,
-    "up_down_vol_ratio": 1.72,
+    "smart_money_score": 60.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: N/A).",
+    "cmf_20d": 0.03,
+    "up_down_vol_ratio": 1.63,
     "absorption_5d_pct": 41.3,
-    "vol_shock_ratio": 0.67,
+    "vol_shock_ratio": 1.05,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

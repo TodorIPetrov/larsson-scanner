@@ -3,17 +3,17 @@
   "name": "HANetf Sprott Pure Play Copper Miners (Milan)",
   "sector": "Базови ресурси & Енергиен преход",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:35:58.200648+00:00",
+  "generated_at": "2026-11-17T23:30:38.606494+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 378,
-  "current_price": 16.63,
+  "backtest_total_bars": 377,
+  "current_price": 16.87,
   "state": "BLUE",
-  "v1": 18.63,
-  "v2": 19.26,
-  "sma200": 19.41,
-  "rsi14": 30.0,
+  "v1": 18.78,
+  "v2": 19.36,
+  "sma200": 19.43,
+  "rsi14": 31.4,
   "atr14": 0.46,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 65.3,
-    "cagr_pct": 39.8,
+    "cagr_pct": 39.9,
     "sharpe_ratio": 1.1,
     "win_rate_pct": 50.0,
     "profit_factor": 5.93,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 63.8,
-      "cagr_pct": 38.9,
-      "sharpe_ratio": 1.08,
+      "cagr_pct": 39.1,
+      "sharpe_ratio": 1.09,
       "win_rate_pct": 50.0,
       "profit_factor": 5.86,
       "max_drawdown_pct": 27.1,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 64.0,
-      "cagr_pct": 39.1,
+      "cagr_pct": 39.2,
       "sharpe_ratio": 1.09,
       "win_rate_pct": 33.3,
       "profit_factor": 4.66,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 65.3,
-      "cagr_pct": 39.8,
+      "cagr_pct": 39.9,
       "sharpe_ratio": 1.1,
       "win_rate_pct": 50.0,
       "profit_factor": 5.93,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 78.3,
-      "cagr_pct": 47.0,
-      "sharpe_ratio": 1.21,
+      "total_return_pct": 80.8,
+      "cagr_pct": 48.6,
+      "sharpe_ratio": 1.23,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.89,
+      "profit_factor": 2.98,
       "max_drawdown_pct": 27.1,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 26.5,
     "entry_price": 21.2,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 37.2,
-    "mos_pct": 37.2,
+    "actual_discount_pct": 36.4,
+    "mos_pct": 36.4,
     "moat": "Wide",
     "roic_pct": 16.5,
     "wacc_pct": 10.2,
@@ -5399,20 +5399,6 @@
       "v2": 19.36,
       "sma200": 19.43,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 16.49,
-      "high": 16.56,
-      "low": 16.49,
-      "close": 16.63,
-      "volume": 261.0,
-      "v1": 18.63,
-      "m1": 18.88,
-      "m2": 19.15,
-      "v2": 19.26,
-      "sma200": 19.41,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6958,10 +6944,6 @@
         {
           "time": "2026-11-16",
           "value": 16528.08
-        },
-        {
-          "time": "2026-11-17",
-          "value": 16528.08
         }
       ]
     },
@@ -8476,10 +8458,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 16376.42
-        },
-        {
-          "time": "2026-11-17",
           "value": 16376.42
         }
       ]
@@ -9996,10 +9974,6 @@
         {
           "time": "2026-11-16",
           "value": 16397.25
-        },
-        {
-          "time": "2026-11-17",
-          "value": 16397.25
         }
       ]
     },
@@ -11515,10 +11489,6 @@
         {
           "time": "2026-11-16",
           "value": 18095.94
-        },
-        {
-          "time": "2026-11-17",
-          "value": 17844.88
         }
       ]
     }
@@ -11551,14 +11521,14 @@
   ],
   "smart_money": {
     "symbol": "COPR.MI",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -3.15).",
-    "cmf_20d": -3.148,
-    "up_down_vol_ratio": 0.72,
-    "absorption_5d_pct": -31.0,
-    "vol_shock_ratio": 0.07,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -3.12).",
+    "cmf_20d": -3.124,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": -125.3,
+    "vol_shock_ratio": 0.31,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

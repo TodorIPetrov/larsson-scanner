@@ -3,17 +3,17 @@
   "name": "Vulcan Energy Resources Ltd",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:36:21.514444+00:00",
+  "generated_at": "2026-11-17T23:31:03.013647+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 380,
-  "current_price": 0.67,
+  "backtest_total_bars": 379,
+  "current_price": 0.7,
   "state": "BLUE",
-  "v1": 0.81,
-  "v2": 1.01,
-  "sma200": 1.75,
-  "rsi14": 37.1,
+  "v1": 0.82,
+  "v2": 1.03,
+  "sma200": 1.76,
+  "rsi14": 39.4,
   "atr14": 0.05,
   "empirical_tier": "A",
   "walk_forward_stable": false,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -6.9,
-      "cagr_pct": -4.6,
+      "cagr_pct": -4.7,
       "sharpe_ratio": 0.01,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -15.5,
-      "cagr_pct": -10.5,
+      "cagr_pct": -10.6,
       "sharpe_ratio": -0.58,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -6.9,
-      "cagr_pct": -4.6,
+      "cagr_pct": -4.7,
       "sharpe_ratio": 0.01,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -69.8,
-      "cagr_pct": -54.8,
-      "sharpe_ratio": -0.89,
+      "total_return_pct": -68.4,
+      "cagr_pct": -53.5,
+      "sharpe_ratio": -0.85,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 81.8,
@@ -107,8 +107,8 @@
     "target_price": 0.55,
     "entry_price": 0.38,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -21.5,
-    "mos_pct": -21.5,
+    "actual_discount_pct": -27.4,
+    "mos_pct": -27.4,
     "moat": "None",
     "roic_pct": -18.5,
     "wacc_pct": 12.0,
@@ -5427,20 +5427,6 @@
       "v2": 1.03,
       "sma200": 1.76,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 0.67,
-      "high": 0.68,
-      "low": 0.67,
-      "close": 0.67,
-      "volume": 252831.0,
-      "v1": 0.81,
-      "m1": 0.87,
-      "m2": 0.96,
-      "v2": 1.01,
-      "sma200": 1.75,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6994,10 +6980,6 @@
         {
           "time": "2026-11-16",
           "value": 9067.86
-        },
-        {
-          "time": "2026-11-17",
-          "value": 9067.86
         }
       ]
     },
@@ -8520,10 +8502,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 9919.16
-        },
-        {
-          "time": "2026-11-17",
           "value": 9919.16
         }
       ]
@@ -10048,10 +10026,6 @@
         {
           "time": "2026-11-16",
           "value": 9308.84
-        },
-        {
-          "time": "2026-11-17",
-          "value": 9308.84
         }
       ]
     },
@@ -11575,10 +11549,6 @@
         {
           "time": "2026-11-16",
           "value": 3165.48
-        },
-        {
-          "time": "2026-11-17",
-          "value": 3018.62
         }
       ]
     }
@@ -11611,14 +11581,14 @@
   ],
   "smart_money": {
     "symbol": "VUL.DE",
-    "smart_money_score": 50.0,
+    "smart_money_score": 62.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.024,
-    "up_down_vol_ratio": 0.91,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: N/A).",
+    "cmf_20d": 0.054,
+    "up_down_vol_ratio": 0.92,
     "absorption_5d_pct": 40.4,
-    "vol_shock_ratio": 0.91,
+    "vol_shock_ratio": 0.55,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

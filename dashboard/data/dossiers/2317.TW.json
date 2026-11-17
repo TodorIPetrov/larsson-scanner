@@ -3,18 +3,18 @@
   "name": "HON HAI PRECISION INDUSTRY",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T17:35:49.129384+00:00",
+  "generated_at": "2026-11-17T23:30:28.352368+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.4,
-  "backtest_total_bars": 363,
-  "current_price": 218.5,
+  "backtest_total_bars": 364,
+  "current_price": 219.0,
   "state": "BLUE",
-  "v1": 242.47,
-  "v2": 245.08,
-  "sma200": 236.04,
-  "rsi14": 33.6,
-  "atr14": 9.3,
+  "v1": 241.05,
+  "v2": 244.26,
+  "sma200": 236.0,
+  "rsi14": 34.1,
+  "atr14": 9.53,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 30.5,
-      "cagr_pct": 20.3,
+      "cagr_pct": 20.2,
       "sharpe_ratio": 0.74,
       "win_rate_pct": 50.0,
       "profit_factor": 7.85,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -21.8,
-      "cagr_pct": -15.7,
+      "cagr_pct": -15.6,
       "sharpe_ratio": -0.72,
       "win_rate_pct": 32.1,
       "profit_factor": 1.23,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 51.6,
-      "cagr_pct": 33.5,
+      "total_return_pct": 52.0,
+      "cagr_pct": 33.6,
       "sharpe_ratio": 0.99,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.81,
+      "profit_factor": 1.83,
       "max_drawdown_pct": 28.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 254.28,
     "entry_price": 190.71,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 14.1,
-    "mos_pct": 14.1,
+    "actual_discount_pct": 13.9,
+    "mos_pct": 13.9,
     "moat": "None",
     "roic_pct": 10.6,
     "wacc_pct": 7.7,
@@ -5203,6 +5203,20 @@
       "v2": 245.08,
       "sma200": 236.04,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 217.0,
+      "high": 227.5,
+      "low": 215.0,
+      "close": 219.0,
+      "volume": 52986698.0,
+      "v1": 241.05,
+      "m1": 242.39,
+      "m2": 243.72,
+      "v2": 244.26,
+      "sma200": 236.0,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6678,6 +6692,10 @@
         {
           "time": "2026-11-16",
           "value": 11036.61
+        },
+        {
+          "time": "2026-11-17",
+          "value": 11036.61
         }
       ]
     },
@@ -8136,6 +8154,10 @@
         },
         {
           "time": "2026-11-16",
+          "value": 13045.43
+        },
+        {
+          "time": "2026-11-17",
           "value": 13045.43
         }
       ]
@@ -9596,6 +9618,10 @@
         {
           "time": "2026-11-16",
           "value": 10904.88
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10904.88
         }
       ]
     },
@@ -11055,6 +11081,10 @@
         {
           "time": "2026-11-16",
           "value": 15175.6
+        },
+        {
+          "time": "2026-11-17",
+          "value": 15210.33
         }
       ]
     }
@@ -11075,14 +11105,14 @@
   ],
   "smart_money": {
     "symbol": "2317.TW",
-    "smart_money_score": 62.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: N/A).",
-    "cmf_20d": 0.052,
-    "up_down_vol_ratio": 0.84,
-    "absorption_5d_pct": 38.7,
-    "vol_shock_ratio": 1.89,
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 0.045,
+    "up_down_vol_ratio": 1.02,
+    "absorption_5d_pct": 38.4,
+    "vol_shock_ratio": 1.28,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

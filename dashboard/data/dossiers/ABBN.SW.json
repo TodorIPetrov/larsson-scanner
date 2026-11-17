@@ -3,26 +3,26 @@
   "name": "ABB LTD N",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:35:51.453616+00:00",
+  "generated_at": "2026-11-17T23:30:30.834677+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 68.02,
+  "backtest_total_bars": 374,
+  "current_price": 69.22,
   "state": "BLUE",
-  "v1": 72.16,
-  "v2": 74.73,
+  "v1": 72.43,
+  "v2": 74.96,
   "sma200": 76.52,
-  "rsi14": 38.1,
-  "atr14": 2.0,
+  "rsi14": 41.0,
+  "atr14": 2.02,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": 51.2,
-    "cagr_pct": 32.0,
-    "sharpe_ratio": 1.22,
+    "cagr_pct": 32.1,
+    "sharpe_ratio": 1.23,
     "win_rate_pct": 22.2,
     "profit_factor": 7.22,
     "max_drawdown_pct": 17.8,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 48.1,
-      "cagr_pct": 30.2,
-      "sharpe_ratio": 1.15,
+      "cagr_pct": 30.3,
+      "sharpe_ratio": 1.16,
       "win_rate_pct": 14.3,
       "profit_factor": 4.24,
       "max_drawdown_pct": 20.9,
@@ -58,8 +58,8 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": 51.2,
-      "cagr_pct": 32.0,
-      "sharpe_ratio": 1.22,
+      "cagr_pct": 32.1,
+      "sharpe_ratio": 1.23,
       "win_rate_pct": 22.2,
       "profit_factor": 7.22,
       "max_drawdown_pct": 17.8,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 46.4,
-      "cagr_pct": 29.2,
-      "sharpe_ratio": 1.05,
+      "total_return_pct": 49.0,
+      "cagr_pct": 30.8,
+      "sharpe_ratio": 1.09,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.9,
+      "profit_factor": 2.01,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 38.61,
     "entry_price": 30.89,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -76.2,
-    "mos_pct": -76.2,
+    "actual_discount_pct": -79.3,
+    "mos_pct": -79.3,
     "moat": "Narrow",
     "roic_pct": 24.1,
     "wacc_pct": 9.34,
@@ -5357,20 +5357,6 @@
       "v2": 74.96,
       "sma200": 76.52,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 68.62,
-      "high": 69.14,
-      "low": 67.52,
-      "close": 68.02,
-      "volume": 3025858.0,
-      "v1": 72.16,
-      "m1": 73.07,
-      "m2": 74.16,
-      "v2": 74.73,
-      "sma200": 76.52,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7002,10 +6988,6 @@
         {
           "time": "2026-11-16",
           "value": 15120.2
-        },
-        {
-          "time": "2026-11-17",
-          "value": 15120.2
         }
       ]
     },
@@ -8508,10 +8490,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 14808.59
-        },
-        {
-          "time": "2026-11-17",
           "value": 14808.59
         }
       ]
@@ -10016,10 +9994,6 @@
         {
           "time": "2026-11-16",
           "value": 12304.81
-        },
-        {
-          "time": "2026-11-17",
-          "value": 12304.81
         }
       ]
     },
@@ -11523,10 +11497,6 @@
         {
           "time": "2026-11-16",
           "value": 14914.8
-        },
-        {
-          "time": "2026-11-17",
-          "value": 14656.23
         }
       ]
     }
@@ -11643,14 +11613,14 @@
   ],
   "smart_money": {
     "symbol": "ABBN.SW",
-    "smart_money_score": 42.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.12, P/C: N/A).",
-    "cmf_20d": -0.118,
-    "up_down_vol_ratio": 0.77,
-    "absorption_5d_pct": 35.0,
-    "vol_shock_ratio": 0.83,
+    "smart_money_score": 22.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
+    "cmf_20d": -0.104,
+    "up_down_vol_ratio": 0.7,
+    "absorption_5d_pct": 32.5,
+    "vol_shock_ratio": 0.56,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

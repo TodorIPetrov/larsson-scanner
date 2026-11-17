@@ -3,18 +3,18 @@
   "name": "ACER INC",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T17:35:49.349317+00:00",
+  "generated_at": "2026-11-17T23:30:28.559286+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.4,
-  "backtest_total_bars": 363,
-  "current_price": 29.1,
+  "backtest_total_bars": 364,
+  "current_price": 29.15,
   "state": "BLUE",
-  "v1": 30.89,
-  "v2": 31.14,
-  "sma200": 29.69,
-  "rsi14": 37.2,
-  "atr14": 1.11,
+  "v1": 30.77,
+  "v2": 31.07,
+  "sma200": 29.71,
+  "rsi14": 37.7,
+  "atr14": 1.13,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -14.5,
-      "cagr_pct": -10.3,
-      "sharpe_ratio": -0.9,
+      "total_return_pct": -14.8,
+      "cagr_pct": -10.5,
+      "sharpe_ratio": -0.92,
       "win_rate_pct": 16.7,
-      "profit_factor": 0.17,
-      "max_drawdown_pct": 14.5,
+      "profit_factor": 0.16,
+      "max_drawdown_pct": 14.8,
       "total_trades": 6
     },
     {
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -10.8,
-      "cagr_pct": -7.6,
+      "total_return_pct": -10.7,
+      "cagr_pct": -7.5,
       "sharpe_ratio": -0.03,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 62.9,
-    "target_price": 62.9,
-    "entry_price": 47.18,
+    "fair_value": 65.03,
+    "target_price": 65.03,
+    "entry_price": 48.77,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 53.7,
-    "mos_pct": 53.7,
+    "actual_discount_pct": 55.2,
+    "mos_pct": 55.2,
     "moat": "Narrow",
-    "roic_pct": 15.8,
+    "roic_pct": 15.1,
     "wacc_pct": 8.0,
-    "z_score": 1.54,
-    "m_score": -2.1,
-    "tata": 0.077,
+    "z_score": 1.75,
+    "m_score": -1.91,
+    "tata": 0.102,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "BUY / ACCUMULATE",
+    "verdict": "STRONG BUY",
     "model_type": "Mid-Cycle Normalized DCF",
-    "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": null
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-17"
   },
   "candles": [
     {
@@ -5203,6 +5203,20 @@
       "v2": 31.14,
       "sma200": 29.69,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 29.05,
+      "high": 29.7,
+      "low": 28.3,
+      "close": 29.15,
+      "volume": 16230086.0,
+      "v1": 30.77,
+      "m1": 30.91,
+      "m2": 31.03,
+      "v2": 31.07,
+      "sma200": 29.71,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6790,6 +6804,10 @@
         {
           "time": "2026-11-16",
           "value": 10718.16
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10718.16
         }
       ]
     },
@@ -8248,6 +8266,10 @@
         },
         {
           "time": "2026-11-16",
+          "value": 10601.5
+        },
+        {
+          "time": "2026-11-17",
           "value": 10601.5
         }
       ]
@@ -9708,6 +9730,10 @@
         {
           "time": "2026-11-16",
           "value": 8469.83
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8469.83
         }
       ]
     },
@@ -11167,6 +11193,10 @@
         {
           "time": "2026-11-16",
           "value": 8927.19
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8942.53
         }
       ]
     }
@@ -11286,11 +11316,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.26).",
-    "cmf_20d": -0.261,
-    "up_down_vol_ratio": 0.53,
-    "absorption_5d_pct": 21.6,
-    "vol_shock_ratio": 0.73,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.28).",
+    "cmf_20d": -0.275,
+    "up_down_vol_ratio": 0.62,
+    "absorption_5d_pct": 26.3,
+    "vol_shock_ratio": 0.77,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

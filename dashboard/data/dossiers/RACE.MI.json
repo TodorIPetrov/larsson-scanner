@@ -3,18 +3,18 @@
   "name": "FERRARI",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:36:16.094403+00:00",
+  "generated_at": "2026-11-17T23:30:57.008254+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 379,
-  "current_price": 363.85,
+  "backtest_total_bars": 378,
+  "current_price": 368.4,
   "state": "GOLD",
-  "v1": 362.56,
-  "v2": 356.8,
-  "sma200": 324.61,
-  "rsi14": 50.4,
-  "atr14": 8.88,
+  "v1": 362.22,
+  "v2": 356.42,
+  "sma200": 324.2,
+  "rsi14": 54.9,
+  "atr14": 8.95,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -29.5,
-      "cagr_pct": -20.8,
-      "sharpe_ratio": -0.76,
+      "total_return_pct": -28.7,
+      "cagr_pct": -20.2,
+      "sharpe_ratio": -0.73,
       "win_rate_pct": 8.3,
-      "profit_factor": 0.29,
+      "profit_factor": 0.31,
       "max_drawdown_pct": 40.0,
       "total_trades": 12
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -28.5,
-      "cagr_pct": -20.0,
-      "sharpe_ratio": -0.73,
+      "total_return_pct": -27.6,
+      "cagr_pct": -19.4,
+      "sharpe_ratio": -0.69,
       "win_rate_pct": 8.3,
-      "profit_factor": 0.3,
+      "profit_factor": 0.32,
       "max_drawdown_pct": 39.2,
       "total_trades": 12
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -12.3,
-      "cagr_pct": -8.4,
-      "sharpe_ratio": -0.36,
+      "total_return_pct": -11.2,
+      "cagr_pct": -7.6,
+      "sharpe_ratio": -0.32,
       "win_rate_pct": 7.7,
-      "profit_factor": 0.52,
+      "profit_factor": 0.55,
       "max_drawdown_pct": 26.0,
       "total_trades": 13
     },
@@ -83,7 +83,7 @@
       "is_winner": false,
       "total_return_pct": -10.8,
       "cagr_pct": -7.3,
-      "sharpe_ratio": -1.14,
+      "sharpe_ratio": -1.15,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 15.1,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -15.6,
-      "cagr_pct": -10.6,
-      "sharpe_ratio": -0.11,
+      "total_return_pct": -14.5,
+      "cagr_pct": -9.9,
+      "sharpe_ratio": -0.09,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 37.9,
@@ -107,8 +107,8 @@
     "target_price": 155.63,
     "entry_price": 124.5,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -133.8,
-    "mos_pct": -133.8,
+    "actual_discount_pct": -136.7,
+    "mos_pct": -136.7,
     "moat": "Wide",
     "roic_pct": 22.7,
     "wacc_pct": 8.37,
@@ -5413,20 +5413,6 @@
       "v2": 356.42,
       "sma200": 324.2,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 369.0,
-      "high": 371.35,
-      "low": 363.4,
-      "close": 363.85,
-      "volume": 463533.0,
-      "v1": 362.56,
-      "m1": 360.77,
-      "m2": 358.37,
-      "v2": 356.8,
-      "sma200": 324.61,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -6990,10 +6976,6 @@
         {
           "time": "2026-11-16",
           "value": 9696.69
-        },
-        {
-          "time": "2026-11-17",
-          "value": 9696.69
         }
       ]
     },
@@ -8513,10 +8495,6 @@
         {
           "time": "2026-11-16",
           "value": 8884.09
-        },
-        {
-          "time": "2026-11-17",
-          "value": 8774.41
         }
       ]
     },
@@ -10035,10 +10013,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 8923.27
-        },
-        {
-          "time": "2026-11-17",
           "value": 8923.27
         }
       ]
@@ -11559,10 +11533,6 @@
         {
           "time": "2026-11-16",
           "value": 8556.83
-        },
-        {
-          "time": "2026-11-17",
-          "value": 8451.15
         }
       ]
     }
@@ -11607,14 +11577,14 @@
   ],
   "smart_money": {
     "symbol": "RACE.MI",
-    "smart_money_score": 52.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.08, P/C: N/A).",
-    "cmf_20d": 0.081,
-    "up_down_vol_ratio": 0.98,
-    "absorption_5d_pct": 29.6,
-    "vol_shock_ratio": 1.09,
+    "smart_money_score": 75.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.14, Up/Dn Vol: 1.16x). Силна скрита подкрепа.",
+    "cmf_20d": 0.144,
+    "up_down_vol_ratio": 1.16,
+    "absorption_5d_pct": 39.1,
+    "vol_shock_ratio": 0.73,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

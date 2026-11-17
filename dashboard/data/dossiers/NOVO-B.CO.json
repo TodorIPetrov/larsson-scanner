@@ -3,28 +3,28 @@
   "name": "Novo Nordisk B A/S",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:36:11.318521+00:00",
+  "generated_at": "2026-11-17T23:30:52.103164+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 373,
-  "current_price": 275.5,
+  "backtest_total_bars": 372,
+  "current_price": 285.25,
   "state": "BLUE",
-  "v1": 269.79,
-  "v2": 272.19,
-  "sma200": 277.12,
-  "rsi14": 54.9,
-  "atr14": 7.51,
+  "v1": 269.14,
+  "v2": 271.95,
+  "sma200": 277.51,
+  "rsi14": 64.9,
+  "atr14": 7.23,
   "empirical_tier": "S",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -3.0,
-    "cagr_pct": -2.0,
-    "sharpe_ratio": -0.13,
+    "total_return_pct": -1.2,
+    "cagr_pct": -0.8,
+    "sharpe_ratio": -0.01,
     "win_rate_pct": 50.0,
-    "profit_factor": 0.57,
+    "profit_factor": 0.83,
     "max_drawdown_pct": 15.9,
     "total_trades": 2
   },
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -20.7,
-      "cagr_pct": -14.5,
+      "cagr_pct": -14.6,
       "sharpe_ratio": -0.5,
       "win_rate_pct": 50.0,
       "profit_factor": 0.2,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -3.0,
-      "cagr_pct": -2.0,
-      "sharpe_ratio": -0.13,
+      "total_return_pct": -1.2,
+      "cagr_pct": -0.8,
+      "sharpe_ratio": -0.01,
       "win_rate_pct": 50.0,
-      "profit_factor": 0.57,
+      "profit_factor": 0.83,
       "max_drawdown_pct": 15.9,
       "total_trades": 2
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -34.8,
-      "cagr_pct": -25.1,
-      "sharpe_ratio": -0.37,
+      "total_return_pct": -32.5,
+      "cagr_pct": -23.4,
+      "sharpe_ratio": -0.32,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 54.9,
@@ -107,8 +107,8 @@
     "target_price": 321.96,
     "entry_price": 273.67,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 14.4,
-    "mos_pct": 14.4,
+    "actual_discount_pct": 11.4,
+    "mos_pct": 11.4,
     "moat": "Wide",
     "roic_pct": 27.7,
     "wacc_pct": 7.77,
@@ -5329,20 +5329,6 @@
       "v2": 271.95,
       "sma200": 277.51,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 283.8,
-      "high": 283.8,
-      "low": 274.1,
-      "close": 275.5,
-      "volume": 5644253.0,
-      "v1": 269.79,
-      "m1": 269.9,
-      "m2": 271.14,
-      "v2": 272.19,
-      "sma200": 277.12,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5368,11 +5354,11 @@
       "text": "BUY #2 @ $253.9"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-16",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +8.29% ($385.85 €)"
+      "text": "EXIT +12.12% ($564.22 €)"
     }
   ],
   "equity_curves": [
@@ -6868,10 +6854,6 @@
         {
           "time": "2026-11-16",
           "value": 9887.06
-        },
-        {
-          "time": "2026-11-17",
-          "value": 9708.51
         }
       ]
     },
@@ -8366,10 +8348,6 @@
         },
         {
           "time": "2026-11-16",
-          "value": 7926.61
-        },
-        {
-          "time": "2026-11-17",
           "value": 7926.61
         }
       ]
@@ -9866,10 +9844,6 @@
         {
           "time": "2026-11-16",
           "value": 7730.63
-        },
-        {
-          "time": "2026-11-17",
-          "value": 7730.63
         }
       ]
     },
@@ -11365,10 +11339,6 @@
         {
           "time": "2026-11-16",
           "value": 6753.21
-        },
-        {
-          "time": "2026-11-17",
-          "value": 6522.38
         }
       ]
     }
@@ -11390,25 +11360,25 @@
       "num": 2,
       "entry_date": "2026-10-08",
       "entry_price": 253.9,
-      "exit_date": "2026-11-17",
-      "exit_price": 275.5,
-      "holding_days": 28,
-      "pnl_pct": 8.29,
-      "pnl_eur": 385.85,
+      "exit_date": "2026-11-16",
+      "exit_price": 285.25,
+      "holding_days": 27,
+      "pnl_pct": 12.12,
+      "pnl_eur": 564.22,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "NOVO-B.CO",
-    "smart_money_score": 77.0,
+    "smart_money_score": 85.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.08, Up/Dn Vol: 1.58x). Силна скрита подкрепа.",
-    "cmf_20d": 0.078,
-    "up_down_vol_ratio": 1.58,
-    "absorption_5d_pct": 54.1,
-    "vol_shock_ratio": 1.1,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.15, Up/Dn Vol: 1.94x). Силна скрита подкрепа.",
+    "cmf_20d": 0.154,
+    "up_down_vol_ratio": 1.94,
+    "absorption_5d_pct": 54.0,
+    "vol_shock_ratio": 0.97,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

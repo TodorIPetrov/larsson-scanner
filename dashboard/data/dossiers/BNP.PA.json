@@ -3,26 +3,26 @@
   "name": "BNP PARIBAS ACT.A",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T17:35:56.251683+00:00",
+  "generated_at": "2026-11-17T23:30:36.080739+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
-  "backtest_total_bars": 383,
-  "current_price": 93.82,
+  "backtest_total_bars": 382,
+  "current_price": 95.44,
   "state": "BLUE",
-  "v1": 92.21,
-  "v2": 93.44,
-  "sma200": 92.19,
-  "rsi14": 56.3,
-  "atr14": 2.21,
+  "v1": 92.04,
+  "v2": 93.4,
+  "sma200": 92.16,
+  "rsi14": 63.2,
+  "atr14": 2.25,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 37.6,
-    "cagr_pct": 23.4,
-    "sharpe_ratio": 1.11,
+    "total_return_pct": 38.8,
+    "cagr_pct": 24.2,
+    "sharpe_ratio": 1.14,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 18.0,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 37.6,
-      "cagr_pct": 23.4,
-      "sharpe_ratio": 1.11,
+      "total_return_pct": 38.8,
+      "cagr_pct": 24.2,
+      "sharpe_ratio": 1.14,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 18.0,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 22.4,
-      "cagr_pct": 14.2,
+      "cagr_pct": 14.3,
       "sharpe_ratio": 0.75,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 32.4,
-      "cagr_pct": 20.3,
-      "sharpe_ratio": 0.83,
+      "total_return_pct": 34.7,
+      "cagr_pct": 21.7,
+      "sharpe_ratio": 0.87,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.33,
+      "profit_factor": 1.42,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 103.43026291434037,
     "entry_price": 77.57269718575529,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 9.3,
-    "mos_pct": 9.3,
+    "actual_discount_pct": 7.7,
+    "mos_pct": 7.7,
     "moat": "None",
     "roic_pct": 9.74,
     "wacc_pct": 9.767000041961667,
@@ -5469,20 +5469,6 @@
       "v2": 93.4,
       "sma200": 92.16,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-17",
-      "open": 94.9,
-      "high": 95.41,
-      "low": 93.76,
-      "close": 93.82,
-      "volume": 2383422.0,
-      "v1": 92.21,
-      "m1": 92.5,
-      "m2": 93.09,
-      "v2": 93.44,
-      "sma200": 92.19,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5508,11 +5494,11 @@
       "text": "BUY #2 @ $85.18"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-16",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +9.92% ($649.81 €)"
+      "text": "EXIT +11.82% ($774.1 €)"
     }
   ],
   "equity_curves": [
@@ -7048,10 +7034,6 @@
         {
           "time": "2026-11-16",
           "value": 13891.31
-        },
-        {
-          "time": "2026-11-17",
-          "value": 13766.89
         }
       ]
     },
@@ -8587,10 +8569,6 @@
         {
           "time": "2026-11-16",
           "value": 12240.59
-        },
-        {
-          "time": "2026-11-17",
-          "value": 12240.59
         }
       ]
     },
@@ -8613,7 +8591,7 @@
         },
         {
           "time": "2025-05-27",
-          "value": 9937.44
+          "value": 9937.45
         },
         {
           "time": "2025-05-28",
@@ -8673,7 +8651,7 @@
         },
         {
           "time": "2025-06-17",
-          "value": 9751.52
+          "value": 9751.51
         },
         {
           "time": "2025-06-18",
@@ -8709,7 +8687,7 @@
         },
         {
           "time": "2025-06-30",
-          "value": 9796.4
+          "value": 9796.39
         },
         {
           "time": "2025-07-01",
@@ -8725,7 +8703,7 @@
         },
         {
           "time": "2025-07-04",
-          "value": 9611.75
+          "value": 9611.74
         },
         {
           "time": "2025-07-07",
@@ -8817,7 +8795,7 @@
         },
         {
           "time": "2025-08-06",
-          "value": 10178.51
+          "value": 10178.52
         },
         {
           "time": "2025-08-07",
@@ -8917,7 +8895,7 @@
         },
         {
           "time": "2025-09-10",
-          "value": 10032.33
+          "value": 10032.34
         },
         {
           "time": "2025-09-11",
@@ -8925,7 +8903,7 @@
         },
         {
           "time": "2025-09-12",
-          "value": 10178.51
+          "value": 10178.52
         },
         {
           "time": "2025-09-15",
@@ -9317,7 +9295,7 @@
         },
         {
           "time": "2026-02-02",
-          "value": 9589.64
+          "value": 9589.65
         },
         {
           "time": "2026-02-03",
@@ -9913,7 +9891,7 @@
         },
         {
           "time": "2026-09-02",
-          "value": 10044.73
+          "value": 10044.74
         },
         {
           "time": "2026-09-03",
@@ -10126,10 +10104,6 @@
         {
           "time": "2026-11-16",
           "value": 9978.29
-        },
-        {
-          "time": "2026-11-17",
-          "value": 9978.29
         }
       ]
     },
@@ -10228,7 +10202,7 @@
         },
         {
           "time": "2025-06-23",
-          "value": 9380.31
+          "value": 9380.3
         },
         {
           "time": "2025-06-24",
@@ -10296,7 +10270,7 @@
         },
         {
           "time": "2025-07-16",
-          "value": 9765.37
+          "value": 9765.38
         },
         {
           "time": "2025-07-17",
@@ -11665,10 +11639,6 @@
         {
           "time": "2026-11-16",
           "value": 13478.84
-        },
-        {
-          "time": "2026-11-17",
-          "value": 13250.05
         }
       ]
     }
@@ -11690,25 +11660,25 @@
       "num": 2,
       "entry_date": "2026-10-27",
       "entry_price": 85.18,
-      "exit_date": "2026-11-17",
-      "exit_price": 93.82,
-      "holding_days": 15,
-      "pnl_pct": 9.92,
-      "pnl_eur": 649.81,
+      "exit_date": "2026-11-16",
+      "exit_price": 95.44,
+      "holding_days": 14,
+      "pnl_pct": 11.82,
+      "pnl_eur": 774.1,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "BNP.PA",
-    "smart_money_score": 42.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
-    "cmf_20d": -0.064,
-    "up_down_vol_ratio": 1.72,
-    "absorption_5d_pct": 17.7,
-    "vol_shock_ratio": 0.94,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: N/A).",
+    "cmf_20d": -0.003,
+    "up_down_vol_ratio": 1.69,
+    "absorption_5d_pct": 18.1,
+    "vol_shock_ratio": 0.7,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
