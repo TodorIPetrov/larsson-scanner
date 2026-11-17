@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T13:06:26.861237+00:00",
+  "generated_at": "2026-11-17T15:11:35.854187+00:00",
   "fundamental_profiles": {
     "BTCUSDT": {
       "ticker": "BTCUSDT",
@@ -19240,6 +19240,43 @@
       "is_bullish": false,
       "is_bearish_or_distressed": true,
       "is_hold": false
+    },
+    "RIO.L": {
+      "ticker": "RIO.L",
+      "name": "RIO TINTO PLC ORD 10P",
+      "verdict": "HOLD / SENSITIVITY REVIEW",
+      "target_price": 13396.9,
+      "fair_value": 13396.9,
+      "mos_pct": 54.5,
+      "required_mos_pct": 25.0,
+      "actual_discount_pct": 54.5,
+      "moat": "Narrow",
+      "roic_pct": 13.3,
+      "wacc_pct": 8.0,
+      "z_score": 3.42,
+      "m_score": -1.99,
+      "upside_pct": 120.0,
+      "thesis": "\u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430 \u0441\u0442\u043e\u0439\u043d\u043e\u0441\u0442 $13,396.90 (+120.0%). \u0420\u043e\u0432: Narrow, ROIC: 13.3%, Z-Score: 3.42.",
+      "sector": "Basic Materials",
+      "industry": "Other Industrial Metals & Mining",
+      "model_type": "Mid-Cycle Normalized DCF",
+      "price": 6089.5,
+      "shares": 16264973.515723787,
+      "mcap_b": 1.31,
+      "beta": 0.709,
+      "revenue_b": 57.64,
+      "ebit_b": 15.45,
+      "nopat_b": 10.51,
+      "tata": -0.051,
+      "entry_price": 10047.68,
+      "action": "HOLD",
+      "solvency_type": "Altman Z''-Score (Universal Model)",
+      "production_cost": null,
+      "mvrv_ratio": null,
+      "latest_filing_date": "2026-06-30 (10-Q TTM)",
+      "is_bullish": false,
+      "is_bearish_or_distressed": false,
+      "is_hold": true
     }
   }
 }
