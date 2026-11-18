@@ -3,7 +3,7 @@
   "name": "Dynatrace, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-18T00:56:25.943813+00:00",
+  "generated_at": "2026-11-18T07:11:21.264376+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
@@ -5378,7 +5378,7 @@
       "high": 43.89,
       "low": 41.91,
       "close": 43.19,
-      "volume": 7717430.0,
+      "volume": 7717800.0,
       "v1": 51.9,
       "m1": 52.73,
       "m2": 53.13,
@@ -11517,18 +11517,18 @@
   ],
   "smart_money": {
     "symbol": "DT",
-    "smart_money_score": 43.0,
+    "smart_money_score": 53.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.37) с Gamma стена на $42.50. Залог за рязък отскок.",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.34) с Gamma стена на $37.50. Залог за рязък отскок.",
     "cmf_20d": -0.224,
     "up_down_vol_ratio": 0.3,
     "absorption_5d_pct": 46.7,
     "vol_shock_ratio": 0.89,
-    "put_call_ratio": 0.37,
+    "put_call_ratio": 0.34,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 42.5,
-    "max_pain": 80.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 37.5,
+    "max_pain": 32.5,
+    "unusual_call_sweep": true
   }
 }

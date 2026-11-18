@@ -3,7 +3,7 @@
   "name": "The Kraft Heinz Company",
   "sector": "Consumer Defensive",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T00:56:36.301186+00:00",
+  "generated_at": "2026-11-18T07:11:31.375424+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
@@ -5378,7 +5378,7 @@
       "high": 25.44,
       "low": 24.76,
       "close": 25.11,
-      "volume": 14809130.0,
+      "volume": 14822300.0,
       "v1": 24.33,
       "m1": 24.26,
       "m2": 24.21,
@@ -8002,7 +8002,7 @@
         },
         {
           "time": "2026-06-18",
-          "value": 8928.98
+          "value": 8928.97
         },
         {
           "time": "2026-06-22",
@@ -9968,7 +9968,7 @@
         },
         {
           "time": "2025-05-30",
-          "value": 9642.31
+          "value": 9642.3
         },
         {
           "time": "2025-06-02",
@@ -9988,7 +9988,7 @@
         },
         {
           "time": "2025-06-06",
-          "value": 9642.31
+          "value": 9642.3
         },
         {
           "time": "2025-06-09",
@@ -10032,11 +10032,11 @@
         },
         {
           "time": "2025-06-24",
-          "value": 9389.79
+          "value": 9389.8
         },
         {
           "time": "2025-06-25",
-          "value": 9281.58
+          "value": 9281.57
         },
         {
           "time": "2025-06-26",
@@ -10092,7 +10092,7 @@
         },
         {
           "time": "2025-07-16",
-          "value": 9948.93
+          "value": 9948.92
         },
         {
           "time": "2025-07-17",
@@ -10200,7 +10200,7 @@
         },
         {
           "time": "2025-08-22",
-          "value": 10122.08
+          "value": 10122.07
         },
         {
           "time": "2025-08-25",
@@ -10380,7 +10380,7 @@
         },
         {
           "time": "2025-10-27",
-          "value": 9366.62
+          "value": 9366.63
         },
         {
           "time": "2025-10-28",
@@ -10436,7 +10436,7 @@
         },
         {
           "time": "2025-11-14",
-          "value": 9095.76
+          "value": 9095.77
         },
         {
           "time": "2025-11-17",
@@ -10460,7 +10460,7 @@
         },
         {
           "time": "2025-11-24",
-          "value": 9234.86
+          "value": 9234.85
         },
         {
           "time": "2025-11-25",
@@ -10488,7 +10488,7 @@
         },
         {
           "time": "2025-12-04",
-          "value": 9143.46
+          "value": 9143.47
         },
         {
           "time": "2025-12-05",
@@ -10696,7 +10696,7 @@
         },
         {
           "time": "2026-02-20",
-          "value": 9072.82
+          "value": 9072.81
         },
         {
           "time": "2026-02-23",
@@ -11465,18 +11465,18 @@
   ],
   "smart_money": {
     "symbol": "KHC",
-    "smart_money_score": 78.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.00, Up/Dn Vol: 1.06x). Силна скрита подкрепа.",
+    "smart_money_score": 60.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: 1.00).",
     "cmf_20d": -0.004,
     "up_down_vol_ratio": 1.06,
     "absorption_5d_pct": 57.9,
     "vol_shock_ratio": 1.07,
-    "put_call_ratio": 0.22,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 25.5,
-    "max_pain": 26.0,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 12.5,
+    "max_pain": 12.5,
     "unusual_call_sweep": false
   }
 }

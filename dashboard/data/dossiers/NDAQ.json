@@ -3,12 +3,12 @@
   "name": "Nasdaq, Inc.",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T00:56:41.868079+00:00",
+  "generated_at": "2026-11-18T07:11:37.128655+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
   "backtest_total_bars": 376,
-  "current_price": 105.12,
+  "current_price": 105.13,
   "state": "GOLD",
   "v1": 103.68,
   "v2": 99.96,
@@ -5377,8 +5377,8 @@
       "open": 107.98,
       "high": 108.4,
       "low": 104.99,
-      "close": 105.12,
-      "volume": 2608332.0,
+      "close": 105.13,
+      "volume": 2682500.0,
       "v1": 103.68,
       "m1": 102.36,
       "m2": 100.8,
@@ -5428,7 +5428,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +31.9% ($2982.76 €)"
+      "text": "EXIT +31.91% ($2983.35 €)"
     }
   ],
   "equity_curves": [
@@ -6939,7 +6939,7 @@
         },
         {
           "time": "2026-11-17",
-          "value": 12350.37
+          "value": 12350.95
         }
       ]
     },
@@ -8450,7 +8450,7 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10558.4
+          "value": 10558.9
         }
       ]
     },
@@ -9961,7 +9961,7 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8634.75
+          "value": 8635.16
         }
       ]
     },
@@ -11472,7 +11472,7 @@
         },
         {
           "time": "2026-11-17",
-          "value": 13161.07
+          "value": 13161.7
         }
       ]
     }
@@ -11507,10 +11507,10 @@
       "entry_date": "2026-07-01",
       "entry_price": 79.54,
       "exit_date": "2026-11-17",
-      "exit_price": 105.12,
+      "exit_price": 105.13,
       "holding_days": 97,
-      "pnl_pct": 31.9,
-      "pnl_eur": 2982.76,
+      "pnl_pct": 31.91,
+      "pnl_eur": 2983.35,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11520,15 +11520,15 @@
     "smart_money_score": 44.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: 2.29).",
-    "cmf_20d": 0.07,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: 2.00).",
+    "cmf_20d": 0.069,
     "up_down_vol_ratio": 1.6,
     "absorption_5d_pct": 24.0,
-    "vol_shock_ratio": 0.68,
-    "put_call_ratio": 2.29,
+    "vol_shock_ratio": 0.7,
+    "put_call_ratio": 2.0,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 105.0,
-    "max_pain": 90.0,
+    "gamma_wall": 82.5,
+    "max_pain": 82.5,
     "unusual_call_sweep": false
   }
 }

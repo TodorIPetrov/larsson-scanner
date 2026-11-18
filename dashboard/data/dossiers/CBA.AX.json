@@ -3,18 +3,18 @@
   "name": "CWLTH BANK FPO [CBA]",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T00:56:22.216102+00:00",
+  "generated_at": "2026-11-18T07:11:17.857440+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 168.5,
+  "current_price": 170.88,
   "state": "GOLD",
-  "v1": 163.88,
-  "v2": 161.52,
-  "sma200": 164.66,
-  "rsi14": 59.1,
-  "atr14": 3.42,
+  "v1": 163.91,
+  "v2": 161.53,
+  "sma200": 164.67,
+  "rsi14": 65.1,
+  "atr14": 3.45,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -30.3,
-      "cagr_pct": -21.3,
-      "sharpe_ratio": -1.13,
+      "total_return_pct": -29.4,
+      "cagr_pct": -20.5,
+      "sharpe_ratio": -1.09,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.16,
+      "profit_factor": 0.19,
       "max_drawdown_pct": 37.6,
       "total_trades": 10
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -34.3,
-      "cagr_pct": -24.2,
-      "sharpe_ratio": -1.4,
+      "total_return_pct": -33.4,
+      "cagr_pct": -23.5,
+      "sharpe_ratio": -1.35,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.08,
+      "profit_factor": 0.1,
       "max_drawdown_pct": 41.1,
       "total_trades": 10
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -23.1,
-      "cagr_pct": -16.0,
-      "sharpe_ratio": -1.25,
+      "total_return_pct": -22.6,
+      "cagr_pct": -15.6,
+      "sharpe_ratio": -1.21,
       "win_rate_pct": 36.8,
-      "profit_factor": 0.24,
+      "profit_factor": 0.26,
       "max_drawdown_pct": 27.3,
       "total_trades": 19
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -15.0,
-      "cagr_pct": -10.2,
-      "sharpe_ratio": -0.86,
+      "total_return_pct": -13.8,
+      "cagr_pct": -9.3,
+      "sharpe_ratio": -0.78,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.02,
+      "profit_factor": 0.1,
       "max_drawdown_pct": 19.2,
       "total_trades": 4
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 1.9,
-      "cagr_pct": 1.2,
-      "sharpe_ratio": 0.16,
+      "total_return_pct": 3.3,
+      "cagr_pct": 2.2,
+      "sharpe_ratio": 0.2,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.1,
+      "profit_factor": 0.15,
       "max_drawdown_pct": 21.9,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 78.25712231968767,
     "entry_price": 62.60569785575014,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -115.3,
-    "mos_pct": -115.3,
+    "actual_discount_pct": -118.4,
+    "mos_pct": -118.4,
     "moat": "Narrow",
     "roic_pct": 13.81,
     "wacc_pct": 8.68140004196167,
@@ -5445,15 +5445,15 @@
     {
       "time": "2026-11-18",
       "open": 169.2,
-      "high": 169.8,
+      "high": 170.88,
       "low": 167.56,
-      "close": 168.5,
-      "volume": 330699.0,
-      "v1": 163.88,
-      "m1": 162.77,
-      "m2": 161.84,
-      "v2": 161.52,
-      "sma200": 164.66,
+      "close": 170.88,
+      "volume": 1708922.0,
+      "v1": 163.91,
+      "m1": 162.8,
+      "m2": 161.86,
+      "v2": 161.53,
+      "sma200": 164.67,
       "state": "GOLD"
     }
   ],
@@ -8560,7 +8560,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8513.2
+          "value": 8633.32
         }
       ]
     },
@@ -10091,7 +10091,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 7693.33
+          "value": 7747.74
         }
       ]
     },
@@ -11622,7 +11622,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10198.03
+          "value": 10342.08
         }
       ]
     }
@@ -11667,14 +11667,14 @@
   ],
   "smart_money": {
     "symbol": "CBA.AX",
-    "smart_money_score": 85.0,
+    "smart_money_score": 92.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.19, Up/Dn Vol: 1.43x). Силна скрита подкрепа.",
-    "cmf_20d": 0.192,
-    "up_down_vol_ratio": 1.43,
-    "absorption_5d_pct": 56.9,
-    "vol_shock_ratio": 0.15,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.23, Up/Dn Vol: 1.56x). Силна скрита подкрепа.",
+    "cmf_20d": 0.227,
+    "up_down_vol_ratio": 1.56,
+    "absorption_5d_pct": 68.5,
+    "vol_shock_ratio": 0.78,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,7 +3,7 @@
   "name": "CrowdStrike Holdings, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-18T00:56:23.704075+00:00",
+  "generated_at": "2026-11-18T07:11:19.347355+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 75.1,
-      "cagr_pct": 45.6,
+      "total_return_pct": 75.3,
+      "cagr_pct": 45.7,
       "sharpe_ratio": 1.1,
       "win_rate_pct": 33.3,
-      "profit_factor": 35.04,
+      "profit_factor": 35.11,
       "max_drawdown_pct": 22.2,
       "total_trades": 3
     },
@@ -5374,11 +5374,11 @@
     },
     {
       "time": "2026-11-17",
-      "open": 224.0,
+      "open": 224.21,
       "high": 226.0,
       "low": 213.65,
       "close": 219.58,
-      "volume": 7730064.0,
+      "volume": 7860400.0,
       "v1": 237.66,
       "m1": 237.95,
       "m2": 236.3,
@@ -9933,7 +9933,7 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17510.75
+          "value": 17527.16
         }
       ]
     },
@@ -11465,18 +11465,18 @@
   ],
   "smart_money": {
     "symbol": "CRWD",
-    "smart_money_score": 37.0,
+    "smart_money_score": 47.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: 1.04).",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: 0.65).",
     "cmf_20d": -0.066,
     "up_down_vol_ratio": 0.59,
     "absorption_5d_pct": 54.1,
-    "vol_shock_ratio": 0.86,
-    "put_call_ratio": 1.04,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 225.0,
-    "max_pain": 250.0,
-    "unusual_call_sweep": false
+    "vol_shock_ratio": 0.87,
+    "put_call_ratio": 0.65,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 450.0,
+    "max_pain": 560.0,
+    "unusual_call_sweep": true
   }
 }

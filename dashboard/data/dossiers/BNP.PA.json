@@ -3,7 +3,7 @@
   "name": "BNP PARIBAS ACT.A",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T00:56:20.171300+00:00",
+  "generated_at": "2026-11-18T07:11:15.882170+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-16",
   "backtest_years": 1.5,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 103.43026291434037,
-    "target_price": 103.43026291434037,
-    "entry_price": 77.57269718575529,
-    "required_mos_pct": 25.0,
-    "actual_discount_pct": 7.7,
-    "mos_pct": 7.7,
-    "moat": "None",
-    "roic_pct": 9.74,
-    "wacc_pct": 9.767000041961667,
-    "z_score": 2.86,
-    "m_score": -2.72,
-    "tata": -0.012,
-    "solvency_type": "Financial TCE Capital Ratio (4.1%)",
-    "verdict": "BUY / ACCUMULATE",
+    "fair_value": 120.02,
+    "target_price": 120.02,
+    "entry_price": 96.02,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 20.5,
+    "mos_pct": 20.5,
+    "moat": "Narrow",
+    "roic_pct": 10.7,
+    "wacc_pct": 9.94,
+    "z_score": 2.62,
+    "m_score": null,
+    "tata": 0.0,
+    "solvency_type": "Financial TCE Capital Ratio (3.8%)",
+    "verdict": "AVOID / FORENSIC RED FLAG",
     "model_type": "Residual Income (RIM) & Justified P/TBV",
-    "latest_filing_date": "2026-Q2/Q3 (Cached)",
-    "last_fundamental_update": null
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-18"
   },
   "candles": [
     {
@@ -9287,7 +9287,7 @@
         },
         {
           "time": "2026-01-29",
-          "value": 9346.95
+          "value": 9346.94
         },
         {
           "time": "2026-01-30",
@@ -9907,7 +9907,7 @@
         },
         {
           "time": "2026-09-08",
-          "value": 10120.67
+          "value": 10120.66
         },
         {
           "time": "2026-09-09",
