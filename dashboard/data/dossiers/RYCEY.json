@@ -3,18 +3,18 @@
   "name": "Rolls Royce Holdings plc",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T14:50:26.945067+00:00",
+  "generated_at": "2026-11-18T17:13:13.003202+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 17.49,
+  "backtest_total_bars": 377,
+  "current_price": 17.42,
   "state": "BLUE",
-  "v1": 17.67,
-  "v2": 18.13,
+  "v1": 17.66,
+  "v2": 18.11,
   "sma200": 17.93,
-  "rsi14": 48.5,
-  "atr14": 0.52,
+  "rsi14": 47.7,
+  "atr14": 0.51,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 13.4,
-      "cagr_pct": 8.8,
+      "cagr_pct": 8.7,
       "sharpe_ratio": 0.46,
       "win_rate_pct": 42.9,
       "profit_factor": 1.47,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -2.9,
-      "cagr_pct": -2.0,
+      "cagr_pct": -1.9,
       "sharpe_ratio": -0.03,
       "win_rate_pct": 50.0,
       "profit_factor": 1.84,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 58.5,
-      "cagr_pct": 36.2,
-      "sharpe_ratio": 1.05,
+      "total_return_pct": 57.9,
+      "cagr_pct": 35.7,
+      "sharpe_ratio": 1.04,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.21,
+      "profit_factor": 2.19,
       "max_drawdown_pct": 26.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 13.2,
     "entry_price": 11.22,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -32.5,
-    "mos_pct": -32.5,
+    "actual_discount_pct": -32.0,
+    "mos_pct": -32.0,
     "moat": "Wide",
     "roic_pct": 27.2,
     "wacc_pct": 10.09,
@@ -5385,6 +5385,20 @@
       "v2": 18.13,
       "sma200": 17.93,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 17.71,
+      "high": 17.73,
+      "low": 17.4,
+      "close": 17.42,
+      "volume": 53307.0,
+      "v1": 17.66,
+      "m1": 17.81,
+      "m2": 18.01,
+      "v2": 18.11,
+      "sma200": 17.93,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6982,6 +6996,10 @@
         {
           "time": "2026-11-17",
           "value": 12789.06
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12789.06
         }
       ]
     },
@@ -8492,6 +8510,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12404.75
+        },
+        {
+          "time": "2026-11-18",
           "value": 12404.75
         }
       ]
@@ -10004,6 +10026,10 @@
         {
           "time": "2026-11-17",
           "value": 11335.1
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11335.1
         }
       ]
     },
@@ -10114,7 +10140,7 @@
         },
         {
           "time": "2025-06-27",
-          "value": 11880.49
+          "value": 11880.48
         },
         {
           "time": "2025-06-30",
@@ -11515,6 +11541,10 @@
         {
           "time": "2026-11-17",
           "value": 15865.17
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15801.67
         }
       ]
     }
@@ -11595,14 +11625,14 @@
   ],
   "smart_money": {
     "symbol": "RYCEY",
-    "smart_money_score": 47.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.09, P/C: N/A).",
-    "cmf_20d": -0.091,
-    "up_down_vol_ratio": 1.09,
-    "absorption_5d_pct": 46.1,
-    "vol_shock_ratio": 0.61,
+    "cmf_20d": -0.087,
+    "up_down_vol_ratio": 1.15,
+    "absorption_5d_pct": 30.5,
+    "vol_shock_ratio": 0.01,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

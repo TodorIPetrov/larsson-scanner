@@ -3,28 +3,28 @@
   "name": "Deckers Outdoor Corporation",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T14:50:06.058663+00:00",
+  "generated_at": "2026-11-18T17:12:52.336311+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 82.21,
+  "current_price": 83.39,
   "state": "BLUE",
-  "v1": 84.69,
-  "v2": 85.71,
+  "v1": 84.72,
+  "v2": 85.72,
   "sma200": 98.1,
-  "rsi14": 44.9,
-  "atr14": 3.24,
+  "rsi14": 47.4,
+  "atr14": 3.3,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -0.3,
-    "cagr_pct": -0.2,
-    "sharpe_ratio": 0.05,
+    "total_return_pct": 0.4,
+    "cagr_pct": 0.3,
+    "sharpe_ratio": 0.09,
     "win_rate_pct": 50.0,
-    "profit_factor": 1.9,
+    "profit_factor": 1.97,
     "max_drawdown_pct": 10.3,
     "total_trades": 4
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -0.3,
-      "cagr_pct": -0.2,
-      "sharpe_ratio": 0.05,
+      "total_return_pct": 0.4,
+      "cagr_pct": 0.3,
+      "sharpe_ratio": 0.09,
       "win_rate_pct": 50.0,
-      "profit_factor": 1.9,
+      "profit_factor": 1.97,
       "max_drawdown_pct": 10.3,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -35.0,
-      "cagr_pct": -25.0,
-      "sharpe_ratio": -0.36,
+      "total_return_pct": -34.0,
+      "cagr_pct": -24.3,
+      "sharpe_ratio": -0.33,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 38.5,
@@ -107,8 +107,8 @@
     "target_price": 164.78,
     "entry_price": 140.06,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 50.1,
-    "mos_pct": 50.1,
+    "actual_discount_pct": 49.4,
+    "mos_pct": 49.4,
     "moat": "Wide",
     "roic_pct": 60.6,
     "wacc_pct": 9.77,
@@ -5389,14 +5389,14 @@
     {
       "time": "2026-11-18",
       "open": 81.0,
-      "high": 82.71,
+      "high": 83.54,
       "low": 80.5,
-      "close": 82.21,
-      "volume": 214491.0,
-      "v1": 84.69,
-      "m1": 84.74,
-      "m2": 85.22,
-      "v2": 85.71,
+      "close": 83.39,
+      "volume": 1264021.0,
+      "v1": 84.72,
+      "m1": 84.76,
+      "m2": 85.23,
+      "v2": 85.72,
       "sma200": 98.1,
       "state": "BLUE"
     }
@@ -5456,7 +5456,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +2.29% ($112.65 €)"
+      "text": "EXIT +3.76% ($185.22 €)"
     }
   ],
   "equity_curves": [
@@ -6971,7 +6971,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9971.54
+          "value": 10044.18
         }
       ]
     },
@@ -11516,7 +11516,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 6508.78
+          "value": 6602.6
         }
       ]
     }
@@ -11563,27 +11563,27 @@
       "entry_date": "2026-09-14",
       "entry_price": 80.21,
       "exit_date": "2026-11-18",
-      "exit_price": 82.21,
+      "exit_price": 83.39,
       "holding_days": 47,
-      "pnl_pct": 2.29,
-      "pnl_eur": 112.65,
+      "pnl_pct": 3.76,
+      "pnl_eur": 185.22,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "DECK",
-    "smart_money_score": 30.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.82, CMF: +0.00).",
-    "cmf_20d": 0.002,
-    "up_down_vol_ratio": 0.5,
-    "absorption_5d_pct": 34.6,
-    "vol_shock_ratio": 0.06,
+    "smart_money_score": 40.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: 0.82).",
+    "cmf_20d": 0.015,
+    "up_down_vol_ratio": 0.52,
+    "absorption_5d_pct": 38.1,
+    "vol_shock_ratio": 0.33,
     "put_call_ratio": 0.82,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 80.0,
+    "gamma_wall": 85.0,
     "max_pain": 85.0,
     "unusual_call_sweep": false
   }

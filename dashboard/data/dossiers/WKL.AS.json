@@ -3,28 +3,28 @@
   "name": "WKL.AS",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-18T14:50:32.957876+00:00",
+  "generated_at": "2026-11-18T17:13:19.811302+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 85.46,
+  "current_price": 85.66,
   "state": "GOLD",
   "v1": 84.76,
   "v2": 79.6,
   "sma200": 66.77,
-  "rsi14": 50.6,
+  "rsi14": 51.0,
   "atr14": 2.56,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 18.6,
-    "cagr_pct": 11.8,
-    "sharpe_ratio": 0.83,
+    "total_return_pct": 18.9,
+    "cagr_pct": 12.0,
+    "sharpe_ratio": 0.84,
     "win_rate_pct": 50.0,
-    "profit_factor": 4.44,
+    "profit_factor": 4.49,
     "max_drawdown_pct": 8.0,
     "total_trades": 2
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 4.8,
-      "cagr_pct": 3.1,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 5.0,
+      "cagr_pct": 3.3,
+      "sharpe_ratio": 0.29,
       "win_rate_pct": 14.3,
-      "profit_factor": 1.29,
+      "profit_factor": 1.3,
       "max_drawdown_pct": 18.8,
       "total_trades": 7
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 4.8,
-      "cagr_pct": 3.1,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 5.0,
+      "cagr_pct": 3.3,
+      "sharpe_ratio": 0.29,
       "win_rate_pct": 14.3,
-      "profit_factor": 1.29,
+      "profit_factor": 1.3,
       "max_drawdown_pct": 18.8,
       "total_trades": 7
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 5.0,
-      "cagr_pct": 3.3,
-      "sharpe_ratio": 0.31,
+      "total_return_pct": 5.2,
+      "cagr_pct": 3.4,
+      "sharpe_ratio": 0.32,
       "win_rate_pct": 22.2,
-      "profit_factor": 1.45,
+      "profit_factor": 1.46,
       "max_drawdown_pct": 16.6,
       "total_trades": 9
     },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 19.6,
-      "cagr_pct": 12.4,
-      "sharpe_ratio": 0.75,
+      "total_return_pct": 19.9,
+      "cagr_pct": 12.6,
+      "sharpe_ratio": 0.76,
       "win_rate_pct": 16.7,
-      "profit_factor": 3.01,
+      "profit_factor": 3.03,
       "max_drawdown_pct": 14.6,
       "total_trades": 6
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 18.6,
-      "cagr_pct": 11.8,
-      "sharpe_ratio": 0.83,
+      "total_return_pct": 18.9,
+      "cagr_pct": 12.0,
+      "sharpe_ratio": 0.84,
       "win_rate_pct": 50.0,
-      "profit_factor": 4.44,
+      "profit_factor": 4.49,
       "max_drawdown_pct": 8.0,
       "total_trades": 2
     },
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -44.3,
-      "cagr_pct": -31.9,
+      "total_return_pct": -44.2,
+      "cagr_pct": -31.8,
       "sharpe_ratio": -0.88,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -5489,8 +5489,8 @@
       "open": 87.7,
       "high": 88.76,
       "low": 85.34,
-      "close": 85.46,
-      "volume": 286690.0,
+      "close": 85.66,
+      "volume": 973967.0,
       "v1": 84.76,
       "m1": 83.06,
       "m2": 80.85,
@@ -5526,7 +5526,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +25.4% ($2399.75 €)"
+      "text": "EXIT +25.69% ($2427.49 €)"
     }
   ],
   "equity_curves": [
@@ -6985,7 +6985,7 @@
         },
         {
           "time": "2026-10-20",
-          "value": 11629.13
+          "value": 11629.12
         },
         {
           "time": "2026-10-21",
@@ -7069,7 +7069,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11870.62
+          "value": 11898.38
         }
       ]
     },
@@ -8296,7 +8296,7 @@
         },
         {
           "time": "2026-07-30",
-          "value": 9515.06
+          "value": 9515.07
         },
         {
           "time": "2026-07-31",
@@ -8612,7 +8612,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11969.6
+          "value": 11997.61
         }
       ]
     },
@@ -10155,7 +10155,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10510.52
+          "value": 10535.11
         }
       ]
     },
@@ -11698,7 +11698,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 5570.93
+          "value": 5583.97
         }
       ]
     }
@@ -11721,24 +11721,24 @@
       "entry_date": "2026-08-05",
       "entry_price": 68.02,
       "exit_date": "2026-11-18",
-      "exit_price": 85.46,
+      "exit_price": 85.66,
       "holding_days": 75,
-      "pnl_pct": 25.4,
-      "pnl_eur": 2399.75,
+      "pnl_pct": 25.69,
+      "pnl_eur": 2427.49,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "WKL.AS",
-    "smart_money_score": 67.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.057,
-    "up_down_vol_ratio": 1.18,
-    "absorption_5d_pct": 46.7,
-    "vol_shock_ratio": 0.3,
+    "smart_money_score": 55.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: N/A).",
+    "cmf_20d": 0.028,
+    "up_down_vol_ratio": 1.09,
+    "absorption_5d_pct": 47.9,
+    "vol_shock_ratio": 1.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

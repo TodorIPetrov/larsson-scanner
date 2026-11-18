@@ -3,28 +3,28 @@
   "name": "ROCHE I",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:50:26.721125+00:00",
+  "generated_at": "2026-11-18T17:13:12.741061+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 411.8,
+  "current_price": 407.6,
   "state": "GOLD",
-  "v1": 398.87,
-  "v2": 387.04,
-  "sma200": 353.55,
-  "rsi14": 63.4,
-  "atr14": 6.69,
+  "v1": 398.82,
+  "v2": 387.01,
+  "sma200": 353.53,
+  "rsi14": 58.3,
+  "atr14": 6.79,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 30.5,
-    "cagr_pct": 19.6,
-    "sharpe_ratio": 1.03,
+    "total_return_pct": 29.1,
+    "cagr_pct": 18.8,
+    "sharpe_ratio": 0.99,
     "win_rate_pct": 50.0,
-    "profit_factor": 5.13,
+    "profit_factor": 4.95,
     "max_drawdown_pct": 16.3,
     "total_trades": 2
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 23.5,
-      "cagr_pct": 15.2,
-      "sharpe_ratio": 0.85,
+      "total_return_pct": 22.2,
+      "cagr_pct": 14.4,
+      "sharpe_ratio": 0.81,
       "win_rate_pct": 33.3,
-      "profit_factor": 2.21,
+      "profit_factor": 2.14,
       "max_drawdown_pct": 20.6,
       "total_trades": 6
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 8.4,
-      "cagr_pct": 5.6,
-      "sharpe_ratio": 0.4,
+      "total_return_pct": 7.3,
+      "cagr_pct": 4.9,
+      "sharpe_ratio": 0.36,
       "win_rate_pct": 28.6,
-      "profit_factor": 1.45,
+      "profit_factor": 1.39,
       "max_drawdown_pct": 24.1,
       "total_trades": 7
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 9.4,
-      "cagr_pct": 6.2,
-      "sharpe_ratio": 0.49,
+      "total_return_pct": 8.3,
+      "cagr_pct": 5.5,
+      "sharpe_ratio": 0.44,
       "win_rate_pct": 33.3,
-      "profit_factor": 2.31,
+      "profit_factor": 2.24,
       "max_drawdown_pct": 19.4,
       "total_trades": 12
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 30.5,
-      "cagr_pct": 19.6,
-      "sharpe_ratio": 1.03,
+      "total_return_pct": 29.1,
+      "cagr_pct": 18.8,
+      "sharpe_ratio": 0.99,
       "win_rate_pct": 50.0,
-      "profit_factor": 5.13,
+      "profit_factor": 4.95,
       "max_drawdown_pct": 16.3,
       "total_trades": 2
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 53.9,
-      "cagr_pct": 33.6,
-      "sharpe_ratio": 1.36,
+      "total_return_pct": 52.3,
+      "cagr_pct": 32.7,
+      "sharpe_ratio": 1.33,
       "win_rate_pct": 100.0,
-      "profit_factor": 3.3,
+      "profit_factor": 3.2,
       "max_drawdown_pct": 16.3,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 337.41,
     "entry_price": 286.8,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -22.0,
-    "mos_pct": -22.0,
+    "actual_discount_pct": -20.8,
+    "mos_pct": -20.8,
     "moat": "Wide",
     "roic_pct": 20.3,
     "wacc_pct": 7.8,
@@ -5362,14 +5362,14 @@
       "time": "2026-11-18",
       "open": 409.0,
       "high": 412.6,
-      "low": 409.0,
-      "close": 411.8,
-      "volume": 6440.0,
-      "v1": 398.87,
-      "m1": 394.96,
-      "m2": 389.95,
-      "v2": 387.04,
-      "sma200": 353.55,
+      "low": 407.6,
+      "close": 407.6,
+      "volume": 25136.0,
+      "v1": 398.82,
+      "m1": 394.93,
+      "m2": 389.93,
+      "v2": 387.01,
+      "sma200": 353.53,
       "state": "GOLD"
     }
   ],
@@ -5400,7 +5400,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +40.91% ($3785.53 €)"
+      "text": "EXIT +39.47% ($3652.55 €)"
     }
   ],
   "equity_curves": [
@@ -6907,7 +6907,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 13060.78
+          "value": 12927.67
         }
       ]
     },
@@ -8414,7 +8414,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 12358.5
+          "value": 12232.56
         }
       ]
     },
@@ -11428,7 +11428,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 15404.3
+          "value": 15247.19
         }
       ]
     }
@@ -11451,24 +11451,24 @@
       "entry_date": "2025-11-12",
       "entry_price": 291.66,
       "exit_date": "2026-11-18",
-      "exit_price": 411.8,
+      "exit_price": 407.6,
       "holding_days": 254,
-      "pnl_pct": 40.91,
-      "pnl_eur": 3785.53,
+      "pnl_pct": 39.47,
+      "pnl_eur": 3652.55,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "RO.SW",
-    "smart_money_score": 80.0,
+    "smart_money_score": 62.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.15, Up/Dn Vol: 2.14x). Силна скрита подкрепа.",
-    "cmf_20d": 0.153,
-    "up_down_vol_ratio": 2.14,
-    "absorption_5d_pct": 42.3,
-    "vol_shock_ratio": 0.23,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.10, Up/Dn Vol: 1.83x). Силна скрита подкрепа.",
+    "cmf_20d": 0.096,
+    "up_down_vol_ratio": 1.83,
+    "absorption_5d_pct": 26.8,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

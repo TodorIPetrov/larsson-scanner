@@ -3,18 +3,18 @@
   "name": "AMG Critical Materials N.V.",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:49:57.869549+00:00",
+  "generated_at": "2026-11-18T17:12:43.337237+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 21.82,
+  "current_price": 21.64,
   "state": "BLUE",
-  "v1": 24.59,
+  "v1": 24.58,
   "v2": 26.43,
   "sma200": 32.1,
-  "rsi14": 29.7,
-  "atr14": 0.92,
+  "rsi14": 28.9,
+  "atr14": 0.94,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 20.4,
-      "cagr_pct": 13.0,
-      "sharpe_ratio": 0.49,
+      "total_return_pct": 19.4,
+      "cagr_pct": 12.3,
+      "sharpe_ratio": 0.48,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.43,
-      "max_drawdown_pct": 47.8,
+      "profit_factor": 0.4,
+      "max_drawdown_pct": 48.3,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 17.89,
     "entry_price": 13.42,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -22.0,
-    "mos_pct": -22.0,
+    "actual_discount_pct": -21.0,
+    "mos_pct": -21.0,
     "moat": "None",
     "roic_pct": 11.4,
     "wacc_pct": 8.0,
@@ -5488,10 +5488,10 @@
       "time": "2026-11-18",
       "open": 22.02,
       "high": 22.46,
-      "low": 21.82,
-      "close": 21.82,
-      "volume": 91270.0,
-      "v1": 24.59,
+      "low": 21.6,
+      "close": 21.64,
+      "volume": 202455.0,
+      "v1": 24.58,
       "m1": 25.17,
       "m2": 25.96,
       "v2": 26.43,
@@ -5699,7 +5699,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 13850.12
+          "value": 13850.11
         },
         {
           "time": "2025-07-24",
@@ -10328,7 +10328,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 13853.96
+          "value": 13853.95
         },
         {
           "time": "2025-07-24",
@@ -11684,7 +11684,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 12052.23
+          "value": 11952.81
         }
       ]
     }
@@ -11708,11 +11708,11 @@
     "smart_money_score": 22.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.07).",
-    "cmf_20d": -0.074,
-    "up_down_vol_ratio": 0.68,
-    "absorption_5d_pct": 29.7,
-    "vol_shock_ratio": 0.34,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.09).",
+    "cmf_20d": -0.089,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 30.7,
+    "vol_shock_ratio": 0.75,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

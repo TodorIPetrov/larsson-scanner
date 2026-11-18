@@ -3,17 +3,17 @@
   "name": "Mercedes-Benz Group AG        N",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:50:15.640361+00:00",
+  "generated_at": "2026-11-18T17:13:01.928859+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 38.98,
+  "current_price": 38.96,
   "state": "BLUE",
   "v1": 41.12,
   "v2": 42.1,
   "sma200": 46.93,
-  "rsi14": 37.1,
+  "rsi14": 37.0,
   "atr14": 1.11,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -70,8 +70,8 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -4.9,
-      "cagr_pct": -3.2,
-      "sharpe_ratio": -0.47,
+      "cagr_pct": -3.3,
+      "sharpe_ratio": -0.48,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 8.9,
@@ -98,7 +98,7 @@
       "sharpe_ratio": -0.37,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 32.6,
+      "max_drawdown_pct": 32.7,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 15.88,
     "entry_price": 11.91,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -145.5,
-    "mos_pct": -145.5,
+    "actual_discount_pct": -145.3,
+    "mos_pct": -145.3,
     "moat": "None",
     "roic_pct": 4.5,
     "wacc_pct": 8.0,
@@ -5447,8 +5447,8 @@
       "open": 39.45,
       "high": 39.45,
       "low": 38.49,
-      "close": 38.98,
-      "volume": 1030486.0,
+      "close": 38.96,
+      "volume": 2307612.0,
       "v1": 41.12,
       "m1": 41.38,
       "m2": 41.81,
@@ -10133,7 +10133,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9518.7
+          "value": 9516.31
         }
       ]
     },
@@ -11664,7 +11664,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 7938.11
+          "value": 7934.04
         }
       ]
     }
@@ -11745,14 +11745,14 @@
   ],
   "smart_money": {
     "symbol": "MBG.DE",
-    "smart_money_score": 30.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
-    "cmf_20d": -0.211,
-    "up_down_vol_ratio": 1.0,
-    "absorption_5d_pct": 26.2,
-    "vol_shock_ratio": 0.4,
+    "cmf_20d": -0.207,
+    "up_down_vol_ratio": 0.95,
+    "absorption_5d_pct": 25.8,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
