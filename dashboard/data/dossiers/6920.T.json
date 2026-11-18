@@ -3,25 +3,25 @@
   "name": "6920.T",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T23:30:29.931545+00:00",
+  "generated_at": "2026-11-18T00:56:10.232223+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
-  "backtest_years": 1.4,
-  "backtest_total_bars": 365,
-  "current_price": 31050.0,
+  "backtest_end_date": "2026-11-18",
+  "backtest_years": 1.5,
+  "backtest_total_bars": 366,
+  "current_price": 32920.0,
   "state": "BLUE",
-  "v1": 37425.51,
-  "v2": 38533.07,
-  "sma200": 39185.16,
-  "rsi14": 36.7,
-  "atr14": 3073.39,
+  "v1": 37097.14,
+  "v2": 38325.04,
+  "sma200": 39156.87,
+  "rsi14": 41.5,
+  "atr14": 3012.44,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 58.5,
-    "cagr_pct": 37.4,
+    "cagr_pct": 37.3,
     "sharpe_ratio": 0.81,
     "win_rate_pct": 33.3,
     "profit_factor": 3.24,
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 36.4,
-      "cagr_pct": 23.9,
-      "sharpe_ratio": 0.66,
+      "cagr_pct": 23.8,
+      "sharpe_ratio": 0.65,
       "win_rate_pct": 28.6,
       "profit_factor": 1.58,
       "max_drawdown_pct": 57.6,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 24.0,
-      "cagr_pct": 16.0,
+      "cagr_pct": 15.9,
       "sharpe_ratio": 0.55,
       "win_rate_pct": 25.0,
       "profit_factor": 2.39,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 58.5,
-      "cagr_pct": 37.4,
+      "cagr_pct": 37.3,
       "sharpe_ratio": 0.81,
       "win_rate_pct": 33.3,
       "profit_factor": 3.24,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 121.1,
-      "cagr_pct": 73.0,
-      "sharpe_ratio": 1.12,
+      "total_return_pct": 134.5,
+      "cagr_pct": 79.8,
+      "sharpe_ratio": 1.18,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.65,
+      "profit_factor": 2.94,
       "max_drawdown_pct": 45.8,
       "total_trades": 1
     }
@@ -5231,6 +5231,20 @@
       "v2": 38533.07,
       "sma200": 39185.16,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 32000.0,
+      "high": 33270.0,
+      "low": 31730.0,
+      "close": 32920.0,
+      "volume": 1924100.0,
+      "v1": 37097.14,
+      "m1": 37580.96,
+      "m2": 38079.04,
+      "v2": 38325.04,
+      "sma200": 39156.87,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6201,7 +6215,7 @@
         },
         {
           "time": "2026-04-27",
-          "value": 23551.83
+          "value": 23551.82
         },
         {
           "time": "2026-04-28",
@@ -6741,6 +6755,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 15846.51
+        },
+        {
+          "time": "2026-11-18",
           "value": 15846.51
         }
       ]
@@ -8209,6 +8227,10 @@
         {
           "time": "2026-11-17",
           "value": 13639.34
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13639.34
         }
       ]
     },
@@ -9675,6 +9697,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12396.67
+        },
+        {
+          "time": "2026-11-18",
           "value": 12396.67
         }
       ]
@@ -11143,6 +11169,10 @@
         {
           "time": "2026-11-17",
           "value": 22135.65
+        },
+        {
+          "time": "2026-11-18",
+          "value": 23468.78
         }
       ]
     }
@@ -11187,14 +11217,14 @@
   ],
   "smart_money": {
     "symbol": "6920.T",
-    "smart_money_score": 30.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: +0.01).",
-    "cmf_20d": 0.013,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 31.9,
-    "vol_shock_ratio": 0.96,
+    "smart_money_score": 42.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: N/A).",
+    "cmf_20d": 0.031,
+    "up_down_vol_ratio": 0.74,
+    "absorption_5d_pct": 28.8,
+    "vol_shock_ratio": 0.39,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
