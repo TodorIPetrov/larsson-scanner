@@ -3,26 +3,26 @@
   "name": "ROLLS-ROYCE HOLDINGS PLC ORD SH",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:50:26.852769+00:00",
+  "generated_at": "2026-11-18T17:13:21.627953+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 380,
-  "current_price": 1346.8,
+  "current_price": 1330.2,
   "state": "BLUE",
   "v1": 1331.41,
   "v2": 1362.57,
-  "sma200": 1340.51,
-  "rsi14": 53.3,
+  "sma200": 1340.42,
+  "rsi14": 50.8,
   "atr14": 49.36,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 4.5,
-    "cagr_pct": 3.0,
-    "sharpe_ratio": 0.27,
+    "total_return_pct": 3.9,
+    "cagr_pct": 2.5,
+    "sharpe_ratio": 0.24,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 19.2,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 4.5,
-      "cagr_pct": 3.0,
-      "sharpe_ratio": 0.27,
+      "total_return_pct": 3.9,
+      "cagr_pct": 2.5,
+      "sharpe_ratio": 0.24,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 19.2,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 62.8,
-      "cagr_pct": 38.1,
-      "sharpe_ratio": 1.11,
+      "total_return_pct": 60.8,
+      "cagr_pct": 37.0,
+      "sharpe_ratio": 1.08,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.43,
+      "profit_factor": 2.35,
       "max_drawdown_pct": 25.9,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 957.77,
     "entry_price": 814.1,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -40.6,
-    "mos_pct": -40.6,
+    "actual_discount_pct": -38.9,
+    "mos_pct": -38.9,
     "moat": "Wide",
     "roic_pct": 27.2,
     "wacc_pct": 10.37,
@@ -5433,13 +5433,13 @@
       "open": 1331.2,
       "high": 1357.8,
       "low": 1321.4,
-      "close": 1346.8,
-      "volume": 4175151.0,
+      "close": 1330.2,
+      "volume": 10780498.0,
       "v1": 1331.41,
       "m1": 1342.16,
       "m2": 1355.9,
       "v2": 1362.57,
-      "sma200": 1340.51,
+      "sma200": 1340.42,
       "state": "BLUE"
     }
   ],
@@ -5470,7 +5470,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +9.47% ($472.27 €)"
+      "text": "EXIT +8.12% ($405.0 €)"
     }
   ],
   "equity_curves": [
@@ -6997,7 +6997,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10458.72
+          "value": 10391.38
         }
       ]
     },
@@ -7208,7 +7208,7 @@
         },
         {
           "time": "2025-07-31",
-          "value": 12965.42
+          "value": 12965.41
         },
         {
           "time": "2025-08-01",
@@ -8667,7 +8667,7 @@
         },
         {
           "time": "2025-07-08",
-          "value": 10844.6
+          "value": 10844.61
         },
         {
           "time": "2025-07-09",
@@ -10162,7 +10162,7 @@
         },
         {
           "time": "2025-06-26",
-          "value": 11296.52
+          "value": 11296.51
         },
         {
           "time": "2025-06-27",
@@ -11578,7 +11578,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 16294.74
+          "value": 16093.9
         }
       ]
     }
@@ -11601,24 +11601,24 @@
       "entry_date": "2026-10-27",
       "entry_price": 1227.8,
       "exit_date": "2026-11-18",
-      "exit_price": 1346.8,
+      "exit_price": 1330.2,
       "holding_days": 16,
-      "pnl_pct": 9.47,
-      "pnl_eur": 472.27,
+      "pnl_pct": 8.12,
+      "pnl_eur": 405.0,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "RR.L",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.15, P/C: N/A).",
-    "cmf_20d": -0.148,
-    "up_down_vol_ratio": 1.04,
-    "absorption_5d_pct": 37.6,
-    "vol_shock_ratio": 0.18,
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.16).",
+    "cmf_20d": -0.162,
+    "up_down_vol_ratio": 1.07,
+    "absorption_5d_pct": 28.5,
+    "vol_shock_ratio": 0.46,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

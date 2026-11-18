@@ -3,17 +3,17 @@
   "name": "NESTLE N",
   "sector": "Consumer Defensive",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:50:18.760394+00:00",
+  "generated_at": "2026-11-18T17:13:13.721699+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 86.04,
+  "current_price": 86.03,
   "state": "GOLD",
   "v1": 83.97,
   "v2": 82.16,
   "sma200": 79.34,
-  "rsi14": 59.2,
+  "rsi14": 59.1,
   "atr14": 1.32,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -9.2,
-      "cagr_pct": -6.2,
+      "cagr_pct": -6.3,
       "sharpe_ratio": -0.75,
       "win_rate_pct": 25.0,
       "profit_factor": 0.26,
@@ -94,7 +94,7 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": 1.1,
-      "cagr_pct": 0.8,
+      "cagr_pct": 0.7,
       "sharpe_ratio": 0.14,
       "win_rate_pct": 100.0,
       "profit_factor": 0.1,
@@ -5363,8 +5363,8 @@
       "open": 86.21,
       "high": 86.57,
       "low": 85.85,
-      "close": 86.04,
-      "volume": 951092.0,
+      "close": 86.03,
+      "volume": 2730583.0,
       "v1": 83.97,
       "m1": 83.26,
       "m2": 82.52,
@@ -8442,7 +8442,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9093.64
+          "value": 9092.58
         }
       ]
     },
@@ -9949,7 +9949,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8498.23
+          "value": 8497.24
         }
       ]
     },
@@ -11456,7 +11456,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10122.62
+          "value": 10121.44
         }
       ]
     }
@@ -11516,11 +11516,11 @@
     "smart_money_score": 85.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.17, Up/Dn Vol: 1.44x). Силна скрита подкрепа.",
-    "cmf_20d": 0.175,
-    "up_down_vol_ratio": 1.44,
-    "absorption_5d_pct": 52.3,
-    "vol_shock_ratio": 0.25,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.16, Up/Dn Vol: 1.36x). Силна скрита подкрепа.",
+    "cmf_20d": 0.158,
+    "up_down_vol_ratio": 1.36,
+    "absorption_5d_pct": 52.0,
+    "vol_shock_ratio": 0.73,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

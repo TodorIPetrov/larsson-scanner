@@ -3,18 +3,18 @@
   "name": "Tesla, Inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T14:50:30.330734+00:00",
+  "generated_at": "2026-11-18T17:13:24.646742+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 382.33,
+  "current_price": 381.67,
   "state": "GOLD",
-  "v1": 380.69,
-  "v2": 376.09,
+  "v1": 380.66,
+  "v2": 376.07,
   "sma200": 382.07,
-  "rsi14": 50.5,
-  "atr14": 15.56,
+  "rsi14": 50.3,
+  "atr14": 15.63,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -17.9,
-      "cagr_pct": -12.3,
+      "total_return_pct": -18.0,
+      "cagr_pct": -12.4,
       "sharpe_ratio": -0.12,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.67,
+      "profit_factor": 0.66,
       "max_drawdown_pct": 42.7,
       "total_trades": 10
     },
@@ -45,8 +45,8 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -11.7,
-      "cagr_pct": -8.0,
+      "total_return_pct": -11.9,
+      "cagr_pct": -8.1,
       "sharpe_ratio": -0.01,
       "win_rate_pct": 20.0,
       "profit_factor": 0.79,
@@ -57,8 +57,8 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -17.9,
-      "cagr_pct": -12.3,
+      "total_return_pct": -18.0,
+      "cagr_pct": -12.4,
       "sharpe_ratio": -0.23,
       "win_rate_pct": 23.1,
       "profit_factor": 0.95,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 10.8,
-      "cagr_pct": 7.1,
+      "total_return_pct": 10.6,
+      "cagr_pct": 7.0,
       "sharpe_ratio": 0.43,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.28,
+      "profit_factor": 0.27,
       "max_drawdown_pct": 39.1,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 152.22,
     "entry_price": 114.16,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -151.2,
-    "mos_pct": -151.2,
+    "actual_discount_pct": -150.7,
+    "mos_pct": -150.7,
     "moat": "None",
     "roic_pct": 8.7,
     "wacc_pct": 11.91,
@@ -5390,13 +5390,13 @@
       "time": "2026-11-18",
       "open": 385.19,
       "high": 389.27,
-      "low": 379.35,
-      "close": 382.33,
-      "volume": 3480038.0,
-      "v1": 380.69,
-      "m1": 379.01,
-      "m2": 376.99,
-      "v2": 376.09,
+      "low": 378.36,
+      "close": 381.67,
+      "volume": 12339333.0,
+      "v1": 380.66,
+      "m1": 378.98,
+      "m2": 376.97,
+      "v2": 376.07,
       "sma200": 382.07,
       "state": "GOLD"
     }
@@ -8429,7 +8429,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8836.28
+          "value": 8821.15
         }
       ]
     },
@@ -9944,7 +9944,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8219.72
+          "value": 8205.65
         }
       ]
     },
@@ -11459,7 +11459,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11089.27
+          "value": 11070.27
         }
       ]
     }
@@ -11467,18 +11467,18 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "TSLA",
-    "smart_money_score": 50.0,
+    "smart_money_score": 60.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: 0.91).",
-    "cmf_20d": -0.0,
-    "up_down_vol_ratio": 0.8,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 0.91).",
+    "cmf_20d": -0.005,
+    "up_down_vol_ratio": 0.82,
     "absorption_5d_pct": 45.6,
-    "vol_shock_ratio": 0.09,
+    "vol_shock_ratio": 0.32,
     "put_call_ratio": 0.91,
-    "options_sentiment": "NEUTRAL",
+    "options_sentiment": "BULLISH",
     "gamma_wall": 380.0,
     "max_pain": 400.0,
-    "unusual_call_sweep": false
+    "unusual_call_sweep": true
   }
 }

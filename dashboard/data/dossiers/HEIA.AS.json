@@ -3,17 +3,17 @@
   "name": "HEINEKEN",
   "sector": "Consumer Defensive",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:50:10.841646+00:00",
+  "generated_at": "2026-11-18T17:13:06.423904+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 84.1,
+  "current_price": 84.16,
   "state": "GOLD",
   "v1": 79.99,
   "v2": 77.29,
   "sma200": 72.24,
-  "rsi14": 69.6,
+  "rsi14": 70.0,
   "atr14": 1.39,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -33,7 +33,7 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -22.4,
+      "total_return_pct": -22.3,
       "cagr_pct": -15.3,
       "sharpe_ratio": -0.88,
       "win_rate_pct": 12.5,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -18.9,
-      "cagr_pct": -12.9,
+      "cagr_pct": -12.8,
       "sharpe_ratio": -1.03,
       "win_rate_pct": 14.3,
       "profit_factor": 0.22,
@@ -81,7 +81,7 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -10.4,
+      "total_return_pct": -10.3,
       "cagr_pct": -6.9,
       "sharpe_ratio": -0.42,
       "win_rate_pct": 25.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 9.1,
-      "cagr_pct": 5.9,
+      "total_return_pct": 9.2,
+      "cagr_pct": 6.0,
       "sharpe_ratio": 0.39,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.46,
+      "profit_factor": 0.47,
       "max_drawdown_pct": 19.8,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 59.175952153623996,
     "entry_price": 44.381964115218,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -42.1,
-    "mos_pct": -42.1,
+    "actual_discount_pct": -42.2,
+    "mos_pct": -42.2,
     "moat": "None",
     "roic_pct": 7.31,
     "wacc_pct": 7.5,
@@ -5489,8 +5489,8 @@
       "open": 83.86,
       "high": 84.68,
       "low": 83.64,
-      "close": 84.1,
-      "volume": 118524.0,
+      "close": 84.16,
+      "volume": 372640.0,
       "v1": 79.99,
       "m1": 78.97,
       "m2": 77.86,
@@ -8583,7 +8583,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8970.9
+          "value": 8977.29
         }
       ]
     },
@@ -10126,7 +10126,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8111.36
+          "value": 8114.39
         }
       ]
     },
@@ -11669,7 +11669,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10925.39
+          "value": 10933.19
         }
       ]
     }
@@ -11680,11 +11680,11 @@
     "smart_money_score": 75.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.17, Up/Dn Vol: 1.23x). Силна скрита подкрепа.",
-    "cmf_20d": 0.173,
-    "up_down_vol_ratio": 1.23,
-    "absorption_5d_pct": 38.3,
-    "vol_shock_ratio": 0.18,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.17, Up/Dn Vol: 1.18x). Силна скрита подкрепа.",
+    "cmf_20d": 0.17,
+    "up_down_vol_ratio": 1.18,
+    "absorption_5d_pct": 39.4,
+    "vol_shock_ratio": 0.57,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

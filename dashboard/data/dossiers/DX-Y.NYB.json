@@ -3,17 +3,17 @@
   "name": "US Dollar Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-18T14:50:07.013345+00:00",
+  "generated_at": "2026-11-18T17:13:02.888930+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 378,
-  "current_price": 103.78,
+  "current_price": 103.82,
   "state": "GOLD",
   "v1": 102.23,
   "v2": 101.63,
   "sma200": 99.95,
-  "rsi14": 69.3,
+  "rsi14": 69.5,
   "atr14": 0.52,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": 3.1,
     "cagr_pct": 2.1,
-    "sharpe_ratio": 0.86,
+    "sharpe_ratio": 0.87,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 2.4,
@@ -35,9 +35,9 @@
       "is_winner": false,
       "total_return_pct": -3.5,
       "cagr_pct": -2.3,
-      "sharpe_ratio": -0.64,
+      "sharpe_ratio": -0.63,
       "win_rate_pct": 14.3,
-      "profit_factor": 0.38,
+      "profit_factor": 0.39,
       "max_drawdown_pct": 6.4,
       "total_trades": 7
     },
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -1.3,
       "cagr_pct": -0.9,
-      "sharpe_ratio": -0.23,
+      "sharpe_ratio": -0.22,
       "win_rate_pct": 42.9,
       "profit_factor": 0.71,
       "max_drawdown_pct": 5.3,
@@ -61,7 +61,7 @@
       "cagr_pct": -1.8,
       "sharpe_ratio": -0.53,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.43,
+      "profit_factor": 0.44,
       "max_drawdown_pct": 5.4,
       "total_trades": 12
     },
@@ -71,7 +71,7 @@
       "is_winner": true,
       "total_return_pct": 3.1,
       "cagr_pct": 2.1,
-      "sharpe_ratio": 0.86,
+      "sharpe_ratio": 0.87,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 2.4,
@@ -83,7 +83,7 @@
       "is_winner": false,
       "total_return_pct": -1.6,
       "cagr_pct": -1.1,
-      "sharpe_ratio": -0.31,
+      "sharpe_ratio": -0.3,
       "win_rate_pct": 25.0,
       "profit_factor": 0.58,
       "max_drawdown_pct": 4.5,
@@ -5405,7 +5405,7 @@
       "open": 103.66,
       "high": 103.91,
       "low": 103.59,
-      "close": 103.78,
+      "close": 103.82,
       "volume": 0.0,
       "v1": 102.23,
       "m1": 102.03,
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.63% ($456.15 €)"
+      "text": "EXIT +4.67% ($459.63 €)"
     }
   ],
   "equity_curves": [
@@ -6961,7 +6961,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10320.47
+          "value": 10323.95
         }
       ]
     },
@@ -8480,7 +8480,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9877.41
+          "value": 9880.74
         }
       ]
     },
@@ -9999,7 +9999,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9848.25
+          "value": 9851.57
         }
       ]
     },
@@ -11518,7 +11518,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10368.86
+          "value": 10372.36
         }
       ]
     }
@@ -11541,10 +11541,10 @@
       "entry_date": "2026-08-25",
       "entry_price": 98.99,
       "exit_date": "2026-11-18",
-      "exit_price": 103.78,
+      "exit_price": 103.82,
       "holding_days": 60,
-      "pnl_pct": 4.63,
-      "pnl_eur": 456.15,
+      "pnl_pct": 4.67,
+      "pnl_eur": 459.63,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }

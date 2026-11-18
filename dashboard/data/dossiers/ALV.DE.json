@@ -3,26 +3,26 @@
   "name": "Allianz SE                    v",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:49:57.441606+00:00",
+  "generated_at": "2026-11-18T17:12:53.777105+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 465.4,
+  "current_price": 461.6,
   "state": "GOLD",
-  "v1": 449.63,
-  "v2": 441.16,
-  "sma200": 401.88,
-  "rsi14": 61.0,
-  "atr14": 7.76,
+  "v1": 449.55,
+  "v2": 441.12,
+  "sma200": 401.87,
+  "rsi14": 57.9,
+  "atr14": 7.92,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 32.3,
-    "cagr_pct": 20.3,
-    "sharpe_ratio": 1.65,
+    "total_return_pct": 31.2,
+    "cagr_pct": 19.7,
+    "sharpe_ratio": 1.6,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 9.1,
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 25.7,
-      "cagr_pct": 16.3,
-      "sharpe_ratio": 0.99,
+      "total_return_pct": 24.7,
+      "cagr_pct": 15.7,
+      "sharpe_ratio": 0.96,
       "win_rate_pct": 66.7,
-      "profit_factor": 6.95,
+      "profit_factor": 6.71,
       "max_drawdown_pct": 12.6,
       "total_trades": 3
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -2.6,
-      "cagr_pct": -1.7,
-      "sharpe_ratio": 0.04,
+      "total_return_pct": -3.4,
+      "cagr_pct": -2.2,
+      "sharpe_ratio": 0.0,
       "win_rate_pct": 18.2,
-      "profit_factor": 0.86,
+      "profit_factor": 0.81,
       "max_drawdown_pct": 20.7,
       "total_trades": 11
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 5.5,
-      "cagr_pct": 3.6,
-      "sharpe_ratio": 0.33,
+      "total_return_pct": 4.7,
+      "cagr_pct": 3.1,
+      "sharpe_ratio": 0.29,
       "win_rate_pct": 24.1,
-      "profit_factor": 1.7,
+      "profit_factor": 1.65,
       "max_drawdown_pct": 19.1,
       "total_trades": 29
     },
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 32.3,
-      "cagr_pct": 20.3,
-      "sharpe_ratio": 1.65,
+      "total_return_pct": 31.2,
+      "cagr_pct": 19.7,
+      "sharpe_ratio": 1.6,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 9.1,
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 12.9,
-      "cagr_pct": 8.3,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 11.9,
+      "cagr_pct": 7.7,
+      "sharpe_ratio": 0.66,
       "win_rate_pct": 25.0,
-      "profit_factor": 2.23,
+      "profit_factor": 2.15,
       "max_drawdown_pct": 16.0,
       "total_trades": 4
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 38.5,
-      "cagr_pct": 24.1,
-      "sharpe_ratio": 1.31,
+      "total_return_pct": 37.4,
+      "cagr_pct": 23.4,
+      "sharpe_ratio": 1.27,
       "win_rate_pct": 100.0,
-      "profit_factor": 3.12,
+      "profit_factor": 3.03,
       "max_drawdown_pct": 12.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 324.48,
     "entry_price": 275.81,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -43.4,
-    "mos_pct": -43.4,
+    "actual_discount_pct": -42.3,
+    "mos_pct": -42.3,
     "moat": "Wide",
     "roic_pct": 18.8,
     "wacc_pct": 8.48,
@@ -5446,14 +5446,14 @@
       "time": "2026-11-18",
       "open": 466.0,
       "high": 467.3,
-      "low": 463.6,
-      "close": 465.4,
-      "volume": 96479.0,
-      "v1": 449.63,
-      "m1": 446.56,
-      "m2": 443.14,
-      "v2": 441.16,
-      "sma200": 401.88,
+      "low": 461.4,
+      "close": 461.6,
+      "volume": 431522.0,
+      "v1": 449.55,
+      "m1": 446.5,
+      "m2": 443.1,
+      "v2": 441.12,
+      "sma200": 401.87,
       "state": "GOLD"
     }
   ],
@@ -5470,7 +5470,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +38.57% ($3680.95 €)"
+      "text": "EXIT +37.44% ($3572.98 €)"
     }
   ],
   "equity_curves": [
@@ -7001,7 +7001,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 13241.53
+          "value": 13133.45
         }
       ]
     },
@@ -8532,7 +8532,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 12584.14
+          "value": 12481.48
         }
       ]
     },
@@ -10063,7 +10063,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11297.73
+          "value": 11205.55
         }
       ]
     },
@@ -11594,7 +11594,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 13867.4
+          "value": 13754.17
         }
       ]
     }
@@ -11605,10 +11605,10 @@
       "entry_date": "2026-03-11",
       "entry_price": 335.18,
       "exit_date": "2026-11-18",
-      "exit_price": 465.4,
+      "exit_price": 461.6,
       "holding_days": 177,
-      "pnl_pct": 38.57,
-      "pnl_eur": 3680.95,
+      "pnl_pct": 37.44,
+      "pnl_eur": 3572.98,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11618,11 +11618,11 @@
     "smart_money_score": 80.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.15, Up/Dn Vol: 2.07x). Силна скрита подкрепа.",
-    "cmf_20d": 0.15,
-    "up_down_vol_ratio": 2.07,
-    "absorption_5d_pct": 44.5,
-    "vol_shock_ratio": 0.2,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.10, Up/Dn Vol: 1.86x). Силна скрита подкрепа.",
+    "cmf_20d": 0.103,
+    "up_down_vol_ratio": 1.86,
+    "absorption_5d_pct": 35.4,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

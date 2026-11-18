@@ -3,18 +3,18 @@
   "name": "GitLab Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-18T14:50:10.502578+00:00",
+  "generated_at": "2026-11-18T17:13:06.196516+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
   "current_price": 44.53,
   "state": "GOLD",
-  "v1": 49.78,
+  "v1": 49.77,
   "v2": 48.5,
   "sma200": 34.89,
   "rsi14": 31.1,
-  "atr14": 2.43,
+  "atr14": 2.47,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -5389,13 +5389,13 @@
     {
       "time": "2026-11-18",
       "open": 44.67,
-      "high": 44.93,
-      "low": 44.43,
+      "high": 45.0,
+      "low": 44.04,
       "close": 44.53,
-      "volume": 59222.0,
-      "v1": 49.78,
-      "m1": 49.71,
-      "m2": 49.09,
+      "volume": 503441.0,
+      "v1": 49.77,
+      "m1": 49.7,
+      "m2": 49.08,
       "v2": 48.5,
       "sma200": 34.89,
       "state": "GOLD"
@@ -5624,7 +5624,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +70.16% ($5135.1 €)"
+      "text": "EXIT +70.14% ($5133.7 €)"
     }
   ],
   "equity_curves": [
@@ -7139,7 +7139,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 12470.33
+          "value": 12468.93
         }
       ]
     },
@@ -8654,7 +8654,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 12401.18
+          "value": 12399.79
         }
       ]
     },
@@ -10169,7 +10169,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 12259.68
+          "value": 12258.31
         }
       ]
     },
@@ -11684,7 +11684,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8951.8
+          "value": 8950.8
         }
       ]
     }
@@ -11877,8 +11877,8 @@
       "exit_date": "2026-11-18",
       "exit_price": 44.53,
       "holding_days": 106,
-      "pnl_pct": 70.16,
-      "pnl_eur": 5135.1,
+      "pnl_pct": 70.14,
+      "pnl_eur": 5133.7,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11889,10 +11889,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.46) с Gamma стена на $45.00. Залог за рязък отскок.",
-    "cmf_20d": -0.022,
-    "up_down_vol_ratio": 0.54,
-    "absorption_5d_pct": 52.7,
-    "vol_shock_ratio": 0.02,
+    "cmf_20d": -0.021,
+    "up_down_vol_ratio": 0.53,
+    "absorption_5d_pct": 58.7,
+    "vol_shock_ratio": 0.18,
     "put_call_ratio": 0.46,
     "options_sentiment": "BULLISH",
     "gamma_wall": 45.0,

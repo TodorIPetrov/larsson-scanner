@@ -3,28 +3,28 @@
   "name": "Investor AB ser. B",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T14:50:12.531061+00:00",
+  "generated_at": "2026-11-18T17:13:08.096575+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 424.0,
+  "current_price": 422.6,
   "state": "GOLD",
-  "v1": 423.57,
-  "v2": 417.02,
-  "sma200": 388.61,
-  "rsi14": 49.4,
-  "atr14": 5.83,
+  "v1": 423.49,
+  "v2": 416.98,
+  "sma200": 388.6,
+  "rsi14": 47.8,
+  "atr14": 5.99,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 41.1,
-    "cagr_pct": 26.0,
-    "sharpe_ratio": 1.65,
+    "total_return_pct": 40.6,
+    "cagr_pct": 25.7,
+    "sharpe_ratio": 1.64,
     "win_rate_pct": 50.0,
-    "profit_factor": 14.99,
+    "profit_factor": 14.83,
     "max_drawdown_pct": 10.5,
     "total_trades": 2
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 38.7,
-      "cagr_pct": 24.6,
-      "sharpe_ratio": 1.5,
+      "total_return_pct": 38.3,
+      "cagr_pct": 24.3,
+      "sharpe_ratio": 1.49,
       "win_rate_pct": 50.0,
-      "profit_factor": 8.23,
+      "profit_factor": 8.14,
       "max_drawdown_pct": 10.5,
       "total_trades": 4
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 35.4,
-      "cagr_pct": 22.6,
-      "sharpe_ratio": 1.42,
+      "total_return_pct": 34.9,
+      "cagr_pct": 22.3,
+      "sharpe_ratio": 1.4,
       "win_rate_pct": 25.0,
-      "profit_factor": 6.15,
+      "profit_factor": 6.09,
       "max_drawdown_pct": 10.5,
       "total_trades": 4
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 34.1,
-      "cagr_pct": 21.8,
-      "sharpe_ratio": 1.42,
+      "total_return_pct": 33.7,
+      "cagr_pct": 21.5,
+      "sharpe_ratio": 1.41,
       "win_rate_pct": 33.3,
-      "profit_factor": 6.0,
+      "profit_factor": 5.94,
       "max_drawdown_pct": 10.5,
       "total_trades": 9
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 41.1,
-      "cagr_pct": 26.0,
-      "sharpe_ratio": 1.65,
+      "total_return_pct": 40.6,
+      "cagr_pct": 25.7,
+      "sharpe_ratio": 1.64,
       "win_rate_pct": 50.0,
-      "profit_factor": 14.99,
+      "profit_factor": 14.83,
       "max_drawdown_pct": 10.5,
       "total_trades": 2
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 51.9,
-      "cagr_pct": 32.4,
-      "sharpe_ratio": 1.87,
+      "total_return_pct": 51.4,
+      "cagr_pct": 32.2,
+      "sharpe_ratio": 1.85,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.93,
+      "profit_factor": 4.88,
       "max_drawdown_pct": 10.5,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 174.4,
     "entry_price": 139.52,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -143.1,
-    "mos_pct": -143.1,
+    "actual_discount_pct": -142.3,
+    "mos_pct": -142.3,
     "moat": "Narrow",
     "roic_pct": 15.0,
     "wacc_pct": 8.73,
@@ -5362,14 +5362,14 @@
       "time": "2026-11-18",
       "open": 426.2,
       "high": 426.9,
-      "low": 423.65,
-      "close": 424.0,
-      "volume": 967128.0,
-      "v1": 423.57,
-      "m1": 421.41,
-      "m2": 418.68,
-      "v2": 417.02,
-      "sma200": 388.61,
+      "low": 421.3,
+      "close": 422.6,
+      "volume": 2050569.0,
+      "v1": 423.49,
+      "m1": 421.35,
+      "m2": 418.63,
+      "v2": 416.98,
+      "sma200": 388.6,
       "state": "GOLD"
     }
   ],
@@ -5400,7 +5400,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +45.41% ($4403.29 €)"
+      "text": "EXIT +44.93% ($4356.73 €)"
     }
   ],
   "equity_curves": [
@@ -6907,7 +6907,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 14123.56
+          "value": 14076.96
         }
       ]
     },
@@ -8414,7 +8414,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 13887.56
+          "value": 13841.74
         }
       ]
     },
@@ -9921,7 +9921,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 13425.61
+          "value": 13381.3
         }
       ]
     },
@@ -11428,7 +11428,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 15206.81
+          "value": 15156.6
         }
       ]
     }
@@ -11451,10 +11451,10 @@
       "entry_date": "2025-10-02",
       "entry_price": 291.0,
       "exit_date": "2026-11-18",
-      "exit_price": 424.0,
+      "exit_price": 422.6,
       "holding_days": 283,
-      "pnl_pct": 45.41,
-      "pnl_eur": 4403.29,
+      "pnl_pct": 44.93,
+      "pnl_eur": 4356.73,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11464,11 +11464,11 @@
     "smart_money_score": 70.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.24, Up/Dn Vol: 1.73x). Силна скрита подкрепа.",
-    "cmf_20d": 0.236,
-    "up_down_vol_ratio": 1.73,
-    "absorption_5d_pct": 30.9,
-    "vol_shock_ratio": 0.37,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.22, Up/Dn Vol: 1.64x). Силна скрита подкрепа.",
+    "cmf_20d": 0.224,
+    "up_down_vol_ratio": 1.64,
+    "absorption_5d_pct": 33.3,
+    "vol_shock_ratio": 0.78,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

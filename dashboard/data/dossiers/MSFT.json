@@ -3,26 +3,26 @@
   "name": "Microsoft Corporation",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T14:50:17.485029+00:00",
+  "generated_at": "2026-11-18T17:13:12.704910+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 501.94,
+  "current_price": 502.11,
   "state": "GOLD",
-  "v1": 523.39,
-  "v2": 512.33,
+  "v1": 523.37,
+  "v2": 512.31,
   "sma200": 441.84,
-  "rsi14": 40.3,
-  "atr14": 14.77,
+  "rsi14": 40.4,
+  "atr14": 14.82,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 14.3,
+    "total_return_pct": 14.4,
     "cagr_pct": 9.4,
-    "sharpe_ratio": 0.63,
+    "sharpe_ratio": 0.64,
     "win_rate_pct": 50.0,
     "profit_factor": 7.67,
     "max_drawdown_pct": 9.7,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -12.5,
-      "cagr_pct": -8.6,
+      "cagr_pct": -8.5,
       "sharpe_ratio": -0.4,
       "win_rate_pct": 33.3,
       "profit_factor": 0.39,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -7.3,
-      "cagr_pct": -5.0,
+      "cagr_pct": -4.9,
       "sharpe_ratio": -0.2,
       "win_rate_pct": 33.3,
       "profit_factor": 0.59,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 14.3,
+      "total_return_pct": 14.4,
       "cagr_pct": 9.4,
-      "sharpe_ratio": 0.63,
+      "sharpe_ratio": 0.64,
       "win_rate_pct": 50.0,
       "profit_factor": 7.67,
       "max_drawdown_pct": 9.7,
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -4.5,
+      "total_return_pct": -4.4,
       "cagr_pct": -3.0,
       "sharpe_ratio": -0.18,
       "win_rate_pct": 50.0,
-      "profit_factor": 0.19,
+      "profit_factor": 0.2,
       "max_drawdown_pct": 9.7,
       "total_trades": 2
     },
@@ -107,8 +107,8 @@
     "target_price": 196.85,
     "entry_price": 167.32,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -155.0,
-    "mos_pct": -155.0,
+    "actual_discount_pct": -155.1,
+    "mos_pct": -155.1,
     "moat": "Wide",
     "roic_pct": 24.4,
     "wacc_pct": 9.76,
@@ -5390,13 +5390,13 @@
       "time": "2026-11-18",
       "open": 505.11,
       "high": 508.5,
-      "low": 501.86,
-      "close": 501.94,
-      "volume": 1724320.0,
-      "v1": 523.39,
-      "m1": 521.12,
-      "m2": 516.14,
-      "v2": 512.33,
+      "low": 501.08,
+      "close": 502.11,
+      "volume": 6625057.0,
+      "v1": 523.37,
+      "m1": 521.1,
+      "m2": 516.12,
+      "v2": 512.31,
       "sma200": 441.84,
       "state": "GOLD"
     }
@@ -5456,7 +5456,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +32.95% ($2831.87 €)"
+      "text": "EXIT +32.99% ($2835.74 €)"
     }
   ],
   "equity_curves": [
@@ -6971,7 +6971,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11443.06
+          "value": 11446.93
         }
       ]
     },
@@ -8486,7 +8486,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9562.54
+          "value": 9565.78
         }
       ]
     },
@@ -10001,7 +10001,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9275.25
+          "value": 9278.39
         }
       ]
     },
@@ -10028,7 +10028,7 @@
         },
         {
           "time": "2025-05-28",
-          "value": 10051.31
+          "value": 10051.32
         },
         {
           "time": "2025-05-29",
@@ -10084,7 +10084,7 @@
         },
         {
           "time": "2025-06-17",
-          "value": 10505.8
+          "value": 10505.79
         },
         {
           "time": "2025-06-18",
@@ -10140,7 +10140,7 @@
         },
         {
           "time": "2025-07-09",
-          "value": 11065.54
+          "value": 11065.55
         },
         {
           "time": "2025-07-10",
@@ -11516,7 +11516,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11140.08
+          "value": 11143.86
         }
       ]
     }
@@ -11563,27 +11563,27 @@
       "entry_date": "2026-06-29",
       "entry_price": 376.79,
       "exit_date": "2026-11-18",
-      "exit_price": 501.94,
+      "exit_price": 502.11,
       "holding_days": 100,
-      "pnl_pct": 32.95,
-      "pnl_eur": 2831.87,
+      "pnl_pct": 32.99,
+      "pnl_eur": 2835.74,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "MSFT",
-    "smart_money_score": 22.0,
+    "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.93, CMF: -0.06).",
-    "cmf_20d": -0.061,
-    "up_down_vol_ratio": 0.48,
-    "absorption_5d_pct": 34.7,
-    "vol_shock_ratio": 0.06,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.93, CMF: -0.07).",
+    "cmf_20d": -0.066,
+    "up_down_vol_ratio": 0.47,
+    "absorption_5d_pct": 37.2,
+    "vol_shock_ratio": 0.24,
     "put_call_ratio": 0.93,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 515.0,
+    "gamma_wall": 502.5,
     "max_pain": 515.0,
     "unusual_call_sweep": false
   }

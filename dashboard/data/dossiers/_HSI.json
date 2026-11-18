@@ -3,18 +3,18 @@
   "name": "Hang Seng Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-18T14:50:34.144142+00:00",
+  "generated_at": "2026-11-18T17:13:28.691248+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 370,
-  "current_price": 23294.75,
+  "backtest_total_bars": 369,
+  "current_price": 23508.17,
   "state": "BLUE",
-  "v1": 23934.47,
-  "v2": 24206.75,
-  "sma200": 25172.93,
-  "rsi14": 40.1,
-  "atr14": 364.55,
+  "v1": 23978.18,
+  "v2": 24238.33,
+  "sma200": 25190.29,
+  "rsi14": 42.9,
+  "atr14": 369.51,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -1.3,
-      "cagr_pct": -0.9,
-      "sharpe_ratio": 0.04,
+      "total_return_pct": -0.4,
+      "cagr_pct": -0.3,
+      "sharpe_ratio": 0.08,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 18.9,
@@ -5287,20 +5287,6 @@
       "v2": 24238.33,
       "sma200": 25190.29,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 23428.72,
-      "high": 23436.97,
-      "low": 23208.13,
-      "close": 23294.75,
-      "volume": 0.0,
-      "v1": 23934.47,
-      "m1": 24016.39,
-      "m2": 24135.09,
-      "v2": 24206.75,
-      "sma200": 25172.93,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6800,10 +6786,6 @@
         {
           "time": "2026-11-17",
           "value": 10324.55
-        },
-        {
-          "time": "2026-11-18",
-          "value": 10324.55
         }
       ]
     },
@@ -8286,10 +8268,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10160.73
-        },
-        {
-          "time": "2026-11-18",
           "value": 10160.73
         }
       ]
@@ -9774,10 +9752,6 @@
         {
           "time": "2026-11-17",
           "value": 9910.77
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9910.77
         }
       ]
     },
@@ -11261,10 +11235,6 @@
         {
           "time": "2026-11-17",
           "value": 9969.13
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9878.63
         }
       ]
     }
@@ -11285,14 +11255,14 @@
   ],
   "smart_money": {
     "symbol": "^HSI",
-    "smart_money_score": 60.0,
+    "smart_money_score": 45.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: N/A).",
-    "cmf_20d": -0.001,
-    "up_down_vol_ratio": 1.28,
-    "absorption_5d_pct": 36.4,
-    "vol_shock_ratio": 0.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
+    "cmf_20d": -0.036,
+    "up_down_vol_ratio": 1.17,
+    "absorption_5d_pct": 34.6,
+    "vol_shock_ratio": 0.97,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
