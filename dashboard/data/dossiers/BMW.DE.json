@@ -3,18 +3,18 @@
   "name": "BAYERISCHE MOTOREN WERKE AG   S",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:15.485235+00:00",
+  "generated_at": "2026-11-18T14:50:01.880922+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 379,
-  "current_price": 56.98,
+  "backtest_total_bars": 381,
+  "current_price": 55.04,
   "state": "BLUE",
-  "v1": 57.88,
-  "v2": 58.35,
-  "sma200": 66.77,
-  "rsi14": 46.1,
-  "atr14": 1.6,
+  "v1": 57.63,
+  "v2": 58.19,
+  "sma200": 66.49,
+  "rsi14": 38.3,
+  "atr14": 1.54,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -0.7,
       "cagr_pct": -0.4,
-      "sharpe_ratio": 0.21,
+      "sharpe_ratio": 0.2,
       "win_rate_pct": 60.0,
       "profit_factor": 0.94,
       "max_drawdown_pct": 15.5,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -14.0,
-      "cagr_pct": -9.5,
-      "sharpe_ratio": -1.02,
-      "win_rate_pct": 16.7,
-      "profit_factor": 0.09,
+      "total_return_pct": -15.5,
+      "cagr_pct": -10.5,
+      "sharpe_ratio": -1.13,
+      "win_rate_pct": 0.0,
+      "profit_factor": 0.0,
       "max_drawdown_pct": 18.7,
       "total_trades": 6
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -22.9,
-      "cagr_pct": -15.9,
-      "sharpe_ratio": -0.38,
+      "total_return_pct": -25.6,
+      "cagr_pct": -17.7,
+      "sharpe_ratio": -0.46,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 43.3,
@@ -107,8 +107,8 @@
     "target_price": 22.7,
     "entry_price": 17.02,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -151.0,
-    "mos_pct": -151.0,
+    "actual_discount_pct": -142.5,
+    "mos_pct": -142.5,
     "moat": "None",
     "roic_pct": 4.3,
     "wacc_pct": 8.0,
@@ -5427,6 +5427,34 @@
       "v2": 58.35,
       "sma200": 66.77,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 56.62,
+      "high": 57.02,
+      "low": 56.0,
+      "close": 56.1,
+      "volume": 992434.0,
+      "v1": 57.79,
+      "m1": 57.84,
+      "m2": 58.06,
+      "v2": 58.29,
+      "sma200": 66.63,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 56.0,
+      "high": 56.0,
+      "low": 54.78,
+      "close": 55.04,
+      "volume": 364414.0,
+      "v1": 57.63,
+      "m1": 57.71,
+      "m2": 57.95,
+      "v2": 58.19,
+      "sma200": 66.49,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6966,6 +6994,14 @@
         {
           "time": "2026-11-16",
           "value": 10904.77
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10904.77
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10904.77
         }
       ]
     },
@@ -8488,6 +8524,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 9932.97
+        },
+        {
+          "time": "2026-11-17",
+          "value": 9932.97
+        },
+        {
+          "time": "2026-11-18",
           "value": 9932.97
         }
       ]
@@ -10012,6 +10056,14 @@
         {
           "time": "2026-11-16",
           "value": 9520.59
+        },
+        {
+          "time": "2026-11-17",
+          "value": 9520.59
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9520.59
         }
       ]
     },
@@ -11535,6 +11587,14 @@
         {
           "time": "2026-11-16",
           "value": 7714.71
+        },
+        {
+          "time": "2026-11-17",
+          "value": 7595.56
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7452.05
         }
       ]
     }
@@ -11555,14 +11615,14 @@
   ],
   "smart_money": {
     "symbol": "BMW.DE",
-    "smart_money_score": 30.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
-    "cmf_20d": -0.174,
-    "up_down_vol_ratio": 1.06,
-    "absorption_5d_pct": 22.3,
-    "vol_shock_ratio": 0.81,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
+    "cmf_20d": -0.214,
+    "up_down_vol_ratio": 0.92,
+    "absorption_5d_pct": 21.8,
+    "vol_shock_ratio": 0.28,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

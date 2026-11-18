@@ -3,25 +3,25 @@
   "name": "Eos Energy Enterprises, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T07:11:22.409247+00:00",
+  "generated_at": "2026-11-18T14:50:07.373447+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 1.49,
+  "backtest_total_bars": 377,
+  "current_price": 1.55,
   "state": "BLUE",
-  "v1": 2.1,
-  "v2": 2.65,
-  "sma200": 5.38,
-  "rsi14": 36.7,
-  "atr14": 0.25,
+  "v1": 2.06,
+  "v2": 2.61,
+  "sma200": 5.31,
+  "rsi14": 38.4,
+  "atr14": 0.23,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": 44.5,
-    "cagr_pct": 28.0,
+    "cagr_pct": 27.9,
     "sharpe_ratio": 0.71,
     "win_rate_pct": 33.3,
     "profit_factor": 2.92,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": 44.5,
-      "cagr_pct": 28.0,
+      "cagr_pct": 27.9,
       "sharpe_ratio": 0.71,
       "win_rate_pct": 33.3,
       "profit_factor": 2.92,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -75.5,
-      "cagr_pct": -61.0,
-      "sharpe_ratio": -0.22,
+      "total_return_pct": -74.5,
+      "cagr_pct": -59.9,
+      "sharpe_ratio": -0.2,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 92.2,
@@ -107,8 +107,8 @@
     "target_price": 1.39,
     "entry_price": 0.97,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -7.2,
-    "mos_pct": -7.2,
+    "actual_discount_pct": -11.5,
+    "mos_pct": -11.5,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 11.46,
@@ -5385,6 +5385,20 @@
       "v2": 2.65,
       "sma200": 5.38,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1.55,
+      "high": 1.56,
+      "low": 1.5,
+      "close": 1.55,
+      "volume": 2763957.0,
+      "v1": 2.06,
+      "m1": 2.22,
+      "m2": 2.45,
+      "v2": 2.61,
+      "sma200": 5.31,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6982,6 +6996,10 @@
         {
           "time": "2026-11-17",
           "value": 14449.96
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14449.96
         }
       ]
     },
@@ -8492,6 +8510,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 10053.47
+        },
+        {
+          "time": "2026-11-18",
           "value": 10053.47
         }
       ]
@@ -10004,6 +10026,10 @@
         {
           "time": "2026-11-17",
           "value": 11144.18
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11144.18
         }
       ]
     },
@@ -11515,6 +11541,10 @@
         {
           "time": "2026-11-17",
           "value": 2452.24
+        },
+        {
+          "time": "2026-11-18",
+          "value": 2550.99
         }
       ]
     }
@@ -11595,18 +11625,18 @@
   ],
   "smart_money": {
     "symbol": "EOSE",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.00).",
-    "cmf_20d": -0.004,
-    "up_down_vol_ratio": 1.31,
-    "absorption_5d_pct": 34.9,
-    "vol_shock_ratio": 0.97,
-    "put_call_ratio": 2.0,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 0.5,
-    "max_pain": 13.0,
+    "smart_money_score": 78.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.00, Up/Dn Vol: 1.32x). Силна скрита подкрепа.",
+    "cmf_20d": 0.004,
+    "up_down_vol_ratio": 1.32,
+    "absorption_5d_pct": 37.9,
+    "vol_shock_ratio": 0.12,
+    "put_call_ratio": 0.26,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 1.5,
+    "max_pain": 6.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,25 +3,25 @@
   "name": "LVMH",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:34.236756+00:00",
+  "generated_at": "2026-11-18T14:50:15.744296+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 382,
-  "current_price": 404.0,
+  "backtest_total_bars": 384,
+  "current_price": 385.35,
   "state": "BLUE",
-  "v1": 400.0,
-  "v2": 408.9,
-  "sma200": 458.82,
-  "rsi14": 54.3,
-  "atr14": 10.0,
+  "v1": 399.09,
+  "v2": 407.82,
+  "sma200": 457.43,
+  "rsi14": 39.6,
+  "atr14": 10.23,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 14.9,
-    "cagr_pct": 9.6,
+    "cagr_pct": 9.5,
     "sharpe_ratio": 0.67,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 14.9,
-      "cagr_pct": 9.6,
+      "cagr_pct": 9.5,
       "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 5.0,
-      "cagr_pct": 3.3,
+      "cagr_pct": 3.2,
       "sharpe_ratio": 0.27,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 5.7,
-      "cagr_pct": 3.8,
+      "cagr_pct": 3.7,
       "sharpe_ratio": 0.3,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -15.0,
-      "cagr_pct": -10.2,
-      "sharpe_ratio": -0.22,
+      "total_return_pct": -18.9,
+      "cagr_pct": -12.9,
+      "sharpe_ratio": -0.32,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 41.0,
@@ -107,8 +107,8 @@
     "target_price": 481.31,
     "entry_price": 385.05,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 16.1,
-    "mos_pct": 16.1,
+    "actual_discount_pct": 19.9,
+    "mos_pct": 19.9,
     "moat": "Narrow",
     "roic_pct": 14.4,
     "wacc_pct": 8.35,
@@ -5469,6 +5469,34 @@
       "v2": 408.9,
       "sma200": 458.82,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 404.55,
+      "high": 405.1,
+      "low": 390.2,
+      "close": 393.0,
+      "volume": 645545.0,
+      "v1": 399.84,
+      "m1": 401.45,
+      "m2": 405.41,
+      "v2": 408.51,
+      "sma200": 458.14,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 391.15,
+      "high": 392.8,
+      "low": 384.25,
+      "close": 385.35,
+      "volume": 270788.0,
+      "v1": 399.09,
+      "m1": 400.77,
+      "m2": 404.73,
+      "v2": 407.82,
+      "sma200": 457.43,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7020,6 +7048,14 @@
         {
           "time": "2026-11-16",
           "value": 11488.43
+        },
+        {
+          "time": "2026-11-17",
+          "value": 11488.43
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11488.43
         }
       ]
     },
@@ -8554,6 +8590,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 10574.77
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10574.77
+        },
+        {
+          "time": "2026-11-18",
           "value": 10574.77
         }
       ]
@@ -10090,6 +10134,14 @@
         {
           "time": "2026-11-16",
           "value": 10498.62
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10498.62
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10498.62
         }
       ]
     },
@@ -11625,6 +11677,14 @@
         {
           "time": "2026-11-16",
           "value": 8510.08
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8278.37
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8117.23
         }
       ]
     }
@@ -11645,14 +11705,14 @@
   ],
   "smart_money": {
     "symbol": "MC.PA",
-    "smart_money_score": 42.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: N/A).",
-    "cmf_20d": -0.075,
-    "up_down_vol_ratio": 1.36,
-    "absorption_5d_pct": 25.3,
-    "vol_shock_ratio": 0.59,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.11, P/C: N/A).",
+    "cmf_20d": -0.114,
+    "up_down_vol_ratio": 1.17,
+    "absorption_5d_pct": 20.7,
+    "vol_shock_ratio": 0.46,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

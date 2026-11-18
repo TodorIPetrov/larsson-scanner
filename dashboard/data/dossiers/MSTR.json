@@ -3,18 +3,18 @@
   "name": "MSTR",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-18T07:11:36.161870+00:00",
+  "generated_at": "2026-11-18T14:50:17.785278+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 96.5,
+  "backtest_total_bars": 377,
+  "current_price": 92.29,
   "state": "BLUE",
-  "v1": 130.38,
-  "v2": 132.89,
-  "sma200": 132.33,
-  "rsi14": 26.2,
-  "atr14": 8.8,
+  "v1": 127.91,
+  "v2": 131.53,
+  "sma200": 132.13,
+  "rsi14": 24.7,
+  "atr14": 8.55,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -58.8,
-      "cagr_pct": -44.8,
+      "cagr_pct": -44.7,
       "sharpe_ratio": -1.36,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -56.2,
-      "cagr_pct": -42.5,
-      "sharpe_ratio": -1.28,
+      "cagr_pct": -42.4,
+      "sharpe_ratio": -1.27,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 60.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -42.2,
-      "cagr_pct": -30.7,
+      "cagr_pct": -30.6,
       "sharpe_ratio": -1.23,
       "win_rate_pct": 6.7,
       "profit_factor": 0.02,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -76.8,
-      "cagr_pct": -62.5,
-      "sharpe_ratio": -0.92,
+      "total_return_pct": -77.9,
+      "cagr_pct": -63.5,
+      "sharpe_ratio": -0.96,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 81.9,
@@ -5385,6 +5385,20 @@
       "v2": 132.89,
       "sma200": 132.33,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 95.02,
+      "high": 95.51,
+      "low": 91.2,
+      "close": 92.29,
+      "volume": 4173939.0,
+      "v1": 127.91,
+      "m1": 130.04,
+      "m2": 131.29,
+      "v2": 131.53,
+      "sma200": 132.13,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6954,6 +6968,10 @@
         {
           "time": "2026-11-17",
           "value": 10225.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10225.03
         }
       ]
     },
@@ -8464,6 +8482,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7141.63
+        },
+        {
+          "time": "2026-11-18",
           "value": 7141.63
         }
       ]
@@ -9976,6 +9998,10 @@
         {
           "time": "2026-11-17",
           "value": 5783.7
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5783.7
         }
       ]
     },
@@ -11487,6 +11513,10 @@
         {
           "time": "2026-11-17",
           "value": 2317.84
+        },
+        {
+          "time": "2026-11-18",
+          "value": 2216.72
         }
       ]
     }
@@ -11543,18 +11573,18 @@
   ],
   "smart_money": {
     "symbol": "MSTR",
-    "smart_money_score": 60.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.09) с Gamma стена на $40.00. Залог за рязък отскок.",
-    "cmf_20d": -0.06,
-    "up_down_vol_ratio": 0.52,
-    "absorption_5d_pct": 37.5,
-    "vol_shock_ratio": 1.33,
-    "put_call_ratio": 0.09,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.58, CMF: -0.11).",
+    "cmf_20d": -0.11,
+    "up_down_vol_ratio": 0.41,
+    "absorption_5d_pct": 31.6,
+    "vol_shock_ratio": 0.23,
+    "put_call_ratio": 0.58,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 40.0,
-    "max_pain": 40.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 90.0,
+    "max_pain": 135.0,
+    "unusual_call_sweep": false
   }
 }

@@ -3,18 +3,18 @@
   "name": "AIR LIQUIDE",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:08.384404+00:00",
+  "generated_at": "2026-11-18T14:49:56.992000+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 382,
-  "current_price": 193.24,
+  "backtest_total_bars": 384,
+  "current_price": 190.98,
   "state": "GOLD",
-  "v1": 181.44,
-  "v2": 176.78,
-  "sma200": 166.49,
-  "rsi14": 81.3,
-  "atr14": 2.77,
+  "v1": 182.7,
+  "v2": 177.75,
+  "sma200": 166.9,
+  "rsi14": 71.9,
+  "atr14": 2.73,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 3.3,
-      "cagr_pct": 2.2,
-      "sharpe_ratio": 0.23,
+      "total_return_pct": 2.1,
+      "cagr_pct": 1.4,
+      "sharpe_ratio": 0.18,
       "win_rate_pct": 14.3,
-      "profit_factor": 1.15,
+      "profit_factor": 1.1,
       "max_drawdown_pct": 21.2,
       "total_trades": 7
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 2.5,
-      "cagr_pct": 1.6,
-      "sharpe_ratio": 0.2,
+      "total_return_pct": 1.3,
+      "cagr_pct": 0.9,
+      "sharpe_ratio": 0.14,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.13,
+      "profit_factor": 1.07,
       "max_drawdown_pct": 19.3,
       "total_trades": 8
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 5.5,
-      "cagr_pct": 3.6,
-      "sharpe_ratio": 0.35,
+      "total_return_pct": 4.3,
+      "cagr_pct": 2.8,
+      "sharpe_ratio": 0.29,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.39,
+      "profit_factor": 1.33,
       "max_drawdown_pct": 18.1,
       "total_trades": 20
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -1.6,
-      "cagr_pct": -1.0,
-      "sharpe_ratio": -0.15,
+      "total_return_pct": -2.7,
+      "cagr_pct": -1.8,
+      "sharpe_ratio": -0.29,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.87,
+      "profit_factor": 0.78,
       "max_drawdown_pct": 12.2,
       "total_trades": 3
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 17.0,
-      "cagr_pct": 10.9,
-      "sharpe_ratio": 0.71,
+      "total_return_pct": 15.6,
+      "cagr_pct": 10.0,
+      "sharpe_ratio": 0.66,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.05,
+      "profit_factor": 0.97,
       "max_drawdown_pct": 16.1,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 75.47,
     "entry_price": 56.6,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -156.0,
-    "mos_pct": -156.0,
+    "actual_discount_pct": -153.1,
+    "mos_pct": -153.1,
     "moat": "None",
     "roic_pct": 9.3,
     "wacc_pct": 8.0,
@@ -5469,6 +5469,34 @@
       "v2": 176.78,
       "sma200": 166.49,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 192.0,
+      "high": 192.5,
+      "low": 189.86,
+      "close": 190.94,
+      "volume": 1100753.0,
+      "v1": 182.09,
+      "m1": 180.24,
+      "m2": 178.27,
+      "v2": 177.27,
+      "sma200": 166.7,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 190.7,
+      "high": 192.08,
+      "low": 190.36,
+      "close": 190.98,
+      "volume": 271125.0,
+      "v1": 182.7,
+      "m1": 180.82,
+      "m2": 178.79,
+      "v2": 177.75,
+      "sma200": 166.9,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -7020,6 +7048,14 @@
         {
           "time": "2026-11-16",
           "value": 9754.62
+        },
+        {
+          "time": "2026-11-17",
+          "value": 9754.62
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9754.62
         }
       ]
     },
@@ -8555,6 +8591,14 @@
         {
           "time": "2026-11-16",
           "value": 10560.39
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10434.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10436.93
         }
       ]
     },
@@ -10090,6 +10134,14 @@
         {
           "time": "2026-11-16",
           "value": 10260.11
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10138.1
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10140.22
         }
       ]
     },
@@ -11625,6 +11677,14 @@
         {
           "time": "2026-11-16",
           "value": 11706.89
+        },
+        {
+          "time": "2026-11-17",
+          "value": 11567.55
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11569.97
         }
       ]
     }
@@ -11645,14 +11705,14 @@
   ],
   "smart_money": {
     "symbol": "AI.PA",
-    "smart_money_score": 80.0,
+    "smart_money_score": 70.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.26, Up/Dn Vol: 2.48x). Силна скрита подкрепа.",
-    "cmf_20d": 0.258,
-    "up_down_vol_ratio": 2.48,
-    "absorption_5d_pct": 36.0,
-    "vol_shock_ratio": 0.83,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.23, Up/Dn Vol: 2.36x). Силна скрита подкрепа.",
+    "cmf_20d": 0.227,
+    "up_down_vol_ratio": 2.36,
+    "absorption_5d_pct": 20.9,
+    "vol_shock_ratio": 0.28,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

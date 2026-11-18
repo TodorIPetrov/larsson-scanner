@@ -3,18 +3,18 @@
   "name": "STELLANTIS",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:52.294847+00:00",
+  "generated_at": "2026-11-18T14:50:29.082271+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 378,
-  "current_price": 3.38,
+  "backtest_total_bars": 380,
+  "current_price": 3.23,
   "state": "BLUE",
-  "v1": 3.92,
-  "v2": 4.14,
-  "sma200": 5.38,
-  "rsi14": 32.0,
-  "atr14": 0.19,
+  "v1": 3.84,
+  "v2": 4.08,
+  "sma200": 5.34,
+  "rsi14": 28.8,
+  "atr14": 0.18,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -17.6,
-      "cagr_pct": -12.1,
-      "sharpe_ratio": -1.13,
+      "total_return_pct": -18.3,
+      "cagr_pct": -12.5,
+      "sharpe_ratio": -1.18,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 17.6,
+      "max_drawdown_pct": 18.3,
       "total_trades": 4
     },
     {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -63.2,
-      "cagr_pct": -48.7,
-      "sharpe_ratio": -1.03,
+      "total_return_pct": -64.9,
+      "cagr_pct": -50.1,
+      "sharpe_ratio": -1.08,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 67.5,
+      "max_drawdown_pct": 69.0,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 7.32,
     "entry_price": 5.49,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 53.8,
-    "mos_pct": 53.8,
+    "actual_discount_pct": 55.9,
+    "mos_pct": 55.9,
     "moat": "None",
     "roic_pct": 6.2,
     "wacc_pct": 8.0,
@@ -5413,6 +5413,34 @@
       "v2": 4.14,
       "sma200": 5.38,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 3.32,
+      "high": 3.38,
+      "low": 3.28,
+      "close": 3.32,
+      "volume": 64118412.0,
+      "v1": 3.88,
+      "m1": 3.95,
+      "m2": 4.04,
+      "v2": 4.11,
+      "sma200": 5.36,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 3.35,
+      "high": 3.35,
+      "low": 3.18,
+      "close": 3.23,
+      "volume": 34378464.0,
+      "v1": 3.84,
+      "m1": 3.91,
+      "m2": 4.01,
+      "v2": 4.08,
+      "sma200": 5.34,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7032,6 +7060,14 @@
         {
           "time": "2026-11-16",
           "value": 8793.75
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8793.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8793.75
         }
       ]
     },
@@ -8550,6 +8586,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 9596.86
+        },
+        {
+          "time": "2026-11-17",
+          "value": 9596.86
+        },
+        {
+          "time": "2026-11-18",
           "value": 9596.86
         }
       ]
@@ -10070,6 +10114,14 @@
         {
           "time": "2026-11-16",
           "value": 8948.27
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8948.27
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8948.27
         }
       ]
     },
@@ -11589,6 +11641,14 @@
         {
           "time": "2026-11-16",
           "value": 3679.44
+        },
+        {
+          "time": "2026-11-17",
+          "value": 3619.02
+        },
+        {
+          "time": "2026-11-18",
+          "value": 3513.97
         }
       ]
     }
@@ -11681,14 +11741,14 @@
   ],
   "smart_money": {
     "symbol": "STLAM.MI",
-    "smart_money_score": 42.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: N/A).",
-    "cmf_20d": 0.046,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 15.4,
-    "vol_shock_ratio": 1.05,
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: +0.02).",
+    "cmf_20d": 0.02,
+    "up_down_vol_ratio": 0.55,
+    "absorption_5d_pct": 25.6,
+    "vol_shock_ratio": 0.68,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

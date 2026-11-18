@@ -3,18 +3,18 @@
   "name": "HERMES INTL",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:47.309202+00:00",
+  "generated_at": "2026-11-18T14:50:26.610327+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 382,
-  "current_price": 1349.5,
+  "backtest_total_bars": 384,
+  "current_price": 1274.5,
   "state": "BLUE",
-  "v1": 1337.84,
-  "v2": 1375.48,
-  "sma200": 1607.6,
-  "rsi14": 53.0,
-  "atr14": 41.22,
+  "v1": 1332.51,
+  "v2": 1370.14,
+  "sma200": 1600.06,
+  "rsi14": 39.7,
+  "atr14": 42.38,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -12.3,
-      "cagr_pct": -8.3,
-      "sharpe_ratio": -1.25,
+      "cagr_pct": -8.2,
+      "sharpe_ratio": -1.24,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 11.1,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -45.1,
-      "cagr_pct": -32.7,
-      "sharpe_ratio": -1.1,
+      "total_return_pct": -48.2,
+      "cagr_pct": -35.0,
+      "sharpe_ratio": -1.21,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 49.4,
@@ -107,8 +107,8 @@
     "target_price": 968.05,
     "entry_price": 822.84,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -39.4,
-    "mos_pct": -39.4,
+    "actual_discount_pct": -31.7,
+    "mos_pct": -31.7,
     "moat": "Wide",
     "roic_pct": 43.4,
     "wacc_pct": 9.79,
@@ -5469,6 +5469,34 @@
       "v2": 1375.48,
       "sma200": 1607.6,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 1345.5,
+      "high": 1348.5,
+      "low": 1275.0,
+      "close": 1280.5,
+      "volume": 145304.0,
+      "v1": 1336.1,
+      "m1": 1343.95,
+      "m2": 1360.66,
+      "v2": 1373.28,
+      "sma200": 1603.86,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1285.0,
+      "high": 1295.5,
+      "low": 1269.0,
+      "close": 1274.5,
+      "volume": 35141.0,
+      "v1": 1332.51,
+      "m1": 1340.7,
+      "m2": 1357.53,
+      "v2": 1370.14,
+      "sma200": 1600.06,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7076,6 +7104,14 @@
         {
           "time": "2026-11-16",
           "value": 9622.46
+        },
+        {
+          "time": "2026-11-17",
+          "value": 9622.46
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9622.46
         }
       ]
     },
@@ -8610,6 +8646,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 8842.49
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8842.49
+        },
+        {
+          "time": "2026-11-18",
           "value": 8842.49
         }
       ]
@@ -10146,6 +10190,14 @@
         {
           "time": "2026-11-16",
           "value": 9165.71
+        },
+        {
+          "time": "2026-11-17",
+          "value": 9165.71
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9165.71
         }
       ]
     },
@@ -11681,6 +11733,14 @@
         {
           "time": "2026-11-16",
           "value": 5495.3
+        },
+        {
+          "time": "2026-11-17",
+          "value": 5214.32
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5189.89
         }
       ]
     }
@@ -11749,14 +11809,14 @@
   ],
   "smart_money": {
     "symbol": "RMS.PA",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: N/A).",
-    "cmf_20d": 0.023,
-    "up_down_vol_ratio": 0.88,
-    "absorption_5d_pct": 20.8,
-    "vol_shock_ratio": 0.94,
+    "smart_money_score": 22.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.08).",
+    "cmf_20d": -0.078,
+    "up_down_vol_ratio": 0.63,
+    "absorption_5d_pct": 19.3,
+    "vol_shock_ratio": 0.34,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

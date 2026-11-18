@@ -3,18 +3,18 @@
   "name": "Sea Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T07:11:49.638503+00:00",
+  "generated_at": "2026-11-18T14:50:27.762111+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 69.44,
+  "backtest_total_bars": 377,
+  "current_price": 70.1,
   "state": "BLUE",
-  "v1": 81.14,
-  "v2": 88.49,
-  "sma200": 95.78,
-  "rsi14": 29.3,
-  "atr14": 3.84,
+  "v1": 80.38,
+  "v2": 87.84,
+  "sma200": 95.59,
+  "rsi14": 31.1,
+  "atr14": 3.68,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -18.3,
-      "cagr_pct": -12.7,
+      "cagr_pct": -12.6,
       "sharpe_ratio": -0.28,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -30.3,
-      "cagr_pct": -21.5,
+      "cagr_pct": -21.4,
       "sharpe_ratio": -0.86,
       "win_rate_pct": 14.3,
       "profit_factor": 0.32,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -57.4,
-      "cagr_pct": -43.5,
-      "sharpe_ratio": -0.91,
+      "total_return_pct": -57.0,
+      "cagr_pct": -43.1,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 64.7,
@@ -107,8 +107,8 @@
     "target_price": 159.79,
     "entry_price": 119.84,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 56.5,
-    "mos_pct": 56.5,
+    "actual_discount_pct": 56.1,
+    "mos_pct": 56.1,
     "moat": "None",
     "roic_pct": 17.1,
     "wacc_pct": 10.93,
@@ -116,7 +116,7 @@
     "m_score": -2.68,
     "tata": -0.114,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "STRONG BUY",
+    "verdict": "BUY / ACCUMULATE",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-18"
@@ -5385,6 +5385,20 @@
       "v2": 88.49,
       "sma200": 95.78,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 68.92,
+      "high": 70.57,
+      "low": 68.88,
+      "close": 70.1,
+      "volume": 420726.0,
+      "v1": 80.38,
+      "m1": 82.98,
+      "m2": 86.17,
+      "v2": 87.84,
+      "sma200": 95.59,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-17",
           "value": 8957.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8957.28
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7830.86
+        },
+        {
+          "time": "2026-11-18",
           "value": 7830.86
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-17",
           "value": 8171.84
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8171.84
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-17",
           "value": 4266.07
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4306.46
         }
       ]
     }
@@ -11491,18 +11521,18 @@
   ],
   "smart_money": {
     "symbol": "SE",
-    "smart_money_score": 63.0,
+    "smart_money_score": 53.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $165.00. Залог за рязък отскок.",
-    "cmf_20d": -0.17,
-    "up_down_vol_ratio": 0.76,
-    "absorption_5d_pct": 36.3,
-    "vol_shock_ratio": 0.62,
-    "put_call_ratio": 0.0,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.24) с Gamma стена на $65.00. Залог за рязък отскок.",
+    "cmf_20d": -0.178,
+    "up_down_vol_ratio": 0.91,
+    "absorption_5d_pct": 47.5,
+    "vol_shock_ratio": 0.05,
+    "put_call_ratio": 0.24,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 165.0,
-    "max_pain": 165.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 65.0,
+    "max_pain": 110.0,
+    "unusual_call_sweep": false
   }
 }

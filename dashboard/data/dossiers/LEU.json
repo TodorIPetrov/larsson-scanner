@@ -3,25 +3,25 @@
   "name": "Centrus Energy Corp.",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T07:11:32.351575+00:00",
+  "generated_at": "2026-11-18T14:50:14.523711+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 94.19,
+  "backtest_total_bars": 377,
+  "current_price": 93.74,
   "state": "BLUE",
-  "v1": 112.72,
-  "v2": 128.01,
-  "sma200": 173.37,
-  "rsi14": 38.2,
-  "atr14": 8.92,
+  "v1": 111.39,
+  "v2": 126.79,
+  "sma200": 172.43,
+  "rsi14": 38.0,
+  "atr14": 8.59,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 132.5,
-    "cagr_pct": 76.1,
+    "cagr_pct": 75.8,
     "sharpe_ratio": 1.24,
     "win_rate_pct": 40.0,
     "profit_factor": 3.11,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 72.3,
-      "cagr_pct": 44.0,
-      "sharpe_ratio": 0.9,
+      "cagr_pct": 43.8,
+      "sharpe_ratio": 0.89,
       "win_rate_pct": 20.0,
       "profit_factor": 2.03,
       "max_drawdown_pct": 62.9,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 132.5,
-      "cagr_pct": 76.1,
+      "cagr_pct": 75.8,
       "sharpe_ratio": 1.24,
       "win_rate_pct": 40.0,
       "profit_factor": 3.11,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 45.3,
-      "cagr_pct": 28.5,
+      "cagr_pct": 28.4,
       "sharpe_ratio": 0.75,
       "win_rate_pct": 20.0,
       "profit_factor": 3.52,
@@ -93,10 +93,10 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 0.3,
-      "cagr_pct": 0.2,
-      "sharpe_ratio": 0.46,
-      "win_rate_pct": 100.0,
+      "total_return_pct": -0.2,
+      "cagr_pct": -0.1,
+      "sharpe_ratio": 0.45,
+      "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 79.6,
       "total_trades": 1
@@ -107,8 +107,8 @@
     "target_price": 67.99,
     "entry_price": 47.59,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -38.5,
-    "mos_pct": -38.5,
+    "actual_discount_pct": -37.9,
+    "mos_pct": -37.9,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 8.62,
@@ -5385,6 +5385,20 @@
       "v2": 128.01,
       "sma200": 173.37,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 94.46,
+      "high": 94.89,
+      "low": 90.65,
+      "close": 93.74,
+      "volume": 58215.0,
+      "v1": 111.39,
+      "m1": 116.22,
+      "m2": 122.84,
+      "v2": 126.79,
+      "sma200": 172.43,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6968,6 +6982,10 @@
         {
           "time": "2026-11-17",
           "value": 23254.94
+        },
+        {
+          "time": "2026-11-18",
+          "value": 23254.94
         }
       ]
     },
@@ -8478,6 +8496,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 17227.33
+        },
+        {
+          "time": "2026-11-18",
           "value": 17227.33
         }
       ]
@@ -9990,6 +10012,10 @@
         {
           "time": "2026-11-17",
           "value": 14529.89
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14529.89
         }
       ]
     },
@@ -11501,6 +11527,10 @@
         {
           "time": "2026-11-17",
           "value": 10042.24
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9994.26
         }
       ]
     }
@@ -11569,18 +11599,18 @@
   ],
   "smart_money": {
     "symbol": "LEU",
-    "smart_money_score": 30.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.04).",
-    "cmf_20d": -0.044,
-    "up_down_vol_ratio": 0.5,
-    "absorption_5d_pct": 25.0,
-    "vol_shock_ratio": 0.57,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 70.0,
-    "max_pain": 70.0,
+    "smart_money_score": 50.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 0.60).",
+    "cmf_20d": -0.011,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 36.7,
+    "vol_shock_ratio": 0.07,
+    "put_call_ratio": 0.6,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 100.0,
+    "max_pain": 100.0,
     "unusual_call_sweep": false
   }
 }

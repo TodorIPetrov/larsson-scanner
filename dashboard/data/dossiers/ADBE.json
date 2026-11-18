@@ -3,18 +3,18 @@
   "name": "Adobe Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T07:11:07.705330+00:00",
+  "generated_at": "2026-11-18T14:49:56.623641+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 235.55,
+  "backtest_total_bars": 377,
+  "current_price": 230.68,
   "state": "BLUE",
-  "v1": 245.24,
-  "v2": 246.97,
-  "sma200": 247.14,
-  "rsi14": 41.5,
-  "atr14": 8.41,
+  "v1": 244.39,
+  "v2": 246.47,
+  "sma200": 246.93,
+  "rsi14": 38.1,
+  "atr14": 8.21,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -20.2,
-      "cagr_pct": -14.1,
+      "cagr_pct": -14.0,
       "sharpe_ratio": -0.87,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -9.6,
-      "cagr_pct": -6.6,
+      "cagr_pct": -6.5,
       "sharpe_ratio": -0.85,
       "win_rate_pct": 33.3,
       "profit_factor": 0.16,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -43.3,
-      "cagr_pct": -31.7,
-      "sharpe_ratio": -0.83,
+      "total_return_pct": -44.5,
+      "cagr_pct": -32.5,
+      "sharpe_ratio": -0.86,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 53.6,
@@ -107,8 +107,8 @@
     "target_price": 459.53,
     "entry_price": 390.6,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 48.7,
-    "mos_pct": 48.7,
+    "actual_discount_pct": 49.8,
+    "mos_pct": 49.8,
     "moat": "Wide",
     "roic_pct": 35.6,
     "wacc_pct": 10.49,
@@ -5385,6 +5385,20 @@
       "v2": 246.97,
       "sma200": 247.14,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 234.25,
+      "high": 234.96,
+      "low": 230.02,
+      "close": 230.68,
+      "volume": 369219.0,
+      "v1": 244.39,
+      "m1": 245.27,
+      "m2": 246.11,
+      "v2": 246.47,
+      "sma200": 246.93,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6968,6 +6982,10 @@
         {
           "time": "2026-11-17",
           "value": 8882.2
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8882.2
         }
       ]
     },
@@ -8478,6 +8496,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9037.7
+        },
+        {
+          "time": "2026-11-18",
           "value": 9037.7
         }
       ]
@@ -9990,6 +10012,10 @@
         {
           "time": "2026-11-17",
           "value": 8833.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8833.5
         }
       ]
     },
@@ -11501,6 +11527,10 @@
         {
           "time": "2026-11-17",
           "value": 5672.14
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5554.75
         }
       ]
     }
@@ -11569,18 +11599,18 @@
   ],
   "smart_money": {
     "symbol": "ADBE",
-    "smart_money_score": 75.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.06, Up/Dn Vol: 0.93x). Силна скрита подкрепа.",
-    "cmf_20d": -0.057,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 52.7,
-    "vol_shock_ratio": 1.19,
-    "put_call_ratio": 0.39,
+    "smart_money_score": 57.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.48) с Gamma стена на $230.00. Залог за рязък отскок.",
+    "cmf_20d": -0.062,
+    "up_down_vol_ratio": 1.0,
+    "absorption_5d_pct": 45.4,
+    "vol_shock_ratio": 0.09,
+    "put_call_ratio": 0.48,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 490.0,
-    "max_pain": 490.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 230.0,
+    "max_pain": 260.0,
+    "unusual_call_sweep": false
   }
 }

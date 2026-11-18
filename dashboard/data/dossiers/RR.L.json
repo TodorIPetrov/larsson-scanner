@@ -3,26 +3,26 @@
   "name": "ROLLS-ROYCE HOLDINGS PLC ORD SH",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:48.002693+00:00",
+  "generated_at": "2026-11-18T14:50:26.852769+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 378,
-  "current_price": 1337.4,
+  "backtest_total_bars": 380,
+  "current_price": 1346.8,
   "state": "BLUE",
-  "v1": 1330.44,
-  "v2": 1364.35,
-  "sma200": 1339.4,
-  "rsi14": 51.9,
-  "atr14": 52.03,
+  "v1": 1331.41,
+  "v2": 1362.57,
+  "sma200": 1340.51,
+  "rsi14": 53.3,
+  "atr14": 49.36,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 4.2,
-    "cagr_pct": 2.7,
-    "sharpe_ratio": 0.25,
+    "total_return_pct": 4.5,
+    "cagr_pct": 3.0,
+    "sharpe_ratio": 0.27,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 19.2,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 26.7,
-      "cagr_pct": 17.1,
-      "sharpe_ratio": 0.67,
+      "cagr_pct": 17.0,
+      "sharpe_ratio": 0.66,
       "win_rate_pct": 50.0,
       "profit_factor": 2.45,
       "max_drawdown_pct": 27.6,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 22.2,
-      "cagr_pct": 14.3,
+      "cagr_pct": 14.2,
       "sharpe_ratio": 0.61,
       "win_rate_pct": 50.0,
       "profit_factor": 4.89,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 4.2,
-      "cagr_pct": 2.7,
-      "sharpe_ratio": 0.25,
+      "total_return_pct": 4.5,
+      "cagr_pct": 3.0,
+      "sharpe_ratio": 0.27,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 19.2,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -15.9,
-      "cagr_pct": -10.9,
+      "cagr_pct": -10.8,
       "sharpe_ratio": -0.65,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 61.6,
-      "cagr_pct": 37.7,
-      "sharpe_ratio": 1.1,
+      "total_return_pct": 62.8,
+      "cagr_pct": 38.1,
+      "sharpe_ratio": 1.11,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.38,
+      "profit_factor": 2.43,
       "max_drawdown_pct": 25.9,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 957.77,
     "entry_price": 814.1,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -39.6,
-    "mos_pct": -39.6,
+    "actual_discount_pct": -40.6,
+    "mos_pct": -40.6,
     "moat": "Wide",
     "roic_pct": 27.2,
     "wacc_pct": 10.37,
@@ -5413,6 +5413,34 @@
       "v2": 1364.35,
       "sma200": 1339.4,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 1329.2,
+      "high": 1350.6,
+      "low": 1322.0,
+      "close": 1326.6,
+      "volume": 14545375.0,
+      "v1": 1330.83,
+      "m1": 1342.3,
+      "m2": 1356.58,
+      "v2": 1363.39,
+      "sma200": 1339.86,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1331.2,
+      "high": 1357.8,
+      "low": 1321.4,
+      "close": 1346.8,
+      "volume": 4175151.0,
+      "v1": 1331.41,
+      "m1": 1342.16,
+      "m2": 1355.9,
+      "v2": 1362.57,
+      "sma200": 1340.51,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5438,11 +5466,11 @@
       "text": "BUY #2 @ $1227.8"
     },
     {
-      "time": "2026-11-16",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +8.71% ($434.18 €)"
+      "text": "EXIT +9.47% ($472.27 €)"
     }
   ],
   "equity_curves": [
@@ -6962,6 +6990,14 @@
         {
           "time": "2026-11-16",
           "value": 10420.59
+        },
+        {
+          "time": "2026-11-17",
+          "value": 10376.78
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10458.72
         }
       ]
     },
@@ -8480,6 +8516,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 12667.34
+        },
+        {
+          "time": "2026-11-17",
+          "value": 12667.34
+        },
+        {
+          "time": "2026-11-18",
           "value": 12667.34
         }
       ]
@@ -10000,6 +10044,14 @@
         {
           "time": "2026-11-16",
           "value": 12224.17
+        },
+        {
+          "time": "2026-11-17",
+          "value": 12224.17
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12224.17
         }
       ]
     },
@@ -11519,6 +11571,14 @@
         {
           "time": "2026-11-16",
           "value": 16181.01
+        },
+        {
+          "time": "2026-11-17",
+          "value": 16050.34
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16294.74
         }
       ]
     }
@@ -11540,25 +11600,25 @@
       "num": 2,
       "entry_date": "2026-10-27",
       "entry_price": 1227.8,
-      "exit_date": "2026-11-16",
-      "exit_price": 1337.4,
-      "holding_days": 14,
-      "pnl_pct": 8.71,
-      "pnl_eur": 434.18,
+      "exit_date": "2026-11-18",
+      "exit_price": 1346.8,
+      "holding_days": 16,
+      "pnl_pct": 9.47,
+      "pnl_eur": 472.27,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "RR.L",
-    "smart_money_score": 37.0,
+    "smart_money_score": 40.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: N/A).",
-    "cmf_20d": -0.074,
-    "up_down_vol_ratio": 1.09,
-    "absorption_5d_pct": 33.7,
-    "vol_shock_ratio": 1.11,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.15, P/C: N/A).",
+    "cmf_20d": -0.148,
+    "up_down_vol_ratio": 1.04,
+    "absorption_5d_pct": 37.6,
+    "vol_shock_ratio": 0.18,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,18 +3,18 @@
   "name": "lululemon athletica inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T07:11:33.192274+00:00",
+  "generated_at": "2026-11-18T14:50:15.225028+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 104.14,
+  "backtest_total_bars": 377,
+  "current_price": 105.57,
   "state": "NEUTRAL",
-  "v1": 105.09,
-  "v2": 105.93,
-  "sma200": 129.0,
-  "rsi14": 48.1,
-  "atr14": 4.18,
+  "v1": 105.06,
+  "v2": 105.89,
+  "sma200": 128.67,
+  "rsi14": 50.8,
+  "atr14": 4.09,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": -12.1,
     "cagr_pct": -8.3,
-    "sharpe_ratio": -0.91,
+    "sharpe_ratio": -0.9,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
     "max_drawdown_pct": 14.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -21.6,
-      "cagr_pct": -15.1,
+      "cagr_pct": -15.0,
       "sharpe_ratio": -1.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -83,7 +83,7 @@
       "is_winner": true,
       "total_return_pct": -12.1,
       "cagr_pct": -8.3,
-      "sharpe_ratio": -0.91,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 14.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -67.7,
-      "cagr_pct": -53.1,
-      "sharpe_ratio": -1.32,
+      "total_return_pct": -67.3,
+      "cagr_pct": -52.6,
+      "sharpe_ratio": -1.3,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 72.6,
@@ -107,8 +107,8 @@
     "target_price": 258.27,
     "entry_price": 206.62,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 59.7,
-    "mos_pct": 59.7,
+    "actual_discount_pct": 59.1,
+    "mos_pct": 59.1,
     "moat": "Narrow",
     "roic_pct": 27.1,
     "wacc_pct": 8.71,
@@ -5385,6 +5385,20 @@
       "v2": 105.93,
       "sma200": 129.0,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 103.71,
+      "high": 106.17,
+      "low": 103.25,
+      "close": 105.57,
+      "volume": 142464.0,
+      "v1": 105.06,
+      "m1": 104.9,
+      "m2": 105.31,
+      "v2": 105.89,
+      "sma200": 128.67,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-17",
           "value": 8785.78
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8785.78
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8643.02
+        },
+        {
+          "time": "2026-11-18",
           "value": 8643.02
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-17",
           "value": 7929.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7929.0
         }
       ]
     },
@@ -11445,6 +11471,10 @@
         {
           "time": "2026-11-17",
           "value": 3229.82
+        },
+        {
+          "time": "2026-11-18",
+          "value": 3274.17
         }
       ]
     }
@@ -11465,18 +11495,18 @@
   ],
   "smart_money": {
     "symbol": "LULU",
-    "smart_money_score": 77.0,
+    "smart_money_score": 75.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.06, Up/Dn Vol: 1.08x). Силна скрита подкрепа.",
-    "cmf_20d": 0.062,
-    "up_down_vol_ratio": 1.08,
-    "absorption_5d_pct": 33.7,
-    "vol_shock_ratio": 0.81,
-    "put_call_ratio": 0.49,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 65.0,
-    "max_pain": 65.0,
-    "unusual_call_sweep": true
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.10, Up/Dn Vol: 1.22x). Силна скрита подкрепа.",
+    "cmf_20d": 0.105,
+    "up_down_vol_ratio": 1.22,
+    "absorption_5d_pct": 40.3,
+    "vol_shock_ratio": 0.04,
+    "put_call_ratio": 0.8,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 105.0,
+    "max_pain": 105.0,
+    "unusual_call_sweep": false
   }
 }

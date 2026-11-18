@@ -3,18 +3,18 @@
   "name": "ARKW",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-18T07:11:10.637518+00:00",
+  "generated_at": "2026-11-18T14:49:58.523527+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 135.01,
+  "backtest_total_bars": 377,
+  "current_price": 134.38,
   "state": "BLUE",
-  "v1": 148.74,
-  "v2": 151.4,
-  "sma200": 142.89,
-  "rsi14": 33.4,
-  "atr14": 4.76,
+  "v1": 147.83,
+  "v2": 150.84,
+  "sma200": 142.9,
+  "rsi14": 32.8,
+  "atr14": 4.53,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -7.5,
-      "cagr_pct": -5.1,
+      "cagr_pct": -5.0,
       "sharpe_ratio": -0.1,
       "win_rate_pct": 55.6,
       "profit_factor": 1.68,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -7.8,
-      "cagr_pct": -5.3,
-      "sharpe_ratio": -0.39,
+      "total_return_pct": -8.0,
+      "cagr_pct": -5.4,
+      "sharpe_ratio": -0.4,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.01,
-      "max_drawdown_pct": 14.2,
+      "profit_factor": 0.99,
+      "max_drawdown_pct": 14.4,
       "total_trades": 4
     },
     {
@@ -83,7 +83,7 @@
       "is_winner": false,
       "total_return_pct": 6.0,
       "cagr_pct": 4.0,
-      "sharpe_ratio": 0.3,
+      "sharpe_ratio": 0.29,
       "win_rate_pct": 33.3,
       "profit_factor": 1.36,
       "max_drawdown_pct": 30.7,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 15.0,
-      "cagr_pct": 9.8,
-      "sharpe_ratio": 0.46,
+      "total_return_pct": 14.4,
+      "cagr_pct": 9.4,
+      "sharpe_ratio": 0.45,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.41,
+      "profit_factor": 0.4,
       "max_drawdown_pct": 36.2,
       "total_trades": 1
     }
@@ -5385,6 +5385,20 @@
       "v2": 151.4,
       "sma200": 142.89,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 135.85,
+      "high": 135.85,
+      "low": 134.35,
+      "close": 134.38,
+      "volume": 6963.0,
+      "v1": 147.83,
+      "m1": 149.31,
+      "m2": 150.49,
+      "v2": 150.84,
+      "sma200": 142.9,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6954,6 +6968,10 @@
         {
           "time": "2026-11-17",
           "value": 11464.39
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11464.39
         }
       ]
     },
@@ -8464,6 +8482,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 10597.01
+        },
+        {
+          "time": "2026-11-18",
           "value": 10597.01
         }
       ]
@@ -9976,6 +9998,10 @@
         {
           "time": "2026-11-17",
           "value": 10813.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10813.45
         }
       ]
     },
@@ -11487,6 +11513,10 @@
         {
           "time": "2026-11-17",
           "value": 11509.26
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11455.57
         }
       ]
     }
@@ -11543,18 +11573,18 @@
   ],
   "smart_money": {
     "symbol": "ARKW",
-    "smart_money_score": 49.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: 2.00).",
-    "cmf_20d": 0.042,
-    "up_down_vol_ratio": 1.07,
-    "absorption_5d_pct": 39.7,
-    "vol_shock_ratio": 0.72,
-    "put_call_ratio": 2.0,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 135.0,
-    "max_pain": 154.0,
+    "smart_money_score": 58.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.11) с Gamma стена на $130.00. Залог за рязък отскок.",
+    "cmf_20d": 0.028,
+    "up_down_vol_ratio": 0.99,
+    "absorption_5d_pct": 33.0,
+    "vol_shock_ratio": 0.08,
+    "put_call_ratio": 0.11,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 130.0,
+    "max_pain": 180.0,
     "unusual_call_sweep": false
   }
 }

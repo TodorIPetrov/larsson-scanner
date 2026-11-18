@@ -3,18 +3,18 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T07:11:13.053014+00:00",
+  "generated_at": "2026-11-18T14:50:00.017664+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 86.65,
+  "backtest_total_bars": 377,
+  "current_price": 86.57,
   "state": "BLUE",
-  "v1": 102.34,
-  "v2": 106.44,
-  "sma200": 121.44,
-  "rsi14": 26.3,
-  "atr14": 3.59,
+  "v1": 101.28,
+  "v2": 105.75,
+  "sma200": 121.06,
+  "rsi14": 26.2,
+  "atr14": 3.38,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -10.2,
-      "cagr_pct": -7.0,
+      "cagr_pct": -6.9,
       "sharpe_ratio": -0.07,
       "win_rate_pct": 12.5,
       "profit_factor": 0.66,
@@ -98,7 +98,7 @@
       "sharpe_ratio": -0.31,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 53.8,
+      "max_drawdown_pct": 53.9,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 73.34,
     "entry_price": 55.0,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -18.1,
-    "mos_pct": -18.1,
+    "actual_discount_pct": -18.0,
+    "mos_pct": -18.0,
     "moat": "None",
     "roic_pct": 9.1,
     "wacc_pct": 7.5,
@@ -5385,6 +5385,20 @@
       "v2": 106.44,
       "sma200": 121.44,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 86.18,
+      "high": 86.83,
+      "low": 86.13,
+      "close": 86.57,
+      "volume": 1644297.0,
+      "v1": 101.28,
+      "m1": 102.8,
+      "m2": 104.67,
+      "v2": 105.75,
+      "sma200": 121.06,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5414,7 +5428,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -1.77% ($-170.59 €)"
+      "text": "EXIT -1.77% ($-170.58 €)"
     },
     {
       "time": "2025-05-23",
@@ -7010,6 +7024,10 @@
         {
           "time": "2026-11-17",
           "value": 10634.11
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10634.11
         }
       ]
     },
@@ -8520,6 +8538,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9972.16
+        },
+        {
+          "time": "2026-11-18",
           "value": 9972.16
         }
       ]
@@ -10032,6 +10054,10 @@
         {
           "time": "2026-11-17",
           "value": 8980.61
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8980.61
         }
       ]
     },
@@ -11543,6 +11569,10 @@
         {
           "time": "2026-11-17",
           "value": 7081.3
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7074.76
         }
       ]
     }
@@ -11568,7 +11598,7 @@
       "exit_price": 116.52,
       "holding_days": 1,
       "pnl_pct": -1.77,
-      "pnl_eur": -170.59,
+      "pnl_eur": -170.58,
       "exit_reason": "Твърд Стоп-Лос",
       "is_win": false
     },
@@ -11650,15 +11680,15 @@
     "smart_money_score": 43.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.06) с Gamma стена на $270.00. Залог за рязък отскок.",
-    "cmf_20d": -0.295,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 31.2,
-    "vol_shock_ratio": 1.61,
-    "put_call_ratio": 0.06,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.32) с Gamma стена на $90.00. Залог за рязък отскок.",
+    "cmf_20d": -0.285,
+    "up_down_vol_ratio": 0.6,
+    "absorption_5d_pct": 36.2,
+    "vol_shock_ratio": 0.14,
+    "put_call_ratio": 0.32,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 270.0,
-    "max_pain": 280.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 90.0,
+    "max_pain": 160.0,
+    "unusual_call_sweep": false
   }
 }

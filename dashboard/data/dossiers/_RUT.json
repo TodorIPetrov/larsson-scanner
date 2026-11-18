@@ -3,18 +3,18 @@
   "name": "Russell 2000",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-18T07:11:58.945947+00:00",
+  "generated_at": "2026-11-18T14:50:34.268487+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 2701.87,
+  "backtest_total_bars": 377,
+  "current_price": 2700.58,
   "state": "BLUE",
-  "v1": 2803.07,
-  "v2": 2831.97,
-  "sma200": 2812.81,
-  "rsi14": 38.7,
-  "atr14": 46.95,
+  "v1": 2796.17,
+  "v2": 2827.41,
+  "sma200": 2813.07,
+  "rsi14": 38.6,
+  "atr14": 43.89,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 29.4,
+      "total_return_pct": 29.3,
       "cagr_pct": 18.8,
       "sharpe_ratio": 1.09,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.46,
-      "max_drawdown_pct": 11.9,
+      "profit_factor": 2.45,
+      "max_drawdown_pct": 12.0,
       "total_trades": 1
     }
   ],
@@ -5385,6 +5385,20 @@
       "v2": 2831.97,
       "sma200": 2812.81,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 2698.91,
+      "high": 2701.55,
+      "low": 2697.71,
+      "close": 2700.58,
+      "volume": 0.0,
+      "v1": 2796.17,
+      "m1": 2806.11,
+      "m2": 2819.89,
+      "v2": 2827.41,
+      "sma200": 2813.07,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-17",
           "value": 12078.51
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12078.51
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11808.13
+        },
+        {
+          "time": "2026-11-18",
           "value": 11808.13
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-17",
           "value": 11687.04
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11687.04
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-17",
           "value": 12951.18
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12945.01
         }
       ]
     }
@@ -11491,14 +11521,14 @@
   ],
   "smart_money": {
     "symbol": "^RUT",
-    "smart_money_score": 62.0,
+    "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: N/A).",
-    "cmf_20d": 0.034,
-    "up_down_vol_ratio": 1.27,
-    "absorption_5d_pct": 33.6,
-    "vol_shock_ratio": 0.93,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: N/A).",
+    "cmf_20d": 0.041,
+    "up_down_vol_ratio": 1.17,
+    "absorption_5d_pct": 34.6,
+    "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

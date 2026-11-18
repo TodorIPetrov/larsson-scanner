@@ -3,28 +3,28 @@
   "name": "Equifax, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-18T07:11:22.158310+00:00",
+  "generated_at": "2026-11-18T14:50:07.108160+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 180.3,
+  "backtest_total_bars": 377,
+  "current_price": 180.16,
   "state": "GOLD",
-  "v1": 178.92,
-  "v2": 174.15,
-  "sma200": 175.02,
-  "rsi14": 50.9,
-  "atr14": 5.88,
+  "v1": 179.02,
+  "v2": 174.36,
+  "sma200": 175.06,
+  "rsi14": 50.7,
+  "atr14": 5.74,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -2.3,
+    "total_return_pct": -2.4,
     "cagr_pct": -1.6,
     "sharpe_ratio": -0.07,
     "win_rate_pct": 25.0,
-    "profit_factor": 1.98,
+    "profit_factor": 1.97,
     "max_drawdown_pct": 11.0,
     "total_trades": 4
   },
@@ -33,9 +33,9 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -36.2,
+      "total_return_pct": -36.3,
       "cagr_pct": -26.0,
-      "sharpe_ratio": -1.47,
+      "sharpe_ratio": -1.48,
       "win_rate_pct": 12.5,
       "profit_factor": 0.01,
       "max_drawdown_pct": 36.1,
@@ -45,35 +45,35 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -35.3,
+      "total_return_pct": -35.4,
       "cagr_pct": -25.3,
       "sharpe_ratio": -1.46,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 35.2,
+      "max_drawdown_pct": 35.3,
       "total_trades": 8
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -30.0,
-      "cagr_pct": -21.3,
-      "sharpe_ratio": -1.51,
+      "total_return_pct": -30.3,
+      "cagr_pct": -21.4,
+      "sharpe_ratio": -1.53,
       "win_rate_pct": 27.8,
       "profit_factor": 0.03,
-      "max_drawdown_pct": 31.7,
+      "max_drawdown_pct": 32.0,
       "total_trades": 18
     },
     {
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -2.3,
+      "total_return_pct": -2.4,
       "cagr_pct": -1.6,
       "sharpe_ratio": -0.07,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.98,
+      "profit_factor": 1.97,
       "max_drawdown_pct": 11.0,
       "total_trades": 4
     },
@@ -81,19 +81,19 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -18.6,
+      "total_return_pct": -18.7,
       "cagr_pct": -12.9,
       "sharpe_ratio": -1.03,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 20.1,
+      "max_drawdown_pct": 20.2,
       "total_trades": 3
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -32.9,
+      "total_return_pct": -33.0,
       "cagr_pct": -23.5,
       "sharpe_ratio": -0.41,
       "win_rate_pct": 0.0,
@@ -107,8 +107,8 @@
     "target_price": 111.00164850092389,
     "entry_price": 79.92118692066519,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -62.4,
-    "mos_pct": -62.4,
+    "actual_discount_pct": -62.3,
+    "mos_pct": -62.3,
     "moat": "None",
     "roic_pct": 9.23,
     "wacc_pct": 9.656311736787071,
@@ -5385,6 +5385,20 @@
       "v2": 174.15,
       "sma200": 175.02,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 181.12,
+      "high": 182.45,
+      "low": 178.53,
+      "close": 180.16,
+      "volume": 29356.0,
+      "v1": 179.02,
+      "m1": 177.0,
+      "m2": 175.12,
+      "v2": 174.36,
+      "sma200": 175.06,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5438,11 +5452,11 @@
       "text": "BUY #4 @ $146.27"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +23.02% ($1826.83 €)"
+      "text": "EXIT +22.92% ($1819.01 €)"
     }
   ],
   "equity_curves": [
@@ -6321,7 +6335,7 @@
         },
         {
           "time": "2026-04-02",
-          "value": 9717.24
+          "value": 9717.23
         },
         {
           "time": "2026-04-06",
@@ -6413,7 +6427,7 @@
         },
         {
           "time": "2026-05-06",
-          "value": 9464.7
+          "value": 9464.69
         },
         {
           "time": "2026-05-07",
@@ -6937,7 +6951,7 @@
         },
         {
           "time": "2026-11-11",
-          "value": 10216.92
+          "value": 10216.93
         },
         {
           "time": "2026-11-12",
@@ -6954,6 +6968,10 @@
         {
           "time": "2026-11-17",
           "value": 9777.34
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9769.52
         }
       ]
     },
@@ -8465,6 +8483,10 @@
         {
           "time": "2026-11-17",
           "value": 8144.37
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8137.86
         }
       ]
     },
@@ -8539,7 +8561,7 @@
         },
         {
           "time": "2025-06-13",
-          "value": 9968.3
+          "value": 9968.29
         },
         {
           "time": "2025-06-16",
@@ -8611,7 +8633,7 @@
         },
         {
           "time": "2025-07-11",
-          "value": 9142.29
+          "value": 9142.28
         },
         {
           "time": "2025-07-14",
@@ -8619,7 +8641,7 @@
         },
         {
           "time": "2025-07-15",
-          "value": 9022.74
+          "value": 9022.73
         },
         {
           "time": "2025-07-16",
@@ -8631,7 +8653,7 @@
         },
         {
           "time": "2025-07-18",
-          "value": 9183.5
+          "value": 9183.49
         },
         {
           "time": "2025-07-21",
@@ -8843,7 +8865,7 @@
         },
         {
           "time": "2025-10-02",
-          "value": 8064.84
+          "value": 8064.83
         },
         {
           "time": "2025-10-03",
@@ -9719,7 +9741,7 @@
         },
         {
           "time": "2026-08-18",
-          "value": 8054.38
+          "value": 8054.37
         },
         {
           "time": "2026-08-19",
@@ -9771,7 +9793,7 @@
         },
         {
           "time": "2026-09-04",
-          "value": 7652.17
+          "value": 7652.16
         },
         {
           "time": "2026-09-08",
@@ -9976,6 +9998,10 @@
         {
           "time": "2026-11-17",
           "value": 7001.54
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6975.86
         }
       ]
     },
@@ -9990,7 +10016,7 @@
         },
         {
           "time": "2025-05-22",
-          "value": 9656.76
+          "value": 9656.75
         },
         {
           "time": "2025-05-23",
@@ -9998,7 +10024,7 @@
         },
         {
           "time": "2025-05-27",
-          "value": 9490.74
+          "value": 9490.73
         },
         {
           "time": "2025-05-28",
@@ -10038,7 +10064,7 @@
         },
         {
           "time": "2025-06-10",
-          "value": 9987.7
+          "value": 9987.69
         },
         {
           "time": "2025-06-11",
@@ -10114,7 +10140,7 @@
         },
         {
           "time": "2025-07-09",
-          "value": 9760.34
+          "value": 9760.33
         },
         {
           "time": "2025-07-10",
@@ -10130,7 +10156,7 @@
         },
         {
           "time": "2025-07-15",
-          "value": 9454.01
+          "value": 9454.0
         },
         {
           "time": "2025-07-16",
@@ -10142,7 +10168,7 @@
         },
         {
           "time": "2025-07-18",
-          "value": 9663.37
+          "value": 9663.36
         },
         {
           "time": "2025-07-21",
@@ -10202,7 +10228,7 @@
         },
         {
           "time": "2025-08-08",
-          "value": 8808.29
+          "value": 8808.28
         },
         {
           "time": "2025-08-11",
@@ -10250,7 +10276,7 @@
         },
         {
           "time": "2025-08-26",
-          "value": 9094.42
+          "value": 9094.41
         },
         {
           "time": "2025-08-27",
@@ -10262,7 +10288,7 @@
         },
         {
           "time": "2025-08-29",
-          "value": 9046.67
+          "value": 9046.66
         },
         {
           "time": "2025-09-02",
@@ -10302,7 +10328,7 @@
         },
         {
           "time": "2025-09-15",
-          "value": 9454.47
+          "value": 9454.46
         },
         {
           "time": "2025-09-16",
@@ -10314,7 +10340,7 @@
         },
         {
           "time": "2025-09-18",
-          "value": 9595.8
+          "value": 9595.79
         },
         {
           "time": "2025-09-19",
@@ -10342,7 +10368,7 @@
         },
         {
           "time": "2025-09-29",
-          "value": 9406.99
+          "value": 9406.98
         },
         {
           "time": "2025-09-30",
@@ -10418,7 +10444,7 @@
         },
         {
           "time": "2025-10-24",
-          "value": 8605.01
+          "value": 8605.0
         },
         {
           "time": "2025-10-27",
@@ -10426,7 +10452,7 @@
         },
         {
           "time": "2025-10-28",
-          "value": 8250.21
+          "value": 8250.2
         },
         {
           "time": "2025-10-29",
@@ -10490,7 +10516,7 @@
         },
         {
           "time": "2025-11-19",
-          "value": 7591.4
+          "value": 7591.39
         },
         {
           "time": "2025-11-20",
@@ -10566,7 +10592,7 @@
         },
         {
           "time": "2025-12-17",
-          "value": 8047.47
+          "value": 8047.46
         },
         {
           "time": "2025-12-18",
@@ -10670,7 +10696,7 @@
         },
         {
           "time": "2026-01-27",
-          "value": 7674.5
+          "value": 7674.49
         },
         {
           "time": "2026-01-28",
@@ -10682,7 +10708,7 @@
         },
         {
           "time": "2026-01-30",
-          "value": 7429.91
+          "value": 7429.9
         },
         {
           "time": "2026-02-02",
@@ -10698,7 +10724,7 @@
         },
         {
           "time": "2026-02-05",
-          "value": 7046.61
+          "value": 7046.6
         },
         {
           "time": "2026-02-06",
@@ -10742,7 +10768,7 @@
         },
         {
           "time": "2026-02-23",
-          "value": 6951.43
+          "value": 6951.42
         },
         {
           "time": "2026-02-24",
@@ -10754,7 +10780,7 @@
         },
         {
           "time": "2026-02-26",
-          "value": 7667.86
+          "value": 7667.85
         },
         {
           "time": "2026-02-27",
@@ -10762,7 +10788,7 @@
         },
         {
           "time": "2026-03-02",
-          "value": 7674.5
+          "value": 7674.49
         },
         {
           "time": "2026-03-03",
@@ -10906,7 +10932,7 @@
         },
         {
           "time": "2026-04-22",
-          "value": 6608.81
+          "value": 6608.8
         },
         {
           "time": "2026-04-23",
@@ -10978,7 +11004,7 @@
         },
         {
           "time": "2026-05-18",
-          "value": 6075.03
+          "value": 6075.02
         },
         {
           "time": "2026-05-19",
@@ -11046,7 +11072,7 @@
         },
         {
           "time": "2026-06-11",
-          "value": 5923.36
+          "value": 5923.35
         },
         {
           "time": "2026-06-12",
@@ -11130,7 +11156,7 @@
         },
         {
           "time": "2026-07-14",
-          "value": 6196.18
+          "value": 6196.17
         },
         {
           "time": "2026-07-15",
@@ -11210,7 +11236,7 @@
         },
         {
           "time": "2026-08-11",
-          "value": 6754.07
+          "value": 6754.06
         },
         {
           "time": "2026-08-12",
@@ -11246,7 +11272,7 @@
         },
         {
           "time": "2026-08-24",
-          "value": 7224.36
+          "value": 7224.35
         },
         {
           "time": "2026-08-25",
@@ -11322,7 +11348,7 @@
         },
         {
           "time": "2026-09-21",
-          "value": 5904.74
+          "value": 5904.73
         },
         {
           "time": "2026-09-22",
@@ -11422,7 +11448,7 @@
         },
         {
           "time": "2026-10-26",
-          "value": 6647.02
+          "value": 6647.01
         },
         {
           "time": "2026-10-27",
@@ -11487,6 +11513,10 @@
         {
           "time": "2026-11-17",
           "value": 6711.79
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6706.42
         }
       ]
     }
@@ -11532,29 +11562,29 @@
       "num": 4,
       "entry_date": "2026-10-09",
       "entry_price": 146.27,
-      "exit_date": "2026-11-17",
-      "exit_price": 180.3,
-      "holding_days": 27,
-      "pnl_pct": 23.02,
-      "pnl_eur": 1826.83,
+      "exit_date": "2026-11-18",
+      "exit_price": 180.16,
+      "holding_days": 28,
+      "pnl_pct": 22.92,
+      "pnl_eur": 1819.01,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "EFX",
-    "smart_money_score": 68.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $120.00. Залог за рязък отскок.",
-    "cmf_20d": 0.02,
-    "up_down_vol_ratio": 0.94,
-    "absorption_5d_pct": 32.6,
-    "vol_shock_ratio": 0.77,
-    "put_call_ratio": 0.0,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 120.0,
-    "max_pain": 120.0,
-    "unusual_call_sweep": true
+    "smart_money_score": 37.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.00, P/C: 1.29).",
+    "cmf_20d": 0.002,
+    "up_down_vol_ratio": 1.1,
+    "absorption_5d_pct": 21.7,
+    "vol_shock_ratio": 0.02,
+    "put_call_ratio": 1.29,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 175.0,
+    "max_pain": 130.0,
+    "unusual_call_sweep": false
   }
 }

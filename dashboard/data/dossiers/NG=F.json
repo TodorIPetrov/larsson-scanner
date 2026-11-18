@@ -3,17 +3,17 @@
   "name": "Natural Gas",
   "sector": "Суровини",
   "asset_class": "commodities",
-  "generated_at": "2026-11-18T07:11:38.013410+00:00",
+  "generated_at": "2026-11-18T14:50:19.504196+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 378,
-  "current_price": 3.17,
+  "current_price": 3.23,
   "state": "GOLD",
   "v1": 3.06,
   "v2": 3.01,
   "sma200": 2.97,
-  "rsi14": 54.9,
+  "rsi14": 57.5,
   "atr14": 0.15,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -33,9 +33,9 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -66.9,
-      "cagr_pct": -52.1,
-      "sharpe_ratio": -0.87,
+      "total_return_pct": -66.3,
+      "cagr_pct": -51.6,
+      "sharpe_ratio": -0.85,
       "win_rate_pct": 7.7,
       "profit_factor": 0.08,
       "max_drawdown_pct": 81.6,
@@ -45,9 +45,9 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -67.1,
-      "cagr_pct": -52.3,
-      "sharpe_ratio": -0.9,
+      "total_return_pct": -66.5,
+      "cagr_pct": -51.7,
+      "sharpe_ratio": -0.88,
       "win_rate_pct": 15.4,
       "profit_factor": 0.09,
       "max_drawdown_pct": 79.9,
@@ -57,9 +57,9 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -42.4,
-      "cagr_pct": -30.8,
-      "sharpe_ratio": -0.9,
+      "total_return_pct": -41.9,
+      "cagr_pct": -30.4,
+      "sharpe_ratio": -0.88,
       "win_rate_pct": 11.8,
       "profit_factor": 0.42,
       "max_drawdown_pct": 58.5,
@@ -81,9 +81,9 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -53.3,
-      "cagr_pct": -39.8,
-      "sharpe_ratio": -0.63,
+      "total_return_pct": -52.5,
+      "cagr_pct": -39.1,
+      "sharpe_ratio": -0.61,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 71.5,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -7.4,
-      "cagr_pct": -5.0,
-      "sharpe_ratio": 0.4,
+      "total_return_pct": -5.6,
+      "cagr_pct": -3.8,
+      "sharpe_ratio": 0.41,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 66.2,
@@ -5403,10 +5403,10 @@
     {
       "time": "2026-11-18",
       "open": 3.2,
-      "high": 3.21,
+      "high": 3.29,
       "low": 3.15,
-      "close": 3.17,
-      "volume": 6472.0,
+      "close": 3.23,
+      "volume": 80678.0,
       "v1": 3.06,
       "m1": 3.04,
       "m2": 3.02,
@@ -8451,7 +8451,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 5760.79
+          "value": 5813.25
         }
       ]
     },
@@ -9970,7 +9970,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 4671.75
+          "value": 4758.61
         }
       ]
     },
@@ -11489,7 +11489,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9273.29
+          "value": 9445.89
         }
       ]
     }
@@ -11497,14 +11497,14 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "NG=F",
-    "smart_money_score": 72.0,
+    "smart_money_score": 77.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.08, Up/Dn Vol: 1.52x). Силна скрита подкрепа.",
-    "cmf_20d": 0.083,
-    "up_down_vol_ratio": 1.52,
-    "absorption_5d_pct": 47.4,
-    "vol_shock_ratio": 0.04,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.09, Up/Dn Vol: 1.59x). Силна скрита подкрепа.",
+    "cmf_20d": 0.085,
+    "up_down_vol_ratio": 1.59,
+    "absorption_5d_pct": 52.7,
+    "vol_shock_ratio": 0.45,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

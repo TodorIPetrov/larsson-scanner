@@ -3,18 +3,18 @@
   "name": "BTCC-B.TO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-18T07:11:16.414480+00:00",
+  "generated_at": "2026-11-18T14:50:02.189598+00:00",
   "backtest_start_date": "2025-05-20",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 377,
-  "current_price": 12.62,
+  "backtest_total_bars": 378,
+  "current_price": 12.5,
   "state": "NEUTRAL",
-  "v1": 14.85,
-  "v2": 14.94,
-  "sma200": 13.97,
-  "rsi14": 23.7,
-  "atr14": 0.46,
+  "v1": 14.7,
+  "v2": 14.86,
+  "sma200": 13.96,
+  "rsi14": 23.0,
+  "atr14": 0.44,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -13.8,
-      "cagr_pct": -9.5,
+      "cagr_pct": -9.4,
       "sharpe_ratio": -0.34,
       "win_rate_pct": 50.0,
       "profit_factor": 0.1,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -16.8,
-      "cagr_pct": -11.6,
+      "cagr_pct": -11.5,
       "sharpe_ratio": -0.75,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -38.6,
-      "cagr_pct": -27.8,
-      "sharpe_ratio": -0.63,
+      "total_return_pct": -39.2,
+      "cagr_pct": -28.2,
+      "sharpe_ratio": -0.64,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 52.9,
@@ -5399,6 +5399,20 @@
       "v2": 14.94,
       "sma200": 13.97,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 12.71,
+      "high": 12.71,
+      "low": 12.48,
+      "close": 12.5,
+      "volume": 17480.0,
+      "v1": 14.7,
+      "m1": 14.83,
+      "m2": 14.87,
+      "v2": 14.86,
+      "sma200": 13.96,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -6972,6 +6986,10 @@
         {
           "time": "2026-11-17",
           "value": 9350.59
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9350.59
         }
       ]
     },
@@ -8486,6 +8504,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8618.1
+        },
+        {
+          "time": "2026-11-18",
           "value": 8618.1
         }
       ]
@@ -10002,6 +10024,10 @@
         {
           "time": "2026-11-17",
           "value": 9241.42
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9241.42
         }
       ]
     },
@@ -11517,6 +11543,10 @@
         {
           "time": "2026-11-17",
           "value": 6143.95
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6085.53
         }
       ]
     }
@@ -11573,14 +11603,14 @@
   ],
   "smart_money": {
     "symbol": "BTCC-B.TO",
-    "smart_money_score": 57.0,
+    "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: N/A).",
-    "cmf_20d": 0.052,
-    "up_down_vol_ratio": 0.47,
-    "absorption_5d_pct": 52.5,
-    "vol_shock_ratio": 1.19,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: N/A).",
+    "cmf_20d": 0.036,
+    "up_down_vol_ratio": 0.43,
+    "absorption_5d_pct": 34.3,
+    "vol_shock_ratio": 0.11,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
