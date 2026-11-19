@@ -3,18 +3,18 @@
   "name": "VODAFONE GROUP PLC ORD USD0.20 ",
   "sector": "Communication Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T12:51:42.123968+00:00",
+  "generated_at": "2026-11-19T14:58:11.701390+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 380,
-  "current_price": 111.1,
+  "current_price": 110.7,
   "state": "BLUE",
-  "v1": 118.08,
-  "v2": 119.06,
-  "sma200": 115.57,
-  "rsi14": 33.9,
-  "atr14": 2.83,
+  "v1": 118.07,
+  "v2": 119.05,
+  "sma200": 115.56,
+  "rsi14": 33.3,
+  "atr14": 2.85,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -81,23 +81,23 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -6.9,
-      "cagr_pct": -4.6,
-      "sharpe_ratio": -0.33,
+      "total_return_pct": -8.0,
+      "cagr_pct": -5.4,
+      "sharpe_ratio": -0.39,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 14.9,
+      "max_drawdown_pct": 16.0,
       "total_trades": 1
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 42.8,
-      "cagr_pct": 26.6,
-      "sharpe_ratio": 0.98,
+      "total_return_pct": 42.3,
+      "cagr_pct": 26.3,
+      "sharpe_ratio": 0.97,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.28,
+      "profit_factor": 2.25,
       "max_drawdown_pct": 18.8,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 256.85,
     "entry_price": 192.64,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 56.7,
-    "mos_pct": 56.7,
+    "actual_discount_pct": 56.9,
+    "mos_pct": 56.9,
     "moat": "None",
     "roic_pct": 3.1,
     "wacc_pct": 7.5,
@@ -5432,14 +5432,14 @@
       "time": "2026-11-19",
       "open": 112.15,
       "high": 112.8,
-      "low": 110.85,
-      "close": 111.1,
-      "volume": 6863578.0,
-      "v1": 118.08,
-      "m1": 118.6,
-      "m2": 118.99,
-      "v2": 119.06,
-      "sma200": 115.57,
+      "low": 110.55,
+      "close": 110.7,
+      "volume": 10908929.0,
+      "v1": 118.07,
+      "m1": 118.59,
+      "m2": 118.98,
+      "v2": 119.05,
+      "sma200": 115.56,
       "state": "BLUE"
     }
   ],
@@ -7826,7 +7826,7 @@
         },
         {
           "time": "2026-03-17",
-          "value": 12304.81
+          "value": 12304.82
         },
         {
           "time": "2026-03-18",
@@ -8014,7 +8014,7 @@
         },
         {
           "time": "2026-05-27",
-          "value": 12304.81
+          "value": 12304.82
         },
         {
           "time": "2026-05-28",
@@ -8529,7 +8529,7 @@
         },
         {
           "time": "2025-05-27",
-          "value": 9980.88
+          "value": 9980.89
         },
         {
           "time": "2025-05-28",
@@ -8681,7 +8681,7 @@
         },
         {
           "time": "2025-07-18",
-          "value": 9494.12
+          "value": 9494.13
         },
         {
           "time": "2025-07-21",
@@ -9173,7 +9173,7 @@
         },
         {
           "time": "2026-01-13",
-          "value": 11404.91
+          "value": 11404.92
         },
         {
           "time": "2026-01-14",
@@ -9309,7 +9309,7 @@
         },
         {
           "time": "2026-03-02",
-          "value": 13033.01
+          "value": 13033.02
         },
         {
           "time": "2026-03-03",
@@ -9629,7 +9629,7 @@
         },
         {
           "time": "2026-06-26",
-          "value": 12215.15
+          "value": 12215.16
         },
         {
           "time": "2026-06-29",
@@ -9721,7 +9721,7 @@
         },
         {
           "time": "2026-07-29",
-          "value": 12063.81
+          "value": 12063.82
         },
         {
           "time": "2026-07-31",
@@ -11564,7 +11564,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 14293.2
+          "value": 14241.74
         }
       ]
     }
@@ -11588,11 +11588,11 @@
     "smart_money_score": 75.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.14, Up/Dn Vol: 1.11x). Силна скрита подкрепа.",
-    "cmf_20d": 0.137,
-    "up_down_vol_ratio": 1.11,
-    "absorption_5d_pct": 37.7,
-    "vol_shock_ratio": 0.12,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.13, Up/Dn Vol: 1.1x). Силна скрита подкрепа.",
+    "cmf_20d": 0.132,
+    "up_down_vol_ratio": 1.1,
+    "absorption_5d_pct": 36.5,
+    "vol_shock_ratio": 0.18,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

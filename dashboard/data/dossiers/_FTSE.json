@@ -3,26 +3,26 @@
   "name": "^FTSE",
   "sector": "Equities",
   "asset_class": "indices",
-  "generated_at": "2026-11-19T12:51:44.171019+00:00",
+  "generated_at": "2026-11-19T14:58:13.983608+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 10508.63,
+  "current_price": 10516.32,
   "state": "GOLD",
   "v1": 10730.11,
   "v2": 10712.33,
-  "sma200": 10559.89,
-  "rsi14": 38.6,
+  "sma200": 10559.93,
+  "rsi14": 38.9,
   "atr14": 117.43,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
-    "total_return_pct": 19.8,
-    "cagr_pct": 12.7,
-    "sharpe_ratio": 1.2,
+    "total_return_pct": 19.9,
+    "cagr_pct": 12.8,
+    "sharpe_ratio": 1.21,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 9.3,
@@ -33,8 +33,8 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 19.3,
-      "cagr_pct": 12.4,
+      "total_return_pct": 19.4,
+      "cagr_pct": 12.5,
       "sharpe_ratio": 1.2,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 2.5,
+      "total_return_pct": 2.6,
       "cagr_pct": 1.7,
       "sharpe_ratio": 0.27,
       "win_rate_pct": 18.2,
-      "profit_factor": 1.2,
+      "profit_factor": 1.21,
       "max_drawdown_pct": 17.2,
       "total_trades": 11
     },
@@ -57,9 +57,9 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
-      "total_return_pct": 19.8,
-      "cagr_pct": 12.7,
-      "sharpe_ratio": 1.2,
+      "total_return_pct": 19.9,
+      "cagr_pct": 12.8,
+      "sharpe_ratio": 1.21,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 9.3,
@@ -94,10 +94,10 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": 19.4,
-      "cagr_pct": 12.4,
+      "cagr_pct": 12.5,
       "sharpe_ratio": 1.2,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.08,
+      "profit_factor": 2.09,
       "max_drawdown_pct": 9.3,
       "total_trades": 1
     }
@@ -5447,13 +5447,13 @@
       "open": 10551.1,
       "high": 10563.14,
       "low": 10498.53,
-      "close": 10508.63,
+      "close": 10516.32,
       "volume": 0.0,
       "v1": 10730.11,
       "m1": 10725.27,
       "m2": 10718.0,
       "v2": 10712.33,
-      "sma200": 10559.89,
+      "sma200": 10559.93,
       "state": "GOLD"
     }
   ],
@@ -5470,7 +5470,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +19.36% ($1942.71 €)"
+      "text": "EXIT +19.45% ($1951.48 €)"
     }
   ],
   "equity_curves": [
@@ -7001,7 +7001,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11993.99
+          "value": 12002.76
         }
       ]
     },
@@ -8532,7 +8532,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11946.08
+          "value": 11954.81
         }
       ]
     },
@@ -10063,7 +10063,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10265.0
+          "value": 10272.5
         }
       ]
     },
@@ -11594,7 +11594,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11948.01
+          "value": 11956.76
         }
       ]
     }
@@ -11605,10 +11605,10 @@
       "entry_date": "2025-05-22",
       "entry_price": 8786.5,
       "exit_date": "2026-11-19",
-      "exit_price": 10508.63,
+      "exit_price": 10516.32,
       "holding_days": 380,
-      "pnl_pct": 19.36,
-      "pnl_eur": 1942.71,
+      "pnl_pct": 19.45,
+      "pnl_eur": 1951.48,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11621,7 +11621,7 @@
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: N/A).",
     "cmf_20d": -0.099,
     "up_down_vol_ratio": 1.1,
-    "absorption_5d_pct": 22.9,
+    "absorption_5d_pct": 25.3,
     "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",

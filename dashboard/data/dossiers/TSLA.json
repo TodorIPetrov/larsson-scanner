@@ -3,18 +3,18 @@
   "name": "Tesla, Inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:39.876113+00:00",
+  "generated_at": "2026-11-19T14:58:08.903293+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 383.72,
+  "backtest_total_bars": 377,
+  "current_price": 386.29,
   "state": "GOLD",
-  "v1": 380.66,
-  "v2": 376.07,
-  "sma200": 382.08,
-  "rsi14": 51.1,
-  "atr14": 15.63,
+  "v1": 381.24,
+  "v2": 376.53,
+  "sma200": 381.98,
+  "rsi14": 52.2,
+  "atr14": 15.22,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -17.6,
-      "cagr_pct": -12.2,
-      "sharpe_ratio": -0.12,
+      "total_return_pct": -17.0,
+      "cagr_pct": -11.7,
+      "sharpe_ratio": -0.1,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.67,
+      "profit_factor": 0.68,
       "max_drawdown_pct": 42.7,
       "total_trades": 10
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -11.4,
-      "cagr_pct": -7.8,
-      "sharpe_ratio": -0.0,
+      "total_return_pct": -10.8,
+      "cagr_pct": -7.4,
+      "sharpe_ratio": 0.01,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.8,
+      "profit_factor": 0.81,
       "max_drawdown_pct": 38.4,
       "total_trades": 10
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -17.6,
-      "cagr_pct": -12.1,
-      "sharpe_ratio": -0.22,
+      "total_return_pct": -17.0,
+      "cagr_pct": -11.7,
+      "sharpe_ratio": -0.21,
       "win_rate_pct": 23.1,
-      "profit_factor": 0.96,
+      "profit_factor": 0.98,
       "max_drawdown_pct": 34.8,
       "total_trades": 26
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 15.4,
-      "cagr_pct": 10.1,
-      "sharpe_ratio": 0.41,
+      "total_return_pct": 16.2,
+      "cagr_pct": 10.5,
+      "sharpe_ratio": 0.42,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.39,
+      "profit_factor": 0.41,
       "max_drawdown_pct": 39.1,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 152.22,
     "entry_price": 114.16,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -152.1,
-    "mos_pct": -152.1,
+    "actual_discount_pct": -153.8,
+    "mos_pct": -153.8,
     "moat": "None",
     "roic_pct": 8.7,
     "wacc_pct": 11.91,
@@ -5385,6 +5385,20 @@
       "v2": 376.07,
       "sma200": 382.08,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 389.9,
+      "high": 393.6,
+      "low": 385.19,
+      "close": 386.29,
+      "volume": 4182894.0,
+      "v1": 381.24,
+      "m1": 379.53,
+      "m2": 377.47,
+      "v2": 376.53,
+      "sma200": 381.98,
+      "state": "GOLD"
     }
   ],
   "markers": [],
@@ -6897,6 +6911,10 @@
         {
           "time": "2026-11-18",
           "value": 10000.0
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10000.0
         }
       ]
     },
@@ -8408,6 +8426,10 @@
         {
           "time": "2026-11-18",
           "value": 8869.91
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8929.26
         }
       ]
     },
@@ -9919,6 +9941,10 @@
         {
           "time": "2026-11-18",
           "value": 8251.99
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8307.23
         }
       ]
     },
@@ -11430,6 +11456,10 @@
         {
           "time": "2026-11-18",
           "value": 11549.75
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11627.1
         }
       ]
     }
@@ -11437,14 +11467,14 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "TSLA",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.40, CMF: +0.00).",
-    "cmf_20d": 0.001,
-    "up_down_vol_ratio": 0.85,
-    "absorption_5d_pct": 49.4,
-    "vol_shock_ratio": 0.69,
+    "smart_money_score": 44.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.06, P/C: 1.40).",
+    "cmf_20d": 0.062,
+    "up_down_vol_ratio": 0.99,
+    "absorption_5d_pct": 36.7,
+    "vol_shock_ratio": 0.11,
     "put_call_ratio": 1.4,
     "options_sentiment": "BEARISH",
     "gamma_wall": 400.0,

@@ -3,18 +3,18 @@
   "name": "Sea Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:37.618667+00:00",
+  "generated_at": "2026-11-19T14:58:05.538024+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 68.6,
+  "backtest_total_bars": 377,
+  "current_price": 68.71,
   "state": "BLUE",
-  "v1": 80.37,
-  "v2": 87.84,
-  "sma200": 95.58,
-  "rsi14": 28.4,
-  "atr14": 3.72,
+  "v1": 79.62,
+  "v2": 87.19,
+  "sma200": 95.39,
+  "rsi14": 28.7,
+  "atr14": 3.56,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -21.3,
-      "cagr_pct": -14.9,
+      "cagr_pct": -14.8,
       "sharpe_ratio": -0.48,
       "win_rate_pct": 22.2,
       "profit_factor": 0.39,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -30.3,
-      "cagr_pct": -21.5,
+      "cagr_pct": -21.4,
       "sharpe_ratio": -0.86,
       "win_rate_pct": 14.3,
       "profit_factor": 0.32,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -57.5,
-      "cagr_pct": -43.6,
+      "total_return_pct": -57.4,
+      "cagr_pct": -43.5,
       "sharpe_ratio": -0.91,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -107,8 +107,8 @@
     "target_price": 159.79,
     "entry_price": 119.84,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 57.1,
-    "mos_pct": 57.1,
+    "actual_discount_pct": 57.0,
+    "mos_pct": 57.0,
     "moat": "None",
     "roic_pct": 17.1,
     "wacc_pct": 10.93,
@@ -5385,6 +5385,20 @@
       "v2": 87.84,
       "sma200": 95.58,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 68.84,
+      "high": 69.8,
+      "low": 68.3,
+      "close": 68.71,
+      "volume": 748342.0,
+      "v1": 79.62,
+      "m1": 82.24,
+      "m2": 85.48,
+      "v2": 87.19,
+      "sma200": 95.39,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-18",
           "value": 9041.15
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9041.15
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 7867.14
+        },
+        {
+          "time": "2026-11-19",
           "value": 7867.14
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-18",
           "value": 8248.36
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8248.36
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-18",
           "value": 4253.97
+        },
+        {
+          "time": "2026-11-19",
+          "value": 4260.79
         }
       ]
     }
@@ -11494,14 +11524,14 @@
     "smart_money_score": 43.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.14) с Gamma стена на $165.00. Залог за рязък отскок.",
-    "cmf_20d": -0.198,
-    "up_down_vol_ratio": 0.86,
-    "absorption_5d_pct": 34.0,
-    "vol_shock_ratio": 0.47,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.14) с Gamma стена на $70.00. Залог за рязък отскок.",
+    "cmf_20d": -0.167,
+    "up_down_vol_ratio": 0.97,
+    "absorption_5d_pct": 23.7,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": 0.14,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 165.0,
+    "gamma_wall": 70.0,
     "max_pain": 70.0,
     "unusual_call_sweep": false
   }

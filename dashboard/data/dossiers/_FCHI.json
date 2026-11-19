@@ -3,28 +3,28 @@
   "name": "^FCHI",
   "sector": "Equities",
   "asset_class": "indices",
-  "generated_at": "2026-11-19T12:51:44.146068+00:00",
+  "generated_at": "2026-11-19T14:58:13.942587+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 8151.67,
+  "current_price": 8130.16,
   "state": "NEUTRAL",
-  "v1": 8123.23,
-  "v2": 8122.91,
-  "sma200": 8206.69,
-  "rsi14": 51.9,
-  "atr14": 92.77,
+  "v1": 8122.43,
+  "v2": 8122.5,
+  "sma200": 8206.58,
+  "rsi14": 50.5,
+  "atr14": 94.31,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.8,
+    "total_return_pct": 0.7,
     "cagr_pct": 0.5,
-    "sharpe_ratio": 0.29,
+    "sharpe_ratio": 0.25,
     "win_rate_pct": 50.0,
-    "profit_factor": 1.73,
+    "profit_factor": 1.61,
     "max_drawdown_pct": 1.7,
     "total_trades": 2
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.8,
+      "total_return_pct": 0.7,
       "cagr_pct": 0.5,
-      "sharpe_ratio": 0.29,
+      "sharpe_ratio": 0.25,
       "win_rate_pct": 50.0,
-      "profit_factor": 1.73,
+      "profit_factor": 1.61,
       "max_drawdown_pct": 1.7,
       "total_trades": 2
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 3.3,
-      "cagr_pct": 2.1,
-      "sharpe_ratio": 0.32,
+      "total_return_pct": 3.0,
+      "cagr_pct": 2.0,
+      "sharpe_ratio": 0.31,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.29,
+      "profit_factor": 0.26,
       "max_drawdown_pct": 11.4,
       "total_trades": 1
     }
@@ -5488,14 +5488,14 @@
       "time": "2026-11-19",
       "open": 8193.76,
       "high": 8200.11,
-      "low": 8149.12,
-      "close": 8151.67,
+      "low": 8125.33,
+      "close": 8130.16,
       "volume": 0.0,
-      "v1": 8123.23,
-      "m1": 8113.42,
-      "m2": 8116.23,
-      "v2": 8122.91,
-      "sma200": 8206.69,
+      "v1": 8122.43,
+      "m1": 8112.79,
+      "m2": 8115.76,
+      "v2": 8122.5,
+      "sma200": 8206.58,
       "state": "NEUTRAL"
     }
   ],
@@ -5526,7 +5526,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.94% ($194.77 €)"
+      "text": "EXIT +3.67% ($181.22 €)"
     }
   ],
   "equity_curves": [
@@ -7069,7 +7069,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10087.42
+          "value": 10073.86
         }
       ]
     },
@@ -11698,7 +11698,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10338.52
+          "value": 10311.24
         }
       ]
     }
@@ -11721,10 +11721,10 @@
       "entry_date": "2026-10-12",
       "entry_price": 7826.73,
       "exit_date": "2026-11-19",
-      "exit_price": 8151.67,
+      "exit_price": 8130.16,
       "holding_days": 28,
-      "pnl_pct": 3.94,
-      "pnl_eur": 194.77,
+      "pnl_pct": 3.67,
+      "pnl_eur": 181.22,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11737,7 +11737,7 @@
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: N/A).",
     "cmf_20d": 0.006,
     "up_down_vol_ratio": 1.44,
-    "absorption_5d_pct": 19.4,
+    "absorption_5d_pct": 19.7,
     "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",

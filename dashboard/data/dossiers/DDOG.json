@@ -3,18 +3,18 @@
   "name": "Datadog, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T12:51:18.071795+00:00",
+  "generated_at": "2026-11-19T14:57:39.432940+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 167.11,
+  "backtest_total_bars": 377,
+  "current_price": 179.78,
   "state": "BLUE",
-  "v1": 215.75,
-  "v2": 229.74,
-  "sma200": 202.0,
-  "rsi14": 27.9,
-  "atr14": 13.62,
+  "v1": 213.23,
+  "v2": 227.95,
+  "sma200": 202.32,
+  "rsi14": 35.8,
+  "atr14": 13.73,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 46.1,
-      "cagr_pct": 28.9,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 57.1,
+      "cagr_pct": 35.3,
+      "sharpe_ratio": 0.77,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.95,
+      "profit_factor": 1.18,
       "max_drawdown_pct": 48.6,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 75.49,
     "entry_price": 56.62,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -121.4,
-    "mos_pct": -121.4,
+    "actual_discount_pct": -138.2,
+    "mos_pct": -138.2,
     "moat": "None",
     "roic_pct": 7.5,
     "wacc_pct": 10.94,
@@ -5385,6 +5385,20 @@
       "v2": 229.74,
       "sma200": 202.0,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 174.19,
+      "high": 182.39,
+      "low": 173.66,
+      "close": 179.78,
+      "volume": 675163.0,
+      "v1": 213.23,
+      "m1": 219.77,
+      "m2": 225.71,
+      "v2": 227.95,
+      "sma200": 202.32,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-18",
           "value": 11278.72
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11278.72
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 10922.42
+        },
+        {
+          "time": "2026-11-19",
           "value": 10922.42
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-18",
           "value": 8961.29
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8961.29
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-18",
           "value": 14621.67
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15730.26
         }
       ]
     }
@@ -11494,14 +11524,14 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.77, CMF: -0.24).",
-    "cmf_20d": -0.243,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 46.1,
-    "vol_shock_ratio": 0.82,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.77, CMF: -0.21).",
+    "cmf_20d": -0.213,
+    "up_down_vol_ratio": 0.63,
+    "absorption_5d_pct": 44.3,
+    "vol_shock_ratio": 0.14,
     "put_call_ratio": 0.77,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 100.0,
+    "gamma_wall": 180.0,
     "max_pain": 145.0,
     "unusual_call_sweep": false
   }

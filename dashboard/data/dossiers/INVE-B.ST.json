@@ -3,18 +3,18 @@
   "name": "Investor AB ser. B",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T12:51:24.176317+00:00",
+  "generated_at": "2026-11-19T14:57:47.721652+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 421.95,
+  "current_price": 422.0,
   "state": "GOLD",
-  "v1": 423.49,
-  "v2": 417.21,
+  "v1": 423.48,
+  "v2": 417.2,
   "sma200": 388.94,
   "rsi14": 47.1,
-  "atr14": 5.88,
+  "atr14": 5.9,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -24,7 +24,7 @@
     "cagr_pct": 25.6,
     "sharpe_ratio": 1.63,
     "win_rate_pct": 50.0,
-    "profit_factor": 14.75,
+    "profit_factor": 14.76,
     "max_drawdown_pct": 10.5,
     "total_trades": 2
   },
@@ -37,7 +37,7 @@
       "cagr_pct": 24.2,
       "sharpe_ratio": 1.48,
       "win_rate_pct": 50.0,
-      "profit_factor": 8.1,
+      "profit_factor": 8.11,
       "max_drawdown_pct": 10.5,
       "total_trades": 4
     },
@@ -85,7 +85,7 @@
       "cagr_pct": 25.6,
       "sharpe_ratio": 1.63,
       "win_rate_pct": 50.0,
-      "profit_factor": 14.75,
+      "profit_factor": 14.76,
       "max_drawdown_pct": 10.5,
       "total_trades": 2
     },
@@ -95,7 +95,7 @@
       "is_winner": false,
       "total_return_pct": 51.2,
       "cagr_pct": 32.0,
-      "sharpe_ratio": 1.78,
+      "sharpe_ratio": 1.79,
       "win_rate_pct": 100.0,
       "profit_factor": 4.86,
       "max_drawdown_pct": 10.5,
@@ -107,8 +107,8 @@
     "target_price": 174.4,
     "entry_price": 139.52,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -141.9,
-    "mos_pct": -141.9,
+    "actual_discount_pct": -142.0,
+    "mos_pct": -142.0,
     "moat": "Narrow",
     "roic_pct": 15.0,
     "wacc_pct": 8.73,
@@ -1594,7 +1594,7 @@
     },
     {
       "time": "2025-10-23",
-      "open": 306.56,
+      "open": 306.55,
       "high": 307.78,
       "low": 305.23,
       "close": 307.34,
@@ -5362,13 +5362,13 @@
       "time": "2026-11-19",
       "open": 424.9,
       "high": 425.7,
-      "low": 421.25,
-      "close": 421.95,
-      "volume": 971475.0,
-      "v1": 423.49,
-      "m1": 421.46,
-      "m2": 418.83,
-      "v2": 417.21,
+      "low": 421.05,
+      "close": 422.0,
+      "volume": 1327791.0,
+      "v1": 423.48,
+      "m1": 421.45,
+      "m2": 418.82,
+      "v2": 417.2,
       "sma200": 388.94,
       "state": "GOLD"
     }
@@ -5400,7 +5400,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +44.71% ($4335.12 €)"
+      "text": "EXIT +44.73% ($4336.78 €)"
     }
   ],
   "equity_curves": [
@@ -5807,7 +5807,7 @@
         },
         {
           "time": "2025-10-15",
-          "value": 10103.09
+          "value": 10103.08
         },
         {
           "time": "2025-10-16",
@@ -6111,7 +6111,7 @@
         },
         {
           "time": "2026-02-06",
-          "value": 11892.06
+          "value": 11892.05
         },
         {
           "time": "2026-02-09",
@@ -6143,7 +6143,7 @@
         },
         {
           "time": "2026-02-18",
-          "value": 12075.8
+          "value": 12075.79
         },
         {
           "time": "2026-02-19",
@@ -6271,7 +6271,7 @@
         },
         {
           "time": "2026-04-07",
-          "value": 11675.51
+          "value": 11675.5
         },
         {
           "time": "2026-04-08",
@@ -6375,7 +6375,7 @@
         },
         {
           "time": "2026-05-15",
-          "value": 12098.23
+          "value": 12098.22
         },
         {
           "time": "2026-05-18",
@@ -6907,7 +6907,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 14055.33
+          "value": 14056.99
         }
       ]
     },
@@ -7282,7 +7282,7 @@
         },
         {
           "time": "2025-10-03",
-          "value": 9752.83
+          "value": 9752.82
         },
         {
           "time": "2025-10-06",
@@ -7354,7 +7354,7 @@
         },
         {
           "time": "2025-10-29",
-          "value": 10117.31
+          "value": 10117.32
         },
         {
           "time": "2025-10-30",
@@ -7646,7 +7646,7 @@
         },
         {
           "time": "2026-02-17",
-          "value": 11688.51
+          "value": 11688.5
         },
         {
           "time": "2026-02-18",
@@ -8206,7 +8206,7 @@
         },
         {
           "time": "2026-09-08",
-          "value": 13313.0
+          "value": 13312.99
         },
         {
           "time": "2026-09-09",
@@ -8234,7 +8234,7 @@
         },
         {
           "time": "2026-09-17",
-          "value": 13254.3
+          "value": 13254.29
         },
         {
           "time": "2026-09-18",
@@ -8414,7 +8414,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13820.47
+          "value": 13822.11
         }
       ]
     },
@@ -9225,7 +9225,7 @@
         },
         {
           "time": "2026-03-13",
-          "value": 10976.09
+          "value": 10976.08
         },
         {
           "time": "2026-03-16",
@@ -9921,7 +9921,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13360.73
+          "value": 13362.32
         }
       ]
     },
@@ -10076,7 +10076,7 @@
         },
         {
           "time": "2025-07-18",
-          "value": 10276.74
+          "value": 10276.73
         },
         {
           "time": "2025-07-21",
@@ -10096,7 +10096,7 @@
         },
         {
           "time": "2025-07-25",
-          "value": 10276.74
+          "value": 10276.73
         },
         {
           "time": "2025-07-28",
@@ -10392,7 +10392,7 @@
         },
         {
           "time": "2025-11-06",
-          "value": 11070.09
+          "value": 11070.1
         },
         {
           "time": "2025-11-07",
@@ -11428,7 +11428,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 15130.62
+          "value": 15132.41
         }
       ]
     }
@@ -11451,10 +11451,10 @@
       "entry_date": "2025-10-02",
       "entry_price": 291.0,
       "exit_date": "2026-11-19",
-      "exit_price": 421.95,
+      "exit_price": 422.0,
       "holding_days": 284,
-      "pnl_pct": 44.71,
-      "pnl_eur": 4335.12,
+      "pnl_pct": 44.73,
+      "pnl_eur": 4336.78,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11464,11 +11464,11 @@
     "smart_money_score": 70.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.29, Up/Dn Vol: 1.85x). Силна скрита подкрепа.",
-    "cmf_20d": 0.286,
-    "up_down_vol_ratio": 1.85,
-    "absorption_5d_pct": 26.8,
-    "vol_shock_ratio": 0.37,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.28, Up/Dn Vol: 1.81x). Силна скрита подкрепа.",
+    "cmf_20d": 0.281,
+    "up_down_vol_ratio": 1.81,
+    "absorption_5d_pct": 27.7,
+    "vol_shock_ratio": 0.51,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

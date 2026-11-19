@@ -3,18 +3,18 @@
   "name": "SANOFI",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T12:51:37.232006+00:00",
+  "generated_at": "2026-11-19T14:58:04.996152+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 84.22,
+  "current_price": 84.14,
   "state": "GOLD",
   "v1": 81.17,
-  "v2": 78.54,
+  "v2": 78.53,
   "sma200": 75.81,
-  "rsi14": 60.0,
-  "atr14": 1.69,
+  "rsi14": 59.7,
+  "atr14": 1.7,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -20.2,
-      "cagr_pct": -13.7,
-      "sharpe_ratio": -0.97,
+      "cagr_pct": -13.8,
+      "sharpe_ratio": -0.98,
       "win_rate_pct": 12.5,
       "profit_factor": 0.02,
       "max_drawdown_pct": 23.4,
@@ -45,8 +45,8 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -16.3,
-      "cagr_pct": -11.0,
+      "total_return_pct": -16.4,
+      "cagr_pct": -11.1,
       "sharpe_ratio": -0.83,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -57,7 +57,7 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -17.8,
+      "total_return_pct": -17.9,
       "cagr_pct": -12.1,
       "sharpe_ratio": -1.21,
       "win_rate_pct": 18.8,
@@ -81,9 +81,9 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -7.0,
+      "total_return_pct": -7.1,
       "cagr_pct": -4.7,
-      "sharpe_ratio": -0.73,
+      "sharpe_ratio": -0.74,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 9.6,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -4.8,
-      "cagr_pct": -3.2,
+      "total_return_pct": -4.9,
+      "cagr_pct": -3.3,
       "sharpe_ratio": 0.03,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -107,8 +107,8 @@
     "target_price": 124.86,
     "entry_price": 93.64,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 32.5,
-    "mos_pct": 32.5,
+    "actual_discount_pct": 32.6,
+    "mos_pct": 32.6,
     "moat": "None",
     "roic_pct": 9.6,
     "wacc_pct": 7.55,
@@ -5488,13 +5488,13 @@
       "time": "2026-11-19",
       "open": 85.75,
       "high": 85.75,
-      "low": 84.03,
-      "close": 84.22,
-      "volume": 412485.0,
+      "low": 83.93,
+      "close": 84.14,
+      "volume": 586681.0,
       "v1": 81.17,
-      "m1": 80.1,
+      "m1": 80.09,
       "m2": 79.02,
-      "v2": 78.54,
+      "v2": 78.53,
       "sma200": 75.81,
       "state": "GOLD"
     }
@@ -8583,7 +8583,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9308.18
+          "value": 9299.35
         }
       ]
     },
@@ -10126,7 +10126,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8380.54
+          "value": 8372.59
         }
       ]
     },
@@ -11669,7 +11669,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9526.04
+          "value": 9516.99
         }
       ]
     }
@@ -11681,10 +11681,10 @@
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: N/A).",
-    "cmf_20d": 0.071,
-    "up_down_vol_ratio": 3.93,
-    "absorption_5d_pct": 21.8,
-    "vol_shock_ratio": 0.15,
+    "cmf_20d": 0.068,
+    "up_down_vol_ratio": 3.87,
+    "absorption_5d_pct": 21.9,
+    "vol_shock_ratio": 0.21,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

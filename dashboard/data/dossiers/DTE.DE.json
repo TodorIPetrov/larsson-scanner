@@ -3,28 +3,28 @@
   "name": "DEUTSCHE TELEKOM AG           N",
   "sector": "Communication Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T12:51:19.101845+00:00",
+  "generated_at": "2026-11-19T14:57:40.779922+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 26.15,
+  "current_price": 26.13,
   "state": "BLUE",
-  "v1": 26.26,
+  "v1": 26.25,
   "v2": 26.52,
   "sma200": 28.16,
-  "rsi14": 48.9,
-  "atr14": 0.59,
+  "rsi14": 48.7,
+  "atr14": 0.6,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": -0.1,
-    "cagr_pct": -0.0,
-    "sharpe_ratio": 0.05,
+    "cagr_pct": -0.1,
+    "sharpe_ratio": 0.04,
     "win_rate_pct": 50.0,
-    "profit_factor": 2.45,
+    "profit_factor": 2.44,
     "max_drawdown_pct": 6.8,
     "total_trades": 4
   },
@@ -70,10 +70,10 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": -0.1,
-      "cagr_pct": -0.0,
-      "sharpe_ratio": 0.05,
+      "cagr_pct": -0.1,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 50.0,
-      "profit_factor": 2.45,
+      "profit_factor": 2.44,
       "max_drawdown_pct": 6.8,
       "total_trades": 4
     },
@@ -94,7 +94,7 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": -20.6,
-      "cagr_pct": -14.1,
+      "cagr_pct": -14.2,
       "sharpe_ratio": -0.46,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -5446,10 +5446,10 @@
       "time": "2026-11-19",
       "open": 26.36,
       "high": 26.4,
-      "low": 26.11,
-      "close": 26.15,
-      "volume": 994661.0,
-      "v1": 26.26,
+      "low": 26.03,
+      "close": 26.13,
+      "volume": 1593162.0,
+      "v1": 26.25,
       "m1": 26.32,
       "m2": 26.44,
       "v2": 26.52,
@@ -5512,7 +5512,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.98% ($194.56 €)"
+      "text": "EXIT +3.9% ($190.66 €)"
     }
   ],
   "equity_curves": [
@@ -7043,7 +7043,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9998.13
+          "value": 9994.24
         }
       ]
     },
@@ -11636,7 +11636,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 7951.33
+          "value": 7945.25
         }
       ]
     }
@@ -11683,10 +11683,10 @@
       "entry_date": "2026-10-13",
       "entry_price": 25.1,
       "exit_date": "2026-11-19",
-      "exit_price": 26.15,
+      "exit_price": 26.13,
       "holding_days": 27,
-      "pnl_pct": 3.98,
-      "pnl_eur": 194.56,
+      "pnl_pct": 3.9,
+      "pnl_eur": 190.66,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11699,8 +11699,8 @@
     "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.11, Up/Dn Vol: 1.05x). Силна скрита подкрепа.",
     "cmf_20d": 0.112,
     "up_down_vol_ratio": 1.05,
-    "absorption_5d_pct": 41.0,
-    "vol_shock_ratio": 0.13,
+    "absorption_5d_pct": 43.6,
+    "vol_shock_ratio": 0.21,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

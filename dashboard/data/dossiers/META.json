@@ -3,18 +3,18 @@
   "name": "Meta Platforms, Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:27.354735+00:00",
+  "generated_at": "2026-11-19T14:57:51.998724+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 616.38,
+  "backtest_total_bars": 377,
+  "current_price": 625.29,
   "state": "NEUTRAL",
-  "v1": 646.44,
-  "v2": 651.26,
-  "sma200": 628.79,
-  "rsi14": 41.4,
-  "atr14": 21.24,
+  "v1": 645.07,
+  "v2": 650.38,
+  "sma200": 628.58,
+  "rsi14": 44.6,
+  "atr14": 20.7,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -17.0,
-      "cagr_pct": -11.8,
+      "cagr_pct": -11.7,
       "sharpe_ratio": -0.55,
       "win_rate_pct": 20.0,
       "profit_factor": 0.19,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -2.5,
-      "cagr_pct": -1.7,
-      "sharpe_ratio": 0.15,
+      "total_return_pct": -1.1,
+      "cagr_pct": -0.7,
+      "sharpe_ratio": 0.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 33.3,
@@ -107,8 +107,8 @@
     "target_price": 925.08,
     "entry_price": 740.07,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 33.4,
-    "mos_pct": 33.4,
+    "actual_discount_pct": 32.4,
+    "mos_pct": 32.4,
     "moat": "Narrow",
     "roic_pct": 16.4,
     "wacc_pct": 10.19,
@@ -5385,6 +5385,20 @@
       "v2": 651.26,
       "sma200": 628.79,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 625.0,
+      "high": 630.01,
+      "low": 621.67,
+      "close": 625.29,
+      "volume": 1961952.0,
+      "v1": 645.07,
+      "m1": 648.81,
+      "m2": 650.6,
+      "v2": 650.38,
+      "sma200": 628.58,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -5487,7 +5501,7 @@
         },
         {
           "time": "2025-06-10",
-          "value": 10767.25
+          "value": 10767.26
         },
         {
           "time": "2025-06-11",
@@ -5607,7 +5621,7 @@
         },
         {
           "time": "2025-07-24",
-          "value": 10965.58
+          "value": 10965.59
         },
         {
           "time": "2025-07-25",
@@ -5687,7 +5701,7 @@
         },
         {
           "time": "2025-08-21",
-          "value": 11338.02
+          "value": 11338.03
         },
         {
           "time": "2025-08-22",
@@ -6819,7 +6833,7 @@
         },
         {
           "time": "2026-10-07",
-          "value": 11558.65
+          "value": 11558.66
         },
         {
           "time": "2026-10-08",
@@ -6851,7 +6865,7 @@
         },
         {
           "time": "2026-10-19",
-          "value": 11304.58
+          "value": 11304.59
         },
         {
           "time": "2026-10-20",
@@ -6891,7 +6905,7 @@
         },
         {
           "time": "2026-11-02",
-          "value": 9724.29
+          "value": 9724.3
         },
         {
           "time": "2026-11-03",
@@ -6939,6 +6953,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 10265.08
+        },
+        {
+          "time": "2026-11-19",
           "value": 10265.08
         }
       ]
@@ -7502,7 +7520,7 @@
         },
         {
           "time": "2025-12-09",
-          "value": 10258.58
+          "value": 10258.59
         },
         {
           "time": "2025-12-10",
@@ -7514,7 +7532,7 @@
         },
         {
           "time": "2025-12-12",
-          "value": 10156.78
+          "value": 10156.79
         },
         {
           "time": "2025-12-15",
@@ -7570,7 +7588,7 @@
         },
         {
           "time": "2026-01-05",
-          "value": 10277.51
+          "value": 10277.52
         },
         {
           "time": "2026-01-06",
@@ -7698,7 +7716,7 @@
         },
         {
           "time": "2026-02-20",
-          "value": 10252.46
+          "value": 10252.47
         },
         {
           "time": "2026-02-23",
@@ -7730,7 +7748,7 @@
         },
         {
           "time": "2026-03-04",
-          "value": 10349.06
+          "value": 10349.07
         },
         {
           "time": "2026-03-05",
@@ -7758,7 +7776,7 @@
         },
         {
           "time": "2026-03-13",
-          "value": 9916.72
+          "value": 9916.73
         },
         {
           "time": "2026-03-16",
@@ -8451,6 +8469,10 @@
         {
           "time": "2026-11-18",
           "value": 9384.08
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9384.08
         }
       ]
     },
@@ -8537,7 +8559,7 @@
         },
         {
           "time": "2025-06-20",
-          "value": 10234.11
+          "value": 10234.12
         },
         {
           "time": "2025-06-23",
@@ -8837,7 +8859,7 @@
         },
         {
           "time": "2025-10-07",
-          "value": 10469.65
+          "value": 10469.64
         },
         {
           "time": "2025-10-08",
@@ -9962,6 +9984,10 @@
         {
           "time": "2026-11-18",
           "value": 8296.57
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8296.57
         }
       ]
     },
@@ -10196,7 +10222,7 @@
         },
         {
           "time": "2025-08-13",
-          "value": 12300.29
+          "value": 12300.28
         },
         {
           "time": "2025-08-14",
@@ -10428,7 +10454,7 @@
         },
         {
           "time": "2025-11-04",
-          "value": 9898.25
+          "value": 9898.24
         },
         {
           "time": "2025-11-05",
@@ -10480,7 +10506,7 @@
         },
         {
           "time": "2025-11-21",
-          "value": 9376.44
+          "value": 9376.45
         },
         {
           "time": "2025-11-24",
@@ -11473,6 +11499,10 @@
         {
           "time": "2026-11-18",
           "value": 9758.62
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9899.68
         }
       ]
     }
@@ -11520,14 +11550,14 @@
     "smart_money_score": 40.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.41) с Gamma стена на $600.00. Залог за рязък отскок.",
-    "cmf_20d": -0.357,
-    "up_down_vol_ratio": 0.46,
-    "absorption_5d_pct": 51.2,
-    "vol_shock_ratio": 0.44,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.41) с Gamma стена на $620.00. Залог за рязък отскок.",
+    "cmf_20d": -0.336,
+    "up_down_vol_ratio": 0.53,
+    "absorption_5d_pct": 51.7,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": 0.41,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 600.0,
+    "gamma_wall": 620.0,
     "max_pain": 700.0,
     "unusual_call_sweep": false
   }

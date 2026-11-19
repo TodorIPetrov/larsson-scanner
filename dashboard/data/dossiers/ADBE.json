@@ -3,18 +3,18 @@
   "name": "Adobe Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:10.262984+00:00",
+  "generated_at": "2026-11-19T14:57:27.911387+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 226.2,
+  "backtest_total_bars": 377,
+  "current_price": 225.81,
   "state": "BLUE",
-  "v1": 244.22,
-  "v2": 246.38,
-  "sma200": 246.91,
-  "rsi14": 35.4,
-  "atr14": 8.56,
+  "v1": 243.11,
+  "v2": 245.73,
+  "sma200": 246.64,
+  "rsi14": 35.2,
+  "atr14": 8.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -20.2,
-      "cagr_pct": -14.1,
+      "cagr_pct": -14.0,
       "sharpe_ratio": -0.87,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -9.6,
-      "cagr_pct": -6.6,
+      "cagr_pct": -6.5,
       "sharpe_ratio": -0.85,
       "win_rate_pct": 33.3,
       "profit_factor": 0.16,
@@ -93,7 +93,7 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -45.3,
+      "total_return_pct": -45.4,
       "cagr_pct": -33.2,
       "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
@@ -107,8 +107,8 @@
     "target_price": 459.53,
     "entry_price": 390.6,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 50.8,
-    "mos_pct": 50.8,
+    "actual_discount_pct": 50.9,
+    "mos_pct": 50.9,
     "moat": "Wide",
     "roic_pct": 35.6,
     "wacc_pct": 10.49,
@@ -5385,6 +5385,20 @@
       "v2": 246.38,
       "sma200": 246.91,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 225.9,
+      "high": 229.55,
+      "low": 225.57,
+      "close": 225.81,
+      "volume": 290821.0,
+      "v1": 243.11,
+      "m1": 244.21,
+      "m2": 245.28,
+      "v2": 245.73,
+      "sma200": 246.64,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6968,6 +6982,10 @@
         {
           "time": "2026-11-18",
           "value": 8882.2
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8882.2
         }
       ]
     },
@@ -8478,6 +8496,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 9037.7
+        },
+        {
+          "time": "2026-11-19",
           "value": 9037.7
         }
       ]
@@ -9990,6 +10012,10 @@
         {
           "time": "2026-11-18",
           "value": 8833.5
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8833.5
         }
       ]
     },
@@ -11501,6 +11527,10 @@
         {
           "time": "2026-11-18",
           "value": 5478.02
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5468.57
         }
       ]
     }
@@ -11569,17 +11599,17 @@
   ],
   "smart_money": {
     "symbol": "ADBE",
-    "smart_money_score": 52.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.42) с Gamma стена на $130.00. Залог за рязък отскок.",
-    "cmf_20d": -0.095,
-    "up_down_vol_ratio": 0.91,
-    "absorption_5d_pct": 45.0,
-    "vol_shock_ratio": 1.02,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.42) с Gamma стена на $230.00. Залог за рязък отскок.",
+    "cmf_20d": -0.181,
+    "up_down_vol_ratio": 0.74,
+    "absorption_5d_pct": 32.1,
+    "vol_shock_ratio": 0.07,
     "put_call_ratio": 0.42,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 130.0,
+    "gamma_wall": 230.0,
     "max_pain": 260.0,
     "unusual_call_sweep": false
   }

@@ -3,25 +3,25 @@
   "name": "Global X Uranium ETF",
   "sector": "Макро индекси",
   "asset_class": "commodities",
-  "generated_at": "2026-11-19T12:51:41.077619+00:00",
+  "generated_at": "2026-11-19T14:58:10.731943+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 29.42,
+  "backtest_total_bars": 377,
+  "current_price": 29.66,
   "state": "BLUE",
-  "v1": 34.3,
-  "v2": 37.02,
-  "sma200": 45.55,
-  "rsi14": 30.7,
-  "atr14": 1.41,
+  "v1": 33.99,
+  "v2": 36.77,
+  "sma200": 45.43,
+  "rsi14": 32.1,
+  "atr14": 1.34,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": 72.5,
-    "cagr_pct": 44.1,
+    "cagr_pct": 44.0,
     "sharpe_ratio": 1.04,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": 72.5,
-      "cagr_pct": 44.1,
+      "cagr_pct": 44.0,
       "sharpe_ratio": 1.04,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 41.4,
-      "cagr_pct": 26.1,
+      "cagr_pct": 26.0,
       "sharpe_ratio": 0.76,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 72.5,
-      "cagr_pct": 44.1,
+      "cagr_pct": 44.0,
       "sharpe_ratio": 1.04,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 9.7,
-      "cagr_pct": 6.4,
-      "sharpe_ratio": 0.35,
+      "total_return_pct": 10.6,
+      "cagr_pct": 6.9,
+      "sharpe_ratio": 0.36,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.18,
+      "profit_factor": 0.2,
       "max_drawdown_pct": 52.4,
       "total_trades": 1
     }
@@ -5385,6 +5385,20 @@
       "v2": 37.02,
       "sma200": 45.55,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 29.6,
+      "high": 29.81,
+      "low": 29.45,
+      "close": 29.66,
+      "volume": 978457.0,
+      "v1": 33.99,
+      "m1": 34.9,
+      "m2": 36.08,
+      "v2": 36.77,
+      "sma200": 45.43,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-18",
           "value": 17248.66
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17248.66
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 17248.66
+        },
+        {
+          "time": "2026-11-19",
           "value": 17248.66
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-18",
           "value": 14137.24
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14137.24
         }
       ]
     },
@@ -11445,6 +11471,10 @@
         {
           "time": "2026-11-18",
           "value": 10978.11
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11067.66
         }
       ]
     }
@@ -11468,14 +11498,14 @@
     "smart_money_score": 30.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.65, CMF: -0.05).",
-    "cmf_20d": -0.047,
-    "up_down_vol_ratio": 0.61,
-    "absorption_5d_pct": 24.9,
-    "vol_shock_ratio": 1.44,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.65, CMF: -0.01).",
+    "cmf_20d": -0.015,
+    "up_down_vol_ratio": 0.68,
+    "absorption_5d_pct": 34.8,
+    "vol_shock_ratio": 0.2,
     "put_call_ratio": 0.65,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 29.5,
+    "gamma_wall": 30.0,
     "max_pain": 40.0,
     "unusual_call_sweep": false
   }

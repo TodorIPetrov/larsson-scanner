@@ -3,25 +3,25 @@
   "name": "AST SpaceMobile, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:12.417938+00:00",
+  "generated_at": "2026-11-19T14:57:31.002393+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 25.49,
+  "backtest_total_bars": 377,
+  "current_price": 27.27,
   "state": "BLUE",
-  "v1": 39.18,
-  "v2": 47.01,
-  "sma200": 72.37,
-  "rsi14": 29.7,
-  "atr14": 3.87,
+  "v1": 38.42,
+  "v2": 46.34,
+  "sma200": 71.98,
+  "rsi14": 33.5,
+  "atr14": 3.81,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 55.7,
-    "cagr_pct": 34.5,
+    "cagr_pct": 34.4,
     "sharpe_ratio": 0.77,
     "win_rate_pct": 50.0,
     "profit_factor": 1.76,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -66.0,
-      "cagr_pct": -51.5,
+      "cagr_pct": -51.4,
       "sharpe_ratio": -0.45,
       "win_rate_pct": 25.0,
       "profit_factor": 0.57,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 55.7,
-      "cagr_pct": 34.5,
+      "cagr_pct": 34.4,
       "sharpe_ratio": 0.77,
       "win_rate_pct": 50.0,
       "profit_factor": 1.76,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 5.7,
-      "cagr_pct": 3.8,
-      "sharpe_ratio": 0.54,
+      "total_return_pct": 13.1,
+      "cagr_pct": 8.6,
+      "sharpe_ratio": 0.59,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.1,
+      "profit_factor": 0.16,
       "max_drawdown_pct": 80.8,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 14.53,
     "entry_price": 10.46,
     "required_mos_pct": 28.0,
-    "actual_discount_pct": -75.4,
-    "mos_pct": -75.4,
+    "actual_discount_pct": -87.7,
+    "mos_pct": -87.7,
     "moat": "None",
     "roic_pct": 50.3,
     "wacc_pct": 12.5,
@@ -5385,6 +5385,20 @@
       "v2": 47.01,
       "sma200": 72.37,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 27.7,
+      "high": 28.47,
+      "low": 26.95,
+      "close": 27.27,
+      "volume": 3871363.0,
+      "v1": 38.42,
+      "m1": 40.97,
+      "m2": 44.34,
+      "v2": 46.34,
+      "sma200": 71.98,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-18",
           "value": 15565.6
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15565.6
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 9738.22
+        },
+        {
+          "time": "2026-11-19",
           "value": 9738.22
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-18",
           "value": 8276.48
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8276.48
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-18",
           "value": 10579.36
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11318.13
         }
       ]
     }
@@ -11494,14 +11524,14 @@
     "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.25) с Gamma стена на $23.00. Залог за рязък отскок.",
-    "cmf_20d": -0.141,
-    "up_down_vol_ratio": 0.62,
-    "absorption_5d_pct": 17.4,
-    "vol_shock_ratio": 1.29,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.25) с Gamma стена на $30.00. Залог за рязък отскок.",
+    "cmf_20d": -0.14,
+    "up_down_vol_ratio": 0.7,
+    "absorption_5d_pct": 21.1,
+    "vol_shock_ratio": 0.21,
     "put_call_ratio": 0.25,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 23.0,
+    "gamma_wall": 30.0,
     "max_pain": 60.0,
     "unusual_call_sweep": false
   }

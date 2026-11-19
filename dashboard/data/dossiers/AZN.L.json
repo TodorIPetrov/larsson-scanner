@@ -3,18 +3,18 @@
   "name": "ASTRAZENECA PLC ORD SHS $0.25",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T12:51:13.058919+00:00",
+  "generated_at": "2026-11-19T14:57:32.020788+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 13452.0,
+  "current_price": 13450.0,
   "state": "GOLD",
-  "v1": 13366.96,
-  "v2": 13021.66,
-  "sma200": 13435.34,
-  "rsi14": 51.2,
-  "atr14": 298.51,
+  "v1": 13365.56,
+  "v2": 13020.94,
+  "sma200": 13435.33,
+  "rsi14": 51.1,
+  "atr14": 301.51,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,19 +33,19 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 16.1,
+      "total_return_pct": 16.0,
       "cagr_pct": 10.3,
       "sharpe_ratio": 0.64,
       "win_rate_pct": 50.0,
-      "profit_factor": 6.42,
-      "max_drawdown_pct": 16.0,
+      "profit_factor": 6.38,
+      "max_drawdown_pct": 16.1,
       "total_trades": 2
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 13.7,
+      "total_return_pct": 13.6,
       "cagr_pct": 8.8,
       "sharpe_ratio": 0.58,
       "win_rate_pct": 25.0,
@@ -61,7 +61,7 @@
       "cagr_pct": 11.6,
       "sharpe_ratio": 0.7,
       "win_rate_pct": 50.0,
-      "profit_factor": 12.85,
+      "profit_factor": 12.77,
       "max_drawdown_pct": 15.0,
       "total_trades": 2
     },
@@ -85,7 +85,7 @@
       "cagr_pct": 10.6,
       "sharpe_ratio": 0.64,
       "win_rate_pct": 50.0,
-      "profit_factor": 6.55,
+      "profit_factor": 6.51,
       "max_drawdown_pct": 15.7,
       "total_trades": 2
     },
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 8218.43,
-    "target_price": 8218.43,
-    "entry_price": 6574.75,
+    "fair_value": 29629.6,
+    "target_price": 29629.6,
+    "entry_price": 23703.68,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -63.7,
-    "mos_pct": -63.7,
+    "actual_discount_pct": 54.6,
+    "mos_pct": 54.6,
     "moat": "Narrow",
     "roic_pct": 13.0,
-    "wacc_pct": 7.53,
+    "wacc_pct": 7.5,
     "z_score": 2.02,
-    "m_score": -2.26,
-    "tata": -0.03,
+    "m_score": -2.21,
+    "tata": -0.018,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
+    "verdict": "BUY / ACCUMULATE",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
-    "last_fundamental_update": null
+    "last_fundamental_update": "2026-11-19"
   },
   "candles": [
     {
@@ -5446,14 +5446,14 @@
       "time": "2026-11-19",
       "open": 13672.0,
       "high": 13672.0,
-      "low": 13444.0,
-      "close": 13452.0,
-      "volume": 230215.0,
-      "v1": 13366.96,
-      "m1": 13227.14,
-      "m2": 13082.86,
-      "v2": 13021.66,
-      "sma200": 13435.34,
+      "low": 13402.0,
+      "close": 13450.0,
+      "volume": 412449.0,
+      "v1": 13365.56,
+      "m1": 13226.03,
+      "m2": 13082.02,
+      "v2": 13020.94,
+      "sma200": 13435.33,
       "state": "GOLD"
     }
   ],
@@ -5470,7 +5470,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +15.3% ($1411.55 €)"
+      "text": "EXIT +15.29% ($1409.97 €)"
     }
   ],
   "equity_curves": [
@@ -7001,7 +7001,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10650.57
+          "value": 10648.98
         }
       ]
     },
@@ -8532,7 +8532,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11817.96
+          "value": 11817.09
         }
       ]
     },
@@ -10063,7 +10063,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11662.07
+          "value": 11660.34
         }
       ]
     },
@@ -11594,7 +11594,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12912.34
+          "value": 12910.42
         }
       ]
     }
@@ -11605,10 +11605,10 @@
       "entry_date": "2026-08-05",
       "entry_price": 11643.23,
       "exit_date": "2026-11-19",
-      "exit_price": 13452.0,
+      "exit_price": 13450.0,
       "holding_days": 75,
-      "pnl_pct": 15.3,
-      "pnl_eur": 1411.55,
+      "pnl_pct": 15.29,
+      "pnl_eur": 1409.97,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11619,10 +11619,10 @@
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: N/A).",
-    "cmf_20d": -0.03,
-    "up_down_vol_ratio": 1.27,
-    "absorption_5d_pct": 28.4,
-    "vol_shock_ratio": 0.1,
+    "cmf_20d": -0.031,
+    "up_down_vol_ratio": 1.26,
+    "absorption_5d_pct": 31.3,
+    "vol_shock_ratio": 0.17,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

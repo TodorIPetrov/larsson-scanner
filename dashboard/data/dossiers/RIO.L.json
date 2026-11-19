@@ -3,18 +3,18 @@
   "name": "RIO TINTO PLC ORD 10P",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T12:51:36.390941+00:00",
+  "generated_at": "2026-11-19T14:58:03.810922+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 380,
-  "current_price": 5812.0,
+  "current_price": 5809.0,
   "state": "BLUE",
-  "v1": 6388.79,
-  "v2": 6657.2,
-  "sma200": 7131.39,
-  "rsi14": 29.1,
-  "atr14": 171.74,
+  "v1": 6388.87,
+  "v2": 6657.24,
+  "sma200": 7131.38,
+  "rsi14": 29.0,
+  "atr14": 171.92,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -265,7 +265,7 @@
     {
       "time": "2025-06-06",
       "open": 4354.42,
-      "high": 4386.9,
+      "high": 4386.89,
       "low": 4337.93,
       "close": 4352.42,
       "volume": 4274560.0,
@@ -432,12 +432,12 @@
     },
     {
       "time": "2025-06-24",
-      "open": 4273.47,
-      "high": 4273.47,
+      "open": 4273.48,
+      "high": 4273.48,
       "low": 4190.53,
       "close": 4190.53,
       "volume": 3332321.0,
-      "v1": 4357.04,
+      "v1": 4357.03,
       "m1": 4390.18,
       "m2": 4432.94,
       "v2": 4458.21,
@@ -560,7 +560,7 @@
       "time": "2025-07-07",
       "open": 4257.99,
       "high": 4275.97,
-      "low": 4244.99,
+      "low": 4245.0,
       "close": 4252.99,
       "volume": 1366280.0,
       "v1": 4315.35,
@@ -5431,15 +5431,15 @@
     {
       "time": "2026-11-19",
       "open": 5788.0,
-      "high": 5832.0,
+      "high": 5834.5,
       "low": 5767.72,
-      "close": 5812.0,
-      "volume": 748867.0,
-      "v1": 6388.79,
-      "m1": 6482.94,
-      "m2": 6596.83,
-      "v2": 6657.2,
-      "sma200": 7131.39,
+      "close": 5809.0,
+      "volume": 995934.0,
+      "v1": 6388.87,
+      "m1": 6483.0,
+      "m2": 6596.88,
+      "v2": 6657.24,
+      "sma200": 7131.38,
       "state": "BLUE"
     }
   ],
@@ -9125,7 +9125,7 @@
         },
         {
           "time": "2025-12-24",
-          "value": 13114.3
+          "value": 13114.31
         },
         {
           "time": "2025-12-29",
@@ -10192,7 +10192,7 @@
         },
         {
           "time": "2025-07-14",
-          "value": 9554.99
+          "value": 9555.0
         },
         {
           "time": "2025-07-15",
@@ -11564,7 +11564,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12556.02
+          "value": 12549.54
         }
       ]
     }
@@ -11585,14 +11585,14 @@
   ],
   "smart_money": {
     "symbol": "RIO.L",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.13, P/C: N/A).",
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.13).",
     "cmf_20d": -0.128,
-    "up_down_vol_ratio": 1.06,
-    "absorption_5d_pct": 35.4,
-    "vol_shock_ratio": 0.23,
+    "up_down_vol_ratio": 1.07,
+    "absorption_5d_pct": 34.0,
+    "vol_shock_ratio": 0.3,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

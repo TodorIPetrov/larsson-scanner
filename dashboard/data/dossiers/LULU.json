@@ -3,18 +3,18 @@
   "name": "lululemon athletica inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:26.379568+00:00",
+  "generated_at": "2026-11-19T14:57:50.614344+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 110.78,
+  "backtest_total_bars": 377,
+  "current_price": 108.77,
   "state": "NEUTRAL",
-  "v1": 105.29,
-  "v2": 106.01,
-  "sma200": 128.7,
-  "rsi14": 58.5,
-  "atr14": 4.56,
+  "v1": 105.54,
+  "v2": 106.11,
+  "sma200": 128.35,
+  "rsi14": 54.9,
+  "atr14": 4.41,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": -12.1,
     "cagr_pct": -8.3,
-    "sharpe_ratio": -0.91,
+    "sharpe_ratio": -0.9,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
     "max_drawdown_pct": 14.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -21.6,
-      "cagr_pct": -15.1,
+      "cagr_pct": -15.0,
       "sharpe_ratio": -1.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -83,7 +83,7 @@
       "is_winner": true,
       "total_return_pct": -12.1,
       "cagr_pct": -8.3,
-      "sharpe_ratio": -0.91,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 14.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -65.5,
-      "cagr_pct": -51.0,
-      "sharpe_ratio": -1.24,
+      "total_return_pct": -66.1,
+      "cagr_pct": -51.5,
+      "sharpe_ratio": -1.26,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 72.6,
@@ -107,8 +107,8 @@
     "target_price": 258.27,
     "entry_price": 206.62,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 57.1,
-    "mos_pct": 57.1,
+    "actual_discount_pct": 57.9,
+    "mos_pct": 57.9,
     "moat": "Narrow",
     "roic_pct": 27.1,
     "wacc_pct": 8.71,
@@ -5385,6 +5385,20 @@
       "v2": 106.01,
       "sma200": 128.7,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 108.66,
+      "high": 109.8,
+      "low": 108.26,
+      "close": 108.77,
+      "volume": 185671.0,
+      "v1": 105.54,
+      "m1": 105.29,
+      "m2": 105.59,
+      "v2": 106.11,
+      "sma200": 128.35,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-18",
           "value": 8785.79
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8785.79
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 8643.03
+        },
+        {
+          "time": "2026-11-19",
           "value": 8643.03
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-18",
           "value": 7929.0
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7929.0
         }
       ]
     },
@@ -11445,6 +11471,10 @@
         {
           "time": "2026-11-18",
           "value": 3453.02
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3390.37
         }
       ]
     }
@@ -11465,17 +11495,17 @@
   ],
   "smart_money": {
     "symbol": "LULU",
-    "smart_money_score": 80.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.13, Up/Dn Vol: 1.36x). Силна скрита подкрепа.",
-    "cmf_20d": 0.131,
-    "up_down_vol_ratio": 1.36,
-    "absorption_5d_pct": 40.1,
-    "vol_shock_ratio": 1.16,
+    "smart_money_score": 55.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 0.80).",
+    "cmf_20d": 0.029,
+    "up_down_vol_ratio": 1.1,
+    "absorption_5d_pct": 44.0,
+    "vol_shock_ratio": 0.06,
     "put_call_ratio": 0.8,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 65.0,
+    "gamma_wall": 110.0,
     "max_pain": 105.0,
     "unusual_call_sweep": false
   }

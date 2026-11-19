@@ -3,18 +3,18 @@
   "name": "Netflix, Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T12:51:30.228892+00:00",
+  "generated_at": "2026-11-19T14:57:55.564122+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 59.82,
+  "backtest_total_bars": 377,
+  "current_price": 59.95,
   "state": "BLUE",
-  "v1": 65.04,
-  "v2": 68.25,
-  "sma200": 80.17,
-  "rsi14": 33.6,
-  "atr14": 1.89,
+  "v1": 64.71,
+  "v2": 67.97,
+  "sma200": 80.07,
+  "rsi14": 34.2,
+  "atr14": 1.8,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": -12.5,
     "cagr_pct": -8.5,
-    "sharpe_ratio": -0.91,
+    "sharpe_ratio": -0.9,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
     "max_drawdown_pct": 13.4,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -26.6,
-      "cagr_pct": -18.7,
+      "cagr_pct": -18.6,
       "sharpe_ratio": -1.61,
       "win_rate_pct": 14.3,
       "profit_factor": 0.04,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -22.0,
-      "cagr_pct": -15.4,
+      "cagr_pct": -15.3,
       "sharpe_ratio": -0.99,
       "win_rate_pct": 12.5,
       "profit_factor": 0.56,
@@ -83,7 +83,7 @@
       "is_winner": true,
       "total_return_pct": -12.5,
       "cagr_pct": -8.5,
-      "sharpe_ratio": -0.91,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 13.4,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -49.9,
-      "cagr_pct": -37.1,
-      "sharpe_ratio": -1.2,
+      "total_return_pct": -49.8,
+      "cagr_pct": -36.9,
+      "sharpe_ratio": -1.19,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 55.4,
@@ -107,8 +107,8 @@
     "target_price": 43.7,
     "entry_price": 37.14,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -36.9,
-    "mos_pct": -36.9,
+    "actual_discount_pct": -37.2,
+    "mos_pct": -37.2,
     "moat": "Wide",
     "roic_pct": 28.6,
     "wacc_pct": 11.16,
@@ -5385,6 +5385,20 @@
       "v2": 68.25,
       "sma200": 80.17,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 60.05,
+      "high": 60.45,
+      "low": 59.88,
+      "close": 59.95,
+      "volume": 3577960.0,
+      "v1": 64.71,
+      "m1": 65.75,
+      "m2": 67.14,
+      "v2": 67.97,
+      "sma200": 80.07,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-18",
           "value": 8754.29
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8754.29
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 7750.48
+        },
+        {
+          "time": "2026-11-19",
           "value": 7750.48
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-18",
           "value": 7797.41
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7797.41
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-18",
           "value": 5011.76
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5022.64
         }
       ]
     }
@@ -11491,14 +11521,14 @@
   ],
   "smart_money": {
     "symbol": "NFLX",
-    "smart_money_score": 35.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.45) с Gamma стена на $60.00. Залог за рязък отскок.",
-    "cmf_20d": -0.14,
-    "up_down_vol_ratio": 0.86,
-    "absorption_5d_pct": 14.9,
-    "vol_shock_ratio": 0.61,
+    "cmf_20d": -0.204,
+    "up_down_vol_ratio": 0.74,
+    "absorption_5d_pct": 15.7,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": 0.45,
     "options_sentiment": "BULLISH",
     "gamma_wall": 60.0,
