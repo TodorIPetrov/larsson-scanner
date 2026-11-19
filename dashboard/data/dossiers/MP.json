@@ -3,25 +3,25 @@
   "name": "MP Materials Corp.",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T00:16:20.140122+00:00",
+  "generated_at": "2026-11-19T01:55:22.950949+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 35.95,
+  "backtest_total_bars": 375,
+  "current_price": 34.86,
   "state": "BLUE",
-  "v1": 39.45,
-  "v2": 42.94,
-  "sma200": 53.34,
-  "rsi14": 41.3,
-  "atr14": 2.56,
+  "v1": 39.67,
+  "v2": 43.18,
+  "sma200": 53.49,
+  "rsi14": 37.7,
+  "atr14": 2.49,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 62.4,
-    "cagr_pct": 38.4,
+    "cagr_pct": 38.5,
     "sharpe_ratio": 0.78,
     "win_rate_pct": 50.0,
     "profit_factor": 4.33,
@@ -35,7 +35,7 @@
       "is_winner": false,
       "total_return_pct": 11.9,
       "cagr_pct": 7.8,
-      "sharpe_ratio": 0.42,
+      "sharpe_ratio": 0.43,
       "win_rate_pct": 12.5,
       "profit_factor": 1.14,
       "max_drawdown_pct": 66.5,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -5.4,
-      "cagr_pct": -3.6,
-      "sharpe_ratio": -0.18,
+      "total_return_pct": -6.8,
+      "cagr_pct": -4.6,
+      "sharpe_ratio": -0.25,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 23.1,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 62.4,
-      "cagr_pct": 38.4,
+      "cagr_pct": 38.5,
       "sharpe_ratio": 0.78,
       "win_rate_pct": 50.0,
       "profit_factor": 4.33,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 81.2,
-      "cagr_pct": 48.9,
-      "sharpe_ratio": 0.86,
+      "total_return_pct": 75.7,
+      "cagr_pct": 46.0,
+      "sharpe_ratio": 0.83,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.23,
+      "profit_factor": 1.15,
       "max_drawdown_pct": 65.8,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 16.64,
     "entry_price": 12.48,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -116.0,
-    "mos_pct": -116.0,
+    "actual_discount_pct": -109.5,
+    "mos_pct": -109.5,
     "moat": "None",
     "roic_pct": 0.9,
     "wacc_pct": 12.32,
@@ -5371,20 +5371,6 @@
       "v2": 43.18,
       "sma200": 53.49,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 34.77,
-      "high": 38.16,
-      "low": 34.69,
-      "close": 35.95,
-      "volume": 7495832.0,
-      "v1": 39.45,
-      "m1": 40.56,
-      "m2": 42.06,
-      "v2": 42.94,
-      "sma200": 53.34,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6922,10 +6908,6 @@
         {
           "time": "2026-11-17",
           "value": 16240.59
-        },
-        {
-          "time": "2026-11-18",
-          "value": 16240.59
         }
       ]
     },
@@ -8432,10 +8414,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 11540.22
-        },
-        {
-          "time": "2026-11-18",
           "value": 11540.22
         }
       ]
@@ -9944,10 +9922,6 @@
         {
           "time": "2026-11-17",
           "value": 11187.36
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11187.36
         }
       ]
     },
@@ -11455,10 +11429,6 @@
         {
           "time": "2026-11-17",
           "value": 17588.46
-        },
-        {
-          "time": "2026-11-18",
-          "value": 18138.41
         }
       ]
     }
@@ -11495,10 +11465,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.41) с Gamma стена на $35.00. Залог за рязък отскок.",
-    "cmf_20d": -0.073,
-    "up_down_vol_ratio": 0.86,
-    "absorption_5d_pct": 32.6,
-    "vol_shock_ratio": 1.18,
+    "cmf_20d": -0.06,
+    "up_down_vol_ratio": 0.79,
+    "absorption_5d_pct": 25.6,
+    "vol_shock_ratio": 1.08,
     "put_call_ratio": 0.41,
     "options_sentiment": "BULLISH",
     "gamma_wall": 35.0,

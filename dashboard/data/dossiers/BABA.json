@@ -3,18 +3,18 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T00:15:54.429520+00:00",
+  "generated_at": "2026-11-19T01:54:20.253605+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 84.37,
+  "backtest_total_bars": 375,
+  "current_price": 86.65,
   "state": "BLUE",
-  "v1": 101.22,
-  "v2": 105.72,
-  "sma200": 121.05,
-  "rsi14": 24.5,
-  "atr14": 3.52,
+  "v1": 102.34,
+  "v2": 106.44,
+  "sma200": 121.44,
+  "rsi14": 26.3,
+  "atr14": 3.59,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,22 +93,22 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -28.9,
-      "cagr_pct": -20.4,
-      "sharpe_ratio": -0.32,
+      "total_return_pct": -27.0,
+      "cagr_pct": -19.0,
+      "sharpe_ratio": -0.28,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 55.0,
+      "max_drawdown_pct": 53.8,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 73.34,
-    "target_price": 73.34,
-    "entry_price": 55.0,
+    "fair_value": 73.37,
+    "target_price": 73.37,
+    "entry_price": 55.03,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -15.0,
-    "mos_pct": -15.0,
+    "actual_discount_pct": -18.1,
+    "mos_pct": -18.1,
     "moat": "None",
     "roic_pct": 9.1,
     "wacc_pct": 7.5,
@@ -116,10 +116,10 @@
     "m_score": -1.78,
     "tata": -0.003,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "HOLD / FAIRLY VALUED",
+    "verdict": "REDUCE / OVERVALUED",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": null
+    "last_fundamental_update": "2026-11-19"
   },
   "candles": [
     {
@@ -5371,20 +5371,6 @@
       "v2": 106.44,
       "sma200": 121.44,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 86.18,
-      "high": 86.89,
-      "low": 84.23,
-      "close": 84.37,
-      "volume": 16446116.0,
-      "v1": 101.22,
-      "m1": 102.75,
-      "m2": 104.64,
-      "v2": 105.72,
-      "sma200": 121.05,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6992,10 +6978,6 @@
         {
           "time": "2026-11-17",
           "value": 11015.43
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11015.43
         }
       ]
     },
@@ -8503,10 +8485,6 @@
         {
           "time": "2026-11-17",
           "value": 10147.78
-        },
-        {
-          "time": "2026-11-18",
-          "value": 10147.78
         }
       ]
     },
@@ -8549,7 +8527,7 @@
         },
         {
           "time": "2025-06-04",
-          "value": 9802.83
+          "value": 9802.84
         },
         {
           "time": "2025-06-05",
@@ -8805,7 +8783,7 @@
         },
         {
           "time": "2025-09-05",
-          "value": 9804.29
+          "value": 9804.28
         },
         {
           "time": "2025-09-08",
@@ -10014,10 +9992,6 @@
         {
           "time": "2026-11-17",
           "value": 9302.63
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9302.63
         }
       ]
     },
@@ -10080,7 +10054,7 @@
         },
         {
           "time": "2025-06-11",
-          "value": 9894.62
+          "value": 9894.61
         },
         {
           "time": "2025-06-12",
@@ -11525,10 +11499,6 @@
         {
           "time": "2026-11-17",
           "value": 7312.11
-        },
-        {
-          "time": "2026-11-18",
-          "value": 7119.71
         }
       ]
     }
@@ -11625,10 +11595,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.32) с Gamma стена на $85.00. Залог за рязък отскок.",
-    "cmf_20d": -0.332,
-    "up_down_vol_ratio": 0.54,
-    "absorption_5d_pct": 24.8,
-    "vol_shock_ratio": 1.43,
+    "cmf_20d": -0.295,
+    "up_down_vol_ratio": 0.56,
+    "absorption_5d_pct": 31.2,
+    "vol_shock_ratio": 1.62,
     "put_call_ratio": 0.32,
     "options_sentiment": "BULLISH",
     "gamma_wall": 85.0,

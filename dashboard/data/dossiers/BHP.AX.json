@@ -3,17 +3,17 @@
   "name": "BHP GROUP FPO [BHP]",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T00:15:56.118218+00:00",
+  "generated_at": "2026-11-19T01:54:25.344670+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 52.58,
+  "current_price": 52.48,
   "state": "BLUE",
   "v1": 57.96,
   "v2": 58.94,
   "sma200": 57.47,
-  "rsi14": 32.7,
+  "rsi14": 32.5,
   "atr14": 1.67,
   "empirical_tier": "S",
   "walk_forward_stable": true,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 44.7,
-      "cagr_pct": 27.7,
-      "sharpe_ratio": 1.0,
+      "total_return_pct": 44.4,
+      "cagr_pct": 27.5,
+      "sharpe_ratio": 0.99,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.17,
-      "max_drawdown_pct": 20.6,
+      "profit_factor": 2.14,
+      "max_drawdown_pct": 20.8,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 35.92933214426968,
     "entry_price": 26.587705786759564,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -46.3,
-    "mos_pct": -46.3,
+    "actual_discount_pct": -46.1,
+    "mos_pct": -46.1,
     "moat": "Narrow",
     "roic_pct": 18.58,
     "wacc_pct": 9.471465314698264,
@@ -5445,13 +5445,13 @@
     {
       "time": "2026-11-19",
       "open": 52.58,
-      "high": 52.78,
+      "high": 52.89,
       "low": 51.95,
-      "close": 52.58,
-      "volume": 3285793.0,
+      "close": 52.48,
+      "volume": 5092862.0,
       "v1": 57.96,
       "m1": 58.35,
-      "m2": 58.76,
+      "m2": 58.77,
       "v2": 58.94,
       "sma200": 57.47,
       "state": "BLUE"
@@ -5665,7 +5665,7 @@
         },
         {
           "time": "2025-07-30",
-          "value": 10022.46
+          "value": 10022.45
         },
         {
           "time": "2025-07-31",
@@ -5725,7 +5725,7 @@
         },
         {
           "time": "2025-08-20",
-          "value": 10499.54
+          "value": 10499.55
         },
         {
           "time": "2025-08-21",
@@ -7208,7 +7208,7 @@
         },
         {
           "time": "2025-08-04",
-          "value": 9887.73
+          "value": 9887.72
         },
         {
           "time": "2025-08-05",
@@ -7236,7 +7236,7 @@
         },
         {
           "time": "2025-08-13",
-          "value": 10421.65
+          "value": 10421.66
         },
         {
           "time": "2025-08-14",
@@ -8739,7 +8739,7 @@
         },
         {
           "time": "2025-08-04",
-          "value": 9887.73
+          "value": 9887.72
         },
         {
           "time": "2025-08-05",
@@ -8767,7 +8767,7 @@
         },
         {
           "time": "2025-08-13",
-          "value": 10421.65
+          "value": 10421.66
         },
         {
           "time": "2025-08-14",
@@ -10118,7 +10118,7 @@
         },
         {
           "time": "2025-06-11",
-          "value": 10106.47
+          "value": 10106.46
         },
         {
           "time": "2025-06-12",
@@ -10138,7 +10138,7 @@
         },
         {
           "time": "2025-06-18",
-          "value": 9539.67
+          "value": 9539.68
         },
         {
           "time": "2025-06-19",
@@ -11594,7 +11594,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 14484.04
+          "value": 14456.49
         }
       ]
     }
@@ -11618,11 +11618,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
-    "cmf_20d": -0.142,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 22.0,
-    "vol_shock_ratio": 0.39,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
+    "cmf_20d": -0.147,
+    "up_down_vol_ratio": 0.63,
+    "absorption_5d_pct": 18.1,
+    "vol_shock_ratio": 0.6,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,7 +3,7 @@
   "name": "SAP SE                        I",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T00:16:36.313299+00:00",
+  "generated_at": "2026-11-19T01:56:03.547167+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
@@ -103,15 +103,15 @@
     }
   ],
   "fundamental": {
-    "fair_value": 145.31,
-    "target_price": 145.31,
-    "entry_price": 116.25,
+    "fair_value": 142.92,
+    "target_price": 142.92,
+    "entry_price": 114.33,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -38.7,
-    "mos_pct": -38.7,
+    "actual_discount_pct": -41.0,
+    "mos_pct": -41.0,
     "moat": "Narrow",
     "roic_pct": 15.8,
-    "wacc_pct": 8.42,
+    "wacc_pct": 8.55,
     "z_score": 4.98,
     "m_score": -2.58,
     "tata": -0.024,
@@ -119,7 +119,7 @@
     "verdict": "REDUCE / OVERVALUED",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
-    "last_fundamental_update": null
+    "last_fundamental_update": "2026-11-19"
   },
   "candles": [
     {

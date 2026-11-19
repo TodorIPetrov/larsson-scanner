@@ -3,18 +3,18 @@
   "name": "Datadog, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T00:16:01.843716+00:00",
+  "generated_at": "2026-11-19T01:54:39.669512+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 167.11,
+  "backtest_total_bars": 375,
+  "current_price": 165.18,
   "state": "BLUE",
-  "v1": 215.75,
-  "v2": 229.74,
-  "sma200": 202.0,
-  "rsi14": 27.9,
-  "atr14": 13.62,
+  "v1": 219.29,
+  "v2": 232.0,
+  "sma200": 201.76,
+  "rsi14": 26.6,
+  "atr14": 14.04,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -17.1,
-      "cagr_pct": -11.8,
+      "cagr_pct": -11.9,
       "sharpe_ratio": 0.01,
       "win_rate_pct": 30.0,
       "profit_factor": 0.68,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 46.1,
-      "cagr_pct": 28.9,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 44.4,
+      "cagr_pct": 28.0,
+      "sharpe_ratio": 0.68,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.95,
+      "profit_factor": 0.91,
       "max_drawdown_pct": 48.6,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 75.49,
     "entry_price": 56.62,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -121.4,
-    "mos_pct": -121.4,
+    "actual_discount_pct": -118.8,
+    "mos_pct": -118.8,
     "moat": "None",
     "roic_pct": 7.5,
     "wacc_pct": 10.94,
@@ -5371,20 +5371,6 @@
       "v2": 232.0,
       "sma200": 201.76,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 167.4,
-      "high": 170.26,
-      "low": 162.2,
-      "close": 167.11,
-      "volume": 3895689.0,
-      "v1": 215.75,
-      "m1": 222.09,
-      "m2": 227.69,
-      "v2": 229.74,
-      "sma200": 202.0,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6922,10 +6908,6 @@
         {
           "time": "2026-11-17",
           "value": 11278.72
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11278.72
         }
       ]
     },
@@ -8432,10 +8414,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10922.42
-        },
-        {
-          "time": "2026-11-18",
           "value": 10922.42
         }
       ]
@@ -9944,10 +9922,6 @@
         {
           "time": "2026-11-17",
           "value": 8961.29
-        },
-        {
-          "time": "2026-11-18",
-          "value": 8961.29
         }
       ]
     },
@@ -11455,10 +11429,6 @@
         {
           "time": "2026-11-17",
           "value": 14452.8
-        },
-        {
-          "time": "2026-11-18",
-          "value": 14621.67
         }
       ]
     }
@@ -11495,10 +11465,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.46) с Gamma стена на $165.00. Залог за рязък отскок.",
-    "cmf_20d": -0.243,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 46.1,
-    "vol_shock_ratio": 0.82,
+    "cmf_20d": -0.239,
+    "up_down_vol_ratio": 0.56,
+    "absorption_5d_pct": 38.8,
+    "vol_shock_ratio": 1.5,
     "put_call_ratio": 0.46,
     "options_sentiment": "BULLISH",
     "gamma_wall": 165.0,

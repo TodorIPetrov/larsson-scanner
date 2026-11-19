@@ -3,7 +3,7 @@
   "name": "US Dollar Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-19T00:16:03.898501+00:00",
+  "generated_at": "2026-11-19T01:54:45.582116+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
@@ -14,7 +14,7 @@
   "v2": 101.63,
   "sma200": 99.95,
   "rsi14": 69.5,
-  "atr14": 0.52,
+  "atr14": 0.51,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -5402,9 +5402,9 @@
     },
     {
       "time": "2026-11-18",
-      "open": 103.66,
-      "high": 103.91,
-      "low": 103.59,
+      "open": 103.81,
+      "high": 103.83,
+      "low": 103.77,
       "close": 103.81,
       "volume": 0.0,
       "v1": 102.23,
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.66% ($459.23 €)"
+      "text": "EXIT +4.66% ($459.13 €)"
     }
   ],
   "equity_curves": [
@@ -6961,7 +6961,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10323.56
+          "value": 10323.46
         }
       ]
     },
@@ -8480,7 +8480,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9880.36
+          "value": 9880.26
         }
       ]
     },
@@ -9999,7 +9999,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9851.19
+          "value": 9851.1
         }
       ]
     },
@@ -11518,7 +11518,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10371.96
+          "value": 10371.86
         }
       ]
     }
@@ -11544,7 +11544,7 @@
       "exit_price": 103.81,
       "holding_days": 60,
       "pnl_pct": 4.66,
-      "pnl_eur": 459.23,
+      "pnl_eur": 459.13,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }

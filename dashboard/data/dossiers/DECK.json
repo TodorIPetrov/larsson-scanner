@@ -3,28 +3,28 @@
   "name": "Deckers Outdoor Corporation",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T00:16:02.099970+00:00",
+  "generated_at": "2026-11-19T01:54:40.594370+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 83.6,
+  "backtest_total_bars": 375,
+  "current_price": 81.48,
   "state": "BLUE",
-  "v1": 84.73,
-  "v2": 85.73,
-  "sma200": 98.1,
-  "rsi14": 47.8,
-  "atr14": 3.33,
+  "v1": 84.91,
+  "v2": 85.86,
+  "sma200": 98.25,
+  "rsi14": 43.3,
+  "atr14": 3.32,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.5,
-    "cagr_pct": 0.3,
-    "sharpe_ratio": 0.09,
+    "total_return_pct": -0.8,
+    "cagr_pct": -0.5,
+    "sharpe_ratio": 0.02,
     "win_rate_pct": 50.0,
-    "profit_factor": 1.99,
+    "profit_factor": 1.85,
     "max_drawdown_pct": 10.3,
     "total_trades": 4
   },
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -42.4,
-      "cagr_pct": -30.9,
+      "cagr_pct": -31.0,
       "sharpe_ratio": -1.39,
       "win_rate_pct": 12.5,
       "profit_factor": 0.08,
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -40.0,
       "cagr_pct": -29.0,
-      "sharpe_ratio": -1.87,
+      "sharpe_ratio": -1.88,
       "win_rate_pct": 14.3,
       "profit_factor": 0.1,
       "max_drawdown_pct": 40.0,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.5,
-      "cagr_pct": 0.3,
-      "sharpe_ratio": 0.09,
+      "total_return_pct": -0.8,
+      "cagr_pct": -0.5,
+      "sharpe_ratio": 0.02,
       "win_rate_pct": 50.0,
-      "profit_factor": 1.99,
+      "profit_factor": 1.85,
       "max_drawdown_pct": 10.3,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -32.4,
-      "cagr_pct": -23.1,
-      "sharpe_ratio": -0.36,
+      "total_return_pct": -34.1,
+      "cagr_pct": -24.5,
+      "sharpe_ratio": -0.4,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 38.5,
@@ -107,8 +107,8 @@
     "target_price": 164.78,
     "entry_price": 140.06,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 49.3,
-    "mos_pct": 49.3,
+    "actual_discount_pct": 50.6,
+    "mos_pct": 50.6,
     "moat": "Wide",
     "roic_pct": 60.6,
     "wacc_pct": 9.77,
@@ -5371,20 +5371,6 @@
       "v2": 85.86,
       "sma200": 98.25,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 81.0,
-      "high": 83.97,
-      "low": 80.5,
-      "close": 83.6,
-      "volume": 3229678.0,
-      "v1": 84.73,
-      "m1": 84.77,
-      "m2": 85.24,
-      "v2": 85.73,
-      "sma200": 98.1,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5438,11 +5424,11 @@
       "text": "BUY #4 @ $80.21"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-17",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.02% ($197.77 €)"
+      "text": "EXIT +1.38% ($67.94 €)"
     }
   ],
   "equity_curves": [
@@ -6950,10 +6936,6 @@
         {
           "time": "2026-11-17",
           "value": 9926.8
-        },
-        {
-          "time": "2026-11-18",
-          "value": 10056.76
         }
       ]
     },
@@ -8460,10 +8442,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8115.22
-        },
-        {
-          "time": "2026-11-18",
           "value": 8115.22
         }
       ]
@@ -9972,10 +9950,6 @@
         {
           "time": "2026-11-17",
           "value": 5761.55
-        },
-        {
-          "time": "2026-11-18",
-          "value": 5761.55
         }
       ]
     },
@@ -11483,10 +11457,6 @@
         {
           "time": "2026-11-17",
           "value": 6595.25
-        },
-        {
-          "time": "2026-11-18",
-          "value": 6766.84
         }
       ]
     }
@@ -11532,25 +11502,25 @@
       "num": 4,
       "entry_date": "2026-09-14",
       "entry_price": 80.21,
-      "exit_date": "2026-11-18",
-      "exit_price": 83.6,
-      "holding_days": 47,
-      "pnl_pct": 4.02,
-      "pnl_eur": 197.77,
+      "exit_date": "2026-11-17",
+      "exit_price": 81.48,
+      "holding_days": 46,
+      "pnl_pct": 1.38,
+      "pnl_eur": 67.94,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "DECK",
-    "smart_money_score": 52.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 0.82).",
-    "cmf_20d": 0.033,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 36.9,
-    "vol_shock_ratio": 0.85,
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.82, CMF: +0.00).",
+    "cmf_20d": 0.001,
+    "up_down_vol_ratio": 0.46,
+    "absorption_5d_pct": 30.3,
+    "vol_shock_ratio": 1.31,
     "put_call_ratio": 0.82,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 85.0,

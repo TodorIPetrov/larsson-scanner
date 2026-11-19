@@ -3,18 +3,18 @@
   "name": "^AXJO",
   "sector": "Equities",
   "asset_class": "indices",
-  "generated_at": "2026-11-19T00:16:45.444317+00:00",
+  "generated_at": "2026-11-19T01:56:29.784003+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 8717.3,
+  "current_price": 8775.4,
   "state": "GOLD",
   "v1": 8913.63,
-  "v2": 8884.48,
-  "sma200": 8838.44,
-  "rsi14": 37.6,
-  "atr14": 96.3,
+  "v2": 8884.47,
+  "sma200": 8838.74,
+  "rsi14": 40.3,
+  "atr14": 96.32,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 4.2,
-      "cagr_pct": 2.8,
-      "sharpe_ratio": 0.3,
+      "total_return_pct": 4.9,
+      "cagr_pct": 3.2,
+      "sharpe_ratio": 0.34,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.46,
+      "profit_factor": 0.54,
       "max_drawdown_pct": 9.1,
       "total_trades": 1
     }
@@ -5446,14 +5446,14 @@
       "time": "2026-11-19",
       "open": 8821.8,
       "high": 8821.8,
-      "low": 8710.7,
-      "close": 8717.3,
+      "low": 8710.5,
+      "close": 8775.4,
       "volume": 0.0,
       "v1": 8913.63,
       "m1": 8900.04,
-      "m2": 8888.95,
-      "v2": 8884.48,
-      "sma200": 8838.44,
+      "m2": 8888.94,
+      "v2": 8884.47,
+      "sma200": 8838.74,
       "state": "GOLD"
     }
   ],
@@ -11608,7 +11608,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10431.06
+          "value": 10500.59
         }
       ]
     }
@@ -11647,7 +11647,7 @@
     "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.14, Up/Dn Vol: 1.11x). Силна скрита подкрепа.",
     "cmf_20d": 0.144,
     "up_down_vol_ratio": 1.11,
-    "absorption_5d_pct": 24.3,
+    "absorption_5d_pct": 34.8,
     "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",

@@ -3,25 +3,25 @@
   "name": "Eos Energy Enterprises, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T00:16:04.208105+00:00",
+  "generated_at": "2026-11-19T01:54:46.849917+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 1.48,
+  "backtest_total_bars": 375,
+  "current_price": 1.49,
   "state": "BLUE",
-  "v1": 2.06,
-  "v2": 2.61,
-  "sma200": 5.31,
-  "rsi14": 36.5,
-  "atr14": 0.24,
+  "v1": 2.1,
+  "v2": 2.65,
+  "sma200": 5.38,
+  "rsi14": 36.7,
+  "atr14": 0.25,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": 48.0,
-    "cagr_pct": 30.1,
+    "cagr_pct": 30.2,
     "sharpe_ratio": 0.7,
     "win_rate_pct": 33.3,
     "profit_factor": 3.29,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": 48.0,
-      "cagr_pct": 30.1,
+      "cagr_pct": 30.2,
       "sharpe_ratio": 0.7,
       "win_rate_pct": 33.3,
       "profit_factor": 3.29,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -74.4,
-      "cagr_pct": -59.8,
+      "total_return_pct": -74.2,
+      "cagr_pct": -59.7,
       "sharpe_ratio": -0.23,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 92.3,
+      "max_drawdown_pct": 92.2,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 1.39,
     "entry_price": 0.97,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -6.5,
-    "mos_pct": -6.5,
+    "actual_discount_pct": -7.2,
+    "mos_pct": -7.2,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 11.46,
@@ -5371,20 +5371,6 @@
       "v2": 2.65,
       "sma200": 5.38,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 1.55,
-      "high": 1.66,
-      "low": 1.47,
-      "close": 1.48,
-      "volume": 17625690.0,
-      "v1": 2.06,
-      "m1": 2.22,
-      "m2": 2.45,
-      "v2": 2.61,
-      "sma200": 5.31,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6978,10 +6964,6 @@
         {
           "time": "2026-11-17",
           "value": 14802.37
-        },
-        {
-          "time": "2026-11-18",
-          "value": 14802.37
         }
       ]
     },
@@ -8488,10 +8470,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10053.47
-        },
-        {
-          "time": "2026-11-18",
           "value": 10053.47
         }
       ]
@@ -10000,10 +9978,6 @@
         {
           "time": "2026-11-17",
           "value": 11743.23
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11743.23
         }
       ]
     },
@@ -11511,10 +11485,6 @@
         {
           "time": "2026-11-17",
           "value": 2584.22
-        },
-        {
-          "time": "2026-11-18",
-          "value": 2566.87
         }
       ]
     }
@@ -11595,14 +11565,14 @@
   ],
   "smart_money": {
     "symbol": "EOSE",
-    "smart_money_score": 63.0,
+    "smart_money_score": 68.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.26) с Gamma стена на $1.50. Залог за рязък отскок.",
-    "cmf_20d": -0.035,
-    "up_down_vol_ratio": 1.2,
-    "absorption_5d_pct": 22.3,
-    "vol_shock_ratio": 0.75,
+    "cmf_20d": -0.005,
+    "up_down_vol_ratio": 1.31,
+    "absorption_5d_pct": 34.9,
+    "vol_shock_ratio": 0.99,
     "put_call_ratio": 0.26,
     "options_sentiment": "BULLISH",
     "gamma_wall": 1.5,

@@ -3,18 +3,18 @@
   "name": "ARKW",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T00:15:51.072392+00:00",
+  "generated_at": "2026-11-19T01:54:13.903945+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 135.46,
+  "backtest_total_bars": 375,
+  "current_price": 135.01,
   "state": "BLUE",
-  "v1": 147.86,
-  "v2": 150.85,
-  "sma200": 142.91,
-  "rsi14": 34.1,
-  "atr14": 4.59,
+  "v1": 148.74,
+  "v2": 151.4,
+  "sma200": 142.89,
+  "rsi14": 33.4,
+  "atr14": 4.76,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -7.6,
-      "cagr_pct": -5.1,
+      "cagr_pct": -5.2,
       "sharpe_ratio": -0.12,
       "win_rate_pct": 55.6,
       "profit_factor": 1.66,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -7.6,
-      "cagr_pct": -5.2,
-      "sharpe_ratio": -0.38,
+      "total_return_pct": -7.8,
+      "cagr_pct": -5.3,
+      "sharpe_ratio": -0.39,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.03,
+      "profit_factor": 1.01,
       "max_drawdown_pct": 14.2,
       "total_trades": 4
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 15.1,
-      "cagr_pct": 9.9,
+      "total_return_pct": 14.7,
+      "cagr_pct": 9.7,
       "sharpe_ratio": 0.44,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.42,
+      "profit_factor": 0.41,
       "max_drawdown_pct": 36.2,
       "total_trades": 1
     }
@@ -5371,20 +5371,6 @@
       "v2": 151.4,
       "sma200": 142.89,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 135.85,
-      "high": 136.68,
-      "low": 134.23,
-      "close": 135.46,
-      "volume": 266459.0,
-      "v1": 147.86,
-      "m1": 149.33,
-      "m2": 150.5,
-      "v2": 150.85,
-      "sma200": 142.91,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,10 +6936,6 @@
         {
           "time": "2026-11-17",
           "value": 11436.54
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11436.54
         }
       ]
     },
@@ -8460,10 +8442,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10787.19
-        },
-        {
-          "time": "2026-11-18",
           "value": 10787.19
         }
       ]
@@ -9972,10 +9950,6 @@
         {
           "time": "2026-11-17",
           "value": 9241.89
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9241.89
         }
       ]
     },
@@ -11483,10 +11457,6 @@
         {
           "time": "2026-11-17",
           "value": 11481.28
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11519.55
         }
       ]
     }
@@ -11543,14 +11513,14 @@
   ],
   "smart_money": {
     "symbol": "ARKW",
-    "smart_money_score": 78.0,
+    "smart_money_score": 85.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.03, Up/Dn Vol: 1.32x). Силна скрита подкрепа.",
-    "cmf_20d": 0.028,
-    "up_down_vol_ratio": 1.32,
-    "absorption_5d_pct": 42.6,
-    "vol_shock_ratio": 3.14,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.07x). Силна скрита подкрепа.",
+    "cmf_20d": 0.042,
+    "up_down_vol_ratio": 1.07,
+    "absorption_5d_pct": 39.7,
+    "vol_shock_ratio": 0.72,
     "put_call_ratio": 0.11,
     "options_sentiment": "BULLISH",
     "gamma_wall": 152.0,
