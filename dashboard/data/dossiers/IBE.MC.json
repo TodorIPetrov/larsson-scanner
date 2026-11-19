@@ -3,18 +3,18 @@
   "name": "ACCIONES IBERDROLA",
   "sector": "Utilities",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:42.635918+00:00",
+  "generated_at": "2026-11-19T09:22:08.720033+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1184,
-  "current_price": 22.89,
+  "backtest_total_bars": 1186,
+  "current_price": 22.59,
   "state": "GOLD",
-  "v1": 22.24,
-  "v2": 21.63,
-  "sma200": 20.26,
-  "rsi14": 60.6,
-  "atr14": 0.35,
+  "v1": 22.3,
+  "v2": 21.71,
+  "sma200": 20.3,
+  "rsi14": 54.3,
+  "atr14": 0.34,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 79.0,
-      "cagr_pct": 13.2,
-      "sharpe_ratio": 0.92,
+      "total_return_pct": 76.6,
+      "cagr_pct": 12.8,
+      "sharpe_ratio": 0.9,
       "win_rate_pct": 33.3,
-      "profit_factor": 4.2,
+      "profit_factor": 4.1,
       "max_drawdown_pct": 25.9,
       "total_trades": 9
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 51.7,
-      "cagr_pct": 9.3,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 49.7,
+      "cagr_pct": 9.0,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 33.3,
-      "profit_factor": 2.48,
+      "profit_factor": 2.42,
       "max_drawdown_pct": 24.2,
       "total_trades": 18
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 73.2,
-      "cagr_pct": 12.4,
-      "sharpe_ratio": 0.92,
+      "total_return_pct": 70.9,
+      "cagr_pct": 12.1,
+      "sharpe_ratio": 0.89,
       "win_rate_pct": 42.9,
-      "profit_factor": 5.04,
+      "profit_factor": 4.93,
       "max_drawdown_pct": 26.1,
       "total_trades": 21
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 16.6,
-      "cagr_pct": 3.3,
-      "sharpe_ratio": 0.35,
+      "total_return_pct": 15.0,
+      "cagr_pct": 3.0,
+      "sharpe_ratio": 0.32,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.64,
+      "profit_factor": 1.58,
       "max_drawdown_pct": 27.3,
       "total_trades": 8
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 178.7,
-      "cagr_pct": 24.4,
-      "sharpe_ratio": 1.39,
+      "total_return_pct": 175.0,
+      "cagr_pct": 24.0,
+      "sharpe_ratio": 1.37,
       "win_rate_pct": 100.0,
-      "profit_factor": 10.43,
+      "profit_factor": 10.22,
       "max_drawdown_pct": 17.1,
       "total_trades": 1
     }
@@ -16689,13 +16689,41 @@
       "open": 23.14,
       "high": 23.18,
       "low": 22.78,
-      "close": 22.89,
-      "volume": 2176952.0,
+      "close": 22.88,
+      "volume": 6106099.0,
       "v1": 22.24,
       "m1": 22.03,
       "m2": 21.77,
       "v2": 21.63,
       "sma200": 20.26,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 22.78,
+      "high": 22.87,
+      "low": 22.7,
+      "close": 22.76,
+      "volume": 4728125.0,
+      "v1": 22.28,
+      "m1": 22.07,
+      "m2": 21.81,
+      "v2": 21.67,
+      "sma200": 20.28,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 22.76,
+      "high": 22.76,
+      "low": 22.51,
+      "close": 22.59,
+      "volume": 591543.0,
+      "v1": 22.3,
+      "m1": 22.1,
+      "m2": 21.84,
+      "v2": 21.71,
+      "sma200": 20.3,
       "state": "GOLD"
     }
   ],
@@ -21470,6 +21498,14 @@
         {
           "time": "2026-11-17",
           "value": 11216.35
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11216.35
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11216.35
         }
       ]
     },
@@ -26212,7 +26248,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17336.49
+          "value": 17328.92
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17238.07
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17109.38
         }
       ]
     },
@@ -30955,7 +30999,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17913.62
+          "value": 17905.8
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17811.98
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17679.06
         }
       ]
     },
@@ -35698,7 +35750,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 27894.89
+          "value": 27882.7
+        },
+        {
+          "time": "2026-11-18",
+          "value": 27736.46
+        },
+        {
+          "time": "2026-11-19",
+          "value": 27529.29
         }
       ]
     }
@@ -35731,14 +35791,14 @@
   ],
   "smart_money": {
     "symbol": "IBE.MC",
-    "smart_money_score": 85.0,
+    "smart_money_score": 80.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.32, Up/Dn Vol: 5.25x). Силна скрита подкрепа.",
-    "cmf_20d": 0.324,
-    "up_down_vol_ratio": 5.25,
-    "absorption_5d_pct": 57.9,
-    "vol_shock_ratio": 0.28,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.18, Up/Dn Vol: 3.16x). Силна скрита подкрепа.",
+    "cmf_20d": 0.183,
+    "up_down_vol_ratio": 3.16,
+    "absorption_5d_pct": 37.9,
+    "vol_shock_ratio": 0.08,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

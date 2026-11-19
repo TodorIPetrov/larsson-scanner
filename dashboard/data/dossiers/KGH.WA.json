@@ -3,18 +3,18 @@
   "name": "KGH C.XWAR PLN",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:46.454209+00:00",
+  "generated_at": "2026-11-19T09:22:20.229435+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1155,
-  "current_price": 262.15,
+  "backtest_total_bars": 1157,
+  "current_price": 257.15,
   "state": "BLUE",
-  "v1": 298.37,
-  "v2": 312.44,
-  "sma200": 321.19,
-  "rsi14": 31.8,
-  "atr14": 11.25,
+  "v1": 292.58,
+  "v2": 308.43,
+  "sma200": 320.52,
+  "rsi14": 33.6,
+  "atr14": 11.63,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -34.3,
-      "cagr_pct": -8.8,
+      "cagr_pct": -8.7,
       "sharpe_ratio": -0.12,
       "win_rate_pct": 11.5,
       "profit_factor": 0.62,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -30.9,
-      "cagr_pct": -7.8,
+      "cagr_pct": -7.7,
       "sharpe_ratio": -0.19,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 61.2,
-      "cagr_pct": 11.0,
-      "sharpe_ratio": 0.46,
+      "total_return_pct": 58.1,
+      "cagr_pct": 10.5,
+      "sharpe_ratio": 0.45,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.23,
+      "profit_factor": 1.17,
       "max_drawdown_pct": 49.8,
       "total_trades": 1
     }
@@ -16283,13 +16283,41 @@
       "open": 262.9,
       "high": 266.3,
       "low": 260.0,
-      "close": 262.15,
-      "volume": 510264.0,
+      "close": 264.3,
+      "volume": 691630.0,
       "v1": 298.37,
       "m1": 303.76,
       "m2": 309.63,
       "v2": 312.44,
-      "sma200": 321.19,
+      "sma200": 321.2,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 254.85,
+      "high": 254.85,
+      "low": 246.75,
+      "close": 248.2,
+      "volume": 1342564.0,
+      "v1": 295.2,
+      "m1": 300.97,
+      "m2": 307.28,
+      "v2": 310.31,
+      "sma200": 320.78,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 252.8,
+      "high": 258.95,
+      "low": 252.75,
+      "close": 257.15,
+      "volume": 199728.0,
+      "v1": 292.58,
+      "m1": 298.6,
+      "m2": 305.22,
+      "v2": 308.43,
+      "sma200": 320.52,
       "state": "BLUE"
     }
   ],
@@ -21032,6 +21060,14 @@
         {
           "time": "2026-11-17",
           "value": 9286.65
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9286.65
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9286.65
         }
       ]
     },
@@ -25658,6 +25694,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8873.21
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8873.21
+        },
+        {
+          "time": "2026-11-19",
           "value": 8873.21
         }
       ]
@@ -30286,6 +30330,14 @@
         {
           "time": "2026-11-17",
           "value": 6568.88
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6568.88
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6568.88
         }
       ]
     },
@@ -34912,7 +34964,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 16137.22
+          "value": 16269.56
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15278.49
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15829.43
         }
       ]
     }
@@ -35017,14 +35077,14 @@
   ],
   "smart_money": {
     "symbol": "KGH.WA",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
-    "cmf_20d": -0.178,
-    "up_down_vol_ratio": 0.39,
-    "absorption_5d_pct": 29.0,
-    "vol_shock_ratio": 0.66,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
+    "cmf_20d": -0.214,
+    "up_down_vol_ratio": 0.28,
+    "absorption_5d_pct": 37.6,
+    "vol_shock_ratio": 0.25,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

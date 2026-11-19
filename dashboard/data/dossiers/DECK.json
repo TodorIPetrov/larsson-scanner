@@ -3,18 +3,18 @@
   "name": "Deckers Outdoor Corporation",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:28.574827+00:00",
+  "generated_at": "2026-11-19T09:21:29.600300+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 83.85,
-  "state": "NEUTRAL",
-  "v1": 84.97,
-  "v2": 85.89,
-  "sma200": 98.27,
-  "rsi14": 47.6,
-  "atr14": 3.19,
+  "backtest_total_bars": 1160,
+  "current_price": 83.6,
+  "state": "BLUE",
+  "v1": 84.73,
+  "v2": 85.73,
+  "sma200": 98.1,
+  "rsi14": 47.8,
+  "atr14": 3.33,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -6.7,
+      "total_return_pct": -6.9,
       "cagr_pct": -1.5,
       "sharpe_ratio": -0.07,
       "win_rate_pct": 42.9,
-      "profit_factor": 1.45,
+      "profit_factor": 1.44,
       "max_drawdown_pct": 19.8,
       "total_trades": 7
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 85.5,
-      "cagr_pct": 14.4,
+      "total_return_pct": 85.0,
+      "cagr_pct": 14.3,
       "sharpe_ratio": 0.53,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.31,
+      "profit_factor": 1.3,
       "max_drawdown_pct": 65.3,
       "total_trades": 1
     }
@@ -16338,15 +16338,29 @@
       "time": "2026-11-17",
       "open": 83.64,
       "high": 84.49,
-      "low": 82.84,
-      "close": 83.85,
-      "volume": 1020224.0,
-      "v1": 84.97,
-      "m1": 84.96,
-      "m2": 85.41,
-      "v2": 85.89,
-      "sma200": 98.27,
-      "state": "NEUTRAL"
+      "low": 81.01,
+      "close": 81.48,
+      "volume": 4836000.0,
+      "v1": 84.91,
+      "m1": 84.91,
+      "m2": 85.37,
+      "v2": 85.86,
+      "sma200": 98.25,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 81.0,
+      "high": 83.97,
+      "low": 80.5,
+      "close": 83.6,
+      "volume": 3346200.0,
+      "v1": 84.73,
+      "m1": 84.77,
+      "m2": 85.24,
+      "v2": 85.73,
+      "sma200": 98.1,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 23735.12
+        },
+        {
+          "time": "2026-11-18",
+          "value": 23735.12
         }
       ]
     },
@@ -25718,7 +25736,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9330.52
+          "value": 9195.93
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9316.32
         }
       ]
     },
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 12384.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12384.45
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 18573.43
+          "value": 18048.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 18518.05
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "DECK",
-    "smart_money_score": 52.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: 0.83).",
-    "cmf_20d": 0.053,
-    "up_down_vol_ratio": 0.53,
-    "absorption_5d_pct": 39.8,
-    "vol_shock_ratio": 0.28,
-    "put_call_ratio": 0.83,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 85.0,
-    "max_pain": 85.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 80.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 0.56x). Силна скрита подкрепа.",
+    "cmf_20d": 0.035,
+    "up_down_vol_ratio": 0.56,
+    "absorption_5d_pct": 37.0,
+    "vol_shock_ratio": 0.88,
+    "put_call_ratio": 0.16,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 130.0,
+    "max_pain": 130.0,
+    "unusual_call_sweep": true
   }
 }

@@ -3,28 +3,28 @@
   "name": "HPQ",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:36:41.653018+00:00",
+  "generated_at": "2026-11-19T09:22:05.927974+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 28.47,
+  "backtest_total_bars": 1160,
+  "current_price": 28.66,
   "state": "NEUTRAL",
-  "v1": 30.06,
-  "v2": 30.07,
-  "sma200": 24.77,
-  "rsi14": 41.1,
-  "atr14": 1.29,
+  "v1": 29.98,
+  "v2": 30.03,
+  "sma200": 24.82,
+  "rsi14": 42.3,
+  "atr14": 1.25,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": -4.0,
-    "cagr_pct": -0.9,
-    "sharpe_ratio": 0.09,
+    "total_return_pct": -3.4,
+    "cagr_pct": -0.7,
+    "sharpe_ratio": 0.1,
     "win_rate_pct": 25.0,
-    "profit_factor": 0.88,
+    "profit_factor": 0.9,
     "max_drawdown_pct": 31.4,
     "total_trades": 8
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -19.4,
-      "cagr_pct": -4.6,
-      "sharpe_ratio": 0.0,
+      "total_return_pct": -18.9,
+      "cagr_pct": -4.4,
+      "sharpe_ratio": 0.01,
       "win_rate_pct": 16.7,
-      "profit_factor": 0.57,
+      "profit_factor": 0.59,
       "max_drawdown_pct": 49.2,
       "total_trades": 12
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -35.9,
-      "cagr_pct": -9.2,
-      "sharpe_ratio": -0.24,
+      "total_return_pct": -35.4,
+      "cagr_pct": -9.1,
+      "sharpe_ratio": -0.23,
       "win_rate_pct": 35.4,
-      "profit_factor": 0.81,
+      "profit_factor": 0.82,
       "max_drawdown_pct": 57.4,
       "total_trades": 65
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": -4.0,
-      "cagr_pct": -0.9,
-      "sharpe_ratio": 0.09,
+      "total_return_pct": -3.4,
+      "cagr_pct": -0.7,
+      "sharpe_ratio": 0.1,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.88,
+      "profit_factor": 0.9,
       "max_drawdown_pct": 31.4,
       "total_trades": 8
     },
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -4.8,
-      "cagr_pct": -1.1,
+      "total_return_pct": -4.2,
+      "cagr_pct": -0.9,
       "sharpe_ratio": 0.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 28.52,
-      "high": 28.71,
-      "low": 28.22,
-      "close": 28.47,
-      "volume": 1105252.0,
+      "high": 28.81,
+      "low": 28.14,
+      "close": 28.71,
+      "volume": 11197300.0,
       "v1": 30.06,
       "m1": 30.2,
       "m2": 30.18,
       "v2": 30.07,
       "sma200": 24.77,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 29.0,
+      "high": 29.2,
+      "low": 28.6,
+      "close": 28.66,
+      "volume": 10189600.0,
+      "v1": 29.98,
+      "m1": 30.13,
+      "m2": 30.13,
+      "v2": 30.03,
+      "sma200": 24.82,
       "state": "NEUTRAL"
     }
   ],
@@ -16456,11 +16470,11 @@
       "text": "BUY #8 @ $21.01"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +35.23% ($2497.77 €)"
+      "text": "EXIT +36.15% ($2563.45 €)"
     }
   ],
   "equity_curves": [
@@ -21103,7 +21117,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9604.77
+          "value": 9687.38
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9670.52
         }
       ]
     },
@@ -25747,6 +25765,10 @@
         {
           "time": "2026-11-17",
           "value": 8277.91
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8277.91
         }
       ]
     },
@@ -30389,7 +30411,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8064.0
+          "value": 8133.36
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8119.21
         }
       ]
     },
@@ -35032,7 +35058,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9525.73
+          "value": 9607.71
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9590.98
         }
       ]
     }
@@ -35126,29 +35156,29 @@
       "num": 8,
       "entry_date": "2026-05-13",
       "entry_price": 21.01,
-      "exit_date": "2026-11-17",
-      "exit_price": 28.47,
-      "holding_days": 130,
-      "pnl_pct": 35.23,
-      "pnl_eur": 2497.77,
+      "exit_date": "2026-11-18",
+      "exit_price": 28.66,
+      "holding_days": 131,
+      "pnl_pct": 36.15,
+      "pnl_eur": 2563.45,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "HPQ",
-    "smart_money_score": 32.0,
+    "smart_money_score": 24.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.99, CMF: -0.07).",
-    "cmf_20d": -0.073,
-    "up_down_vol_ratio": 0.49,
-    "absorption_5d_pct": 45.4,
-    "vol_shock_ratio": 0.08,
-    "put_call_ratio": 0.99,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 122.50, CMF: -0.09).",
+    "cmf_20d": -0.086,
+    "up_down_vol_ratio": 0.48,
+    "absorption_5d_pct": 45.3,
+    "vol_shock_ratio": 0.76,
+    "put_call_ratio": 122.5,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 29.0,
-    "max_pain": 29.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 46.0,
+    "max_pain": 17.0,
+    "unusual_call_sweep": true
   }
 }

@@ -3,18 +3,18 @@
   "name": "lululemon athletica inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:50.234720+00:00",
+  "generated_at": "2026-11-19T09:22:57.783096+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 107.05,
+  "backtest_total_bars": 1160,
+  "current_price": 110.78,
   "state": "NEUTRAL",
-  "v1": 105.18,
-  "v2": 105.98,
-  "sma200": 129.02,
-  "rsi14": 53.2,
-  "atr14": 4.03,
+  "v1": 105.29,
+  "v2": 106.01,
+  "sma200": 128.7,
+  "rsi14": 58.5,
+  "atr14": 4.56,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -71.3,
-      "cagr_pct": -23.8,
-      "sharpe_ratio": -0.4,
+      "total_return_pct": -70.3,
+      "cagr_pct": -23.2,
+      "sharpe_ratio": -0.38,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 82.0,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 106.51,
+      "open": 106.44,
       "high": 109.08,
-      "low": 105.97,
-      "close": 107.05,
-      "volume": 385891.0,
-      "v1": 105.18,
-      "m1": 104.98,
-      "m2": 105.39,
-      "v2": 105.98,
-      "sma200": 129.02,
+      "low": 103.38,
+      "close": 104.14,
+      "volume": 2575400.0,
+      "v1": 105.09,
+      "m1": 104.91,
+      "m2": 105.34,
+      "v2": 105.93,
+      "sma200": 129.0,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 103.71,
+      "high": 112.81,
+      "low": 103.25,
+      "close": 110.78,
+      "volume": 3690200.0,
+      "v1": 105.29,
+      "m1": 105.08,
+      "m2": 105.44,
+      "v2": 106.01,
+      "sma200": 128.7,
       "state": "NEUTRAL"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 7428.49
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7428.49
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8051.52
+        },
+        {
+          "time": "2026-11-18",
           "value": 8051.52
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 6396.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6396.03
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 2874.81
+          "value": 2796.66
+        },
+        {
+          "time": "2026-11-18",
+          "value": 2974.98
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "LULU",
-    "smart_money_score": 67.0,
+    "smart_money_score": 95.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.09, Up/Dn Vol: 1.2x). Силна скрита подкрепа.",
-    "cmf_20d": 0.094,
-    "up_down_vol_ratio": 1.2,
-    "absorption_5d_pct": 38.0,
-    "vol_shock_ratio": 0.12,
-    "put_call_ratio": 0.79,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 105.0,
-    "max_pain": 105.0,
-    "unusual_call_sweep": false
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.13, Up/Dn Vol: 1.36x). Силна скрита подкрепа.",
+    "cmf_20d": 0.131,
+    "up_down_vol_ratio": 1.36,
+    "absorption_5d_pct": 40.1,
+    "vol_shock_ratio": 1.16,
+    "put_call_ratio": 0.49,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 65.0,
+    "max_pain": 65.0,
+    "unusual_call_sweep": true
   }
 }

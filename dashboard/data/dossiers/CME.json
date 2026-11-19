@@ -3,18 +3,18 @@
   "name": "CME Group Inc.",
   "sector": "Financial Services",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:24.521017+00:00",
+  "generated_at": "2026-11-19T09:21:21.042924+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 315.08,
+  "backtest_total_bars": 1160,
+  "current_price": 310.25,
   "state": "GOLD",
-  "v1": 300.65,
-  "v2": 290.21,
-  "sma200": 279.34,
-  "rsi14": 65.7,
-  "atr14": 6.58,
+  "v1": 301.1,
+  "v2": 290.8,
+  "sma200": 279.45,
+  "rsi14": 59.2,
+  "atr14": 6.77,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 34.1,
-      "cagr_pct": 6.6,
-      "sharpe_ratio": 0.44,
+      "total_return_pct": 32.0,
+      "cagr_pct": 6.2,
+      "sharpe_ratio": 0.42,
       "win_rate_pct": 28.6,
-      "profit_factor": 2.13,
+      "profit_factor": 2.06,
       "max_drawdown_pct": 22.9,
       "total_trades": 14
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 25.5,
-      "cagr_pct": 5.1,
-      "sharpe_ratio": 0.37,
+      "total_return_pct": 23.6,
+      "cagr_pct": 4.7,
+      "sharpe_ratio": 0.35,
       "win_rate_pct": 20.0,
-      "profit_factor": 1.68,
+      "profit_factor": 1.63,
       "max_drawdown_pct": 19.9,
       "total_trades": 20
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 20.7,
-      "cagr_pct": 4.2,
-      "sharpe_ratio": 0.34,
+      "total_return_pct": 18.8,
+      "cagr_pct": 3.8,
+      "sharpe_ratio": 0.31,
       "win_rate_pct": 31.0,
-      "profit_factor": 1.71,
+      "profit_factor": 1.66,
       "max_drawdown_pct": 25.6,
       "total_trades": 29
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 60.3,
-      "cagr_pct": 10.8,
-      "sharpe_ratio": 0.57,
+      "total_return_pct": 57.9,
+      "cagr_pct": 10.4,
+      "sharpe_ratio": 0.56,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.94,
+      "profit_factor": 1.86,
       "max_drawdown_pct": 31.1,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 321.39,
       "low": 315.78,
       "close": 319.37,
-      "volume": 1641600.0,
+      "volume": 2198300.0,
       "v1": 299.57,
       "m1": 295.96,
       "m2": 291.62,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 315.72,
+      "open": 315.51,
       "high": 318.16,
-      "low": 313.35,
-      "close": 315.08,
-      "volume": 146476.0,
-      "v1": 300.65,
-      "m1": 297.01,
-      "m2": 292.58,
-      "v2": 290.21,
-      "sma200": 279.34,
+      "low": 310.85,
+      "close": 311.56,
+      "volume": 1731500.0,
+      "v1": 300.57,
+      "m1": 296.94,
+      "m2": 292.53,
+      "v2": 290.17,
+      "sma200": 279.32,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 311.23,
+      "high": 311.97,
+      "low": 305.12,
+      "close": 310.25,
+      "volume": 2400400.0,
+      "v1": 301.1,
+      "m1": 297.55,
+      "m2": 293.17,
+      "v2": 290.8,
+      "sma200": 279.45,
       "state": "GOLD"
     }
   ],
@@ -21062,6 +21076,10 @@
         {
           "time": "2026-11-17",
           "value": 12737.01
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12737.01
         }
       ]
     },
@@ -25704,7 +25722,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 13423.29
+          "value": 13273.67
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13217.91
         }
       ]
     },
@@ -30347,7 +30369,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 12077.28
+          "value": 11942.6
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11892.41
         }
       ]
     },
@@ -34990,7 +35016,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 16047.53
+          "value": 15868.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15801.78
         }
       ]
     }
@@ -35059,18 +35089,18 @@
   ],
   "smart_money": {
     "symbol": "CME",
-    "smart_money_score": 72.0,
+    "smart_money_score": 95.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.16, Up/Dn Vol: 1.74x). Силна скрита подкрепа.",
-    "cmf_20d": 0.163,
-    "up_down_vol_ratio": 1.74,
-    "absorption_5d_pct": 49.2,
-    "vol_shock_ratio": 0.08,
-    "put_call_ratio": 1.17,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 310.0,
-    "max_pain": 310.0,
-    "unusual_call_sweep": false
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.14, Up/Dn Vol: 1.25x). Силна скрита подкрепа.",
+    "cmf_20d": 0.138,
+    "up_down_vol_ratio": 1.25,
+    "absorption_5d_pct": 40.0,
+    "vol_shock_ratio": 1.27,
+    "put_call_ratio": 0.0,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 360.0,
+    "max_pain": 250.0,
+    "unusual_call_sweep": true
   }
 }

@@ -3,17 +3,17 @@
   "name": "IVANHOE MINES LTD",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:44.805160+00:00",
+  "generated_at": "2026-11-19T09:22:16.304881+00:00",
   "backtest_start_date": "2022-04-07",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1158,
-  "current_price": 7.26,
+  "backtest_total_bars": 1159,
+  "current_price": 6.76,
   "state": "BLUE",
-  "v1": 9.15,
-  "v2": 10.03,
-  "sma200": 11.79,
-  "rsi14": 23.5,
+  "v1": 8.99,
+  "v2": 9.92,
+  "sma200": 11.74,
+  "rsi14": 20.0,
   "atr14": 0.46,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -35.7,
-      "cagr_pct": -9.2,
-      "sharpe_ratio": 0.08,
+      "total_return_pct": -40.1,
+      "cagr_pct": -10.6,
+      "sharpe_ratio": 0.05,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 66.2,
+      "max_drawdown_pct": 68.2,
       "total_trades": 1
     }
   ],
@@ -16324,14 +16324,28 @@
       "time": "2026-11-17",
       "open": 7.27,
       "high": 7.48,
-      "low": 7.23,
-      "close": 7.26,
-      "volume": 815619.0,
-      "v1": 9.15,
+      "low": 7.18,
+      "close": 7.23,
+      "volume": 4083900.0,
+      "v1": 9.14,
       "m1": 9.48,
       "m2": 9.84,
       "v2": 10.03,
       "sma200": 11.79,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 6.93,
+      "high": 7.05,
+      "low": 6.69,
+      "close": 6.76,
+      "volume": 7386500.0,
+      "v1": 8.99,
+      "m1": 9.34,
+      "m2": 9.72,
+      "v2": 9.92,
+      "sma200": 11.74,
       "state": "BLUE"
     }
   ],
@@ -21086,6 +21100,10 @@
         {
           "time": "2026-11-17",
           "value": 7554.43
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7554.43
         }
       ]
     },
@@ -25724,6 +25742,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 6099.57
+        },
+        {
+          "time": "2026-11-18",
           "value": 6099.57
         }
       ]
@@ -30364,6 +30386,10 @@
         {
           "time": "2026-11-17",
           "value": 5374.08
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5374.08
         }
       ]
     },
@@ -35002,7 +35028,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6435.44
+          "value": 6408.85
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5992.23
         }
       ]
     }
@@ -35110,11 +35140,11 @@
     "smart_money_score": 30.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.03).",
-    "cmf_20d": -0.026,
-    "up_down_vol_ratio": 0.17,
-    "absorption_5d_pct": 28.5,
-    "vol_shock_ratio": 0.14,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.02).",
+    "cmf_20d": -0.018,
+    "up_down_vol_ratio": 0.2,
+    "absorption_5d_pct": 29.1,
+    "vol_shock_ratio": 1.25,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

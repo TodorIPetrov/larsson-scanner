@@ -3,17 +3,17 @@
   "name": "Nu Holdings Ltd.",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:01.908171+00:00",
+  "generated_at": "2026-11-19T09:23:34.921289+00:00",
   "backtest_start_date": "2022-07-18",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.3,
-  "backtest_total_bars": 1090,
-  "current_price": 12.48,
+  "backtest_total_bars": 1091,
+  "current_price": 12.08,
   "state": "BLUE",
-  "v1": 12.98,
-  "v2": 13.45,
-  "sma200": 14.12,
-  "rsi14": 46.0,
+  "v1": 12.93,
+  "v2": 13.41,
+  "sma200": 14.09,
+  "rsi14": 43.0,
   "atr14": 0.64,
   "empirical_tier": "A",
   "walk_forward_stable": false,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 214.4,
-      "cagr_pct": 30.3,
-      "sharpe_ratio": 0.8,
+      "total_return_pct": 204.4,
+      "cagr_pct": 29.3,
+      "sharpe_ratio": 0.78,
       "win_rate_pct": 100.0,
-      "profit_factor": 5.42,
+      "profit_factor": 5.16,
       "max_drawdown_pct": 39.6,
       "total_trades": 1
     }
@@ -15360,7 +15360,7 @@
       "high": 13.19,
       "low": 12.64,
       "close": 12.68,
-      "volume": 89606300.0,
+      "volume": 89794500.0,
       "v1": 13.0,
       "m1": 13.19,
       "m2": 13.39,
@@ -15372,14 +15372,28 @@
       "time": "2026-11-17",
       "open": 12.73,
       "high": 12.83,
-      "low": 12.46,
-      "close": 12.48,
-      "volume": 8236743.0,
-      "v1": 12.98,
+      "low": 12.24,
+      "close": 12.33,
+      "volume": 52098600.0,
+      "v1": 12.97,
       "m1": 13.16,
-      "m2": 13.36,
-      "v2": 13.45,
+      "m2": 13.35,
+      "v2": 13.44,
       "sma200": 14.12,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 12.33,
+      "high": 12.59,
+      "low": 12.05,
+      "close": 12.08,
+      "volume": 37636700.0,
+      "v1": 12.93,
+      "m1": 13.11,
+      "m2": 13.31,
+      "v2": 13.41,
+      "sma200": 14.09,
       "state": "BLUE"
     }
   ],
@@ -19834,6 +19848,10 @@
         {
           "time": "2026-11-17",
           "value": 9018.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9018.03
         }
       ]
     },
@@ -24200,6 +24218,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9900.56
+        },
+        {
+          "time": "2026-11-18",
           "value": 9900.56
         }
       ]
@@ -28568,6 +28590,10 @@
         {
           "time": "2026-11-17",
           "value": 8534.51
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8534.51
         }
       ]
     },
@@ -32934,7 +32960,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 31471.02
+          "value": 31105.23
+        },
+        {
+          "time": "2026-11-18",
+          "value": 30474.54
         }
       ]
     }
@@ -33015,18 +33045,18 @@
   ],
   "smart_money": {
     "symbol": "NU",
-    "smart_money_score": 62.0,
+    "smart_money_score": 70.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.47) с Gamma стена на $13.00. Залог за рязък отскок.",
-    "cmf_20d": 0.048,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 41.3,
-    "vol_shock_ratio": 0.09,
-    "put_call_ratio": 0.47,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $23.00. Залог за рязък отскок.",
+    "cmf_20d": 0.042,
+    "up_down_vol_ratio": 0.55,
+    "absorption_5d_pct": 26.7,
+    "vol_shock_ratio": 0.41,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 13.0,
-    "max_pain": 14.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 23.0,
+    "max_pain": 23.0,
+    "unusual_call_sweep": true
   }
 }

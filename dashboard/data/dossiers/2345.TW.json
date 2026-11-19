@@ -3,18 +3,18 @@
   "name": "ACCTON TECHNOLOGY CORP",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:35:54.866457+00:00",
+  "generated_at": "2026-11-19T09:19:22.032168+00:00",
   "backtest_start_date": "2022-04-19",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.4,
-  "backtest_total_bars": 1114,
-  "current_price": 1330.0,
+  "backtest_total_bars": 1116,
+  "current_price": 1350.0,
   "state": "BLUE",
-  "v1": 1663.64,
-  "v2": 1814.21,
-  "sma200": 1954.26,
-  "rsi14": 32.5,
-  "atr14": 116.69,
+  "v1": 1631.37,
+  "v2": 1787.01,
+  "sma200": 1956.46,
+  "rsi14": 36.0,
+  "atr14": 124.19,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 355.5,
-      "cagr_pct": 40.9,
+      "cagr_pct": 40.8,
       "sharpe_ratio": 0.99,
       "win_rate_pct": 25.0,
       "profit_factor": 9.67,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 149.3,
-      "cagr_pct": 23.0,
+      "cagr_pct": 22.9,
       "sharpe_ratio": 0.7,
       "win_rate_pct": 24.0,
       "profit_factor": 2.9,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 233.1,
-      "cagr_pct": 31.3,
+      "cagr_pct": 31.2,
       "sharpe_ratio": 0.86,
       "win_rate_pct": 32.3,
       "profit_factor": 7.51,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 557.6,
-      "cagr_pct": 53.1,
+      "total_return_pct": 567.5,
+      "cagr_pct": 53.5,
       "sharpe_ratio": 1.07,
       "win_rate_pct": 100.0,
-      "profit_factor": 10.5,
+      "profit_factor": 10.69,
       "max_drawdown_pct": 53.1,
       "total_trades": 1
     }
@@ -15710,12 +15710,40 @@
       "high": 1365.0,
       "low": 1290.0,
       "close": 1330.0,
-      "volume": 5619696.0,
+      "volume": 5511069.0,
       "v1": 1663.64,
       "m1": 1716.13,
       "m2": 1779.94,
       "v2": 1814.21,
       "sma200": 1954.26,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1385.0,
+      "high": 1460.0,
+      "low": 1320.0,
+      "close": 1420.0,
+      "volume": 8027044.0,
+      "v1": 1645.4,
+      "m1": 1698.96,
+      "m2": 1764.35,
+      "v2": 1799.59,
+      "sma200": 1955.58,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1435.0,
+      "high": 1535.0,
+      "low": 1335.0,
+      "close": 1350.0,
+      "volume": 8365328.0,
+      "v1": 1631.37,
+      "m1": 1685.07,
+      "m2": 1751.17,
+      "v2": 1787.01,
+      "sma200": 1956.46,
       "state": "BLUE"
     }
   ],
@@ -20238,6 +20266,14 @@
         {
           "time": "2026-11-17",
           "value": 35206.92
+        },
+        {
+          "time": "2026-11-18",
+          "value": 35206.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 35206.92
         }
       ]
     },
@@ -24700,6 +24736,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 45551.2
+        },
+        {
+          "time": "2026-11-18",
+          "value": 45551.2
+        },
+        {
+          "time": "2026-11-19",
           "value": 45551.2
         }
       ]
@@ -29164,6 +29208,14 @@
         {
           "time": "2026-11-17",
           "value": 33577.71
+        },
+        {
+          "time": "2026-11-18",
+          "value": 33577.71
+        },
+        {
+          "time": "2026-11-19",
+          "value": 33577.71
         }
       ]
     },
@@ -33627,6 +33679,14 @@
         {
           "time": "2026-11-17",
           "value": 65826.96
+        },
+        {
+          "time": "2026-11-18",
+          "value": 70281.41
+        },
+        {
+          "time": "2026-11-19",
+          "value": 66816.83
         }
       ]
     }
@@ -33686,11 +33746,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.199,
-    "up_down_vol_ratio": 0.26,
-    "absorption_5d_pct": 33.9,
-    "vol_shock_ratio": 1.39,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.13).",
+    "cmf_20d": -0.127,
+    "up_down_vol_ratio": 0.4,
+    "absorption_5d_pct": 30.7,
+    "vol_shock_ratio": 1.94,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

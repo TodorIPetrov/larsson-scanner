@@ -3,18 +3,18 @@
   "name": "ETHX-B.TO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:34.370047+00:00",
+  "generated_at": "2026-11-19T09:21:46.249868+00:00",
   "backtest_start_date": "2022-04-07",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1158,
-  "current_price": 9.17,
+  "backtest_total_bars": 1159,
+  "current_price": 8.89,
   "state": "BLUE",
-  "v1": 11.17,
-  "v2": 11.41,
-  "sma200": 10.56,
-  "rsi14": 24.9,
-  "atr14": 0.44,
+  "v1": 11.02,
+  "v2": 11.32,
+  "sma200": 10.55,
+  "rsi14": 23.2,
+  "atr14": 0.45,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -38.1,
-      "cagr_pct": -9.9,
-      "sharpe_ratio": 0.17,
+      "total_return_pct": -40.0,
+      "cagr_pct": -10.5,
+      "sharpe_ratio": 0.16,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 68.1,
@@ -16324,14 +16324,28 @@
       "time": "2026-11-17",
       "open": 9.24,
       "high": 9.29,
-      "low": 9.12,
-      "close": 9.17,
-      "volume": 31044.0,
-      "v1": 11.17,
+      "low": 8.89,
+      "close": 9.12,
+      "volume": 160600.0,
+      "v1": 11.16,
       "m1": 11.32,
       "m2": 11.4,
-      "v2": 11.41,
+      "v2": 11.4,
       "sma200": 10.56,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 9.09,
+      "high": 9.1,
+      "low": 8.81,
+      "close": 8.89,
+      "volume": 75800.0,
+      "v1": 11.02,
+      "m1": 11.19,
+      "m2": 11.3,
+      "v2": 11.32,
+      "sma200": 10.55,
       "state": "BLUE"
     }
   ],
@@ -21072,6 +21086,10 @@
         {
           "time": "2026-11-17",
           "value": 10943.81
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10943.81
         }
       ]
     },
@@ -25710,6 +25728,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 13934.02
+        },
+        {
+          "time": "2026-11-18",
           "value": 13934.02
         }
       ]
@@ -30350,6 +30372,10 @@
         {
           "time": "2026-11-17",
           "value": 7829.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7829.28
         }
       ]
     },
@@ -34988,7 +35014,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6193.94
+          "value": 6160.16
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6004.81
         }
       ]
     }
@@ -35084,11 +35114,11 @@
     "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.10, P/C: N/A).",
-    "cmf_20d": 0.096,
-    "up_down_vol_ratio": 0.45,
-    "absorption_5d_pct": 54.4,
-    "vol_shock_ratio": 0.19,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.09, P/C: N/A).",
+    "cmf_20d": 0.09,
+    "up_down_vol_ratio": 0.36,
+    "absorption_5d_pct": 53.3,
+    "vol_shock_ratio": 0.45,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

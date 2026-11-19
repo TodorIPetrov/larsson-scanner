@@ -3,28 +3,28 @@
   "name": "American Express Company",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:12.350193+00:00",
+  "generated_at": "2026-11-19T09:20:03.553418+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 318.27,
+  "backtest_total_bars": 1160,
+  "current_price": 315.4,
   "state": "NEUTRAL",
-  "v1": 319.8,
-  "v2": 320.25,
-  "sma200": 322.42,
-  "rsi14": 48.6,
-  "atr14": 6.8,
+  "v1": 319.37,
+  "v2": 320.01,
+  "sma200": 322.25,
+  "rsi14": 45.8,
+  "atr14": 6.91,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 76.2,
-    "cagr_pct": 13.1,
+    "total_return_pct": 75.4,
+    "cagr_pct": 13.0,
     "sharpe_ratio": 0.75,
     "win_rate_pct": 50.0,
-    "profit_factor": 6.46,
+    "profit_factor": 6.42,
     "max_drawdown_pct": 24.9,
     "total_trades": 10
   },
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": 55.6,
       "cagr_pct": 10.1,
-      "sharpe_ratio": 0.6,
+      "sharpe_ratio": 0.59,
       "win_rate_pct": 21.4,
       "profit_factor": 2.35,
       "max_drawdown_pct": 24.1,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 76.2,
-      "cagr_pct": 13.1,
+      "total_return_pct": 75.4,
+      "cagr_pct": 13.0,
       "sharpe_ratio": 0.75,
       "win_rate_pct": 50.0,
-      "profit_factor": 6.46,
+      "profit_factor": 6.42,
       "max_drawdown_pct": 24.9,
       "total_trades": 10
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 82.6,
-      "cagr_pct": 14.0,
-      "sharpe_ratio": 0.61,
+      "total_return_pct": 81.0,
+      "cagr_pct": 13.8,
+      "sharpe_ratio": 0.6,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.87,
+      "profit_factor": 2.82,
       "max_drawdown_pct": 28.8,
       "total_trades": 1
     }
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 317.76,
       "high": 319.36,
-      "low": 316.97,
-      "close": 318.27,
-      "volume": 218886.0,
-      "v1": 319.8,
-      "m1": 319.6,
-      "m2": 319.89,
-      "v2": 320.25,
-      "sma200": 322.42,
+      "low": 313.17,
+      "close": 315.78,
+      "volume": 2665400.0,
+      "v1": 319.67,
+      "m1": 319.5,
+      "m2": 319.81,
+      "v2": 320.18,
+      "sma200": 322.4,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 315.5,
+      "high": 317.5,
+      "low": 312.73,
+      "close": 315.4,
+      "volume": 3167600.0,
+      "v1": 319.37,
+      "m1": 319.27,
+      "m2": 319.62,
+      "v2": 320.01,
+      "sma200": 322.25,
       "state": "NEUTRAL"
     }
   ],
@@ -16484,11 +16498,11 @@
       "text": "BUY #10 @ $306.05"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.78% ($326.79 €)"
+      "text": "EXIT +2.85% ($245.96 €)"
     }
   ],
   "equity_curves": [
@@ -21131,7 +21145,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17625.57
+          "value": 17555.38
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17544.67
         }
       ]
     },
@@ -25774,6 +25792,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 13718.69
+        },
+        {
+          "time": "2026-11-18",
           "value": 13718.69
         }
       ]
@@ -30418,6 +30440,10 @@
         {
           "time": "2026-11-17",
           "value": 15558.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15558.75
         }
       ]
     },
@@ -35060,7 +35086,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 18279.23
+          "value": 18136.22
+        },
+        {
+          "time": "2026-11-18",
+          "value": 18114.4
         }
       ]
     }
@@ -35178,29 +35208,29 @@
       "num": 10,
       "entry_date": "2026-09-25",
       "entry_price": 306.05,
-      "exit_date": "2026-11-17",
-      "exit_price": 318.27,
-      "holding_days": 37,
-      "pnl_pct": 3.78,
-      "pnl_eur": 326.79,
+      "exit_date": "2026-11-18",
+      "exit_price": 315.4,
+      "holding_days": 38,
+      "pnl_pct": 2.85,
+      "pnl_eur": 245.96,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "AXP",
-    "smart_money_score": 57.0,
+    "smart_money_score": 53.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.46) с Gamma стена на $320.00. Залог за рязък отскок.",
-    "cmf_20d": -0.118,
-    "up_down_vol_ratio": 0.91,
-    "absorption_5d_pct": 52.5,
-    "vol_shock_ratio": 0.08,
-    "put_call_ratio": 0.46,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.20) с Gamma стена на $210.00. Залог за рязък отскок.",
+    "cmf_20d": -0.137,
+    "up_down_vol_ratio": 0.68,
+    "absorption_5d_pct": 41.9,
+    "vol_shock_ratio": 1.11,
+    "put_call_ratio": 0.2,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 320.0,
-    "max_pain": 345.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 210.0,
+    "max_pain": 220.0,
+    "unusual_call_sweep": true
   }
 }

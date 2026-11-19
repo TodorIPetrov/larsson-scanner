@@ -3,18 +3,18 @@
   "name": "Booking Holdings Inc. Common St",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:18.078846+00:00",
+  "generated_at": "2026-11-19T09:20:43.161116+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 157.09,
+  "backtest_total_bars": 1160,
+  "current_price": 153.28,
   "state": "BLUE",
-  "v1": 160.92,
-  "v2": 166.04,
-  "sma200": 173.65,
-  "rsi14": 46.0,
-  "atr14": 5.96,
+  "v1": 160.39,
+  "v2": 165.59,
+  "sma200": 173.48,
+  "rsi14": 42.2,
+  "atr14": 5.9,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 79.3,
-      "cagr_pct": 13.5,
-      "sharpe_ratio": 0.56,
+      "total_return_pct": 75.0,
+      "cagr_pct": 12.9,
+      "sharpe_ratio": 0.54,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.22,
+      "profit_factor": 2.1,
       "max_drawdown_pct": 35.7,
       "total_trades": 1
     }
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 156.76,
+      "open": 156.77,
       "high": 157.94,
-      "low": 155.68,
-      "close": 157.09,
-      "volume": 428919.0,
-      "v1": 160.92,
-      "m1": 162.4,
-      "m2": 164.68,
-      "v2": 166.04,
-      "sma200": 173.65,
+      "low": 153.59,
+      "close": 154.46,
+      "volume": 7008700.0,
+      "v1": 160.85,
+      "m1": 162.34,
+      "m2": 164.64,
+      "v2": 166.01,
+      "sma200": 173.64,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 153.08,
+      "high": 155.66,
+      "low": 152.39,
+      "close": 153.28,
+      "volume": 4363400.0,
+      "v1": 160.39,
+      "m1": 161.9,
+      "m2": 164.22,
+      "v2": 165.59,
+      "sma200": 173.48,
       "state": "BLUE"
     }
   ],
@@ -21132,6 +21146,10 @@
         {
           "time": "2026-11-17",
           "value": 15441.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15441.28
         }
       ]
     },
@@ -25774,6 +25792,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11949.76
+        },
+        {
+          "time": "2026-11-18",
           "value": 11949.76
         }
       ]
@@ -30418,6 +30440,10 @@
         {
           "time": "2026-11-17",
           "value": 13439.8
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13439.8
         }
       ]
     },
@@ -35060,7 +35086,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17949.15
+          "value": 17648.65
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17513.82
         }
       ]
     }
@@ -35192,15 +35222,15 @@
     "smart_money_score": 45.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.48) с Gamma стена на $160.00. Залог за рязък отскок.",
-    "cmf_20d": -0.135,
-    "up_down_vol_ratio": 0.83,
-    "absorption_5d_pct": 44.7,
-    "vol_shock_ratio": 0.06,
-    "put_call_ratio": 0.48,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.49) с Gamma стена на $240.00. Залог за рязък отскок.",
+    "cmf_20d": -0.146,
+    "up_down_vol_ratio": 0.8,
+    "absorption_5d_pct": 25.7,
+    "vol_shock_ratio": 0.56,
+    "put_call_ratio": 0.49,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 160.0,
-    "max_pain": 200.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 240.0,
+    "max_pain": 240.0,
+    "unusual_call_sweep": true
   }
 }

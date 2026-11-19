@@ -3,18 +3,18 @@
   "name": "BHP GROUP FPO [BHP]",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:17.024405+00:00",
+  "generated_at": "2026-11-19T09:20:40.250128+00:00",
   "backtest_start_date": "2022-04-05",
-  "backtest_end_date": "2026-11-17",
-  "backtest_years": 4.6,
-  "backtest_total_bars": 1170,
-  "current_price": 54.38,
+  "backtest_end_date": "2026-11-19",
+  "backtest_years": 4.7,
+  "backtest_total_bars": 1172,
+  "current_price": 52.34,
   "state": "BLUE",
-  "v1": 58.59,
-  "v2": 59.32,
-  "sma200": 57.41,
-  "rsi14": 36.8,
-  "atr14": 1.63,
+  "v1": 57.96,
+  "v2": 58.94,
+  "sma200": 57.47,
+  "rsi14": 32.2,
+  "atr14": 1.68,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 51.1,
-      "cagr_pct": 9.3,
-      "sharpe_ratio": 0.48,
+      "total_return_pct": 45.4,
+      "cagr_pct": 8.4,
+      "sharpe_ratio": 0.44,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.86,
+      "profit_factor": 1.65,
       "max_drawdown_pct": 27.5,
       "total_trades": 1
     }
@@ -16494,12 +16494,40 @@
       "high": 56.11,
       "low": 54.38,
       "close": 54.38,
-      "volume": 14350497.0,
+      "volume": 14674610.0,
       "v1": 58.59,
       "m1": 58.88,
       "m2": 59.2,
       "v2": 59.32,
       "sma200": 57.41,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 55.15,
+      "high": 55.76,
+      "low": 54.34,
+      "close": 54.34,
+      "volume": 9783123.0,
+      "v1": 58.36,
+      "m1": 58.68,
+      "m2": 59.03,
+      "v2": 59.17,
+      "sma200": 57.45,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 52.58,
+      "high": 52.89,
+      "low": 51.76,
+      "close": 52.34,
+      "volume": 12933881.0,
+      "v1": 57.96,
+      "m1": 58.35,
+      "m2": 58.76,
+      "v2": 58.94,
+      "sma200": 57.47,
       "state": "BLUE"
     }
   ],
@@ -21204,6 +21232,14 @@
         {
           "time": "2026-11-17",
           "value": 16399.66
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16399.66
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16399.66
         }
       ]
     },
@@ -25890,6 +25926,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11618.11
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11618.11
+        },
+        {
+          "time": "2026-11-19",
           "value": 11618.11
         }
       ]
@@ -30578,6 +30622,14 @@
         {
           "time": "2026-11-17",
           "value": 11314.81
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11314.81
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11314.81
         }
       ]
     },
@@ -35265,6 +35317,14 @@
         {
           "time": "2026-11-17",
           "value": 15120.98
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15109.86
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14553.73
         }
       ]
     }
@@ -35288,11 +35348,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
-    "cmf_20d": -0.166,
-    "up_down_vol_ratio": 0.64,
-    "absorption_5d_pct": 31.5,
-    "vol_shock_ratio": 1.81,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.142,
+    "up_down_vol_ratio": 0.59,
+    "absorption_5d_pct": 17.1,
+    "vol_shock_ratio": 1.52,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

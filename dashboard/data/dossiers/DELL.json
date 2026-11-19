@@ -3,25 +3,25 @@
   "name": "Dell Technologies Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:36:28.817832+00:00",
+  "generated_at": "2026-11-19T09:21:30.476604+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 316.6,
+  "backtest_total_bars": 1160,
+  "current_price": 313.11,
   "state": "BLUE",
-  "v1": 416.38,
-  "v2": 444.64,
-  "sma200": 344.64,
-  "rsi14": 32.8,
-  "atr14": 33.56,
+  "v1": 409.57,
+  "v2": 440.13,
+  "sma200": 345.65,
+  "rsi14": 32.6,
+  "atr14": 33.31,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 689.4,
-    "cagr_pct": 56.7,
+    "cagr_pct": 56.6,
     "sharpe_ratio": 1.17,
     "win_rate_pct": 50.0,
     "profit_factor": 84.88,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 592.1,
-      "cagr_pct": 52.3,
+      "cagr_pct": 52.2,
       "sharpe_ratio": 1.13,
       "win_rate_pct": 36.4,
       "profit_factor": 13.24,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 689.4,
-      "cagr_pct": 56.7,
+      "cagr_pct": 56.6,
       "sharpe_ratio": 1.17,
       "win_rate_pct": 50.0,
       "profit_factor": 84.88,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 622.0,
-      "cagr_pct": 53.7,
+      "total_return_pct": 614.1,
+      "cagr_pct": 53.3,
       "sharpe_ratio": 1.04,
       "win_rate_pct": 100.0,
-      "profit_factor": 10.44,
+      "profit_factor": 10.31,
       "max_drawdown_pct": 59.6,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 332.36,
       "low": 318.03,
       "close": 320.55,
-      "volume": 8365900.0,
+      "volume": 8458700.0,
       "v1": 423.09,
       "m1": 436.06,
       "m2": 446.37,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 327.99,
       "high": 328.77,
-      "low": 316.26,
-      "close": 316.6,
-      "volume": 1622889.0,
-      "v1": 416.38,
-      "m1": 430.08,
-      "m2": 441.41,
-      "v2": 444.64,
-      "sma200": 344.64,
+      "low": 305.8,
+      "close": 322.79,
+      "volume": 7301000.0,
+      "v1": 416.03,
+      "m1": 429.81,
+      "m2": 441.2,
+      "v2": 444.46,
+      "sma200": 344.67,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 328.61,
+      "high": 329.25,
+      "low": 308.93,
+      "close": 313.11,
+      "volume": 6451400.0,
+      "v1": 409.57,
+      "m1": 423.98,
+      "m2": 436.32,
+      "v2": 440.13,
+      "sma200": 345.65,
       "state": "BLUE"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 78937.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 78937.75
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 69214.38
+        },
+        {
+          "time": "2026-11-18",
           "value": 69214.38
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 45051.59
+        },
+        {
+          "time": "2026-11-18",
+          "value": 45051.59
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 72274.92
+          "value": 73688.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 71478.2
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "DELL",
-    "smart_money_score": 25.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.88, CMF: -0.28).",
-    "cmf_20d": -0.28,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 37.1,
-    "vol_shock_ratio": 0.22,
-    "put_call_ratio": 0.88,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 340.0,
-    "max_pain": 400.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 53.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $185.00. Залог за рязък отскок.",
+    "cmf_20d": -0.239,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 43.9,
+    "vol_shock_ratio": 0.87,
+    "put_call_ratio": 0.0,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 185.0,
+    "max_pain": 185.0,
+    "unusual_call_sweep": true
   }
 }

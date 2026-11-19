@@ -3,17 +3,17 @@
   "name": "Amundi ShortDAX Daily (-2x) Inverse UCITS ETF",
   "sector": "Хеджиращи деривати",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:50.804218+00:00",
+  "generated_at": "2026-11-19T09:22:59.353866+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1178,
-  "current_price": 0.46,
+  "backtest_total_bars": 1179,
+  "current_price": 0.47,
   "state": "BLUE",
   "v1": 0.47,
   "v2": 0.48,
   "sma200": 0.51,
-  "rsi14": 46.6,
+  "rsi14": 51.9,
   "atr14": 0.01,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -52.6,
-      "cagr_pct": -14.8,
+      "cagr_pct": -14.7,
       "sharpe_ratio": -1.14,
       "win_rate_pct": 24.2,
       "profit_factor": 0.17,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -70.2,
-      "cagr_pct": -22.8,
-      "sharpe_ratio": -0.65,
+      "total_return_pct": -69.4,
+      "cagr_pct": -22.3,
+      "sharpe_ratio": -0.63,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 78.7,
@@ -16603,10 +16603,24 @@
     {
       "time": "2026-11-17",
       "open": 0.45,
-      "high": 0.46,
+      "high": 0.47,
       "low": 0.45,
-      "close": 0.46,
-      "volume": 562.0,
+      "close": 0.47,
+      "volume": 94922.0,
+      "v1": 0.47,
+      "m1": 0.47,
+      "m2": 0.47,
+      "v2": 0.48,
+      "sma200": 0.51,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 0.47,
+      "high": 0.47,
+      "low": 0.47,
+      "close": 0.47,
+      "volume": 78.0,
       "v1": 0.47,
       "m1": 0.47,
       "m2": 0.47,
@@ -21446,6 +21460,10 @@
         {
           "time": "2026-11-17",
           "value": 8512.18
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8512.18
         }
       ]
     },
@@ -26164,6 +26182,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 5900.45
+        },
+        {
+          "time": "2026-11-19",
           "value": 5900.45
         }
       ]
@@ -30884,6 +30906,10 @@
         {
           "time": "2026-11-17",
           "value": 4973.46
+        },
+        {
+          "time": "2026-11-19",
+          "value": 4973.46
         }
       ]
     },
@@ -35602,7 +35628,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 2987.51
+          "value": 3023.26
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3067.45
         }
       ]
     }
@@ -35710,9 +35740,9 @@
     "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.28, P/C: N/A).",
-    "cmf_20d": -0.282,
-    "up_down_vol_ratio": 0.54,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.23, P/C: N/A).",
+    "cmf_20d": -0.226,
+    "up_down_vol_ratio": 0.61,
     "absorption_5d_pct": 70.9,
     "vol_shock_ratio": 0.0,
     "put_call_ratio": null,

@@ -3,17 +3,17 @@
   "name": "ServiceNow, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:01.184808+00:00",
+  "generated_at": "2026-11-19T09:23:33.338311+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 93.8,
+  "backtest_total_bars": 1160,
+  "current_price": 90.59,
   "state": "BLUE",
-  "v1": 118.61,
-  "v2": 123.9,
-  "sma200": 113.53,
-  "rsi14": 27.1,
+  "v1": 116.75,
+  "v2": 122.75,
+  "sma200": 113.43,
+  "rsi14": 25.6,
   "atr14": 6.0,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 29.3,
-      "cagr_pct": 5.8,
+      "cagr_pct": 5.7,
       "sharpe_ratio": 0.35,
       "win_rate_pct": 22.2,
       "profit_factor": 1.39,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -13.8,
-      "cagr_pct": -3.2,
-      "sharpe_ratio": 0.18,
+      "total_return_pct": -16.7,
+      "cagr_pct": -3.9,
+      "sharpe_ratio": 0.16,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 64.5,
@@ -16326,7 +16326,7 @@
       "high": 101.94,
       "low": 98.88,
       "close": 99.37,
-      "volume": 12487500.0,
+      "volume": 12700100.0,
       "v1": 120.21,
       "m1": 122.71,
       "m2": 124.48,
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 98.0,
-      "high": 98.93,
-      "low": 93.66,
-      "close": 93.8,
-      "volume": 4892775.0,
-      "v1": 118.61,
-      "m1": 121.32,
-      "m2": 123.35,
-      "v2": 123.9,
+      "high": 99.0,
+      "low": 92.03,
+      "close": 92.9,
+      "volume": 23974800.0,
+      "v1": 118.56,
+      "m1": 121.28,
+      "m2": 123.32,
+      "v2": 123.88,
       "sma200": 113.53,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 93.0,
+      "high": 93.6,
+      "low": 89.17,
+      "close": 90.59,
+      "volume": 19873400.0,
+      "v1": 116.75,
+      "m1": 119.71,
+      "m2": 122.04,
+      "v2": 122.75,
+      "sma200": 113.43,
       "state": "BLUE"
     }
   ],
@@ -21132,6 +21146,10 @@
         {
           "time": "2026-11-17",
           "value": 14073.52
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14073.52
         }
       ]
     },
@@ -25774,6 +25792,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12215.19
+        },
+        {
+          "time": "2026-11-18",
           "value": 12215.19
         }
       ]
@@ -30418,6 +30440,10 @@
         {
           "time": "2026-11-17",
           "value": 12933.12
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12933.12
         }
       ]
     },
@@ -35060,7 +35086,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8631.42
+          "value": 8548.61
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8336.04
         }
       ]
     }
@@ -35189,18 +35219,18 @@
   ],
   "smart_money": {
     "symbol": "NOW",
-    "smart_money_score": 35.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.57, CMF: -0.25).",
-    "cmf_20d": -0.25,
-    "up_down_vol_ratio": 0.42,
-    "absorption_5d_pct": 41.6,
-    "vol_shock_ratio": 0.25,
-    "put_call_ratio": 0.57,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 95.0,
-    "max_pain": 105.0,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.30).",
+    "cmf_20d": -0.305,
+    "up_down_vol_ratio": 0.33,
+    "absorption_5d_pct": 35.4,
+    "vol_shock_ratio": 0.96,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 45.0,
+    "max_pain": 45.0,
     "unusual_call_sweep": false
   }
 }

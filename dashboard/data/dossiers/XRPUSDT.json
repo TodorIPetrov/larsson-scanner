@@ -3,17 +3,17 @@
   "name": "Ripple",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-17T15:37:31.496062+00:00",
+  "generated_at": "2026-11-19T09:24:58.273215+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1753,
-  "current_price": 0.96,
+  "backtest_total_bars": 1755,
+  "current_price": 0.98,
   "state": "BLUE",
-  "v1": 1.17,
-  "v2": 1.24,
+  "v1": 1.14,
+  "v2": 1.22,
   "sma200": 1.25,
-  "rsi14": 25.9,
+  "rsi14": 30.8,
   "atr14": 0.06,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -84.3,
-      "cagr_pct": -23.4,
+      "cagr_pct": -23.3,
       "sharpe_ratio": -0.34,
       "win_rate_pct": 17.1,
       "profit_factor": 0.23,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 56.0,
-      "cagr_pct": 6.6,
-      "sharpe_ratio": 0.41,
+      "total_return_pct": 60.8,
+      "cagr_pct": 7.1,
+      "sharpe_ratio": 0.42,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.75,
+      "profit_factor": 0.82,
       "max_drawdown_pct": 74.2,
       "total_trades": 1
     }
@@ -24663,6 +24663,34 @@
       "v2": 1.24,
       "sma200": 1.25,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 0.96,
+      "high": 0.99,
+      "low": 0.95,
+      "close": 0.98,
+      "volume": 98771676.0,
+      "v1": 1.16,
+      "m1": 1.19,
+      "m2": 1.22,
+      "v2": 1.23,
+      "sma200": 1.25,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 0.98,
+      "high": 1.01,
+      "low": 0.97,
+      "close": 0.98,
+      "volume": 55238443.0,
+      "v1": 1.14,
+      "m1": 1.18,
+      "m2": 1.21,
+      "v2": 1.22,
+      "sma200": 1.25,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -31824,6 +31852,14 @@
         {
           "time": "2026-11-16",
           "value": 6665.99
+        },
+        {
+          "time": "2026-11-17",
+          "value": 6665.99
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6665.99
         }
       ]
     },
@@ -38842,6 +38878,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 7792.76
+        },
+        {
+          "time": "2026-11-17",
+          "value": 7792.76
+        },
+        {
+          "time": "2026-11-18",
           "value": 7792.76
         }
       ]
@@ -45862,6 +45906,14 @@
         {
           "time": "2026-11-16",
           "value": 3863.32
+        },
+        {
+          "time": "2026-11-17",
+          "value": 3863.32
+        },
+        {
+          "time": "2026-11-18",
+          "value": 3863.32
         }
       ]
     },
@@ -52881,6 +52933,14 @@
         {
           "time": "2026-11-16",
           "value": 15614.28
+        },
+        {
+          "time": "2026-11-17",
+          "value": 16078.47
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16096.45
         }
       ]
     }
@@ -53009,14 +53069,14 @@
   ],
   "smart_money": {
     "symbol": "XRPUSDT",
-    "smart_money_score": 25.0,
+    "smart_money_score": 30.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.19).",
-    "cmf_20d": -0.194,
-    "up_down_vol_ratio": 0.27,
-    "absorption_5d_pct": 46.7,
-    "vol_shock_ratio": 1.11,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
+    "cmf_20d": -0.122,
+    "up_down_vol_ratio": 0.42,
+    "absorption_5d_pct": 54.0,
+    "vol_shock_ratio": 0.5,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

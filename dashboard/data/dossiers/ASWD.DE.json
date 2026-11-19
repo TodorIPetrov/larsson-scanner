@@ -3,18 +3,18 @@
   "name": "HANetf Sprott Pure Play Copper Miners UCITS ETF",
   "sector": "Базови ресурси & Енергиен преход",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:11.248447+00:00",
+  "generated_at": "2026-11-19T09:20:00.618421+00:00",
   "backtest_start_date": "2024-07-11",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 2.4,
-  "backtest_total_bars": 597,
-  "current_price": 16.71,
+  "backtest_total_bars": 598,
+  "current_price": 15.54,
   "state": "BLUE",
-  "v1": 18.62,
-  "v2": 19.25,
-  "sma200": 19.39,
-  "rsi14": 32.2,
-  "atr14": 0.62,
+  "v1": 18.42,
+  "v2": 19.12,
+  "sma200": 19.38,
+  "rsi14": 26.1,
+  "atr14": 0.65,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": 23.1,
       "cagr_pct": 9.2,
-      "sharpe_ratio": 0.44,
+      "sharpe_ratio": 0.43,
       "win_rate_pct": 27.3,
       "profit_factor": 1.59,
       "max_drawdown_pct": 30.4,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 58.1,
-      "cagr_pct": 21.3,
-      "sharpe_ratio": 0.69,
+      "total_return_pct": 47.1,
+      "cagr_pct": 17.7,
+      "sharpe_ratio": 0.62,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.9,
+      "profit_factor": 1.54,
       "max_drawdown_pct": 30.6,
       "total_trades": 1
     }
@@ -8471,13 +8471,27 @@
       "open": 16.6,
       "high": 16.85,
       "low": 16.42,
-      "close": 16.71,
-      "volume": 10565.0,
+      "close": 16.53,
+      "volume": 13590.0,
       "v1": 18.62,
       "m1": 18.87,
       "m2": 19.13,
       "v2": 19.25,
       "sma200": 19.39,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 15.53,
+      "high": 15.54,
+      "low": 15.53,
+      "close": 15.54,
+      "volume": 100.0,
+      "v1": 18.42,
+      "m1": 18.7,
+      "m2": 18.99,
+      "v2": 19.12,
+      "sma200": 19.38,
       "state": "BLUE"
     }
   ],
@@ -10918,6 +10932,10 @@
         {
           "time": "2026-11-17",
           "value": 19483.8
+        },
+        {
+          "time": "2026-11-19",
+          "value": 19483.8
         }
       ]
     },
@@ -13312,6 +13330,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 14009.75
+        },
+        {
+          "time": "2026-11-19",
           "value": 14009.75
         }
       ]
@@ -15708,6 +15730,10 @@
         {
           "time": "2026-11-17",
           "value": 12313.03
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12313.03
         }
       ]
     },
@@ -18102,7 +18128,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 15825.24
+          "value": 15656.62
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14722.6
         }
       ]
     }
@@ -18147,14 +18177,14 @@
   ],
   "smart_money": {
     "symbol": "ASWD.DE",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.36).",
-    "cmf_20d": -0.363,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.41).",
+    "cmf_20d": -0.405,
     "up_down_vol_ratio": 0.41,
-    "absorption_5d_pct": 25.3,
-    "vol_shock_ratio": 1.1,
+    "absorption_5d_pct": 36.7,
+    "vol_shock_ratio": 0.01,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,28 +3,28 @@
   "name": "Fortinet, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:36.692252+00:00",
+  "generated_at": "2026-11-19T09:21:52.716124+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 120.83,
+  "backtest_total_bars": 1160,
+  "current_price": 131.81,
   "state": "BLUE",
-  "v1": 145.84,
-  "v2": 153.86,
-  "sma200": 131.12,
-  "rsi14": 29.6,
-  "atr14": 7.45,
+  "v1": 144.72,
+  "v2": 153.0,
+  "sma200": 131.4,
+  "rsi14": 40.0,
+  "atr14": 7.56,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -2.3,
-    "cagr_pct": -0.5,
-    "sharpe_ratio": 0.04,
-    "win_rate_pct": 60.0,
-    "profit_factor": 2.58,
+    "total_return_pct": 2.0,
+    "cagr_pct": 0.4,
+    "sharpe_ratio": 0.11,
+    "win_rate_pct": 80.0,
+    "profit_factor": 4.04,
     "max_drawdown_pct": 22.1,
     "total_trades": 5
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -2.3,
-      "cagr_pct": -0.5,
-      "sharpe_ratio": 0.04,
-      "win_rate_pct": 60.0,
-      "profit_factor": 2.58,
+      "total_return_pct": 2.0,
+      "cagr_pct": 0.4,
+      "sharpe_ratio": 0.11,
+      "win_rate_pct": 80.0,
+      "profit_factor": 4.04,
       "max_drawdown_pct": 22.1,
       "total_trades": 5
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 79.8,
-      "cagr_pct": 13.6,
-      "sharpe_ratio": 0.52,
+      "total_return_pct": 96.2,
+      "cagr_pct": 15.8,
+      "sharpe_ratio": 0.56,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.05,
+      "profit_factor": 2.47,
       "max_drawdown_pct": 39.0,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 127.0,
       "low": 122.76,
       "close": 123.27,
-      "volume": 4385300.0,
+      "volume": 4442300.0,
       "v1": 147.48,
       "m1": 151.13,
       "m2": 154.1,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 123.5,
-      "high": 125.07,
-      "low": 120.75,
-      "close": 120.83,
-      "volume": 554661.0,
-      "v1": 145.84,
+      "open": 123.16,
+      "high": 125.11,
+      "low": 120.5,
+      "close": 124.5,
+      "volume": 4468800.0,
+      "v1": 145.83,
       "m1": 149.64,
       "m2": 152.85,
       "v2": 153.86,
-      "sma200": 131.12,
+      "sma200": 131.14,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 126.12,
+      "high": 133.31,
+      "low": 124.96,
+      "close": 131.81,
+      "volume": 4920600.0,
+      "v1": 144.72,
+      "m1": 148.56,
+      "m2": 151.9,
+      "v2": 153.0,
+      "sma200": 131.4,
       "state": "BLUE"
     }
   ],
@@ -16414,11 +16428,11 @@
       "text": "BUY #5 @ $126.95"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-18",
       "position": "aboveBar",
-      "color": "#ef4444",
+      "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT -5.01% ($-250.87 €)"
+      "text": "EXIT +3.62% ($181.27 €)"
     }
   ],
   "equity_curves": [
@@ -21061,7 +21075,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9776.79
+          "value": 9921.37
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10209.36
         }
       ]
     },
@@ -25704,6 +25722,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 14270.95
+        },
+        {
+          "time": "2026-11-18",
           "value": 14270.95
         }
       ]
@@ -30348,6 +30370,10 @@
         {
           "time": "2026-11-17",
           "value": 13613.83
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13613.83
         }
       ]
     },
@@ -34990,7 +35016,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17999.64
+          "value": 18546.35
+        },
+        {
+          "time": "2026-11-18",
+          "value": 19635.29
         }
       ]
     }
@@ -35048,29 +35078,29 @@
       "num": 5,
       "entry_date": "2026-11-12",
       "entry_price": 126.95,
-      "exit_date": "2026-11-17",
-      "exit_price": 120.83,
-      "holding_days": 3,
-      "pnl_pct": -5.01,
-      "pnl_eur": -250.87,
+      "exit_date": "2026-11-18",
+      "exit_price": 131.81,
+      "holding_days": 4,
+      "pnl_pct": 3.62,
+      "pnl_eur": 181.27,
       "exit_reason": "Край на Бектеста (Отворена)",
-      "is_win": false
+      "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "FTNT",
-    "smart_money_score": 40.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.31) с Gamma стена на $122.00. Залог за рязък отскок.",
-    "cmf_20d": -0.077,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 34.9,
-    "vol_shock_ratio": 0.09,
-    "put_call_ratio": 0.31,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 122.0,
-    "max_pain": 170.0,
+    "smart_money_score": 45.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: 1.00).",
+    "cmf_20d": -0.036,
+    "up_down_vol_ratio": 0.67,
+    "absorption_5d_pct": 59.5,
+    "vol_shock_ratio": 0.79,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 95.0,
+    "max_pain": 95.0,
     "unusual_call_sweep": false
   }
 }

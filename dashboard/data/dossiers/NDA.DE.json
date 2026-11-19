@@ -3,18 +3,18 @@
   "name": "Aurubis AG                    I",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:57.237010+00:00",
+  "generated_at": "2026-11-19T09:23:22.740243+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1180,
-  "current_price": 133.3,
+  "backtest_total_bars": 1182,
+  "current_price": 128.0,
   "state": "BLUE",
-  "v1": 143.56,
-  "v2": 152.04,
-  "sma200": 172.39,
-  "rsi14": 35.5,
-  "atr14": 4.85,
+  "v1": 141.67,
+  "v2": 150.47,
+  "sma200": 172.01,
+  "rsi14": 32.0,
+  "atr14": 4.88,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 30.9,
-      "cagr_pct": 5.9,
-      "sharpe_ratio": 0.34,
+      "total_return_pct": 25.7,
+      "cagr_pct": 5.0,
+      "sharpe_ratio": 0.31,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.57,
+      "profit_factor": 0.47,
       "max_drawdown_pct": 54.3,
       "total_trades": 1
     }
@@ -16632,14 +16632,42 @@
       "time": "2026-11-17",
       "open": 133.8,
       "high": 134.8,
-      "low": 132.6,
-      "close": 133.3,
-      "volume": 25611.0,
+      "low": 132.5,
+      "close": 133.7,
+      "volume": 98011.0,
       "v1": 143.56,
-      "m1": 146.24,
+      "m1": 146.23,
       "m2": 149.9,
       "v2": 152.04,
       "sma200": 172.39,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 132.0,
+      "high": 132.0,
+      "low": 126.3,
+      "close": 126.6,
+      "volume": 149704.0,
+      "v1": 142.6,
+      "m1": 145.33,
+      "m2": 149.07,
+      "v2": 151.25,
+      "sma200": 172.21,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 128.5,
+      "high": 129.4,
+      "low": 128.0,
+      "close": 128.0,
+      "volume": 5988.0,
+      "v1": 141.67,
+      "m1": 144.46,
+      "m2": 148.25,
+      "v2": 150.47,
+      "sma200": 172.01,
       "state": "BLUE"
     }
   ],
@@ -21496,6 +21524,14 @@
         {
           "time": "2026-11-17",
           "value": 13771.11
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13771.11
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13771.11
         }
       ]
     },
@@ -26222,6 +26258,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 18492.48
+        },
+        {
+          "time": "2026-11-18",
+          "value": 18492.48
+        },
+        {
+          "time": "2026-11-19",
           "value": 18492.48
         }
       ]
@@ -30950,6 +30994,14 @@
         {
           "time": "2026-11-17",
           "value": 12798.34
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12798.34
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12798.34
         }
       ]
     },
@@ -35676,7 +35728,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 13105.51
+          "value": 13144.83
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12446.79
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12584.43
         }
       ]
     }
@@ -35793,14 +35853,14 @@
   ],
   "smart_money": {
     "symbol": "NDA.DE",
-    "smart_money_score": 40.0,
+    "smart_money_score": 52.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: N/A).",
-    "cmf_20d": 0.021,
-    "up_down_vol_ratio": 0.74,
-    "absorption_5d_pct": 39.6,
-    "vol_shock_ratio": 0.17,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: N/A).",
+    "cmf_20d": 0.065,
+    "up_down_vol_ratio": 0.77,
+    "absorption_5d_pct": 32.1,
+    "vol_shock_ratio": 0.04,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

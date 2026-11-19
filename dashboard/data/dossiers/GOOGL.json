@@ -3,18 +3,18 @@
   "name": "Alphabet Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:39.369733+00:00",
+  "generated_at": "2026-11-19T09:21:58.929167+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 282.15,
+  "backtest_total_bars": 1160,
+  "current_price": 282.44,
   "state": "BLUE",
-  "v1": 307.91,
-  "v2": 321.55,
-  "sma200": 337.63,
-  "rsi14": 33.7,
-  "atr14": 9.95,
+  "v1": 306.13,
+  "v2": 320.16,
+  "sma200": 337.33,
+  "rsi14": 34.9,
+  "atr14": 9.78,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 101.5,
-      "cagr_pct": 16.5,
-      "sharpe_ratio": 0.8,
+      "cagr_pct": 16.4,
+      "sharpe_ratio": 0.79,
       "win_rate_pct": 40.0,
       "profit_factor": 3.82,
       "max_drawdown_pct": 25.5,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 64.6,
+      "total_return_pct": 64.7,
       "cagr_pct": 11.5,
       "sharpe_ratio": 0.62,
       "win_rate_pct": 44.4,
-      "profit_factor": 5.1,
-      "max_drawdown_pct": 21.0,
+      "profit_factor": 5.12,
+      "max_drawdown_pct": 21.1,
       "total_trades": 9
     },
     {
@@ -93,7 +93,7 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 104.9,
+      "total_return_pct": 105.1,
       "cagr_pct": 16.9,
       "sharpe_ratio": 0.65,
       "win_rate_pct": 100.0,
@@ -16326,7 +16326,7 @@
       "high": 294.14,
       "low": 282.96,
       "close": 283.72,
-      "volume": 34643200.0,
+      "volume": 34747200.0,
       "v1": 309.72,
       "m1": 314.59,
       "m2": 320.12,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 283.4,
       "high": 284.09,
-      "low": 280.89,
-      "close": 282.15,
-      "volume": 5585582.0,
-      "v1": 307.91,
-      "m1": 312.9,
-      "m2": 318.61,
-      "v2": 321.55,
-      "sma200": 337.63,
+      "low": 278.46,
+      "close": 280.2,
+      "volume": 32175900.0,
+      "v1": 307.83,
+      "m1": 312.84,
+      "m2": 318.57,
+      "v2": 321.51,
+      "sma200": 337.62,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 282.75,
+      "high": 284.97,
+      "low": 279.69,
+      "close": 282.44,
+      "volume": 27190700.0,
+      "v1": 306.13,
+      "m1": 311.23,
+      "m2": 317.12,
+      "v2": 320.16,
+      "sma200": 337.33,
       "state": "BLUE"
     }
   ],
@@ -21104,6 +21118,10 @@
         {
           "time": "2026-11-17",
           "value": 22941.62
+        },
+        {
+          "time": "2026-11-18",
+          "value": 22941.62
         }
       ]
     },
@@ -25746,6 +25764,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 22539.8
+        },
+        {
+          "time": "2026-11-18",
           "value": 22539.8
         }
       ]
@@ -30390,6 +30412,10 @@
         {
           "time": "2026-11-17",
           "value": 20153.73
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20153.73
         }
       ]
     },
@@ -35032,7 +35058,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 20508.11
+          "value": 20366.37
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20529.18
         }
       ]
     }
@@ -35137,18 +35167,18 @@
   ],
   "smart_money": {
     "symbol": "GOOGL",
-    "smart_money_score": 35.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.54, CMF: -0.29).",
-    "cmf_20d": -0.295,
-    "up_down_vol_ratio": 0.62,
-    "absorption_5d_pct": 37.3,
-    "vol_shock_ratio": 0.13,
-    "put_call_ratio": 0.54,
+    "smart_money_score": 43.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.03) с Gamma стена на $640.00. Залог за рязък отскок.",
+    "cmf_20d": -0.308,
+    "up_down_vol_ratio": 0.68,
+    "absorption_5d_pct": 33.3,
+    "vol_shock_ratio": 0.64,
+    "put_call_ratio": 0.03,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 282.5,
-    "max_pain": 300.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 640.0,
+    "max_pain": 640.0,
+    "unusual_call_sweep": true
   }
 }

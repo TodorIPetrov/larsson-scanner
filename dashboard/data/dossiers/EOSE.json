@@ -3,17 +3,17 @@
   "name": "Eos Energy Enterprises, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:32.881139+00:00",
+  "generated_at": "2026-11-19T09:21:41.677713+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 1.61,
+  "backtest_total_bars": 1160,
+  "current_price": 1.48,
   "state": "BLUE",
-  "v1": 2.1,
-  "v2": 2.65,
-  "sma200": 5.38,
-  "rsi14": 38.7,
+  "v1": 2.06,
+  "v2": 2.61,
+  "sma200": 5.31,
+  "rsi14": 36.5,
   "atr14": 0.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 154.8,
-    "cagr_pct": 22.6,
+    "cagr_pct": 22.5,
     "sharpe_ratio": 0.65,
     "win_rate_pct": 28.6,
     "profit_factor": 3.83,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 154.8,
-      "cagr_pct": 22.6,
+      "cagr_pct": 22.5,
       "sharpe_ratio": 0.65,
       "win_rate_pct": 28.6,
       "profit_factor": 3.83,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -60.8,
-      "cagr_pct": -18.4,
-      "sharpe_ratio": 0.44,
+      "total_return_pct": -63.9,
+      "cagr_pct": -19.8,
+      "sharpe_ratio": 0.43,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 91.6,
+      "max_drawdown_pct": 92.3,
       "total_trades": 1
     }
   ],
@@ -16326,7 +16326,7 @@
       "high": 1.89,
       "low": 1.7,
       "close": 1.71,
-      "volume": 13871100.0,
+      "volume": 13990700.0,
       "v1": 2.13,
       "m1": 2.29,
       "m2": 2.53,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 1.73,
       "high": 1.76,
-      "low": 1.6,
-      "close": 1.61,
-      "volume": 4557500.0,
+      "low": 1.49,
+      "close": 1.49,
+      "volume": 23366100.0,
       "v1": 2.1,
-      "m1": 2.26,
+      "m1": 2.25,
       "m2": 2.49,
       "v2": 2.65,
       "sma200": 5.38,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1.55,
+      "high": 1.66,
+      "low": 1.47,
+      "close": 1.48,
+      "volume": 17683700.0,
+      "v1": 2.06,
+      "m1": 2.22,
+      "m2": 2.45,
+      "v2": 2.61,
+      "sma200": 5.31,
       "state": "BLUE"
     }
   ],
@@ -21090,6 +21104,10 @@
         {
           "time": "2026-11-17",
           "value": 25479.9
+        },
+        {
+          "time": "2026-11-18",
+          "value": 25479.9
         }
       ]
     },
@@ -25732,6 +25750,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 22038.89
+        },
+        {
+          "time": "2026-11-18",
           "value": 22038.89
         }
       ]
@@ -30376,6 +30398,10 @@
         {
           "time": "2026-11-17",
           "value": 12203.2
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12203.2
         }
       ]
     },
@@ -35018,7 +35044,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 3920.28
+          "value": 3639.39
+        },
+        {
+          "time": "2026-11-18",
+          "value": 3614.96
         }
       ]
     }
@@ -35111,18 +35141,18 @@
   ],
   "smart_money": {
     "symbol": "EOSE",
-    "smart_money_score": 90.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.45x). Силна скрита подкрепа.",
-    "cmf_20d": 0.037,
-    "up_down_vol_ratio": 1.45,
-    "absorption_5d_pct": 35.2,
-    "vol_shock_ratio": 0.19,
-    "put_call_ratio": 0.29,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 2.0,
-    "max_pain": 6.0,
+    "smart_money_score": 27.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.04).",
+    "cmf_20d": -0.035,
+    "up_down_vol_ratio": 1.2,
+    "absorption_5d_pct": 22.3,
+    "vol_shock_ratio": 0.75,
+    "put_call_ratio": 2.0,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 0.5,
+    "max_pain": 13.0,
     "unusual_call_sweep": false
   }
 }

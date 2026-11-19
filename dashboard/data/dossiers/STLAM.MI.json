@@ -3,18 +3,18 @@
   "name": "STELLANTIS",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:21.668407+00:00",
+  "generated_at": "2026-11-19T09:24:29.818197+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1176,
-  "current_price": 3.33,
+  "backtest_total_bars": 1178,
+  "current_price": 3.3,
   "state": "BLUE",
-  "v1": 3.88,
-  "v2": 4.11,
-  "sma200": 5.36,
-  "rsi14": 31.0,
-  "atr14": 0.18,
+  "v1": 3.81,
+  "v2": 4.06,
+  "sma200": 5.33,
+  "rsi14": 30.9,
+  "atr14": 0.17,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -32.4,
-      "cagr_pct": -8.1,
+      "cagr_pct": -8.0,
       "sharpe_ratio": -0.9,
       "win_rate_pct": 10.0,
       "profit_factor": 0.26,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -69.1,
-      "cagr_pct": -22.3,
+      "total_return_pct": -69.4,
+      "cagr_pct": -22.4,
       "sharpe_ratio": -0.45,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 85.7,
+      "max_drawdown_pct": 85.9,
       "total_trades": 1
     }
   ],
@@ -16577,13 +16577,41 @@
       "open": 3.32,
       "high": 3.38,
       "low": 3.28,
-      "close": 3.33,
-      "volume": 46470534.0,
+      "close": 3.32,
+      "volume": 64118412.0,
       "v1": 3.88,
       "m1": 3.95,
       "m2": 4.04,
       "v2": 4.11,
       "sma200": 5.36,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 3.35,
+      "high": 3.35,
+      "low": 3.18,
+      "close": 3.28,
+      "volume": 57336978.0,
+      "v1": 3.84,
+      "m1": 3.91,
+      "m2": 4.01,
+      "v2": 4.08,
+      "sma200": 5.34,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 3.26,
+      "high": 3.33,
+      "low": 3.26,
+      "close": 3.3,
+      "volume": 7511189.0,
+      "v1": 3.81,
+      "m1": 3.88,
+      "m2": 3.98,
+      "v2": 4.06,
+      "sma200": 5.33,
       "state": "BLUE"
     }
   ],
@@ -21354,6 +21382,14 @@
         {
           "time": "2026-11-17",
           "value": 13116.41
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13116.41
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13116.41
         }
       ]
     },
@@ -26064,6 +26100,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12105.31
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12105.31
+        },
+        {
+          "time": "2026-11-19",
           "value": 12105.31
         }
       ]
@@ -30776,6 +30820,14 @@
         {
           "time": "2026-11-17",
           "value": 9499.77
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9499.77
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9499.77
         }
       ]
     },
@@ -35486,7 +35538,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 3089.01
+          "value": 3082.06
+        },
+        {
+          "time": "2026-11-18",
+          "value": 3043.12
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3061.2
         }
       ]
     }
@@ -35543,14 +35603,14 @@
   ],
   "smart_money": {
     "symbol": "STLAM.MI",
-    "smart_money_score": 42.0,
+    "smart_money_score": 40.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: N/A).",
-    "cmf_20d": 0.035,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 25.3,
-    "vol_shock_ratio": 0.93,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: N/A).",
+    "cmf_20d": 0.014,
+    "up_down_vol_ratio": 0.58,
+    "absorption_5d_pct": 38.5,
+    "vol_shock_ratio": 0.14,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,28 +3,28 @@
   "name": "iShares STOXX Europe 600 Auto & Parts",
   "sector": "Макро индекси",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:35.371659+00:00",
+  "generated_at": "2026-11-19T09:21:48.951554+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1179,
-  "current_price": 37.78,
+  "backtest_total_bars": 1180,
+  "current_price": 37.64,
   "state": "BLUE",
-  "v1": 38.65,
-  "v2": 38.9,
-  "sma200": 40.23,
-  "rsi14": 41.2,
-  "atr14": 0.71,
+  "v1": 38.58,
+  "v2": 38.85,
+  "sma200": 40.21,
+  "rsi14": 40.3,
+  "atr14": 0.68,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -3.4,
-    "cagr_pct": -0.7,
+    "total_return_pct": -3.5,
+    "cagr_pct": -0.8,
     "sharpe_ratio": -0.06,
     "win_rate_pct": 41.7,
-    "profit_factor": 2.21,
+    "profit_factor": 2.18,
     "max_drawdown_pct": 15.0,
     "total_trades": 12
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -3.4,
-      "cagr_pct": -0.7,
+      "total_return_pct": -3.5,
+      "cagr_pct": -0.8,
       "sharpe_ratio": -0.06,
       "win_rate_pct": 41.7,
-      "profit_factor": 2.21,
+      "profit_factor": 2.18,
       "max_drawdown_pct": 15.0,
       "total_trades": 12
     },
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -11.3,
-      "cagr_pct": -2.5,
+      "total_return_pct": -11.6,
+      "cagr_pct": -2.6,
       "sharpe_ratio": -0.01,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16618,14 +16618,28 @@
       "time": "2026-11-17",
       "open": 37.91,
       "high": 38.0,
-      "low": 37.65,
-      "close": 37.78,
-      "volume": 47252.0,
+      "low": 37.58,
+      "close": 37.59,
+      "volume": 48107.0,
       "v1": 38.65,
       "m1": 38.7,
-      "m2": 38.82,
+      "m2": 38.81,
       "v2": 38.9,
       "sma200": 40.23,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 37.48,
+      "high": 37.68,
+      "low": 37.43,
+      "close": 37.64,
+      "volume": 1606.0,
+      "v1": 38.58,
+      "m1": 38.64,
+      "m2": 38.76,
+      "v2": 38.85,
+      "sma200": 40.21,
       "state": "BLUE"
     }
   ],
@@ -16792,11 +16806,11 @@
       "text": "BUY #12 @ $38.0"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -0.76% ($-37.07 €)"
+      "text": "EXIT -1.13% ($-54.89 €)"
     }
   ],
   "equity_curves": [
@@ -21519,7 +21533,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9669.78
+          "value": 9645.57
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9651.95
         }
       ]
     },
@@ -26242,6 +26260,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9047.08
+        },
+        {
+          "time": "2026-11-19",
           "value": 9047.08
         }
       ]
@@ -30966,6 +30988,10 @@
         {
           "time": "2026-11-17",
           "value": 7587.8
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7587.8
         }
       ]
     },
@@ -35688,7 +35714,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8880.72
+          "value": 8836.06
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8847.81
         }
       ]
     }
@@ -35830,25 +35860,25 @@
       "num": 12,
       "entry_date": "2026-10-07",
       "entry_price": 38.0,
-      "exit_date": "2026-11-17",
-      "exit_price": 37.78,
-      "holding_days": 29,
-      "pnl_pct": -0.76,
-      "pnl_eur": -37.07,
+      "exit_date": "2026-11-19",
+      "exit_price": 37.64,
+      "holding_days": 30,
+      "pnl_pct": -1.13,
+      "pnl_eur": -54.89,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
   ],
   "smart_money": {
     "symbol": "EXV5.DE",
-    "smart_money_score": 40.0,
+    "smart_money_score": 45.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: N/A).",
-    "cmf_20d": -0.012,
-    "up_down_vol_ratio": 0.98,
-    "absorption_5d_pct": 25.7,
-    "vol_shock_ratio": 1.4,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: N/A).",
+    "cmf_20d": -0.032,
+    "up_down_vol_ratio": 1.04,
+    "absorption_5d_pct": 27.4,
+    "vol_shock_ratio": 0.04,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,18 +3,18 @@
   "name": "MP Materials Corp.",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:53.372113+00:00",
+  "generated_at": "2026-11-19T09:23:06.371990+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 35.67,
+  "backtest_total_bars": 1160,
+  "current_price": 35.95,
   "state": "BLUE",
-  "v1": 39.7,
-  "v2": 43.19,
-  "sma200": 53.49,
-  "rsi14": 39.4,
-  "atr14": 2.43,
+  "v1": 39.45,
+  "v2": 42.94,
+  "sma200": 53.34,
+  "rsi14": 41.3,
+  "atr14": 2.56,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -22.0,
-      "cagr_pct": -5.3,
+      "total_return_pct": -21.7,
+      "cagr_pct": -5.2,
       "sharpe_ratio": -0.23,
       "win_rate_pct": 10.0,
-      "profit_factor": 0.67,
-      "max_drawdown_pct": 40.6,
+      "profit_factor": 0.68,
+      "max_drawdown_pct": 41.3,
       "total_trades": 10
     },
     {
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -34.3,
-      "cagr_pct": -8.7,
+      "total_return_pct": -33.8,
+      "cagr_pct": -8.6,
       "sharpe_ratio": 0.21,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 36.75,
       "high": 37.09,
-      "low": 35.6,
-      "close": 35.67,
-      "volume": 1504020.0,
-      "v1": 39.7,
-      "m1": 40.81,
-      "m2": 42.31,
-      "v2": 43.19,
+      "low": 34.64,
+      "close": 34.86,
+      "volume": 6687600.0,
+      "v1": 39.67,
+      "m1": 40.79,
+      "m2": 42.29,
+      "v2": 43.18,
       "sma200": 53.49,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 34.77,
+      "high": 38.16,
+      "low": 34.69,
+      "close": 35.95,
+      "volume": 7513700.0,
+      "v1": 39.45,
+      "m1": 40.56,
+      "m2": 42.06,
+      "v2": 42.94,
+      "sma200": 53.34,
       "state": "BLUE"
     }
   ],
@@ -21062,6 +21076,10 @@
         {
           "time": "2026-11-17",
           "value": 17950.63
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17950.63
         }
       ]
     },
@@ -25704,7 +25722,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 7803.87
+          "value": 7715.97
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7834.26
         }
       ]
     },
@@ -30348,6 +30370,10 @@
         {
           "time": "2026-11-17",
           "value": 5735.52
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5735.52
         }
       ]
     },
@@ -34990,7 +35016,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6577.03
+          "value": 6427.67
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6628.65
         }
       ]
     }
@@ -35059,18 +35089,18 @@
   ],
   "smart_money": {
     "symbol": "MP",
-    "smart_money_score": 50.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.47) с Gamma стена на $35.00. Залог за рязък отскок.",
-    "cmf_20d": -0.029,
-    "up_down_vol_ratio": 0.85,
-    "absorption_5d_pct": 24.8,
-    "vol_shock_ratio": 0.24,
-    "put_call_ratio": 0.47,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 35.0,
-    "max_pain": 50.0,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.07).",
+    "cmf_20d": -0.073,
+    "up_down_vol_ratio": 0.86,
+    "absorption_5d_pct": 32.6,
+    "vol_shock_ratio": 1.19,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 25.0,
+    "max_pain": 25.0,
     "unusual_call_sweep": false
   }
 }

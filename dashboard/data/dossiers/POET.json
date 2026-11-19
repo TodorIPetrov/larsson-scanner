@@ -3,18 +3,18 @@
   "name": "POET Technologies Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:09.976561+00:00",
+  "generated_at": "2026-11-19T09:23:54.282202+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 4.5,
+  "backtest_total_bars": 1160,
+  "current_price": 4.25,
   "state": "BLUE",
-  "v1": 5.59,
-  "v2": 6.37,
-  "sma200": 8.14,
-  "rsi14": 37.3,
-  "atr14": 0.47,
+  "v1": 5.51,
+  "v2": 6.3,
+  "sma200": 8.13,
+  "rsi14": 35.1,
+  "atr14": 0.48,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -58.6,
-      "cagr_pct": -17.5,
+      "cagr_pct": -17.4,
       "sharpe_ratio": 0.17,
       "win_rate_pct": 18.8,
       "profit_factor": 0.33,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -31.8,
-      "cagr_pct": -8.0,
-      "sharpe_ratio": -0.25,
+      "total_return_pct": -29.6,
+      "cagr_pct": -7.4,
+      "sharpe_ratio": -0.22,
       "win_rate_pct": 11.1,
-      "profit_factor": 0.62,
-      "max_drawdown_pct": 49.9,
+      "profit_factor": 0.65,
+      "max_drawdown_pct": 49.1,
       "total_trades": 9
     },
     {
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -34.8,
-      "cagr_pct": -8.9,
-      "sharpe_ratio": 0.46,
+      "total_return_pct": -38.4,
+      "cagr_pct": -10.0,
+      "sharpe_ratio": 0.45,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 89.2,
@@ -16326,7 +16326,7 @@
       "high": 4.87,
       "low": 4.55,
       "close": 4.66,
-      "volume": 11654600.0,
+      "volume": 11744500.0,
       "v1": 5.66,
       "m1": 5.9,
       "m2": 6.23,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 4.78,
-      "high": 4.79,
-      "low": 4.49,
-      "close": 4.5,
-      "volume": 1545917.0,
+      "open": 4.81,
+      "high": 4.81,
+      "low": 4.37,
+      "close": 4.4,
+      "volume": 7488900.0,
       "v1": 5.59,
       "m1": 5.83,
       "m2": 6.17,
-      "v2": 6.37,
+      "v2": 6.36,
       "sma200": 8.14,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 4.52,
+      "high": 4.57,
+      "low": 4.21,
+      "close": 4.25,
+      "volume": 7732200.0,
+      "v1": 5.51,
+      "m1": 5.76,
+      "m2": 6.09,
+      "v2": 6.3,
+      "sma200": 8.13,
       "state": "BLUE"
     }
   ],
@@ -21104,6 +21118,10 @@
         {
           "time": "2026-11-17",
           "value": 6292.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6292.75
         }
       ]
     },
@@ -25747,6 +25765,10 @@
         {
           "time": "2026-11-17",
           "value": 5809.93
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5809.93
         }
       ]
     },
@@ -30389,7 +30411,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6818.2
+          "value": 7035.06
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7035.06
         }
       ]
     },
@@ -35032,7 +35058,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6524.67
+          "value": 6379.68
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6162.19
         }
       ]
     }
@@ -35137,18 +35167,18 @@
   ],
   "smart_money": {
     "symbol": "POET",
-    "smart_money_score": 48.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.20) с Gamma стена на $5.00. Залог за рязък отскок.",
-    "cmf_20d": -0.027,
-    "up_down_vol_ratio": 0.63,
-    "absorption_5d_pct": 33.5,
-    "vol_shock_ratio": 0.19,
-    "put_call_ratio": 0.2,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.23) с Gamma стена на $33.00. Залог за рязък отскок.",
+    "cmf_20d": -0.085,
+    "up_down_vol_ratio": 0.5,
+    "absorption_5d_pct": 25.7,
+    "vol_shock_ratio": 0.96,
+    "put_call_ratio": 0.23,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 5.0,
-    "max_pain": 10.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 33.0,
+    "max_pain": 33.0,
+    "unusual_call_sweep": true
   }
 }

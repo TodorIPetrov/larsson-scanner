@@ -3,18 +3,18 @@
   "name": "NNE",
   "sector": "Equities",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:59.800325+00:00",
+  "generated_at": "2026-11-19T09:23:29.397795+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 10.18,
+  "backtest_total_bars": 377,
+  "current_price": 10.35,
   "state": "BLUE",
-  "v1": 12.42,
-  "v2": 14.12,
-  "sma200": 20.37,
-  "rsi14": 35.9,
-  "atr14": 0.97,
+  "v1": 12.3,
+  "v2": 14.0,
+  "sma200": 20.28,
+  "rsi14": 36.7,
+  "atr14": 0.99,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -25.1,
-      "cagr_pct": -17.6,
-      "sharpe_ratio": -0.57,
+      "total_return_pct": -24.5,
+      "cagr_pct": -17.1,
+      "sharpe_ratio": -0.55,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 39.6,
+      "max_drawdown_pct": 39.1,
       "total_trades": 5
     },
     {
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -60.4,
-      "cagr_pct": -46.2,
-      "sharpe_ratio": -0.16,
+      "total_return_pct": -59.7,
+      "cagr_pct": -45.5,
+      "sharpe_ratio": -0.15,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 83.0,
@@ -5376,14 +5376,28 @@
       "time": "2026-11-17",
       "open": 10.69,
       "high": 10.77,
-      "low": 10.18,
-      "close": 10.18,
-      "volume": 313102.0,
-      "v1": 12.42,
-      "m1": 12.94,
-      "m2": 13.67,
-      "v2": 14.12,
+      "low": 9.98,
+      "close": 10.49,
+      "volume": 2122300.0,
+      "v1": 12.41,
+      "m1": 12.93,
+      "m2": 13.66,
+      "v2": 14.11,
       "sma200": 20.37,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 10.65,
+      "high": 11.27,
+      "low": 10.19,
+      "close": 10.35,
+      "volume": 1639200.0,
+      "v1": 12.3,
+      "m1": 12.82,
+      "m2": 13.54,
+      "v2": 14.0,
+      "sma200": 20.28,
       "state": "BLUE"
     }
   ],
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-17",
           "value": 10102.37
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10102.37
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9471.5
+        },
+        {
+          "time": "2026-11-18",
           "value": 9471.5
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-17",
           "value": 9471.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9471.5
         }
       ]
     },
@@ -11444,7 +11470,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 3967.94
+          "value": 4088.77
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4034.2
         }
       ]
     }
@@ -11465,18 +11495,18 @@
   ],
   "smart_money": {
     "symbol": "NNE",
-    "smart_money_score": 40.0,
+    "smart_money_score": 60.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.31) с Gamma стена на $10.00. Залог за рязък отскок.",
-    "cmf_20d": -0.118,
-    "up_down_vol_ratio": 0.73,
-    "absorption_5d_pct": 33.1,
-    "vol_shock_ratio": 0.16,
-    "put_call_ratio": 0.31,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $30.00. Залог за рязък отскок.",
+    "cmf_20d": -0.115,
+    "up_down_vol_ratio": 0.57,
+    "absorption_5d_pct": 47.6,
+    "vol_shock_ratio": 0.82,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 10.0,
-    "max_pain": 12.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 30.0,
+    "max_pain": 30.0,
+    "unusual_call_sweep": true
   }
 }

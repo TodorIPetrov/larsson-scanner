@@ -3,18 +3,18 @@
   "name": "Rio Tinto Plc",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:14.416250+00:00",
+  "generated_at": "2026-11-19T09:24:06.819575+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 80.26,
+  "backtest_total_bars": 1160,
+  "current_price": 75.9,
   "state": "BLUE",
-  "v1": 86.17,
-  "v2": 89.52,
-  "sma200": 94.32,
-  "rsi14": 33.9,
-  "atr14": 2.01,
+  "v1": 85.5,
+  "v2": 89.06,
+  "sma200": 94.24,
+  "rsi14": 26.6,
+  "atr14": 2.18,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -39.5,
-      "cagr_pct": -10.4,
+      "cagr_pct": -10.3,
       "sharpe_ratio": -0.43,
       "win_rate_pct": 8.7,
       "profit_factor": 0.45,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -27.6,
       "cagr_pct": -6.8,
-      "sharpe_ratio": -0.27,
+      "sharpe_ratio": -0.26,
       "win_rate_pct": 13.0,
       "profit_factor": 0.59,
       "max_drawdown_pct": 56.7,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 31.9,
-      "cagr_pct": 6.2,
-      "sharpe_ratio": 0.35,
+      "total_return_pct": 24.7,
+      "cagr_pct": 4.9,
+      "sharpe_ratio": 0.31,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.91,
+      "profit_factor": 0.7,
       "max_drawdown_pct": 35.0,
       "total_trades": 1
     }
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 79.85,
       "high": 80.55,
-      "low": 79.74,
-      "close": 80.26,
-      "volume": 408002.0,
-      "v1": 86.17,
-      "m1": 87.35,
-      "m2": 88.78,
-      "v2": 89.52,
+      "low": 79.31,
+      "close": 79.47,
+      "volume": 2386900.0,
+      "v1": 86.16,
+      "m1": 87.34,
+      "m2": 88.77,
+      "v2": 89.51,
       "sma200": 94.32,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 77.2,
+      "high": 77.23,
+      "low": 75.53,
+      "close": 75.9,
+      "volume": 3755500.0,
+      "v1": 85.5,
+      "m1": 86.76,
+      "m2": 88.27,
+      "v2": 89.06,
+      "sma200": 94.24,
       "state": "BLUE"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 9211.43
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9211.43
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7817.36
+        },
+        {
+          "time": "2026-11-18",
           "value": 7817.36
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 7237.47
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7237.47
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 13198.74
+          "value": 13068.83
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12481.74
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "RIO",
-    "smart_money_score": 5.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.53, CMF: -0.13).",
-    "cmf_20d": -0.128,
-    "up_down_vol_ratio": 0.5,
-    "absorption_5d_pct": 33.7,
-    "vol_shock_ratio": 0.13,
-    "put_call_ratio": 1.53,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 80.0,
-    "max_pain": 80.0,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.16).",
+    "cmf_20d": -0.162,
+    "up_down_vol_ratio": 0.46,
+    "absorption_5d_pct": 12.0,
+    "vol_shock_ratio": 1.2,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 70.0,
+    "max_pain": 70.0,
     "unusual_call_sweep": false
   }
 }

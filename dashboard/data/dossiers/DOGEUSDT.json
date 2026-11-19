@@ -3,17 +3,17 @@
   "name": "Dogecoin",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-17T15:36:30.637576+00:00",
+  "generated_at": "2026-11-19T09:21:35.864982+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1753,
+  "backtest_total_bars": 1755,
   "current_price": 0.06,
   "state": "BLUE",
   "v1": 0.07,
   "v2": 0.08,
   "sma200": 0.08,
-  "rsi14": 25.7,
+  "rsi14": 28.2,
   "atr14": 0.0,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -58.4,
-      "cagr_pct": -11.9,
+      "total_return_pct": -58.1,
+      "cagr_pct": -11.8,
       "sharpe_ratio": 0.19,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -24663,6 +24663,34 @@
       "v2": 0.08,
       "sma200": 0.08,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 0.06,
+      "high": 0.06,
+      "low": 0.06,
+      "close": 0.06,
+      "volume": 407843024.0,
+      "v1": 0.07,
+      "m1": 0.07,
+      "m2": 0.08,
+      "v2": 0.08,
+      "sma200": 0.08,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 0.06,
+      "high": 0.06,
+      "low": 0.06,
+      "close": 0.06,
+      "volume": 102137617.0,
+      "v1": 0.07,
+      "m1": 0.07,
+      "m2": 0.07,
+      "v2": 0.08,
+      "sma200": 0.08,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -31866,6 +31894,14 @@
         {
           "time": "2026-11-16",
           "value": 5361.02
+        },
+        {
+          "time": "2026-11-17",
+          "value": 5361.02
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5361.02
         }
       ]
     },
@@ -38884,6 +38920,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 6761.05
+        },
+        {
+          "time": "2026-11-17",
+          "value": 6761.05
+        },
+        {
+          "time": "2026-11-18",
           "value": 6761.05
         }
       ]
@@ -45904,6 +45948,14 @@
         {
           "time": "2026-11-16",
           "value": 4066.29
+        },
+        {
+          "time": "2026-11-17",
+          "value": 4066.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4066.29
         }
       ]
     },
@@ -52923,6 +52975,14 @@
         {
           "time": "2026-11-16",
           "value": 4160.5
+        },
+        {
+          "time": "2026-11-17",
+          "value": 4245.93
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4191.56
         }
       ]
     }
@@ -53087,14 +53147,14 @@
   ],
   "smart_money": {
     "symbol": "DOGEUSDT",
-    "smart_money_score": 45.0,
+    "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.021,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 52.4,
-    "vol_shock_ratio": 1.13,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.06, P/C: N/A).",
+    "cmf_20d": 0.055,
+    "up_down_vol_ratio": 0.62,
+    "absorption_5d_pct": 56.7,
+    "vol_shock_ratio": 0.19,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

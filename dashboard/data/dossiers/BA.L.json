@@ -3,18 +3,18 @@
   "name": "BAE SYSTEMS PLC ORD 2.5P",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:13.414281+00:00",
+  "generated_at": "2026-11-19T09:20:30.433328+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1167,
-  "current_price": 1864.5,
+  "backtest_total_bars": 1169,
+  "current_price": 1853.0,
   "state": "BLUE",
-  "v1": 1944.28,
-  "v2": 1961.09,
-  "sma200": 2022.96,
-  "rsi14": 40.2,
-  "atr14": 58.55,
+  "v1": 1931.38,
+  "v2": 1953.17,
+  "sma200": 2022.69,
+  "rsi14": 40.5,
+  "atr14": 56.36,
   "empirical_tier": "S",
   "walk_forward_stable": false,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 158.7,
-      "cagr_pct": 22.8,
-      "sharpe_ratio": 0.9,
+      "total_return_pct": 157.1,
+      "cagr_pct": 22.6,
+      "sharpe_ratio": 0.89,
       "win_rate_pct": 100.0,
-      "profit_factor": 6.86,
+      "profit_factor": 6.8,
       "max_drawdown_pct": 23.1,
       "total_trades": 1
     }
@@ -16451,13 +16451,41 @@
       "open": 1887.0,
       "high": 1891.5,
       "low": 1857.0,
-      "close": 1864.5,
-      "volume": 3880120.0,
+      "close": 1860.5,
+      "volume": 8833495.0,
       "v1": 1944.28,
       "m1": 1950.03,
       "m2": 1957.2,
       "v2": 1961.09,
-      "sma200": 2022.96,
+      "sma200": 2022.94,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1856.0,
+      "high": 1872.5,
+      "low": 1826.0,
+      "close": 1828.0,
+      "volume": 4901524.0,
+      "v1": 1937.94,
+      "m1": 1944.73,
+      "m2": 1952.88,
+      "v2": 1957.23,
+      "sma200": 2022.71,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1820.0,
+      "high": 1859.0,
+      "low": 1820.0,
+      "close": 1853.0,
+      "volume": 401880.0,
+      "v1": 1931.38,
+      "m1": 1939.19,
+      "m2": 1948.35,
+      "v2": 1953.17,
+      "sma200": 2022.69,
       "state": "BLUE"
     }
   ],
@@ -21500,6 +21528,14 @@
         {
           "time": "2026-11-17",
           "value": 13212.9
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13212.9
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13212.9
         }
       ]
     },
@@ -26174,6 +26210,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11844.95
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11844.95
+        },
+        {
+          "time": "2026-11-19",
           "value": 11844.95
         }
       ]
@@ -30850,6 +30894,14 @@
         {
           "time": "2026-11-17",
           "value": 13232.57
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13232.57
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13232.57
         }
       ]
     },
@@ -35524,7 +35576,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 25893.99
+          "value": 25838.43
+        },
+        {
+          "time": "2026-11-18",
+          "value": 25387.08
+        },
+        {
+          "time": "2026-11-19",
+          "value": 25734.28
         }
       ]
     }
@@ -35845,14 +35905,14 @@
   ],
   "smart_money": {
     "symbol": "BA.L",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
-    "cmf_20d": -0.044,
-    "up_down_vol_ratio": 0.74,
-    "absorption_5d_pct": 35.9,
-    "vol_shock_ratio": 0.79,
+    "smart_money_score": 25.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.145,
+    "up_down_vol_ratio": 0.71,
+    "absorption_5d_pct": 36.2,
+    "vol_shock_ratio": 0.08,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

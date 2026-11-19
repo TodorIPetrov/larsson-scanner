@@ -3,26 +3,26 @@
   "name": "Atlas Copco AB ser. A",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:11.610657+00:00",
+  "generated_at": "2026-11-19T09:20:01.775418+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1162,
-  "current_price": 189.8,
+  "backtest_total_bars": 1164,
+  "current_price": 192.9,
   "state": "BLUE",
-  "v1": 192.02,
-  "v2": 194.47,
-  "sma200": 188.04,
-  "rsi14": 47.2,
-  "atr14": 4.87,
+  "v1": 191.92,
+  "v2": 194.25,
+  "sma200": 188.1,
+  "rsi14": 51.8,
+  "atr14": 4.79,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 2.5,
-    "cagr_pct": 0.5,
-    "sharpe_ratio": 0.11,
+    "total_return_pct": 3.4,
+    "cagr_pct": 0.7,
+    "sharpe_ratio": 0.14,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 10.2,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 2.5,
-      "cagr_pct": 0.5,
-      "sharpe_ratio": 0.11,
+      "total_return_pct": 3.4,
+      "cagr_pct": 0.7,
+      "sharpe_ratio": 0.14,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 10.2,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 68.0,
-      "cagr_pct": 11.9,
-      "sharpe_ratio": 0.53,
+      "total_return_pct": 70.8,
+      "cagr_pct": 12.3,
+      "sharpe_ratio": 0.54,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.07,
+      "profit_factor": 2.16,
       "max_drawdown_pct": 32.8,
       "total_trades": 1
     }
@@ -16380,14 +16380,42 @@
       "time": "2026-11-17",
       "open": 190.15,
       "high": 191.5,
-      "low": 188.55,
-      "close": 189.8,
-      "volume": 1957775.0,
-      "v1": 192.02,
+      "low": 188.35,
+      "close": 189.2,
+      "volume": 5558129.0,
+      "v1": 192.01,
       "m1": 193.04,
-      "m2": 194.09,
+      "m2": 194.08,
       "v2": 194.47,
       "sma200": 188.04,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 191.6,
+      "high": 191.6,
+      "low": 188.15,
+      "close": 188.75,
+      "volume": 5177091.0,
+      "v1": 191.87,
+      "m1": 192.87,
+      "m2": 193.91,
+      "v2": 194.31,
+      "sma200": 188.06,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 191.7,
+      "high": 193.75,
+      "low": 191.6,
+      "close": 192.9,
+      "volume": 430336.0,
+      "v1": 191.92,
+      "m1": 192.86,
+      "m2": 193.86,
+      "v2": 194.25,
+      "sma200": 188.1,
       "state": "BLUE"
     }
   ],
@@ -16428,11 +16456,11 @@
       "text": "BUY #3 @ $181.35"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.45% ($222.99 €)"
+      "text": "EXIT +6.16% ($308.48 €)"
     }
   ],
   "equity_curves": [
@@ -21087,7 +21115,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10259.63
+          "value": 10243.06
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10230.64
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10345.19
         }
       ]
     },
@@ -25742,6 +25778,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 10114.07
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10114.07
+        },
+        {
+          "time": "2026-11-19",
           "value": 10114.07
         }
       ]
@@ -30398,6 +30442,14 @@
         {
           "time": "2026-11-17",
           "value": 7056.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7056.29
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7056.29
         }
       ]
     },
@@ -35052,7 +35104,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 16818.0
+          "value": 16764.83
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16724.96
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17092.68
         }
       ]
     }
@@ -35086,25 +35146,25 @@
       "num": 3,
       "entry_date": "2026-10-27",
       "entry_price": 181.35,
-      "exit_date": "2026-11-17",
-      "exit_price": 189.8,
-      "holding_days": 15,
-      "pnl_pct": 4.45,
-      "pnl_eur": 222.99,
+      "exit_date": "2026-11-19",
+      "exit_price": 192.9,
+      "holding_days": 17,
+      "pnl_pct": 6.16,
+      "pnl_eur": 308.48,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "ATCO-A.ST",
-    "smart_money_score": 62.0,
+    "smart_money_score": 52.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.10, P/C: N/A).",
     "cmf_20d": 0.096,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 48.2,
-    "vol_shock_ratio": 0.33,
+    "up_down_vol_ratio": 0.82,
+    "absorption_5d_pct": 33.1,
+    "vol_shock_ratio": 0.08,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

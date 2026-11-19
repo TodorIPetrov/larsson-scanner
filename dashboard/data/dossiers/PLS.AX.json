@@ -3,18 +3,18 @@
   "name": "PLSGROUP FPO [PLS]",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:09.010077+00:00",
+  "generated_at": "2026-11-19T09:23:51.663747+00:00",
   "backtest_start_date": "2022-04-05",
-  "backtest_end_date": "2026-11-17",
-  "backtest_years": 4.6,
-  "backtest_total_bars": 1170,
-  "current_price": 2.64,
+  "backtest_end_date": "2026-11-19",
+  "backtest_years": 4.7,
+  "backtest_total_bars": 1172,
+  "current_price": 2.56,
   "state": "BLUE",
-  "v1": 3.06,
-  "v2": 3.48,
-  "sma200": 4.72,
-  "rsi14": 37.0,
-  "atr14": 0.19,
+  "v1": 3.01,
+  "v2": 3.42,
+  "sma200": 4.71,
+  "rsi14": 34.9,
+  "atr14": 0.18,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": 186.3,
     "cagr_pct": 25.4,
-    "sharpe_ratio": 0.79,
+    "sharpe_ratio": 0.78,
     "win_rate_pct": 50.0,
     "profit_factor": 12.34,
     "max_drawdown_pct": 42.2,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 108.5,
-      "cagr_pct": 17.1,
-      "sharpe_ratio": 0.65,
+      "total_return_pct": 105.4,
+      "cagr_pct": 16.7,
+      "sharpe_ratio": 0.64,
       "win_rate_pct": 18.2,
-      "profit_factor": 2.92,
-      "max_drawdown_pct": 45.6,
+      "profit_factor": 2.79,
+      "max_drawdown_pct": 46.4,
       "total_trades": 11
     },
     {
@@ -83,7 +83,7 @@
       "is_winner": true,
       "total_return_pct": 186.3,
       "cagr_pct": 25.4,
-      "sharpe_ratio": 0.79,
+      "sharpe_ratio": 0.78,
       "win_rate_pct": 50.0,
       "profit_factor": 12.34,
       "max_drawdown_pct": 42.2,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -24.2,
-      "cagr_pct": -5.8,
-      "sharpe_ratio": 0.2,
+      "total_return_pct": -26.5,
+      "cagr_pct": -6.4,
+      "sharpe_ratio": 0.19,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 78.2,
@@ -16494,12 +16494,40 @@
       "high": 2.8,
       "low": 2.64,
       "close": 2.64,
-      "volume": 38314326.0,
+      "volume": 41697143.0,
       "v1": 3.06,
       "m1": 3.19,
       "m2": 3.37,
       "v2": 3.48,
       "sma200": 4.72,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 2.69,
+      "high": 2.77,
+      "low": 2.6,
+      "close": 2.6,
+      "volume": 39961655.0,
+      "v1": 3.03,
+      "m1": 3.16,
+      "m2": 3.34,
+      "v2": 3.45,
+      "sma200": 4.71,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 2.56,
+      "high": 2.65,
+      "low": 2.54,
+      "close": 2.56,
+      "volume": 24614754.0,
+      "v1": 3.01,
+      "m1": 3.13,
+      "m2": 3.31,
+      "v2": 3.42,
+      "sma200": 4.71,
       "state": "BLUE"
     }
   ],
@@ -21246,6 +21274,14 @@
         {
           "time": "2026-11-17",
           "value": 28630.33
+        },
+        {
+          "time": "2026-11-18",
+          "value": 28630.33
+        },
+        {
+          "time": "2026-11-19",
+          "value": 28630.33
         }
       ]
     },
@@ -25932,6 +25968,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 20236.16
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20236.16
+        },
+        {
+          "time": "2026-11-19",
           "value": 20236.16
         }
       ]
@@ -30620,6 +30664,14 @@
         {
           "time": "2026-11-17",
           "value": 20858.47
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20702.76
+        },
+        {
+          "time": "2026-11-19",
+          "value": 20547.04
         }
       ]
     },
@@ -35307,6 +35359,14 @@
         {
           "time": "2026-11-17",
           "value": 7589.48
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7474.49
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7359.49
         }
       ]
     }
@@ -35363,14 +35423,14 @@
   ],
   "smart_money": {
     "symbol": "PLS.AX",
-    "smart_money_score": 35.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
-    "cmf_20d": -0.213,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.26).",
+    "cmf_20d": -0.257,
     "up_down_vol_ratio": 0.96,
-    "absorption_5d_pct": 38.2,
-    "vol_shock_ratio": 1.12,
+    "absorption_5d_pct": 22.9,
+    "vol_shock_ratio": 0.72,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

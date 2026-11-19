@@ -3,18 +3,18 @@
   "name": "GitLab Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:36:39.881108+00:00",
+  "generated_at": "2026-11-19T09:22:00.527604+00:00",
   "backtest_start_date": "2022-05-19",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.5,
-  "backtest_total_bars": 1129,
-  "current_price": 44.58,
+  "backtest_total_bars": 1130,
+  "current_price": 44.5,
   "state": "GOLD",
-  "v1": 50.16,
-  "v2": 48.64,
-  "sma200": 34.83,
-  "rsi14": 31.2,
-  "atr14": 2.55,
+  "v1": 49.77,
+  "v2": 48.49,
+  "sma200": 34.88,
+  "rsi14": 31.1,
+  "atr14": 2.48,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,7 +33,7 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -49.8,
+      "total_return_pct": -49.9,
       "cagr_pct": -14.3,
       "sharpe_ratio": -0.15,
       "win_rate_pct": 26.1,
@@ -45,7 +45,7 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -53.3,
+      "total_return_pct": -53.4,
       "cagr_pct": -15.6,
       "sharpe_ratio": -0.22,
       "win_rate_pct": 23.1,
@@ -57,8 +57,8 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -36.8,
-      "cagr_pct": -9.7,
+      "total_return_pct": -36.9,
+      "cagr_pct": -9.8,
       "sharpe_ratio": -0.15,
       "win_rate_pct": 23.9,
       "profit_factor": 0.84,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 17.5,
-      "cagr_pct": 3.7,
-      "sharpe_ratio": 0.38,
+      "total_return_pct": 17.3,
+      "cagr_pct": 3.6,
+      "sharpe_ratio": 0.37,
       "win_rate_pct": 100.0,
       "profit_factor": 0.23,
       "max_drawdown_pct": 75.0,
@@ -15918,14 +15918,28 @@
       "time": "2026-11-17",
       "open": 46.64,
       "high": 47.1,
-      "low": 44.47,
+      "low": 44.03,
       "close": 44.58,
-      "volume": 353661.0,
-      "v1": 50.16,
-      "m1": 50.0,
-      "m2": 49.28,
+      "volume": 2116900.0,
+      "v1": 50.15,
+      "m1": 49.99,
+      "m2": 49.27,
       "v2": 48.64,
       "sma200": 34.83,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 44.67,
+      "high": 45.01,
+      "low": 43.91,
+      "close": 44.5,
+      "volume": 2358100.0,
+      "v1": 49.77,
+      "m1": 49.7,
+      "m2": 49.08,
+      "v2": 48.49,
+      "sma200": 34.88,
       "state": "GOLD"
     }
   ],
@@ -20550,6 +20564,10 @@
         {
           "time": "2026-11-17",
           "value": 8281.99
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8281.99
         }
       ]
     },
@@ -25072,7 +25090,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6327.96
+          "value": 6328.67
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6317.32
         }
       ]
     },
@@ -29596,6 +29618,10 @@
         {
           "time": "2026-11-17",
           "value": 5813.18
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5813.18
         }
       ]
     },
@@ -34118,7 +34144,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 11761.87
+          "value": 11763.19
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11742.08
         }
       ]
     }
@@ -34211,18 +34241,18 @@
   ],
   "smart_money": {
     "symbol": "GTLB",
-    "smart_money_score": 55.0,
+    "smart_money_score": 45.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: 0.57).",
-    "cmf_20d": -0.004,
-    "up_down_vol_ratio": 0.64,
-    "absorption_5d_pct": 50.0,
-    "vol_shock_ratio": 0.13,
-    "put_call_ratio": 0.57,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 45.0,
-    "max_pain": 50.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: 1.00).",
+    "cmf_20d": -0.017,
+    "up_down_vol_ratio": 0.5,
+    "absorption_5d_pct": 59.2,
+    "vol_shock_ratio": 0.85,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 25.0,
+    "max_pain": 25.0,
     "unusual_call_sweep": false
   }
 }

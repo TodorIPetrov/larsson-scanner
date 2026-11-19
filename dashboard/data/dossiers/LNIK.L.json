@@ -3,18 +3,18 @@
   "name": "WisdomTree Nickel (LME Nickel ETC)",
   "sector": "Суровини & Индустриални метали",
   "asset_class": "commodities",
-  "generated_at": "2026-11-17T15:36:49.912935+00:00",
+  "generated_at": "2026-11-19T09:22:56.296186+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1167,
-  "current_price": 12.75,
+  "backtest_total_bars": 1168,
+  "current_price": 12.51,
   "state": "BLUE",
-  "v1": 12.85,
-  "v2": 13.25,
-  "sma200": 15.63,
-  "rsi14": 49.2,
-  "atr14": 0.27,
+  "v1": 12.83,
+  "v2": 13.22,
+  "sma200": 15.62,
+  "rsi14": 46.6,
+  "atr14": 0.33,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -89.9,
-      "cagr_pct": -39.0,
+      "total_return_pct": -90.1,
+      "cagr_pct": -39.2,
       "sharpe_ratio": -0.53,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16448,16 +16448,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 12.7,
+      "open": 12.74,
       "high": 12.75,
       "low": 12.69,
-      "close": 12.75,
-      "volume": 1087.0,
+      "close": 13.58,
+      "volume": 1081.0,
       "v1": 12.85,
       "m1": 12.94,
       "m2": 13.12,
       "v2": 13.25,
-      "sma200": 15.63,
+      "sma200": 15.64,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 12.47,
+      "high": 12.51,
+      "low": 12.47,
+      "close": 12.51,
+      "volume": 2.0,
+      "v1": 12.83,
+      "m1": 12.92,
+      "m2": 13.09,
+      "v2": 13.22,
+      "sma200": 15.62,
       "state": "BLUE"
     }
   ],
@@ -21234,6 +21248,10 @@
         {
           "time": "2026-11-17",
           "value": 7503.37
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7503.37
         }
       ]
     },
@@ -25908,6 +25926,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7980.55
+        },
+        {
+          "time": "2026-11-19",
           "value": 7980.55
         }
       ]
@@ -30584,6 +30606,10 @@
         {
           "time": "2026-11-17",
           "value": 6528.71
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6528.71
         }
       ]
     },
@@ -35258,7 +35284,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 1014.92
+          "value": 1080.79
+        },
+        {
+          "time": "2026-11-19",
+          "value": 995.42
         }
       ]
     }
@@ -35351,14 +35381,14 @@
   ],
   "smart_money": {
     "symbol": "LNIK.L",
-    "smart_money_score": 15.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.34).",
-    "cmf_20d": -0.341,
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 1.805,
     "up_down_vol_ratio": 0.11,
-    "absorption_5d_pct": 16.0,
-    "vol_shock_ratio": 1.85,
+    "absorption_5d_pct": 355.3,
+    "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

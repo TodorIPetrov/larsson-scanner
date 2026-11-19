@@ -3,18 +3,18 @@
   "name": "GLENCORE PLC ORD USD0.01",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:39.079348+00:00",
+  "generated_at": "2026-11-19T09:21:57.759261+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1164,
-  "current_price": 492.7,
+  "backtest_total_bars": 1166,
+  "current_price": 467.25,
   "state": "BLUE",
-  "v1": 529.65,
-  "v2": 543.46,
-  "sma200": 548.41,
-  "rsi14": 33.0,
-  "atr14": 16.15,
+  "v1": 521.79,
+  "v2": 538.39,
+  "sma200": 547.91,
+  "rsi14": 28.5,
+  "atr14": 16.78,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -23.6,
-      "cagr_pct": -5.7,
-      "sharpe_ratio": -0.46,
+      "total_return_pct": -24.9,
+      "cagr_pct": -6.0,
+      "sharpe_ratio": -0.49,
       "win_rate_pct": 27.3,
-      "profit_factor": 0.77,
+      "profit_factor": 0.73,
       "max_drawdown_pct": 32.3,
       "total_trades": 11
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -3.3,
-      "cagr_pct": -0.7,
-      "sharpe_ratio": 0.15,
+      "total_return_pct": -8.3,
+      "cagr_pct": -1.9,
+      "sharpe_ratio": 0.11,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 60.2,
@@ -16408,14 +16408,42 @@
       "time": "2026-11-17",
       "open": 492.5,
       "high": 498.15,
-      "low": 491.05,
-      "close": 492.7,
-      "volume": 8924434.0,
-      "v1": 529.65,
+      "low": 490.85,
+      "close": 491.45,
+      "volume": 17930375.0,
+      "v1": 529.64,
       "m1": 535.25,
       "m2": 540.95,
       "v2": 543.46,
       "sma200": 548.41,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 483.95,
+      "high": 483.95,
+      "low": 457.3,
+      "close": 461.4,
+      "volume": 39628651.0,
+      "v1": 525.71,
+      "m1": 531.85,
+      "m2": 538.14,
+      "v2": 540.95,
+      "sma200": 548.13,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 466.0,
+      "high": 469.47,
+      "low": 464.4,
+      "close": 467.25,
+      "volume": 2977064.0,
+      "v1": 521.79,
+      "m1": 528.43,
+      "m2": 535.29,
+      "v2": 538.39,
+      "sma200": 547.91,
       "state": "BLUE"
     }
   ],
@@ -21208,6 +21236,14 @@
         {
           "time": "2026-11-17",
           "value": 11078.44
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11078.44
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11078.44
         }
       ]
     },
@@ -25870,7 +25906,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 7643.66
+          "value": 7634.18
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7514.82
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7514.82
         }
       ]
     },
@@ -30534,6 +30578,14 @@
         {
           "time": "2026-11-17",
           "value": 7663.08
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7663.08
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7663.08
         }
       ]
     },
@@ -35196,7 +35248,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9680.96
+          "value": 9656.4
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9065.96
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9180.9
         }
       ]
     }
@@ -35313,14 +35373,14 @@
   ],
   "smart_money": {
     "symbol": "GLEN.L",
-    "smart_money_score": 25.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.124,
-    "up_down_vol_ratio": 0.5,
-    "absorption_5d_pct": 42.7,
-    "vol_shock_ratio": 0.32,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
+    "cmf_20d": -0.174,
+    "up_down_vol_ratio": 0.4,
+    "absorption_5d_pct": 27.8,
+    "vol_shock_ratio": 0.11,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

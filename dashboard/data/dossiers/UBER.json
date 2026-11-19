@@ -3,25 +3,25 @@
   "name": "Uber Technologies, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:26.759346+00:00",
+  "generated_at": "2026-11-19T09:24:44.398770+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 68.8,
+  "backtest_total_bars": 1160,
+  "current_price": 68.76,
   "state": "BLUE",
-  "v1": 69.15,
-  "v2": 70.0,
-  "sma200": 72.55,
-  "rsi14": 49.1,
-  "atr14": 1.97,
+  "v1": 69.09,
+  "v2": 69.95,
+  "sma200": 72.5,
+  "rsi14": 48.9,
+  "atr14": 2.08,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 38.0,
-    "cagr_pct": 7.3,
+    "cagr_pct": 7.2,
     "sharpe_ratio": 0.39,
     "win_rate_pct": 28.6,
     "profit_factor": 1.54,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 38.0,
-      "cagr_pct": 7.3,
+      "cagr_pct": 7.2,
       "sharpe_ratio": 0.39,
       "win_rate_pct": 28.6,
       "profit_factor": 1.54,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 102.8,
+      "total_return_pct": 102.7,
       "cagr_pct": 16.6,
       "sharpe_ratio": 0.58,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.61,
+      "profit_factor": 2.6,
       "max_drawdown_pct": 39.5,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 70.89,
       "low": 69.45,
       "close": 69.99,
-      "volume": 14343500.0,
+      "volume": 14564400.0,
       "v1": 69.13,
       "m1": 69.37,
       "m2": 69.77,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 69.6,
       "high": 70.09,
-      "low": 68.56,
-      "close": 68.8,
-      "volume": 2955837.0,
-      "v1": 69.15,
-      "m1": 69.37,
-      "m2": 69.76,
-      "v2": 70.0,
+      "low": 67.06,
+      "close": 68.81,
+      "volume": 22224700.0,
+      "v1": 69.1,
+      "m1": 69.33,
+      "m2": 69.73,
+      "v2": 69.98,
       "sma200": 72.55,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 68.16,
+      "high": 70.11,
+      "low": 68.02,
+      "close": 68.76,
+      "volume": 12235800.0,
+      "v1": 69.09,
+      "m1": 69.32,
+      "m2": 69.7,
+      "v2": 69.95,
+      "sma200": 72.5,
       "state": "BLUE"
     }
   ],
@@ -21090,6 +21104,10 @@
         {
           "time": "2026-11-17",
           "value": 13798.56
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13798.56
         }
       ]
     },
@@ -25732,6 +25750,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12143.45
+        },
+        {
+          "time": "2026-11-18",
           "value": 12143.45
         }
       ]
@@ -30376,6 +30398,10 @@
         {
           "time": "2026-11-17",
           "value": 13929.81
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13929.81
         }
       ]
     },
@@ -35018,7 +35044,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 20301.64
+          "value": 20304.59
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20289.84
         }
       ]
     }
@@ -35114,15 +35144,15 @@
     "smart_money_score": 40.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: 0.67).",
-    "cmf_20d": -0.032,
-    "up_down_vol_ratio": 0.71,
-    "absorption_5d_pct": 37.8,
-    "vol_shock_ratio": 0.16,
-    "put_call_ratio": 0.67,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 70.0,
-    "max_pain": 70.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: 1.00).",
+    "cmf_20d": 0.006,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 37.2,
+    "vol_shock_ratio": 0.64,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 35.0,
+    "max_pain": 35.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,18 +3,18 @@
   "name": "The Kraft Heinz Company",
   "sector": "Consumer Defensive",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:46.797141+00:00",
+  "generated_at": "2026-11-19T09:22:22.184286+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 25.24,
+  "backtest_total_bars": 1160,
+  "current_price": 25.44,
   "state": "GOLD",
-  "v1": 24.32,
-  "v2": 24.19,
-  "sma200": 23.46,
-  "rsi14": 59.9,
-  "atr14": 0.69,
+  "v1": 24.39,
+  "v2": 24.23,
+  "sma200": 23.48,
+  "rsi14": 61.7,
+  "atr14": 0.71,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -26.8,
-      "cagr_pct": -6.6,
-      "sharpe_ratio": -0.4,
+      "total_return_pct": -26.3,
+      "cagr_pct": -6.4,
+      "sharpe_ratio": -0.39,
       "win_rate_pct": 13.3,
-      "profit_factor": 0.19,
+      "profit_factor": 0.21,
       "max_drawdown_pct": 37.0,
       "total_trades": 15
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -17.5,
-      "cagr_pct": -4.1,
-      "sharpe_ratio": -0.24,
+      "total_return_pct": -16.8,
+      "cagr_pct": -3.9,
+      "sharpe_ratio": -0.23,
       "win_rate_pct": 29.4,
-      "profit_factor": 0.52,
+      "profit_factor": 0.54,
       "max_drawdown_pct": 34.0,
       "total_trades": 17
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -30.3,
-      "cagr_pct": -7.5,
-      "sharpe_ratio": -0.51,
+      "total_return_pct": -29.7,
+      "cagr_pct": -7.4,
+      "sharpe_ratio": -0.49,
       "win_rate_pct": 29.4,
-      "profit_factor": 0.28,
+      "profit_factor": 0.3,
       "max_drawdown_pct": 38.0,
       "total_trades": 34
     },
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -19.9,
-      "cagr_pct": -4.7,
+      "total_return_pct": -19.2,
+      "cagr_pct": -4.5,
       "sharpe_ratio": -0.09,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 24.85,
-      "high": 25.24,
+      "high": 25.44,
       "low": 24.76,
-      "close": 25.24,
-      "volume": 1590670.0,
-      "v1": 24.32,
+      "close": 25.11,
+      "volume": 14822300.0,
+      "v1": 24.33,
       "m1": 24.26,
       "m2": 24.21,
       "v2": 24.19,
       "sma200": 23.46,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 24.88,
+      "high": 25.61,
+      "low": 24.83,
+      "close": 25.44,
+      "volume": 15194500.0,
+      "v1": 24.39,
+      "m1": 24.31,
+      "m2": 24.25,
+      "v2": 24.23,
+      "sma200": 23.48,
       "state": "GOLD"
     }
   ],
@@ -21118,6 +21132,10 @@
         {
           "time": "2026-11-17",
           "value": 10115.82
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10115.82
         }
       ]
     },
@@ -25760,7 +25778,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8262.72
+          "value": 8220.98
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8328.92
         }
       ]
     },
@@ -30403,7 +30425,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6980.63
+          "value": 6945.35
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7036.59
         }
       ]
     },
@@ -35046,7 +35072,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8020.58
+          "value": 7980.02
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8084.9
         }
       ]
     }
@@ -35163,18 +35193,18 @@
   ],
   "smart_money": {
     "symbol": "KHC",
-    "smart_money_score": 80.0,
+    "smart_money_score": 77.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.00, Up/Dn Vol: 0.96x). Силна скрита подкрепа.",
-    "cmf_20d": 0.001,
-    "up_down_vol_ratio": 0.96,
-    "absorption_5d_pct": 67.6,
-    "vol_shock_ratio": 0.12,
-    "put_call_ratio": 0.22,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 25.5,
-    "max_pain": 26.0,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.26x). Силна скрита подкрепа.",
+    "cmf_20d": 0.04,
+    "up_down_vol_ratio": 1.26,
+    "absorption_5d_pct": 54.7,
+    "vol_shock_ratio": 1.08,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 12.5,
+    "max_pain": 12.5,
     "unusual_call_sweep": false
   }
 }

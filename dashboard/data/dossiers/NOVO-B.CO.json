@@ -3,25 +3,25 @@
   "name": "Novo Nordisk B A/S",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:00.758613+00:00",
+  "generated_at": "2026-11-19T09:23:31.983250+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1157,
-  "current_price": 276.6,
+  "backtest_total_bars": 1159,
+  "current_price": 270.15,
   "state": "BLUE",
-  "v1": 269.79,
-  "v2": 272.19,
-  "sma200": 277.12,
-  "rsi14": 55.8,
-  "atr14": 7.51,
+  "v1": 270.06,
+  "v2": 272.17,
+  "sma200": 276.28,
+  "rsi14": 50.2,
+  "atr14": 7.15,
   "empirical_tier": "S",
   "walk_forward_stable": false,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": 69.4,
-    "cagr_pct": 12.2,
+    "cagr_pct": 12.1,
     "sharpe_ratio": 0.57,
     "win_rate_pct": 37.5,
     "profit_factor": 2.01,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": 69.4,
-      "cagr_pct": 12.2,
+      "cagr_pct": 12.1,
       "sharpe_ratio": 0.57,
       "win_rate_pct": 37.5,
       "profit_factor": 2.01,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -31.4,
-      "cagr_pct": -7.9,
-      "sharpe_ratio": -0.69,
+      "total_return_pct": -32.2,
+      "cagr_pct": -8.1,
+      "sharpe_ratio": -0.71,
       "win_rate_pct": 11.1,
-      "profit_factor": 0.08,
+      "profit_factor": 0.06,
       "max_drawdown_pct": 35.6,
       "total_trades": 9
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -18.6,
-      "cagr_pct": -4.4,
-      "sharpe_ratio": 0.09,
+      "total_return_pct": -20.5,
+      "cagr_pct": -4.9,
+      "sharpe_ratio": 0.07,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 76.7,
@@ -16311,13 +16311,41 @@
       "open": 283.8,
       "high": 283.8,
       "low": 274.05,
-      "close": 276.6,
-      "volume": 2804567.0,
+      "close": 275.5,
+      "volume": 5911013.0,
       "v1": 269.79,
       "m1": 269.9,
       "m2": 271.14,
       "v2": 272.19,
       "sma200": 277.12,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 275.5,
+      "high": 277.7,
+      "low": 269.45,
+      "close": 271.45,
+      "volume": 4447534.0,
+      "v1": 270.04,
+      "m1": 270.09,
+      "m2": 271.23,
+      "v2": 272.24,
+      "sma200": 276.71,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 270.9,
+      "high": 271.0,
+      "low": 269.7,
+      "close": 270.15,
+      "volume": 469628.0,
+      "v1": 270.06,
+      "m1": 270.11,
+      "m2": 271.2,
+      "v2": 272.17,
+      "sma200": 276.28,
       "state": "BLUE"
     }
   ],
@@ -21068,6 +21096,14 @@
         {
           "time": "2026-11-17",
           "value": 16944.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16944.28
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16944.28
         }
       ]
     },
@@ -25702,6 +25738,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 15173.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15173.45
+        },
+        {
+          "time": "2026-11-19",
           "value": 15173.45
         }
       ]
@@ -30338,6 +30382,14 @@
         {
           "time": "2026-11-17",
           "value": 13701.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13701.5
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13701.5
         }
       ]
     },
@@ -34972,7 +35024,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8152.94
+          "value": 8120.51
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8001.14
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7962.82
         }
       ]
     }
@@ -35077,14 +35137,14 @@
   ],
   "smart_money": {
     "symbol": "NOVO-B.CO",
-    "smart_money_score": 85.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.11, Up/Dn Vol: 1.7x). Силна скрита подкрепа.",
-    "cmf_20d": 0.107,
-    "up_down_vol_ratio": 1.7,
-    "absorption_5d_pct": 56.4,
-    "vol_shock_ratio": 0.54,
+    "smart_money_score": 55.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.00, P/C: N/A).",
+    "cmf_20d": 0.001,
+    "up_down_vol_ratio": 1.23,
+    "absorption_5d_pct": 43.8,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

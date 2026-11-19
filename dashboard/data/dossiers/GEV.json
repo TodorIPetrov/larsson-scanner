@@ -3,25 +3,25 @@
   "name": "GE Vernova Inc.",
   "sector": "Industrials",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:36:38.399605+00:00",
+  "generated_at": "2026-11-19T09:21:56.370367+00:00",
   "backtest_start_date": "2024-10-30",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 2.0,
-  "backtest_total_bars": 514,
-  "current_price": 761.93,
+  "backtest_total_bars": 515,
+  "current_price": 772.22,
   "state": "BLUE",
-  "v1": 857.62,
-  "v2": 897.58,
-  "sma200": 951.2,
-  "rsi14": 37.3,
-  "atr14": 54.86,
+  "v1": 852.54,
+  "v2": 893.58,
+  "sma200": 951.26,
+  "rsi14": 39.2,
+  "atr14": 53.66,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 147.1,
-    "cagr_pct": 55.8,
+    "cagr_pct": 55.7,
     "sharpe_ratio": 1.29,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 141.6,
-      "cagr_pct": 54.1,
+      "cagr_pct": 54.0,
       "sharpe_ratio": 1.15,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 100.5,
-      "cagr_pct": 40.7,
+      "cagr_pct": 40.6,
       "sharpe_ratio": 1.0,
       "win_rate_pct": 50.0,
       "profit_factor": 2.45,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 147.1,
-      "cagr_pct": 55.8,
+      "cagr_pct": 55.7,
       "sharpe_ratio": 1.29,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 154.7,
-      "cagr_pct": 58.1,
-      "sharpe_ratio": 1.12,
+      "total_return_pct": 158.1,
+      "cagr_pct": 59.0,
+      "sharpe_ratio": 1.13,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.04,
+      "profit_factor": 4.13,
       "max_drawdown_pct": 38.3,
       "total_trades": 1
     }
@@ -7308,14 +7308,28 @@
       "time": "2026-11-17",
       "open": 775.5,
       "high": 797.77,
-      "low": 761.11,
-      "close": 761.93,
-      "volume": 1067094.0,
-      "v1": 857.62,
-      "m1": 871.85,
-      "m2": 888.69,
-      "v2": 897.58,
-      "sma200": 951.2,
+      "low": 753.03,
+      "close": 779.91,
+      "volume": 5018600.0,
+      "v1": 857.35,
+      "m1": 871.64,
+      "m2": 888.53,
+      "v2": 897.44,
+      "sma200": 951.29,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 786.7,
+      "high": 800.53,
+      "low": 770.0,
+      "close": 772.22,
+      "volume": 3136400.0,
+      "v1": 852.54,
+      "m1": 867.1,
+      "m2": 884.4,
+      "v2": 893.58,
+      "sma200": 951.26,
       "state": "BLUE"
     }
   ],
@@ -9396,6 +9410,10 @@
         {
           "time": "2026-11-17",
           "value": 24712.36
+        },
+        {
+          "time": "2026-11-18",
+          "value": 24712.36
         }
       ]
     },
@@ -11458,6 +11476,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 24160.8
+        },
+        {
+          "time": "2026-11-18",
           "value": 24160.8
         }
       ]
@@ -13522,6 +13544,10 @@
         {
           "time": "2026-11-17",
           "value": 20053.02
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20053.02
         }
       ]
     },
@@ -15584,7 +15610,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 25494.56
+          "value": 26096.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 25838.7
         }
       ]
     }
@@ -15605,18 +15635,18 @@
   ],
   "smart_money": {
     "symbol": "GEV",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.97, CMF: -0.06).",
-    "cmf_20d": -0.057,
-    "up_down_vol_ratio": 0.78,
-    "absorption_5d_pct": 23.5,
-    "vol_shock_ratio": 0.25,
-    "put_call_ratio": 0.97,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 780.0,
-    "max_pain": 780.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 60.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $1360.00. Залог за рязък отскок.",
+    "cmf_20d": -0.066,
+    "up_down_vol_ratio": 0.79,
+    "absorption_5d_pct": 33.3,
+    "vol_shock_ratio": 0.7,
+    "put_call_ratio": 0.0,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 1360.0,
+    "max_pain": 1360.0,
+    "unusual_call_sweep": true
   }
 }

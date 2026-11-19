@@ -3,18 +3,18 @@
   "name": "Silver Futures",
   "sector": "Суровини",
   "asset_class": "commodities",
-  "generated_at": "2026-11-17T15:37:19.566712+00:00",
+  "generated_at": "2026-11-19T09:24:23.582060+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1161,
-  "current_price": 47.66,
+  "backtest_total_bars": 1163,
+  "current_price": 45.01,
   "state": "BLUE",
-  "v1": 53.49,
-  "v2": 56.88,
-  "sma200": 68.08,
-  "rsi14": 32.7,
-  "atr14": 1.52,
+  "v1": 52.42,
+  "v2": 56.08,
+  "sma200": 67.69,
+  "rsi14": 27.1,
+  "atr14": 1.56,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 60.8,
-      "cagr_pct": 10.9,
+      "cagr_pct": 10.8,
       "sharpe_ratio": 0.48,
       "win_rate_pct": 25.0,
       "profit_factor": 3.06,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 95.1,
-      "cagr_pct": 15.6,
-      "sharpe_ratio": 0.57,
+      "total_return_pct": 84.2,
+      "cagr_pct": 14.2,
+      "sharpe_ratio": 0.54,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.6,
-      "max_drawdown_pct": 59.3,
+      "profit_factor": 1.38,
+      "max_drawdown_pct": 60.9,
       "total_trades": 1
     }
   ],
@@ -16354,7 +16354,7 @@
       "high": 47.83,
       "low": 46.47,
       "close": 46.78,
-      "volume": 175.0,
+      "volume": 76.0,
       "v1": 53.93,
       "m1": 55.06,
       "m2": 56.44,
@@ -16364,16 +16364,44 @@
     },
     {
       "time": "2026-11-17",
-      "open": 46.93,
-      "high": 47.92,
-      "low": 46.76,
-      "close": 47.66,
-      "volume": 36910.0,
-      "v1": 53.49,
+      "open": 47.38,
+      "high": 47.62,
+      "low": 47.1,
+      "close": 47.29,
+      "volume": 136.0,
+      "v1": 53.5,
       "m1": 54.65,
       "m2": 56.07,
       "v2": 56.88,
       "sma200": 68.08,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 45.81,
+      "high": 45.81,
+      "low": 44.6,
+      "close": 45.0,
+      "volume": 136.0,
+      "v1": 52.94,
+      "m1": 54.16,
+      "m2": 55.64,
+      "v2": 56.47,
+      "sma200": 67.89,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 47.41,
+      "high": 45.78,
+      "low": 44.41,
+      "close": 45.01,
+      "volume": 20383.0,
+      "v1": 52.42,
+      "m1": 53.68,
+      "m2": 55.22,
+      "v2": 56.08,
+      "sma200": 67.69,
       "state": "BLUE"
     }
   ],
@@ -21448,6 +21476,14 @@
         {
           "time": "2026-11-17",
           "value": 16022.88
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16022.88
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16022.88
         }
       ]
     },
@@ -26098,6 +26134,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 16077.8
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16077.8
+        },
+        {
+          "time": "2026-11-19",
           "value": 16077.8
         }
       ]
@@ -30750,6 +30794,14 @@
         {
           "time": "2026-11-17",
           "value": 14358.54
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14358.54
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14358.54
         }
       ]
     },
@@ -35400,7 +35452,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 19525.26
+          "value": 19372.86
+        },
+        {
+          "time": "2026-11-18",
+          "value": 18435.1
+        },
+        {
+          "time": "2026-11-19",
+          "value": 18439.61
         }
       ]
     }
@@ -35769,14 +35829,14 @@
   ],
   "smart_money": {
     "symbol": "SI=F",
-    "smart_money_score": 85.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.52, Up/Dn Vol: 36.94x). Силна скрита подкрепа.",
-    "cmf_20d": 0.524,
-    "up_down_vol_ratio": 36.94,
-    "absorption_5d_pct": 57.7,
-    "vol_shock_ratio": 440.72,
+    "smart_money_score": 45.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.13, P/C: N/A).",
+    "cmf_20d": -0.127,
+    "up_down_vol_ratio": 21.45,
+    "absorption_5d_pct": 37.4,
+    "vol_shock_ratio": 221.43,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

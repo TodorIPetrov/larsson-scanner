@@ -3,17 +3,17 @@
   "name": "Vulcan Energy Resources Ltd",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:29.322580+00:00",
+  "generated_at": "2026-11-19T09:24:51.886828+00:00",
   "backtest_start_date": "2022-09-15",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.2,
-  "backtest_total_bars": 1063,
-  "current_price": 0.68,
+  "backtest_total_bars": 1065,
+  "current_price": 0.66,
   "state": "BLUE",
-  "v1": 0.81,
-  "v2": 1.01,
-  "sma200": 1.75,
-  "rsi14": 37.9,
+  "v1": 0.79,
+  "v2": 0.99,
+  "sma200": 1.73,
+  "rsi14": 36.3,
   "atr14": 0.05,
   "empirical_tier": "A",
   "walk_forward_stable": false,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -31.4,
-      "cagr_pct": -8.6,
+      "cagr_pct": -8.5,
       "sharpe_ratio": -0.62,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -86.5,
-      "cagr_pct": -37.8,
-      "sharpe_ratio": -0.37,
+      "total_return_pct": -87.0,
+      "cagr_pct": -38.3,
+      "sharpe_ratio": -0.38,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 86.8,
+      "max_drawdown_pct": 87.0,
       "total_trades": 1
     }
   ],
@@ -14995,13 +14995,41 @@
       "open": 0.67,
       "high": 0.68,
       "low": 0.67,
-      "close": 0.68,
-      "volume": 219435.0,
+      "close": 0.67,
+      "volume": 252831.0,
       "v1": 0.81,
       "m1": 0.87,
       "m2": 0.96,
       "v2": 1.01,
       "sma200": 1.75,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 0.68,
+      "high": 0.68,
+      "low": 0.65,
+      "close": 0.65,
+      "volume": 67373.0,
+      "v1": 0.8,
+      "m1": 0.86,
+      "m2": 0.95,
+      "v2": 1.0,
+      "sma200": 1.74,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 0.66,
+      "high": 0.66,
+      "low": 0.66,
+      "close": 0.66,
+      "volume": 37093.0,
+      "v1": 0.79,
+      "m1": 0.85,
+      "m2": 0.94,
+      "v2": 0.99,
+      "sma200": 1.73,
       "state": "BLUE"
     }
   ],
@@ -19292,6 +19320,14 @@
         {
           "time": "2026-11-17",
           "value": 11320.34
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11320.34
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11320.34
         }
       ]
     },
@@ -23550,6 +23586,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11499.79
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11499.79
+        },
+        {
+          "time": "2026-11-19",
           "value": 11499.79
         }
       ]
@@ -27810,6 +27854,14 @@
         {
           "time": "2026-11-17",
           "value": 6755.2
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6755.2
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6755.2
         }
       ]
     },
@@ -32068,7 +32120,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 1352.15
+          "value": 1329.27
+        },
+        {
+          "time": "2026-11-18",
+          "value": 1300.42
+        },
+        {
+          "time": "2026-11-19",
+          "value": 1304.4
         }
       ]
     }
@@ -32101,14 +32161,14 @@
   ],
   "smart_money": {
     "symbol": "VUL.DE",
-    "smart_money_score": 74.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.061,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 60.4,
-    "vol_shock_ratio": 0.79,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
+    "cmf_20d": -0.096,
+    "up_down_vol_ratio": 0.83,
+    "absorption_5d_pct": 20.4,
+    "vol_shock_ratio": 0.13,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,18 +3,18 @@
   "name": "BWX Technologies, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:20.940696+00:00",
+  "generated_at": "2026-11-19T09:20:52.600108+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 120.12,
+  "backtest_total_bars": 1160,
+  "current_price": 117.93,
   "state": "BLUE",
-  "v1": 130.04,
-  "v2": 139.04,
-  "sma200": 179.34,
-  "rsi14": 39.7,
-  "atr14": 5.9,
+  "v1": 129.18,
+  "v2": 138.29,
+  "sma200": 178.87,
+  "rsi14": 37.2,
+  "atr14": 5.75,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -35,7 +35,7 @@
       "is_winner": false,
       "total_return_pct": 137.4,
       "cagr_pct": 20.7,
-      "sharpe_ratio": 0.78,
+      "sharpe_ratio": 0.77,
       "win_rate_pct": 36.4,
       "profit_factor": 5.76,
       "max_drawdown_pct": 25.7,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -17.2,
-      "cagr_pct": -4.0,
-      "sharpe_ratio": -0.5,
+      "total_return_pct": -18.0,
+      "cagr_pct": -4.2,
+      "sharpe_ratio": -0.53,
       "win_rate_pct": 28.6,
-      "profit_factor": 0.45,
+      "profit_factor": 0.43,
       "max_drawdown_pct": 24.5,
       "total_trades": 7
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 136.3,
-      "cagr_pct": 20.6,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 132.0,
+      "cagr_pct": 20.1,
+      "sharpe_ratio": 0.69,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.64,
+      "profit_factor": 2.56,
       "max_drawdown_pct": 51.6,
       "total_trades": 1
     }
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 117.25,
-      "high": 122.38,
-      "low": 117.47,
-      "close": 120.12,
-      "volume": 230568.0,
-      "v1": 130.04,
+      "high": 122.39,
+      "low": 117.25,
+      "close": 118.82,
+      "volume": 1542000.0,
+      "v1": 130.03,
       "m1": 132.62,
-      "m2": 136.5,
+      "m2": 136.49,
       "v2": 139.04,
-      "sma200": 179.34,
+      "sma200": 179.33,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 118.49,
+      "high": 119.2,
+      "low": 115.37,
+      "close": 117.93,
+      "volume": 1214300.0,
+      "v1": 129.18,
+      "m1": 131.81,
+      "m2": 135.72,
+      "v2": 138.29,
+      "sma200": 178.87,
       "state": "BLUE"
     }
   ],
@@ -21048,6 +21062,10 @@
         {
           "time": "2026-11-17",
           "value": 28110.1
+        },
+        {
+          "time": "2026-11-18",
+          "value": 28110.1
         }
       ]
     },
@@ -25690,6 +25708,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 23739.07
+        },
+        {
+          "time": "2026-11-18",
           "value": 23739.07
         }
       ]
@@ -30334,6 +30356,10 @@
         {
           "time": "2026-11-17",
           "value": 20900.61
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20900.61
         }
       ]
     },
@@ -34976,7 +35002,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 23649.57
+          "value": 23393.62
+        },
+        {
+          "time": "2026-11-18",
+          "value": 23218.39
         }
       ]
     }
@@ -35033,18 +35063,18 @@
   ],
   "smart_money": {
     "symbol": "BWXT",
-    "smart_money_score": 25.0,
+    "smart_money_score": 24.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.53, CMF: -0.14).",
-    "cmf_20d": -0.137,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 33.9,
-    "vol_shock_ratio": 0.17,
-    "put_call_ratio": 0.53,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 115.0,
-    "max_pain": 150.0,
-    "unusual_call_sweep": false
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 5.83, CMF: -0.12).",
+    "cmf_20d": -0.119,
+    "up_down_vol_ratio": 0.57,
+    "absorption_5d_pct": 41.7,
+    "vol_shock_ratio": 0.87,
+    "put_call_ratio": 5.83,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 340.0,
+    "max_pain": 230.0,
+    "unusual_call_sweep": true
   }
 }

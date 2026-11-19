@@ -3,26 +3,26 @@
   "name": "WISTRON CORPORATION",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:35:57.299043+00:00",
+  "generated_at": "2026-11-19T09:19:30.355179+00:00",
   "backtest_start_date": "2022-04-19",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.4,
-  "backtest_total_bars": 1114,
-  "current_price": 157.0,
+  "backtest_total_bars": 1116,
+  "current_price": 156.0,
   "state": "NEUTRAL",
-  "v1": 176.98,
-  "v2": 178.31,
-  "sma200": 155.42,
-  "rsi14": 33.6,
-  "atr14": 8.66,
+  "v1": 174.71,
+  "v2": 177.02,
+  "sma200": 155.68,
+  "rsi14": 35.3,
+  "atr14": 8.68,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 339.2,
-    "cagr_pct": 39.8,
-    "sharpe_ratio": 1.12,
+    "cagr_pct": 39.7,
+    "sharpe_ratio": 1.11,
     "win_rate_pct": 36.4,
     "profit_factor": 5.19,
     "max_drawdown_pct": 44.8,
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 228.8,
-      "cagr_pct": 30.9,
-      "sharpe_ratio": 0.91,
+      "total_return_pct": 226.7,
+      "cagr_pct": 30.6,
+      "sharpe_ratio": 0.9,
       "win_rate_pct": 30.0,
-      "profit_factor": 3.2,
+      "profit_factor": 3.18,
       "max_drawdown_pct": 54.2,
       "total_trades": 10
     },
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 339.2,
-      "cagr_pct": 39.8,
-      "sharpe_ratio": 1.12,
+      "cagr_pct": 39.7,
+      "sharpe_ratio": 1.11,
       "win_rate_pct": 36.4,
       "profit_factor": 5.19,
       "max_drawdown_pct": 44.8,
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 221.4,
-      "cagr_pct": 30.2,
+      "total_return_pct": 219.3,
+      "cagr_pct": 30.0,
       "sharpe_ratio": 0.91,
       "win_rate_pct": 31.8,
-      "profit_factor": 3.63,
+      "profit_factor": 3.61,
       "max_drawdown_pct": 51.7,
       "total_trades": 22
     },
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": 27.5,
-      "cagr_pct": 5.7,
+      "cagr_pct": 5.6,
       "sharpe_ratio": 0.43,
       "win_rate_pct": 50.0,
       "profit_factor": 5.93,
@@ -82,8 +82,8 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 258.3,
-      "cagr_pct": 33.5,
-      "sharpe_ratio": 1.02,
+      "cagr_pct": 33.4,
+      "sharpe_ratio": 1.01,
       "win_rate_pct": 33.3,
       "profit_factor": 4.65,
       "max_drawdown_pct": 43.5,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 556.1,
-      "cagr_pct": 53.0,
-      "sharpe_ratio": 1.19,
+      "total_return_pct": 551.9,
+      "cagr_pct": 52.7,
+      "sharpe_ratio": 1.18,
       "win_rate_pct": 100.0,
-      "profit_factor": 10.78,
+      "profit_factor": 10.7,
       "max_drawdown_pct": 51.6,
       "total_trades": 1
     }
@@ -15710,12 +15710,40 @@
       "high": 162.5,
       "low": 153.0,
       "close": 157.0,
-      "volume": 40192350.0,
+      "volume": 39878969.0,
       "v1": 176.98,
       "m1": 178.1,
       "m2": 178.55,
       "v2": 178.31,
       "sma200": 155.42,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 160.0,
+      "high": 163.5,
+      "low": 155.0,
+      "close": 162.0,
+      "volume": 32040220.0,
+      "v1": 175.79,
+      "m1": 177.11,
+      "m2": 177.78,
+      "v2": 177.65,
+      "sma200": 155.56,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 161.0,
+      "high": 164.0,
+      "low": 155.0,
+      "close": 156.0,
+      "volume": 23282177.0,
+      "v1": 174.71,
+      "m1": 176.18,
+      "m2": 177.05,
+      "v2": 177.02,
+      "sma200": 155.68,
       "state": "NEUTRAL"
     }
   ],
@@ -20336,6 +20364,14 @@
         {
           "time": "2026-11-17",
           "value": 43923.85
+        },
+        {
+          "time": "2026-11-18",
+          "value": 43923.85
+        },
+        {
+          "time": "2026-11-19",
+          "value": 43923.85
         }
       ]
     },
@@ -24798,6 +24834,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 35834.38
+        },
+        {
+          "time": "2026-11-18",
+          "value": 35834.38
+        },
+        {
+          "time": "2026-11-19",
           "value": 35834.38
         }
       ]
@@ -29262,6 +29306,14 @@
         {
           "time": "2026-11-17",
           "value": 32168.71
+        },
+        {
+          "time": "2026-11-18",
+          "value": 33192.76
+        },
+        {
+          "time": "2026-11-19",
+          "value": 31963.91
         }
       ]
     },
@@ -33725,6 +33777,14 @@
         {
           "time": "2026-11-17",
           "value": 65670.9
+        },
+        {
+          "time": "2026-11-18",
+          "value": 67762.33
+        },
+        {
+          "time": "2026-11-19",
+          "value": 65252.62
         }
       ]
     }
@@ -33865,14 +33925,14 @@
   ],
   "smart_money": {
     "symbol": "3231.TW",
-    "smart_money_score": 42.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: N/A).",
-    "cmf_20d": -0.098,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 37.5,
-    "vol_shock_ratio": 1.19,
+    "smart_money_score": 25.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
+    "cmf_20d": -0.155,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 36.2,
+    "vol_shock_ratio": 0.73,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

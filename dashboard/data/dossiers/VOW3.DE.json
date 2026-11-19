@@ -3,18 +3,18 @@
   "name": "VOLKSWAGEN AG                 V",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:28.931387+00:00",
+  "generated_at": "2026-11-19T09:24:50.840165+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1180,
-  "current_price": 66.44,
+  "backtest_total_bars": 1182,
+  "current_price": 65.44,
   "state": "BLUE",
-  "v1": 69.66,
-  "v2": 71.22,
-  "sma200": 78.7,
-  "rsi14": 38.5,
-  "atr14": 2.01,
+  "v1": 69.11,
+  "v2": 70.83,
+  "sma200": 78.41,
+  "rsi14": 36.1,
+  "atr14": 1.89,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -54.2,
-      "cagr_pct": -15.4,
+      "cagr_pct": -15.3,
       "sharpe_ratio": -0.97,
       "win_rate_pct": 26.8,
       "profit_factor": 0.13,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -31.9,
-      "cagr_pct": -7.9,
-      "sharpe_ratio": -0.16,
+      "total_return_pct": -33.0,
+      "cagr_pct": -8.2,
+      "sharpe_ratio": -0.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 38.3,
+      "max_drawdown_pct": 39.4,
       "total_trades": 1
     }
   ],
@@ -16633,13 +16633,41 @@
       "open": 66.66,
       "high": 66.86,
       "low": 65.84,
-      "close": 66.44,
-      "volume": 424887.0,
+      "close": 66.3,
+      "volume": 805390.0,
       "v1": 69.66,
       "m1": 70.12,
       "m2": 70.79,
       "v2": 71.22,
       "sma200": 78.7,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 65.92,
+      "high": 66.18,
+      "low": 65.0,
+      "close": 65.28,
+      "volume": 979097.0,
+      "v1": 69.39,
+      "m1": 69.88,
+      "m2": 70.58,
+      "v2": 71.03,
+      "sma200": 78.56,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 65.4,
+      "high": 65.78,
+      "low": 64.84,
+      "close": 65.44,
+      "volume": 105253.0,
+      "v1": 69.11,
+      "m1": 69.64,
+      "m2": 70.37,
+      "v2": 70.83,
+      "sma200": 78.41,
       "state": "BLUE"
     }
   ],
@@ -21510,6 +21538,14 @@
         {
           "time": "2026-11-17",
           "value": 8766.59
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8766.59
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8766.59
         }
       ]
     },
@@ -26236,6 +26272,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 6153.83
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6153.83
+        },
+        {
+          "time": "2026-11-19",
           "value": 6153.83
         }
       ]
@@ -30964,6 +31008,14 @@
         {
           "time": "2026-11-17",
           "value": 4832.85
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4832.85
+        },
+        {
+          "time": "2026-11-19",
+          "value": 4832.85
         }
       ]
     },
@@ -35690,7 +35742,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6813.89
+          "value": 6799.53
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6694.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6711.33
         }
       ]
     }
@@ -35819,14 +35879,14 @@
   ],
   "smart_money": {
     "symbol": "VOW3.DE",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.14, P/C: N/A).",
-    "cmf_20d": -0.144,
-    "up_down_vol_ratio": 1.0,
-    "absorption_5d_pct": 36.1,
-    "vol_shock_ratio": 0.48,
+    "smart_money_score": 25.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.22).",
+    "cmf_20d": -0.217,
+    "up_down_vol_ratio": 0.82,
+    "absorption_5d_pct": 34.2,
+    "vol_shock_ratio": 0.12,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

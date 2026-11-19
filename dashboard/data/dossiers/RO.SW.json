@@ -3,18 +3,18 @@
   "name": "ROCHE I",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:16.259585+00:00",
+  "generated_at": "2026-11-19T09:24:13.055110+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1162,
-  "current_price": 411.8,
+  "backtest_total_bars": 1164,
+  "current_price": 407.0,
   "state": "GOLD",
-  "v1": 398.01,
-  "v2": 386.19,
-  "sma200": 353.27,
-  "rsi14": 63.8,
-  "atr14": 6.92,
+  "v1": 399.42,
+  "v2": 387.73,
+  "sma200": 353.79,
+  "rsi14": 57.6,
+  "atr14": 6.57,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -11.1,
-      "cagr_pct": -2.5,
-      "sharpe_ratio": -0.1,
+      "total_return_pct": -12.1,
+      "cagr_pct": -2.8,
+      "sharpe_ratio": -0.11,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.76,
+      "profit_factor": 0.74,
       "max_drawdown_pct": 39.5,
       "total_trades": 16
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -34.0,
-      "cagr_pct": -8.6,
-      "sharpe_ratio": -0.55,
+      "total_return_pct": -34.8,
+      "cagr_pct": -8.8,
+      "sharpe_ratio": -0.57,
       "win_rate_pct": 12.5,
-      "profit_factor": 0.41,
+      "profit_factor": 0.4,
       "max_drawdown_pct": 49.9,
       "total_trades": 24
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -14.1,
-      "cagr_pct": -3.2,
-      "sharpe_ratio": -0.21,
+      "total_return_pct": -15.1,
+      "cagr_pct": -3.5,
+      "sharpe_ratio": -0.23,
       "win_rate_pct": 37.1,
-      "profit_factor": 0.93,
+      "profit_factor": 0.9,
       "max_drawdown_pct": 30.0,
       "total_trades": 35
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 6.9,
-      "cagr_pct": 1.5,
-      "sharpe_ratio": 0.17,
+      "total_return_pct": 5.7,
+      "cagr_pct": 1.2,
+      "sharpe_ratio": 0.16,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.26,
+      "profit_factor": 1.21,
       "max_drawdown_pct": 28.8,
       "total_trades": 8
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 16.7,
-      "cagr_pct": 3.4,
-      "sharpe_ratio": 0.24,
+      "total_return_pct": 15.4,
+      "cagr_pct": 3.1,
+      "sharpe_ratio": 0.23,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.39,
+      "profit_factor": 0.36,
       "max_drawdown_pct": 43.0,
       "total_trades": 1
     }
@@ -16381,13 +16381,41 @@
       "open": 414.0,
       "high": 415.0,
       "low": 409.8,
-      "close": 411.8,
-      "volume": 10416.0,
+      "close": 411.0,
+      "volume": 27206.0,
       "v1": 398.01,
       "m1": 394.09,
       "m2": 389.09,
       "v2": 386.19,
       "sma200": 353.27,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 409.0,
+      "high": 412.6,
+      "low": 407.6,
+      "close": 407.6,
+      "volume": 25136.0,
+      "v1": 398.82,
+      "m1": 394.93,
+      "m2": 389.93,
+      "v2": 387.01,
+      "sma200": 353.53,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 406.4,
+      "high": 409.8,
+      "low": 406.0,
+      "close": 407.0,
+      "volume": 2616.0,
+      "v1": 399.42,
+      "m1": 395.61,
+      "m2": 390.65,
+      "v2": 387.73,
+      "sma200": 353.79,
       "state": "GOLD"
     }
   ],
@@ -21172,6 +21200,14 @@
         {
           "time": "2026-11-17",
           "value": 9492.4
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9492.4
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9492.4
         }
       ]
     },
@@ -25826,7 +25862,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 10705.21
+          "value": 10684.42
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10596.1
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10580.51
         }
       ]
     },
@@ -30481,7 +30525,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8595.91
+          "value": 8579.22
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8508.28
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8495.76
         }
       ]
     },
@@ -35136,7 +35188,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 11685.54
+          "value": 11662.84
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11566.36
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11549.33
         }
       ]
     }
@@ -35253,14 +35313,14 @@
   ],
   "smart_money": {
     "symbol": "RO.SW",
-    "smart_money_score": 80.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.20, Up/Dn Vol: 2.52x). Силна скрита подкрепа.",
-    "cmf_20d": 0.204,
-    "up_down_vol_ratio": 2.52,
-    "absorption_5d_pct": 47.2,
-    "vol_shock_ratio": 0.37,
+    "smart_money_score": 62.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.06, P/C: N/A).",
+    "cmf_20d": 0.059,
+    "up_down_vol_ratio": 1.67,
+    "absorption_5d_pct": 21.5,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

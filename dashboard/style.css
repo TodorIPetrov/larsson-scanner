@@ -8695,3 +8695,312 @@ h1 {
 .ai-leaders-table th {
   background: rgba(13, 17, 23, 0.8);
 }
+
+
+/* =============================================================================
+   PHASE 3 REDESIGN: VARIANT A + GLOBAL CURRENCY/CAPITAL + COCKPIT & RESEARCH HUB
+   ============================================================================= */
+
+.header-right {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Global Intelligent Currency & Capital Bar */
+.global-profile-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.currency-switch-pills {
+  display: inline-flex;
+  background: rgba(11, 14, 20, 0.9);
+  border-radius: 6px;
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 2px;
+}
+
+.curr-pill {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.curr-pill:hover {
+  color: var(--text-primary);
+}
+
+.curr-pill.active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.28), rgba(234, 179, 8, 0.16));
+  color: #fbbf24;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+}
+
+.global-cap-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+}
+
+.global-cap-lbl {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.global-cap-input {
+  width: 78px;
+  background: rgba(11, 14, 20, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.global-cap-input:focus {
+  outline: none;
+  border-color: #fbbf24;
+}
+
+.global-cap-sym {
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+/* Contextual Calculator Utility Tab on Right */
+.nav-tab-util {
+  margin-left: auto;
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+.nav-tab-util:hover {
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.nav-tab-util.active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.2));
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
+/* Research Hub Sub-Navigation Bar */
+.research-sub-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.research-sub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.research-sub-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.research-sub-btn.active {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+/* Cockpit Hero Daily Action Plan */
+.cockpit-hero-section {
+  background: linear-gradient(160deg, rgba(21, 26, 35, 0.96), rgba(15, 23, 42, 0.92));
+  border: 1px solid rgba(255, 215, 0, 0.28);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+.cockpit-hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.cockpit-hero-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cockpit-hero-title-wrap h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.cockpit-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cockpit-stat-pill {
+  background: rgba(11, 14, 20, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.cockpit-hero-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+/* Combined Portfolio Mode Switcher */
+.dot-combined {
+  background: linear-gradient(135deg, #f59e0b, #10b981);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+}
+
+.port-mode-btn.port-btn-combined.active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(16, 185, 129, 0.18));
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fef3c7;
+}
+
+.port-btn-combined .port-mode-badge-tag {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.port-mode-toggle-group {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-live-dossier,
+.btn-live-calc {
+  background: rgba(88, 166, 255, 0.14);
+  border: 1px solid rgba(88, 166, 255, 0.45);
+  color: #58a6ff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-live-dossier:hover,
+.btn-live-calc:hover {
+  background: rgba(88, 166, 255, 0.25);
+  color: #fff;
+}
+
+.btn-live-calc {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+}
+
+.btn-live-calc:hover {
+  background: rgba(245, 158, 11, 0.25);
+}
+
+@media (max-width: 768px) {
+  .global-profile-bar {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .nav-tab-util {
+    margin-left: 0;
+  }
+}
+
+/* Pre-Gold & Pending Setups Enhancements */
+.queue-card-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.queue-pregold-callout {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-left: 3px solid #f59e0b;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.queue-pregold-callout.is-ready {
+  background: rgba(63, 185, 80, 0.1);
+  border-color: rgba(63, 185, 80, 0.35);
+  border-left-color: #3fb950;
+}
+
+.btn-queue-dossier {
+  flex: 1;
+  background: rgba(31, 111, 235, 0.16);
+  border: 1px solid rgba(56, 139, 253, 0.4);
+  color: #58a6ff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.btn-queue-dossier:hover {
+  background: rgba(31, 111, 235, 0.28);
+  color: #ffffff;
+  border-color: #58a6ff;
+}

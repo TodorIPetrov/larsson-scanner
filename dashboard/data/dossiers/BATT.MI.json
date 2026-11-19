@@ -3,18 +3,18 @@
   "name": "L&G Battery Value-Chain UCITS ETF (Milan)",
   "sector": "Чисти технологии & Батерии",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:15.484513+00:00",
+  "generated_at": "2026-11-19T09:20:35.689887+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1174,
-  "current_price": 20.42,
+  "backtest_total_bars": 1175,
+  "current_price": 20.25,
   "state": "BLUE",
-  "v1": 22.77,
-  "v2": 24.19,
-  "sma200": 28.27,
-  "rsi14": 30.7,
-  "atr14": 0.6,
+  "v1": 22.59,
+  "v2": 24.05,
+  "sma200": 28.24,
+  "rsi14": 29.9,
+  "atr14": 0.59,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 28.1,
-      "cagr_pct": 5.5,
-      "sharpe_ratio": 0.34,
+      "total_return_pct": 27.0,
+      "cagr_pct": 5.3,
+      "sharpe_ratio": 0.33,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.66,
-      "max_drawdown_pct": 42.6,
+      "profit_factor": 0.63,
+      "max_drawdown_pct": 43.1,
       "total_trades": 1
     }
   ],
@@ -16548,14 +16548,28 @@
       "time": "2026-11-17",
       "open": 20.49,
       "high": 20.67,
-      "low": 20.42,
-      "close": 20.42,
-      "volume": 6603.0,
-      "v1": 22.77,
+      "low": 20.12,
+      "close": 20.31,
+      "volume": 15110.0,
+      "v1": 22.76,
       "m1": 23.22,
       "m2": 23.83,
       "v2": 24.19,
       "sma200": 28.27,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 20.17,
+      "high": 20.27,
+      "low": 20.17,
+      "close": 20.25,
+      "volume": 1390.0,
+      "v1": 22.59,
+      "m1": 23.06,
+      "m2": 23.68,
+      "v2": 24.05,
+      "sma200": 28.24,
       "state": "BLUE"
     }
   ],
@@ -21472,6 +21486,10 @@
         {
           "time": "2026-11-17",
           "value": 15424.68
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15424.68
         }
       ]
     },
@@ -26174,6 +26192,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 13747.11
+        },
+        {
+          "time": "2026-11-19",
           "value": 13747.11
         }
       ]
@@ -30878,6 +30900,10 @@
         {
           "time": "2026-11-17",
           "value": 14043.74
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14043.74
         }
       ]
     },
@@ -35580,7 +35606,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 12821.86
+          "value": 12749.65
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12715.12
         }
       ]
     }
@@ -35773,10 +35803,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.089,
-    "up_down_vol_ratio": 0.83,
-    "absorption_5d_pct": 50.0,
-    "vol_shock_ratio": 0.38,
+    "cmf_20d": 0.064,
+    "up_down_vol_ratio": 0.94,
+    "absorption_5d_pct": 52.6,
+    "vol_shock_ratio": 0.08,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

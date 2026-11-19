@@ -3,18 +3,18 @@
   "name": "BAYERISCHE MOTOREN WERKE AG   S",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:18.359259+00:00",
+  "generated_at": "2026-11-19T09:20:43.755420+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1180,
-  "current_price": 56.24,
+  "backtest_total_bars": 1182,
+  "current_price": 54.76,
   "state": "BLUE",
-  "v1": 57.79,
-  "v2": 58.29,
-  "sma200": 66.63,
-  "rsi14": 42.9,
-  "atr14": 1.56,
+  "v1": 57.44,
+  "v2": 58.07,
+  "sma200": 66.34,
+  "rsi14": 37.3,
+  "atr14": 1.47,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -23.4,
-      "cagr_pct": -5.5,
-      "sharpe_ratio": -0.68,
-      "win_rate_pct": 16.7,
-      "profit_factor": 0.27,
+      "total_return_pct": -24.4,
+      "cagr_pct": -5.8,
+      "sharpe_ratio": -0.72,
+      "win_rate_pct": 8.3,
+      "profit_factor": 0.24,
       "max_drawdown_pct": 26.1,
       "total_trades": 12
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -1.1,
-      "cagr_pct": -0.2,
-      "sharpe_ratio": 0.12,
+      "total_return_pct": -3.7,
+      "cagr_pct": -0.8,
+      "sharpe_ratio": 0.1,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 46.1,
@@ -16633,13 +16633,41 @@
       "open": 56.62,
       "high": 57.02,
       "low": 56.0,
-      "close": 56.24,
-      "volume": 468391.0,
+      "close": 56.1,
+      "volume": 992434.0,
       "v1": 57.79,
       "m1": 57.84,
       "m2": 58.06,
       "v2": 58.29,
       "sma200": 66.63,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 56.0,
+      "high": 56.0,
+      "low": 54.64,
+      "close": 55.0,
+      "volume": 1227238.0,
+      "v1": 57.62,
+      "m1": 57.7,
+      "m2": 57.95,
+      "v2": 58.19,
+      "sma200": 66.49,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 55.0,
+      "high": 55.1,
+      "low": 54.64,
+      "close": 54.76,
+      "volume": 54007.0,
+      "v1": 57.44,
+      "m1": 57.56,
+      "m2": 57.83,
+      "v2": 58.07,
+      "sma200": 66.34,
       "state": "BLUE"
     }
   ],
@@ -21664,6 +21692,14 @@
         {
           "time": "2026-11-17",
           "value": 8491.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8491.28
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8491.28
         }
       ]
     },
@@ -26390,6 +26426,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8600.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8600.75
+        },
+        {
+          "time": "2026-11-19",
           "value": 8600.75
         }
       ]
@@ -31118,6 +31162,14 @@
         {
           "time": "2026-11-17",
           "value": 7483.49
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7483.49
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7483.49
         }
       ]
     },
@@ -35844,7 +35896,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9900.34
+          "value": 9875.69
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9682.05
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9639.8
         }
       ]
     }
@@ -36108,11 +36168,11 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.197,
-    "up_down_vol_ratio": 0.92,
-    "absorption_5d_pct": 27.0,
-    "vol_shock_ratio": 0.36,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.25).",
+    "cmf_20d": -0.251,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": 24.9,
+    "vol_shock_ratio": 0.04,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

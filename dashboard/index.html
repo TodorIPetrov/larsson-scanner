@@ -63,6 +63,18 @@
         </div>
       </div>
       <div class="header-right">
+        <!-- Global Intelligent Currency & Capital Profile -->
+        <div class="global-profile-bar" id="globalProfileBar" title="Глобална валута и капитал на портфейла (синхронизира Кокпит, Ротация, Реално Портфолио, Калкулатор и Досиета)">
+          <div class="currency-switch-pills" role="group" aria-label="Базова валута">
+            <button type="button" class="curr-pill active" id="btnCurrEUR" onclick="setGlobalCurrency('EUR')" title="Превключи към Евро (1 EUR ≈ 1.08 USD)">€ EUR</button>
+            <button type="button" class="curr-pill" id="btnCurrUSD" onclick="setGlobalCurrency('USD')" title="Превключи към Щатски долар">$ USD</button>
+          </div>
+          <div class="global-cap-input-wrap">
+            <span class="global-cap-lbl">Капитал:</span>
+            <input type="number" id="globalCapitalInput" value="10000" min="500" step="500" class="global-cap-input" aria-label="Общ капитал на портфейла">
+            <span class="global-cap-sym" id="globalCapSymbol">€</span>
+          </div>
+        </div>
         <!-- Live System & Scanner Diagnostics Pill -->
         <button type="button" class="system-status-pill" id="systemStatusBadge" onclick="toggleSystemStatusModal()" title="Кликнете за системна диагностика и статус на скенера">
           <span class="status-indicator-dot online" id="systemStatusDot"></span>
@@ -78,7 +90,7 @@
         </div>
         <div class="last-updated" id="lastUpdated">Updated: Just now</div>
         <button class="btn btn-action-analyze" id="btnRunNewAnalysis" title="Стартирай нов пазарен анализ за генериране на търговски предложения (1x Spot, 2x, 3x)">
-          <span class="analyze-icon">⚡</span> Нов Анализ (Сделки)
+          <span class="analyze-icon">⚡</span> Нов Анализ
         </button>
         <button class="btn btn-refresh" id="refreshBtn" title="Reload data">↻ Refresh</button>
         <button type="button" class="btn btn-install-app" id="btnInstallApp" style="display: none;" title="Инсталирай Larsson Scanner като приложение (PWA)">
@@ -87,33 +99,24 @@
       </div>
     </header>
 
-    <!-- Master Navigation Tabs (Sticky Top Navigation) -->
+    <!-- Master Navigation Tabs (Consolidated Variant A: 4 Work Centers + Contextual Calculator) -->
     <nav class="main-nav-tabs" id="mainNavTabs">
-      <button class="nav-tab-btn active" data-tab="scanner">
-        <span class="tab-icon">📊</span> Скенер на Пазара
-      </button>
-      <button class="nav-tab-btn" data-tab="queue">
-        <span class="tab-icon">⚡</span> Сделки (Swing Опашка)
+      <button class="nav-tab-btn active" data-tab="cockpit" id="navTabCockpit">
+        <span class="tab-icon">🎯</span> Дневен Кокпит &amp; Сигнали
         <span class="tab-badge" id="queueCountBadge">0</span>
       </button>
-      <button class="nav-tab-btn" data-tab="macro" id="navTabMacro">
-        <span class="tab-icon">🏛️</span> Макро &amp; Риск
+      <button class="nav-tab-btn" data-tab="portfolio" id="navTabPortfolio">
+        <span class="tab-icon">🏆</span> Портфолио &amp; Ротация
       </button>
-      <button class="nav-tab-btn" data-tab="portfolio">
-        <span class="tab-icon">🏆</span> Топ 15 Моментум Портфолио
+      <button class="nav-tab-btn" data-tab="scanner" id="navTabScanner">
+        <span class="tab-icon">📊</span> Пазарен Скенер &amp; Графика
       </button>
-      <button class="nav-tab-btn" data-tab="calculator">
-        <span class="tab-icon">🧮</span> Калкулатор на Сделки
-      </button>
-      <button class="nav-tab-btn" data-tab="fundamentals" id="navTabFundamentals">
-        <span class="tab-icon">🏢</span> Фундамент &amp; DCF
-      </button>
-      <button class="nav-tab-btn" data-tab="ai-map" id="navTabAiMap">
-        <span class="tab-icon">🗺️</span> AI Карта (3 Сценария)
-      </button>
-      <button class="nav-tab-btn" data-tab="ideas" id="navTabIdeas">
-        <span class="tab-icon">💡</span> Моите Идеи &amp; Радар
+      <button class="nav-tab-btn" data-tab="research" id="navTabResearch">
+        <span class="tab-icon">🏢</span> Рисърч Хъб (DCF, AI Карта &amp; Идеи)
         <span class="tab-badge" id="ideasCountBadge">0</span>
+      </button>
+      <button class="nav-tab-btn nav-tab-util" data-tab="calculator" id="navTabCalculator" title="Отвори Калкулатора на сделки (автоматично зареден с текущия актив и глобален капитал)">
+        <span class="tab-icon">🧮</span> Калкулатор
       </button>
     </nav>
 
@@ -123,8 +126,8 @@
       <span class="offline-text">Няма интернет връзка. Показват се последно запазените кеширани пазарни данни.</span>
     </div>
 
-    <!-- Tab 1: Scanner View (Default) -->
-    <div class="tab-content-panel active" id="tabContentScanner">
+    <!-- Tab 1: Scanner View -->
+    <div class="tab-content-panel" id="tabContentScanner" style="display: none;">
 
 
     <!-- Institutional Command Bar -->
@@ -319,6 +322,12 @@
               <button class="btn-expand-modal" id="liveExpandBtn" title="Отвори на цял екран с калкулатор">
                 ⛶ Цял Екран
               </button>
+              <button type="button" class="btn-dossier-nav-btn btn-live-dossier" id="liveDossierBtn" onclick="openDossierFromLiveChart()" title="Отвори Пълно Досие &amp; 10-год. Бектест">
+                📑 Досие
+              </button>
+              <button type="button" class="btn-dossier-nav-btn btn-live-calc" id="liveCalcBtn" onclick="openCalculatorForTicker(liveTicker)" title="Оразмери в Калкулатор">
+                🧮
+              </button>
               <a href="#" target="_blank" rel="noopener" class="tv-link-btn" id="liveTvLink" title="Отвори в TradingView">TV ↗</a>
               <a href="#" target="_blank" rel="noopener" class="tv-link-btn tv-btc-link" id="liveTvBtcLink" title="Отвори Asset/BTC Графика в TradingView" style="display: none; background: rgba(247, 147, 26, 0.15); border-color: #f7931a; color: #f7931a;">🪙 /BTC ↗</a>
             </div>
@@ -361,8 +370,32 @@
     </div>
     </div> <!-- End Tab 1: tabContentScanner -->
 
-    <!-- Tab 2: Pending Setups & Trade Approval Queue -->
+    <!-- Tab 2: Pending Setups & Trade Approval Queue (Cockpit Center) -->
     <div class="tab-content-panel" id="tabContentQueue" style="display: none;">
+      <!-- Part 0: Unified Daily Action Plan (Cockpit Hero: Exits + Top 15 Rotation + Quantamental Dips) -->
+      <section class="cockpit-hero-section" id="cockpitHeroSection">
+        <div class="cockpit-hero-header">
+          <div class="cockpit-hero-title-wrap">
+            <span class="live-pulse-dot"></span>
+            <h2>🎯 Дневен Екшън План — Всички Сигнали за Днес на 1 Място</h2>
+            <span class="badge badge-gold" id="cockpitActionDateBadge">Днес</span>
+          </div>
+          <div class="cockpit-hero-stats" id="cockpitHeroStats">
+            <span class="cockpit-stat-pill" id="cockpitSlotsSummary">Слотове: 0/15 заети</span>
+            <span class="cockpit-stat-pill" id="cockpitCurrencyInfo">Валута: EUR € (1€ ≈ 1.08$)</span>
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="btnToggleClusterMatrix" onclick="toggleCockpitMacroDetails()">
+              🏛️ Пълна Клъстерна Матрица &amp; Риск ▾
+            </button>
+          </div>
+        </div>
+        <p class="cockpit-hero-subtitle">
+          Приоритизираните действия за днешната сесия: <strong>🔴 Задължителни Изходи</strong> по реални позиции, <strong>🟢 Топ 15 Моментум Входове</strong> и <strong>💎 Активни Quantamental Dips</strong> — оразмерени в избраната валута.
+        </p>
+        <div id="cockpitDailyActionsGrid" class="rot-actions-grid">
+          <div class="rot-action-loading">Зареждане на дневните сигнали...</div>
+        </div>
+      </section>
+
       <!-- Part 1: Trade Approval Queue (Cleared by Regime & Risk Budget) -->
       <section class="proposals-banner-section approval-queue-section" id="proposalsBannerSection">
         <div class="proposals-banner-header">
@@ -408,6 +441,14 @@
         </div>
 
         <div class="queue-filter-bar">
+          <div class="filter-group" id="queueTypeFilters">
+            <span class="filter-badge-lbl">Тип Сетъп:</span>
+            <button class="filter-btn active" data-queue-type="ALL">Всички</button>
+            <button class="filter-btn filter-gold" data-queue-type="PRE_GOLD">🔥 Предстоящ GOLD (1-3 дни)</button>
+            <button class="filter-btn filter-purple" data-queue-type="TOP15_CANDIDATE">🏆 За Топ 15 Ротация</button>
+            <button class="filter-btn filter-cyan" data-queue-type="QUALITY_DIP_BUY">💎 Dip Buy (Weekly GOLD)</button>
+            <button class="filter-btn" data-queue-type="SR_APPROACH">🎯 S/R &amp; Дивергенции</button>
+          </div>
           <div class="filter-group" id="queuePriorityFilters">
             <span class="filter-badge-lbl">Приоритет:</span>
             <button class="filter-btn active" data-queue-prio="ALL">Всички</button>
@@ -438,9 +479,9 @@
       </section>
     </div> <!-- End Tab 2: tabContentQueue -->
 
-    <!-- Tab 3: Dedicated Institutional Macro Regime & Risk Cockpit (Option 1.A) -->
+    <!-- Tab 3: Dedicated Institutional Macro Regime & Risk Cockpit (Compact Top Barometer inside Cockpit) -->
     <div class="tab-content-panel" id="tabContentMacro" style="display: none;">
-      <section class="macro-header-section">
+      <section class="macro-header-section" id="macroHeaderSection" style="display: none;">
         <div class="macro-intro">
           <div class="macro-title-badge">
             <span class="live-pulse-dot"></span>
@@ -564,13 +605,18 @@
 
     <!-- Tab 3: Portfolio & Trade Journal -->
     <div class="tab-content-panel port-mode-real" id="tabContentPortfolio" style="display: none;">
-      <!-- 1. Portfolio Mode Dual Switcher (Prominent at top) -->
+      <!-- 1. Portfolio Mode Switcher (Combined, Rotation, Real, Paper) -->
       <section class="portfolio-mode-header">
         <div class="port-mode-switch-wrapper">
           <div class="port-mode-toggle-group">
-            <button class="port-mode-btn port-btn-rotation active" id="portModeRotationBtn" data-port-mode="ROTATION">
+            <button class="port-mode-btn port-btn-combined active" id="portModeCombinedBtn" data-port-mode="COMBINED">
+              <span class="port-mode-indicator dot-combined"></span>
+              <span class="port-mode-title">🔀 ОБЕДИНЕН ИЗГЛЕД (РЕАЛНИ + ТОП 15)</span>
+              <span class="port-mode-badge-tag">SYNCED</span>
+            </button>
+            <button class="port-mode-btn port-btn-rotation" id="portModeRotationBtn" data-port-mode="ROTATION">
               <span class="port-mode-indicator dot-gold"></span>
-              <span class="port-mode-title">🏆 ТОП 15 МОМЕНТУМ РОТАЦИЯ (€10,000)</span>
+              <span class="port-mode-title" id="portModeRotationTitle">🏆 ТОП 15 МОМЕНТУМ РОТАЦИЯ</span>
               <span class="port-mode-badge-tag">QUANT STRATEGY</span>
             </button>
             <button class="port-mode-btn port-btn-real" id="portModeRealBtn" data-port-mode="REAL">
@@ -592,10 +638,10 @@
         <section class="rotation-cockpit-strip">
           <div class="rotation-cockpit-left">
             <div class="rotation-capital-control">
-              <label for="rotationCapitalInput">💰 Портфейлен Капитал (€):</label>
+              <label for="rotationCapitalInput" id="rotCapitalLabel">💰 Портфейлен Капитал (<span class="js-base-curr-code">EUR</span>):</label>
               <div class="capital-input-wrap">
                 <input type="number" id="rotationCapitalInput" value="10000" step="500" min="1000" class="input-capital-eur">
-                <span class="currency-tag">EUR €</span>
+                <span class="currency-tag" id="rotCurrencyTag">EUR €</span>
               </div>
             </div>
             <div class="rotation-sizing-summary">
@@ -647,7 +693,7 @@
                   <th>Ниво за Изход</th>
                   <th>Текуща Цена</th>
                   <th>Стоп ($v_2$)</th>
-                  <th>Слот (€)</th>
+                  <th id="rotSlotColHeader">Слот (<span class="js-base-curr-sym">€</span>)</th>
                   <th>Целеви Брой</th>
                   <th>Статус</th>
                   <th>Действия</th>
@@ -727,8 +773,8 @@
                     <th>Fair Value</th>
                     <th>Margin of Safety</th>
                     <th>Доказана Value ДНК</th>
-                    <th>Стоп ($)</th>
-                    <th>Транш (€)</th>
+                    <th>Стоп</th>
+                    <th id="rotTrancheColHeader">Транш (<span class="js-base-curr-sym">€</span>)</th>
                     <th>🐋 Smart Money</th>
                     <th>Действие</th>
                   </tr>
@@ -874,7 +920,7 @@
 
           <div class="calc-form-grid">
             <div class="form-group">
-              <label for="pageCalcCapital">Портфолио Капитал ($)</label>
+              <label for="pageCalcCapital">Портфолио Капитал (<span class="js-base-curr-sym">€</span>)</label>
               <input type="number" id="pageCalcCapital" value="10000" step="500">
             </div>
 
@@ -1060,6 +1106,20 @@
         </div>
       </section>
     </div> <!-- End Tab 4: tabContentCalculator -->
+
+    <!-- Unified Research Hub Sub-Navigation (Shown when Fundamentals, AI Map, or Ideas is active) -->
+    <nav class="research-sub-nav" id="researchSubNav" style="display: none;">
+      <button type="button" class="research-sub-btn active" data-research-sub="fundamentals" onclick="switchResearchSubTab('fundamentals')">
+        <span>🏢</span> Фундамент &amp; DCF Скрийнър
+      </button>
+      <button type="button" class="research-sub-btn" data-research-sub="ai-map" onclick="switchResearchSubTab('ai-map')">
+        <span>🗺️</span> AI Карта (3 Сценария S01–S03)
+      </button>
+      <button type="button" class="research-sub-btn" data-research-sub="ideas" onclick="switchResearchSubTab('ideas')">
+        <span>💡</span> Моите Идеи &amp; Личен Радар
+        <span class="tab-badge" id="researchIdeasBadge">0</span>
+      </button>
+    </nav>
 
     <!-- Tab 5: Fundamental Analysis & DCF Hub -->
     <div class="tab-content-panel" id="tabContentFundamentals" style="display: none;">
@@ -1278,6 +1338,12 @@
             <strong class="dossier-price-val" id="dossierPrice">$0.00</strong>
             <span class="trend-state-pill" id="dossierStateBadge">● GOLD</span>
           </div>
+          <button type="button" class="btn btn-sm btn-outline-info" id="btnDossierOpenDcf" onclick="openFundamentalTab(currentDossierTicker, 'proposal-dossier')" title="Отвори пълен интерактивен DCF симулатор">
+            🏢 Интерактивен DCF
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-warning" id="btnDossierOpenCalc" onclick="openCalculatorForTicker(currentDossierTicker)" title="Оразмери сделката в Калкулатор">
+            🧮 Калкулатор
+          </button>
           <button type="button" class="btn-exec-real btn-sm" id="btnDossierExecReal" onclick="executeFromDossier()">
             ➕ Изпълни Сделката
           </button>
@@ -1794,7 +1860,7 @@
               <input type="text" id="realBroker" placeholder="Interactive Brokers, Binance, Revolut..." value="Interactive Brokers">
             </div>
             <div class="form-group">
-              <label for="realEntryPrice">Входна Цена ($) *</label>
+              <label for="realEntryPrice" id="realEntryPriceLabel">Входна Цена (валута на актива) *</label>
               <input type="number" id="realEntryPrice" step="any" placeholder="0.00" required>
             </div>
             <div class="form-group">
@@ -1843,7 +1909,7 @@
         </p>
         <form id="setRealCashForm" onsubmit="return false;">
           <div class="form-group">
-            <label for="realCashAmount">Наличен Кеш ($) *</label>
+            <label for="realCashAmount">Наличен Кеш (<span class="js-base-curr-sym">€</span>) *</label>
             <input type="number" id="realCashAmount" step="any" placeholder="10000.00" required>
           </div>
           <div class="real-modal-footer">

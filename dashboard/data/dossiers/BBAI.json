@@ -3,17 +3,17 @@
   "name": "BigBear.ai, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:15.816784+00:00",
+  "generated_at": "2026-11-19T09:20:37.029695+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 1.83,
+  "backtest_total_bars": 1160,
+  "current_price": 1.75,
   "state": "BLUE",
-  "v1": 2.32,
-  "v2": 2.53,
-  "sma200": 3.4,
-  "rsi14": 32.6,
+  "v1": 2.28,
+  "v2": 2.5,
+  "sma200": 3.38,
+  "rsi14": 30.4,
   "atr14": 0.17,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -83.8,
-      "cagr_pct": -32.7,
+      "cagr_pct": -32.6,
       "sharpe_ratio": 0.07,
       "win_rate_pct": 14.3,
       "profit_factor": 0.16,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -87.6,
-      "cagr_pct": -36.4,
+      "total_return_pct": -88.1,
+      "cagr_pct": -37.0,
       "sharpe_ratio": 0.35,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16326,7 +16326,7 @@
       "high": 1.91,
       "low": 1.8,
       "close": 1.82,
-      "volume": 20537900.0,
+      "volume": 20661000.0,
       "v1": 2.35,
       "m1": 2.41,
       "m2": 2.5,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 1.87,
       "high": 1.91,
-      "low": 1.82,
-      "close": 1.83,
-      "volume": 5049017.0,
+      "low": 1.75,
+      "close": 1.8,
+      "volume": 20091000.0,
       "v1": 2.32,
       "m1": 2.38,
       "m2": 2.47,
       "v2": 2.53,
       "sma200": 3.4,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1.8,
+      "high": 1.85,
+      "low": 1.73,
+      "close": 1.75,
+      "volume": 14406600.0,
+      "v1": 2.28,
+      "m1": 2.35,
+      "m2": 2.44,
+      "v2": 2.5,
+      "sma200": 3.38,
       "state": "BLUE"
     }
   ],
@@ -21160,6 +21174,10 @@
         {
           "time": "2026-11-17",
           "value": 4765.42
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4765.42
         }
       ]
     },
@@ -25802,6 +25820,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 4513.73
+        },
+        {
+          "time": "2026-11-18",
           "value": 4513.73
         }
       ]
@@ -30446,6 +30468,10 @@
         {
           "time": "2026-11-17",
           "value": 5910.4
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5910.4
         }
       ]
     },
@@ -35088,7 +35114,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 1245.18
+          "value": 1224.1
+        },
+        {
+          "time": "2026-11-18",
+          "value": 1190.1
         }
       ]
     }
@@ -35241,18 +35271,18 @@
   ],
   "smart_money": {
     "symbol": "BBAI",
-    "smart_money_score": 58.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.24) с Gamma стена на $2.00. Залог за рязък отскок.",
-    "cmf_20d": -0.028,
-    "up_down_vol_ratio": 0.78,
-    "absorption_5d_pct": 10.5,
-    "vol_shock_ratio": 0.23,
-    "put_call_ratio": 0.24,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 2.0,
-    "max_pain": 3.0,
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.05).",
+    "cmf_20d": -0.049,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 15.9,
+    "vol_shock_ratio": 0.65,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 0.5,
+    "max_pain": 0.5,
     "unusual_call_sweep": false
   }
 }

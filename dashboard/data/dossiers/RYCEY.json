@@ -3,17 +3,17 @@
   "name": "Rolls Royce Holdings plc",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:16.735449+00:00",
+  "generated_at": "2026-11-19T09:24:15.181304+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 17.65,
+  "backtest_total_bars": 1160,
+  "current_price": 17.51,
   "state": "BLUE",
-  "v1": 17.67,
-  "v2": 18.14,
+  "v1": 17.66,
+  "v2": 18.11,
   "sma200": 17.93,
-  "rsi14": 50.4,
+  "rsi14": 48.8,
   "atr14": 0.51,
   "empirical_tier": "S",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 1510.7,
-    "cagr_pct": 83.0,
+    "cagr_pct": 82.9,
     "sharpe_ratio": 1.9,
     "win_rate_pct": 25.0,
     "profit_factor": 28.93,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 1178.3,
-      "cagr_pct": 74.0,
+      "cagr_pct": 73.9,
       "sharpe_ratio": 1.74,
       "win_rate_pct": 33.3,
       "profit_factor": 4.34,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": 828.2,
       "cagr_pct": 62.3,
-      "sharpe_ratio": 1.59,
+      "sharpe_ratio": 1.58,
       "win_rate_pct": 55.6,
       "profit_factor": 4.54,
       "max_drawdown_pct": 33.6,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 1369.0,
-      "cagr_pct": 79.4,
+      "cagr_pct": 79.3,
       "sharpe_ratio": 1.85,
       "win_rate_pct": 33.3,
       "profit_factor": 6.37,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 1510.7,
-      "cagr_pct": 83.0,
+      "cagr_pct": 82.9,
       "sharpe_ratio": 1.9,
       "win_rate_pct": 25.0,
       "profit_factor": 28.93,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 1188.6,
-      "cagr_pct": 74.3,
+      "cagr_pct": 74.2,
       "sharpe_ratio": 1.77,
       "win_rate_pct": 50.0,
       "profit_factor": 10.89,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 1304.4,
-      "cagr_pct": 77.6,
-      "sharpe_ratio": 1.6,
+      "total_return_pct": 1293.2,
+      "cagr_pct": 77.2,
+      "sharpe_ratio": 1.59,
       "win_rate_pct": 100.0,
-      "profit_factor": 30.83,
+      "profit_factor": 30.57,
       "max_drawdown_pct": 42.3,
       "total_trades": 1
     }
@@ -16336,15 +16336,29 @@
     },
     {
       "time": "2026-11-17",
-      "open": 17.65,
-      "high": 17.76,
-      "low": 17.63,
-      "close": 17.65,
-      "volume": 50650.0,
+      "open": 17.64,
+      "high": 17.77,
+      "low": 17.42,
+      "close": 17.49,
+      "volume": 2234800.0,
       "v1": 17.67,
       "m1": 17.83,
-      "m2": 18.04,
-      "v2": 18.14,
+      "m2": 18.03,
+      "v2": 18.13,
+      "sma200": 17.93,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 17.69,
+      "high": 17.73,
+      "low": 17.37,
+      "close": 17.51,
+      "volume": 1255500.0,
+      "v1": 17.66,
+      "m1": 17.81,
+      "m2": 18.01,
+      "v2": 18.11,
       "sma200": 17.93,
       "state": "BLUE"
     }
@@ -21048,6 +21062,10 @@
         {
           "time": "2026-11-17",
           "value": 161069.6
+        },
+        {
+          "time": "2026-11-18",
+          "value": 161069.6
         }
       ]
     },
@@ -25690,6 +25708,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 146903.86
+        },
+        {
+          "time": "2026-11-18",
           "value": 146903.86
         }
       ]
@@ -30334,6 +30356,10 @@
         {
           "time": "2026-11-17",
           "value": 128855.07
+        },
+        {
+          "time": "2026-11-18",
+          "value": 128855.07
         }
       ]
     },
@@ -34976,7 +35002,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 140577.64
+          "value": 139303.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 139462.59
         }
       ]
     }
@@ -35036,11 +35066,11 @@
     "smart_money_score": 47.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: N/A).",
-    "cmf_20d": -0.075,
-    "up_down_vol_ratio": 1.09,
-    "absorption_5d_pct": 45.1,
-    "vol_shock_ratio": 0.01,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.09, P/C: N/A).",
+    "cmf_20d": -0.089,
+    "up_down_vol_ratio": 1.2,
+    "absorption_5d_pct": 37.1,
+    "vol_shock_ratio": 0.34,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

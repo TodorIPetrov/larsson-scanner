@@ -3,28 +3,28 @@
   "name": "JP Morgan Chase & Co.",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:45.764899+00:00",
+  "generated_at": "2026-11-19T09:22:18.815521+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 334.72,
+  "backtest_total_bars": 1160,
+  "current_price": 324.11,
   "state": "NEUTRAL",
-  "v1": 340.08,
-  "v2": 340.14,
-  "sma200": 322.77,
-  "rsi14": 45.6,
-  "atr14": 7.2,
+  "v1": 339.09,
+  "v2": 339.62,
+  "sma200": 322.82,
+  "rsi14": 38.2,
+  "atr14": 7.38,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 87.0,
-    "cagr_pct": 14.6,
-    "sharpe_ratio": 0.78,
+    "total_return_pct": 81.0,
+    "cagr_pct": 13.8,
+    "sharpe_ratio": 0.75,
     "win_rate_pct": 80.0,
-    "profit_factor": 16.01,
+    "profit_factor": 14.99,
     "max_drawdown_pct": 22.9,
     "total_trades": 5
   },
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 68.8,
-      "cagr_pct": 12.1,
+      "cagr_pct": 12.0,
       "sharpe_ratio": 0.68,
       "win_rate_pct": 45.5,
       "profit_factor": 4.75,
@@ -71,7 +71,7 @@
       "is_winner": false,
       "total_return_pct": 67.0,
       "cagr_pct": 11.8,
-      "sharpe_ratio": 0.8,
+      "sharpe_ratio": 0.79,
       "win_rate_pct": 66.7,
       "profit_factor": 21.84,
       "max_drawdown_pct": 22.7,
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 87.0,
-      "cagr_pct": 14.6,
-      "sharpe_ratio": 0.78,
+      "total_return_pct": 81.0,
+      "cagr_pct": 13.8,
+      "sharpe_ratio": 0.75,
       "win_rate_pct": 80.0,
-      "profit_factor": 16.01,
+      "profit_factor": 14.99,
       "max_drawdown_pct": 22.9,
       "total_trades": 5
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 183.6,
-      "cagr_pct": 25.4,
-      "sharpe_ratio": 1.07,
+      "total_return_pct": 174.6,
+      "cagr_pct": 24.5,
+      "sharpe_ratio": 1.04,
       "win_rate_pct": 100.0,
-      "profit_factor": 7.52,
+      "profit_factor": 7.15,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 346.52,
       "low": 336.67,
       "close": 338.21,
-      "volume": 7229000.0,
+      "volume": 7250300.0,
       "v1": 340.47,
       "m1": 340.48,
       "m2": 340.49,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 333.57,
       "high": 336.89,
-      "low": 332.32,
-      "close": 334.72,
-      "volume": 1348410.0,
-      "v1": 340.08,
-      "m1": 340.17,
-      "m2": 340.26,
-      "v2": 340.14,
-      "sma200": 322.77,
+      "low": 328.74,
+      "close": 329.96,
+      "volume": 8210200.0,
+      "v1": 339.96,
+      "m1": 340.07,
+      "m2": 340.19,
+      "v2": 340.07,
+      "sma200": 322.75,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 327.52,
+      "high": 330.09,
+      "low": 323.71,
+      "close": 324.11,
+      "volume": 6765600.0,
+      "v1": 339.09,
+      "m1": 339.38,
+      "m2": 339.65,
+      "v2": 339.62,
+      "sma200": 322.82,
       "state": "NEUTRAL"
     }
   ],
@@ -16414,11 +16428,11 @@
       "text": "BUY #5 @ $310.3"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +7.66% ($1328.23 €)"
+      "text": "EXIT +4.24% ($736.15 €)"
     }
   ],
   "equity_curves": [
@@ -21061,7 +21075,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 18714.8
+          "value": 18448.91
+        },
+        {
+          "time": "2026-11-18",
+          "value": 18122.13
         }
       ]
     },
@@ -25704,6 +25722,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 16702.0
+        },
+        {
+          "time": "2026-11-18",
           "value": 16702.0
         }
       ]
@@ -30348,6 +30370,10 @@
         {
           "time": "2026-11-17",
           "value": 17335.98
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17335.98
         }
       ]
     },
@@ -34990,7 +35016,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 28388.21
+          "value": 27984.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 27488.35
         }
       ]
     }
@@ -35048,29 +35078,29 @@
       "num": 5,
       "entry_date": "2026-06-08",
       "entry_price": 310.3,
-      "exit_date": "2026-11-17",
-      "exit_price": 334.72,
-      "holding_days": 113,
-      "pnl_pct": 7.66,
-      "pnl_eur": 1328.23,
+      "exit_date": "2026-11-18",
+      "exit_price": 324.11,
+      "holding_days": 114,
+      "pnl_pct": 4.24,
+      "pnl_eur": 736.15,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "JPM",
-    "smart_money_score": 35.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.02, CMF: -0.13).",
-    "cmf_20d": -0.132,
-    "up_down_vol_ratio": 0.95,
-    "absorption_5d_pct": 44.8,
-    "vol_shock_ratio": 0.21,
-    "put_call_ratio": 1.02,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 335.0,
-    "max_pain": 320.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 53.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $255.00. Залог за рязък отскок.",
+    "cmf_20d": -0.219,
+    "up_down_vol_ratio": 0.84,
+    "absorption_5d_pct": 26.2,
+    "vol_shock_ratio": 1.03,
+    "put_call_ratio": 0.0,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 255.0,
+    "max_pain": 255.0,
+    "unusual_call_sweep": true
   }
 }

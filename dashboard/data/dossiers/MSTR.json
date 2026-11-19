@@ -3,25 +3,25 @@
   "name": "MSTR",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:56.181032+00:00",
+  "generated_at": "2026-11-19T09:23:20.028533+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 101.73,
+  "backtest_total_bars": 1160,
+  "current_price": 90.32,
   "state": "BLUE",
-  "v1": 130.55,
-  "v2": 132.98,
-  "sma200": 132.36,
-  "rsi14": 28.2,
-  "atr14": 8.45,
+  "v1": 127.88,
+  "v2": 131.51,
+  "sma200": 132.12,
+  "rsi14": 24.0,
+  "atr14": 8.62,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 150.2,
-    "cagr_pct": 22.1,
+    "cagr_pct": 22.0,
     "sharpe_ratio": 0.63,
     "win_rate_pct": 33.3,
     "profit_factor": 1.9,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 150.2,
-      "cagr_pct": 22.1,
+      "cagr_pct": 22.0,
       "sharpe_ratio": 0.63,
       "win_rate_pct": 33.3,
       "profit_factor": 1.9,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 114.7,
-      "cagr_pct": 18.1,
-      "sharpe_ratio": 0.65,
+      "total_return_pct": 90.6,
+      "cagr_pct": 15.0,
+      "sharpe_ratio": 0.62,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.39,
+      "profit_factor": 1.1,
       "max_drawdown_pct": 82.6,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 105.79,
       "low": 101.7,
       "close": 103.03,
-      "volume": 21149200.0,
+      "volume": 21260900.0,
       "v1": 132.55,
       "m1": 133.86,
       "m2": 134.23,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 102.67,
+      "open": 102.78,
       "high": 103.76,
-      "low": 101.28,
-      "close": 101.73,
-      "volume": 3286449.0,
-      "v1": 130.55,
-      "m1": 132.21,
-      "m2": 132.97,
-      "v2": 132.98,
-      "sma200": 132.36,
+      "low": 96.35,
+      "close": 96.5,
+      "volume": 23796200.0,
+      "v1": 130.38,
+      "m1": 132.08,
+      "m2": 132.87,
+      "v2": 132.89,
+      "sma200": 132.33,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 95.02,
+      "high": 95.51,
+      "low": 90.2,
+      "close": 90.32,
+      "volume": 25481800.0,
+      "v1": 127.88,
+      "m1": 130.01,
+      "m2": 131.27,
+      "v2": 131.51,
+      "sma200": 132.12,
       "state": "BLUE"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 25016.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 25016.29
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 26540.66
+        },
+        {
+          "time": "2026-11-18",
           "value": 26540.66
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 19710.83
+        },
+        {
+          "time": "2026-11-18",
+          "value": 19710.83
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 21489.53
+          "value": 20384.74
+        },
+        {
+          "time": "2026-11-18",
+          "value": 19079.27
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "MSTR",
-    "smart_money_score": 50.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.00, P/C: 0.58).",
-    "cmf_20d": -0.003,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 40.7,
-    "vol_shock_ratio": 0.19,
-    "put_call_ratio": 0.58,
+    "smart_money_score": 43.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.09) с Gamma стена на $40.00. Залог за рязък отскок.",
+    "cmf_20d": -0.166,
+    "up_down_vol_ratio": 0.38,
+    "absorption_5d_pct": 27.0,
+    "vol_shock_ratio": 1.42,
+    "put_call_ratio": 0.09,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 100.0,
-    "max_pain": 135.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 40.0,
+    "max_pain": 40.0,
+    "unusual_call_sweep": true
   }
 }

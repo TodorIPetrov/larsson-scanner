@@ -3,18 +3,18 @@
   "name": "Stereotaxis, Inc.",
   "sector": "Healthcare",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:22.002574+00:00",
+  "generated_at": "2026-11-19T09:24:31.030012+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 0.83,
+  "backtest_total_bars": 1160,
+  "current_price": 0.95,
   "state": "BLUE",
   "v1": 1.0,
   "v2": 1.12,
   "sma200": 1.61,
-  "rsi14": 36.8,
-  "atr14": 0.09,
+  "rsi14": 47.3,
+  "atr14": 0.1,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -76.9,
-      "cagr_pct": -27.3,
-      "sharpe_ratio": -0.17,
+      "total_return_pct": -73.4,
+      "cagr_pct": -25.0,
+      "sharpe_ratio": -0.12,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 77.8,
@@ -16337,13 +16337,27 @@
     {
       "time": "2026-11-17",
       "open": 0.83,
-      "high": 0.83,
-      "low": 0.81,
-      "close": 0.83,
-      "volume": 104257.0,
+      "high": 0.91,
+      "low": 0.8,
+      "close": 0.88,
+      "volume": 1217300.0,
       "v1": 1.0,
       "m1": 1.04,
       "m2": 1.09,
+      "v2": 1.12,
+      "sma200": 1.61,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 0.89,
+      "high": 0.95,
+      "low": 0.87,
+      "close": 0.95,
+      "volume": 901000.0,
+      "v1": 1.0,
+      "m1": 1.03,
+      "m2": 1.08,
       "v2": 1.12,
       "sma200": 1.61,
       "state": "BLUE"
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 6606.35
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6606.35
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 5223.67
+        },
+        {
+          "time": "2026-11-18",
           "value": 5223.67
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 4403.62
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4403.62
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 2316.78
+          "value": 2469.44
+        },
+        {
+          "time": "2026-11-18",
+          "value": 2665.87
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "STXS",
-    "smart_money_score": 43.0,
+    "smart_money_score": 58.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $2.50. Залог за рязък отскок.",
-    "cmf_20d": -0.145,
-    "up_down_vol_ratio": 0.45,
-    "absorption_5d_pct": 39.3,
-    "vol_shock_ratio": 0.11,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $5.00. Залог за рязък отскок.",
+    "cmf_20d": -0.044,
+    "up_down_vol_ratio": 0.63,
+    "absorption_5d_pct": 43.6,
+    "vol_shock_ratio": 0.91,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 2.5,
-    "max_pain": 2.5,
+    "gamma_wall": 5.0,
+    "max_pain": 5.0,
     "unusual_call_sweep": false
   }
 }

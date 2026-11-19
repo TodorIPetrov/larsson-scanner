@@ -3,28 +3,28 @@
   "name": "Mercedes-Benz Group AG        N",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:51.123564+00:00",
+  "generated_at": "2026-11-19T09:23:00.438815+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1180,
-  "current_price": 39.82,
+  "backtest_total_bars": 1182,
+  "current_price": 38.85,
   "state": "BLUE",
-  "v1": 41.27,
-  "v2": 42.21,
-  "sma200": 47.01,
-  "rsi14": 41.2,
-  "atr14": 1.11,
+  "v1": 40.97,
+  "v2": 41.99,
+  "sma200": 46.85,
+  "rsi14": 36.4,
+  "atr14": 1.06,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 40.0,
-    "cagr_pct": 7.4,
-    "sharpe_ratio": 0.56,
+    "total_return_pct": 38.3,
+    "cagr_pct": 7.2,
+    "sharpe_ratio": 0.54,
     "win_rate_pct": 50.0,
-    "profit_factor": 6.71,
+    "profit_factor": 5.85,
     "max_drawdown_pct": 14.8,
     "total_trades": 8
   },
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -17.1,
       "cagr_pct": -3.9,
-      "sharpe_ratio": -0.17,
+      "sharpe_ratio": -0.16,
       "win_rate_pct": 22.7,
       "profit_factor": 0.67,
       "max_drawdown_pct": 30.5,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 40.0,
-      "cagr_pct": 7.4,
-      "sharpe_ratio": 0.56,
+      "total_return_pct": 38.3,
+      "cagr_pct": 7.2,
+      "sharpe_ratio": 0.54,
       "win_rate_pct": 50.0,
-      "profit_factor": 6.71,
+      "profit_factor": 5.85,
       "max_drawdown_pct": 14.8,
       "total_trades": 8
     },
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -9.2,
-      "cagr_pct": -2.0,
-      "sharpe_ratio": 0.06,
+      "total_return_pct": -11.4,
+      "cagr_pct": -2.6,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 36.1,
+      "max_drawdown_pct": 36.4,
       "total_trades": 1
     }
   ],
@@ -16633,13 +16633,41 @@
       "open": 40.4,
       "high": 40.4,
       "low": 39.33,
-      "close": 39.82,
-      "volume": 1229452.0,
+      "close": 39.53,
+      "volume": 2353699.0,
       "v1": 41.27,
       "m1": 41.51,
       "m2": 41.93,
       "v2": 42.21,
       "sma200": 47.01,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 39.45,
+      "high": 39.45,
+      "low": 38.49,
+      "close": 38.96,
+      "volume": 2312227.0,
+      "v1": 41.12,
+      "m1": 41.38,
+      "m2": 41.81,
+      "v2": 42.1,
+      "sma200": 46.93,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 38.8,
+      "high": 39.03,
+      "low": 38.6,
+      "close": 38.85,
+      "volume": 185820.0,
+      "v1": 40.97,
+      "m1": 41.25,
+      "m2": 41.69,
+      "v2": 41.99,
+      "sma200": 46.85,
       "state": "BLUE"
     }
   ],
@@ -16750,11 +16778,11 @@
       "text": "BUY #8 @ $40.4"
     },
     {
-      "time": "2026-11-17",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -1.63% ($-115.08 €)"
+      "text": "EXIT -4.04% ($-284.86 €)"
     }
   ],
   "equity_curves": [
@@ -21481,7 +21509,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 14003.97
+          "value": 13954.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13854.07
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13834.02
         }
       ]
     },
@@ -26208,6 +26244,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8370.63
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8370.63
+        },
+        {
+          "time": "2026-11-19",
           "value": 8370.63
         }
       ]
@@ -30936,6 +30980,14 @@
         {
           "time": "2026-11-17",
           "value": 9049.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9049.0
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9049.0
         }
       ]
     },
@@ -35662,7 +35714,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9089.87
+          "value": 9024.81
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8893.55
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8867.3
         }
       ]
     }
@@ -35756,25 +35816,25 @@
       "num": 8,
       "entry_date": "2026-10-07",
       "entry_price": 40.4,
-      "exit_date": "2026-11-17",
-      "exit_price": 39.82,
-      "holding_days": 29,
-      "pnl_pct": -1.63,
-      "pnl_eur": -115.08,
+      "exit_date": "2026-11-19",
+      "exit_price": 38.85,
+      "holding_days": 31,
+      "pnl_pct": -4.04,
+      "pnl_eur": -284.86,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
   ],
   "smart_money": {
     "symbol": "MBG.DE",
-    "smart_money_score": 30.0,
+    "smart_money_score": 35.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.195,
-    "up_down_vol_ratio": 1.02,
-    "absorption_5d_pct": 28.3,
-    "vol_shock_ratio": 0.48,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.27).",
+    "cmf_20d": -0.266,
+    "up_down_vol_ratio": 0.84,
+    "absorption_5d_pct": 36.6,
+    "vol_shock_ratio": 0.07,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

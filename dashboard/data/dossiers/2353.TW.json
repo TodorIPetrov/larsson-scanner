@@ -3,18 +3,18 @@
   "name": "ACER INC",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:35:55.247437+00:00",
+  "generated_at": "2026-11-19T09:19:23.339831+00:00",
   "backtest_start_date": "2022-04-19",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.4,
-  "backtest_total_bars": 1114,
-  "current_price": 29.15,
+  "backtest_total_bars": 1116,
+  "current_price": 27.7,
   "state": "BLUE",
-  "v1": 30.77,
-  "v2": 31.07,
-  "sma200": 29.71,
-  "rsi14": 37.7,
-  "atr14": 1.13,
+  "v1": 30.49,
+  "v2": 30.9,
+  "sma200": 29.73,
+  "rsi14": 30.0,
+  "atr14": 1.16,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 60.3,
-      "cagr_pct": 11.3,
+      "cagr_pct": 11.2,
       "sharpe_ratio": 0.6,
       "win_rate_pct": 33.3,
       "profit_factor": 4.21,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 32.4,
-      "cagr_pct": 6.6,
-      "sharpe_ratio": 0.36,
+      "total_return_pct": 25.8,
+      "cagr_pct": 5.3,
+      "sharpe_ratio": 0.33,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.61,
+      "profit_factor": 0.48,
       "max_drawdown_pct": 53.4,
       "total_trades": 1
     }
@@ -15710,12 +15710,40 @@
       "high": 29.7,
       "low": 28.3,
       "close": 29.15,
-      "volume": 16269357.0,
+      "volume": 16230086.0,
       "v1": 30.77,
       "m1": 30.91,
       "m2": 31.03,
       "v2": 31.07,
       "sma200": 29.71,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 29.3,
+      "high": 29.55,
+      "low": 28.35,
+      "close": 28.9,
+      "volume": 10938912.0,
+      "v1": 30.64,
+      "m1": 30.8,
+      "m2": 30.94,
+      "v2": 30.99,
+      "sma200": 29.72,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 29.0,
+      "high": 29.15,
+      "low": 27.65,
+      "close": 27.7,
+      "volume": 16970816.0,
+      "v1": 30.49,
+      "m1": 30.68,
+      "m2": 30.84,
+      "v2": 30.9,
+      "sma200": 29.73,
       "state": "BLUE"
     }
   ],
@@ -20280,6 +20308,14 @@
         {
           "time": "2026-11-17",
           "value": 17638.32
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17638.32
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17638.32
         }
       ]
     },
@@ -24742,6 +24778,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 16036.74
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16036.74
+        },
+        {
+          "time": "2026-11-19",
           "value": 16036.74
         }
       ]
@@ -29206,6 +29250,14 @@
         {
           "time": "2026-11-17",
           "value": 16031.97
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16031.97
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16031.97
         }
       ]
     },
@@ -33669,6 +33721,14 @@
         {
           "time": "2026-11-17",
           "value": 13252.4
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13138.75
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12593.19
         }
       ]
     }
@@ -33764,11 +33824,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.28).",
-    "cmf_20d": -0.275,
-    "up_down_vol_ratio": 0.62,
-    "absorption_5d_pct": 26.3,
-    "vol_shock_ratio": 0.77,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.31).",
+    "cmf_20d": -0.308,
+    "up_down_vol_ratio": 0.47,
+    "absorption_5d_pct": 30.3,
+    "vol_shock_ratio": 0.82,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

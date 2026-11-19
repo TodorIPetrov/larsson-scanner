@@ -3,18 +3,18 @@
   "name": "LVMH",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:51.434206+00:00",
+  "generated_at": "2026-11-19T09:23:01.772436+00:00",
   "backtest_start_date": "2022-03-30",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1186,
-  "current_price": 397.1,
+  "backtest_total_bars": 1188,
+  "current_price": 390.15,
   "state": "BLUE",
-  "v1": 399.84,
-  "v2": 408.51,
-  "sma200": 458.16,
-  "rsi14": 47.9,
-  "atr14": 10.35,
+  "v1": 398.6,
+  "v2": 407.26,
+  "sma200": 456.76,
+  "rsi14": 43.3,
+  "atr14": 9.88,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -35.1,
-      "cagr_pct": -8.8,
-      "sharpe_ratio": -0.16,
+      "total_return_pct": -36.2,
+      "cagr_pct": -9.1,
+      "sharpe_ratio": -0.18,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 54.8,
@@ -16717,13 +16717,41 @@
       "open": 404.55,
       "high": 405.1,
       "low": 390.2,
-      "close": 397.1,
-      "volume": 305420.0,
+      "close": 393.0,
+      "volume": 645545.0,
       "v1": 399.84,
       "m1": 401.45,
       "m2": 405.41,
       "v2": 408.51,
-      "sma200": 458.16,
+      "sma200": 458.14,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 391.15,
+      "high": 392.8,
+      "low": 384.25,
+      "close": 388.1,
+      "volume": 679893.0,
+      "v1": 399.09,
+      "m1": 400.77,
+      "m2": 404.73,
+      "v2": 407.82,
+      "sma200": 457.44,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 391.5,
+      "high": 393.3,
+      "low": 390.15,
+      "close": 390.15,
+      "volume": 54077.0,
+      "v1": 398.6,
+      "m1": 400.3,
+      "m2": 404.21,
+      "v2": 407.26,
+      "sma200": 456.76,
       "state": "BLUE"
     }
   ],
@@ -21576,6 +21604,14 @@
         {
           "time": "2026-11-17",
           "value": 10288.88
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10288.88
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10288.88
         }
       ]
     },
@@ -26326,6 +26362,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 10216.43
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10216.43
+        },
+        {
+          "time": "2026-11-19",
           "value": 10216.43
         }
       ]
@@ -31078,6 +31122,14 @@
         {
           "time": "2026-11-17",
           "value": 10688.52
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10688.52
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10688.52
         }
       ]
     },
@@ -35828,7 +35880,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6500.16
+          "value": 6433.05
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6352.84
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6386.4
         }
       ]
     }
@@ -35921,14 +35981,14 @@
   ],
   "smart_money": {
     "symbol": "MC.PA",
-    "smart_money_score": 50.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
-    "cmf_20d": -0.042,
-    "up_down_vol_ratio": 1.42,
-    "absorption_5d_pct": 34.6,
-    "vol_shock_ratio": 0.52,
+    "smart_money_score": 30.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.142,
+    "up_down_vol_ratio": 1.21,
+    "absorption_5d_pct": 27.0,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

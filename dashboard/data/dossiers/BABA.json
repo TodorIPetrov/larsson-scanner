@@ -3,18 +3,18 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:13.750753+00:00",
+  "generated_at": "2026-11-19T09:20:31.454968+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 87.5,
+  "backtest_total_bars": 1160,
+  "current_price": 84.37,
   "state": "BLUE",
-  "v1": 102.37,
-  "v2": 106.45,
-  "sma200": 121.44,
-  "rsi14": 27.0,
-  "atr14": 3.53,
+  "v1": 101.22,
+  "v2": 105.72,
+  "sma200": 121.05,
+  "rsi14": 24.5,
+  "atr14": 3.52,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -15.0,
-      "cagr_pct": -3.5,
-      "sharpe_ratio": 0.16,
+      "total_return_pct": -18.1,
+      "cagr_pct": -4.2,
+      "sharpe_ratio": 0.15,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 53.4,
+      "max_drawdown_pct": 55.0,
       "total_trades": 1
     }
   ],
@@ -16326,7 +16326,7 @@
       "high": 94.38,
       "low": 90.57,
       "close": 90.62,
-      "volume": 12407300.0,
+      "volume": 12448400.0,
       "v1": 103.4,
       "m1": 104.61,
       "m2": 106.18,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 88.16,
       "high": 88.5,
-      "low": 87.32,
-      "close": 87.5,
-      "volume": 5163419.0,
-      "v1": 102.37,
-      "m1": 103.73,
-      "m2": 105.45,
-      "v2": 106.45,
+      "low": 86.49,
+      "close": 86.65,
+      "volume": 17734100.0,
+      "v1": 102.34,
+      "m1": 103.71,
+      "m2": 105.43,
+      "v2": 106.44,
       "sma200": 121.44,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 86.18,
+      "high": 86.89,
+      "low": 84.22,
+      "close": 84.37,
+      "volume": 16578200.0,
+      "v1": 101.22,
+      "m1": 102.75,
+      "m2": 104.64,
+      "v2": 105.72,
+      "sma200": 121.05,
       "state": "BLUE"
     }
   ],
@@ -21104,6 +21118,10 @@
         {
           "time": "2026-11-17",
           "value": 9247.18
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9247.18
         }
       ]
     },
@@ -25746,6 +25764,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7237.57
+        },
+        {
+          "time": "2026-11-18",
           "value": 7237.57
         }
       ]
@@ -30390,6 +30412,10 @@
         {
           "time": "2026-11-17",
           "value": 7553.64
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7553.64
         }
       ]
     },
@@ -35032,7 +35058,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8503.6
+          "value": 8420.51
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8198.95
         }
       ]
     }
@@ -35137,18 +35167,18 @@
   ],
   "smart_money": {
     "symbol": "BABA",
-    "smart_money_score": 33.0,
+    "smart_money_score": 43.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.35) с Gamma стена на $90.00. Залог за рязък отскок.",
-    "cmf_20d": -0.259,
-    "up_down_vol_ratio": 0.61,
-    "absorption_5d_pct": 32.8,
-    "vol_shock_ratio": 0.47,
-    "put_call_ratio": 0.35,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.06) с Gamma стена на $270.00. Залог за рязък отскок.",
+    "cmf_20d": -0.332,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 24.8,
+    "vol_shock_ratio": 1.44,
+    "put_call_ratio": 0.06,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 90.0,
-    "max_pain": 160.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 270.0,
+    "max_pain": 280.0,
+    "unusual_call_sweep": true
   }
 }

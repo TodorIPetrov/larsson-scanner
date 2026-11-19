@@ -3,18 +3,18 @@
   "name": "Marvell Technology, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:36:54.810353+00:00",
+  "generated_at": "2026-11-19T09:23:09.676032+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 145.24,
+  "backtest_total_bars": 1160,
+  "current_price": 145.54,
   "state": "BLUE",
-  "v1": 193.05,
-  "v2": 210.39,
-  "sma200": 187.6,
-  "rsi14": 32.5,
-  "atr14": 16.07,
+  "v1": 189.89,
+  "v2": 208.15,
+  "sma200": 187.97,
+  "rsi14": 33.4,
+  "atr14": 15.9,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -15.7,
+      "total_return_pct": -15.6,
       "cagr_pct": -3.6,
-      "sharpe_ratio": -0.73,
+      "sharpe_ratio": -0.72,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 17.4,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 120.8,
+      "total_return_pct": 121.3,
       "cagr_pct": 18.8,
       "sharpe_ratio": 0.59,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.99,
+      "profit_factor": 2.0,
       "max_drawdown_pct": 60.8,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 149.16,
       "low": 144.04,
       "close": 145.36,
-      "volume": 21368300.0,
+      "volume": 23235500.0,
       "v1": 196.27,
       "m1": 203.47,
       "m2": 210.07,
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 150.2,
-      "high": 150.94,
-      "low": 145.05,
-      "close": 145.24,
-      "volume": 7167652.0,
-      "v1": 193.05,
-      "m1": 200.55,
-      "m2": 207.59,
-      "v2": 210.39,
-      "sma200": 187.6,
+      "high": 150.95,
+      "low": 140.9,
+      "close": 148.74,
+      "volume": 27118700.0,
+      "v1": 192.91,
+      "m1": 200.44,
+      "m2": 207.5,
+      "v2": 210.32,
+      "sma200": 187.62,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 151.91,
+      "high": 152.39,
+      "low": 142.62,
+      "close": 145.54,
+      "volume": 19313100.0,
+      "v1": 189.89,
+      "m1": 197.66,
+      "m2": 205.1,
+      "v2": 208.15,
+      "sma200": 187.97,
       "state": "BLUE"
     }
   ],
@@ -21090,6 +21104,10 @@
         {
           "time": "2026-11-17",
           "value": 14540.84
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14540.84
         }
       ]
     },
@@ -25732,6 +25750,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11693.8
+        },
+        {
+          "time": "2026-11-18",
           "value": 11693.8
         }
       ]
@@ -30376,6 +30398,10 @@
         {
           "time": "2026-11-17",
           "value": 11417.54
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11417.54
         }
       ]
     },
@@ -35018,7 +35044,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 22106.57
+          "value": 22638.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 22151.7
         }
       ]
     }
@@ -35114,15 +35144,15 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.63, CMF: -0.18).",
-    "cmf_20d": -0.182,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 39.1,
-    "vol_shock_ratio": 0.24,
-    "put_call_ratio": 0.63,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 160.0,
-    "max_pain": 300.0,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.16).",
+    "cmf_20d": -0.156,
+    "up_down_vol_ratio": 0.57,
+    "absorption_5d_pct": 49.5,
+    "vol_shock_ratio": 0.62,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 40.0,
+    "max_pain": 40.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,18 +3,18 @@
   "name": "Ouster, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:06.484067+00:00",
+  "generated_at": "2026-11-19T09:23:46.344843+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 30.3,
+  "backtest_total_bars": 1160,
+  "current_price": 29.3,
   "state": "BLUE",
-  "v1": 33.94,
-  "v2": 35.19,
-  "sma200": 32.97,
-  "rsi14": 42.8,
-  "atr14": 2.97,
+  "v1": 33.67,
+  "v2": 35.0,
+  "sma200": 33.02,
+  "rsi14": 41.1,
+  "atr14": 2.99,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -37.1,
-      "cagr_pct": -9.6,
-      "sharpe_ratio": 0.41,
+      "total_return_pct": -39.2,
+      "cagr_pct": -10.2,
+      "sharpe_ratio": 0.4,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 93.0,
@@ -16326,7 +16326,7 @@
       "high": 32.33,
       "low": 30.77,
       "close": 31.23,
-      "volume": 1840400.0,
+      "volume": 1854600.0,
       "v1": 34.14,
       "m1": 34.51,
       "m2": 35.05,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 31.99,
+      "open": 31.78,
       "high": 31.99,
-      "low": 30.15,
-      "close": 30.3,
-      "volume": 352565.0,
-      "v1": 33.94,
-      "m1": 34.33,
-      "m2": 34.89,
-      "v2": 35.19,
+      "low": 29.19,
+      "close": 30.48,
+      "volume": 1972700.0,
+      "v1": 33.91,
+      "m1": 34.31,
+      "m2": 34.87,
+      "v2": 35.17,
       "sma200": 32.97,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 31.1,
+      "high": 31.59,
+      "low": 29.13,
+      "close": 29.3,
+      "volume": 1927000.0,
+      "v1": 33.67,
+      "m1": 34.1,
+      "m2": 34.69,
+      "v2": 35.0,
+      "sma200": 33.02,
       "state": "BLUE"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 7757.11
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7757.11
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7703.07
+        },
+        {
+          "time": "2026-11-18",
           "value": 7703.07
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 4726.38
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4726.38
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6292.2
+          "value": 6330.46
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6085.38
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "OUST",
-    "smart_money_score": 75.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.20, Up/Dn Vol: 1.15x). Силна скрита подкрепа.",
-    "cmf_20d": 0.204,
-    "up_down_vol_ratio": 1.15,
-    "absorption_5d_pct": 18.5,
-    "vol_shock_ratio": 0.12,
-    "put_call_ratio": 0.45,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 30.0,
-    "max_pain": 50.0,
+    "smart_money_score": 42.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.18, P/C: 2.00).",
+    "cmf_20d": 0.176,
+    "up_down_vol_ratio": 0.93,
+    "absorption_5d_pct": 25.7,
+    "vol_shock_ratio": 0.68,
+    "put_call_ratio": 2.0,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 70.0,
+    "max_pain": 13.0,
     "unusual_call_sweep": false
   }
 }

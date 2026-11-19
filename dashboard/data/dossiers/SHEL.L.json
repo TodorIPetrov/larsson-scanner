@@ -3,18 +3,18 @@
   "name": "SHELL PLC ORD EUR0.07",
   "sector": "Energy",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:19.251380+00:00",
+  "generated_at": "2026-11-19T09:24:22.596495+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1167,
-  "current_price": 3686.0,
+  "backtest_total_bars": 1169,
+  "current_price": 3583.5,
   "state": "GOLD",
-  "v1": 3764.55,
-  "v2": 3685.71,
-  "sma200": 3342.78,
-  "rsi14": 42.3,
-  "atr14": 78.63,
+  "v1": 3744.05,
+  "v2": 3680.3,
+  "sma200": 3350.44,
+  "rsi14": 35.4,
+  "atr14": 74.65,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -15.0,
-      "cagr_pct": -3.4,
-      "sharpe_ratio": -0.06,
+      "total_return_pct": -17.3,
+      "cagr_pct": -4.0,
+      "sharpe_ratio": -0.09,
       "win_rate_pct": 41.2,
-      "profit_factor": 0.58,
+      "profit_factor": 0.52,
       "max_drawdown_pct": 36.0,
       "total_trades": 17
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -15.7,
-      "cagr_pct": -3.6,
-      "sharpe_ratio": -0.09,
+      "total_return_pct": -18.0,
+      "cagr_pct": -4.2,
+      "sharpe_ratio": -0.12,
       "win_rate_pct": 31.0,
-      "profit_factor": 0.69,
+      "profit_factor": 0.65,
       "max_drawdown_pct": 42.0,
       "total_trades": 29
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -36.9,
-      "cagr_pct": -9.5,
-      "sharpe_ratio": -0.44,
+      "total_return_pct": -38.6,
+      "cagr_pct": -10.0,
+      "sharpe_ratio": -0.47,
       "win_rate_pct": 30.4,
-      "profit_factor": 0.37,
+      "profit_factor": 0.33,
       "max_drawdown_pct": 52.9,
       "total_trades": 56
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -7.3,
-      "cagr_pct": -1.6,
-      "sharpe_ratio": -0.03,
+      "total_return_pct": -9.8,
+      "cagr_pct": -2.2,
+      "sharpe_ratio": -0.07,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.63,
+      "profit_factor": 0.5,
       "max_drawdown_pct": 31.5,
       "total_trades": 9
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 73.8,
-      "cagr_pct": 12.7,
-      "sharpe_ratio": 0.64,
+      "total_return_pct": 69.0,
+      "cagr_pct": 12.0,
+      "sharpe_ratio": 0.61,
       "win_rate_pct": 100.0,
-      "profit_factor": 3.33,
+      "profit_factor": 3.11,
       "max_drawdown_pct": 22.2,
       "total_trades": 1
     }
@@ -16451,13 +16451,41 @@
       "open": 3681.5,
       "high": 3708.5,
       "low": 3664.0,
-      "close": 3686.0,
-      "volume": 3782131.0,
+      "close": 3673.5,
+      "volume": 9153890.0,
       "v1": 3764.55,
       "m1": 3746.89,
       "m2": 3711.13,
       "v2": 3685.71,
-      "sma200": 3342.78,
+      "sma200": 3342.72,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 3665.5,
+      "high": 3667.0,
+      "low": 3595.5,
+      "close": 3595.5,
+      "volume": 8041394.0,
+      "v1": 3755.67,
+      "m1": 3740.8,
+      "m2": 3707.93,
+      "v2": 3683.83,
+      "sma200": 3346.37,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 3580.5,
+      "high": 3590.75,
+      "low": 3572.0,
+      "close": 3583.5,
+      "volume": 709573.0,
+      "v1": 3744.05,
+      "m1": 3732.41,
+      "m2": 3702.87,
+      "v2": 3680.3,
+      "sma200": 3350.44,
       "state": "GOLD"
     }
   ],
@@ -21206,6 +21234,14 @@
         {
           "time": "2026-11-17",
           "value": 10065.41
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10065.41
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10065.41
         }
       ]
     },
@@ -25880,7 +25916,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9282.39
+          "value": 9250.94
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9054.7
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9024.5
         }
       ]
     },
@@ -30555,7 +30599,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8510.19
+          "value": 8481.36
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8301.44
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8273.76
         }
       ]
     },
@@ -35230,7 +35282,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17399.66
+          "value": 17340.66
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16972.46
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16915.81
         }
       ]
     }
@@ -35299,14 +35359,14 @@
   ],
   "smart_money": {
     "symbol": "SHEL.L",
-    "smart_money_score": 37.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
-    "cmf_20d": -0.06,
-    "up_down_vol_ratio": 0.26,
-    "absorption_5d_pct": 50.5,
-    "vol_shock_ratio": 0.39,
+    "smart_money_score": 22.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.08).",
+    "cmf_20d": -0.08,
+    "up_down_vol_ratio": 0.2,
+    "absorption_5d_pct": 34.6,
+    "vol_shock_ratio": 0.07,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,17 +3,17 @@
   "name": "INTESA SANPAOLO",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:44.197456+00:00",
+  "generated_at": "2026-11-19T09:22:13.915165+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1176,
-  "current_price": 6.22,
+  "backtest_total_bars": 1178,
+  "current_price": 6.14,
   "state": "BLUE",
-  "v1": 6.22,
-  "v2": 6.29,
-  "sma200": 5.99,
-  "rsi14": 50.4,
+  "v1": 6.21,
+  "v2": 6.28,
+  "sma200": 6.0,
+  "rsi14": 47.3,
   "atr14": 0.14,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 323.3,
-      "cagr_pct": 36.2,
-      "sharpe_ratio": 1.34,
+      "total_return_pct": 317.9,
+      "cagr_pct": 35.8,
+      "sharpe_ratio": 1.33,
       "win_rate_pct": 100.0,
-      "profit_factor": 14.7,
+      "profit_factor": 14.46,
       "max_drawdown_pct": 22.0,
       "total_trades": 1
     }
@@ -16576,14 +16576,42 @@
       "time": "2026-11-17",
       "open": 6.23,
       "high": 6.28,
-      "low": 6.21,
-      "close": 6.22,
-      "volume": 17708410.0,
+      "low": 6.17,
+      "close": 6.19,
+      "volume": 42002903.0,
       "v1": 6.22,
       "m1": 6.25,
       "m2": 6.28,
       "v2": 6.29,
       "sma200": 5.99,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 6.21,
+      "high": 6.22,
+      "low": 6.06,
+      "close": 6.07,
+      "volume": 45996133.0,
+      "v1": 6.22,
+      "m1": 6.24,
+      "m2": 6.27,
+      "v2": 6.29,
+      "sma200": 5.99,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 6.12,
+      "high": 6.16,
+      "low": 6.1,
+      "close": 6.14,
+      "volume": 7452225.0,
+      "v1": 6.21,
+      "m1": 6.24,
+      "m2": 6.27,
+      "v2": 6.28,
+      "sma200": 6.0,
       "state": "BLUE"
     }
   ],
@@ -21340,6 +21368,14 @@
         {
           "time": "2026-11-17",
           "value": 35295.13
+        },
+        {
+          "time": "2026-11-18",
+          "value": 35295.13
+        },
+        {
+          "time": "2026-11-19",
+          "value": 35295.13
         }
       ]
     },
@@ -26050,6 +26086,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 34182.1
+        },
+        {
+          "time": "2026-11-18",
+          "value": 34182.1
+        },
+        {
+          "time": "2026-11-19",
           "value": 34182.1
         }
       ]
@@ -30762,6 +30806,14 @@
         {
           "time": "2026-11-17",
           "value": 32975.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 32975.28
+        },
+        {
+          "time": "2026-11-19",
+          "value": 32975.28
         }
       ]
     },
@@ -35472,7 +35524,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 42375.46
+          "value": 42143.97
+        },
+        {
+          "time": "2026-11-18",
+          "value": 41292.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 41830.78
         }
       ]
     }
@@ -35517,14 +35577,14 @@
   ],
   "smart_money": {
     "symbol": "ISP.MI",
-    "smart_money_score": 62.0,
+    "smart_money_score": 60.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: N/A).",
-    "cmf_20d": 0.045,
-    "up_down_vol_ratio": 1.35,
-    "absorption_5d_pct": 31.7,
-    "vol_shock_ratio": 0.37,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: N/A).",
+    "cmf_20d": 0.009,
+    "up_down_vol_ratio": 1.26,
+    "absorption_5d_pct": 38.2,
+    "vol_shock_ratio": 0.16,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

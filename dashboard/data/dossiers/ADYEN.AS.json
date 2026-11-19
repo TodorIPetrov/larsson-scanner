@@ -3,25 +3,25 @@
   "name": "ADYEN",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:04.754114+00:00",
+  "generated_at": "2026-11-19T09:19:44.500234+00:00",
   "backtest_start_date": "2022-03-30",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1186,
-  "current_price": 851.2,
+  "backtest_total_bars": 1188,
+  "current_price": 835.7,
   "state": "BLUE",
-  "v1": 883.73,
-  "v2": 898.84,
-  "sma200": 917.71,
-  "rsi14": 42.5,
-  "atr14": 29.7,
+  "v1": 877.44,
+  "v2": 894.51,
+  "sma200": 914.39,
+  "rsi14": 39.7,
+  "atr14": 27.84,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": -17.3,
-    "cagr_pct": -4.0,
+    "cagr_pct": -3.9,
     "sharpe_ratio": -0.12,
     "win_rate_pct": 44.4,
     "profit_factor": 1.62,
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -49.9,
       "cagr_pct": -13.6,
-      "sharpe_ratio": -0.44,
+      "sharpe_ratio": -0.43,
       "win_rate_pct": 22.2,
       "profit_factor": 0.2,
       "max_drawdown_pct": 51.4,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": -17.3,
-      "cagr_pct": -4.0,
+      "cagr_pct": -3.9,
       "sharpe_ratio": -0.12,
       "win_rate_pct": 44.4,
       "profit_factor": 1.62,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -55.7,
-      "cagr_pct": -15.9,
-      "sharpe_ratio": -0.07,
+      "total_return_pct": -56.5,
+      "cagr_pct": -16.2,
+      "sharpe_ratio": -0.08,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 66.7,
@@ -16716,14 +16716,42 @@
       "time": "2026-11-17",
       "open": 857.7,
       "high": 859.1,
-      "low": 846.7,
-      "close": 851.2,
-      "volume": 26034.0,
-      "v1": 883.73,
-      "m1": 889.11,
-      "m2": 895.5,
-      "v2": 898.84,
-      "sma200": 917.71,
+      "low": 837.7,
+      "close": 837.7,
+      "volume": 75578.0,
+      "v1": 883.43,
+      "m1": 888.88,
+      "m2": 895.32,
+      "v2": 898.69,
+      "sma200": 917.64,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 835.0,
+      "high": 847.0,
+      "low": 828.7,
+      "close": 836.4,
+      "volume": 94665.0,
+      "v1": 880.39,
+      "m1": 886.19,
+      "m2": 893.02,
+      "v2": 896.59,
+      "sma200": 916.15,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 838.0,
+      "high": 839.4,
+      "low": 832.9,
+      "close": 835.7,
+      "volume": 8838.0,
+      "v1": 877.44,
+      "m1": 883.56,
+      "m2": 890.74,
+      "v2": 894.51,
+      "sma200": 914.39,
       "state": "BLUE"
     }
   ],
@@ -21604,6 +21632,14 @@
         {
           "time": "2026-11-17",
           "value": 8271.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8271.45
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8271.45
         }
       ]
     },
@@ -26354,6 +26390,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 5013.81
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5013.81
+        },
+        {
+          "time": "2026-11-19",
           "value": 5013.81
         }
       ]
@@ -31106,6 +31150,14 @@
         {
           "time": "2026-11-17",
           "value": 5410.84
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5410.84
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5410.84
         }
       ]
     },
@@ -35856,7 +35908,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 4435.37
+          "value": 4365.02
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4358.25
+        },
+        {
+          "time": "2026-11-19",
+          "value": 4354.6
         }
       ]
     }
@@ -35973,14 +36033,14 @@
   ],
   "smart_money": {
     "symbol": "ADYEN.AS",
-    "smart_money_score": 42.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: N/A).",
-    "cmf_20d": -0.101,
-    "up_down_vol_ratio": 0.81,
-    "absorption_5d_pct": 36.8,
-    "vol_shock_ratio": 0.17,
+    "smart_money_score": 15.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
+    "cmf_20d": -0.182,
+    "up_down_vol_ratio": 0.63,
+    "absorption_5d_pct": 26.0,
+    "vol_shock_ratio": 0.06,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

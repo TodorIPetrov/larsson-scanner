@@ -3,18 +3,18 @@
   "name": "Meta Platforms, Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:53.156819+00:00",
+  "generated_at": "2026-11-19T09:23:05.902568+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 623.26,
+  "backtest_total_bars": 1160,
+  "current_price": 616.38,
   "state": "NEUTRAL",
-  "v1": 648.84,
-  "v2": 652.63,
-  "sma200": 629.18,
-  "rsi14": 43.1,
-  "atr14": 21.66,
+  "v1": 646.44,
+  "v2": 651.26,
+  "sma200": 628.79,
+  "rsi14": 41.4,
+  "atr14": 21.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 176.7,
-      "cagr_pct": 24.8,
-      "sharpe_ratio": 0.73,
+      "total_return_pct": 173.7,
+      "cagr_pct": 24.4,
+      "sharpe_ratio": 0.72,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.94,
+      "profit_factor": 2.89,
       "max_drawdown_pct": 60.2,
       "total_trades": 1
     }
@@ -16326,7 +16326,7 @@
       "high": 640.7,
       "low": 620.14,
       "close": 626.41,
-      "volume": 11541500.0,
+      "volume": 11577900.0,
       "v1": 650.66,
       "m1": 653.76,
       "m2": 654.49,
@@ -16336,16 +16336,30 @@
     },
     {
       "time": "2026-11-17",
-      "open": 624.4,
+      "open": 624.21,
       "high": 627.48,
-      "low": 619.24,
-      "close": 623.26,
-      "volume": 3027261.0,
-      "v1": 648.84,
-      "m1": 652.16,
-      "m2": 653.25,
-      "v2": 652.63,
-      "sma200": 629.18,
+      "low": 613.51,
+      "close": 618.87,
+      "volume": 12971800.0,
+      "v1": 648.65,
+      "m1": 652.01,
+      "m2": 653.13,
+      "v2": 652.53,
+      "sma200": 629.15,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 620.11,
+      "high": 620.81,
+      "low": 610.3,
+      "close": 616.38,
+      "volume": 10358800.0,
+      "v1": 646.44,
+      "m1": 650.09,
+      "m2": 651.63,
+      "v2": 651.26,
+      "sma200": 628.79,
       "state": "NEUTRAL"
     }
   ],
@@ -21104,6 +21118,10 @@
         {
           "time": "2026-11-17",
           "value": 31838.34
+        },
+        {
+          "time": "2026-11-18",
+          "value": 31838.34
         }
       ]
     },
@@ -25746,6 +25764,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 33819.16
+        },
+        {
+          "time": "2026-11-18",
           "value": 33819.16
         }
       ]
@@ -30390,6 +30412,10 @@
         {
           "time": "2026-11-17",
           "value": 27574.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 27574.29
         }
       ]
     },
@@ -35032,7 +35058,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 27702.62
+          "value": 27507.49
+        },
+        {
+          "time": "2026-11-18",
+          "value": 27396.82
         }
       ]
     }
@@ -35137,18 +35167,18 @@
   ],
   "smart_money": {
     "symbol": "META",
-    "smart_money_score": 25.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.79, CMF: -0.37).",
-    "cmf_20d": -0.368,
-    "up_down_vol_ratio": 0.59,
-    "absorption_5d_pct": 42.5,
-    "vol_shock_ratio": 0.13,
-    "put_call_ratio": 0.79,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 620.0,
-    "max_pain": 660.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 58.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.10) с Gamma стена на $35.00. Залог за рязък отскок.",
+    "cmf_20d": -0.357,
+    "up_down_vol_ratio": 0.46,
+    "absorption_5d_pct": 51.2,
+    "vol_shock_ratio": 0.44,
+    "put_call_ratio": 0.1,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 35.0,
+    "max_pain": 45.0,
+    "unusual_call_sweep": true
   }
 }

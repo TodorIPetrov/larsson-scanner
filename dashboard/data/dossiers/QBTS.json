@@ -3,18 +3,18 @@
   "name": "D-Wave Quantum Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:11.790108+00:00",
+  "generated_at": "2026-11-19T09:23:58.906440+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 8.24,
+  "backtest_total_bars": 1160,
+  "current_price": 7.69,
   "state": "BLUE",
-  "v1": 11.53,
-  "v2": 13.56,
-  "sma200": 18.37,
-  "rsi14": 30.0,
-  "atr14": 0.89,
+  "v1": 11.29,
+  "v2": 13.36,
+  "sma200": 18.31,
+  "rsi14": 28.0,
+  "atr14": 0.9,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -16.9,
-      "cagr_pct": -3.9,
-      "sharpe_ratio": 0.61,
+      "total_return_pct": -22.5,
+      "cagr_pct": -5.4,
+      "sharpe_ratio": 0.6,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 96.7,
@@ -16326,7 +16326,7 @@
       "high": 9.27,
       "low": 8.62,
       "close": 8.67,
-      "volume": 13882300.0,
+      "volume": 13924100.0,
       "v1": 11.75,
       "m1": 12.39,
       "m2": 13.24,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 8.63,
       "high": 8.66,
-      "low": 8.2,
-      "close": 8.24,
-      "volume": 4402300.0,
-      "v1": 11.53,
-      "m1": 12.18,
-      "m2": 13.05,
-      "v2": 13.56,
+      "low": 7.92,
+      "close": 8.08,
+      "volume": 18095300.0,
+      "v1": 11.52,
+      "m1": 12.17,
+      "m2": 13.04,
+      "v2": 13.55,
       "sma200": 18.37,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 8.28,
+      "high": 8.34,
+      "low": 7.66,
+      "close": 7.69,
+      "volume": 14918700.0,
+      "v1": 11.29,
+      "m1": 11.95,
+      "m2": 12.84,
+      "v2": 13.36,
+      "sma200": 18.31,
       "state": "BLUE"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 21591.79
+        },
+        {
+          "time": "2026-11-18",
+          "value": 21591.79
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12708.14
+        },
+        {
+          "time": "2026-11-18",
           "value": 12708.14
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 14477.77
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14477.77
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8319.95
+          "value": 8153.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7759.91
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "QBTS",
-    "smart_money_score": 48.0,
+    "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.30) с Gamma стена на $8.00. Залог за рязък отскок.",
-    "cmf_20d": -0.047,
-    "up_down_vol_ratio": 0.67,
-    "absorption_5d_pct": 21.1,
-    "vol_shock_ratio": 0.3,
-    "put_call_ratio": 0.3,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.01) с Gamma стена на $60.00. Залог за рязък отскок.",
+    "cmf_20d": -0.125,
+    "up_down_vol_ratio": 0.52,
+    "absorption_5d_pct": 18.0,
+    "vol_shock_ratio": 0.98,
+    "put_call_ratio": 0.01,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 8.0,
-    "max_pain": 12.0,
+    "gamma_wall": 60.0,
+    "max_pain": 60.0,
     "unusual_call_sweep": false
   }
 }

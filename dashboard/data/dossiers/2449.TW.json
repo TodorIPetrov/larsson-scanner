@@ -3,26 +3,26 @@
   "name": "KING YUAN ELECTRONICS CO",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-17T15:35:56.007298+00:00",
+  "generated_at": "2026-11-19T09:19:26.129241+00:00",
   "backtest_start_date": "2022-04-19",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.4,
-  "backtest_total_bars": 1114,
-  "current_price": 176.5,
+  "backtest_total_bars": 1116,
+  "current_price": 175.0,
   "state": "BLUE",
-  "v1": 244.67,
-  "v2": 257.17,
-  "sma200": 273.72,
-  "rsi14": 27.1,
-  "atr14": 16.66,
+  "v1": 236.91,
+  "v2": 252.24,
+  "sma200": 272.97,
+  "rsi14": 31.1,
+  "atr14": 16.88,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 459.1,
-    "cagr_pct": 47.6,
-    "sharpe_ratio": 1.13,
+    "cagr_pct": 47.5,
+    "sharpe_ratio": 1.12,
     "win_rate_pct": 50.0,
     "profit_factor": 6.78,
     "max_drawdown_pct": 48.5,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 225.6,
-      "cagr_pct": 30.6,
+      "cagr_pct": 30.5,
       "sharpe_ratio": 0.83,
       "win_rate_pct": 30.0,
       "profit_factor": 2.49,
@@ -82,8 +82,8 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 459.1,
-      "cagr_pct": 47.6,
-      "sharpe_ratio": 1.13,
+      "cagr_pct": 47.5,
+      "sharpe_ratio": 1.12,
       "win_rate_pct": 50.0,
       "profit_factor": 6.78,
       "max_drawdown_pct": 48.5,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 452.9,
-      "cagr_pct": 47.2,
-      "sharpe_ratio": 1.03,
+      "total_return_pct": 448.2,
+      "cagr_pct": 46.8,
+      "sharpe_ratio": 1.02,
       "win_rate_pct": 100.0,
-      "profit_factor": 9.33,
+      "profit_factor": 9.23,
       "max_drawdown_pct": 48.5,
       "total_trades": 1
     }
@@ -15710,12 +15710,40 @@
       "high": 188.5,
       "low": 173.5,
       "close": 176.5,
-      "volume": 41982826.0,
+      "volume": 41282737.0,
       "v1": 244.67,
       "m1": 249.9,
       "m2": 254.89,
       "v2": 257.17,
       "sma200": 273.72,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 190.0,
+      "high": 194.0,
+      "low": 179.0,
+      "close": 194.0,
+      "volume": 43181060.0,
+      "v1": 240.79,
+      "m1": 246.57,
+      "m2": 252.16,
+      "v2": 254.73,
+      "sma200": 273.4,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 190.0,
+      "high": 190.0,
+      "low": 175.0,
+      "close": 175.0,
+      "volume": 22048751.0,
+      "v1": 236.91,
+      "m1": 243.19,
+      "m2": 249.37,
+      "v2": 252.24,
+      "sma200": 272.97,
       "state": "BLUE"
     }
   ],
@@ -20238,6 +20266,14 @@
         {
           "time": "2026-11-17",
           "value": 55911.46
+        },
+        {
+          "time": "2026-11-18",
+          "value": 55911.46
+        },
+        {
+          "time": "2026-11-19",
+          "value": 55911.46
         }
       ]
     },
@@ -24700,6 +24736,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 36392.97
+        },
+        {
+          "time": "2026-11-18",
+          "value": 36392.97
+        },
+        {
+          "time": "2026-11-19",
           "value": 36392.97
         }
       ]
@@ -29164,6 +29208,14 @@
         {
           "time": "2026-11-17",
           "value": 23601.74
+        },
+        {
+          "time": "2026-11-18",
+          "value": 23601.74
+        },
+        {
+          "time": "2026-11-19",
+          "value": 23601.74
         }
       ]
     },
@@ -33627,6 +33679,14 @@
         {
           "time": "2026-11-17",
           "value": 55341.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 60828.37
+        },
+        {
+          "time": "2026-11-19",
+          "value": 54870.96
         }
       ]
     }
@@ -33683,14 +33743,14 @@
   ],
   "smart_money": {
     "symbol": "2449.TW",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.26).",
-    "cmf_20d": -0.259,
-    "up_down_vol_ratio": 0.72,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
+    "cmf_20d": -0.207,
+    "up_down_vol_ratio": 0.78,
     "absorption_5d_pct": 25.2,
-    "vol_shock_ratio": 2.05,
+    "vol_shock_ratio": 0.97,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

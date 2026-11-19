@@ -3,18 +3,18 @@
   "name": "BITO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:17.338017+00:00",
+  "generated_at": "2026-11-19T09:20:41.582063+00:00",
   "backtest_start_date": "2022-05-25",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.5,
-  "backtest_total_bars": 1125,
-  "current_price": 8.63,
-  "state": "NEUTRAL",
-  "v1": 10.14,
-  "v2": 10.24,
-  "sma200": 9.75,
-  "rsi14": 23.6,
-  "atr14": 0.32,
+  "backtest_total_bars": 1126,
+  "current_price": 8.31,
+  "state": "BLUE",
+  "v1": 10.01,
+  "v2": 10.17,
+  "sma200": 9.74,
+  "rsi14": 21.2,
+  "atr14": 0.33,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 63.6,
-      "cagr_pct": 11.7,
+      "cagr_pct": 11.6,
       "sharpe_ratio": 0.49,
       "win_rate_pct": 50.0,
       "profit_factor": 2.05,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 76.0,
-      "cagr_pct": 13.5,
-      "sharpe_ratio": 0.5,
+      "total_return_pct": 69.5,
+      "cagr_pct": 12.5,
+      "sharpe_ratio": 0.49,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.4,
+      "profit_factor": 1.28,
       "max_drawdown_pct": 54.5,
       "total_trades": 1
     }
@@ -15850,7 +15850,7 @@
       "high": 8.73,
       "low": 8.52,
       "close": 8.63,
-      "volume": 95073200.0,
+      "volume": 95109400.0,
       "v1": 10.24,
       "m1": 10.31,
       "m2": 10.32,
@@ -15862,15 +15862,29 @@
       "time": "2026-11-17",
       "open": 8.62,
       "high": 8.69,
-      "low": 8.56,
-      "close": 8.63,
-      "volume": 16838026.0,
-      "v1": 10.14,
-      "m1": 10.22,
+      "low": 8.4,
+      "close": 8.49,
+      "volume": 68189200.0,
+      "v1": 10.13,
+      "m1": 10.21,
       "m2": 10.25,
       "v2": 10.24,
       "sma200": 9.75,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 8.48,
+      "high": 8.49,
+      "low": 8.25,
+      "close": 8.31,
+      "volume": 62280900.0,
+      "v1": 10.01,
+      "m1": 10.12,
+      "m2": 10.17,
+      "v2": 10.17,
+      "sma200": 9.74,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -20450,6 +20464,10 @@
         {
           "time": "2026-11-17",
           "value": 17472.3
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17472.3
         }
       ]
     },
@@ -24956,6 +24974,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 15774.48
+        },
+        {
+          "time": "2026-11-18",
           "value": 15774.48
         }
       ]
@@ -29464,6 +29486,10 @@
         {
           "time": "2026-11-17",
           "value": 16358.43
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16358.43
         }
       ]
     },
@@ -33970,7 +33996,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 17621.42
+          "value": 17335.56
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16968.02
         }
       ]
     }
@@ -34039,18 +34069,18 @@
   ],
   "smart_money": {
     "symbol": "BITO",
-    "smart_money_score": 75.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 0.45x). Силна скрита подкрепа.",
-    "cmf_20d": 0.046,
-    "up_down_vol_ratio": 0.45,
-    "absorption_5d_pct": 56.3,
-    "vol_shock_ratio": 0.27,
-    "put_call_ratio": 0.21,
+    "smart_money_score": 68.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $17.00. Залог за рязък отскок.",
+    "cmf_20d": -0.032,
+    "up_down_vol_ratio": 0.3,
+    "absorption_5d_pct": 38.5,
+    "vol_shock_ratio": 1.01,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 9.0,
-    "max_pain": 9.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 17.0,
+    "max_pain": 17.0,
+    "unusual_call_sweep": true
   }
 }

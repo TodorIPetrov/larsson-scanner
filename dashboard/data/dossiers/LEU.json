@@ -3,29 +3,29 @@
   "name": "Centrus Energy Corp.",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:48.240577+00:00",
+  "generated_at": "2026-11-19T09:22:26.523291+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 95.83,
+  "backtest_total_bars": 1160,
+  "current_price": 91.76,
   "state": "BLUE",
-  "v1": 112.81,
-  "v2": 128.05,
-  "sma200": 173.38,
-  "rsi14": 39.1,
-  "atr14": 8.71,
+  "v1": 111.53,
+  "v2": 126.86,
+  "sma200": 172.42,
+  "rsi14": 37.0,
+  "atr14": 8.89,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 224.6,
-    "cagr_pct": 29.2,
-    "sharpe_ratio": 0.79,
+    "total_return_pct": 227.7,
+    "cagr_pct": 29.4,
+    "sharpe_ratio": 0.8,
     "win_rate_pct": 40.0,
-    "profit_factor": 9.0,
-    "max_drawdown_pct": 51.9,
+    "profit_factor": 9.91,
+    "max_drawdown_pct": 51.5,
     "total_trades": 5
   },
   "all_strategies": [
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 28.2,
-      "cagr_pct": 5.6,
+      "cagr_pct": 5.5,
       "sharpe_ratio": 0.41,
       "win_rate_pct": 25.0,
       "profit_factor": 1.25,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 224.6,
-      "cagr_pct": 29.2,
-      "sharpe_ratio": 0.79,
+      "total_return_pct": 227.7,
+      "cagr_pct": 29.4,
+      "sharpe_ratio": 0.8,
       "win_rate_pct": 40.0,
-      "profit_factor": 9.0,
-      "max_drawdown_pct": 51.9,
+      "profit_factor": 9.91,
+      "max_drawdown_pct": 51.5,
       "total_trades": 5
     },
     {
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 83.1,
-      "cagr_pct": 14.1,
+      "cagr_pct": 14.0,
       "sharpe_ratio": 0.53,
       "win_rate_pct": 50.0,
       "profit_factor": 3.18,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 187.5,
-      "cagr_pct": 25.8,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 175.3,
+      "cagr_pct": 24.6,
+      "sharpe_ratio": 0.69,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.36,
+      "profit_factor": 2.2,
       "max_drawdown_pct": 79.6,
       "total_trades": 1
     }
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 97.76,
-      "high": 99.52,
-      "low": 95.41,
-      "close": 95.83,
-      "volume": 94627.0,
-      "v1": 112.81,
-      "m1": 117.59,
-      "m2": 124.15,
-      "v2": 128.05,
-      "sma200": 173.38,
+      "high": 99.7,
+      "low": 92.55,
+      "close": 94.19,
+      "volume": 482000.0,
+      "v1": 112.72,
+      "m1": 117.52,
+      "m2": 124.09,
+      "v2": 128.01,
+      "sma200": 173.37,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 94.46,
+      "high": 99.16,
+      "low": 90.65,
+      "close": 91.76,
+      "volume": 496300.0,
+      "v1": 111.53,
+      "m1": 116.33,
+      "m2": 122.93,
+      "v2": 126.86,
+      "sma200": 172.42,
       "state": "BLUE"
     }
   ],
@@ -16418,7 +16432,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -10.96% ($-1879.81 €)"
+      "text": "EXIT -9.17% ($-1572.22 €)"
     }
   ],
   "equity_curves": [
@@ -21061,7 +21075,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 32474.91
+          "value": 32767.21
+        },
+        {
+          "time": "2026-11-18",
+          "value": 32767.21
         }
       ]
     },
@@ -25704,6 +25722,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 18312.44
+        },
+        {
+          "time": "2026-11-18",
           "value": 18312.44
         }
       ]
@@ -30348,6 +30370,10 @@
         {
           "time": "2026-11-17",
           "value": 12822.68
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12822.68
         }
       ]
     },
@@ -34990,7 +35016,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 28774.92
+          "value": 28282.48
+        },
+        {
+          "time": "2026-11-18",
+          "value": 27552.82
         }
       ]
     }
@@ -35049,11 +35079,11 @@
       "entry_date": "2026-11-09",
       "entry_price": 107.41,
       "exit_date": "2026-11-17",
-      "exit_price": 95.83,
+      "exit_price": 97.76,
       "holding_days": 6,
-      "pnl_pct": -10.96,
-      "pnl_eur": -1879.81,
-      "exit_reason": "Край на Бектеста (Отворена)",
+      "pnl_pct": -9.17,
+      "pnl_eur": -1572.22,
+      "exit_reason": "Пробив на Подкрепа (-12%)",
       "is_win": false
     }
   ],
@@ -35062,15 +35092,15 @@
     "smart_money_score": 30.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.63, CMF: -0.03).",
-    "cmf_20d": -0.033,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.04).",
+    "cmf_20d": -0.035,
     "up_down_vol_ratio": 0.52,
-    "absorption_5d_pct": 22.5,
-    "vol_shock_ratio": 0.11,
-    "put_call_ratio": 0.63,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 100.0,
-    "max_pain": 100.0,
+    "absorption_5d_pct": 24.7,
+    "vol_shock_ratio": 0.6,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 70.0,
+    "max_pain": 70.0,
     "unusual_call_sweep": false
   }
 }

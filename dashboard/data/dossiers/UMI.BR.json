@@ -3,17 +3,17 @@
   "name": "UMICORE",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:37:27.579150+00:00",
+  "generated_at": "2026-11-19T09:24:47.107033+00:00",
   "backtest_start_date": "2022-03-30",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1186,
-  "current_price": 16.81,
+  "backtest_total_bars": 1188,
+  "current_price": 16.75,
   "state": "BLUE",
-  "v1": 18.88,
-  "v2": 19.81,
-  "sma200": 20.28,
-  "rsi14": 32.4,
+  "v1": 18.58,
+  "v2": 19.59,
+  "sma200": 20.25,
+  "rsi14": 35.7,
   "atr14": 0.68,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": -4.9,
-    "cagr_pct": -1.1,
+    "cagr_pct": -1.0,
     "sharpe_ratio": 0.08,
     "win_rate_pct": 14.3,
     "profit_factor": 0.88,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": -4.9,
-      "cagr_pct": -1.1,
+      "cagr_pct": -1.0,
       "sharpe_ratio": 0.08,
       "win_rate_pct": 14.3,
       "profit_factor": 0.88,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -49.6,
-      "cagr_pct": -13.5,
+      "total_return_pct": -49.8,
+      "cagr_pct": -13.6,
       "sharpe_ratio": -0.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16717,13 +16717,41 @@
       "open": 17.0,
       "high": 17.15,
       "low": 16.59,
-      "close": 16.81,
-      "volume": 297935.0,
+      "close": 16.85,
+      "volume": 917166.0,
       "v1": 18.88,
       "m1": 19.21,
       "m2": 19.6,
       "v2": 19.81,
       "sma200": 20.28,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 16.75,
+      "high": 16.75,
+      "low": 16.15,
+      "close": 16.15,
+      "volume": 507161.0,
+      "v1": 18.72,
+      "m1": 19.06,
+      "m2": 19.48,
+      "v2": 19.69,
+      "sma200": 20.27,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 16.55,
+      "high": 16.84,
+      "low": 16.55,
+      "close": 16.75,
+      "volume": 48741.0,
+      "v1": 18.58,
+      "m1": 18.94,
+      "m2": 19.37,
+      "v2": 19.59,
+      "sma200": 20.25,
       "state": "BLUE"
     }
   ],
@@ -21576,6 +21604,14 @@
         {
           "time": "2026-11-17",
           "value": 9514.91
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9514.91
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9514.91
         }
       ]
     },
@@ -26326,6 +26362,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 5752.73
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5752.73
+        },
+        {
+          "time": "2026-11-19",
           "value": 5752.73
         }
       ]
@@ -31078,6 +31122,14 @@
         {
           "time": "2026-11-17",
           "value": 5555.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5555.5
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5555.5
         }
       ]
     },
@@ -35828,7 +35880,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 5047.87
+          "value": 5059.88
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4849.67
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5029.85
         }
       ]
     }
@@ -35924,11 +35984,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.2,
-    "up_down_vol_ratio": 0.74,
-    "absorption_5d_pct": 9.4,
-    "vol_shock_ratio": 0.56,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
+    "cmf_20d": -0.214,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 24.6,
+    "vol_shock_ratio": 0.09,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

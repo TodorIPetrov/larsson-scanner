@@ -3,18 +3,18 @@
   "name": "ARKW",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:09.342638+00:00",
+  "generated_at": "2026-11-19T09:19:56.861641+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 136.3,
+  "backtest_total_bars": 1160,
+  "current_price": 135.46,
   "state": "BLUE",
-  "v1": 148.83,
-  "v2": 151.44,
-  "sma200": 142.89,
-  "rsi14": 34.4,
-  "atr14": 4.55,
+  "v1": 147.86,
+  "v2": 150.85,
+  "sma200": 142.91,
+  "rsi14": 34.1,
+  "atr14": 4.61,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -21.0,
-      "cagr_pct": -5.0,
-      "sharpe_ratio": -0.43,
+      "total_return_pct": -21.3,
+      "cagr_pct": -5.1,
+      "sharpe_ratio": -0.44,
       "win_rate_pct": 25.0,
       "profit_factor": 0.58,
       "max_drawdown_pct": 25.5,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 60.6,
-      "cagr_pct": 10.8,
+      "total_return_pct": 59.6,
+      "cagr_pct": 10.7,
       "sharpe_ratio": 0.47,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.08,
+      "profit_factor": 1.06,
       "max_drawdown_pct": 56.4,
       "total_trades": 1
     }
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 137.13,
-      "high": 137.07,
-      "low": 136.29,
-      "close": 136.3,
-      "volume": 7412.0,
-      "v1": 148.83,
-      "m1": 150.17,
-      "m2": 151.18,
-      "v2": 151.44,
+      "high": 137.21,
+      "low": 133.52,
+      "close": 135.01,
+      "volume": 63500.0,
+      "v1": 148.74,
+      "m1": 150.1,
+      "m2": 151.13,
+      "v2": 151.4,
       "sma200": 142.89,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 135.85,
+      "high": 136.86,
+      "low": 134.23,
+      "close": 135.46,
+      "volume": 266500.0,
+      "v1": 147.86,
+      "m1": 149.33,
+      "m2": 150.51,
+      "v2": 150.85,
+      "sma200": 142.91,
       "state": "BLUE"
     }
   ],
@@ -21090,6 +21104,10 @@
         {
           "time": "2026-11-17",
           "value": 14258.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14258.03
         }
       ]
     },
@@ -25732,6 +25750,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 14938.12
+        },
+        {
+          "time": "2026-11-18",
           "value": 14938.12
         }
       ]
@@ -30376,6 +30398,10 @@
         {
           "time": "2026-11-17",
           "value": 13760.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13760.0
         }
       ]
     },
@@ -35018,7 +35044,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 16075.91
+          "value": 15923.76
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15976.83
         }
       ]
     }
@@ -35111,18 +35141,18 @@
   ],
   "smart_money": {
     "symbol": "ARKW",
-    "smart_money_score": 75.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 1.15x). Силна скрита подкрепа.",
-    "cmf_20d": 0.047,
-    "up_down_vol_ratio": 1.15,
-    "absorption_5d_pct": 31.7,
-    "vol_shock_ratio": 0.08,
-    "put_call_ratio": 0.12,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 152.0,
-    "max_pain": 180.0,
+    "smart_money_score": 42.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: 2.00).",
+    "cmf_20d": 0.019,
+    "up_down_vol_ratio": 1.32,
+    "absorption_5d_pct": 41.9,
+    "vol_shock_ratio": 3.14,
+    "put_call_ratio": 2.0,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 135.0,
+    "max_pain": 154.0,
     "unusual_call_sweep": false
   }
 }

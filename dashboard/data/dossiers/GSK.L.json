@@ -3,18 +3,18 @@
   "name": "GSK PLC ORD 31 1/4P",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:39.607511+00:00",
+  "generated_at": "2026-11-19T09:21:59.490008+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1167,
-  "current_price": 1879.5,
+  "backtest_total_bars": 1169,
+  "current_price": 1848.0,
   "state": "NEUTRAL",
-  "v1": 1874.53,
-  "v2": 1871.48,
-  "sma200": 1954.01,
-  "rsi14": 50.8,
-  "atr14": 48.83,
+  "v1": 1872.58,
+  "v2": 1870.66,
+  "sma200": 1951.19,
+  "rsi14": 46.1,
+  "atr14": 45.01,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 11.9,
-      "cagr_pct": 2.5,
-      "sharpe_ratio": 0.23,
+      "total_return_pct": 10.0,
+      "cagr_pct": 2.1,
+      "sharpe_ratio": 0.22,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.39,
+      "profit_factor": 0.33,
       "max_drawdown_pct": 30.6,
       "total_trades": 1
     }
@@ -16450,14 +16450,42 @@
       "time": "2026-11-17",
       "open": 1912.5,
       "high": 1917.5,
-      "low": 1872.5,
-      "close": 1879.5,
-      "volume": 1766694.0,
-      "v1": 1874.53,
-      "m1": 1871.34,
-      "m2": 1870.47,
-      "v2": 1871.48,
-      "sma200": 1954.01,
+      "low": 1869.0,
+      "close": 1869.0,
+      "volume": 7867699.0,
+      "v1": 1874.41,
+      "m1": 1871.24,
+      "m2": 1870.4,
+      "v2": 1871.41,
+      "sma200": 1953.96,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 1867.0,
+      "high": 1880.0,
+      "low": 1853.5,
+      "close": 1858.0,
+      "volume": 4360878.0,
+      "v1": 1873.9,
+      "m1": 1871.01,
+      "m2": 1870.25,
+      "v2": 1871.25,
+      "sma200": 1952.85,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1858.0,
+      "high": 1860.5,
+      "low": 1847.5,
+      "close": 1848.0,
+      "volume": 295057.0,
+      "v1": 1872.58,
+      "m1": 1870.11,
+      "m2": 1869.6,
+      "v2": 1870.66,
+      "sma200": 1951.19,
       "state": "NEUTRAL"
     }
   ],
@@ -21248,6 +21276,14 @@
         {
           "time": "2026-11-17",
           "value": 9546.49
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9546.49
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9546.49
         }
       ]
     },
@@ -25922,6 +25958,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8672.09
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8672.09
+        },
+        {
+          "time": "2026-11-19",
           "value": 8672.09
         }
       ]
@@ -30598,6 +30642,14 @@
         {
           "time": "2026-11-17",
           "value": 8122.84
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8122.84
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8122.84
         }
       ]
     },
@@ -35272,7 +35324,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 11199.75
+          "value": 11137.18
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11071.63
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11012.04
         }
       ]
     }
@@ -35377,14 +35437,14 @@
   ],
   "smart_money": {
     "symbol": "GSK.L",
-    "smart_money_score": 67.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.033,
-    "up_down_vol_ratio": 1.13,
-    "absorption_5d_pct": 37.9,
-    "vol_shock_ratio": 0.27,
+    "smart_money_score": 37.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
+    "cmf_20d": -0.064,
+    "up_down_vol_ratio": 1.06,
+    "absorption_5d_pct": 25.6,
+    "vol_shock_ratio": 0.05,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

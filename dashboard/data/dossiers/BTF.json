@@ -3,7 +3,7 @@
   "name": "BTF",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:20.397096+00:00",
+  "generated_at": "2026-11-19T09:20:51.280222+00:00",
   "backtest_start_date": "2022-05-27",
   "backtest_end_date": "2026-10-20",
   "backtest_years": 4.4,
@@ -33379,18 +33379,18 @@
   ],
   "smart_money": {
     "symbol": "BTF",
-    "smart_money_score": 33.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.28) с Gamma стена на $23.00. Залог за рязък отскок.",
+    "smart_money_score": 7.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 6.50, CMF: -0.32).",
     "cmf_20d": -0.32,
     "up_down_vol_ratio": 0.55,
     "absorption_5d_pct": 26.2,
     "vol_shock_ratio": 1.33,
-    "put_call_ratio": 0.28,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 23.0,
-    "max_pain": 23.0,
-    "unusual_call_sweep": false
+    "put_call_ratio": 6.5,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 21.0,
+    "max_pain": 20.0,
+    "unusual_call_sweep": true
   }
 }

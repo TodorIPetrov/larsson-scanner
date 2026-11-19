@@ -3,18 +3,18 @@
   "name": "Sociedad Quimica y Minera S.A.",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:21.160696+00:00",
+  "generated_at": "2026-11-19T09:24:28.438921+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 52.28,
+  "backtest_total_bars": 1160,
+  "current_price": 48.74,
   "state": "BLUE",
-  "v1": 57.93,
-  "v2": 62.0,
-  "sma200": 72.64,
-  "rsi14": 34.7,
-  "atr14": 2.02,
+  "v1": 57.3,
+  "v2": 61.53,
+  "sma200": 72.49,
+  "rsi14": 27.2,
+  "atr14": 2.12,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -24.9,
-      "cagr_pct": -6.0,
-      "sharpe_ratio": 0.12,
+      "total_return_pct": -30.0,
+      "cagr_pct": -7.5,
+      "sharpe_ratio": 0.09,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 69.7,
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 52.72,
       "high": 53.07,
-      "low": 52.0,
-      "close": 52.28,
-      "volume": 245657.0,
-      "v1": 57.93,
-      "m1": 59.26,
-      "m2": 61.0,
-      "v2": 62.0,
-      "sma200": 72.64,
+      "low": 51.41,
+      "close": 51.59,
+      "volume": 1062700.0,
+      "v1": 57.91,
+      "m1": 59.24,
+      "m2": 60.99,
+      "v2": 61.99,
+      "sma200": 72.63,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 49.51,
+      "high": 49.59,
+      "low": 48.11,
+      "close": 48.74,
+      "volume": 1417700.0,
+      "v1": 57.3,
+      "m1": 58.7,
+      "m2": 60.5,
+      "v2": 61.53,
+      "sma200": 72.49,
       "state": "BLUE"
     }
   ],
@@ -21398,6 +21412,10 @@
         {
           "time": "2026-11-17",
           "value": 11258.06
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11258.06
         }
       ]
     },
@@ -26040,6 +26058,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9518.77
+        },
+        {
+          "time": "2026-11-18",
           "value": 9518.77
         }
       ]
@@ -30684,6 +30706,10 @@
         {
           "time": "2026-11-17",
           "value": 7541.96
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7541.96
         }
       ]
     },
@@ -35326,7 +35352,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 7518.1
+          "value": 7418.88
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7009.03
         }
       ]
     }
@@ -35683,18 +35713,18 @@
   ],
   "smart_money": {
     "symbol": "SQM",
-    "smart_money_score": 33.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.26) с Gamma стена на $55.00. Залог за рязък отскок.",
-    "cmf_20d": -0.217,
-    "up_down_vol_ratio": 0.55,
-    "absorption_5d_pct": 30.5,
-    "vol_shock_ratio": 0.26,
-    "put_call_ratio": 0.26,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 55.0,
-    "max_pain": 55.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 7.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 7.50, CMF: -0.21).",
+    "cmf_20d": -0.208,
+    "up_down_vol_ratio": 0.62,
+    "absorption_5d_pct": 32.8,
+    "vol_shock_ratio": 1.51,
+    "put_call_ratio": 7.5,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 90.0,
+    "max_pain": 70.0,
+    "unusual_call_sweep": true
   }
 }

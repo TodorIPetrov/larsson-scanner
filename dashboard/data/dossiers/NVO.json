@@ -3,18 +3,18 @@
   "name": "Novo Nordisk A/S",
   "sector": "Healthcare",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:37:03.632075+00:00",
+  "generated_at": "2026-11-19T09:23:39.494329+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 40.66,
+  "backtest_total_bars": 1160,
+  "current_price": 39.43,
   "state": "BLUE",
-  "v1": 40.31,
-  "v2": 41.0,
-  "sma200": 42.36,
-  "rsi14": 51.9,
-  "atr14": 1.08,
+  "v1": 40.29,
+  "v2": 40.97,
+  "sma200": 42.32,
+  "rsi14": 45.2,
+  "atr14": 1.1,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -31.2,
-      "cagr_pct": -7.8,
-      "sharpe_ratio": -0.68,
+      "total_return_pct": -32.3,
+      "cagr_pct": -8.1,
+      "sharpe_ratio": -0.71,
       "win_rate_pct": 11.1,
-      "profit_factor": 0.07,
+      "profit_factor": 0.04,
       "max_drawdown_pct": 34.4,
       "total_trades": 9
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -21.7,
-      "cagr_pct": -5.2,
-      "sharpe_ratio": 0.06,
+      "total_return_pct": -24.1,
+      "cagr_pct": -5.8,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 74.7,
@@ -16326,7 +16326,7 @@
       "high": 42.3,
       "low": 41.44,
       "close": 41.6,
-      "volume": 16633100.0,
+      "volume": 16658100.0,
       "v1": 40.29,
       "m1": 40.43,
       "m2": 40.78,
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 40.72,
-      "high": 40.93,
+      "high": 40.96,
       "low": 40.23,
-      "close": 40.66,
-      "volume": 4717782.0,
+      "close": 40.7,
+      "volume": 17839000.0,
       "v1": 40.31,
       "m1": 40.44,
       "m2": 40.77,
-      "v2": 41.0,
+      "v2": 41.01,
       "sma200": 42.36,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 40.14,
+      "high": 40.57,
+      "low": 39.32,
+      "close": 39.43,
+      "volume": 16550700.0,
+      "v1": 40.29,
+      "m1": 40.41,
+      "m2": 40.73,
+      "v2": 40.97,
+      "sma200": 42.32,
       "state": "BLUE"
     }
   ],
@@ -21076,6 +21090,10 @@
         {
           "time": "2026-11-17",
           "value": 17323.68
+        },
+        {
+          "time": "2026-11-18",
+          "value": 17323.68
         }
       ]
     },
@@ -25718,6 +25736,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 14818.9
+        },
+        {
+          "time": "2026-11-18",
           "value": 14818.9
         }
       ]
@@ -30362,6 +30384,10 @@
         {
           "time": "2026-11-17",
           "value": 14820.09
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14820.09
         }
       ]
     },
@@ -35004,7 +35030,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 7838.76
+          "value": 7846.47
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7601.63
         }
       ]
     }
@@ -35085,18 +35115,18 @@
   ],
   "smart_money": {
     "symbol": "NVO",
-    "smart_money_score": 49.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: 1.65).",
-    "cmf_20d": 0.019,
-    "up_down_vol_ratio": 1.14,
-    "absorption_5d_pct": 63.3,
-    "vol_shock_ratio": 0.4,
-    "put_call_ratio": 1.65,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 40.0,
-    "max_pain": 35.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: 1.00).",
+    "cmf_20d": 0.005,
+    "up_down_vol_ratio": 0.94,
+    "absorption_5d_pct": 47.7,
+    "vol_shock_ratio": 1.35,
+    "put_call_ratio": 1.0,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 25.0,
+    "max_pain": 25.0,
     "unusual_call_sweep": false
   }
 }

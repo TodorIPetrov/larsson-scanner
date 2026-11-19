@@ -3,30 +3,30 @@
   "name": "Sui Network",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-17T15:37:22.819075+00:00",
+  "generated_at": "2026-11-19T09:24:33.360054+00:00",
   "backtest_start_date": "2023-09-30",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.5,
-  "backtest_total_bars": 1144,
-  "current_price": 0.72,
+  "backtest_total_bars": 1146,
+  "current_price": 0.73,
   "state": "BLUE",
-  "v1": 0.87,
-  "v2": 0.9,
-  "sma200": 0.86,
-  "rsi14": 32.0,
+  "v1": 0.85,
+  "v2": 0.89,
+  "sma200": 0.85,
+  "rsi14": 34.0,
   "atr14": 0.06,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 724.6,
-    "cagr_pct": 59.2,
+    "total_return_pct": 717.0,
+    "cagr_pct": 58.7,
     "sharpe_ratio": 1.07,
-    "win_rate_pct": 36.4,
-    "profit_factor": 5.36,
+    "win_rate_pct": 33.3,
+    "profit_factor": 5.19,
     "max_drawdown_pct": 48.9,
-    "total_trades": 11
+    "total_trades": 12
   },
   "all_strategies": [
     {
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 103.7,
-      "cagr_pct": 17.0,
+      "cagr_pct": 16.9,
       "sharpe_ratio": 0.55,
       "win_rate_pct": 11.8,
       "profit_factor": 1.26,
@@ -69,13 +69,13 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 724.6,
-      "cagr_pct": 59.2,
+      "total_return_pct": 717.0,
+      "cagr_pct": 58.7,
       "sharpe_ratio": 1.07,
-      "win_rate_pct": 36.4,
-      "profit_factor": 5.36,
+      "win_rate_pct": 33.3,
+      "profit_factor": 5.19,
       "max_drawdown_pct": 48.9,
-      "total_trades": 11
+      "total_trades": 12
     },
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 49.9,
-      "cagr_pct": 9.3,
+      "total_return_pct": 51.1,
+      "cagr_pct": 9.5,
       "sharpe_ratio": 0.53,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.57,
+      "profit_factor": 0.58,
       "max_drawdown_pct": 87.7,
       "total_trades": 1
     }
@@ -16137,6 +16137,34 @@
       "v2": 0.9,
       "sma200": 0.86,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 0.72,
+      "high": 0.74,
+      "low": 0.71,
+      "close": 0.74,
+      "volume": 27552231.0,
+      "v1": 0.86,
+      "m1": 0.87,
+      "m2": 0.89,
+      "v2": 0.89,
+      "sma200": 0.86,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 0.74,
+      "high": 0.74,
+      "low": 0.72,
+      "close": 0.73,
+      "volume": 7643326.0,
+      "v1": 0.85,
+      "m1": 0.87,
+      "m2": 0.88,
+      "v2": 0.89,
+      "sma200": 0.85,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -16293,6 +16321,20 @@
       "color": "#ef4444",
       "shape": "arrowDown",
       "text": "EXIT -11.18% ($-4879.47 €)"
+    },
+    {
+      "time": "2026-11-16",
+      "position": "belowBar",
+      "color": "#10b981",
+      "shape": "arrowUp",
+      "text": "BUY #12 @ $0.74"
+    },
+    {
+      "time": "2026-11-18",
+      "position": "aboveBar",
+      "color": "#ef4444",
+      "shape": "arrowDown",
+      "text": "EXIT -1.84% ($-756.71 €)"
     }
   ],
   "equity_curves": [
@@ -20875,7 +20917,15 @@
         },
         {
           "time": "2026-11-16",
-          "value": 82458.72
+          "value": 81435.62
+        },
+        {
+          "time": "2026-11-17",
+          "value": 82512.42
+        },
+        {
+          "time": "2026-11-18",
+          "value": 81742.48
         }
       ]
     },
@@ -25458,6 +25508,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 21268.52
+        },
+        {
+          "time": "2026-11-17",
+          "value": 21268.52
+        },
+        {
+          "time": "2026-11-18",
           "value": 21268.52
         }
       ]
@@ -30042,6 +30100,14 @@
         {
           "time": "2026-11-16",
           "value": 20168.52
+        },
+        {
+          "time": "2026-11-17",
+          "value": 20168.52
+        },
+        {
+          "time": "2026-11-18",
+          "value": 20168.52
         }
       ]
     },
@@ -34625,6 +34691,14 @@
         {
           "time": "2026-11-16",
           "value": 15007.93
+        },
+        {
+          "time": "2026-11-17",
+          "value": 15410.28
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15122.59
         }
       ]
     }
@@ -34761,18 +34835,30 @@
       "pnl_eur": -4879.47,
       "exit_reason": "Пробив на Подкрепа (-12%)",
       "is_win": false
+    },
+    {
+      "num": 12,
+      "entry_date": "2026-11-16",
+      "entry_price": 0.74,
+      "exit_date": "2026-11-18",
+      "exit_price": 0.73,
+      "holding_days": 2,
+      "pnl_pct": -1.84,
+      "pnl_eur": -756.71,
+      "exit_reason": "Край на Бектеста (Отворена)",
+      "is_win": false
     }
   ],
   "smart_money": {
     "symbol": "SUIUSDT",
-    "smart_money_score": 45.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
-    "cmf_20d": -0.043,
-    "up_down_vol_ratio": 0.71,
-    "absorption_5d_pct": 51.3,
-    "vol_shock_ratio": 0.65,
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 0.058,
+    "up_down_vol_ratio": 0.81,
+    "absorption_5d_pct": 53.1,
+    "vol_shock_ratio": 0.22,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

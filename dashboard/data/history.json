@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T15:35:47.604788+00:00",
+  "generated_at": "2026-11-19T09:19:10.220604+00:00",
   "performance_attribution": {
     "by_signal_type": {},
     "by_asset_class": {},
@@ -15,16 +15,16 @@
   },
   "correlation": {
     "matrix": {
-      "ABEC.DE": {
-        "ABEC.DE": 1.0,
-        "NVD.DE": 0.1441
-      },
       "NVD.DE": {
-        "ABEC.DE": 0.1441,
-        "NVD.DE": 1.0
+        "NVD.DE": 1.0,
+        "ABEC.DE": 0.2
+      },
+      "ABEC.DE": {
+        "NVD.DE": 0.2,
+        "ABEC.DE": 1.0
       }
     },
-    "portfolio_avg_correlation": 0.1441,
+    "portfolio_avg_correlation": 0.2,
     "concentration_warning": false,
     "uncorrelated_candidates": [],
     "hhi": 0.5

@@ -4,7 +4,7 @@ let pendingProposals = [];
 let portfolioData = {};
 let portfolioPaperData = {};
 let portfolioRealData = {};
-let currentPortfolioMode = localStorage.getItem('larsson_portfolio_mode') || 'ROTATION';
+let currentPortfolioMode = localStorage.getItem('larsson_portfolio_mode') || 'COMBINED';
 let currentFilter = 'ALL';
 let currentClass = 'ALL';
 let currentTfFilter = 'ALL';
@@ -14,11 +14,175 @@ let currentSetupFilter = 'ALL';
 let currentAiScenarioFilter = 'ALL';
 let currentQueuePriority = 'ALL';
 let currentQueueTier = 'ALL';
+let currentQueueType = 'ALL';
 let currentQueueSearch = '';
 let currentSearch = '';
 let savedView = localStorage.getItem('larsson_view_mode');
 let currentView = (savedView && savedView !== 'table') ? savedView : (window.innerWidth <= 768 ? 'cards' : 'split');
-let currentTab = (location.hash ? location.hash.replace('#', '').split('?')[0] : null) || localStorage.getItem('larsson_active_tab') || 'scanner';
+let currentTab = (location.hash ? location.hash.replace('#', '').split('?')[0] : null) || localStorage.getItem('larsson_active_tab') || 'cockpit';
+let currentResearchSubTab = localStorage.getItem('larsson_research_subtab') || 'fundamentals';
+let isCockpitMacroExpanded = false;
+
+// =============================================================================
+// GLOBAL INTELLIGENT CURRENCY & CAPITAL ENGINE (EUR <-> USD + ASSET QUOTES)
+// =============================================================================
+const FX_EUR_TO_USD = 1.08;
+let globalBaseCurrency = localStorage.getItem('larsson_base_currency') || 'EUR';
+let globalPortfolioCapital = parseFloat(localStorage.getItem('larsson_global_capital')) || 10000.0;
+
+function getGlobalCurrency() {
+  return (globalBaseCurrency === 'USD') ? 'USD' : 'EUR';
+}
+
+function getGlobalCurrencySymbol() {
+  return getGlobalCurrency() === 'EUR' ? '€' : '$';
+}
+
+function getGlobalCapital() {
+  return (isFinite(globalPortfolioCapital) && globalPortfolioCapital > 0) ? globalPortfolioCapital : 10000.0;
+}
+
+function getAssetQuoteCurrency(ticker, assetClass) {
+  const sym = (ticker || '').toUpperCase();
+  if (sym.match(/\.(DE|PA|MI|AS|MC|VI|BR)$/)) return { code: 'EUR', symbol: '€', usdPerUnit: FX_EUR_TO_USD };
+  if (sym.endsWith('.L')) return { code: 'GBP', symbol: '£', usdPerUnit: 1.27 };
+  if (sym.endsWith('.SW')) return { code: 'CHF', symbol: 'CHF ', usdPerUnit: 1.13 };
+  if (sym.endsWith('.T')) return { code: 'JPY', symbol: '¥', usdPerUnit: 1.0 / 153.0 };
+  if (sym.endsWith('.HK')) return { code: 'HKD', symbol: 'HK$', usdPerUnit: 1.0 / 7.78 };
+  if (sym.endsWith('.TW')) return { code: 'TWD', symbol: 'NT$', usdPerUnit: 1.0 / 32.3 };
+  if (sym.endsWith('.KS')) return { code: 'KRW', symbol: '₩', usdPerUnit: 1.0 / 1390.0 };
+  if (sym.endsWith('.AX')) return { code: 'AUD', symbol: 'A$', usdPerUnit: 0.65 };
+  if (sym.endsWith('.TO')) return { code: 'CAD', symbol: 'C$', usdPerUnit: 0.72 };
+  if (sym.endsWith('.CO')) return { code: 'DKK', symbol: 'kr ', usdPerUnit: 1.0 / 6.91 };
+  if (sym.endsWith('.WA')) return { code: 'PLN', symbol: 'zł ', usdPerUnit: 0.25 };
+  return { code: 'USD', symbol: '$', usdPerUnit: 1.0 };
+}
+
+function convertUsdToBase(amountUsd) {
+  const val = Number(amountUsd) || 0;
+  return getGlobalCurrency() === 'EUR' ? (val / FX_EUR_TO_USD) : val;
+}
+
+function convertBaseToUsd(amountBase) {
+  const val = Number(amountBase) || 0;
+  return getGlobalCurrency() === 'EUR' ? (val * FX_EUR_TO_USD) : val;
+}
+
+function convertAssetQuoteToBase(amountAsset, ticker, assetClass) {
+  const val = Number(amountAsset) || 0;
+  const q = getAssetQuoteCurrency(ticker, assetClass);
+  const inUsd = val * q.usdPerUnit;
+  return convertUsdToBase(inUsd);
+}
+
+function convertBaseToAssetQuote(amountBase, ticker, assetClass) {
+  const val = Number(amountBase) || 0;
+  const q = getAssetQuoteCurrency(ticker, assetClass);
+  const inUsd = convertBaseToUsd(val);
+  return q.usdPerUnit > 0 ? (inUsd / q.usdPerUnit) : inUsd;
+}
+
+function formatBaseMoney(amountInBase, decimals = 2) {
+  const val = Number(amountInBase) || 0;
+  const sym = getGlobalCurrencySymbol();
+  const absFormatted = Math.abs(val).toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+  const sign = val < 0 ? '-' : '';
+  return getGlobalCurrency() === 'EUR' ? `${sign}${absFormatted} ${sym}` : `${sign}${sym}${absFormatted}`;
+}
+
+function formatAssetPrice(price, ticker, assetClass) {
+  const q = getAssetQuoteCurrency(ticker, assetClass);
+  return `${q.symbol}${formatShortPrice(price)}`;
+}
+
+function syncGlobalCurrencyAndCapitalUI() {
+  const curr = getGlobalCurrency();
+  const sym = getGlobalCurrencySymbol();
+  const cap = getGlobalCapital();
+
+  const btnEur = document.getElementById('btnCurrEUR');
+  const btnUsd = document.getElementById('btnCurrUSD');
+  if (btnEur) btnEur.classList.toggle('active', curr === 'EUR');
+  if (btnUsd) btnUsd.classList.toggle('active', curr === 'USD');
+
+  const gInput = document.getElementById('globalCapitalInput');
+  if (gInput && document.activeElement !== gInput) gInput.value = Math.round(cap);
+  const gSym = document.getElementById('globalCapSymbol');
+  if (gSym) gSym.textContent = sym;
+
+  const rotInput = document.getElementById('rotationCapitalInput');
+  if (rotInput && document.activeElement !== rotInput) rotInput.value = Math.round(cap);
+  const rotTag = document.getElementById('rotCurrencyTag');
+  if (rotTag) rotTag.textContent = `${curr} ${sym}`;
+
+  const pageCap = document.getElementById('pageCalcCapital');
+  if (pageCap && document.activeElement !== pageCap) pageCap.value = Math.round(cap);
+  const modalCap = document.getElementById('calcAccountSize');
+  if (modalCap && document.activeElement !== modalCap) modalCap.value = Math.round(cap);
+
+  document.querySelectorAll('.js-base-curr-sym').forEach(el => { el.textContent = sym; });
+  document.querySelectorAll('.js-base-curr-code').forEach(el => { el.textContent = curr; });
+
+  const cInfo = document.getElementById('cockpitCurrencyInfo');
+  if (cInfo) {
+    cInfo.textContent = curr === 'EUR'
+      ? `Валута: EUR € (1€ ≈ ${FX_EUR_TO_USD}$)`
+      : `Валута: USD $ (1€ ≈ ${FX_EUR_TO_USD}$)`;
+  }
+}
+
+function setGlobalCurrency(newCurr, opts = {}) {
+  const target = (newCurr === 'USD') ? 'USD' : 'EUR';
+  const prev = getGlobalCurrency();
+  if (target !== prev && !opts.skipConvert) {
+    if (target === 'USD') {
+      globalPortfolioCapital = Math.round((getGlobalCapital() * FX_EUR_TO_USD) / 10) * 10;
+    } else {
+      globalPortfolioCapital = Math.round((getGlobalCapital() / FX_EUR_TO_USD) / 10) * 10;
+    }
+    localStorage.setItem('larsson_global_capital', globalPortfolioCapital.toString());
+  }
+  globalBaseCurrency = target;
+  localStorage.setItem('larsson_base_currency', target);
+  syncGlobalCurrencyAndCapitalUI();
+
+  if (!opts.silent) {
+    refreshCurrencyDependentViews();
+  }
+}
+
+function setGlobalCapital(newVal, sourceId = null) {
+  const parsed = parseFloat(newVal);
+  if (!isFinite(parsed) || parsed <= 0) return;
+  globalPortfolioCapital = parsed;
+  localStorage.setItem('larsson_global_capital', globalPortfolioCapital.toString());
+  syncGlobalCurrencyAndCapitalUI();
+  refreshCurrencyDependentViews(sourceId);
+}
+
+function refreshCurrencyDependentViews(sourceId = null) {
+  if (typeof renderRotationPortfolio === 'function') renderRotationPortfolio();
+  if (typeof renderCockpitDailyActionPlan === 'function') renderCockpitDailyActionPlan();
+  if (typeof renderPortfolioView === 'function' && currentPortfolioMode !== 'ROTATION') renderPortfolioView();
+  if (typeof initPageCalculator === 'function' && sourceId !== 'pageCalcCapital') {
+    try { initPageCalculator(); } catch (e) {}
+  }
+  if (typeof recalculatePositionSize === 'function' && currentModalItem) {
+    try { recalculatePositionSize(); } catch (e) {}
+  }
+  if (currentDossierData && currentTab === 'proposal-dossier') {
+    try { renderProposalDossier(currentDossierData, currentDossierContext); } catch (e) {}
+  }
+  const openDrawer = document.getElementById('cioExpectancyDrawer');
+  if (openDrawer && openDrawer.style.display === 'flex' && window._activeExpectancyClusterId) {
+    openExpectancyDrawer(window._activeExpectancyClusterId);
+  }
+}
+window.setGlobalCurrency = setGlobalCurrency;
+window.setGlobalCapital = setGlobalCapital;
 
 let currentSortColumn = null;
 let currentSortDir = 'asc';
@@ -760,14 +924,21 @@ async function refreshAllAppSystems(data, opts = {}) {
   renderProposalsBanner(pendingProposals);
 
   if (isInitial) {
+    syncGlobalCurrencyAndCapitalUI();
+    const gCapInput = document.getElementById('globalCapitalInput');
+    if (gCapInput && !gCapInput.dataset.bound) {
+      gCapInput.dataset.bound = '1';
+      gCapInput.addEventListener('input', (e) => setGlobalCapital(e.target.value, 'globalCapitalInput'));
+    }
     initPortfolioController();
     switchPortfolioMode(currentPortfolioMode);
     initPageCalculator();
     switchTab(currentTab, false);
   } else {
-    if (currentPortfolioMode === 'ROTATION') {
+    if (currentPortfolioMode === 'COMBINED' || currentPortfolioMode === 'ROTATION') {
       renderRotationPortfolio();
-    } else {
+    }
+    if (currentPortfolioMode !== 'ROTATION') {
       renderPortfolioView();
     }
     if (typeof calculatePageTrade === 'function') {
@@ -778,10 +949,13 @@ async function refreshAllAppSystems(data, opts = {}) {
     }
   }
 
+  if (typeof renderCockpitDailyActionPlan === 'function') {
+    try { renderCockpitDailyActionPlan(); } catch (e) {}
+  }
   if (typeof renderIdeasView === 'function') {
     renderIdeasView();
   }
-  if ((versionChanged || currentTab === 'ai-map') && typeof renderAiCompanyMapView === 'function') {
+  if ((versionChanged || currentTab === 'ai-map' || currentTab === 'research') && typeof renderAiCompanyMapView === 'function') {
     try { renderAiCompanyMapView(); } catch (e) {}
   }
 
@@ -820,10 +994,10 @@ async function refreshAllAppSystems(data, opts = {}) {
   // Refresh Fundamental Screener & active Fundamental Dossier when new data/filings arrive
   if ((isInitial || versionChanged || forceFundamentals) && typeof initFundamentalScreener === 'function') {
     await initFundamentalScreener(true);
-    if (currentTab === 'fundamentals' && currentFundTicker && typeof renderFundamentalDossier === 'function') {
+    if ((currentTab === 'fundamentals' || currentTab === 'research') && currentFundTicker && typeof renderFundamentalDossier === 'function') {
       renderFundamentalDossier(currentFundTicker);
     }
-  } else if (currentTab === 'fundamentals' && currentFundTicker && typeof renderFundamentalDossier === 'function') {
+  } else if ((currentTab === 'fundamentals' || currentTab === 'research') && currentFundTicker && typeof renderFundamentalDossier === 'function') {
     renderFundamentalDossier(currentFundTicker);
   }
 
@@ -1626,15 +1800,18 @@ function openExpectancyDrawer(clusterId) {
   const stop = Number(leaderItem.s1 || (price * 0.95));
   const riskPerShare = Math.max(0.01, Math.abs(price - stop));
 
-  const equity = 100000.0;
-  const riskDollar = 1000.0; // 1%
-  const units = Math.round(riskDollar / riskPerShare);
-  const totalValue = Math.round(units * price);
+  const equityBase = getGlobalCapital();
+  const riskBase = equityBase * 0.01; // 1.0% of user's real global capital
+  const riskInAssetQuote = convertBaseToAssetQuote(riskBase, c.leader, leaderItem.asset_class);
+  const units = Math.max(1, Math.round(riskInAssetQuote / riskPerShare));
+  const totalValueInQuote = units * price;
+  const totalValueInBase = convertAssetQuoteToBase(totalValueInQuote, c.leader, leaderItem.asset_class);
+  const quoteInfo = getAssetQuoteCurrency(c.leader, leaderItem.asset_class);
 
-  if (entryEl) entryEl.textContent = `$${price.toFixed(2)}`;
-  if (stopEl) stopEl.textContent = `$${stop.toFixed(2)} (-${((riskPerShare / price) * 100).toFixed(1)}%)`;
-  if (posSizeEl) posSizeEl.textContent = `${units} units ($${totalValue.toLocaleString('en-US')})`;
-  if (riskDollarEl) riskDollarEl.textContent = `Risk: $1,000 (1.0% of $100k equity)`;
+  if (entryEl) entryEl.textContent = `${quoteInfo.symbol}${price.toFixed(2)}`;
+  if (stopEl) stopEl.textContent = `${quoteInfo.symbol}${stop.toFixed(2)} (-${((riskPerShare / price) * 100).toFixed(1)}%)`;
+  if (posSizeEl) posSizeEl.textContent = `${units} units (${formatBaseMoney(totalValueInBase, 0)})`;
+  if (riskDollarEl) riskDollarEl.textContent = `Risk: ${formatBaseMoney(riskBase, 0)} (1.0% of ${formatBaseMoney(equityBase, 0)} equity)`;
 
   drawer.style.display = 'flex';
 }
@@ -3449,19 +3626,23 @@ function recalculatePositionSize() {
   const riskPctInput = document.getElementById('calcRiskPct');
   if (!accountSizeInput || !riskPctInput) return;
 
-  const accountSize = parseFloat(accountSizeInput.value) || 10000;
+  const accountSize = parseFloat(accountSizeInput.value) || getGlobalCapital();
   const riskPct = parseFloat(riskPctInput.value) || 1.0;
   const leverage = currentModalLeverage || 1;
+  const qInfo = getAssetQuoteCurrency(currentModalItem.ticker, currentModalItem.asset_class);
 
-  const riskUsd = accountSize * (riskPct / 100);
+  const riskBase = accountSize * (riskPct / 100);
+  const riskInQuote = convertBaseToAssetQuote(riskBase, currentModalItem.ticker, currentModalItem.asset_class);
   const riskPerUnit = Math.abs(entry - sl);
 
   if (riskPerUnit > 0 && entry > 0) {
-    const units = riskUsd / riskPerUnit;
+    const units = riskInQuote / riskPerUnit;
     const unitsFormatted = entry < 1 ? units.toFixed(4) : (entry < 50 ? units.toFixed(2) : (entry < 1000 ? units.toFixed(1) : units.toFixed(3)));
-    const notional = units * entry;
-    const marginUsd = notional / leverage;
-    const tp1Profit = tp1 ? (units * 0.5 * Math.abs(tp1 - entry)) : null;
+    const notionalQuote = units * entry;
+    const notionalBase = convertAssetQuoteToBase(notionalQuote, currentModalItem.ticker, currentModalItem.asset_class);
+    const marginBase = notionalBase / leverage;
+    const tp1ProfitQuote = tp1 ? (units * 0.5 * Math.abs(tp1 - entry)) : null;
+    const tp1ProfitBase = tp1ProfitQuote !== null ? convertAssetQuoteToBase(tp1ProfitQuote, currentModalItem.ticker, currentModalItem.asset_class) : null;
     const liqPrice = leverage > 1 
       ? (isLong ? entry * (1.0 - (1.0 / leverage) + 0.005) : entry * (1.0 + (1.0 / leverage) - 0.005))
       : null;
@@ -3474,11 +3655,11 @@ function recalculatePositionSize() {
     const tp1UsdEl = document.getElementById('calcTp1Usd');
 
     if (unitsEl) unitsEl.textContent = `${unitsFormatted} ${currentModalItem.asset_class === 'crypto' ? 'tokens' : 'shares'}`;
-    if (posValEl) posValEl.textContent = `$${notional.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    if (marginEl) marginEl.textContent = `$${marginUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    if (liqEl) liqEl.textContent = liqPrice ? `$${formatShortPrice(liqPrice)}` : '— (Няма)';
-    if (riskUsdEl) riskUsdEl.textContent = `-$${riskUsd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    if (tp1UsdEl) tp1UsdEl.textContent = tp1Profit ? `+$${tp1Profit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : 'N/A';
+    if (posValEl) posValEl.textContent = formatBaseMoney(notionalBase);
+    if (marginEl) marginEl.textContent = formatBaseMoney(marginBase);
+    if (liqEl) liqEl.textContent = liqPrice ? `${qInfo.symbol}${formatShortPrice(liqPrice)}` : '— (Няма)';
+    if (riskUsdEl) riskUsdEl.textContent = `-${formatBaseMoney(riskBase)}`;
+    if (tp1UsdEl) tp1UsdEl.textContent = tp1ProfitBase !== null ? `+${formatBaseMoney(tp1ProfitBase)}` : 'N/A';
   }
 }
 
@@ -3763,8 +3944,62 @@ document.addEventListener('visibilitychange', () => {
 // MASTER TAB NAVIGATION, BROWSER HISTORY & BACK NAVIGATION
 // =============================================================================
 
-let tabHistory = ['scanner'];
+let tabHistory = ['cockpit'];
 let isNavigatingHistory = false;
+
+function toggleCockpitMacroDetails(forceState = null) {
+  isCockpitMacroExpanded = (forceState !== null) ? Boolean(forceState) : !isCockpitMacroExpanded;
+  const grid = document.getElementById('cioCockpitGrid');
+  const hdr = document.getElementById('macroHeaderSection');
+  const btn = document.getElementById('btnToggleClusterMatrix');
+  if (grid) grid.style.display = isCockpitMacroExpanded ? 'grid' : 'none';
+  if (hdr) hdr.style.display = isCockpitMacroExpanded ? 'block' : 'none';
+  if (btn) {
+    btn.innerHTML = isCockpitMacroExpanded
+      ? '🏛️ Скрий Клъстерната Матрица &amp; Риск ▴'
+      : '🏛️ Пълна Клъстерна Матрица &amp; Риск ▾';
+  }
+}
+window.toggleCockpitMacroDetails = toggleCockpitMacroDetails;
+
+function switchResearchSubTab(subTab) {
+  const validSubs = ['fundamentals', 'ai-map', 'ideas'];
+  const targetSub = validSubs.includes(subTab) ? subTab : 'fundamentals';
+  currentResearchSubTab = targetSub;
+  localStorage.setItem('larsson_research_subtab', targetSub);
+
+  document.querySelectorAll('#researchSubNav .research-sub-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.researchSub === targetSub);
+  });
+
+  const subMap = {
+    'fundamentals': 'tabContentFundamentals',
+    'ai-map': 'tabContentAiMap',
+    'ideas': 'tabContentIdeas',
+  };
+  Object.keys(subMap).forEach(k => {
+    const el = document.getElementById(subMap[k]);
+    if (el) {
+      if (k === targetSub) {
+        el.style.display = 'block';
+        el.classList.add('active');
+      } else {
+        el.style.display = 'none';
+        el.classList.remove('active');
+      }
+    }
+  });
+
+  if (targetSub === 'fundamentals') {
+    if (typeof initFundamentalScreener === 'function') initFundamentalScreener(false);
+    if (currentFundTicker && typeof renderFundamentalDossier === 'function') renderFundamentalDossier(currentFundTicker);
+  } else if (targetSub === 'ai-map') {
+    if (typeof renderAiCompanyMapView === 'function') renderAiCompanyMapView();
+  } else if (targetSub === 'ideas') {
+    if (typeof renderIdeasView === 'function') renderIdeasView();
+  }
+}
+window.switchResearchSubTab = switchResearchSubTab;
 
 function switchTab(tabName, pushToHistory = true) {
   if (pushToHistory && !isNavigatingHistory) {
@@ -3780,98 +4015,124 @@ function switchTab(tabName, pushToHistory = true) {
   currentTab = tabName;
   localStorage.setItem('larsson_active_tab', tabName);
 
+  // Determine consolidated Work Center for nav highlight
+  let navCenter = tabName;
+  if (tabName === 'queue' || tabName === 'macro') navCenter = 'cockpit';
+  if (tabName === 'fundamentals' || tabName === 'ai-map' || tabName === 'ideas') navCenter = 'research';
+
   document.querySelectorAll('#mainNavTabs .nav-tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tab === tabName);
+    btn.classList.toggle('active', btn.dataset.tab === navCenter);
   });
 
-  const tabMap = {
-    'scanner': 'tabContentScanner',
-    'queue': 'tabContentQueue',
-    'macro': 'tabContentMacro',
-    'portfolio': 'tabContentPortfolio',
-    'calculator': 'tabContentCalculator',
-    'fundamentals': 'tabContentFundamentals',
-    'ideas': 'tabContentIdeas',
-    'proposal-dossier': 'tabContentProposalDossier',
-    'ai-map': 'tabContentAiMap'
+  const allPanels = [
+    'tabContentScanner',
+    'tabContentQueue',
+    'tabContentMacro',
+    'tabContentPortfolio',
+    'tabContentCalculator',
+    'tabContentFundamentals',
+    'tabContentIdeas',
+    'tabContentProposalDossier',
+    'tabContentAiMap'
+  ];
+
+  allPanels.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = 'none';
+      el.classList.remove('active');
+    }
+  });
+
+  const researchNav = document.getElementById('researchSubNav');
+  if (researchNav) {
+    researchNav.style.display = (navCenter === 'research') ? 'flex' : 'none';
+  }
+
+  const showPanel = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = 'block';
+      el.classList.add('active');
+    }
   };
 
-  Object.keys(tabMap).forEach(key => {
-    const el = document.getElementById(tabMap[key]);
-    if (el) {
-      if (key === tabName) {
-        el.style.display = 'block';
-        el.classList.add('active');
-      } else {
-        el.style.display = 'none';
-        el.classList.remove('active');
-      }
-    }
-  });
-
-  updateNavBackButtons(prevTab);
-
-  if (tabName === 'fundamentals') {
-    if (typeof initFundamentalScreener === 'function') {
-      initFundamentalScreener(false);
-    }
-    if (currentFundTicker) {
-      renderFundamentalDossier(currentFundTicker);
-    }
-  }
-
-  if (tabName === 'macro' && window.lastLoadedDashboardData && typeof renderCioDashboard === 'function') {
-    renderCioDashboard(window.lastLoadedDashboardData);
-  }
-
-  if (tabName === 'ideas') {
-    if (typeof renderIdeasView === 'function') {
-      renderIdeasView();
-    }
-  }
-
-  if (tabName === 'ai-map') {
-    if (typeof renderAiCompanyMapView === 'function') {
-      renderAiCompanyMapView();
-    }
-  }
-
-  if (tabName === 'portfolio') {
-    if (currentPortfolioMode === 'ROTATION') {
-      renderRotationPortfolio();
+  if (navCenter === 'cockpit') {
+    showPanel('tabContentMacro');
+    showPanel('tabContentQueue');
+    if (tabName === 'macro') {
+      toggleCockpitMacroDetails(true);
     } else {
+      toggleCockpitMacroDetails(isCockpitMacroExpanded);
+    }
+    if (window.lastLoadedDashboardData && typeof renderCioDashboard === 'function') {
+      renderCioDashboard(window.lastLoadedDashboardData);
+    }
+    if (typeof renderCockpitDailyActionPlan === 'function') {
+      renderCockpitDailyActionPlan();
+    }
+  } else if (navCenter === 'research') {
+    const targetSub = (tabName === 'research') ? currentResearchSubTab : tabName;
+    switchResearchSubTab(targetSub);
+  } else if (tabName === 'portfolio') {
+    showPanel('tabContentPortfolio');
+    if (currentPortfolioMode === 'COMBINED' || currentPortfolioMode === 'ROTATION') {
+      renderRotationPortfolio();
+    }
+    if (currentPortfolioMode !== 'ROTATION') {
       renderPortfolioView();
     }
-  }
-
-  if (tabName === 'scanner') {
+  } else if (tabName === 'scanner') {
+    showPanel('tabContentScanner');
     applyViewMode();
     setTimeout(() => {
       const liveContainer = document.getElementById('liveChartCanvas');
       if (liveActiveChart && liveContainer && liveContainer.clientWidth) {
-        liveActiveChart.applyOptions({ 
+        liveActiveChart.applyOptions({
           width: liveContainer.clientWidth,
           height: liveContainer.clientHeight || 480
         });
       }
     }, 60);
+  } else if (tabName === 'calculator') {
+    showPanel('tabContentCalculator');
+    // Contextual auto-fill from active live chart if ticker field still default or empty
+    const calcTickerEl = document.getElementById('pageCalcTicker');
+    if (calcTickerEl && typeof liveTicker === 'string' && liveTicker && (!calcTickerEl.value || prevTab === 'scanner')) {
+      const s = allSymbols.find(x => x.ticker === liveTicker);
+      if (s && s.price && prevTab === 'scanner') {
+        calcTickerEl.value = liveTicker;
+        const eEl = document.getElementById('pageCalcEntry');
+        if (eEl) eEl.value = s.price;
+        const slEl = document.getElementById('pageCalcSl');
+        if (slEl) slEl.value = (s.v2 || s.s1 || (s.price * 0.94)).toFixed(s.price >= 1 ? 2 : 4);
+      }
+    }
+    if (typeof initPageCalculator === 'function') initPageCalculator();
+  } else if (tabName === 'proposal-dossier') {
+    showPanel('tabContentProposalDossier');
   }
+
+  updateNavBackButtons(prevTab);
 }
 
 function updateNavBackButtons(fromTab) {
   const names = {
+    'cockpit': '(към Дневния Кокпит)',
     'scanner': '(към Скенера)',
-    'queue': '(към Очаквани Сделки)',
-    'macro': '(към Макро & Риск)',
+    'queue': '(към Дневния Кокпит)',
+    'macro': '(към Дневния Кокпит)',
     'portfolio': '(към Портфолиото)',
     'calculator': '(към Калкулатора)',
+    'research': '(към Рисърч Хъб)',
     'fundamentals': '(към Фундамент)',
     'ideas': '(към Моите Идеи)',
-    'ai-map': '(към AI Карта)'
+    'ai-map': '(към AI Карта)',
+    'proposal-dossier': '(към Досието)'
   };
   const calcTarget = document.getElementById('calcBackTargetText');
   if (calcTarget) {
-    calcTarget.textContent = names[fromTab] || '(към Скенера)';
+    calcTarget.textContent = names[fromTab] || '(към Дневния Кокпит)';
   }
   const fundTarget = document.getElementById('fundBackTargetText');
   if (fundTarget) {
@@ -3888,7 +4149,7 @@ function navigateBack() {
 
   if (tabHistory.length > 1) {
     tabHistory.pop(); // Remove current
-    const previous = tabHistory[tabHistory.length - 1] || 'scanner';
+    const previous = tabHistory[tabHistory.length - 1] || 'cockpit';
     isNavigatingHistory = true;
     switchTab(previous, false);
     isNavigatingHistory = false;
@@ -3897,7 +4158,7 @@ function navigateBack() {
     } catch(e) {}
   } else {
     isNavigatingHistory = true;
-    switchTab('scanner', false);
+    switchTab('cockpit', false);
     isNavigatingHistory = false;
   }
 }
@@ -3916,14 +4177,14 @@ window.addEventListener('popstate', (e) => {
     isNavigatingHistory = false;
   } else if (location.hash) {
     const hashTab = location.hash.replace('#', '').split('?')[0];
-    if (['scanner', 'queue', 'macro', 'portfolio', 'calculator', 'fundamentals', 'ideas', 'ai-map'].includes(hashTab)) {
+    if (['cockpit', 'scanner', 'queue', 'macro', 'portfolio', 'calculator', 'research', 'fundamentals', 'ideas', 'ai-map'].includes(hashTab)) {
       isNavigatingHistory = true;
       switchTab(hashTab, false);
       isNavigatingHistory = false;
     }
   } else {
     isNavigatingHistory = true;
-    switchTab('scanner', false);
+    switchTab('cockpit', false);
     isNavigatingHistory = false;
   }
 });
@@ -3954,6 +4215,16 @@ function renderQueueView() {
     if (currentQueueTier === 'ALL' && (s.tier === 'C' || s.tier === 'C-')) return false;
     const matchesPrio = (currentQueuePriority === 'ALL') || (s.priority === currentQueuePriority);
     const matchesTier = (currentQueueTier === 'ALL') || (s.tier === currentQueueTier);
+    let matchesType = true;
+    if (currentQueueType === 'PRE_GOLD') {
+      matchesType = (s.setup_type === 'IMMINENT_GOLD' || s.setup_type === 'QUALITY_DIP_BUY');
+    } else if (currentQueueType === 'TOP15_CANDIDATE') {
+      matchesType = Boolean(s.will_enter_top15);
+    } else if (currentQueueType === 'QUALITY_DIP_BUY') {
+      matchesType = (s.setup_type === 'QUALITY_DIP_BUY');
+    } else if (currentQueueType === 'SR_APPROACH') {
+      matchesType = (s.setup_type === 'SR_APPROACH' || s.setup_type === 'DIVERGENCE_FORMING' || s.setup_type === 'ACCUMULATION_PATTERN');
+    }
     let matchesSearch = true;
     if (currentQueueSearch) {
       const q = currentQueueSearch.toLowerCase().trim();
@@ -3963,21 +4234,31 @@ function renderQueueView() {
       const setupType = (s.setup_type || '').toLowerCase();
       matchesSearch = sym.includes(q) || normSym.includes(normQ) || setupType.includes(q);
     }
-    return matchesPrio && matchesTier && matchesSearch;
+    return matchesPrio && matchesTier && matchesType && matchesSearch;
   });
 
-  // Sort queue items: Priority (HIGH > MEDIUM > LOW), then Tier (S > A > B), then quality_score descending
+  // Sort queue items: Pre-Gold & Top 15 Momentum candidates prioritized within Priority & Tier
   const prioOrder = { 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
-  const tierOrder = { 'S': 4, 'A': 3, 'B': 2, 'C': 1 };
+  const typeOrder = { 'IMMINENT_GOLD': 4, 'QUALITY_DIP_BUY': 3, 'ACCUMULATION_PATTERN': 2, 'DIVERGENCE_FORMING': 2, 'SR_APPROACH': 1 };
+  const tierOrder = { 'S': 4, 'A+': 4, 'A': 3, 'B': 2, 'C': 1 };
   filtered.sort((a, b) => {
     const pDiff = (prioOrder[b.priority] || 0) - (prioOrder[a.priority] || 0);
     if (pDiff !== 0) return pDiff;
+    const stDiff = (typeOrder[b.setup_type] || 0) - (typeOrder[a.setup_type] || 0);
+    if (stDiff !== 0) return stDiff;
+    const t15Diff = (b.will_enter_top15 ? 1 : 0) - (a.will_enter_top15 ? 1 : 0);
+    if (t15Diff !== 0) return t15Diff;
     const tDiff = (tierOrder[b.tier] || 0) - (tierOrder[a.tier] || 0);
     if (tDiff !== 0) return tDiff;
     return (b.quality_score || 0) - (a.quality_score || 0);
   });
 
-  if (badge) badge.textContent = filtered.length;
+  window._lastPendingSetupsCount = filtered.length;
+  if (typeof updateCockpitMasterBadge === 'function') {
+    updateCockpitMasterBadge();
+  } else if (badge) {
+    badge.textContent = filtered.length;
+  }
 
   if (qBadge) {
     if (currentQueueSearch) {
@@ -4030,9 +4311,29 @@ function renderQueueView() {
       pendingTags = typeof s.conditions_pending === 'string' ? JSON.parse(s.conditions_pending) : (s.conditions_pending || []);
     } catch(e) { pendingTags = []; }
 
-    const entryStr = s.target_entry ? `$${formatShortPrice(s.target_entry)}` : (s.current_price ? `$${formatShortPrice(s.current_price)}` : 'N/A');
-    const keyLvlStr = s.key_level ? `$${formatShortPrice(s.key_level)}` : 'N/A';
-    const triggerStr = s.estimated_trigger || '1-3 бара';
+    const trigVal = s.gold_trigger_3d || s.target_entry || s.current_price;
+    const slVal = s.target_sl || s.v2 || s.key_level;
+    const isPreGold = (s.setup_type === 'IMMINENT_GOLD' || s.setup_type === 'QUALITY_DIP_BUY');
+    const curPriceStr = s.current_price ? formatAssetPrice(s.current_price, s.symbol, s.asset_class) : 'N/A';
+    const entryStr = trigVal ? formatAssetPrice(trigVal, s.symbol, s.asset_class) : 'N/A';
+    const keyLvlStr = slVal ? formatAssetPrice(slVal, s.symbol, s.asset_class) : 'N/A';
+    const triggerStr = s.estimated_trigger || (s.bars_to_gold ? `~${s.bars_to_gold} бара` : '1-3 бара');
+    const entryLbl = isPreGold ? 'Тригер за GOLD (3д)' : 'Входна Зона';
+    const slLbl = (s.target_sl || s.v2) ? 'Защитен Стоп (v2)' : 'Ключово Ниво';
+
+    const rsBadge = s.rs_rating ? `<span class="class-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">RS ${s.rs_rating}</span>` : '';
+    const top15Badge = s.will_enter_top15 ? `<span class="class-badge" style="background: rgba(63, 185, 80, 0.18); color: #3fb950; border-color: rgba(63, 185, 80, 0.4);">🏆 Топ 15 Кандидат</span>` : '';
+
+    let projHtml = '';
+    if (s.gold_trigger_3d && isPreGold) {
+      if (s.gold_dist_pct !== null && s.gold_dist_pct !== undefined && s.gold_dist_pct <= 0) {
+        projHtml = `<div class="queue-pregold-callout is-ready">🟢 Вече над GOLD прага! Автоматичен GOLD след ~<strong>${s.bars_to_gold || 1} бара</strong> при задържане над ${formatAssetPrice(s.gold_trigger_3d, s.symbol, s.asset_class)}.</div>`;
+      } else {
+        const distTxt = (s.gold_dist_pct !== null && s.gold_dist_pct !== undefined) ? `+${Number(s.gold_dist_pct).toFixed(1)}%` : '';
+        const p1Txt = s.gold_trigger_1d ? ` • 1-бар тригер: ${formatAssetPrice(s.gold_trigger_1d, s.symbol, s.asset_class)}` : '';
+        projHtml = `<div class="queue-pregold-callout">🎯 Пробив за GOLD (до 3 бара): <strong>${formatAssetPrice(s.gold_trigger_3d, s.symbol, s.asset_class)}</strong> (${distTxt})${p1Txt}</div>`;
+      }
+    }
 
     const tvUrl = s.tv_url || `https://www.tradingview.com/chart/?symbol=${s.tv_symbol || s.symbol}&interval=1D`;
     const assetDesc = s.name && s.name !== s.symbol ? s.name : '';
@@ -4042,11 +4343,11 @@ function renderQueueView() {
         <div class="queue-card-header">
           <div class="queue-card-title-group">
             <span class="queue-card-ticker">
-              ${s.symbol} <span class="class-badge">${CLASS_LABELS[s.asset_class] || s.asset_class}</span>
+              ${s.symbol} <span class="class-badge">${CLASS_LABELS[s.asset_class] || s.asset_class}</span> ${top15Badge}
             </span>
             ${assetDesc ? `<div style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px; font-weight: 500;">${escapeHtml(assetDesc)}</div>` : ''}
             <div class="queue-card-setup-title" style="margin-top: 4px;">
-              <span>${typeInfo.emoji}</span> ${typeInfo.title}
+              <span>${typeInfo.emoji}</span> ${typeInfo.title} ${rsBadge}
             </div>
           </div>
           <div class="queue-card-badges">
@@ -4058,9 +4359,11 @@ function renderQueueView() {
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span class="queue-card-trigger-est">⏱️ Очакван тригер: <strong>${triggerStr}</strong></span>
           <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8125rem; color: #38bdf8; font-weight: 700;">
-            Скор: ${(s.quality_score * 100).toFixed(0)}/100
+            Скор: ${((s.quality_score || 0) * 100).toFixed(0)}/100
           </span>
         </div>
+
+        ${projHtml}
 
         <div class="queue-card-desc">
           ${s.description_bg || s.description_en || 'Предстоящ сетъп за вход.'}
@@ -4077,30 +4380,33 @@ function renderQueueView() {
         <div class="queue-card-levels">
           <div class="queue-lvl-col">
             <span class="queue-lvl-lbl">Текуща Цена</span>
-            <span class="queue-lvl-val">$${formatShortPrice(s.current_price)}</span>
+            <span class="queue-lvl-val">${curPriceStr}</span>
           </div>
           <div class="queue-lvl-col">
-            <span class="queue-lvl-lbl">Входна Зона</span>
+            <span class="queue-lvl-lbl">${entryLbl}</span>
             <span class="queue-lvl-val" style="color: #38bdf8;">${entryStr}</span>
           </div>
           <div class="queue-lvl-col">
-            <span class="queue-lvl-lbl">Ключово Ниво</span>
+            <span class="queue-lvl-lbl">${slLbl}</span>
             <span class="queue-lvl-val" style="color: #fbbf24;">${keyLvlStr}</span>
           </div>
         </div>
 
         <div class="queue-card-actions">
-          <button class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'active' : ''}"
+          <button type="button" class="btn-queue-dossier" onclick="event.stopPropagation(); openProposalDossier('${s.symbol}', '${s.setup_type}')">
+            📑 Досие
+          </button>
+          <button type="button" class="btn-queue-tv" onclick="event.stopPropagation(); openChartModal('${s.symbol}', '${s.timeframe || '1D'}', '${s.asset_class}')">
+            📊 Графика
+          </button>
+          <button type="button" class="btn-queue-calc" onclick="event.stopPropagation(); quickFillCalculator('${s.symbol}', ${trigVal || 0}, ${s.target_sl || s.v2 || 0}, ${s.target_tp1 || 0}, 0, '${s.tier}')">
+            🧮 Калкулатор
+          </button>
+          <button type="button" class="btn-action-radar ${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'active' : ''}"
                   data-ticker="${s.symbol}"
                   onclick="event.stopPropagation(); toggleTradeIdea('${s.symbol}')"
                   title="${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'Премахни от Моите Идеи' : 'Запази в Моите Идеи'}">
             ★ ${(typeof isTradeIdea === 'function' && isTradeIdea(s.symbol)) ? 'В Радара' : 'Запази'}
-          </button>
-          <a class="btn-queue-tv" href="${tvUrl}" target="_blank" rel="noopener noreferrer">
-            📊 TradingView
-          </a>
-          <button class="btn-queue-calc" onclick="quickFillCalculator('${s.symbol}', ${s.target_entry || s.current_price || 0}, ${s.target_sl || 0}, ${s.target_tp1 || 0}, 0, '${s.tier}')">
-            🧮 Калкулатор
           </button>
         </div>
       </div>
@@ -4133,8 +4439,17 @@ document.querySelectorAll('#queuePriorityFilters .filter-btn').forEach(btn => {
 document.querySelectorAll('#queueTierFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#queueTierFilters .filter-btn').forEach(b => b.classList.remove('active'));
-    e.target.classList.add('active');
-    currentQueueTier = e.target.dataset.queueTier;
+    e.currentTarget.classList.add('active');
+    currentQueueTier = e.currentTarget.dataset.queueTier;
+    renderQueueView();
+  });
+});
+
+document.querySelectorAll('#queueTypeFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#queueTypeFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    currentQueueType = e.currentTarget.dataset.queueType || 'ALL';
     renderQueueView();
   });
 });
@@ -5258,9 +5573,13 @@ function syncLocalRealStorage() {
 }
 
 function initPortfolioController() {
+  const combBtn = document.getElementById('portModeCombinedBtn');
   const rotBtn = document.getElementById('portModeRotationBtn');
   const realBtn = document.getElementById('portModeRealBtn');
   const paperBtn = document.getElementById('portModePaperBtn');
+  if (combBtn) {
+    combBtn.addEventListener('click', () => switchPortfolioMode('COMBINED'));
+  }
   if (rotBtn) {
     rotBtn.addEventListener('click', () => switchPortfolioMode('ROTATION'));
   }
@@ -5272,8 +5591,8 @@ function initPortfolioController() {
   }
   const capInput = document.getElementById('rotationCapitalInput');
   if (capInput) {
-    capInput.addEventListener('input', () => {
-      renderRotationPortfolio();
+    capInput.addEventListener('input', (e) => {
+      setGlobalCapital(e.target.value, 'rotationCapitalInput');
     });
   }
 
@@ -5557,6 +5876,7 @@ function switchPortfolioMode(mode) {
   localStorage.setItem('larsson_portfolio_mode', mode);
 
   const container = document.getElementById('tabContentPortfolio');
+  const combBtn = document.getElementById('portModeCombinedBtn');
   const rotBtn = document.getElementById('portModeRotationBtn');
   const realBtn = document.getElementById('portModeRealBtn');
   const paperBtn = document.getElementById('portModePaperBtn');
@@ -5564,6 +5884,7 @@ function switchPortfolioMode(mode) {
   const stdSec = document.getElementById('portStandardSection');
   const banner = document.getElementById('portModeBanner');
 
+  if (combBtn) combBtn.classList.toggle('active', mode === 'COMBINED');
   if (rotBtn) rotBtn.classList.toggle('active', mode === 'ROTATION');
   if (realBtn) realBtn.classList.toggle('active', mode === 'REAL');
   if (paperBtn) paperBtn.classList.toggle('active', mode === 'PAPER');
@@ -5574,6 +5895,10 @@ function switchPortfolioMode(mode) {
     if (banner) banner.style.display = 'none';
     renderRotationPortfolio();
     return;
+  } else if (mode === 'COMBINED') {
+    if (rotSec) rotSec.style.display = 'block';
+    if (stdSec) stdSec.style.display = 'block';
+    if (banner) banner.style.display = 'flex';
   } else {
     if (rotSec) rotSec.style.display = 'none';
     if (stdSec) stdSec.style.display = 'block';
@@ -5586,7 +5911,7 @@ function switchPortfolioMode(mode) {
   const journalHeading = document.getElementById('portJournalHeading');
 
   if (container) {
-    if (mode === 'REAL') {
+    if (mode === 'REAL' || mode === 'COMBINED') {
       container.classList.remove('port-mode-paper');
       container.classList.add('port-mode-real');
     } else {
@@ -5595,12 +5920,9 @@ function switchPortfolioMode(mode) {
     }
   }
 
-  if (realBtn) realBtn.classList.toggle('active', mode === 'REAL');
-  if (paperBtn) paperBtn.classList.toggle('active', mode === 'PAPER');
-
-  if (mode === 'REAL') {
-    if (bannerBadge) bannerBadge.innerHTML = '🟢 РЕАЛНИ СРЕДСТВА &amp; БРОКЕРИ';
-    if (bannerDesc) bannerDesc.textContent = 'Управление на действителни сделки от брокери (Binance, Interactive Brokers, Revolut). Всички метрики показват реален финансов капитал.';
+  if (mode === 'REAL' || mode === 'COMBINED') {
+    if (bannerBadge) bannerBadge.innerHTML = mode === 'COMBINED' ? '🔀 СИНХРОНИЗИРАН КАПИТАЛ &amp; ТОП 15 РОТАЦИЯ' : '🟢 РЕАЛНИ СРЕДСТВА &amp; БРОКЕРИ';
+    if (bannerDesc) bannerDesc.textContent = 'Управление на действителни сделки от брокери (Binance, Interactive Brokers, Revolut) в пълен синхрон с ротационния двигател и глобалната валута.';
     if (bannerActions) bannerActions.style.display = 'flex';
     if (posHeading) posHeading.textContent = '📈 Отворени Реални Позиции (Live Mark-to-Market)';
     if (journalHeading) journalHeading.textContent = '📖 Търговски Дневник: Реални Сделки & Изпълнения';
@@ -5612,21 +5934,25 @@ function switchPortfolioMode(mode) {
     if (journalHeading) journalHeading.textContent = '📖 Търговски Дневник: Тестова Симулация & Бот';
   }
 
+  if (mode === 'COMBINED') {
+    renderRotationPortfolio();
+  }
   renderPortfolioView();
 }
 
 function renderPortfolioView() {
-  const isReal = (currentPortfolioMode === 'REAL');
+  const isReal = (currentPortfolioMode === 'REAL' || currentPortfolioMode === 'COMBINED');
   const bundle = isReal ? (portfolioRealData || {}) : (portfolioPaperData || {});
   const s = bundle.summary || {};
   let positions = bundle.positions || [];
   let journal = bundle.journal || bundle.history || [];
 
   // Update current prices and mark-to-market for positions from allSymbols if available
-  let totalInvested = 0.0;
-  let unrealizedPnl = 0.0;
+  let totalInvestedBase = 0.0;
+  let unrealizedPnlBase = 0.0;
   positions.forEach(pos => {
-    const symObj = allSymbols.find(item => item.ticker === pos.symbol || item.ticker === pos.ticker);
+    const symTicker = pos.symbol || pos.ticker;
+    const symObj = allSymbols.find(item => item.ticker === symTicker);
     if (symObj && symObj.price) {
       pos.current_price = symObj.price;
     }
@@ -5651,38 +5977,43 @@ function renderPortfolioView() {
     pos.unrealized_pnl = uPnl;
     pos.unrealized_pnl_pct = uPct;
 
-    totalInvested += margin;
-    unrealizedPnl += uPnl;
+    totalInvestedBase += convertAssetQuoteToBase(margin, symTicker, pos.asset_class);
+    unrealizedPnlBase += convertAssetQuoteToBase(uPnl, symTicker, pos.asset_class);
   });
 
-  const availableCash = s.available_cash !== undefined ? s.available_cash : (isReal ? 0.0 : 10000.0);
-  const totalEquity = availableCash + (totalInvested + unrealizedPnl);
-  const initialBalance = s.initial_balance !== undefined ? s.initial_balance : (isReal ? availableCash : 10000.0);
-  const totalRealizedPnl = s.total_realized_pnl || 0.0;
+  const rawCashUsd = s.available_cash !== undefined ? s.available_cash : (isReal ? 0.0 : 10000.0);
+  const rawInitUsd = s.initial_balance !== undefined ? s.initial_balance : (isReal ? rawCashUsd : 10000.0);
+  const rawRealizedUsd = s.total_realized_pnl || 0.0;
+
+  const availableCashBase = convertUsdToBase(rawCashUsd);
+  const initialBalanceBase = convertUsdToBase(rawInitUsd);
+  const totalRealizedPnlBase = convertUsdToBase(rawRealizedUsd);
+  const totalEquityBase = availableCashBase + (totalInvestedBase + unrealizedPnlBase);
+
   const wins = s.wins || 0;
   const losses = s.losses || 0;
   const totalTrades = wins + losses;
   const winRate = totalTrades > 0 ? (wins / totalTrades * 100) : (s.win_rate || 0.0);
-  const unrealizedPct = totalInvested > 0 ? (unrealizedPnl / totalInvested * 100) : 0.0;
+  const unrealizedPct = totalInvestedBase > 0 ? (unrealizedPnlBase / totalInvestedBase * 100) : 0.0;
 
-  // 1. Metric Cards
+  // 1. Metric Cards (Rendered consistently in the user's selected Base Currency EUR or USD)
   const totalEquityEl = document.getElementById('portTotalEquity');
-  if (totalEquityEl) totalEquityEl.textContent = `${totalEquity.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  if (totalEquityEl) totalEquityEl.textContent = formatBaseMoney(totalEquityBase);
 
   const initBalEl = document.getElementById('portInitialBalance');
-  if (initBalEl) initBalEl.textContent = `Базов: ${initialBalance.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  if (initBalEl) initBalEl.textContent = `Базов: ${formatBaseMoney(initialBalanceBase)}`;
 
   const cashEl = document.getElementById('portAvailableCash');
-  if (cashEl) cashEl.textContent = `${availableCash.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  if (cashEl) cashEl.textContent = formatBaseMoney(availableCashBase);
 
   const cashAllocEl = document.getElementById('portCashAlloc');
   if (cashAllocEl) {
-    const cashPct = totalEquity > 0 ? ((availableCash / totalEquity) * 100).toFixed(0) : 100;
+    const cashPct = totalEquityBase > 0 ? ((availableCashBase / totalEquityBase) * 100).toFixed(0) : 100;
     cashAllocEl.textContent = `${cashPct}% ликвиден капитал`;
   }
 
   const investedEl = document.getElementById('portInvested');
-  if (investedEl) investedEl.textContent = `$${totalInvested.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (investedEl) investedEl.textContent = formatBaseMoney(totalInvestedBase);
 
   const openCountEl = document.getElementById('portOpenCount');
   if (openCountEl) openCountEl.textContent = `${positions.length} активни позиции`;
@@ -5690,9 +6021,9 @@ function renderPortfolioView() {
   const unrealizedEl = document.getElementById('portUnrealizedPnl');
   const unrealizedPctEl = document.getElementById('portUnrealizedPct');
   if (unrealizedEl) {
-    const sign = unrealizedPnl >= 0 ? '+' : '';
-    unrealizedEl.textContent = `${sign}$${unrealizedPnl.toFixed(2)}`;
-    unrealizedEl.style.color = unrealizedPnl >= 0 ? '#10b981' : '#ef4444';
+    const sign = unrealizedPnlBase >= 0 ? '+' : '';
+    unrealizedEl.textContent = `${sign}${formatBaseMoney(unrealizedPnlBase)}`;
+    unrealizedEl.style.color = unrealizedPnlBase >= 0 ? '#10b981' : '#ef4444';
   }
   if (unrealizedPctEl) {
     const sign = unrealizedPct >= 0 ? '+' : '';
@@ -5702,9 +6033,9 @@ function renderPortfolioView() {
 
   const realizedEl = document.getElementById('portRealizedPnl');
   if (realizedEl) {
-    const sign = totalRealizedPnl >= 0 ? '+' : '';
-    realizedEl.textContent = `${sign}$${totalRealizedPnl.toFixed(2)}`;
-    realizedEl.style.color = totalRealizedPnl >= 0 ? '#10b981' : '#ef4444';
+    const sign = totalRealizedPnlBase >= 0 ? '+' : '';
+    realizedEl.textContent = `${sign}${formatBaseMoney(totalRealizedPnlBase)}`;
+    realizedEl.style.color = totalRealizedPnlBase >= 0 ? '#10b981' : '#ef4444';
   }
 
   const winRateEl = document.getElementById('portWinRate');
@@ -5888,11 +6219,13 @@ function initPageCalculator() {
   const tp2Input = document.getElementById('pageCalcTp2');
 
   const recalc = () => {
-    const capital = parseFloat(capInput ? capInput.value : 10000) || 10000;
+    const capital = parseFloat(capInput ? capInput.value : getGlobalCapital()) || getGlobalCapital();
     const activeRiskBtn = document.querySelector('#pageRiskPresets .preset-btn.active');
     const riskPct = activeRiskBtn ? parseFloat(activeRiskBtn.dataset.risk) : 1.0;
     const tier = tierSelect ? tierSelect.value : 'A';
     const tierMultiplier = { 'S': 1.0, 'A': 0.85, 'B': 0.6, 'C': 0.3 }[tier] || 0.85;
+    const tickerSym = (tickerInput ? tickerInput.value : 'NVDA').trim().toUpperCase();
+    const qInfo = getAssetQuoteCurrency(tickerSym);
 
     const isLong = (currentCalcDirection === 'LONG');
     const leverage = currentCalcLeverage || 1;
@@ -5902,14 +6235,16 @@ function initPageCalculator() {
     const tp1 = parseFloat(tp1Input ? tp1Input.value : (isLong ? 110 : 90)) || 0;
     const tp2 = parseFloat(tp2Input ? tp2Input.value : (isLong ? 120 : 80)) || 0;
 
-    const baseRiskUsd = capital * (riskPct / 100.0);
-    const riskUsd = baseRiskUsd * tierMultiplier;
+    const baseRisk = capital * (riskPct / 100.0);
+    const riskBase = baseRisk * tierMultiplier;
+    const riskInAssetQuote = convertBaseToAssetQuote(riskBase, tickerSym);
     const riskPerUnit = Math.abs(entry - sl);
 
     if (riskPerUnit > 0 && entry > 0) {
-      const units = riskUsd / riskPerUnit;
-      const notional = units * entry;
-      const margin = notional / leverage;
+      const units = riskInAssetQuote / riskPerUnit;
+      const notionalQuote = units * entry;
+      const notionalBase = convertAssetQuoteToBase(notionalQuote, tickerSym);
+      const marginBase = notionalBase / leverage;
       const riskPctOfPrice = ((riskPerUnit / entry) * 100.0).toFixed(2);
 
       const rr1 = isLong 
@@ -5919,12 +6254,14 @@ function initPageCalculator() {
         ? (tp2 > entry ? ((tp2 - entry) / riskPerUnit).toFixed(2) : null)
         : (tp2 < entry ? ((entry - tp2) / riskPerUnit).toFixed(2) : null);
 
-      const tp1Profit = isLong 
+      const tp1ProfitQuote = isLong 
         ? (tp1 > entry ? (units * 0.5 * (tp1 - entry)) : 0)
         : (tp1 < entry ? (units * 0.5 * (entry - tp1)) : 0);
-      const tp2Profit = isLong
+      const tp2ProfitQuote = isLong
         ? (tp2 > entry ? (units * 0.5 * (tp2 - entry)) : 0)
         : (tp2 < entry ? (units * 0.5 * (entry - tp2)) : 0);
+      const tp1ProfitBase = convertAssetQuoteToBase(tp1ProfitQuote, tickerSym);
+      const tp2ProfitBase = convertAssetQuoteToBase(tp2ProfitQuote, tickerSym);
 
       const liqPrice = leverage > 1 
         ? (isLong ? entry * (1.0 - (1.0 / leverage) + 0.005) : entry * (1.0 + (1.0 / leverage) - 0.005))
@@ -5936,22 +6273,22 @@ function initPageCalculator() {
       if (unitsEl) unitsEl.textContent = `${units < 1 ? units.toFixed(4) : units.toFixed(2)} бр.`;
 
       const valEl = document.getElementById('pageCalcVal');
-      if (valEl) valEl.textContent = `Ноционал: $${notional.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (valEl) valEl.textContent = `Ноционал: ${formatBaseMoney(notionalBase)}`;
 
       const marginEl = document.getElementById('pageCalcMarginUsd');
-      if (marginEl) marginEl.textContent = `$${margin.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (marginEl) marginEl.textContent = formatBaseMoney(marginBase);
 
       const marginSubEl = document.getElementById('pageCalcMarginSub');
-      if (marginSubEl) marginSubEl.textContent = `${leverage}x Isolated (${(100 / leverage).toFixed(1)}% колатерал)`;
+      if (marginSubEl) marginSubEl.textContent = `${leverage}x Isolated (${(100 / leverage).toFixed(1)}% колатерал | Актив в ${qInfo.code})`;
 
       const riskUsdEl = document.getElementById('pageCalcRiskUsd');
-      if (riskUsdEl) riskUsdEl.textContent = `-$${riskUsd.toFixed(2)}`;
+      if (riskUsdEl) riskUsdEl.textContent = `-${formatBaseMoney(riskBase)}`;
 
       const riskPctEl = document.getElementById('pageCalcRiskPct');
       if (riskPctEl) riskPctEl.textContent = `-${riskPctOfPrice}% от входа (Риск: ${riskPct}% * Tier ${tier})`;
 
       const liqEl = document.getElementById('pageCalcLiqPrice');
-      if (liqEl) liqEl.textContent = liqPrice ? `$${formatShortPrice(liqPrice)}` : '— (Няма при 1x)';
+      if (liqEl) liqEl.textContent = liqPrice ? `${qInfo.symbol}${formatShortPrice(liqPrice)}` : '— (Няма при 1x)';
 
       const liqBufEl = document.getElementById('pageCalcLiqBuffer');
       if (liqBufEl) {
@@ -5965,10 +6302,10 @@ function initPageCalculator() {
       }
 
       const tp1ProfitEl = document.getElementById('pageCalcTp1Profit');
-      if (tp1ProfitEl) tp1ProfitEl.textContent = `+$${tp1Profit.toFixed(2)}`;
+      if (tp1ProfitEl) tp1ProfitEl.textContent = `+${formatBaseMoney(tp1ProfitBase)}`;
 
       const tp2ProfitEl = document.getElementById('pageCalcTp2Profit');
-      if (tp2ProfitEl) tp2ProfitEl.textContent = `+$${tp2Profit.toFixed(2)}`;
+      if (tp2ProfitEl) tp2ProfitEl.textContent = `+${formatBaseMoney(tp2ProfitBase)}`;
 
       const rrBadge = document.getElementById('pageCalcRrBadge');
       if (rrBadge) rrBadge.textContent = `R:R 1:${rr1}${rr2 ? ` (TP2 1:${rr2})` : ''}`;
@@ -5977,22 +6314,22 @@ function initPageCalculator() {
       const matrixBody = document.getElementById('pageCalcMatrixBody');
       if (matrixBody) {
         matrixBody.innerHTML = [1, 2, 3].map(lev => {
-          const mReq = notional / lev;
+          const mReqBase = notionalBase / lev;
           const mLiq = lev === 1 ? null : (isLong ? entry * (1.0 - 1.0/lev + 0.005) : entry * (1.0 + 1.0/lev - 0.005));
           const mDist = mLiq ? (Math.abs(entry - mLiq) / entry * 100).toFixed(1) + '%' : '∞ (Няма)';
-          const mRiskPct = (riskUsd / mReq * 100).toFixed(1) + '%';
-          const mRoiTp1 = (tp1Profit / mReq * 100).toFixed(1) + '%';
-          const mRoiTp2 = ((tp1Profit + tp2Profit) / mReq * 100).toFixed(1) + '%';
+          const mRiskPct = (riskBase / mReqBase * 100).toFixed(1) + '%';
+          const mRoiTp1 = (tp1ProfitBase / mReqBase * 100).toFixed(1) + '%';
+          const mRoiTp2 = ((tp1ProfitBase + tp2ProfitBase) / mReqBase * 100).toFixed(1) + '%';
           const isActive = (lev === leverage);
           const isLevSafe = mLiq ? (isLong ? sl > mLiq : sl < mLiq) : true;
 
           return `
             <tr class="${isActive ? 'active-lev-row' : ''}">
               <td><strong>${lev}x ${lev === 1 ? (isLong ? 'Spot' : 'Hedge') : 'Isolated'}</strong> ${isActive ? '👉' : ''}</td>
-              <td><strong style="color: #60a5fa;">$${formatShortPrice(mReq)}</strong></td>
-              <td>$${formatShortPrice(notional)}</td>
-              <td>-$${riskUsd.toFixed(2)} (${mRiskPct})</td>
-              <td><strong style="color: ${mLiq ? '#f87171' : '#34d399'};">${mLiq ? '$' + formatShortPrice(mLiq) : '—'}</strong></td>
+              <td><strong style="color: #60a5fa;">${formatBaseMoney(mReqBase)}</strong></td>
+              <td>${formatBaseMoney(notionalBase)}</td>
+              <td>-${formatBaseMoney(riskBase)} (${mRiskPct})</td>
+              <td><strong style="color: ${mLiq ? '#f87171' : '#34d399'};">${mLiq ? qInfo.symbol + formatShortPrice(mLiq) : '—'}</strong></td>
               <td><span class="${isLevSafe ? 'liq-safe-pill' : 'liq-danger-pill'}">${mDist}</span></td>
               <td><strong style="color: #34d399;">+${mRoiTp1}</strong></td>
               <td><strong style="color: #34d399;">+${mRoiTp2}</strong></td>
@@ -6002,30 +6339,36 @@ function initPageCalculator() {
       }
 
       const dca1 = document.getElementById('pageDcaStep1');
-      if (dca1) dca1.textContent = `Пазарен вход на $${entry.toFixed(2)} (${(units * 0.5).toFixed(2)} бр. = $${(notional * 0.5).toFixed(2)})`;
+      if (dca1) dca1.textContent = `Пазарен вход на ${qInfo.symbol}${entry.toFixed(2)} (${(units * 0.5).toFixed(2)} бр. = ${formatBaseMoney(notionalBase * 0.5)})`;
 
       const dca2 = document.getElementById('pageDcaStep2');
-      if (dca2) dca2.textContent = `Лимитна поръчка на S1 подкрепа (${(units * 0.5).toFixed(2)} бр. = $${(notional * 0.5).toFixed(2)})`;
+      if (dca2) dca2.textContent = `Лимитна поръчка на S1 подкрепа (${(units * 0.5).toFixed(2)} бр. = ${formatBaseMoney(notionalBase * 0.5)})`;
 
-      // Compound growth calculations
+      // Compound growth calculations in Base Currency
       const monthlyReturnPct = 0.04;
       const m3 = capital * Math.pow(1 + monthlyReturnPct, 3);
       const m6 = capital * Math.pow(1 + monthlyReturnPct, 6);
       const m12 = capital * Math.pow(1 + monthlyReturnPct, 12);
 
       const c3 = document.getElementById('compound3m');
-      if (c3) c3.textContent = `$${Math.round(m3).toLocaleString('en-US')}`;
+      if (c3) c3.textContent = formatBaseMoney(Math.round(m3), 0);
       const c6 = document.getElementById('compound6m');
-      if (c6) c6.textContent = `$${Math.round(m6).toLocaleString('en-US')}`;
+      if (c6) c6.textContent = formatBaseMoney(Math.round(m6), 0);
       const c12 = document.getElementById('compound12m');
-      if (c12) c12.textContent = `$${Math.round(m12).toLocaleString('en-US')}`;
+      if (c12) c12.textContent = formatBaseMoney(Math.round(m12), 0);
     }
   };
 
   if (!pageCalcEventsBound) {
     pageCalcEventsBound = true;
 
-    [capInput, tickerInput, tierSelect, entryInput, slInput, tp1Input, tp2Input].forEach(el => {
+    if (capInput) {
+      capInput.addEventListener('input', (e) => {
+        setGlobalCapital(e.target.value, 'pageCalcCapital');
+        recalc();
+      });
+    }
+    [tickerInput, tierSelect, entryInput, slInput, tp1Input, tp2Input].forEach(el => {
       if (el) el.addEventListener('input', recalc);
     });
 
@@ -7105,14 +7448,29 @@ function resetDcfSimulator(ticker) {
 }
 
 function openCalculatorForTicker(ticker) {
+  const s = allSymbols.find(x => (x.ticker || '').toUpperCase() === (ticker || '').toUpperCase());
+  const ts = s && s.trade_suggestion;
+  const entry = (ts && ts.entry) || (s && s.price) || 100;
+  const sl = (ts && ts.sl) || (s && (s.v2 || s.s1)) || (entry * 0.94);
+  const tp1 = (ts && ts.tp1) || (entry + Math.abs(entry - sl) * 2.0);
+  const tp2 = (ts && ts.tp2) || (entry + Math.abs(entry - sl) * 3.5);
+  const tier = (s && (s.empirical_tier || s.tier)) || 'A';
+  const dir = (ts && ts.direction === 'SHORT') ? 'SHORT' : 'LONG';
+
+  if (typeof quickFillCalculator === 'function' && ticker) {
+    const cleanNum = (v) => Number(Number(v).toFixed(entry >= 1 ? 2 : 4));
+    quickFillCalculator(ticker, cleanNum(entry), cleanNum(sl), cleanNum(tp1), cleanNum(tp2), ['S','A','B','C'].includes(tier) ? tier : 'A', dir, 1);
+    return;
+  }
+
   switchTab('calculator');
-  const s = allSymbols.find(x => x.ticker === ticker);
   const tickerInput = document.getElementById('pageCalcTicker');
   const entryInput = document.getElementById('pageCalcEntry');
   if (tickerInput) tickerInput.value = ticker;
   if (entryInput && s && s.price) entryInput.value = s.price;
   if (typeof initPageCalculator === 'function') initPageCalculator();
 }
+window.openCalculatorForTicker = openCalculatorForTicker;
 
 // =============================================================================
 // TAB 5: FUNDAMENTAL SCREENER OVERVIEW TABLE CONTROLLER
@@ -7448,6 +7806,8 @@ function updateIdeaBadges() {
   const count = tradeIdeas.length;
   const navBadge = document.getElementById('ideasCountBadge');
   if (navBadge) navBadge.textContent = count;
+  const resBadge = document.getElementById('researchIdeasBadge');
+  if (resBadge) resBadge.textContent = count;
   const gridCount = document.getElementById('ideasGridCount');
   if (gridCount) gridCount.textContent = `${count} ${count === 1 ? 'запазена идея' : 'запазени идеи'}`;
 }
@@ -7932,31 +8292,291 @@ window.quickAddIdea = quickAddIdea;
 
 
 /* ==========================================================================
-   Opus CIO: Top 15 Momentum Rotation Controller & View Logic
+   Opus CIO: Top 15 Momentum Rotation & Unified Cockpit Action Plan
    ========================================================================== */
+
+function updateCockpitMasterBadge() {
+  const badge = document.getElementById('queueCountBadge');
+  if (!badge) return;
+  const actionCount = Number(window._lastCockpitActionCount || 0);
+  const setupCount = Number(window._lastPendingSetupsCount || 0);
+  badge.textContent = actionCount > 0 ? actionCount : setupCount;
+  badge.title = `${actionCount} сигнала за днес | ${setupCount} очаквани структури`;
+}
+
+function renderCockpitDailyActionPlan() {
+  const grid = document.getElementById('cockpitDailyActionsGrid');
+  if (!grid) return;
+
+  const rotData = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.rotation_portfolio) || (window.dashboardData && window.dashboardData.rotation_portfolio) || window.rotationPortfolio || null;
+  const totalCap = getGlobalCapital();
+  const slotAmount = totalCap / 15.0;
+  const trancheAmount = slotAmount * 0.5;
+
+  const realHeldPositions = (portfolioRealData && portfolioRealData.positions) || [];
+  const realHeldTickers = new Set(realHeldPositions.map(p => (p.symbol || p.ticker || '').toUpperCase()));
+
+  const quantTickerSet = new Set(((rotData && rotData.quantamental_dips) || []).map(q => (q.ticker || '').toUpperCase()));
+  const momentumOwnedCount = [...realHeldTickers].filter(t => !quantTickerSet.has(t)).length;
+  const valueDipOwnedCount = [...realHeldTickers].filter(t => quantTickerSet.has(t)).length;
+  const freeSlots = Math.max(0, 15 - momentumOwnedCount);
+
+  const slotsSummary = document.getElementById('cockpitSlotsSummary');
+  if (slotsSummary) {
+    slotsSummary.innerHTML = `Моментум слотове: <strong>${momentumOwnedCount}/15</strong>${valueDipOwnedCount > 0 ? ` | Value Dips: <strong>${valueDipOwnedCount}</strong>` : ''} | Свободни: <strong style="color:#3fb950;">${freeSlots}</strong> (${formatBaseMoney(freeSlots * slotAmount, 0)})`;
+  }
+
+  const dateBadge = document.getElementById('cockpitActionDateBadge');
+  if (dateBadge && rotData) {
+    const rawDate = rotData.trading_date || (rotData.updated_at ? rotData.updated_at.split('T')[0] : null);
+    dateBadge.textContent = rawDate ? `Сесия ${rawDate}` : 'Днес';
+  }
+
+  if (!rotData) {
+    grid.innerHTML = '<div class="rot-action-loading">Зареждане на пазарните сигнали...</div>';
+    return;
+  }
+
+  let html = '';
+  let signalCount = 0;
+
+  // 1. MANDATORY EXITS ON REAL HELD POSITIONS
+  realHeldPositions.forEach(pos => {
+    const sym = (pos.symbol || pos.ticker || '').toUpperCase();
+    const symObj = allSymbols.find(s => s.ticker === sym);
+    if (!symObj) return;
+
+    const isBlue = (symObj.state === 'BLUE');
+    const isNeutExit = (symObj.state === 'NEUTRAL' && symObj.exit_on_neutral);
+    const isBrokenStop = (Number(symObj.price || 0) <= Number(symObj.v2 || 0) && Number(symObj.v2 || 0) > 0);
+    if (!isBlue && !isNeutExit && !isBrokenStop) return;
+
+    signalCount++;
+    let reason = 'Нарушен тренд (BLUE) -> Затвори за защита на капитала!';
+    let tagText = 'EXIT 100%';
+    if (isBrokenStop) {
+      reason = `Цената (${formatAssetPrice(symObj.price, sym, symObj.asset_class)}) проби стопа $v2 (${formatAssetPrice(symObj.v2, sym, symObj.asset_class)}) -> Затвори незабавно!`;
+      tagText = 'STOP BROKEN';
+    } else if (isNeutExit) {
+      reason = 'Fast Exit ДНК (NEUTRAL) -> Прибери печалба!';
+    }
+
+    html += `
+      <div class="rot-action-card action-sell">
+        <div class="rot-action-hdr">
+          <span class="rot-action-ticker" style="color: #f85149;">🔴 ПРОДАЙ ДНЕС: ${sym}</span>
+          <span class="rot-action-tag tag-sell">${tagText}</span>
+        </div>
+        <p class="rot-action-desc">${reason}</p>
+        <div class="rot-action-meta"><span>Цена: ${formatAssetPrice(symObj.price, sym, symObj.asset_class)}</span></div>
+        <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+          <button type="button" class="btn-add-real-inline" style="background: #da3633;" onclick="event.stopPropagation(); switchTab('portfolio');">
+            🔴 Отвори в Портфолио
+          </button>
+          <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${sym}', 'EXIT')">
+            📑 Досие
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  // 2. TOP 15 MOMENTUM ROTATION BUYS (FRESH FLIPS & PULLBACKS)
+  if (freeSlots > 0) {
+    const allCand = [...(rotData.top15 || []), ...(rotData.reserve_bench || [])];
+    const unowned = allCand.filter(c => !realHeldTickers.has((c.ticker || '').toUpperCase()));
+    const freshPool = (rotData.fresh_flips || []).filter(c => !realHeldTickers.has((c.ticker || '').toUpperCase()));
+    const primeBuys = (freshPool.length > 0 ? freshPool : unowned.filter(c => c.entry_zone_status === 'FRESH_FLIP')).slice(0, Math.min(3, freeSlots));
+
+    primeBuys.forEach(b => {
+      signalCount++;
+      const slotInQuote = convertBaseToAssetQuote(slotAmount, b.ticker, b.asset_class);
+      const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotInQuote / b.price).toFixed(4) : (slotInQuote / b.price).toFixed(2)) : '0';
+      const dayNum = Number(b.bars_since_flip !== undefined ? b.bars_since_flip : 0) + 1;
+      html += `
+        <div class="rot-action-card action-buy">
+          <div class="rot-action-hdr">
+            <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ (ТОП 15): ${b.ticker}</span>
+            <span class="rot-action-tag tag-buy">ДЕН ${dayNum} FLIP</span>
+          </div>
+          <p class="rot-action-desc">${escapeHtml(b.name || b.ticker)} • Риск до стопа ${b.risk_to_v2_pct}% (Стоп v2: ${formatAssetPrice(b.v2_stop, b.ticker, b.asset_class)}).</p>
+          <div class="rot-action-meta">
+            <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+            <span>RS ${b.rs_rating || '—'}</span>
+          </div>
+          <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${slotAmount.toFixed(0)}, ${b.v2_stop || 0})">
+              ➕ Изпълни
+            </button>
+            <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${b.ticker}', 'FRESH_FLIP')">
+              📑 Досие
+            </button>
+            <button type="button" class="btn-add-real-inline" style="background: #9e6a03;" onclick="event.stopPropagation(); openCalculatorForTicker('${b.ticker}')">
+              🧮 Калкулатор
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    const pullPool = (rotData.pullback_entries || []).filter(c => !realHeldTickers.has((c.ticker || '').toUpperCase()));
+    const pullbacks = (pullPool.length > 0 ? pullPool : unowned.filter(c => c.entry_zone_status === 'PULLBACK_V1')).slice(0, 2);
+    pullbacks.forEach(s => {
+      signalCount++;
+      const slotInQuote = convertBaseToAssetQuote(slotAmount, s.ticker, s.asset_class);
+      const shares = s.price > 0 ? (s.asset_class === 'crypto' ? (slotInQuote / s.price).toFixed(4) : (slotInQuote / s.price).toFixed(2)) : '0';
+      const dayNum = Number(s.bars_since_flip !== undefined ? s.bars_since_flip : 0) + 1;
+      html += `
+        <div class="rot-action-card action-buy" style="border-left-color: #58a6ff;">
+          <div class="rot-action-hdr">
+            <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА v1 (ТОП 15): ${s.ticker}</span>
+            <span class="rot-action-tag tag-hold" style="background: rgba(88,166,255,0.2); color: #58a6ff;">ТЕСТ v1 (ДЕН ${dayNum})</span>
+          </div>
+          <p class="rot-action-desc">${escapeHtml(s.name || s.ticker)} • Плътен стоп ${formatAssetPrice(s.v2_stop, s.ticker, s.asset_class)} (Риск ${s.risk_to_v2_pct}%).</p>
+          <div class="rot-action-meta">
+            <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+            <span>RS ${s.rs_rating || '—'}</span>
+          </div>
+          <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${slotAmount.toFixed(0)}, ${s.v2_stop || 0})">
+              ➕ Изпълни
+            </button>
+            <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${s.ticker}', 'PULLBACK_V1')">
+              📑 Досие
+            </button>
+            <button type="button" class="btn-add-real-inline" style="background: #9e6a03;" onclick="event.stopPropagation(); openCalculatorForTicker('${s.ticker}')">
+              🧮 Калкулатор
+            </button>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // 3. ACTIVE QUANTAMENTAL VALUE DIPS (TRIGGER ACTIVE TODAY)
+  const activeDips = (rotData.quantamental_dips || [])
+    .filter(q => q.trigger_active !== false && !realHeldTickers.has((q.ticker || '').toUpperCase()))
+    .slice(0, 3);
+
+  activeDips.forEach(q => {
+    signalCount++;
+    const trancheInQuote = convertBaseToAssetQuote(trancheAmount, q.ticker, q.asset_class);
+    const shares = q.price > 0 ? (q.asset_class === 'crypto' ? (trancheInQuote / q.price).toFixed(4) : (trancheInQuote / q.price).toFixed(2)) : '0';
+    const stopPx = Number(q.value_stop_price || (q.price * 0.92));
+    html += `
+      <div class="rot-action-card action-buy" style="border-left-color: #a855f7;">
+        <div class="rot-action-hdr">
+          <span class="rot-action-ticker" style="color: #d2a8ff;">💎 VALUE DIP (50% ТРАНШ): ${q.ticker}</span>
+          <span class="rot-action-tag" style="background: rgba(168,85,247,0.2); color: #d2a8ff;">MoS +${Number(q.mos_pct || 0).toFixed(0)}%</span>
+        </div>
+        <p class="rot-action-desc">${escapeHtml(q.name || q.ticker)} • ${escapeHtml(q.strategy_label || q.best_value_strategy || 'Value')} | Стоп: ${formatAssetPrice(stopPx, q.ticker, q.asset_class)} (-${q.stop_risk_pct || 8}%).</p>
+        <div class="rot-action-meta">
+          <span>Транш: ${formatBaseMoney(trancheAmount, 0)} (~${shares} бр.)</span>
+          <span>Moat: ${q.moat || 'Wide'}</span>
+        </div>
+        <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+          <button type="button" class="btn-add-real-inline" style="background: #238636;" onclick="event.stopPropagation(); openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${q.price}, ${shares}, ${trancheAmount.toFixed(0)}, ${stopPx.toFixed(2)})">
+            📥 Купи 50%
+          </button>
+          <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${q.ticker}', 'QUANT_DIP')">
+            📑 Досие
+          </button>
+          <button type="button" class="btn-add-real-inline" style="background: #9e6a03;" onclick="event.stopPropagation(); openCalculatorForTicker('${q.ticker}')">
+            🧮 Калкулатор
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  // 4. PRE-GOLD MOMENTUM ANTICIPATION (1-3 BARS AHEAD — TOP 15 CANDIDATES)
+  const preGoldSetups = (Array.isArray(pendingSetups) ? pendingSetups : [])
+    .filter(s => (s.setup_type === 'IMMINENT_GOLD' || s.setup_type === 'QUALITY_DIP_BUY') && !realHeldTickers.has((s.symbol || '').toUpperCase()))
+    .sort((a, b) => {
+      const tDiff = (b.will_enter_top15 ? 1 : 0) - (a.will_enter_top15 ? 1 : 0);
+      if (tDiff !== 0) return tDiff;
+      const da = (a.gold_dist_pct !== null && a.gold_dist_pct !== undefined) ? Math.abs(a.gold_dist_pct) : 99;
+      const db = (b.gold_dist_pct !== null && b.gold_dist_pct !== undefined) ? Math.abs(b.gold_dist_pct) : 99;
+      return da - db;
+    })
+    .slice(0, 3);
+
+  preGoldSetups.forEach(s => {
+    signalCount++;
+    const trigVal = s.gold_trigger_3d || s.target_entry || s.current_price || 0;
+    const slVal = s.target_sl || s.v2 || 0;
+    const distLabel = (s.gold_dist_pct !== null && s.gold_dist_pct !== undefined)
+      ? (s.gold_dist_pct <= 0 ? 'Над GOLD прага' : `+${Number(s.gold_dist_pct).toFixed(1)}% до GOLD`)
+      : (s.estimated_trigger || '1-3 бара');
+    const tagTxt = s.will_enter_top15 ? '🏆 ТОП 15 КАНДИДАТ' : (s.setup_type === 'QUALITY_DIP_BUY' ? '💎 DIP RECLAIM' : '🔥 PRE-GOLD');
+    html += `
+      <div class="rot-action-card action-buy" style="border-left-color: #f59e0b;">
+        <div class="rot-action-hdr">
+          <span class="rot-action-ticker" style="color: #fbbf24;">🔥 ПРЕДСТОЯЩ GOLD (1-3 БАРА): ${s.symbol}</span>
+          <span class="rot-action-tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">${tagTxt}</span>
+        </div>
+        <p class="rot-action-desc">${escapeHtml(s.name || s.symbol)} • Тригер 3д: <strong>${formatAssetPrice(trigVal, s.symbol, s.asset_class)}</strong> (${distLabel}) | Стоп v2: ${slVal ? formatAssetPrice(slVal, s.symbol, s.asset_class) : 'N/A'}.</p>
+        <div class="rot-action-meta">
+          <span>Срок: ${s.estimated_trigger || '1-3 бара'}</span>
+          <span>RS ${s.rs_rating || '—'}</span>
+        </div>
+        <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
+          <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${s.symbol}', '${s.setup_type}')">
+            📑 Досие
+          </button>
+          <button type="button" class="btn-add-real-inline" style="background: #238636;" onclick="event.stopPropagation(); openChartModal('${s.symbol}', '${s.timeframe || '1D'}', '${s.asset_class}')">
+            📊 Графика
+          </button>
+          <button type="button" class="btn-add-real-inline" style="background: #9e6a03;" onclick="event.stopPropagation(); quickFillCalculator('${s.symbol}', ${trigVal}, ${slVal}, ${s.target_tp1 || 0}, 0, '${s.tier}')">
+            🧮 Калкулатор
+          </button>
+        </div>
+      </div>
+    `;
+  });
+
+  if (html === '') {
+    html = `
+      <div class="rot-action-card action-hold" style="grid-column: 1 / -1;">
+        <div class="rot-action-hdr">
+          <span class="rot-action-ticker" style="color: #3fb950;">🛡️ СПОКОЕН ПАЗАР — НЯМА НАЛОЖИТЕЛНИ СДЕЛКИ ДНЕС</span>
+          <span class="rot-action-tag tag-hold">WAIT / HOLD</span>
+        </div>
+        <p class="rot-action-desc">Всички притежавани позиции са над стоповете си. Разгледайте очакваните структури (1–3 бара напред) или Таб „Портфолио &amp; Ротация“ за лимитни поръчки на v1.</p>
+      </div>
+    `;
+  }
+
+  grid.innerHTML = html;
+  window._lastCockpitActionCount = signalCount;
+  updateCockpitMasterBadge();
+}
 
 function renderRotationPortfolio() {
   const rotData = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.rotation_portfolio) || (window.dashboardData && window.dashboardData.rotation_portfolio) || window.rotationPortfolio || null;
   const capInput = document.getElementById('rotationCapitalInput');
-  let totalCap = capInput ? (parseFloat(capInput.value) || 10000.0) : 10000.0;
+  const totalCap = (capInput && parseFloat(capInput.value) > 0) ? parseFloat(capInput.value) : getGlobalCapital();
   const slotAmount = totalCap / 15.0;
   const trancheAmount = slotAmount * 0.5;
 
   const slotEl = document.getElementById('rotSlotAmount');
-  if (slotEl) slotEl.textContent = `${slotAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  if (slotEl) slotEl.textContent = formatBaseMoney(slotAmount);
   const trancheEl = document.getElementById('rotTrancheVal');
-  if (trancheEl) trancheEl.textContent = `${trancheAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+  if (trancheEl) trancheEl.textContent = formatBaseMoney(trancheAmount);
 
-  // 1. Identify User's ACTUAL Open Real Money Positions
+  // 1. Identify User's ACTUAL Open Real Money Positions (separating Momentum slots vs Value Dip positions)
   const realHeldPositions = (portfolioRealData && portfolioRealData.positions) || [];
   const realHeldTickers = new Set(realHeldPositions.map(p => (p.symbol || p.ticker || '').toUpperCase()));
-  const occupiedSlots = realHeldTickers.size;
+  const quantTickerSet = new Set(((rotData && rotData.quantamental_dips) || []).map(q => (q.ticker || '').toUpperCase()));
+  const momentumOccupied = [...realHeldTickers].filter(t => !quantTickerSet.has(t)).length;
+  const valueDipOccupied = [...realHeldTickers].filter(t => quantTickerSet.has(t)).length;
+  const occupiedSlots = momentumOccupied;
   const freeSlots = Math.max(0, 15 - occupiedSlots);
 
   // Update sizing note with live slot availability
   const noteEl = document.querySelector('.sizing-note');
   if (noteEl) {
-    noteEl.innerHTML = `(Заети позиции: <strong style="color:#ffd700;">${occupiedSlots} / 15</strong> | Свободни слотове за покупка: <strong style="color:#3fb950;">${freeSlots}</strong> — <strong>${(freeSlots * slotAmount).toFixed(0)} €</strong> свободен капитал)`;
+    noteEl.innerHTML = `(Моментум слотове: <strong style="color:#ffd700;">${occupiedSlots} / 15</strong>${valueDipOccupied > 0 ? ` | Value Dips: <strong style="color:#d2a8ff;">${valueDipOccupied}</strong>` : ''} | Свободни: <strong style="color:#3fb950;">${freeSlots}</strong> — <strong>${formatBaseMoney(freeSlots * slotAmount, 0)}</strong> свободен капитал)`;
   }
 
   if (!rotData) {
@@ -7967,7 +8587,7 @@ function renderRotationPortfolio() {
       if (actionsList) actionsList.innerHTML = '<div style="padding:15px; color:#8b949e; text-align:center;">Няма намерени ротационни данни. Натиснете Refresh или презаредете страницата (Ctrl+F5).</div>';
       const top15Body = document.getElementById('rotTop15Body');
       if (top15Body) top15Body.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px; color:#8b949e;">Няма заредени позиции за ротацията. Моля натиснете Refresh горе вдясно или натиснете Ctrl+F5.</td></tr>';
-  const benchBody = document.getElementById('rotBenchBody');
+      const benchBody = document.getElementById('rotBenchBody');
       if (benchBody) benchBody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:15px; color:#8b949e;">Няма резерви.</td></tr>';
     }
     return;
@@ -8022,7 +8642,7 @@ function renderRotationPortfolio() {
           let reason = '';
           let tagText = 'EXIT 100%';
           if (isBrokenStop) {
-            reason = `Цената ($${Number(symObj.price || 0).toFixed(2)}) проби стопа $v2 ($${Number(symObj.v2 || 0).toFixed(2)}) -> Затвори за защита на капитала!`;
+            reason = `Цената (${formatAssetPrice(symObj.price, sym, symObj.asset_class)}) проби стопа $v2 (${formatAssetPrice(symObj.v2, sym, symObj.asset_class)}) -> Затвори за защита на капитала!`;
             tagText = 'STOP BROKEN';
           } else if (isBlue) {
             reason = 'Нарушен тренд (BLUE) -> Затвори за защита на капитала!';
@@ -8037,7 +8657,7 @@ function renderRotationPortfolio() {
                 <span class="rot-action-tag tag-sell">${tagText}</span>
               </div>
               <p class="rot-action-desc">${reason}</p>
-              <div class="rot-action-meta"><span>Последна цена: $${Number(symObj.price || 0).toFixed(2)}</span></div>
+              <div class="rot-action-meta"><span>Последна цена: ${formatAssetPrice(symObj.price, sym, symObj.asset_class)}</span></div>
             </div>
           `;
         }
@@ -8054,7 +8674,8 @@ function renderRotationPortfolio() {
       const primeBuys = (freshPool.length > 0 ? freshPool : unownedCandidates.filter(c => c.entry_zone_status === 'FRESH_FLIP')).slice(0, Math.min(3, freeSlots));
 
       primeBuys.forEach(b => {
-        const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotAmount / b.price).toFixed(4) : (slotAmount / b.price).toFixed(2)) : '0';
+        const slotInQuote = convertBaseToAssetQuote(slotAmount, b.ticker, b.asset_class);
+        const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotInQuote / b.price).toFixed(4) : (slotInQuote / b.price).toFixed(2)) : '0';
         const dayNum = Number(b.bars_since_flip !== undefined ? b.bars_since_flip : 0) + 1;
         actHtml += `
           <div class="rot-action-card action-buy">
@@ -8062,17 +8683,20 @@ function renderRotationPortfolio() {
               <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ (КУПИ 100%): ${b.ticker} (${b.name || ''})</span>
               <span class="rot-action-tag tag-buy">ДЕН ${dayNum} FLIP</span>
             </div>
-            <p class="rot-action-desc">Нов Gold Flip от Ден ${dayNum}. Нисък риск до стопа (${b.risk_to_v2_pct}% до $v2 = $${Number(b.v2_stop || 0).toFixed(2)}). ДНК изход: ${b.exit_rule_bg || 'По ДНК'}.</p>
+            <p class="rot-action-desc">Нов Gold Flip от Ден ${dayNum}. Нисък риск до стопа (${b.risk_to_v2_pct}% до $v2 = ${formatAssetPrice(b.v2_stop, b.ticker, b.asset_class)}). ДНК изход: ${b.exit_rule_bg || 'По ДНК'}.</p>
             <div class="rot-action-meta">
-              <span>Слот: ${slotAmount.toFixed(0)} € (~${shares} бр.)</span>
-              <span>Стоп v2: $${Number(b.v2_stop || 0).toFixed(2)}</span>
+              <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+              <span>Стоп v2: ${formatAssetPrice(b.v2_stop, b.ticker, b.asset_class)}</span>
             </div>
             <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${slotAmount.toFixed(0)})">
+              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${slotAmount.toFixed(0)}, ${b.v2_stop || 0})">
                 ➕ Изпълни Свеж Вход
               </button>
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${b.ticker}', 'FRESH_FLIP')">
                 🔍 Досие & Бектест
+              </button>
+              <button type="button" class="btn-add-real-inline" style="background: #9e6a03;" onclick="event.stopPropagation(); openCalculatorForTicker('${b.ticker}')">
+                🧮
               </button>
             </div>
           </div>
@@ -8084,7 +8708,8 @@ function renderRotationPortfolio() {
       const pullbacks = (pullbackPool.length > 0 ? pullbackPool : unownedCandidates.filter(c => c.entry_zone_status === 'PULLBACK_V1')).slice(0, 2);
 
       pullbacks.forEach(s => {
-        const shares = s.price > 0 ? (s.asset_class === 'crypto' ? (slotAmount / s.price).toFixed(4) : (slotAmount / s.price).toFixed(2)) : '0';
+        const slotInQuote = convertBaseToAssetQuote(slotAmount, s.ticker, s.asset_class);
+        const shares = s.price > 0 ? (s.asset_class === 'crypto' ? (slotInQuote / s.price).toFixed(4) : (slotInQuote / s.price).toFixed(2)) : '0';
         const dayNum = Number(s.bars_since_flip !== undefined ? s.bars_since_flip : 0) + 1;
         actHtml += `
           <div class="rot-action-card action-buy" style="border-left-color: #58a6ff;">
@@ -8092,17 +8717,20 @@ function renderRotationPortfolio() {
               <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА ПОДКРЕПА v1: ${s.ticker} (${s.name || ''})</span>
               <span class="rot-action-tag tag-hold" style="background: rgba(88,166,255,0.2); color: #58a6ff;">ТЕСТ v1 (ДЕН ${dayNum})</span>
             </div>
-            <p class="rot-action-desc">Зрял лидер (Ден ${dayNum} в тренд), тестващ лентата на подкрепа ($v1/$v2). Ултра-плътен стоп $v2 ($${Number(s.v2_stop || 0).toFixed(2)}) с риск само ${s.risk_to_v2_pct}%.</p>
+            <p class="rot-action-desc">Зрял лидер (Ден ${dayNum} в тренд), тестващ лентата на подкрепа ($v1/$v2). Ултра-плътен стоп $v2 (${formatAssetPrice(s.v2_stop, s.ticker, s.asset_class)}) с риск само ${s.risk_to_v2_pct}%.</p>
             <div class="rot-action-meta">
-              <span>Слот: ${slotAmount.toFixed(0)} € (~${shares} бр.)</span>
-              <span>Стоп v2: $${Number(s.v2_stop || 0).toFixed(2)}</span>
+              <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+              <span>Стоп v2: ${formatAssetPrice(s.v2_stop, s.ticker, s.asset_class)}</span>
             </div>
             <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${slotAmount.toFixed(0)})">
+              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${slotAmount.toFixed(0)}, ${s.v2_stop || 0})">
                 ➕ Влез на Подкрепа
               </button>
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${s.ticker}', 'PULLBACK_V1')">
                 🔍 Досие & Бектест
+              </button>
+              <button type="button" class="btn-add-real-inline" style="background: #9e6a03;" onclick="event.stopPropagation(); openCalculatorForTicker('${s.ticker}')">
+                🧮
               </button>
             </div>
           </div>
@@ -8112,7 +8740,8 @@ function renderRotationPortfolio() {
       // 3. MATURE TRENDS (Limit Orders on v1 - Do NOT Chase Market Price!)
       const matureBuys = unownedCandidates.filter(c => c.entry_zone_status === 'MATURE_HOLD').slice(0, 2);
       matureBuys.forEach(m => {
-        const halfShares = m.v1_pullback > 0 ? (m.asset_class === 'crypto' ? (trancheAmount / m.v1_pullback).toFixed(4) : (trancheAmount / m.v1_pullback).toFixed(2)) : '0';
+        const trancheInQuote = convertBaseToAssetQuote(trancheAmount, m.ticker, m.asset_class);
+        const halfShares = m.v1_pullback > 0 ? (m.asset_class === 'crypto' ? (trancheInQuote / m.v1_pullback).toFixed(4) : (trancheInQuote / m.v1_pullback).toFixed(2)) : '0';
         const dayNum = Number(m.bars_since_flip !== undefined ? m.bars_since_flip : 0) + 1;
         actHtml += `
           <div class="rot-action-card action-hold" style="border-left-color: #ffd700;">
@@ -8120,13 +8749,13 @@ function renderRotationPortfolio() {
               <span class="rot-action-ticker" style="color: #ffd700;">📝 ЗАДАЙ ЛИМИТ НА v1: ${m.ticker} (${m.name || ''})</span>
               <span class="rot-action-tag tag-hold">В ТРЕНД (ДЕН ${dayNum})</span>
             </div>
-            <p class="rot-action-desc">Активът е в напреднал тренд (Ден ${dayNum}, +${m.dist_to_v1_pct || 5}% над v1). Не купувай по пазарна цена! Постави чакаща лимит поръчка на линията $v1 ($${Number(m.v1_pullback || 0).toFixed(2)}).</p>
+            <p class="rot-action-desc">Активът е в напреднал тренд (Ден ${dayNum}, +${m.dist_to_v1_pct || 5}% над v1). Не купувай по пазарна цена! Постави чакаща лимит поръчка на линията $v1 (${formatAssetPrice(m.v1_pullback, m.ticker, m.asset_class)}).</p>
             <div class="rot-action-meta">
-              <span>Лимит цена v1: $${Number(m.v1_pullback || 0).toFixed(2)}</span>
-              <span>Транш (50%): ${trancheAmount.toFixed(0)} €</span>
+              <span>Лимит цена v1: ${formatAssetPrice(m.v1_pullback, m.ticker, m.asset_class)}</span>
+              <span>Транш (50%): ${formatBaseMoney(trancheAmount, 0)}</span>
             </div>
             <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${m.ticker}', '${m.asset_class}', ${m.v1_pullback}, ${halfShares}, ${trancheAmount.toFixed(0)})">
+              <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${m.ticker}', '${m.asset_class}', ${m.v1_pullback}, ${halfShares}, ${trancheAmount.toFixed(0)}, ${m.v2_stop || 0})">
                 📝 Запиши Лимит на v1
               </button>
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${m.ticker}', 'MATURE_HOLD')">
@@ -8146,7 +8775,7 @@ function renderRotationPortfolio() {
               <span class="rot-action-ticker" style="color: #cbd5e1;">⏳ НЕ ГОНИ ВЪРХА: ${w.ticker}</span>
               <span class="rot-action-tag tag-hold">ЧАКАЙ ПУЛБЕК</span>
             </div>
-            <p class="rot-action-desc">Активът е напреднал твърде много над $v2 (${w.risk_to_v2_pct}% риск). Чакай тест на $v1 ($${Number(w.v1_pullback || 0).toFixed(2)}) или избери лидерите от Свеж Пробив.</p>
+            <p class="rot-action-desc">Активът е напреднал твърде много над $v2 (${w.risk_to_v2_pct}% риск). Чакай тест на $v1 (${formatAssetPrice(w.v1_pullback, w.ticker, w.asset_class)}) или избери лидерите от Свеж Пробив.</p>
           </div>
         `;
       });
@@ -8170,7 +8799,8 @@ function renderRotationPortfolio() {
     let rowsHtml = '';
     rotData.top15.forEach((item, idx) => {
       const isOwned = realHeldTickers.has(item.ticker.toUpperCase());
-      const shares = item.price > 0 ? (item.asset_class === 'crypto' ? (slotAmount / item.price).toFixed(4) : (slotAmount / item.price).toFixed(2)) : '0';
+      const slotInQuote = convertBaseToAssetQuote(slotAmount, item.ticker, item.asset_class);
+      const shares = item.price > 0 ? (item.asset_class === 'crypto' ? (slotInQuote / item.price).toFixed(4) : (slotInQuote / item.price).toFixed(2)) : '0';
       const rsClass = item.rs_rating >= 90 ? 'rs-elite' : (item.rs_rating >= 75 ? 'rs-strong' : '');
 
       let statusBadge = '';
@@ -8184,28 +8814,28 @@ function renderRotationPortfolio() {
         if (item.entry_zone_status === 'FRESH_FLIP') {
           statusBadge = `<span class="text-success" style="font-weight:700; font-size:0.8rem;">🟢 Свеж Пробив (Ден ${dayNum})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)})" title="Купи пълен слот">
-              ➕ Купи (667 €)
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Купи пълен слот">
+              ➕ Купи (${formatBaseMoney(slotAmount, 0)})
             </button>
           `;
         } else if (item.entry_zone_status === 'PULLBACK_V1') {
           statusBadge = `<span class="text-info" style="font-weight:700; font-size:0.8rem;">🔵 Вход на v1 (Ден ${dayNum})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)})" title="Влез на подкрепа v1">
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Влез на подкрепа v1">
               ➕ Влез на v1
             </button>
           `;
         } else if (item.entry_zone_status === 'MATURE_HOLD') {
           statusBadge = `<span style="color:#58a6ff; font-weight:600; font-size:0.8rem;">🛡️ В Тренд (Лимит v1)</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)})" title="Лимит поръчка на v1">
+            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Лимит поръчка на v1">
               📝 Лимит на v1
             </button>
           `;
         } else {
-          statusBadge = `<span style="color:#8b949e; font-size:0.8rem;" title="Спред над v2: ${item.risk_to_v2_pct}%">⏳ Чакай v1 ($${item.v1_pullback})</span>`;
+          statusBadge = `<span style="color:#8b949e; font-size:0.8rem;" title="Спред над v2: ${item.risk_to_v2_pct}%">⏳ Чакай v1 (${formatAssetPrice(item.v1_pullback, item.ticker, item.asset_class)})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)})" title="Лимит поръчка на v1">
+            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Лимит поръчка на v1">
               📝 Лимит на v1
             </button>
           `;
@@ -8230,9 +8860,9 @@ function renderRotationPortfolio() {
           <td><span class="rs-pill ${rsClass}">RS ${item.rs_rating}</span></td>
           <td><span style="font-size: 0.8rem; font-weight: 600;">${item.strategy || ''}</span></td>
           <td><span class="dna-exit-tag">${item.exit_rule_bg || ''}</span></td>
-          <td class="tabular-nums" style="font-weight: 700;">$${Number(item.price || 0).toFixed(2)}</td>
-          <td class="tabular-nums" style="color: #f85149;">$${Number(item.v2_stop || 0).toFixed(2)}</td>
-          <td class="tabular-nums" style="color: #ffd700; font-weight: 700;">${slotAmount.toFixed(0)} €</td>
+          <td class="tabular-nums" style="font-weight: 700;">${formatAssetPrice(item.price || 0, item.ticker, item.asset_class)}</td>
+          <td class="tabular-nums" style="color: #f85149;">${formatAssetPrice(item.v2_stop || 0, item.ticker, item.asset_class)}</td>
+          <td class="tabular-nums" style="color: #ffd700; font-weight: 700;">${formatBaseMoney(slotAmount, 0)}</td>
           <td class="tabular-nums" style="font-weight: 700; color: #58a6ff;">${shares}</td>
           <td>${statusBadge}</td>
           <td>
@@ -8240,6 +8870,9 @@ function renderRotationPortfolio() {
               ${actionBtn}
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb; padding: 4px 6px;" onclick="event.stopPropagation(); openProposalDossier('${item.ticker}', '${item.entry_zone_status}')" title="Отвори подробно досие и бектест">
                 🔍 Досие
+              </button>
+              <button type="button" class="btn-add-real-inline" style="background: #9e6a03; padding: 4px 6px;" onclick="event.stopPropagation(); openCalculatorForTicker('${item.ticker}')" title="Оразмери в Калкулатор">
+                🧮
               </button>
             </div>
           </td>
@@ -8256,7 +8889,8 @@ function renderRotationPortfolio() {
     rotData.reserve_bench.forEach((item, idx) => {
       const isOwned = realHeldTickers.has(item.ticker.toUpperCase());
       const rsClass = item.rs_rating >= 90 ? 'rs-elite' : (item.rs_rating >= 75 ? 'rs-strong' : '');
-      const shares = item.price > 0 ? (item.asset_class === 'crypto' ? (slotAmount / item.price).toFixed(4) : (slotAmount / item.price).toFixed(2)) : '0';
+      const slotInQuote = convertBaseToAssetQuote(slotAmount, item.ticker, item.asset_class);
+      const shares = item.price > 0 ? (item.asset_class === 'crypto' ? (slotInQuote / item.price).toFixed(4) : (slotInQuote / item.price).toFixed(2)) : '0';
 
       bHtml += `
         <tr style="cursor: pointer;" onclick="openProposalDossier('${item.ticker}', 'BENCH')">
@@ -8270,12 +8904,15 @@ function renderRotationPortfolio() {
           <td>
             <div style="display: flex; gap: 6px; align-items: center;">
               ${isOwned ? '<span style="color:#3fb950; font-weight:600; font-size:0.75rem;">✅ Притежавана</span>' : `
-                <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)})">
+                <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})">
                   ➕ Влез
                 </button>
               `}
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb; padding: 4px 6px;" onclick="event.stopPropagation(); openProposalDossier('${item.ticker}', 'BENCH')" title="Подробно досие и бектест">
                 🔍 Досие
+              </button>
+              <button type="button" class="btn-add-real-inline" style="background: #9e6a03; padding: 4px 6px;" onclick="event.stopPropagation(); openCalculatorForTicker('${item.ticker}')" title="Оразмери в Калкулатор">
+                🧮
               </button>
             </div>
           </td>
@@ -8291,7 +8928,8 @@ function renderRotationPortfolio() {
     let qHtml = '';
     rotData.quantamental_dips.forEach(q => {
       const isOwned = realHeldTickers.has(q.ticker.toUpperCase());
-      const trancheShares = q.price > 0 ? (q.asset_class === 'crypto' ? (trancheAmount / q.price).toFixed(4) : (trancheAmount / q.price).toFixed(2)) : '0';
+      const trancheInQuote = convertBaseToAssetQuote(trancheAmount, q.ticker, q.asset_class);
+      const trancheShares = q.price > 0 ? (q.asset_class === 'crypto' ? (trancheInQuote / q.price).toFixed(4) : (trancheInQuote / q.price).toFixed(2)) : '0';
       const stratName = q.strategy_label || q.best_value_strategy || 'Value Accumulator';
       const nTrades = q.value_trades ? `${q.value_trades} сд.` : 'WF Тест';
       const winRate = q.value_win_rate ? `${q.value_win_rate}% Win (${nTrades})` : 'Одобрен';
@@ -8313,8 +8951,8 @@ function renderRotationPortfolio() {
               <span style="font-size: 0.74rem; color: #8b949e;">${q.name || ''}</span>
             </div>
           </td>
-          <td class="tabular-nums" style="font-weight: 700;">$${Number(q.price || 0).toFixed(2)}</td>
-          <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">$${Number(q.fair_value || 0).toFixed(2)}</td>
+          <td class="tabular-nums" style="font-weight: 700;">${formatAssetPrice(q.price || 0, q.ticker, q.asset_class)}</td>
+          <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">${formatAssetPrice(q.fair_value || 0, q.ticker, q.asset_class)}</td>
           <td class="tabular-nums" style="color: #3fb950; font-weight: 700;">+${Number(q.mos_pct || 0).toFixed(0)}%</td>
           <td>
             <span class="badge" style="background: rgba(163, 113, 247, 0.15); color: #d2a8ff; border: 1px solid rgba(163, 113, 247, 0.35); font-size: 0.72rem; white-space: nowrap;">
@@ -8322,11 +8960,11 @@ function renderRotationPortfolio() {
             </span>
           </td>
           <td class="tabular-nums">
-            <span style="color: #f85149; font-weight:700;">$${stopPrice}</span>
+            <span style="color: #f85149; font-weight:700;">${formatAssetPrice(stopPrice, q.ticker, q.asset_class)}</span>
             <span style="font-size:0.72rem; color:#8b949e;">(-${stopRisk}%)</span>
           </td>
           <td class="tabular-nums">
-            <strong style="color: #ffd700;">${trancheAmount.toFixed(0)} €</strong>
+            <strong style="color: #ffd700;">${formatBaseMoney(trancheAmount, 0)}</strong>
             <span style="font-size:0.75rem; color:#58a6ff;">(~${trancheShares})</span>
           </td>
           <td>
@@ -8340,11 +8978,11 @@ function renderRotationPortfolio() {
             <div style="display: flex; gap: 6px; align-items: center;">
               ${isOwned ? '<span style="color:#3fb950; font-weight:600; font-size:0.75rem;">✅ Притежавана</span>' : (
                 q.trigger_active !== false ? `
-                  <button type="button" class="btn-add-real-inline" style="background: #238636;" onclick="event.stopPropagation(); openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${q.price}, ${trancheShares}, ${trancheAmount.toFixed(0)})" title="Влез с 50% транш">
+                  <button type="button" class="btn-add-real-inline" style="background: #238636;" onclick="event.stopPropagation(); openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${q.price}, ${trancheShares}, ${trancheAmount.toFixed(0)}, ${stopPrice})" title="Влез с 50% транш">
                     📥 Купи 50%
                   </button>
                 ` : `
-                  <button type="button" class="btn-add-real-inline" style="background: #30363d; opacity: 0.8;" onclick="event.stopPropagation(); openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${stopPrice}, ${trancheShares}, ${trancheAmount.toFixed(0)})" title="Чакай тригер / Постави лимит">
+                  <button type="button" class="btn-add-real-inline" style="background: #30363d; opacity: 0.8;" onclick="event.stopPropagation(); openAddRealFromRotation('${q.ticker}', '${q.asset_class}', ${stopPrice}, ${trancheShares}, ${trancheAmount.toFixed(0)}, ${stopPrice})" title="Чакай тригер / Постави лимит">
                     ⏳ Лимит
                   </button>
                 `
@@ -8352,28 +8990,39 @@ function renderRotationPortfolio() {
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb; padding: 4px 6px;" onclick="event.stopPropagation(); openProposalDossier('${q.ticker}', 'QUANT_DIP')" title="Подробно досие и бектест">
                 🔍 Досие
               </button>
+              <button type="button" class="btn-add-real-inline" style="background: #9e6a03; padding: 4px 6px;" onclick="event.stopPropagation(); openCalculatorForTicker('${q.ticker}')" title="Оразмери в Калкулатор">
+                🧮
+              </button>
             </div>
           </td>
         </tr>
       `;
     });
-    quantBody.innerHTML = qHtml || '<tr><td colspan="8">Няма подценени активи извън GOLD в момента.</td></tr>';
+    quantBody.innerHTML = qHtml || '<tr><td colspan="9">Няма подценени активи извън GOLD в момента.</td></tr>';
   }
 }
 
-function openAddRealFromRotation(ticker, assetClass, price, units, sizeEur) {
+function openAddRealFromRotation(ticker, assetClass, price, units, sizeInBase, stopLoss = null) {
   const addModal = document.getElementById('addRealModal');
   if (addModal) addModal.style.display = 'flex';
   const tInput = document.getElementById('realTicker');
   const acInput = document.getElementById('realAssetClass');
   const epInput = document.getElementById('realEntryPrice');
+  const epLabel = document.getElementById('realEntryPriceLabel');
   const uInput = document.getElementById('realUnits');
-  const szInput = document.getElementById('realPositionSizeUsd');
+  const slInput = document.getElementById('realSl');
+  const notesInput = document.getElementById('realNotes');
+  const qInfo = getAssetQuoteCurrency(ticker, assetClass);
+
   if (tInput) tInput.value = ticker;
   if (acInput) acInput.value = assetClass || 'us_stocks';
   if (epInput) epInput.value = price;
+  if (epLabel) epLabel.textContent = `Входна Цена (${qInfo.code} ${qInfo.symbol}) *`;
   if (uInput) uInput.value = units;
-  if (szInput) szInput.value = sizeEur;
+  if (slInput && stopLoss && Number(stopLoss) > 0) slInput.value = Number(stopLoss).toFixed(price >= 1 ? 2 : 4);
+  if (notesInput && !notesInput.value) {
+    notesInput.value = `Слот: ${formatBaseMoney(sizeInBase, 0)} (Котировка в ${qInfo.code})`;
+  }
 }
 
 
@@ -8399,6 +9048,12 @@ window.openDossierModal = window.showProposalDossier = function(ticker, context)
 window.openDossierFromActiveChart = function() {
   if (typeof activeTicker !== 'undefined' && activeTicker) {
     openDossierModal(activeTicker);
+  }
+};
+
+window.openDossierFromLiveChart = function() {
+  if (typeof liveTicker !== 'undefined' && liveTicker) {
+    openProposalDossier(liveTicker, 'LIVE_CHART');
   }
 };
 
@@ -8497,7 +9152,7 @@ function renderProposalDossier(d, ctx) {
   if (secEl) secEl.textContent = d.sector || d.asset_class || 'Equities';
 
   const prEl = document.getElementById('dossierPrice');
-  if (prEl) prEl.textContent = `$${Number(d.current_price || 0).toFixed(2)}`;
+  if (prEl) prEl.textContent = formatAssetPrice(d.current_price || 0, d.ticker, d.asset_class);
 
   const stBadge = document.getElementById('dossierStateBadge');
   if (stBadge) {
@@ -8509,18 +9164,21 @@ function renderProposalDossier(d, ctx) {
   // 2. Proposal Narrative Rationale
   const sigBadge = document.getElementById('dossierSignalTypeBadge');
   const narrEl = document.getElementById('dossierNarrative');
-  const rotCapInput = document.getElementById('rotationCapitalInput');
-  const totalCap = rotCapInput ? (parseFloat(rotCapInput.value) || 10000.0) : 10000.0;
-  const slotEur = (totalCap / 15.0).toFixed(0);
-  const trancheEur = (totalCap / 30.0).toFixed(0);
+  const totalCap = getGlobalCapital();
+  const slotBase = totalCap / 15.0;
+  const trancheBase = totalCap / 30.0;
+  const slotLabel = formatBaseMoney(slotBase, 0);
+  const trancheLabel = formatBaseMoney(trancheBase, 0);
 
   const price = d.current_price || 1.0;
   const v1 = d.v1 || price;
   const v2 = d.v2 || (price * 0.93);
   const distV1 = (((price - v1) / v1) * 100.0).toFixed(1);
   const riskV2 = (((price - v2) / price) * 100.0).toFixed(1);
-  const sharesSlot = (slotEur / price).toFixed(price >= 1 ? 2 : 4);
-  const sharesTranche = (trancheEur / price).toFixed(price >= 1 ? 2 : 4);
+  const slotQuote = convertBaseToAssetQuote(slotBase, d.ticker, d.asset_class);
+  const trancheQuote = convertBaseToAssetQuote(trancheBase, d.ticker, d.asset_class);
+  const sharesSlot = (slotQuote / price).toFixed(price >= 1 ? 2 : 4);
+  const sharesTranche = (trancheQuote / price).toFixed(price >= 1 ? 2 : 4);
 
   let narrativeText = '';
   let signalTitle = 'Свеж Пробив в GOLD';
@@ -8529,37 +9187,37 @@ function renderProposalDossier(d, ctx) {
     signalTitle = '🟢 СВЕЖ ПРОБИВ (КУПИ 100% СЛОТ)';
     narrativeText = `
       <strong>План за изпълнение днес:</strong> Активът <strong>${d.ticker}</strong> току-що осъществи потвърден златен пробив в бичи тренд (GOLD). 
-      Лентата на Larsson се подреди възходящо над линията $v2 ($${Number(v2).toFixed(2)}). 
+      Лентата на Larsson се подреди възходящо над линията $v2 (${formatAssetPrice(v2, d.ticker, d.asset_class)}). 
       Рискът до твърдия защитен стоп е изключително плътен (<strong>-${riskV2}%</strong>), което осигурява асиметрично предимство (R:R).
-      Препоръчва се вход с <strong>пълен слот (${slotEur} €, ~${sharesSlot} бр.)</strong> по текуща пазарна цена. 
+      Препоръчва се вход с <strong>пълен слот (${slotLabel}, ~${sharesSlot} бр.)</strong> по текуща пазарна цена. 
       Победилата стратегия за този актив е <strong>${d.winning_strategy_name}</strong> (CAGR: +${d.winning_metrics.cagr_pct}%, Sharpe: ${d.winning_metrics.sharpe_ratio}).
     `;
   } else if (ctx === 'PULLBACK_V1' || (typeof ctx === 'object' && ctx.status === 'PULLBACK_V1')) {
     signalTitle = '🔵 ВХОД НА ПОДКРЕПА v1 (КУПИ 100% СЛОТ)';
     narrativeText = `
-      <strong>План за изпълнение днес:</strong> Активът <strong>${d.ticker}</strong> е зрял моментум лидер, който прави здравословна корекция и тества линията на динамична подкрепа $v1 ($${Number(v1).toFixed(2)}). 
-      Отстоянието до $v1 е само <strong>${distV1}%</strong>, а стопът $v2 ($${Number(v2).toFixed(2)}) защитава капитала при риск от едва <strong>-${riskV2}%</strong>.
-      Препоръчва се незабавен вход с <strong>пълен слот (${slotEur} €, ~${sharesSlot} бр.)</strong>.
+      <strong>План за изпълнение днес:</strong> Активът <strong>${d.ticker}</strong> е зрял моментум лидер, който прави здравословна корекция и тества линията на динамична подкрепа $v1 (${formatAssetPrice(v1, d.ticker, d.asset_class)}). 
+      Отстоянието до $v1 е само <strong>${distV1}%</strong>, а стопът $v2 (${formatAssetPrice(v2, d.ticker, d.asset_class)}) защитава капитала при риск от едва <strong>-${riskV2}%</strong>.
+      Препоръчва се незабавен вход с <strong>пълен слот (${slotLabel}, ~${sharesSlot} бр.)</strong>.
     `;
   } else if (ctx === 'MATURE_HOLD' || (typeof ctx === 'object' && ctx.status === 'MATURE_HOLD')) {
     signalTitle = '📝 ЗАДАЙ ЛИМИТ НА v1 (НЕ КУПУВАЙ ПО ПАЗАРНА)';
     narrativeText = `
       <strong>План за изпълнение днес:</strong> Активът <strong>${d.ticker}</strong> се намира в напреднал тренд и цената е разтеглена на <strong>+${distV1}% над линията $v1</strong>. 
       Институционалното правило забранява купуването по пазарна цена в разтеглен тренд! 
-      Поставете чакаща лимит поръчка точно на линията <strong>$v1 ($${Number(v1).toFixed(2)})</strong> с 50% транш (<strong>${trancheEur} €, ~${sharesTranche} бр.</strong>).
+      Поставете чакаща лимит поръчка точно на линията <strong>$v1 (${formatAssetPrice(v1, d.ticker, d.asset_class)})</strong> с 50% транш (<strong>${trancheLabel}, ~${sharesTranche} бр.</strong>).
     `;
   } else if (ctx === 'QUANT_DIP' || (typeof ctx === 'object' && ctx.status === 'QUANT_DIP')) {
     signalTitle = '💎 QUANTAMENTAL СПАД (50% ТРАНШ)';
     narrativeText = `
       <strong>План за изпълнение днес:</strong> Активът <strong>${d.ticker}</strong> се намира в дълбока корекция (${d.state}), но притежава институционално качество (${d.fundamental.moat || 'Wide'} Moat) и доказана Value ДНК от 10-годишния бектест (<strong>${d.winning_strategy_name}</strong>). 
-      Влиза се с <strong>50% първи транш (${trancheEur} €, ~${sharesTranche} бр.)</strong> със защитен стоп под структурна подкрепа на $${Number(d.v2 || (price * 0.93)).toFixed(2)} (-${riskV2}%).
+      Влиза се с <strong>50% първи транш (${trancheLabel}, ~${sharesTranche} бр.)</strong> със защитен стоп под структурна подкрепа на ${formatAssetPrice(d.v2 || (price * 0.93), d.ticker, d.asset_class)} (-${riskV2}%).
     `;
   } else {
     signalTitle = `📊 ДОСИЕ НА АКТИВА: ${d.ticker}`;
     narrativeText = `
       <strong>Анализ на позицията:</strong> Активът <strong>${d.ticker}</strong> е сред водещите селектирани кандидати. 
       Победилата историческа стратегия за този актив е <strong>${d.winning_strategy_name}</strong> с годишен ръст от <strong>+${d.winning_metrics.cagr_pct}%</strong> и Sharpe ratio <strong>${d.winning_metrics.sharpe_ratio}</strong>.
-      Текущ защитен стоп $v2: <strong>$${Number(v2).toFixed(2)}</strong>.
+      Текущ защитен стоп $v2: <strong>${formatAssetPrice(v2, d.ticker, d.asset_class)}</strong> (Слот: ${slotLabel} ≈ ~${sharesSlot} бр.).
     `;
   }
 
@@ -8891,12 +9549,13 @@ function renderDossierStrategiesTable(d) {
   if (!tbody || !d.all_strategies) return;
 
   const sortedStrats = [...d.all_strategies].sort((a, b) => (b.sharpe_ratio * 2 + b.cagr_pct * 0.1) - (a.sharpe_ratio * 2 + a.cagr_pct * 0.1));
+  const baseCap = getGlobalCapital();
 
   let html = '';
   sortedStrats.forEach((s, idx) => {
     const isWin = s.is_winner || (s.strategy === d.winning_strategy);
     const winBadge = isWin ? '<span class="badge badge-gold" style="font-weight:700;">🏆 ПОБЕДИТЕЛ (ДНК)</span>' : (s.strategy === 'BUY_AND_HOLD' ? '<span class="badge" style="background:#21262d; color:#8b949e;">Бенчмарк</span>' : '<span style="color:#8b949e;">Алтернатива</span>');
-    const finalEur = (10000.0 * (1.0 + (s.total_return_pct / 100.0))).toFixed(0);
+    const finalCap = baseCap * (1.0 + (s.total_return_pct / 100.0));
 
     html += `
       <tr class="${isWin ? 'row-winner' : ''}">
@@ -8911,7 +9570,7 @@ function renderDossierStrategiesTable(d) {
           ${s.total_return_pct >= 0 ? '+' : ''}${s.total_return_pct}%
         </td>
         <td class="tabular-nums" style="font-weight:700; color:#ffd700;">
-          ${Number(finalEur).toLocaleString()} €
+          ${formatBaseMoney(finalCap, 0)}
         </td>
         <td class="tabular-nums" style="font-weight:700; color:#58a6ff;">
           +${s.cagr_pct}%
@@ -8949,24 +9608,28 @@ function renderDossierTradesTable(d) {
     return;
   }
 
+  const capScale = getGlobalCapital() / 10000.0;
+  const fxScale = getGlobalCurrency() === 'USD' ? FX_EUR_TO_USD : 1.0;
+
   let html = '';
   trades.forEach(t => {
     const isWin = t.pnl_pct > 0;
     const sign = isWin ? '+' : '';
+    const pnlBase = Number(t.pnl_eur || 0) * capScale * fxScale;
     html += `
       <tr>
         <td class="tabular-nums" style="font-weight:700;">#${t.num}</td>
         <td class="tabular-nums">${t.entry_date}</td>
-        <td class="tabular-nums">$${Number(t.entry_price).toFixed(2)}</td>
+        <td class="tabular-nums">${formatAssetPrice(Number(t.entry_price), d.ticker, d.asset_class)}</td>
         <td class="tabular-nums">${t.exit_date}</td>
-        <td class="tabular-nums">$${Number(t.exit_price).toFixed(2)}</td>
+        <td class="tabular-nums">${formatAssetPrice(Number(t.exit_price), d.ticker, d.asset_class)}</td>
         <td class="tabular-nums">${t.holding_days} дни</td>
         <td style="font-size:0.78rem; color:#8b949e;">${t.exit_reason || 'Изход'}</td>
         <td class="tabular-nums" style="font-weight:700; color: ${isWin ? '#3fb950' : '#f85149'};">
           ${sign}${t.pnl_pct}%
         </td>
         <td class="tabular-nums" style="font-weight:700; color: ${isWin ? '#ffd700' : '#f85149'};">
-          ${sign}${t.pnl_eur} €
+          ${pnlBase >= 0 ? '+' : ''}${formatBaseMoney(pnlBase, 0)}
         </td>
       </tr>
     `;
@@ -9009,11 +9672,20 @@ function switchDossierChartView(mode) {
 
 function executeFromDossier() {
   if (!currentDossierData) return;
-  const rotCapInput = document.getElementById('rotationCapitalInput');
-  const totalCap = rotCapInput ? (parseFloat(rotCapInput.value) || 10000.0) : 10000.0;
-  const slotEur = (totalCap / 15.0).toFixed(0);
-  const shares = (slotEur / currentDossierData.current_price).toFixed(currentDossierData.current_price >= 1 ? 2 : 4);
-  openAddRealFromRotation(currentDossierData.ticker, currentDossierData.asset_class, currentDossierData.current_price, shares, slotEur);
+  const totalCap = getGlobalCapital();
+  const slotBase = totalCap / 15.0;
+  const slotInQuote = convertBaseToAssetQuote(slotBase, currentDossierData.ticker, currentDossierData.asset_class);
+  const shares = currentDossierData.current_price > 0
+    ? (slotInQuote / currentDossierData.current_price).toFixed(currentDossierData.current_price >= 1 ? 2 : 4)
+    : '0';
+  openAddRealFromRotation(
+    currentDossierData.ticker,
+    currentDossierData.asset_class,
+    currentDossierData.current_price,
+    shares,
+    slotBase.toFixed(0),
+    currentDossierData.v2 || 0
+  );
 }
 
 

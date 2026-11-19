@@ -3,18 +3,18 @@
   "name": "ARKF",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-17T15:36:08.696705+00:00",
+  "generated_at": "2026-11-19T09:19:55.453189+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 39.72,
+  "backtest_total_bars": 1160,
+  "current_price": 39.13,
   "state": "BLUE",
-  "v1": 43.32,
-  "v2": 43.91,
-  "sma200": 41.98,
-  "rsi14": 33.1,
-  "atr14": 1.25,
+  "v1": 43.01,
+  "v2": 43.73,
+  "sma200": 41.96,
+  "rsi14": 31.3,
+  "atr14": 1.26,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 40.1,
-      "cagr_pct": 7.6,
-      "sharpe_ratio": 0.4,
+      "total_return_pct": 38.0,
+      "cagr_pct": 7.2,
+      "sharpe_ratio": 0.39,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.79,
+      "profit_factor": 0.74,
       "max_drawdown_pct": 51.0,
       "total_trades": 1
     }
@@ -16338,14 +16338,28 @@
       "time": "2026-11-17",
       "open": 40.1,
       "high": 40.21,
-      "low": 39.72,
-      "close": 39.72,
-      "volume": 38488.0,
-      "v1": 43.32,
-      "m1": 43.63,
-      "m2": 43.86,
-      "v2": 43.91,
-      "sma200": 41.98,
+      "low": 38.83,
+      "close": 39.14,
+      "volume": 148100.0,
+      "v1": 43.29,
+      "m1": 43.61,
+      "m2": 43.84,
+      "v2": 43.89,
+      "sma200": 41.97,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 39.28,
+      "high": 39.5,
+      "low": 38.84,
+      "close": 39.13,
+      "volume": 1035700.0,
+      "v1": 43.01,
+      "m1": 43.38,
+      "m2": 43.65,
+      "v2": 43.73,
+      "sma200": 41.96,
       "state": "BLUE"
     }
   ],
@@ -21146,6 +21160,10 @@
         {
           "time": "2026-11-17",
           "value": 16735.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16735.03
         }
       ]
     },
@@ -25788,6 +25806,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 12674.52
+        },
+        {
+          "time": "2026-11-18",
           "value": 12674.52
         }
       ]
@@ -30432,6 +30454,10 @@
         {
           "time": "2026-11-17",
           "value": 13566.4
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13566.4
         }
       ]
     },
@@ -35074,7 +35100,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 14020.46
+          "value": 13814.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13810.47
         }
       ]
     }
@@ -35215,18 +35245,18 @@
   ],
   "smart_money": {
     "symbol": "ARKF",
-    "smart_money_score": 60.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.25) с Gamma стена на $42.00. Залог за рязък отскок.",
-    "cmf_20d": 0.062,
-    "up_down_vol_ratio": 0.53,
-    "absorption_5d_pct": 30.5,
-    "vol_shock_ratio": 0.23,
-    "put_call_ratio": 0.25,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 42.0,
-    "max_pain": 50.0,
-    "unusual_call_sweep": false
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.50, CMF: +0.01).",
+    "cmf_20d": 0.008,
+    "up_down_vol_ratio": 0.31,
+    "absorption_5d_pct": 35.8,
+    "vol_shock_ratio": 6.29,
+    "put_call_ratio": 2.5,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 39.0,
+    "max_pain": 35.0,
+    "unusual_call_sweep": true
   }
 }

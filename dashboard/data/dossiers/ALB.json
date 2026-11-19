@@ -3,18 +3,18 @@
   "name": "Albemarle Corporation",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-17T15:36:05.885967+00:00",
+  "generated_at": "2026-11-19T09:19:48.720734+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 89.91,
+  "backtest_total_bars": 1160,
+  "current_price": 85.82,
   "state": "BLUE",
-  "v1": 97.35,
-  "v2": 105.02,
-  "sma200": 144.21,
-  "rsi14": 37.8,
-  "atr14": 3.88,
+  "v1": 96.56,
+  "v2": 104.35,
+  "sma200": 143.78,
+  "rsi14": 31.1,
+  "atr14": 3.84,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -56.0,
-      "cagr_pct": -16.3,
-      "sharpe_ratio": -0.04,
+      "total_return_pct": -58.0,
+      "cagr_pct": -17.2,
+      "sharpe_ratio": -0.06,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 83.9,
@@ -16337,15 +16337,29 @@
     {
       "time": "2026-11-17",
       "open": 89.58,
-      "high": 91.75,
-      "low": 89.33,
-      "close": 89.91,
-      "volume": 287331.0,
-      "v1": 97.35,
-      "m1": 99.45,
-      "m2": 102.78,
-      "v2": 105.02,
-      "sma200": 144.21,
+      "high": 91.76,
+      "low": 87.27,
+      "close": 87.67,
+      "volume": 1761600.0,
+      "v1": 97.28,
+      "m1": 99.4,
+      "m2": 102.74,
+      "v2": 104.99,
+      "sma200": 144.2,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 87.0,
+      "high": 87.71,
+      "low": 85.22,
+      "close": 85.82,
+      "volume": 2157100.0,
+      "v1": 96.56,
+      "m1": 98.72,
+      "m2": 102.09,
+      "v2": 104.35,
+      "sma200": 143.78,
       "state": "BLUE"
     }
   ],
@@ -21482,6 +21496,10 @@
         {
           "time": "2026-11-17",
           "value": 11157.24
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11157.24
         }
       ]
     },
@@ -26124,6 +26142,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9064.71
+        },
+        {
+          "time": "2026-11-18",
           "value": 9064.71
         }
       ]
@@ -30768,6 +30790,10 @@
         {
           "time": "2026-11-17",
           "value": 6938.36
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6938.36
         }
       ]
     },
@@ -35410,7 +35436,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 4405.16
+          "value": 4295.41
+        },
+        {
+          "time": "2026-11-18",
+          "value": 4204.77
         }
       ]
     }
@@ -35839,18 +35869,18 @@
   ],
   "smart_money": {
     "symbol": "ALB",
-    "smart_money_score": 48.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.25) с Gamma стена на $95.00. Залог за рязък отскок.",
-    "cmf_20d": -0.03,
-    "up_down_vol_ratio": 0.62,
-    "absorption_5d_pct": 31.8,
-    "vol_shock_ratio": 0.12,
-    "put_call_ratio": 0.25,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $170.00. Залог за рязък отскок.",
+    "cmf_20d": -0.075,
+    "up_down_vol_ratio": 0.59,
+    "absorption_5d_pct": 27.3,
+    "vol_shock_ratio": 0.88,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 95.0,
-    "max_pain": 115.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 170.0,
+    "max_pain": 170.0,
+    "unusual_call_sweep": true
   }
 }

@@ -3,18 +3,18 @@
   "name": "iShares STOXX Europe 600 Basic Resources UCITS ETF",
   "sector": "Макро индекси",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:35.662843+00:00",
+  "generated_at": "2026-11-19T09:21:50.131636+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1179,
-  "current_price": 73.07,
+  "backtest_total_bars": 1180,
+  "current_price": 70.4,
   "state": "BLUE",
-  "v1": 77.64,
-  "v2": 79.31,
-  "sma200": 80.05,
-  "rsi14": 36.3,
-  "atr14": 1.82,
+  "v1": 77.15,
+  "v2": 79.0,
+  "sma200": 80.03,
+  "rsi14": 31.0,
+  "atr14": 1.89,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 19.1,
-      "cagr_pct": 3.8,
-      "sharpe_ratio": 0.26,
+      "total_return_pct": 14.8,
+      "cagr_pct": 3.0,
+      "sharpe_ratio": 0.23,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.51,
+      "profit_factor": 0.4,
       "max_drawdown_pct": 37.3,
       "total_trades": 1
     }
@@ -16619,13 +16619,27 @@
       "open": 73.02,
       "high": 73.71,
       "low": 72.69,
-      "close": 73.07,
-      "volume": 6138.0,
+      "close": 72.94,
+      "volume": 8172.0,
       "v1": 77.64,
       "m1": 78.27,
       "m2": 78.98,
       "v2": 79.31,
       "sma200": 80.05,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 70.16,
+      "high": 70.42,
+      "low": 70.16,
+      "close": 70.4,
+      "volume": 609.0,
+      "v1": 77.15,
+      "m1": 77.85,
+      "m2": 78.63,
+      "v2": 79.0,
+      "sma200": 80.03,
       "state": "BLUE"
     }
   ],
@@ -21450,6 +21464,10 @@
         {
           "time": "2026-11-17",
           "value": 9662.58
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9662.58
         }
       ]
     },
@@ -26172,6 +26190,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 8437.93
+        },
+        {
+          "time": "2026-11-19",
           "value": 8437.93
         }
       ]
@@ -30896,6 +30918,10 @@
         {
           "time": "2026-11-17",
           "value": 7932.23
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7932.23
         }
       ]
     },
@@ -35618,7 +35644,11 @@
         },
         {
           "time": "2026-11-17",
-          "value": 11925.02
+          "value": 11903.8
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11489.27
         }
       ]
     }
@@ -35711,14 +35741,14 @@
   ],
   "smart_money": {
     "symbol": "EXV6.DE",
-    "smart_money_score": 30.0,
+    "smart_money_score": 35.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.16).",
-    "cmf_20d": -0.158,
-    "up_down_vol_ratio": 1.14,
-    "absorption_5d_pct": 27.3,
-    "vol_shock_ratio": 0.24,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.137,
+    "up_down_vol_ratio": 1.29,
+    "absorption_5d_pct": 34.6,
+    "vol_shock_ratio": 0.02,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

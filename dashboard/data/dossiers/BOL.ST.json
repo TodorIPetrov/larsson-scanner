@@ -3,18 +3,18 @@
   "name": "Boliden AB",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:19.371105+00:00",
+  "generated_at": "2026-11-19T09:20:46.430163+00:00",
   "backtest_start_date": "2022-04-04",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1162,
-  "current_price": 479.5,
+  "backtest_total_bars": 1164,
+  "current_price": 468.6,
   "state": "BLUE",
-  "v1": 510.51,
-  "v2": 517.46,
-  "sma200": 542.32,
-  "rsi14": 38.7,
-  "atr14": 17.42,
+  "v1": 504.71,
+  "v2": 513.94,
+  "sma200": 540.84,
+  "rsi14": 37.3,
+  "atr14": 17.11,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -47.3,
-      "cagr_pct": -13.0,
+      "cagr_pct": -12.9,
       "sharpe_ratio": -0.38,
       "win_rate_pct": 16.0,
       "profit_factor": 0.41,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 17.2,
-      "cagr_pct": 3.5,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 14.6,
+      "cagr_pct": 3.0,
+      "sharpe_ratio": 0.27,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.42,
+      "profit_factor": 0.35,
       "max_drawdown_pct": 41.4,
       "total_trades": 1
     }
@@ -16381,13 +16381,41 @@
       "open": 480.0,
       "high": 483.1,
       "low": 474.5,
-      "close": 479.5,
-      "volume": 1019321.0,
+      "close": 480.2,
+      "volume": 1707133.0,
       "v1": 510.51,
       "m1": 513.01,
       "m2": 515.93,
       "v2": 517.46,
       "sma200": 542.32,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 468.0,
+      "high": 468.0,
+      "low": 459.0,
+      "close": 461.2,
+      "volume": 3054483.0,
+      "v1": 507.38,
+      "m1": 510.4,
+      "m2": 513.83,
+      "v2": 515.6,
+      "sma200": 541.5,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 465.0,
+      "high": 470.8,
+      "low": 463.9,
+      "close": 468.6,
+      "volume": 332138.0,
+      "v1": 504.71,
+      "m1": 508.14,
+      "m2": 511.97,
+      "v2": 513.94,
+      "sma200": 540.84,
       "state": "BLUE"
     }
   ],
@@ -21144,6 +21172,14 @@
         {
           "time": "2026-11-17",
           "value": 16132.86
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16132.86
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16132.86
         }
       ]
     },
@@ -25798,6 +25834,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 11427.13
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11427.13
+        },
+        {
+          "time": "2026-11-19",
           "value": 11427.13
         }
       ]
@@ -30454,6 +30498,14 @@
         {
           "time": "2026-11-17",
           "value": 7359.26
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7359.26
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7359.26
         }
       ]
     },
@@ -35108,7 +35160,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 11735.06
+          "value": 11752.19
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11287.19
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11468.3
         }
       ]
     }
@@ -35201,14 +35261,14 @@
   ],
   "smart_money": {
     "symbol": "BOL.ST",
-    "smart_money_score": 22.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.11).",
-    "cmf_20d": -0.113,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 32.6,
-    "vol_shock_ratio": 0.67,
+    "smart_money_score": 40.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.05, P/C: N/A).",
+    "cmf_20d": -0.05,
+    "up_down_vol_ratio": 0.71,
+    "absorption_5d_pct": 40.8,
+    "vol_shock_ratio": 0.21,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

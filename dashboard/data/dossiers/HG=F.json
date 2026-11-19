@@ -3,18 +3,18 @@
   "name": "Copper Futures",
   "sector": "Суровини",
   "asset_class": "commodities",
-  "generated_at": "2026-11-17T15:36:40.768682+00:00",
+  "generated_at": "2026-11-19T09:22:03.075552+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1162,
-  "current_price": 6.0,
+  "backtest_total_bars": 1164,
+  "current_price": 5.67,
   "state": "BLUE",
-  "v1": 6.36,
-  "v2": 6.43,
+  "v1": 6.27,
+  "v2": 6.38,
   "sma200": 6.23,
-  "rsi14": 32.0,
-  "atr14": 0.1,
+  "rsi14": 24.1,
+  "atr14": 0.11,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 25.7,
-      "cagr_pct": 5.1,
-      "sharpe_ratio": 0.33,
+      "total_return_pct": 18.7,
+      "cagr_pct": 3.8,
+      "sharpe_ratio": 0.28,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.78,
+      "profit_factor": 0.57,
       "max_drawdown_pct": 33.1,
       "total_trades": 1
     }
@@ -16368,7 +16368,7 @@
       "high": 6.05,
       "low": 5.99,
       "close": 6.0,
-      "volume": 673.0,
+      "volume": 557.0,
       "v1": 6.39,
       "m1": 6.42,
       "m2": 6.44,
@@ -16379,14 +16379,42 @@
     {
       "time": "2026-11-17",
       "open": 5.98,
-      "high": 6.02,
-      "low": 5.95,
-      "close": 6.0,
-      "volume": 36907.0,
+      "high": 5.98,
+      "low": 5.97,
+      "close": 5.98,
+      "volume": 470.0,
       "v1": 6.36,
       "m1": 6.39,
       "m2": 6.42,
       "v2": 6.43,
+      "sma200": 6.23,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 5.69,
+      "high": 5.69,
+      "low": 5.64,
+      "close": 5.66,
+      "volume": 470.0,
+      "v1": 6.31,
+      "m1": 6.35,
+      "m2": 6.39,
+      "v2": 6.4,
+      "sma200": 6.23,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 6.0,
+      "high": 5.72,
+      "low": 5.62,
+      "close": 5.67,
+      "volume": 22592.0,
+      "v1": 6.27,
+      "m1": 6.32,
+      "m2": 6.36,
+      "v2": 6.38,
       "sma200": 6.23,
       "state": "BLUE"
     }
@@ -21186,6 +21214,14 @@
         {
           "time": "2026-11-17",
           "value": 10455.17
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10455.17
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10455.17
         }
       ]
     },
@@ -25840,6 +25876,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 10045.94
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10045.94
+        },
+        {
+          "time": "2026-11-19",
           "value": 10045.94
         }
       ]
@@ -30496,6 +30540,14 @@
         {
           "time": "2026-11-17",
           "value": 10522.39
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10522.39
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10522.39
         }
       ]
     },
@@ -35150,7 +35202,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 12583.73
+          "value": 12535.48
+        },
+        {
+          "time": "2026-11-18",
+          "value": 11871.58
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11886.27
         }
       ]
     }
@@ -35279,14 +35339,14 @@
   ],
   "smart_money": {
     "symbol": "HG=F",
-    "smart_money_score": 92.0,
+    "smart_money_score": 80.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.39, Up/Dn Vol: 4.56x). Силна скрита подкрепа.",
-    "cmf_20d": 0.388,
-    "up_down_vol_ratio": 4.56,
-    "absorption_5d_pct": 72.6,
-    "vol_shock_ratio": 25.54,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.16, Up/Dn Vol: 3.57x). Силна скрита подкрепа.",
+    "cmf_20d": 0.163,
+    "up_down_vol_ratio": 3.57,
+    "absorption_5d_pct": 48.1,
+    "vol_shock_ratio": 15.94,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

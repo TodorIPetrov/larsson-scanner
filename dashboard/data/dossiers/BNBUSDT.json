@@ -3,18 +3,18 @@
   "name": "BNB",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-17T15:36:18.782247+00:00",
+  "generated_at": "2026-11-19T09:20:44.618849+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-16",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1753,
-  "current_price": 591.23,
+  "backtest_total_bars": 1755,
+  "current_price": 590.46,
   "state": "BLUE",
-  "v1": 684.01,
-  "v2": 700.95,
-  "sma200": 658.35,
-  "rsi14": 25.6,
-  "atr14": 26.08,
+  "v1": 672.11,
+  "v2": 693.55,
+  "sma200": 658.13,
+  "rsi14": 27.0,
+  "atr14": 24.4,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -38.1,
-      "cagr_pct": -6.7,
+      "cagr_pct": -6.6,
       "sharpe_ratio": -0.02,
       "win_rate_pct": 21.1,
       "profit_factor": 0.63,
@@ -93,7 +93,7 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 52.9,
+      "total_return_pct": 52.7,
       "cagr_pct": 6.3,
       "sharpe_ratio": 0.36,
       "win_rate_pct": 100.0,
@@ -24663,6 +24663,34 @@
       "v2": 700.95,
       "sma200": 658.35,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-17",
+      "open": 591.24,
+      "high": 599.42,
+      "low": 580.78,
+      "close": 597.47,
+      "volume": 132049.0,
+      "v1": 677.75,
+      "m1": 687.04,
+      "m2": 694.78,
+      "v2": 697.13,
+      "sma200": 658.27,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 597.46,
+      "high": 598.0,
+      "low": 588.5,
+      "close": 590.46,
+      "volume": 58725.0,
+      "v1": 672.11,
+      "m1": 682.11,
+      "m2": 690.72,
+      "v2": 693.55,
+      "sma200": 658.13,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -31824,6 +31852,14 @@
         {
           "time": "2026-11-16",
           "value": 7345.3
+        },
+        {
+          "time": "2026-11-17",
+          "value": 7345.3
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7345.3
         }
       ]
     },
@@ -38842,6 +38878,14 @@
         },
         {
           "time": "2026-11-16",
+          "value": 11800.15
+        },
+        {
+          "time": "2026-11-17",
+          "value": 11800.15
+        },
+        {
+          "time": "2026-11-18",
           "value": 11800.15
         }
       ]
@@ -45862,6 +45906,14 @@
         {
           "time": "2026-11-16",
           "value": 8199.75
+        },
+        {
+          "time": "2026-11-17",
+          "value": 8199.75
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8199.75
         }
       ]
     },
@@ -52881,6 +52933,14 @@
         {
           "time": "2026-11-16",
           "value": 15305.49
+        },
+        {
+          "time": "2026-11-17",
+          "value": 15467.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 15285.55
         }
       ]
     }
@@ -53009,14 +53069,14 @@
   ],
   "smart_money": {
     "symbol": "BNBUSDT",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
-    "cmf_20d": -0.102,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 41.5,
-    "vol_shock_ratio": 0.69,
+    "smart_money_score": 55.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
+    "cmf_20d": -0.017,
+    "up_down_vol_ratio": 0.78,
+    "absorption_5d_pct": 54.9,
+    "vol_shock_ratio": 0.36,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

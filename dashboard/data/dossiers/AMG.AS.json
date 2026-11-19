@@ -3,18 +3,18 @@
   "name": "AMG Critical Materials N.V.",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:07.652506+00:00",
+  "generated_at": "2026-11-19T09:19:53.118964+00:00",
   "backtest_start_date": "2022-03-30",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.7,
-  "backtest_total_bars": 1186,
-  "current_price": 22.12,
+  "backtest_total_bars": 1188,
+  "current_price": 22.04,
   "state": "BLUE",
-  "v1": 24.76,
-  "v2": 26.58,
-  "sma200": 32.17,
-  "rsi14": 31.2,
-  "atr14": 0.94,
+  "v1": 24.4,
+  "v2": 26.27,
+  "sma200": 32.03,
+  "rsi14": 33.1,
+  "atr14": 0.9,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -38.6,
-      "cagr_pct": -9.8,
+      "total_return_pct": -38.8,
+      "cagr_pct": -9.9,
       "sharpe_ratio": -0.0,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -16717,13 +16717,41 @@
       "open": 21.98,
       "high": 22.36,
       "low": 21.62,
-      "close": 22.12,
-      "volume": 118975.0,
+      "close": 22.24,
+      "volume": 199476.0,
       "v1": 24.76,
       "m1": 25.34,
       "m2": 26.12,
       "v2": 26.58,
       "sma200": 32.17,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 22.02,
+      "high": 22.46,
+      "low": 21.6,
+      "close": 21.64,
+      "volume": 202455.0,
+      "v1": 24.58,
+      "m1": 25.17,
+      "m2": 25.96,
+      "v2": 26.43,
+      "sma200": 32.1,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 21.8,
+      "high": 22.08,
+      "low": 21.8,
+      "close": 22.04,
+      "volume": 36478.0,
+      "v1": 24.4,
+      "m1": 25.0,
+      "m2": 25.8,
+      "v2": 26.27,
+      "sma200": 32.03,
       "state": "BLUE"
     }
   ],
@@ -21534,6 +21562,14 @@
         {
           "time": "2026-11-17",
           "value": 16122.54
+        },
+        {
+          "time": "2026-11-18",
+          "value": 16122.54
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16122.54
         }
       ]
     },
@@ -26284,6 +26320,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9476.52
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9476.52
+        },
+        {
+          "time": "2026-11-19",
           "value": 9476.52
         }
       ]
@@ -31036,6 +31080,14 @@
         {
           "time": "2026-11-17",
           "value": 7701.81
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7701.81
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7701.81
         }
       ]
     },
@@ -35786,7 +35838,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 6146.22
+          "value": 6179.57
+        },
+        {
+          "time": "2026-11-18",
+          "value": 6012.85
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6124.0
         }
       ]
     }
@@ -35843,14 +35903,14 @@
   ],
   "smart_money": {
     "symbol": "AMG.AS",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.11).",
-    "cmf_20d": -0.106,
-    "up_down_vol_ratio": 0.68,
-    "absorption_5d_pct": 38.8,
-    "vol_shock_ratio": 0.43,
+    "smart_money_score": 42.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
+    "cmf_20d": -0.056,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": 43.6,
+    "vol_shock_ratio": 0.13,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

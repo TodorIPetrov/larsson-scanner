@@ -3,17 +3,17 @@
   "name": "ABB LTD N",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-17T15:36:02.898266+00:00",
+  "generated_at": "2026-11-19T09:19:40.334949+00:00",
   "backtest_start_date": "2022-04-01",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1162,
-  "current_price": 68.26,
+  "backtest_total_bars": 1164,
+  "current_price": 69.88,
   "state": "BLUE",
-  "v1": 72.18,
-  "v2": 74.74,
-  "sma200": 76.52,
-  "rsi14": 38.7,
+  "v1": 71.75,
+  "v2": 74.34,
+  "sma200": 76.55,
+  "rsi14": 45.1,
   "atr14": 1.95,
   "empirical_tier": "S",
   "walk_forward_stable": true,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 156.5,
-      "cagr_pct": 22.7,
-      "sharpe_ratio": 0.92,
+      "total_return_pct": 162.6,
+      "cagr_pct": 23.2,
+      "sharpe_ratio": 0.94,
       "win_rate_pct": 100.0,
-      "profit_factor": 5.99,
+      "profit_factor": 6.23,
       "max_drawdown_pct": 26.1,
       "total_trades": 1
     }
@@ -16380,14 +16380,42 @@
       "time": "2026-11-17",
       "open": 68.62,
       "high": 69.14,
-      "low": 68.24,
-      "close": 68.26,
-      "volume": 1213461.0,
-      "v1": 72.18,
-      "m1": 73.09,
-      "m2": 74.18,
-      "v2": 74.74,
+      "low": 67.52,
+      "close": 68.02,
+      "volume": 3025041.0,
+      "v1": 72.16,
+      "m1": 73.07,
+      "m2": 74.16,
+      "v2": 74.73,
       "sma200": 76.52,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 68.72,
+      "high": 69.02,
+      "low": 67.7,
+      "close": 67.98,
+      "volume": 2601877.0,
+      "v1": 71.91,
+      "m1": 72.82,
+      "m2": 73.93,
+      "v2": 74.51,
+      "sma200": 76.53,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 69.22,
+      "high": 69.92,
+      "low": 69.22,
+      "close": 69.88,
+      "volume": 358069.0,
+      "v1": 71.75,
+      "m1": 72.65,
+      "m2": 73.76,
+      "v2": 74.34,
+      "sma200": 76.55,
       "state": "BLUE"
     }
   ],
@@ -21088,6 +21116,14 @@
         {
           "time": "2026-11-17",
           "value": 13537.68
+        },
+        {
+          "time": "2026-11-18",
+          "value": 13537.68
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13537.68
         }
       ]
     },
@@ -25742,6 +25778,14 @@
         },
         {
           "time": "2026-11-17",
+          "value": 19522.39
+        },
+        {
+          "time": "2026-11-18",
+          "value": 19522.39
+        },
+        {
+          "time": "2026-11-19",
           "value": 19522.39
         }
       ]
@@ -30398,6 +30442,14 @@
         {
           "time": "2026-11-17",
           "value": 24632.85
+        },
+        {
+          "time": "2026-11-18",
+          "value": 24632.85
+        },
+        {
+          "time": "2026-11-19",
+          "value": 24632.85
         }
       ]
     },
@@ -35052,7 +35104,15 @@
         },
         {
           "time": "2026-11-17",
-          "value": 25673.01
+          "value": 25582.74
+        },
+        {
+          "time": "2026-11-18",
+          "value": 25567.7
+        },
+        {
+          "time": "2026-11-19",
+          "value": 26282.3
         }
       ]
     }
@@ -35100,11 +35160,11 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.121,
-    "up_down_vol_ratio": 0.81,
-    "absorption_5d_pct": 29.3,
-    "vol_shock_ratio": 0.33,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.143,
+    "up_down_vol_ratio": 0.7,
+    "absorption_5d_pct": 38.1,
+    "vol_shock_ratio": 0.11,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
