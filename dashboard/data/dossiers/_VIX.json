@@ -3,18 +3,18 @@
   "name": "^VIX",
   "sector": "Equities",
   "asset_class": "indices",
-  "generated_at": "2026-11-19T14:58:14.268432+00:00",
+  "generated_at": "2026-11-19T17:19:19.967233+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 378,
-  "current_price": 22.69,
+  "current_price": 28.02,
   "state": "GOLD",
-  "v1": 19.99,
-  "v2": 18.68,
-  "sma200": 18.54,
-  "rsi14": 54.9,
-  "atr14": 3.3,
+  "v1": 20.15,
+  "v2": 18.76,
+  "sma200": 18.56,
+  "rsi14": 63.6,
+  "atr14": 3.55,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -37.5,
-      "cagr_pct": -26.9,
-      "sharpe_ratio": 0.1,
+      "total_return_pct": -22.8,
+      "cagr_pct": -15.8,
+      "sharpe_ratio": 0.25,
       "win_rate_pct": 13.3,
-      "profit_factor": 0.38,
+      "profit_factor": 0.62,
       "max_drawdown_pct": 62.7,
       "total_trades": 15
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -31.8,
-      "cagr_pct": -22.5,
-      "sharpe_ratio": 0.15,
+      "total_return_pct": -15.7,
+      "cagr_pct": -10.8,
+      "sharpe_ratio": 0.3,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.44,
+      "profit_factor": 0.72,
       "max_drawdown_pct": 57.7,
       "total_trades": 15
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -39.0,
-      "cagr_pct": -28.1,
-      "sharpe_ratio": -0.15,
+      "total_return_pct": -24.7,
+      "cagr_pct": -17.2,
+      "sharpe_ratio": 0.06,
       "win_rate_pct": 13.6,
-      "profit_factor": 0.45,
+      "profit_factor": 0.7,
       "max_drawdown_pct": 57.6,
       "total_trades": 22
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 12.4,
-      "cagr_pct": 8.1,
-      "sharpe_ratio": 0.63,
+      "total_return_pct": 38.8,
+      "cagr_pct": 24.5,
+      "sharpe_ratio": 0.73,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.23,
+      "profit_factor": 0.72,
       "max_drawdown_pct": 54.2,
       "total_trades": 1
     }
@@ -5403,15 +5403,15 @@
     {
       "time": "2026-11-19",
       "open": 22.06,
-      "high": 23.11,
+      "high": 28.02,
       "low": 21.84,
-      "close": 22.69,
+      "close": 28.02,
       "volume": 0.0,
-      "v1": 19.99,
-      "m1": 19.48,
-      "m2": 18.93,
-      "v2": 18.68,
-      "sma200": 18.54,
+      "v1": 20.15,
+      "m1": 19.61,
+      "m2": 19.03,
+      "v2": 18.76,
+      "sma200": 18.56,
       "state": "GOLD"
     }
   ],
@@ -8451,7 +8451,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 6830.55
+          "value": 8433.87
         }
       ]
     },
@@ -9970,7 +9970,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 6259.94
+          "value": 7729.32
         }
       ]
     },
@@ -11489,7 +11489,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11254.87
+          "value": 13898.7
         }
       ]
     }

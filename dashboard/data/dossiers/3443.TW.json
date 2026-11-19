@@ -3,26 +3,26 @@
   "name": "GLOBAL UNICHIP CORP.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T14:57:25.189219+00:00",
+  "generated_at": "2026-11-19T17:18:50.073973+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.4,
-  "backtest_total_bars": 365,
-  "current_price": 6000.0,
+  "backtest_total_bars": 364,
+  "current_price": 6665.0,
   "state": "GOLD",
-  "v1": 7311.92,
-  "v2": 6998.85,
-  "sma200": 4808.02,
-  "rsi14": 38.8,
-  "atr14": 652.19,
+  "v1": 7387.42,
+  "v2": 7025.42,
+  "sma200": 4791.46,
+  "rsi14": 43.5,
+  "atr14": 651.2,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
-    "total_return_pct": 360.6,
-    "cagr_pct": 187.0,
-    "sharpe_ratio": 1.87,
+    "total_return_pct": 411.6,
+    "cagr_pct": 209.6,
+    "sharpe_ratio": 1.99,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 42.2,
@@ -33,9 +33,9 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
-      "total_return_pct": 360.6,
-      "cagr_pct": 187.0,
-      "sharpe_ratio": 1.87,
+      "total_return_pct": 411.6,
+      "cagr_pct": 209.6,
+      "sharpe_ratio": 1.99,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 42.2,
@@ -45,9 +45,9 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 276.2,
-      "cagr_pct": 149.6,
-      "sharpe_ratio": 1.72,
+      "total_return_pct": 317.8,
+      "cagr_pct": 169.1,
+      "sharpe_ratio": 1.84,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 34.3,
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 328.8,
-      "cagr_pct": 173.2,
-      "sharpe_ratio": 1.8,
+      "total_return_pct": 376.3,
+      "cagr_pct": 194.6,
+      "sharpe_ratio": 1.92,
       "win_rate_pct": 14.3,
-      "profit_factor": 25.33,
+      "profit_factor": 28.83,
       "max_drawdown_pct": 42.2,
       "total_trades": 7
     },
@@ -81,9 +81,9 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 360.6,
-      "cagr_pct": 187.0,
-      "sharpe_ratio": 1.87,
+      "total_return_pct": 411.6,
+      "cagr_pct": 209.6,
+      "sharpe_ratio": 1.99,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 42.2,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 424.0,
-      "cagr_pct": 213.8,
-      "sharpe_ratio": 1.99,
+      "total_return_pct": 482.1,
+      "cagr_pct": 238.5,
+      "sharpe_ratio": 2.11,
       "win_rate_pct": 100.0,
-      "profit_factor": 10.04,
+      "profit_factor": 11.41,
       "max_drawdown_pct": 42.2,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 2562.0,
     "entry_price": 2049.6,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -134.2,
-    "mos_pct": -134.2,
+    "actual_discount_pct": -160.1,
+    "mos_pct": -160.1,
     "moat": "Wide",
     "roic_pct": 53.2,
     "wacc_pct": 11.9,
@@ -5217,20 +5217,6 @@
       "v2": 7025.42,
       "sma200": 4791.46,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 6505.0,
-      "high": 6510.0,
-      "low": 6000.0,
-      "close": 6000.0,
-      "volume": 1227952.0,
-      "v1": 7311.92,
-      "m1": 7256.42,
-      "m2": 7113.02,
-      "v2": 6998.85,
-      "sma200": 4808.02,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5242,11 +5228,11 @@
       "text": "BUY #1 @ $1299.08"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +360.94% ($36058.1 €)"
+      "text": "EXIT +412.03% ($41161.76 €)"
     }
   ],
   "equity_curves": [
@@ -6710,10 +6696,6 @@
         {
           "time": "2026-11-18",
           "value": 51212.96
-        },
-        {
-          "time": "2026-11-19",
-          "value": 46104.19
         }
       ]
     },
@@ -8177,10 +8159,6 @@
         {
           "time": "2026-11-18",
           "value": 51212.96
-        },
-        {
-          "time": "2026-11-19",
-          "value": 46104.19
         }
       ]
     },
@@ -9644,10 +9622,6 @@
         {
           "time": "2026-11-18",
           "value": 41826.75
-        },
-        {
-          "time": "2026-11-19",
-          "value": 37656.79
         }
       ]
     },
@@ -11111,10 +11085,6 @@
         {
           "time": "2026-11-18",
           "value": 58264.83
-        },
-        {
-          "time": "2026-11-19",
-          "value": 52451.46
         }
       ]
     }
@@ -11124,11 +11094,11 @@
       "num": 1,
       "entry_date": "2025-07-02",
       "entry_price": 1299.08,
-      "exit_date": "2026-11-19",
-      "exit_price": 6000.0,
-      "holding_days": 337,
-      "pnl_pct": 360.94,
-      "pnl_eur": 36058.1,
+      "exit_date": "2026-11-18",
+      "exit_price": 6665.0,
+      "holding_days": 336,
+      "pnl_pct": 412.03,
+      "pnl_eur": 41161.76,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11140,9 +11110,9 @@
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.08).",
     "cmf_20d": -0.078,
-    "up_down_vol_ratio": 0.52,
-    "absorption_5d_pct": 29.0,
-    "vol_shock_ratio": 0.46,
+    "up_down_vol_ratio": 0.59,
+    "absorption_5d_pct": 29.2,
+    "vol_shock_ratio": 2.37,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

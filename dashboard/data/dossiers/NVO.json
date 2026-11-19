@@ -3,28 +3,28 @@
   "name": "Novo Nordisk A/S",
   "sector": "Healthcare",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T14:57:58.190974+00:00",
+  "generated_at": "2026-11-19T17:19:10.111963+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 39.17,
+  "current_price": 38.71,
   "state": "BLUE",
-  "v1": 40.23,
-  "v2": 40.92,
-  "sma200": 42.29,
-  "rsi14": 43.9,
-  "atr14": 1.07,
+  "v1": 40.21,
+  "v2": 40.91,
+  "sma200": 42.28,
+  "rsi14": 41.8,
+  "atr14": 1.11,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -4.6,
-    "cagr_pct": -3.1,
-    "sharpe_ratio": -0.47,
+    "total_return_pct": -5.2,
+    "cagr_pct": -3.5,
+    "sharpe_ratio": -0.54,
     "win_rate_pct": 50.0,
-    "profit_factor": 0.26,
+    "profit_factor": 0.17,
     "max_drawdown_pct": 6.9,
     "total_trades": 2
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -4.6,
-      "cagr_pct": -3.1,
-      "sharpe_ratio": -0.47,
+      "total_return_pct": -5.2,
+      "cagr_pct": -3.5,
+      "sharpe_ratio": -0.54,
       "win_rate_pct": 50.0,
-      "profit_factor": 0.26,
+      "profit_factor": 0.17,
       "max_drawdown_pct": 6.9,
       "total_trades": 2
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -37.5,
-      "cagr_pct": -27.0,
-      "sharpe_ratio": -0.46,
+      "total_return_pct": -38.2,
+      "cagr_pct": -27.5,
+      "sharpe_ratio": -0.47,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 55.0,
@@ -107,8 +107,8 @@
     "target_price": 47.65,
     "entry_price": 40.51,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 17.8,
-    "mos_pct": 17.8,
+    "actual_discount_pct": 18.8,
+    "mos_pct": 18.8,
     "moat": "Wide",
     "roic_pct": 27.7,
     "wacc_pct": 7.73,
@@ -5390,14 +5390,14 @@
       "time": "2026-11-19",
       "open": 39.35,
       "high": 39.81,
-      "low": 39.17,
-      "close": 39.17,
-      "volume": 4075195.0,
-      "v1": 40.23,
-      "m1": 40.36,
-      "m2": 40.69,
-      "v2": 40.92,
-      "sma200": 42.29,
+      "low": 38.62,
+      "close": 38.71,
+      "volume": 8429992.0,
+      "v1": 40.21,
+      "m1": 40.35,
+      "m2": 40.67,
+      "v2": 40.91,
+      "sma200": 42.28,
       "state": "BLUE"
     }
   ],
@@ -5428,7 +5428,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.42% ($160.12 €)"
+      "text": "EXIT +2.2% ($103.21 €)"
     }
   ],
   "equity_curves": [
@@ -6943,7 +6943,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9545.46
+          "value": 9488.5
         }
       ]
     },
@@ -10008,7 +10008,7 @@
         },
         {
           "time": "2025-06-02",
-          "value": 10955.75
+          "value": 10955.76
         },
         {
           "time": "2025-06-03",
@@ -10104,7 +10104,7 @@
         },
         {
           "time": "2025-07-08",
-          "value": 10475.88
+          "value": 10475.89
         },
         {
           "time": "2025-07-09",
@@ -10188,7 +10188,7 @@
         },
         {
           "time": "2025-08-06",
-          "value": 6826.47
+          "value": 6826.48
         },
         {
           "time": "2025-08-07",
@@ -11488,7 +11488,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 6256.18
+          "value": 6182.71
         }
       ]
     }
@@ -11511,10 +11511,10 @@
       "entry_date": "2026-10-08",
       "entry_price": 37.8,
       "exit_date": "2026-11-19",
-      "exit_price": 39.17,
+      "exit_price": 38.71,
       "holding_days": 30,
-      "pnl_pct": 3.42,
-      "pnl_eur": 160.12,
+      "pnl_pct": 2.2,
+      "pnl_eur": 103.21,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11524,14 +11524,14 @@
     "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.56, CMF: -0.00).",
-    "cmf_20d": -0.001,
-    "up_down_vol_ratio": 0.85,
-    "absorption_5d_pct": 35.4,
-    "vol_shock_ratio": 0.32,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.56, CMF: -0.01).",
+    "cmf_20d": -0.014,
+    "up_down_vol_ratio": 0.83,
+    "absorption_5d_pct": 36.9,
+    "vol_shock_ratio": 0.66,
     "put_call_ratio": 1.56,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 40.0,
+    "gamma_wall": 38.0,
     "max_pain": 35.0,
     "unusual_call_sweep": false
   }

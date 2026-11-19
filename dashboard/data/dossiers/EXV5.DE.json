@@ -3,28 +3,28 @@
   "name": "iShares STOXX Europe 600 Auto & Parts",
   "sector": "Макро индекси",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T14:57:43.236214+00:00",
+  "generated_at": "2026-11-19T17:19:00.802383+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 380,
-  "current_price": 37.51,
+  "current_price": 37.23,
   "state": "BLUE",
-  "v1": 38.51,
+  "v1": 38.5,
   "v2": 38.8,
   "sma200": 40.18,
-  "rsi14": 39.2,
-  "atr14": 0.66,
+  "rsi14": 37.0,
+  "atr14": 0.67,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.2,
-    "cagr_pct": 0.2,
-    "sharpe_ratio": 0.07,
+    "total_return_pct": -0.1,
+    "cagr_pct": -0.1,
+    "sharpe_ratio": 0.04,
     "win_rate_pct": 50.0,
-    "profit_factor": 3.43,
+    "profit_factor": 3.06,
     "max_drawdown_pct": 6.5,
     "total_trades": 4
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.2,
-      "cagr_pct": 0.2,
-      "sharpe_ratio": 0.07,
+      "total_return_pct": -0.1,
+      "cagr_pct": -0.1,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 50.0,
-      "profit_factor": 3.43,
+      "profit_factor": 3.06,
       "max_drawdown_pct": 6.5,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -20.1,
-      "cagr_pct": -13.8,
-      "sharpe_ratio": -0.59,
+      "total_return_pct": -20.7,
+      "cagr_pct": -14.2,
+      "sharpe_ratio": -0.61,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 22.5,
@@ -5432,10 +5432,10 @@
       "time": "2026-11-19",
       "open": 37.48,
       "high": 37.68,
-      "low": 37.43,
-      "close": 37.51,
-      "volume": 1976.0,
-      "v1": 38.51,
+      "low": 37.19,
+      "close": 37.23,
+      "volume": 2523.0,
+      "v1": 38.5,
       "m1": 38.58,
       "m2": 38.71,
       "v2": 38.8,
@@ -5498,7 +5498,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -1.47% ($-74.36 €)"
+      "text": "EXIT -2.21% ($-111.46 €)"
     }
   ],
   "equity_curves": [
@@ -7025,7 +7025,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10029.92
+          "value": 9992.78
         }
       ]
     },
@@ -10186,7 +10186,7 @@
         },
         {
           "time": "2025-06-27",
-          "value": 9709.03
+          "value": 9709.02
         },
         {
           "time": "2025-06-30",
@@ -10314,7 +10314,7 @@
         },
         {
           "time": "2025-08-12",
-          "value": 9654.0
+          "value": 9654.01
         },
         {
           "time": "2025-08-13",
@@ -11606,7 +11606,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8000.9
+          "value": 7941.18
         }
       ]
     }
@@ -11653,10 +11653,10 @@
       "entry_date": "2026-10-07",
       "entry_price": 38.0,
       "exit_date": "2026-11-19",
-      "exit_price": 37.51,
+      "exit_price": 37.23,
       "holding_days": 31,
-      "pnl_pct": -1.47,
-      "pnl_eur": -74.36,
+      "pnl_pct": -2.21,
+      "pnl_eur": -111.46,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
@@ -11667,10 +11667,10 @@
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.121,
+    "cmf_20d": -0.123,
     "up_down_vol_ratio": 0.7,
-    "absorption_5d_pct": 33.6,
-    "vol_shock_ratio": 0.06,
+    "absorption_5d_pct": 29.0,
+    "vol_shock_ratio": 0.07,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

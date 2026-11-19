@@ -3,29 +3,29 @@
   "name": "Trane Technologies plc",
   "sector": "Industrials",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T14:58:09.617492+00:00",
+  "generated_at": "2026-11-19T17:19:16.915685+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 411.66,
+  "current_price": 401.77,
   "state": "BLUE",
-  "v1": 428.79,
-  "v2": 439.01,
-  "sma200": 454.12,
-  "rsi14": 41.5,
-  "atr14": 13.75,
+  "v1": 428.47,
+  "v2": 438.85,
+  "sma200": 454.07,
+  "rsi14": 37.2,
+  "atr14": 14.43,
   "empirical_tier": "S",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.3,
-    "cagr_pct": 0.2,
-    "sharpe_ratio": 0.15,
-    "win_rate_pct": 100.0,
-    "profit_factor": 99.0,
-    "max_drawdown_pct": 2.3,
+    "total_return_pct": -0.9,
+    "cagr_pct": -0.6,
+    "sharpe_ratio": -0.28,
+    "win_rate_pct": 0.0,
+    "profit_factor": 0.0,
+    "max_drawdown_pct": 2.8,
     "total_trades": 1
   },
   "all_strategies": [
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.3,
-      "cagr_pct": 0.2,
-      "sharpe_ratio": 0.15,
-      "win_rate_pct": 100.0,
-      "profit_factor": 99.0,
-      "max_drawdown_pct": 2.3,
+      "total_return_pct": -0.9,
+      "cagr_pct": -0.6,
+      "sharpe_ratio": -0.28,
+      "win_rate_pct": 0.0,
+      "profit_factor": 0.0,
+      "max_drawdown_pct": 2.8,
       "total_trades": 1
     },
     {
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -1.7,
-      "cagr_pct": -1.2,
-      "sharpe_ratio": 0.1,
+      "total_return_pct": -4.1,
+      "cagr_pct": -2.8,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 21.9,
@@ -107,8 +107,8 @@
     "target_price": 282.96,
     "entry_price": 226.37,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -45.5,
-    "mos_pct": -45.5,
+    "actual_discount_pct": -42.0,
+    "mos_pct": -42.0,
     "moat": "Narrow",
     "roic_pct": 26.1,
     "wacc_pct": 10.04,
@@ -1470,7 +1470,7 @@
       "time": "2025-10-09",
       "open": 423.97,
       "high": 424.99,
-      "low": 415.61,
+      "low": 415.6,
       "close": 415.7,
       "volume": 1052200.0,
       "v1": 414.5,
@@ -2491,7 +2491,7 @@
     {
       "time": "2026-01-26",
       "open": 382.52,
-      "high": 392.94,
+      "high": 392.95,
       "low": 381.31,
       "close": 391.4,
       "volume": 2041900.0,
@@ -5390,14 +5390,14 @@
       "time": "2026-11-19",
       "open": 412.24,
       "high": 416.92,
-      "low": 409.11,
-      "close": 411.66,
-      "volume": 85825.0,
-      "v1": 428.79,
-      "m1": 432.55,
-      "m2": 436.81,
-      "v2": 439.01,
-      "sma200": 454.12,
+      "low": 399.57,
+      "close": 401.77,
+      "volume": 381529.0,
+      "v1": 428.47,
+      "m1": 432.3,
+      "m2": 436.62,
+      "v2": 438.85,
+      "sma200": 454.07,
       "state": "BLUE"
     }
   ],
@@ -5412,9 +5412,9 @@
     {
       "time": "2026-11-19",
       "position": "aboveBar",
-      "color": "#10b981",
+      "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT +0.67% ($33.38 €)"
+      "text": "EXIT -1.75% ($-87.48 €)"
     }
   ],
   "equity_curves": [
@@ -6929,7 +6929,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10038.42
+          "value": 9917.43
         }
       ]
     },
@@ -7216,7 +7216,7 @@
         },
         {
           "time": "2025-09-02",
-          "value": 9728.05
+          "value": 9728.06
         },
         {
           "time": "2025-09-03",
@@ -7248,7 +7248,7 @@
         },
         {
           "time": "2025-09-12",
-          "value": 9509.39
+          "value": 9509.4
         },
         {
           "time": "2025-09-15",
@@ -7400,7 +7400,7 @@
         },
         {
           "time": "2025-11-05",
-          "value": 9785.34
+          "value": 9785.33
         },
         {
           "time": "2025-11-06",
@@ -7412,7 +7412,7 @@
         },
         {
           "time": "2025-11-10",
-          "value": 9725.72
+          "value": 9725.71
         },
         {
           "time": "2025-11-11",
@@ -7676,7 +7676,7 @@
         },
         {
           "time": "2026-02-17",
-          "value": 9351.07
+          "value": 9351.06
         },
         {
           "time": "2026-02-18",
@@ -7684,7 +7684,7 @@
         },
         {
           "time": "2026-02-19",
-          "value": 9217.42
+          "value": 9217.41
         },
         {
           "time": "2026-02-20",
@@ -7692,7 +7692,7 @@
         },
         {
           "time": "2026-02-23",
-          "value": 9142.95
+          "value": 9142.94
         },
         {
           "time": "2026-02-24",
@@ -7712,7 +7712,7 @@
         },
         {
           "time": "2026-03-02",
-          "value": 9266.67
+          "value": 9266.66
         },
         {
           "time": "2026-03-03",
@@ -7748,7 +7748,7 @@
         },
         {
           "time": "2026-03-13",
-          "value": 8417.69
+          "value": 8417.68
         },
         {
           "time": "2026-03-16",
@@ -7860,7 +7860,7 @@
         },
         {
           "time": "2026-04-23",
-          "value": 9655.29
+          "value": 9655.28
         },
         {
           "time": "2026-04-24",
@@ -7868,7 +7868,7 @@
         },
         {
           "time": "2026-04-27",
-          "value": 9662.64
+          "value": 9662.63
         },
         {
           "time": "2026-04-28",
@@ -7972,7 +7972,7 @@
         },
         {
           "time": "2026-06-03",
-          "value": 9264.06
+          "value": 9264.05
         },
         {
           "time": "2026-06-04",
@@ -8044,7 +8044,7 @@
         },
         {
           "time": "2026-06-30",
-          "value": 9789.3
+          "value": 9789.29
         },
         {
           "time": "2026-07-01",
@@ -8080,7 +8080,7 @@
         },
         {
           "time": "2026-07-14",
-          "value": 9637.75
+          "value": 9637.74
         },
         {
           "time": "2026-07-15",
@@ -8136,7 +8136,7 @@
         },
         {
           "time": "2026-08-03",
-          "value": 9192.86
+          "value": 9192.85
         },
         {
           "time": "2026-08-04",
@@ -8184,7 +8184,7 @@
         },
         {
           "time": "2026-08-19",
-          "value": 9078.75
+          "value": 9078.74
         },
         {
           "time": "2026-08-20",
@@ -8200,7 +8200,7 @@
         },
         {
           "time": "2026-08-25",
-          "value": 9074.17
+          "value": 9074.16
         },
         {
           "time": "2026-08-26",
@@ -8208,7 +8208,7 @@
         },
         {
           "time": "2026-08-27",
-          "value": 9055.45
+          "value": 9055.44
         },
         {
           "time": "2026-08-28",
@@ -8220,231 +8220,231 @@
         },
         {
           "time": "2026-09-01",
-          "value": 8773.46
+          "value": 8773.45
         },
         {
           "time": "2026-09-02",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-03",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-04",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-08",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-09",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-10",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-11",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-14",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-15",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-16",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-17",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-18",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-21",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-22",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-23",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-24",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-25",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-28",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-29",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-09-30",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-01",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-02",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-05",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-06",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-07",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-08",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-09",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-12",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-13",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-14",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-15",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-16",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-19",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-20",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-21",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-22",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-23",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-26",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-27",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-28",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-29",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-10-30",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-02",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-03",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-04",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-05",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-06",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-09",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-10",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-11",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-12",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-13",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-16",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-17",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-18",
-          "value": 8792.15
+          "value": 8792.14
         },
         {
           "time": "2026-11-19",
-          "value": 8792.15
+          "value": 8792.14
         }
       ]
     },
@@ -10018,7 +10018,7 @@
         },
         {
           "time": "2025-06-10",
-          "value": 9982.26
+          "value": 9982.25
         },
         {
           "time": "2025-06-11",
@@ -10242,7 +10242,7 @@
         },
         {
           "time": "2025-08-29",
-          "value": 9838.33
+          "value": 9838.32
         },
         {
           "time": "2025-09-02",
@@ -10278,7 +10278,7 @@
         },
         {
           "time": "2025-09-12",
-          "value": 9508.89
+          "value": 9508.9
         },
         {
           "time": "2025-09-15",
@@ -10534,7 +10534,7 @@
         },
         {
           "time": "2025-12-12",
-          "value": 9281.59
+          "value": 9281.6
         },
         {
           "time": "2025-12-15",
@@ -11474,7 +11474,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9836.25
+          "value": 9599.82
         }
       ]
     }
@@ -11485,24 +11485,24 @@
       "entry_date": "2026-11-09",
       "entry_price": 408.11,
       "exit_date": "2026-11-19",
-      "exit_price": 411.66,
+      "exit_price": 401.77,
       "holding_days": 8,
-      "pnl_pct": 0.67,
-      "pnl_eur": 33.38,
+      "pnl_pct": -1.75,
+      "pnl_eur": -87.48,
       "exit_reason": "Край на Бектеста (Отворена)",
-      "is_win": true
+      "is_win": false
     }
   ],
   "smart_money": {
     "symbol": "TT",
-    "smart_money_score": 25.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.70, CMF: -0.14).",
-    "cmf_20d": -0.144,
-    "up_down_vol_ratio": 0.73,
-    "absorption_5d_pct": 38.2,
-    "vol_shock_ratio": 0.05,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.70, CMF: -0.15).",
+    "cmf_20d": -0.151,
+    "up_down_vol_ratio": 0.72,
+    "absorption_5d_pct": 34.2,
+    "vol_shock_ratio": 0.22,
     "put_call_ratio": 0.7,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 400.0,

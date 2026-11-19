@@ -3,18 +3,18 @@
   "name": "MP Materials Corp.",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T14:57:52.369438+00:00",
+  "generated_at": "2026-11-19T17:19:06.593499+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 37.02,
+  "current_price": 36.41,
   "state": "BLUE",
-  "v1": 39.26,
+  "v1": 39.27,
   "v2": 42.73,
   "sma200": 53.22,
-  "rsi14": 44.7,
-  "atr14": 2.48,
+  "rsi14": 42.8,
+  "atr14": 2.5,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -4.0,
-      "cagr_pct": -2.7,
-      "sharpe_ratio": -0.11,
+      "total_return_pct": -4.8,
+      "cagr_pct": -3.2,
+      "sharpe_ratio": -0.15,
       "win_rate_pct": 50.0,
-      "profit_factor": 0.21,
+      "profit_factor": 0.05,
       "max_drawdown_pct": 23.1,
       "total_trades": 2
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 86.6,
-      "cagr_pct": 51.7,
-      "sharpe_ratio": 0.88,
+      "total_return_pct": 83.5,
+      "cagr_pct": 50.1,
+      "sharpe_ratio": 0.86,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.32,
+      "profit_factor": 1.27,
       "max_drawdown_pct": 65.8,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 16.64,
     "entry_price": 12.48,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -122.5,
-    "mos_pct": -122.5,
+    "actual_discount_pct": -118.8,
+    "mos_pct": -118.8,
     "moat": "None",
     "roic_pct": 0.9,
     "wacc_pct": 12.32,
@@ -5389,13 +5389,13 @@
     {
       "time": "2026-11-19",
       "open": 36.02,
-      "high": 37.39,
+      "high": 37.61,
       "low": 35.96,
-      "close": 37.02,
-      "volume": 781508.0,
-      "v1": 39.26,
-      "m1": 40.35,
-      "m2": 41.84,
+      "close": 36.41,
+      "volume": 2764679.0,
+      "v1": 39.27,
+      "m1": 40.36,
+      "m2": 41.85,
       "v2": 42.73,
       "sma200": 53.22,
       "state": "BLUE"
@@ -8458,7 +8458,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9607.69
+          "value": 9527.69
         }
       ]
     },
@@ -11488,7 +11488,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 18678.27
+          "value": 18370.5
         }
       ]
     }
@@ -11521,17 +11521,17 @@
   ],
   "smart_money": {
     "symbol": "MP",
-    "smart_money_score": 60.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.37) с Gamma стена на $37.00. Залог за рязък отскок.",
-    "cmf_20d": -0.093,
-    "up_down_vol_ratio": 0.95,
-    "absorption_5d_pct": 36.2,
-    "vol_shock_ratio": 0.12,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.37) с Gamma стена на $35.00. Залог за рязък отскок.",
+    "cmf_20d": -0.105,
+    "up_down_vol_ratio": 0.98,
+    "absorption_5d_pct": 26.8,
+    "vol_shock_ratio": 0.42,
     "put_call_ratio": 0.37,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 37.0,
+    "gamma_wall": 35.0,
     "max_pain": 50.0,
     "unusual_call_sweep": false
   }

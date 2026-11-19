@@ -3,26 +3,26 @@
   "name": "Fortinet, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T14:57:43.829632+00:00",
+  "generated_at": "2026-11-19T17:19:01.151145+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 137.7,
+  "current_price": 134.27,
   "state": "BLUE",
-  "v1": 144.2,
-  "v2": 152.45,
-  "sma200": 131.68,
-  "rsi14": 45.4,
+  "v1": 144.17,
+  "v2": 152.43,
+  "sma200": 131.67,
+  "rsi14": 42.4,
   "atr14": 7.54,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 3.5,
-    "cagr_pct": 2.3,
-    "sharpe_ratio": 0.28,
+    "total_return_pct": 2.2,
+    "cagr_pct": 1.5,
+    "sharpe_ratio": 0.2,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 7.4,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 3.5,
-      "cagr_pct": 2.3,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 2.2,
+      "cagr_pct": 1.5,
+      "sharpe_ratio": 0.2,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 7.4,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 33.0,
-      "cagr_pct": 21.0,
-      "sharpe_ratio": 0.65,
+      "total_return_pct": 29.7,
+      "cagr_pct": 19.0,
+      "sharpe_ratio": 0.61,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.85,
+      "profit_factor": 0.76,
       "max_drawdown_pct": 39.0,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 104.79,
     "entry_price": 89.07,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -31.4,
-    "mos_pct": -31.4,
+    "actual_discount_pct": -28.1,
+    "mos_pct": -28.1,
     "moat": "Wide",
     "roic_pct": 40.4,
     "wacc_pct": 9.75,
@@ -5390,14 +5390,14 @@
       "time": "2026-11-19",
       "open": 136.48,
       "high": 139.03,
-      "low": 134.9,
-      "close": 137.7,
-      "volume": 1029690.0,
-      "v1": 144.2,
-      "m1": 147.95,
-      "m2": 151.3,
-      "v2": 152.45,
-      "sma200": 131.68,
+      "low": 133.86,
+      "close": 134.27,
+      "volume": 3087444.0,
+      "v1": 144.17,
+      "m1": 147.92,
+      "m2": 151.28,
+      "v2": 152.43,
+      "sma200": 131.67,
       "state": "BLUE"
     }
   ],
@@ -5428,7 +5428,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +8.25% ($409.82 €)"
+      "text": "EXIT +5.55% ($275.89 €)"
     }
   ],
   "equity_curves": [
@@ -6943,7 +6943,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10358.79
+          "value": 10224.73
         }
       ]
     },
@@ -11488,7 +11488,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13312.91
+          "value": 12981.3
         }
       ]
     }
@@ -11511,24 +11511,24 @@
       "entry_date": "2026-11-12",
       "entry_price": 126.95,
       "exit_date": "2026-11-19",
-      "exit_price": 137.7,
+      "exit_price": 134.27,
       "holding_days": 5,
-      "pnl_pct": 8.25,
-      "pnl_eur": 409.82,
+      "pnl_pct": 5.55,
+      "pnl_eur": 275.89,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "FTNT",
-    "smart_money_score": 63.0,
+    "smart_money_score": 68.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.30) с Gamma стена на $135.00. Залог за рязък отскок.",
-    "cmf_20d": -0.016,
-    "up_down_vol_ratio": 0.72,
-    "absorption_5d_pct": 56.1,
-    "vol_shock_ratio": 0.16,
+    "cmf_20d": -0.039,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": 44.1,
+    "vol_shock_ratio": 0.49,
     "put_call_ratio": 0.3,
     "options_sentiment": "BULLISH",
     "gamma_wall": 135.0,

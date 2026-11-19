@@ -3,17 +3,17 @@
   "name": "INTESA SANPAOLO",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T14:57:47.838790+00:00",
+  "generated_at": "2026-11-19T17:19:03.769838+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 380,
-  "current_price": 6.11,
+  "current_price": 6.05,
   "state": "BLUE",
   "v1": 6.21,
   "v2": 6.28,
   "sma200": 6.0,
-  "rsi14": 45.8,
+  "rsi14": 42.6,
   "atr14": 0.14,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 34.0,
-      "cagr_pct": 21.4,
-      "sharpe_ratio": 0.96,
+      "total_return_pct": 32.6,
+      "cagr_pct": 20.6,
+      "sharpe_ratio": 0.93,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.79,
+      "profit_factor": 1.72,
       "max_drawdown_pct": 19.0,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 6.2,
     "entry_price": 4.96,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 1.4,
-    "mos_pct": 1.4,
+    "actual_discount_pct": 2.5,
+    "mos_pct": 2.5,
     "moat": "Narrow",
     "roic_pct": 14.5,
     "wacc_pct": 9.18,
@@ -5432,9 +5432,9 @@
       "time": "2026-11-19",
       "open": 6.12,
       "high": 6.16,
-      "low": 6.1,
-      "close": 6.11,
-      "volume": 20994981.0,
+      "low": 6.05,
+      "close": 6.05,
+      "volume": 43124575.0,
       "v1": 6.21,
       "m1": 6.24,
       "m2": 6.27,
@@ -5589,7 +5589,7 @@
         },
         {
           "time": "2025-07-02",
-          "value": 10028.97
+          "value": 10028.96
         },
         {
           "time": "2025-07-03",
@@ -5929,7 +5929,7 @@
         },
         {
           "time": "2025-10-30",
-          "value": 11699.47
+          "value": 11699.48
         },
         {
           "time": "2025-10-31",
@@ -5957,7 +5957,7 @@
         },
         {
           "time": "2025-11-10",
-          "value": 11836.8
+          "value": 11836.81
         },
         {
           "time": "2025-11-11",
@@ -7348,7 +7348,7 @@
         },
         {
           "time": "2025-09-23",
-          "value": 11173.79
+          "value": 11173.8
         },
         {
           "time": "2025-09-24",
@@ -7412,11 +7412,11 @@
         },
         {
           "time": "2025-10-15",
-          "value": 11036.51
+          "value": 11036.52
         },
         {
           "time": "2025-10-16",
-          "value": 11212.72
+          "value": 11212.73
         },
         {
           "time": "2025-10-17",
@@ -8643,7 +8643,7 @@
         },
         {
           "time": "2025-07-02",
-          "value": 10028.97
+          "value": 10028.96
         },
         {
           "time": "2025-07-03",
@@ -8983,7 +8983,7 @@
         },
         {
           "time": "2025-10-30",
-          "value": 11699.47
+          "value": 11699.48
         },
         {
           "time": "2025-10-31",
@@ -9011,7 +9011,7 @@
         },
         {
           "time": "2025-11-10",
-          "value": 11836.8
+          "value": 11836.81
         },
         {
           "time": "2025-11-11",
@@ -10098,7 +10098,7 @@
         },
         {
           "time": "2025-06-06",
-          "value": 10299.81
+          "value": 10299.82
         },
         {
           "time": "2025-06-09",
@@ -10222,7 +10222,7 @@
         },
         {
           "time": "2025-07-21",
-          "value": 10100.8
+          "value": 10100.79
         },
         {
           "time": "2025-07-22",
@@ -10470,7 +10470,7 @@
         },
         {
           "time": "2025-10-16",
-          "value": 11223.1
+          "value": 11223.11
         },
         {
           "time": "2025-10-17",
@@ -10510,7 +10510,7 @@
         },
         {
           "time": "2025-10-30",
-          "value": 11701.16
+          "value": 11701.17
         },
         {
           "time": "2025-10-31",
@@ -11578,7 +11578,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13416.26
+          "value": 13271.4
         }
       ]
     }
@@ -11611,14 +11611,14 @@
   ],
   "smart_money": {
     "symbol": "ISP.MI",
-    "smart_money_score": 50.0,
+    "smart_money_score": 45.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: N/A).",
-    "cmf_20d": -0.007,
-    "up_down_vol_ratio": 1.29,
-    "absorption_5d_pct": 28.2,
-    "vol_shock_ratio": 0.44,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
+    "cmf_20d": -0.04,
+    "up_down_vol_ratio": 1.12,
+    "absorption_5d_pct": 23.9,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

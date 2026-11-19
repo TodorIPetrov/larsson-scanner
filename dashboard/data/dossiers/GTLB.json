@@ -3,28 +3,28 @@
   "name": "GitLab Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T14:57:45.452727+00:00",
+  "generated_at": "2026-11-19T17:19:02.211544+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 46.06,
+  "current_price": 44.67,
   "state": "GOLD",
-  "v1": 49.5,
-  "v2": 48.4,
+  "v1": 49.49,
+  "v2": 48.39,
   "sma200": 34.95,
-  "rsi14": 38.1,
-  "atr14": 2.46,
+  "rsi14": 31.9,
+  "atr14": 2.47,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
-    "total_return_pct": 28.9,
-    "cagr_pct": 18.5,
-    "sharpe_ratio": 0.69,
+    "total_return_pct": 25.0,
+    "cagr_pct": 16.1,
+    "sharpe_ratio": 0.63,
     "win_rate_pct": 31.2,
-    "profit_factor": 2.12,
+    "profit_factor": 1.99,
     "max_drawdown_pct": 26.2,
     "total_trades": 16
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 26.7,
-      "cagr_pct": 17.1,
-      "sharpe_ratio": 0.63,
+      "total_return_pct": 22.8,
+      "cagr_pct": 14.7,
+      "sharpe_ratio": 0.57,
       "win_rate_pct": 16.7,
-      "profit_factor": 1.95,
+      "profit_factor": 1.82,
       "max_drawdown_pct": 29.4,
       "total_trades": 6
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 28.1,
-      "cagr_pct": 18.0,
-      "sharpe_ratio": 0.65,
+      "total_return_pct": 24.3,
+      "cagr_pct": 15.6,
+      "sharpe_ratio": 0.6,
       "win_rate_pct": 16.7,
-      "profit_factor": 2.04,
+      "profit_factor": 1.89,
       "max_drawdown_pct": 28.6,
       "total_trades": 6
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
-      "total_return_pct": 28.9,
-      "cagr_pct": 18.5,
-      "sharpe_ratio": 0.69,
+      "total_return_pct": 25.0,
+      "cagr_pct": 16.1,
+      "sharpe_ratio": 0.63,
       "win_rate_pct": 31.2,
-      "profit_factor": 2.12,
+      "profit_factor": 1.99,
       "max_drawdown_pct": 26.2,
       "total_trades": 16
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -5.4,
-      "cagr_pct": -3.6,
-      "sharpe_ratio": 0.24,
+      "total_return_pct": -8.3,
+      "cagr_pct": -5.6,
+      "sharpe_ratio": 0.2,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 62.0,
@@ -107,8 +107,8 @@
     "target_price": 43.05,
     "entry_price": 31.0,
     "required_mos_pct": 28.0,
-    "actual_discount_pct": -7.0,
-    "mos_pct": -7.0,
+    "actual_discount_pct": -3.8,
+    "mos_pct": -3.8,
     "moat": "Narrow",
     "roic_pct": 85.8,
     "wacc_pct": 9.52,
@@ -5389,14 +5389,14 @@
     {
       "time": "2026-11-19",
       "open": 44.86,
-      "high": 46.71,
-      "low": 44.86,
-      "close": 46.06,
-      "volume": 105850.0,
-      "v1": 49.5,
-      "m1": 49.49,
-      "m2": 48.95,
-      "v2": 48.4,
+      "high": 46.73,
+      "low": 44.36,
+      "close": 44.67,
+      "volume": 959178.0,
+      "v1": 49.49,
+      "m1": 49.48,
+      "m2": 48.94,
+      "v2": 48.39,
       "sma200": 34.95,
       "state": "GOLD"
     }
@@ -5624,7 +5624,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +76.01% ($5563.04 €)"
+      "text": "EXIT +70.68% ($5172.92 €)"
     }
   ],
   "equity_curves": [
@@ -7139,7 +7139,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12898.8
+          "value": 12508.3
         }
       ]
     },
@@ -8654,7 +8654,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12827.03
+          "value": 12438.8
         }
       ]
     },
@@ -10169,7 +10169,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12680.67
+          "value": 12296.88
         }
       ]
     },
@@ -11684,7 +11684,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9468.92
+          "value": 9182.17
         }
       ]
     }
@@ -11875,24 +11875,24 @@
       "entry_date": "2026-06-18",
       "entry_price": 26.12,
       "exit_date": "2026-11-19",
-      "exit_price": 46.06,
+      "exit_price": 44.67,
       "holding_days": 107,
-      "pnl_pct": 76.01,
-      "pnl_eur": 5563.04,
+      "pnl_pct": 70.68,
+      "pnl_eur": 5172.92,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "GTLB",
-    "smart_money_score": 67.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.46) с Gamma стена на $45.00. Залог за рязък отскок.",
-    "cmf_20d": 0.035,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 58.2,
-    "vol_shock_ratio": 0.04,
+    "cmf_20d": 0.02,
+    "up_down_vol_ratio": 0.6,
+    "absorption_5d_pct": 47.8,
+    "vol_shock_ratio": 0.35,
     "put_call_ratio": 0.46,
     "options_sentiment": "BULLISH",
     "gamma_wall": 45.0,

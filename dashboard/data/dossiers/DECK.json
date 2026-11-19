@@ -3,28 +3,28 @@
   "name": "Deckers Outdoor Corporation",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T14:57:39.750563+00:00",
+  "generated_at": "2026-11-19T17:18:58.215160+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 82.62,
+  "current_price": 80.57,
   "state": "BLUE",
-  "v1": 84.59,
-  "v2": 85.62,
-  "sma200": 97.96,
-  "rsi14": 46.0,
-  "atr14": 3.22,
+  "v1": 84.54,
+  "v2": 85.6,
+  "sma200": 97.95,
+  "rsi14": 42.6,
+  "atr14": 3.33,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -0.1,
-    "cagr_pct": -0.1,
-    "sharpe_ratio": 0.06,
+    "total_return_pct": -1.3,
+    "cagr_pct": -0.9,
+    "sharpe_ratio": -0.01,
     "win_rate_pct": 50.0,
-    "profit_factor": 1.92,
+    "profit_factor": 1.79,
     "max_drawdown_pct": 10.3,
     "total_trades": 4
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -0.1,
-      "cagr_pct": -0.1,
-      "sharpe_ratio": 0.06,
+      "total_return_pct": -1.3,
+      "cagr_pct": -0.9,
+      "sharpe_ratio": -0.01,
       "win_rate_pct": 50.0,
-      "profit_factor": 1.92,
+      "profit_factor": 1.79,
       "max_drawdown_pct": 10.3,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -33.2,
-      "cagr_pct": -23.6,
-      "sharpe_ratio": -0.38,
+      "total_return_pct": -34.8,
+      "cagr_pct": -24.9,
+      "sharpe_ratio": -0.42,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 38.5,
@@ -107,8 +107,8 @@
     "target_price": 164.78,
     "entry_price": 140.06,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 49.9,
-    "mos_pct": 49.9,
+    "actual_discount_pct": 51.1,
+    "mos_pct": 51.1,
     "moat": "Wide",
     "roic_pct": 60.6,
     "wacc_pct": 9.77,
@@ -5390,14 +5390,14 @@
       "time": "2026-11-19",
       "open": 82.92,
       "high": 83.32,
-      "low": 81.85,
-      "close": 82.62,
-      "volume": 213910.0,
-      "v1": 84.59,
-      "m1": 84.66,
-      "m2": 85.14,
-      "v2": 85.62,
-      "sma200": 97.96,
+      "low": 80.28,
+      "close": 80.57,
+      "volume": 1125461.0,
+      "v1": 84.54,
+      "m1": 84.62,
+      "m2": 85.11,
+      "v2": 85.6,
+      "sma200": 97.95,
       "state": "BLUE"
     }
   ],
@@ -5456,7 +5456,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +2.81% ($138.06 €)"
+      "text": "EXIT +0.25% ($12.21 €)"
     }
   ],
   "equity_curves": [
@@ -6971,7 +6971,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9996.99
+          "value": 9871.01
         }
       ]
     },
@@ -11516,7 +11516,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 6687.93
+          "value": 6521.59
         }
       ]
     }
@@ -11563,10 +11563,10 @@
       "entry_date": "2026-09-14",
       "entry_price": 80.21,
       "exit_date": "2026-11-19",
-      "exit_price": 82.62,
+      "exit_price": 80.57,
       "holding_days": 48,
-      "pnl_pct": 2.81,
-      "pnl_eur": 138.06,
+      "pnl_pct": 0.25,
+      "pnl_eur": 12.21,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11576,14 +11576,14 @@
     "smart_money_score": 52.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.09, P/C: 0.79).",
-    "cmf_20d": 0.089,
-    "up_down_vol_ratio": 0.67,
-    "absorption_5d_pct": 47.3,
-    "vol_shock_ratio": 0.06,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: 0.79).",
+    "cmf_20d": 0.075,
+    "up_down_vol_ratio": 0.65,
+    "absorption_5d_pct": 38.7,
+    "vol_shock_ratio": 0.29,
     "put_call_ratio": 0.79,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 85.0,
+    "gamma_wall": 80.0,
     "max_pain": 85.0,
     "unusual_call_sweep": false
   }

@@ -3,18 +3,18 @@
   "name": "TENCENT",
   "sector": "Communication Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T14:57:23.487129+00:00",
+  "generated_at": "2026-11-19T17:18:49.040491+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 370,
-  "current_price": 348.4,
+  "backtest_total_bars": 369,
+  "current_price": 372.8,
   "state": "BLUE",
-  "v1": 400.69,
-  "v2": 414.02,
-  "sma200": 462.51,
-  "rsi14": 27.8,
-  "atr14": 13.18,
+  "v1": 403.96,
+  "v2": 416.13,
+  "sma200": 463.77,
+  "rsi14": 34.9,
+  "atr14": 12.06,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -10.7,
-      "cagr_pct": -7.4,
-      "sharpe_ratio": -1.06,
+      "total_return_pct": -9.2,
+      "cagr_pct": -6.4,
+      "sharpe_ratio": -0.92,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 10.7,
+      "max_drawdown_pct": 9.2,
       "total_trades": 3
     },
     {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -31.7,
-      "cagr_pct": -22.9,
-      "sharpe_ratio": -0.64,
+      "total_return_pct": -26.9,
+      "cagr_pct": -19.3,
+      "sharpe_ratio": -0.51,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 48.0,
+      "max_drawdown_pct": 44.3,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 545.94,
     "entry_price": 436.75,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 36.2,
-    "mos_pct": 36.2,
+    "actual_discount_pct": 31.7,
+    "mos_pct": 31.7,
     "moat": "Narrow",
     "roic_pct": 16.5,
     "wacc_pct": 8.29,
@@ -5287,20 +5287,6 @@
       "v2": 416.13,
       "sma200": 463.77,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 361.8,
-      "high": 365.0,
-      "low": 345.0,
-      "close": 348.4,
-      "volume": 76388469.0,
-      "v1": 400.69,
-      "m1": 404.94,
-      "m2": 410.6,
-      "v2": 414.02,
-      "sma200": 462.51,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6800,10 +6786,6 @@
         {
           "time": "2026-11-18",
           "value": 12119.24
-        },
-        {
-          "time": "2026-11-19",
-          "value": 12119.24
         }
       ]
     },
@@ -8286,10 +8268,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 11608.99
-        },
-        {
-          "time": "2026-11-19",
           "value": 11608.99
         }
       ]
@@ -9774,10 +9752,6 @@
         {
           "time": "2026-11-18",
           "value": 11528.78
-        },
-        {
-          "time": "2026-11-19",
-          "value": 11528.78
         }
       ]
     },
@@ -11261,10 +11235,6 @@
         {
           "time": "2026-11-18",
           "value": 7315.85
-        },
-        {
-          "time": "2026-11-19",
-          "value": 6837.02
         }
       ]
     }
@@ -11285,14 +11255,14 @@
   ],
   "smart_money": {
     "symbol": "0700.HK",
-    "smart_money_score": 15.0,
+    "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
-    "cmf_20d": -0.167,
-    "up_down_vol_ratio": 0.73,
-    "absorption_5d_pct": 24.4,
-    "vol_shock_ratio": 2.97,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
+    "cmf_20d": -0.118,
+    "up_down_vol_ratio": 0.77,
+    "absorption_5d_pct": 27.0,
+    "vol_shock_ratio": 0.8,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

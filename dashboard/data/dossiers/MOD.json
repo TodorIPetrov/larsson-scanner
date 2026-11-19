@@ -3,28 +3,28 @@
   "name": "Modine Manufacturing Company",
   "sector": "Consumer Cyclical",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T14:57:52.038228+00:00",
+  "generated_at": "2026-11-19T17:19:06.398291+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 142.34,
+  "current_price": 137.61,
   "state": "BLUE",
-  "v1": 135.25,
-  "v2": 154.28,
-  "sma200": 213.1,
-  "rsi14": 54.9,
-  "atr14": 11.82,
+  "v1": 135.17,
+  "v2": 154.24,
+  "sma200": 213.08,
+  "rsi14": 52.6,
+  "atr14": 11.93,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 13.1,
-    "cagr_pct": 8.6,
-    "sharpe_ratio": 0.62,
+    "total_return_pct": 10.9,
+    "cagr_pct": 7.2,
+    "sharpe_ratio": 0.53,
     "win_rate_pct": 33.3,
-    "profit_factor": 3.65,
+    "profit_factor": 3.21,
     "max_drawdown_pct": 9.5,
     "total_trades": 3
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 13.1,
-      "cagr_pct": 8.6,
-      "sharpe_ratio": 0.62,
+      "total_return_pct": 10.9,
+      "cagr_pct": 7.2,
+      "sharpe_ratio": 0.53,
       "win_rate_pct": 33.3,
-      "profit_factor": 3.65,
+      "profit_factor": 3.21,
       "max_drawdown_pct": 9.5,
       "total_trades": 3
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 51.7,
-      "cagr_pct": 32.1,
-      "sharpe_ratio": 0.78,
+      "total_return_pct": 46.7,
+      "cagr_pct": 29.2,
+      "sharpe_ratio": 0.75,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.74,
+      "profit_factor": 0.66,
       "max_drawdown_pct": 70.2,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 55.52,
     "entry_price": 41.64,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -156.4,
-    "mos_pct": -156.4,
+    "actual_discount_pct": -147.9,
+    "mos_pct": -147.9,
     "moat": "Narrow",
     "roic_pct": 13.1,
     "wacc_pct": 11.15,
@@ -5390,14 +5390,14 @@
       "time": "2026-11-19",
       "open": 139.94,
       "high": 144.53,
-      "low": 138.84,
-      "close": 142.34,
-      "volume": 312079.0,
-      "v1": 135.25,
-      "m1": 141.04,
-      "m2": 149.26,
-      "v2": 154.28,
-      "sma200": 213.1,
+      "low": 136.38,
+      "close": 137.61,
+      "volume": 1244249.0,
+      "v1": 135.17,
+      "m1": 140.97,
+      "m2": 149.22,
+      "v2": 154.24,
+      "sma200": 213.08,
       "state": "BLUE"
     }
   ],
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +37.94% ($1801.61 €)"
+      "text": "EXIT +33.36% ($1584.17 €)"
     }
   ],
   "equity_curves": [
@@ -6957,7 +6957,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 11314.83
+          "value": 11097.17
         }
       ]
     },
@@ -11502,7 +11502,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 15186.66
+          "value": 14682.52
         }
       ]
     }
@@ -11537,27 +11537,27 @@
       "entry_date": "2026-11-10",
       "entry_price": 102.98,
       "exit_date": "2026-11-19",
-      "exit_price": 142.34,
+      "exit_price": 137.61,
       "holding_days": 7,
-      "pnl_pct": 37.94,
-      "pnl_eur": 1801.61,
+      "pnl_pct": 33.36,
+      "pnl_eur": 1584.17,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "MOD",
-    "smart_money_score": 58.0,
+    "smart_money_score": 53.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.26) с Gamma стена на $150.00. Залог за рязък отскок.",
-    "cmf_20d": -0.159,
-    "up_down_vol_ratio": 0.85,
-    "absorption_5d_pct": 50.0,
-    "vol_shock_ratio": 0.11,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.26) с Gamma стена на $130.00. Залог за рязък отскок.",
+    "cmf_20d": -0.173,
+    "up_down_vol_ratio": 0.81,
+    "absorption_5d_pct": 40.7,
+    "vol_shock_ratio": 0.44,
     "put_call_ratio": 0.26,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 150.0,
+    "gamma_wall": 130.0,
     "max_pain": 150.0,
     "unusual_call_sweep": false
   }

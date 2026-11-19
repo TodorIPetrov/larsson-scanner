@@ -3,17 +3,17 @@
   "name": "AMG Critical Materials N.V.",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T14:57:29.549441+00:00",
+  "generated_at": "2026-11-19T17:18:52.245315+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 21.9,
+  "current_price": 21.74,
   "state": "BLUE",
   "v1": 24.4,
   "v2": 26.27,
   "sma200": 32.02,
-  "rsi14": 31.7,
+  "rsi14": 30.0,
   "atr14": 0.9,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 19.9,
-      "cagr_pct": 12.7,
-      "sharpe_ratio": 0.51,
+      "total_return_pct": 19.1,
+      "cagr_pct": 12.1,
+      "sharpe_ratio": 0.5,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.41,
+      "profit_factor": 0.39,
       "max_drawdown_pct": 48.3,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 18.9,
     "entry_price": 14.17,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -15.9,
-    "mos_pct": -15.9,
+    "actual_discount_pct": -15.0,
+    "mos_pct": -15.0,
     "moat": "None",
     "roic_pct": 11.1,
     "wacc_pct": 8.0,
@@ -116,7 +116,7 @@
     "m_score": -1.77,
     "tata": -0.034,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
+    "verdict": "HOLD / FAIRLY VALUED",
     "model_type": "Mid-Cycle Normalized DCF",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-19"
@@ -5488,12 +5488,12 @@
       "time": "2026-11-19",
       "open": 21.8,
       "high": 22.08,
-      "low": 21.8,
-      "close": 21.9,
-      "volume": 77808.0,
+      "low": 21.6,
+      "close": 21.74,
+      "volume": 161848.0,
       "v1": 24.4,
-      "m1": 25.0,
-      "m2": 25.8,
+      "m1": 24.99,
+      "m2": 25.79,
       "v2": 26.27,
       "sma200": 32.02,
       "state": "BLUE"
@@ -5659,7 +5659,7 @@
         },
         {
           "time": "2025-07-10",
-          "value": 13424.0
+          "value": 13424.01
         },
         {
           "time": "2025-07-11",
@@ -7238,7 +7238,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 13703.74
+          "value": 13703.75
         },
         {
           "time": "2025-07-24",
@@ -10172,7 +10172,7 @@
         },
         {
           "time": "2025-05-30",
-          "value": 10070.56
+          "value": 10070.57
         },
         {
           "time": "2025-06-02",
@@ -11684,7 +11684,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12005.37
+          "value": 11917.66
         }
       ]
     }
@@ -11709,10 +11709,10 @@
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.07).",
-    "cmf_20d": -0.065,
-    "up_down_vol_ratio": 0.76,
-    "absorption_5d_pct": 33.6,
-    "vol_shock_ratio": 0.29,
+    "cmf_20d": -0.072,
+    "up_down_vol_ratio": 0.79,
+    "absorption_5d_pct": 32.2,
+    "vol_shock_ratio": 0.6,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

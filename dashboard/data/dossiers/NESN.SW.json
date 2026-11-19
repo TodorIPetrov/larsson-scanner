@@ -3,17 +3,17 @@
   "name": "NESTLE N",
   "sector": "Consumer Defensive",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T14:57:55.067377+00:00",
+  "generated_at": "2026-11-19T17:19:08.306557+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 84.53,
+  "current_price": 84.45,
   "state": "GOLD",
   "v1": 84.02,
   "v2": 82.26,
   "sma200": 79.39,
-  "rsi14": 51.2,
+  "rsi14": 50.8,
   "atr14": 1.37,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -45,9 +45,9 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -16.9,
-      "cagr_pct": -11.7,
-      "sharpe_ratio": -0.7,
+      "total_return_pct": -17.0,
+      "cagr_pct": -11.8,
+      "sharpe_ratio": -0.71,
       "win_rate_pct": 22.2,
       "profit_factor": 0.24,
       "max_drawdown_pct": 22.9,
@@ -81,9 +81,9 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -10.7,
+      "total_return_pct": -10.8,
       "cagr_pct": -7.4,
-      "sharpe_ratio": -0.88,
+      "sharpe_ratio": -0.89,
       "win_rate_pct": 25.0,
       "profit_factor": 0.13,
       "max_drawdown_pct": 13.3,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -1.1,
-      "cagr_pct": -0.7,
+      "total_return_pct": -1.2,
+      "cagr_pct": -0.8,
       "sharpe_ratio": 0.08,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -107,8 +107,8 @@
     "target_price": 67.65,
     "entry_price": 54.12,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -25.0,
-    "mos_pct": -25.0,
+    "actual_discount_pct": -24.8,
+    "mos_pct": -24.8,
     "moat": "Narrow",
     "roic_pct": 12.3,
     "wacc_pct": 7.5,
@@ -5363,8 +5363,8 @@
       "open": 85.55,
       "high": 85.68,
       "low": 84.0,
-      "close": 84.53,
-      "volume": 1671785.0,
+      "close": 84.45,
+      "volume": 3630272.0,
       "v1": 84.02,
       "m1": 83.34,
       "m2": 82.61,
@@ -8442,7 +8442,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8934.19
+          "value": 8925.74
         }
       ]
     },
@@ -9949,7 +9949,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8315.96
+          "value": 8308.1
         }
       ]
     },
@@ -11456,7 +11456,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9900.16
+          "value": 9890.79
         }
       ]
     }
@@ -11516,11 +11516,11 @@
     "smart_money_score": 75.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.21, Up/Dn Vol: 1.11x). Силна скрита подкрепа.",
-    "cmf_20d": 0.206,
-    "up_down_vol_ratio": 1.11,
-    "absorption_5d_pct": 47.0,
-    "vol_shock_ratio": 0.45,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.18, Up/Dn Vol: 1.05x). Силна скрита подкрепа.",
+    "cmf_20d": 0.185,
+    "up_down_vol_ratio": 1.05,
+    "absorption_5d_pct": 46.1,
+    "vol_shock_ratio": 0.98,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

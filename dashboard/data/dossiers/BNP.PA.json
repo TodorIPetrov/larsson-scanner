@@ -3,26 +3,26 @@
   "name": "BNP PARIBAS ACT.A",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T14:57:34.478555+00:00",
+  "generated_at": "2026-11-19T17:18:54.996403+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 92.9,
+  "current_price": 92.05,
   "state": "BLUE",
-  "v1": 92.3,
-  "v2": 93.4,
-  "sma200": 92.24,
-  "rsi14": 52.7,
+  "v1": 92.29,
+  "v2": 93.39,
+  "sma200": 92.23,
+  "rsi14": 49.9,
   "atr14": 2.16,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 36.9,
-    "cagr_pct": 22.9,
-    "sharpe_ratio": 1.09,
+    "total_return_pct": 36.2,
+    "cagr_pct": 22.5,
+    "sharpe_ratio": 1.07,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 18.0,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 36.9,
-      "cagr_pct": 22.9,
-      "sharpe_ratio": 1.09,
+      "total_return_pct": 36.2,
+      "cagr_pct": 22.5,
+      "sharpe_ratio": 1.07,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 18.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 31.6,
-      "cagr_pct": 19.8,
-      "sharpe_ratio": 0.86,
+      "total_return_pct": 30.4,
+      "cagr_pct": 19.0,
+      "sharpe_ratio": 0.84,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.3,
+      "profit_factor": 1.25,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 120.02,
     "entry_price": 96.02,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 22.6,
-    "mos_pct": 22.6,
+    "actual_discount_pct": 23.3,
+    "mos_pct": 23.3,
     "moat": "Narrow",
     "roic_pct": 10.7,
     "wacc_pct": 9.94,
@@ -5488,14 +5488,14 @@
       "time": "2026-11-19",
       "open": 92.75,
       "high": 93.47,
-      "low": 92.43,
-      "close": 92.9,
-      "volume": 579636.0,
-      "v1": 92.3,
-      "m1": 92.54,
-      "m2": 93.08,
-      "v2": 93.4,
-      "sma200": 92.24,
+      "low": 92.08,
+      "close": 92.05,
+      "volume": 1901495.0,
+      "v1": 92.29,
+      "m1": 92.53,
+      "m2": 93.07,
+      "v2": 93.39,
+      "sma200": 92.23,
       "state": "BLUE"
     }
   ],
@@ -5526,7 +5526,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +8.85% ($579.22 €)"
+      "text": "EXIT +7.85% ($514.01 €)"
     }
   ],
   "equity_curves": [
@@ -7069,7 +7069,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13696.23
+          "value": 13630.95
         }
       ]
     },
@@ -11698,7 +11698,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13174.28
+          "value": 13053.74
         }
       ]
     }
@@ -11721,24 +11721,24 @@
       "entry_date": "2026-10-27",
       "entry_price": 85.18,
       "exit_date": "2026-11-19",
-      "exit_price": 92.9,
+      "exit_price": 92.05,
       "holding_days": 17,
-      "pnl_pct": 8.85,
-      "pnl_eur": 579.22,
+      "pnl_pct": 7.85,
+      "pnl_eur": 514.01,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "BNP.PA",
-    "smart_money_score": 50.0,
+    "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.024,
-    "up_down_vol_ratio": 2.2,
-    "absorption_5d_pct": 19.3,
-    "vol_shock_ratio": 0.23,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
+    "cmf_20d": -0.064,
+    "up_down_vol_ratio": 2.29,
+    "absorption_5d_pct": 9.9,
+    "vol_shock_ratio": 0.75,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

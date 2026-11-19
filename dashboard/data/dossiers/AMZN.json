@@ -3,18 +3,18 @@
   "name": "Amazon.com, Inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T14:57:29.672247+00:00",
+  "generated_at": "2026-11-19T17:18:52.486428+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 272.2,
+  "current_price": 262.14,
   "state": "GOLD",
-  "v1": 259.92,
-  "v2": 257.51,
-  "sma200": 245.1,
-  "rsi14": 60.1,
-  "atr14": 8.82,
+  "v1": 259.63,
+  "v2": 257.36,
+  "sma200": 245.05,
+  "rsi14": 52.4,
+  "atr14": 9.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -30.2,
-      "cagr_pct": -21.3,
-      "sharpe_ratio": -0.73,
+      "total_return_pct": -32.7,
+      "cagr_pct": -23.3,
+      "sharpe_ratio": -0.82,
       "win_rate_pct": 28.6,
-      "profit_factor": 0.12,
+      "profit_factor": 0.04,
       "max_drawdown_pct": 43.2,
       "total_trades": 7
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -43.3,
-      "cagr_pct": -31.6,
-      "sharpe_ratio": -1.52,
+      "total_return_pct": -45.4,
+      "cagr_pct": -33.3,
+      "sharpe_ratio": -1.63,
       "win_rate_pct": 29.4,
-      "profit_factor": 0.15,
+      "profit_factor": 0.11,
       "max_drawdown_pct": 50.9,
       "total_trades": 17
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -24.7,
-      "cagr_pct": -17.3,
-      "sharpe_ratio": -0.66,
+      "total_return_pct": -27.5,
+      "cagr_pct": -19.3,
+      "sharpe_ratio": -0.77,
       "win_rate_pct": 27.8,
-      "profit_factor": 0.18,
+      "profit_factor": 0.09,
       "max_drawdown_pct": 39.6,
       "total_trades": 18
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 34.9,
-      "cagr_pct": 22.2,
-      "sharpe_ratio": 0.76,
+      "total_return_pct": 29.9,
+      "cagr_pct": 19.1,
+      "sharpe_ratio": 0.68,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.61,
+      "profit_factor": 1.38,
       "max_drawdown_pct": 21.7,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 129.7,
     "entry_price": 103.76,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -109.9,
-    "mos_pct": -109.9,
+    "actual_discount_pct": -102.1,
+    "mos_pct": -102.1,
     "moat": "Narrow",
     "roic_pct": 10.1,
     "wacc_pct": 10.64,
@@ -5389,15 +5389,15 @@
     {
       "time": "2026-11-19",
       "open": 272.58,
-      "high": 273.99,
-      "low": 270.78,
-      "close": 272.2,
-      "volume": 7651559.0,
-      "v1": 259.92,
-      "m1": 259.0,
-      "m2": 258.04,
-      "v2": 257.51,
-      "sma200": 245.1,
+      "high": 274.0,
+      "low": 261.92,
+      "close": 262.14,
+      "volume": 22562927.0,
+      "v1": 259.63,
+      "m1": 258.77,
+      "m2": 257.86,
+      "v2": 257.36,
+      "sma200": 245.05,
       "state": "GOLD"
     }
   ],
@@ -8429,7 +8429,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 7537.3
+          "value": 7258.86
         }
       ]
     },
@@ -9944,7 +9944,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 6990.8
+          "value": 6732.68
         }
       ]
     },
@@ -11459,7 +11459,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13503.22
+          "value": 13004.16
         }
       ]
     }
@@ -11467,17 +11467,17 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "AMZN",
-    "smart_money_score": 62.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: 0.58).",
-    "cmf_20d": -0.103,
-    "up_down_vol_ratio": 1.09,
-    "absorption_5d_pct": 53.2,
-    "vol_shock_ratio": 0.15,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.12, P/C: 0.58).",
+    "cmf_20d": -0.123,
+    "up_down_vol_ratio": 1.03,
+    "absorption_5d_pct": 44.7,
+    "vol_shock_ratio": 0.45,
     "put_call_ratio": 0.58,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 275.0,
+    "gamma_wall": 265.0,
     "max_pain": 250.0,
     "unusual_call_sweep": false
   }

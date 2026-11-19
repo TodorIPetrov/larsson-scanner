@@ -3,25 +3,25 @@
   "name": "HON HAI PRECISION INDUSTRY",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T14:57:23.895588+00:00",
+  "generated_at": "2026-11-19T17:18:49.364637+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.4,
-  "backtest_total_bars": 365,
-  "current_price": 220.5,
+  "backtest_total_bars": 364,
+  "current_price": 221.0,
   "state": "BLUE",
-  "v1": 238.41,
-  "v2": 242.65,
-  "sma200": 236.01,
-  "rsi14": 35.7,
-  "atr14": 9.45,
+  "v1": 239.63,
+  "v2": 243.41,
+  "sma200": 235.99,
+  "rsi14": 36.0,
+  "atr14": 9.52,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": 10.4,
-    "cagr_pct": 7.0,
+    "cagr_pct": 7.1,
     "sharpe_ratio": 0.42,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 30.5,
-      "cagr_pct": 20.1,
+      "cagr_pct": 20.2,
       "sharpe_ratio": 0.74,
       "win_rate_pct": 50.0,
       "profit_factor": 7.85,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": 10.4,
-      "cagr_pct": 7.0,
+      "cagr_pct": 7.1,
       "sharpe_ratio": 0.42,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 50.5,
-      "cagr_pct": 32.6,
+      "total_return_pct": 50.9,
+      "cagr_pct": 32.9,
       "sharpe_ratio": 0.99,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.78,
+      "profit_factor": 1.79,
       "max_drawdown_pct": 28.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 281.05,
     "entry_price": 210.79,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 21.5,
-    "mos_pct": 21.5,
+    "actual_discount_pct": 21.4,
+    "mos_pct": 21.4,
     "moat": "None",
     "roic_pct": 10.9,
     "wacc_pct": 7.72,
@@ -5217,20 +5217,6 @@
       "v2": 243.41,
       "sma200": 235.99,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 221.0,
-      "high": 225.5,
-      "low": 217.0,
-      "close": 220.5,
-      "volume": 50746786.0,
-      "v1": 238.41,
-      "m1": 240.15,
-      "m2": 241.9,
-      "v2": 242.65,
-      "sma200": 236.01,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6710,10 +6696,6 @@
         {
           "time": "2026-11-18",
           "value": 11036.61
-        },
-        {
-          "time": "2026-11-19",
-          "value": 11036.61
         }
       ]
     },
@@ -8176,10 +8158,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 13045.43
-        },
-        {
-          "time": "2026-11-19",
           "value": 13045.43
         }
       ]
@@ -9644,10 +9622,6 @@
         {
           "time": "2026-11-18",
           "value": 10904.88
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10904.88
         }
       ]
     },
@@ -11111,10 +11085,6 @@
         {
           "time": "2026-11-18",
           "value": 15103.25
-        },
-        {
-          "time": "2026-11-19",
-          "value": 15069.08
         }
       ]
     }
@@ -11135,14 +11105,14 @@
   ],
   "smart_money": {
     "symbol": "2317.TW",
-    "smart_money_score": 50.0,
+    "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.021,
-    "up_down_vol_ratio": 0.83,
-    "absorption_5d_pct": 37.5,
-    "vol_shock_ratio": 1.17,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.05, P/C: N/A).",
+    "cmf_20d": 0.051,
+    "up_down_vol_ratio": 1.05,
+    "absorption_5d_pct": 32.6,
+    "vol_shock_ratio": 0.93,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
