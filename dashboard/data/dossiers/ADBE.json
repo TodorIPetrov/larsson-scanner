@@ -3,25 +3,25 @@
   "name": "Adobe Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T01:54:05.367470+00:00",
+  "generated_at": "2026-11-19T12:51:10.262984+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 235.55,
+  "backtest_total_bars": 376,
+  "current_price": 226.2,
   "state": "BLUE",
-  "v1": 245.24,
-  "v2": 246.97,
-  "sma200": 247.14,
-  "rsi14": 41.5,
-  "atr14": 8.41,
+  "v1": 244.22,
+  "v2": 246.38,
+  "sma200": 246.91,
+  "rsi14": 35.4,
+  "atr14": 8.56,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": -11.2,
-    "cagr_pct": -7.7,
+    "cagr_pct": -7.6,
     "sharpe_ratio": -0.32,
     "win_rate_pct": 20.0,
     "profit_factor": 0.85,
@@ -35,7 +35,7 @@
       "is_winner": false,
       "total_return_pct": -20.2,
       "cagr_pct": -14.1,
-      "sharpe_ratio": -0.88,
+      "sharpe_ratio": -0.87,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 28.7,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -18.8,
       "cagr_pct": -13.0,
-      "sharpe_ratio": -0.84,
+      "sharpe_ratio": -0.83,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 27.9,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": -11.2,
-      "cagr_pct": -7.7,
+      "cagr_pct": -7.6,
       "sharpe_ratio": -0.32,
       "win_rate_pct": 20.0,
       "profit_factor": 0.85,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -43.0,
-      "cagr_pct": -31.5,
-      "sharpe_ratio": -0.83,
+      "total_return_pct": -45.3,
+      "cagr_pct": -33.2,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 53.6,
@@ -107,8 +107,8 @@
     "target_price": 459.53,
     "entry_price": 390.6,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 48.7,
-    "mos_pct": 48.7,
+    "actual_discount_pct": 50.8,
+    "mos_pct": 50.8,
     "moat": "Wide",
     "roic_pct": 35.6,
     "wacc_pct": 10.49,
@@ -5371,6 +5371,20 @@
       "v2": 246.97,
       "sma200": 247.14,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 234.02,
+      "high": 234.96,
+      "low": 225.06,
+      "close": 226.2,
+      "volume": 4037300.0,
+      "v1": 244.22,
+      "m1": 245.14,
+      "m2": 246.02,
+      "v2": 246.38,
+      "sma200": 246.91,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,6 +6964,10 @@
         {
           "time": "2026-11-17",
           "value": 8882.2
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8882.2
         }
       ]
     },
@@ -8456,6 +8474,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9037.7
+        },
+        {
+          "time": "2026-11-18",
           "value": 9037.7
         }
       ]
@@ -9964,6 +9986,10 @@
         {
           "time": "2026-11-17",
           "value": 8833.5
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8833.5
         }
       ]
     },
@@ -11471,6 +11497,10 @@
         {
           "time": "2026-11-17",
           "value": 5704.45
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5478.02
         }
       ]
     }
@@ -11539,17 +11569,17 @@
   ],
   "smart_money": {
     "symbol": "ADBE",
-    "smart_money_score": 57.0,
+    "smart_money_score": 52.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.48) с Gamma стена на $230.00. Залог за рязък отскок.",
-    "cmf_20d": -0.057,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 52.7,
-    "vol_shock_ratio": 1.19,
-    "put_call_ratio": 0.48,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.42) с Gamma стена на $130.00. Залог за рязък отскок.",
+    "cmf_20d": -0.095,
+    "up_down_vol_ratio": 0.91,
+    "absorption_5d_pct": 45.0,
+    "vol_shock_ratio": 1.02,
+    "put_call_ratio": 0.42,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 230.0,
+    "gamma_wall": 130.0,
     "max_pain": 260.0,
     "unusual_call_sweep": false
   }

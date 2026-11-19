@@ -3,18 +3,18 @@
   "name": "HON HAI PRECISION INDUSTRY",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T01:53:59.046715+00:00",
+  "generated_at": "2026-11-19T12:51:07.727579+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.4,
   "backtest_total_bars": 365,
-  "current_price": 222.0,
+  "current_price": 220.5,
   "state": "BLUE",
-  "v1": 238.54,
-  "v2": 242.72,
+  "v1": 238.41,
+  "v2": 242.65,
   "sma200": 236.01,
-  "rsi14": 37.0,
-  "atr14": 9.17,
+  "rsi14": 35.7,
+  "atr14": 9.45,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 51.6,
-      "cagr_pct": 33.3,
-      "sharpe_ratio": 1.0,
+      "total_return_pct": 50.5,
+      "cagr_pct": 32.6,
+      "sharpe_ratio": 0.99,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.81,
+      "profit_factor": 1.78,
       "max_drawdown_pct": 28.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 281.05,
     "entry_price": 210.79,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 21.0,
-    "mos_pct": 21.0,
+    "actual_discount_pct": 21.5,
+    "mos_pct": 21.5,
     "moat": "None",
     "roic_pct": 10.9,
     "wacc_pct": 7.72,
@@ -5222,13 +5222,13 @@
       "time": "2026-11-19",
       "open": 221.0,
       "high": 225.5,
-      "low": 221.0,
-      "close": 222.0,
-      "volume": 15475747.0,
-      "v1": 238.54,
-      "m1": 240.25,
-      "m2": 241.98,
-      "v2": 242.72,
+      "low": 217.0,
+      "close": 220.5,
+      "volume": 50746786.0,
+      "v1": 238.41,
+      "m1": 240.15,
+      "m2": 241.9,
+      "v2": 242.65,
       "sma200": 236.01,
       "state": "BLUE"
     }
@@ -9762,7 +9762,7 @@
         },
         {
           "time": "2025-07-01",
-          "value": 10598.36
+          "value": 10598.37
         },
         {
           "time": "2025-07-02",
@@ -11114,7 +11114,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 15171.59
+          "value": 15069.08
         }
       ]
     }
@@ -11135,14 +11135,14 @@
   ],
   "smart_money": {
     "symbol": "2317.TW",
-    "smart_money_score": 40.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.022,
-    "up_down_vol_ratio": 0.96,
-    "absorption_5d_pct": 33.7,
-    "vol_shock_ratio": 0.36,
+    "cmf_20d": -0.021,
+    "up_down_vol_ratio": 0.83,
+    "absorption_5d_pct": 37.5,
+    "vol_shock_ratio": 1.17,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

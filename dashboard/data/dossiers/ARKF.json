@@ -3,18 +3,18 @@
   "name": "ARKF",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T01:54:12.893478+00:00",
+  "generated_at": "2026-11-19T12:51:11.859790+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 39.14,
+  "backtest_total_bars": 376,
+  "current_price": 39.13,
   "state": "BLUE",
-  "v1": 43.29,
-  "v2": 43.89,
-  "sma200": 41.97,
-  "rsi14": 31.4,
-  "atr14": 1.31,
+  "v1": 43.01,
+  "v2": 43.73,
+  "sma200": 41.96,
+  "rsi14": 31.3,
+  "atr14": 1.26,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -5371,6 +5371,20 @@
       "v2": 43.89,
       "sma200": 41.97,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 39.28,
+      "high": 39.5,
+      "low": 38.84,
+      "close": 39.13,
+      "volume": 1035700.0,
+      "v1": 43.01,
+      "m1": 43.38,
+      "m2": 43.65,
+      "v2": 43.73,
+      "sma200": 41.96,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,6 +6922,10 @@
         {
           "time": "2026-11-17",
           "value": 12539.92
+        },
+        {
+          "time": "2026-11-18",
+          "value": 12539.92
         }
       ]
     },
@@ -8414,6 +8432,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 10741.12
+        },
+        {
+          "time": "2026-11-18",
           "value": 10741.12
         }
       ]
@@ -9922,6 +9944,10 @@
         {
           "time": "2026-11-17",
           "value": 10098.91
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10098.91
         }
       ]
     },
@@ -11429,6 +11455,10 @@
         {
           "time": "2026-11-17",
           "value": 9641.55
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9639.09
         }
       ]
     }
@@ -11461,17 +11491,17 @@
   ],
   "smart_money": {
     "symbol": "ARKF",
-    "smart_money_score": 60.0,
+    "smart_money_score": 58.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.25) с Gamma стена на $42.00. Залог за рязък отскок.",
-    "cmf_20d": 0.047,
-    "up_down_vol_ratio": 0.51,
-    "absorption_5d_pct": 34.7,
-    "vol_shock_ratio": 0.9,
-    "put_call_ratio": 0.25,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.22) с Gamma стена на $39.00. Залог за рязък отскок.",
+    "cmf_20d": 0.008,
+    "up_down_vol_ratio": 0.31,
+    "absorption_5d_pct": 35.8,
+    "vol_shock_ratio": 6.29,
+    "put_call_ratio": 0.22,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 42.0,
+    "gamma_wall": 39.0,
     "max_pain": 50.0,
     "unusual_call_sweep": false
   }

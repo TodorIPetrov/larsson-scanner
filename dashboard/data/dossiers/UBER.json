@@ -3,17 +3,17 @@
   "name": "Uber Technologies, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T01:56:18.726819+00:00",
+  "generated_at": "2026-11-19T12:51:40.890579+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 68.81,
+  "backtest_total_bars": 376,
+  "current_price": 68.76,
   "state": "BLUE",
-  "v1": 69.1,
-  "v2": 69.98,
-  "sma200": 72.55,
-  "rsi14": 49.1,
+  "v1": 69.09,
+  "v2": 69.95,
+  "sma200": 72.5,
+  "rsi14": 48.9,
   "atr14": 2.08,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -107,8 +107,8 @@
     "target_price": 85.19,
     "entry_price": 68.15,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 19.2,
-    "mos_pct": 19.2,
+    "actual_discount_pct": 19.3,
+    "mos_pct": 19.3,
     "moat": "Narrow",
     "roic_pct": 14.1,
     "wacc_pct": 9.95,
@@ -5371,6 +5371,20 @@
       "v2": 69.98,
       "sma200": 72.55,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 68.16,
+      "high": 70.11,
+      "low": 68.02,
+      "close": 68.76,
+      "volume": 12235800.0,
+      "v1": 69.09,
+      "m1": 69.32,
+      "m2": 69.7,
+      "v2": 69.95,
+      "sma200": 72.5,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6936,6 +6950,10 @@
         {
           "time": "2026-11-17",
           "value": 9004.19
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9004.19
         }
       ]
     },
@@ -8442,6 +8460,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 9064.46
+        },
+        {
+          "time": "2026-11-18",
           "value": 9064.46
         }
       ]
@@ -9950,6 +9972,10 @@
         {
           "time": "2026-11-17",
           "value": 9248.96
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9248.96
         }
       ]
     },
@@ -11457,6 +11483,10 @@
         {
           "time": "2026-11-17",
           "value": 7771.76
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7766.11
         }
       ]
     }
@@ -11516,14 +11546,14 @@
     "smart_money_score": 40.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: 0.69).",
-    "cmf_20d": -0.016,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 46.2,
-    "vol_shock_ratio": 1.18,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: 0.69).",
+    "cmf_20d": 0.006,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 37.2,
+    "vol_shock_ratio": 0.64,
     "put_call_ratio": 0.69,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 70.0,
+    "gamma_wall": 69.0,
     "max_pain": 70.0,
     "unusual_call_sweep": false
   }

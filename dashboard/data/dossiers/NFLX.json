@@ -3,25 +3,25 @@
   "name": "Netflix, Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T01:55:33.066597+00:00",
+  "generated_at": "2026-11-19T12:51:30.228892+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 59.68,
+  "backtest_total_bars": 376,
+  "current_price": 59.82,
   "state": "BLUE",
-  "v1": 65.4,
-  "v2": 68.54,
-  "sma200": 80.27,
-  "rsi14": 33.0,
-  "atr14": 1.95,
+  "v1": 65.04,
+  "v2": 68.25,
+  "sma200": 80.17,
+  "rsi14": 33.6,
+  "atr14": 1.89,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": -12.5,
-    "cagr_pct": -8.6,
+    "cagr_pct": -8.5,
     "sharpe_ratio": -0.91,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
@@ -35,7 +35,7 @@
       "is_winner": false,
       "total_return_pct": -22.5,
       "cagr_pct": -15.7,
-      "sharpe_ratio": -0.84,
+      "sharpe_ratio": -0.83,
       "win_rate_pct": 25.0,
       "profit_factor": 0.01,
       "max_drawdown_pct": 30.9,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -26.8,
-      "cagr_pct": -18.9,
+      "cagr_pct": -18.8,
       "sharpe_ratio": -1.22,
       "win_rate_pct": 9.1,
       "profit_factor": 0.03,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": -12.5,
-      "cagr_pct": -8.6,
+      "cagr_pct": -8.5,
       "sharpe_ratio": -0.91,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -50.0,
-      "cagr_pct": -37.3,
-      "sharpe_ratio": -1.21,
+      "total_return_pct": -49.9,
+      "cagr_pct": -37.1,
+      "sharpe_ratio": -1.2,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 55.4,
@@ -107,8 +107,8 @@
     "target_price": 43.7,
     "entry_price": 37.14,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -36.6,
-    "mos_pct": -36.6,
+    "actual_discount_pct": -36.9,
+    "mos_pct": -36.9,
     "moat": "Wide",
     "roic_pct": 28.6,
     "wacc_pct": 11.16,
@@ -5371,6 +5371,20 @@
       "v2": 68.54,
       "sma200": 80.27,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 59.7,
+      "high": 60.5,
+      "low": 59.42,
+      "close": 59.82,
+      "volume": 26823600.0,
+      "v1": 65.04,
+      "m1": 66.06,
+      "m2": 67.43,
+      "v2": 68.25,
+      "sma200": 80.17,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,6 +6922,10 @@
         {
           "time": "2026-11-17",
           "value": 8754.29
+        },
+        {
+          "time": "2026-11-18",
+          "value": 8754.29
         }
       ]
     },
@@ -8414,6 +8432,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 7750.48
+        },
+        {
+          "time": "2026-11-18",
           "value": 7750.48
         }
       ]
@@ -9922,6 +9944,10 @@
         {
           "time": "2026-11-17",
           "value": 7797.41
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7797.41
         }
       ]
     },
@@ -11429,6 +11455,10 @@
         {
           "time": "2026-11-17",
           "value": 5000.03
+        },
+        {
+          "time": "2026-11-18",
+          "value": 5011.76
         }
       ]
     }
@@ -11461,15 +11491,15 @@
   ],
   "smart_money": {
     "symbol": "NFLX",
-    "smart_money_score": 25.0,
+    "smart_money_score": 35.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.49) с Gamma стена на $60.00. Залог за рязък отскок.",
-    "cmf_20d": -0.164,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 27.2,
-    "vol_shock_ratio": 0.76,
-    "put_call_ratio": 0.49,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.45) с Gamma стена на $60.00. Залог за рязък отскок.",
+    "cmf_20d": -0.14,
+    "up_down_vol_ratio": 0.86,
+    "absorption_5d_pct": 14.9,
+    "vol_shock_ratio": 0.61,
+    "put_call_ratio": 0.45,
     "options_sentiment": "BULLISH",
     "gamma_wall": 60.0,
     "max_pain": 60.0,

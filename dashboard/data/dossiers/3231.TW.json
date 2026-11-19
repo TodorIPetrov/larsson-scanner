@@ -3,18 +3,18 @@
   "name": "WISTRON CORPORATION",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T01:54:00.109339+00:00",
+  "generated_at": "2026-11-19T12:51:08.544831+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.4,
   "backtest_total_bars": 365,
-  "current_price": 160.0,
+  "current_price": 156.0,
   "state": "NEUTRAL",
-  "v1": 174.88,
-  "v2": 177.11,
-  "sma200": 155.7,
-  "rsi14": 37.6,
-  "atr14": 8.32,
+  "v1": 174.71,
+  "v2": 177.02,
+  "sma200": 155.68,
+  "rsi14": 35.3,
+  "atr14": 8.68,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 32.4,
-      "cagr_pct": 21.4,
-      "sharpe_ratio": 0.69,
+      "total_return_pct": 29.1,
+      "cagr_pct": 19.3,
+      "sharpe_ratio": 0.65,
       "win_rate_pct": 50.0,
-      "profit_factor": 4.86,
+      "profit_factor": 4.46,
       "max_drawdown_pct": 26.6,
       "total_trades": 4
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 23.7,
-      "cagr_pct": 15.8,
-      "sharpe_ratio": 0.58,
+      "total_return_pct": 20.6,
+      "cagr_pct": 13.8,
+      "sharpe_ratio": 0.53,
       "win_rate_pct": 60.0,
-      "profit_factor": 7.31,
+      "profit_factor": 6.69,
       "max_drawdown_pct": 25.7,
       "total_trades": 5
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 50.8,
-      "cagr_pct": 32.8,
-      "sharpe_ratio": 0.89,
+      "total_return_pct": 47.1,
+      "cagr_pct": 30.5,
+      "sharpe_ratio": 0.85,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.98,
+      "profit_factor": 1.83,
       "max_drawdown_pct": 25.7,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 345.4,
     "entry_price": 259.05,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 53.7,
-    "mos_pct": 53.7,
+    "actual_discount_pct": 54.8,
+    "mos_pct": 54.8,
     "moat": "Narrow",
     "roic_pct": 20.0,
     "wacc_pct": 8.0,
@@ -5222,14 +5222,14 @@
       "time": "2026-11-19",
       "open": 161.0,
       "high": 164.0,
-      "low": 160.0,
-      "close": 160.0,
-      "volume": 4351572.0,
-      "v1": 174.88,
-      "m1": 176.31,
-      "m2": 177.15,
-      "v2": 177.11,
-      "sma200": 155.7,
+      "low": 155.0,
+      "close": 156.0,
+      "volume": 23282177.0,
+      "v1": 174.71,
+      "m1": 176.18,
+      "m2": 177.05,
+      "v2": 177.02,
+      "sma200": 155.68,
       "state": "NEUTRAL"
     }
   ],
@@ -8236,7 +8236,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13251.22
+          "value": 12920.21
         }
       ]
     },
@@ -9703,7 +9703,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12385.77
+          "value": 12076.26
         }
       ]
     },
@@ -11170,7 +11170,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 15098.05
+          "value": 14720.6
         }
       ]
     }
@@ -11239,14 +11239,14 @@
   ],
   "smart_money": {
     "symbol": "3231.TW",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
-    "cmf_20d": -0.135,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 34.0,
-    "vol_shock_ratio": 0.14,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
+    "cmf_20d": -0.155,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 36.2,
+    "vol_shock_ratio": 0.73,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

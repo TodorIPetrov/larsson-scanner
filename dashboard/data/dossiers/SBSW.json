@@ -3,26 +3,26 @@
   "name": "D/B/A Sibanye-Stillwater Limite",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T01:56:04.211059+00:00",
+  "generated_at": "2026-11-19T12:51:37.414388+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 8.45,
+  "backtest_total_bars": 376,
+  "current_price": 7.76,
   "state": "BLUE",
-  "v1": 9.38,
-  "v2": 9.74,
-  "sma200": 11.02,
-  "rsi14": 35.6,
-  "atr14": 0.42,
+  "v1": 9.28,
+  "v2": 9.67,
+  "sma200": 10.98,
+  "rsi14": 29.0,
+  "atr14": 0.44,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 113.9,
-    "cagr_pct": 66.7,
-    "sharpe_ratio": 1.25,
+    "cagr_pct": 66.5,
+    "sharpe_ratio": 1.24,
     "win_rate_pct": 66.7,
     "profit_factor": 6.44,
     "max_drawdown_pct": 42.8,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 87.7,
-      "cagr_pct": 52.7,
+      "cagr_pct": 52.5,
       "sharpe_ratio": 1.05,
       "win_rate_pct": 33.3,
       "profit_factor": 4.68,
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 113.9,
-      "cagr_pct": 66.7,
-      "sharpe_ratio": 1.25,
+      "cagr_pct": 66.5,
+      "sharpe_ratio": 1.24,
       "win_rate_pct": 66.7,
       "profit_factor": 6.44,
       "max_drawdown_pct": 42.8,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 45.6,
-      "cagr_pct": 28.7,
+      "cagr_pct": 28.6,
       "sharpe_ratio": 0.76,
       "win_rate_pct": 33.3,
       "profit_factor": 5.76,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -8.9,
-      "cagr_pct": -6.1,
-      "sharpe_ratio": -0.76,
+      "total_return_pct": -11.8,
+      "cagr_pct": -8.1,
+      "sharpe_ratio": -0.98,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 13.5,
+      "max_drawdown_pct": 16.2,
       "total_trades": 2
     },
     {
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 54.0,
-      "cagr_pct": 33.6,
-      "sharpe_ratio": 0.76,
+      "total_return_pct": 41.4,
+      "cagr_pct": 26.1,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.88,
+      "profit_factor": 0.68,
       "max_drawdown_pct": 61.0,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 9.23,
     "entry_price": 7.38,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 8.5,
-    "mos_pct": 8.5,
+    "actual_discount_pct": 15.9,
+    "mos_pct": 15.9,
     "moat": "Wide",
     "roic_pct": 20.5,
     "wacc_pct": 8.42,
@@ -5371,6 +5371,20 @@
       "v2": 9.74,
       "sma200": 11.02,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 8.0,
+      "high": 8.03,
+      "low": 7.65,
+      "close": 7.76,
+      "volume": 10872100.0,
+      "v1": 9.28,
+      "m1": 9.43,
+      "m2": 9.59,
+      "v2": 9.67,
+      "sma200": 10.98,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6922,6 +6936,10 @@
         {
           "time": "2026-11-17",
           "value": 21394.27
+        },
+        {
+          "time": "2026-11-18",
+          "value": 21394.27
         }
       ]
     },
@@ -8428,6 +8446,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 18770.46
+        },
+        {
+          "time": "2026-11-18",
           "value": 18770.46
         }
       ]
@@ -9936,6 +9958,10 @@
         {
           "time": "2026-11-17",
           "value": 14556.73
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14556.73
         }
       ]
     },
@@ -11443,6 +11469,10 @@
         {
           "time": "2026-11-17",
           "value": 15411.21
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14152.78
         }
       ]
     }
@@ -11490,14 +11520,14 @@
     "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.08, P/C: 0.93).",
-    "cmf_20d": 0.083,
-    "up_down_vol_ratio": 0.64,
-    "absorption_5d_pct": 18.6,
-    "vol_shock_ratio": 0.91,
-    "put_call_ratio": 0.93,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 8.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 0.65).",
+    "cmf_20d": 0.031,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 16.6,
+    "vol_shock_ratio": 2.06,
+    "put_call_ratio": 0.65,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 17.0,
     "max_pain": 12.0,
     "unusual_call_sweep": false
   }

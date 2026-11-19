@@ -3,25 +3,25 @@
   "name": "Centrus Energy Corp.",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T01:55:14.938074+00:00",
+  "generated_at": "2026-11-19T12:51:25.654917+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 94.19,
+  "backtest_total_bars": 376,
+  "current_price": 91.76,
   "state": "BLUE",
-  "v1": 112.72,
-  "v2": 128.01,
-  "sma200": 173.37,
-  "rsi14": 38.2,
-  "atr14": 8.92,
+  "v1": 111.53,
+  "v2": 126.86,
+  "sma200": 172.42,
+  "rsi14": 37.0,
+  "atr14": 8.89,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 134.5,
-    "cagr_pct": 77.3,
+    "cagr_pct": 77.1,
     "sharpe_ratio": 1.25,
     "win_rate_pct": 40.0,
     "profit_factor": 3.12,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 73.7,
-      "cagr_pct": 44.9,
+      "cagr_pct": 44.8,
       "sharpe_ratio": 0.9,
       "win_rate_pct": 20.0,
       "profit_factor": 2.04,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 134.5,
-      "cagr_pct": 77.3,
+      "cagr_pct": 77.1,
       "sharpe_ratio": 1.25,
       "win_rate_pct": 40.0,
       "profit_factor": 3.12,
@@ -93,10 +93,10 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 1.2,
-      "cagr_pct": 0.8,
-      "sharpe_ratio": 0.46,
-      "win_rate_pct": 100.0,
+      "total_return_pct": -1.4,
+      "cagr_pct": -1.0,
+      "sharpe_ratio": 0.44,
+      "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 79.6,
       "total_trades": 1
@@ -107,8 +107,8 @@
     "target_price": 67.99,
     "entry_price": 47.59,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -38.5,
-    "mos_pct": -38.5,
+    "actual_discount_pct": -35.0,
+    "mos_pct": -35.0,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 8.62,
@@ -5371,6 +5371,20 @@
       "v2": 128.01,
       "sma200": 173.37,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 94.46,
+      "high": 99.16,
+      "low": 90.65,
+      "close": 91.76,
+      "volume": 496300.0,
+      "v1": 111.53,
+      "m1": 116.33,
+      "m2": 122.93,
+      "v2": 126.86,
+      "sma200": 172.42,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,6 +6964,10 @@
         {
           "time": "2026-11-17",
           "value": 23452.6
+        },
+        {
+          "time": "2026-11-18",
+          "value": 23452.6
         }
       ]
     },
@@ -8456,6 +8474,10 @@
         },
         {
           "time": "2026-11-17",
+          "value": 17373.75
+        },
+        {
+          "time": "2026-11-18",
           "value": 17373.75
         }
       ]
@@ -9964,6 +9986,10 @@
         {
           "time": "2026-11-17",
           "value": 14614.77
+        },
+        {
+          "time": "2026-11-18",
+          "value": 14614.77
         }
       ]
     },
@@ -11471,6 +11497,10 @@
         {
           "time": "2026-11-17",
           "value": 10127.63
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9866.35
         }
       ]
     }
@@ -11540,16 +11570,16 @@
   "smart_money": {
     "symbol": "LEU",
     "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: 0.60).",
-    "cmf_20d": -0.044,
-    "up_down_vol_ratio": 0.5,
-    "absorption_5d_pct": 25.0,
-    "vol_shock_ratio": 0.57,
-    "put_call_ratio": 0.6,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.50) с Gamma стена на $95.00. Залог за рязък отскок.",
+    "cmf_20d": -0.035,
+    "up_down_vol_ratio": 0.52,
+    "absorption_5d_pct": 24.7,
+    "vol_shock_ratio": 0.6,
+    "put_call_ratio": 0.5,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 100.0,
+    "gamma_wall": 95.0,
     "max_pain": 100.0,
     "unusual_call_sweep": false
   }

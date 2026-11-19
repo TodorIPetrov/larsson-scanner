@@ -3,18 +3,18 @@
   "name": "Constellation Energy Corporatio",
   "sector": "Utilities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T01:54:34.165838+00:00",
+  "generated_at": "2026-11-19T12:51:16.521209+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-17",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 268.07,
+  "backtest_total_bars": 376,
+  "current_price": 262.74,
   "state": "BLUE",
-  "v1": 266.84,
-  "v2": 268.3,
-  "sma200": 277.46,
-  "rsi14": 50.4,
-  "atr14": 12.99,
+  "v1": 266.76,
+  "v2": 268.21,
+  "sma200": 277.43,
+  "rsi14": 47.8,
+  "atr14": 12.61,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -31.1,
-      "cagr_pct": -22.2,
+      "cagr_pct": -22.1,
       "sharpe_ratio": -0.66,
       "win_rate_pct": 11.1,
       "profit_factor": 0.13,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -20.2,
-      "cagr_pct": -14.1,
+      "cagr_pct": -14.0,
       "sharpe_ratio": -0.41,
       "win_rate_pct": 11.1,
       "profit_factor": 0.22,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -23.1,
-      "cagr_pct": -16.2,
+      "cagr_pct": -16.1,
       "sharpe_ratio": -0.59,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -5.4,
-      "cagr_pct": -3.7,
-      "sharpe_ratio": 0.12,
+      "total_return_pct": -7.3,
+      "cagr_pct": -4.9,
+      "sharpe_ratio": 0.09,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 41.2,
@@ -107,8 +107,8 @@
     "target_price": 98.29,
     "entry_price": 73.72,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -172.7,
-    "mos_pct": -172.7,
+    "actual_discount_pct": -167.3,
+    "mos_pct": -167.3,
     "moat": "None",
     "roic_pct": 6.1,
     "wacc_pct": 8.77,
@@ -5371,6 +5371,20 @@
       "v2": 268.3,
       "sma200": 277.46,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-18",
+      "open": 268.48,
+      "high": 269.48,
+      "low": 261.75,
+      "close": 262.74,
+      "volume": 2527900.0,
+      "v1": 266.76,
+      "m1": 267.18,
+      "m2": 267.8,
+      "v2": 268.21,
+      "sma200": 277.43,
+      "state": "BLUE"
     }
   ],
   "markers": [],
@@ -6879,6 +6893,10 @@
         {
           "time": "2026-11-17",
           "value": 10000.0
+        },
+        {
+          "time": "2026-11-18",
+          "value": 10000.0
         }
       ]
     },
@@ -6929,7 +6947,7 @@
         },
         {
           "time": "2025-06-06",
-          "value": 10233.15
+          "value": 10233.14
         },
         {
           "time": "2025-06-09",
@@ -7113,7 +7131,7 @@
         },
         {
           "time": "2025-08-13",
-          "value": 11047.5
+          "value": 11047.49
         },
         {
           "time": "2025-08-14",
@@ -8386,6 +8404,10 @@
         {
           "time": "2026-11-17",
           "value": 7980.12
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7980.12
         }
       ]
     },
@@ -8412,7 +8434,7 @@
         },
         {
           "time": "2025-05-29",
-          "value": 10626.22
+          "value": 10626.21
         },
         {
           "time": "2025-05-30",
@@ -9893,6 +9915,10 @@
         {
           "time": "2026-11-17",
           "value": 7144.54
+        },
+        {
+          "time": "2026-11-18",
+          "value": 7144.54
         }
       ]
     },
@@ -9931,7 +9957,7 @@
         },
         {
           "time": "2025-06-03",
-          "value": 10965.22
+          "value": 10965.21
         },
         {
           "time": "2025-06-04",
@@ -9959,7 +9985,7 @@
         },
         {
           "time": "2025-06-12",
-          "value": 10522.1
+          "value": 10522.09
         },
         {
           "time": "2025-06-13",
@@ -10095,7 +10121,7 @@
         },
         {
           "time": "2025-08-01",
-          "value": 11936.92
+          "value": 11936.93
         },
         {
           "time": "2025-08-04",
@@ -11400,6 +11426,10 @@
         {
           "time": "2026-11-17",
           "value": 9468.6
+        },
+        {
+          "time": "2026-11-18",
+          "value": 9280.34
         }
       ]
     }
@@ -11407,17 +11437,17 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "CEG",
-    "smart_money_score": 47.0,
+    "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.14, P/C: 1.73).",
-    "cmf_20d": 0.144,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 58.9,
-    "vol_shock_ratio": 0.78,
-    "put_call_ratio": 1.73,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.10, P/C: 1.69).",
+    "cmf_20d": 0.101,
+    "up_down_vol_ratio": 0.59,
+    "absorption_5d_pct": 45.8,
+    "vol_shock_ratio": 0.66,
+    "put_call_ratio": 1.69,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 270.0,
+    "gamma_wall": 280.0,
     "max_pain": 220.0,
     "unusual_call_sweep": false
   }
