@@ -3,28 +3,28 @@
   "name": "DHL AG                        N",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:18:58.579649+00:00",
+  "generated_at": "2026-11-19T23:03:59.691387+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 58.98,
+  "backtest_total_bars": 380,
+  "current_price": 59.94,
   "state": "GOLD",
-  "v1": 58.84,
-  "v2": 57.77,
-  "sma200": 52.3,
-  "rsi14": 50.4,
-  "atr14": 1.13,
+  "v1": 58.78,
+  "v2": 57.71,
+  "sma200": 52.25,
+  "rsi14": 56.6,
+  "atr14": 1.11,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
-    "total_return_pct": 40.1,
-    "cagr_pct": 25.0,
-    "sharpe_ratio": 1.07,
+    "total_return_pct": 42.3,
+    "cagr_pct": 26.4,
+    "sharpe_ratio": 1.12,
     "win_rate_pct": 42.9,
-    "profit_factor": 5.26,
+    "profit_factor": 5.5,
     "max_drawdown_pct": 18.1,
     "total_trades": 7
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 45.8,
-      "cagr_pct": 28.3,
-      "sharpe_ratio": 1.14,
+      "total_return_pct": 48.1,
+      "cagr_pct": 29.8,
+      "sharpe_ratio": 1.19,
       "win_rate_pct": 25.0,
-      "profit_factor": 7.28,
+      "profit_factor": 7.6,
       "max_drawdown_pct": 14.3,
       "total_trades": 4
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
-      "total_return_pct": 40.1,
-      "cagr_pct": 25.0,
-      "sharpe_ratio": 1.07,
+      "total_return_pct": 42.3,
+      "cagr_pct": 26.4,
+      "sharpe_ratio": 1.12,
       "win_rate_pct": 42.9,
-      "profit_factor": 5.26,
+      "profit_factor": 5.5,
       "max_drawdown_pct": 18.1,
       "total_trades": 7
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 32.7,
-      "cagr_pct": 20.6,
-      "sharpe_ratio": 0.91,
+      "total_return_pct": 34.8,
+      "cagr_pct": 21.9,
+      "sharpe_ratio": 0.96,
       "win_rate_pct": 36.4,
-      "profit_factor": 6.15,
+      "profit_factor": 6.41,
       "max_drawdown_pct": 15.8,
       "total_trades": 11
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 59.0,
-      "cagr_pct": 35.9,
-      "sharpe_ratio": 1.37,
+      "total_return_pct": 61.6,
+      "cagr_pct": 37.5,
+      "sharpe_ratio": 1.42,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.12,
+      "profit_factor": 4.3,
       "max_drawdown_pct": 14.3,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 82.62,
     "entry_price": 61.96,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 28.6,
-    "mos_pct": 28.6,
+    "actual_discount_pct": 27.5,
+    "mos_pct": 27.5,
     "moat": "None",
     "roic_pct": 10.7,
     "wacc_pct": 8.68,
@@ -5441,20 +5441,6 @@
       "v2": 57.71,
       "sma200": 52.25,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 60.0,
-      "high": 60.34,
-      "low": 58.96,
-      "close": 58.98,
-      "volume": 1114736.0,
-      "v1": 58.84,
-      "m1": 58.5,
-      "m2": 58.05,
-      "v2": 57.77,
-      "sma200": 52.3,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5550,11 +5536,11 @@
       "text": "BUY #7 @ $44.93"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +31.02% ($3313.39 €)"
+      "text": "EXIT +33.15% ($3541.17 €)"
     }
   ],
   "equity_curves": [
@@ -7082,10 +7068,6 @@
         {
           "time": "2026-11-18",
           "value": 14247.24
-        },
-        {
-          "time": "2026-11-19",
-          "value": 14019.22
         }
       ]
     },
@@ -8613,10 +8595,6 @@
         {
           "time": "2026-11-18",
           "value": 14827.5
-        },
-        {
-          "time": "2026-11-19",
-          "value": 14590.17
         }
       ]
     },
@@ -10144,10 +10122,6 @@
         {
           "time": "2026-11-18",
           "value": 13494.73
-        },
-        {
-          "time": "2026-11-19",
-          "value": 13278.67
         }
       ]
     },
@@ -11675,10 +11649,6 @@
         {
           "time": "2026-11-18",
           "value": 16173.22
-        },
-        {
-          "time": "2026-11-19",
-          "value": 15914.19
         }
       ]
     }
@@ -11760,25 +11730,25 @@
       "num": 7,
       "entry_date": "2026-04-30",
       "entry_price": 44.93,
-      "exit_date": "2026-11-19",
-      "exit_price": 58.98,
-      "holding_days": 144,
-      "pnl_pct": 31.02,
-      "pnl_eur": 3313.39,
+      "exit_date": "2026-11-18",
+      "exit_price": 59.94,
+      "holding_days": 143,
+      "pnl_pct": 33.15,
+      "pnl_eur": 3541.17,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "DHL.DE",
-    "smart_money_score": 70.0,
+    "smart_money_score": 80.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.11, Up/Dn Vol: 2.05x). Силна скрита подкрепа.",
-    "cmf_20d": 0.112,
-    "up_down_vol_ratio": 2.05,
-    "absorption_5d_pct": 30.0,
-    "vol_shock_ratio": 0.73,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 2.02x). Силна скрита подкрепа.",
+    "cmf_20d": 0.121,
+    "up_down_vol_ratio": 2.02,
+    "absorption_5d_pct": 38.8,
+    "vol_shock_ratio": 0.79,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

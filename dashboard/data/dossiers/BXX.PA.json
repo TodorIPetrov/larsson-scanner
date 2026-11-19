@@ -3,17 +3,17 @@
   "name": "Amundi EURO STOXX 50 Daily (-2x) Inverse UCITS ETF",
   "sector": "Хеджиращи деривати",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:18:55.740862+00:00",
+  "generated_at": "2026-11-19T23:03:54.108027+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 384,
-  "current_price": 0.44,
-  "state": "GOLD",
+  "backtest_total_bars": 383,
+  "current_price": 0.43,
+  "state": "NEUTRAL",
   "v1": 0.42,
   "v2": 0.42,
-  "sma200": 0.44,
-  "rsi14": 58.2,
+  "sma200": 0.45,
+  "rsi14": 55.8,
   "atr14": 0.01,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -15.2,
-      "cagr_pct": -10.3,
-      "sharpe_ratio": -0.71,
+      "total_return_pct": -16.3,
+      "cagr_pct": -11.1,
+      "sharpe_ratio": -0.77,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.22,
+      "profit_factor": 0.16,
       "max_drawdown_pct": 25.3,
       "total_trades": 5
     },
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -20.7,
-      "cagr_pct": -14.1,
+      "cagr_pct": -14.2,
       "sharpe_ratio": -1.07,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -15.2,
-      "cagr_pct": -10.2,
-      "sharpe_ratio": -1.19,
+      "total_return_pct": -15.7,
+      "cagr_pct": -10.7,
+      "sharpe_ratio": -1.25,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.25,
+      "profit_factor": 0.22,
       "max_drawdown_pct": 20.5,
       "total_trades": 8
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -26.2,
-      "cagr_pct": -18.1,
-      "sharpe_ratio": -0.6,
+      "total_return_pct": -27.1,
+      "cagr_pct": -18.8,
+      "sharpe_ratio": -0.63,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 41.6,
@@ -107,8 +107,8 @@
     "target_price": 0.55,
     "entry_price": 0.44,
     "required_mos_pct": 0.0,
-    "actual_discount_pct": 20.6,
-    "mos_pct": 20.6,
+    "actual_discount_pct": 21.6,
+    "mos_pct": 21.6,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 0.0,
@@ -5483,20 +5483,6 @@
       "v2": 0.42,
       "sma200": 0.45,
       "state": "NEUTRAL"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 0.43,
-      "high": 0.44,
-      "low": 0.42,
-      "close": 0.44,
-      "volume": 315607.0,
-      "v1": 0.42,
-      "m1": 0.42,
-      "m2": 0.42,
-      "v2": 0.42,
-      "sma200": 0.44,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -7052,10 +7038,6 @@
         {
           "time": "2026-11-18",
           "value": 9726.95
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9726.95
         }
       ]
     },
@@ -8595,10 +8577,6 @@
         {
           "time": "2026-11-18",
           "value": 8373.84
-        },
-        {
-          "time": "2026-11-19",
-          "value": 8484.48
         }
       ]
     },
@@ -10138,10 +10116,6 @@
         {
           "time": "2026-11-18",
           "value": 8429.64
-        },
-        {
-          "time": "2026-11-19",
-          "value": 8487.09
         }
       ]
     },
@@ -11681,10 +11655,6 @@
         {
           "time": "2026-11-18",
           "value": 7294.07
-        },
-        {
-          "time": "2026-11-19",
-          "value": 7390.53
         }
       ]
     }
@@ -11708,11 +11678,11 @@
     "smart_money_score": 84.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.64x). Силна скрита подкрепа.",
-    "cmf_20d": 0.04,
-    "up_down_vol_ratio": 1.64,
-    "absorption_5d_pct": 87.3,
-    "vol_shock_ratio": 0.26,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.05, Up/Dn Vol: 1.67x). Силна скрита подкрепа.",
+    "cmf_20d": 0.053,
+    "up_down_vol_ratio": 1.67,
+    "absorption_5d_pct": 75.1,
+    "vol_shock_ratio": 4.78,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

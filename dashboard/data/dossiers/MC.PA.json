@@ -3,25 +3,25 @@
   "name": "LVMH",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:19:05.888549+00:00",
+  "generated_at": "2026-11-19T23:04:13.257407+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 384,
-  "current_price": 391.9,
+  "backtest_total_bars": 383,
+  "current_price": 388.1,
   "state": "BLUE",
-  "v1": 398.63,
-  "v2": 407.28,
-  "sma200": 456.77,
-  "rsi14": 44.9,
-  "atr14": 10.05,
+  "v1": 399.09,
+  "v2": 407.82,
+  "sma200": 457.44,
+  "rsi14": 41.3,
+  "atr14": 10.23,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 14.9,
-    "cagr_pct": 9.5,
+    "cagr_pct": 9.6,
     "sharpe_ratio": 0.67,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 14.9,
-      "cagr_pct": 9.5,
+      "cagr_pct": 9.6,
       "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 5.0,
-      "cagr_pct": 3.2,
+      "cagr_pct": 3.3,
       "sharpe_ratio": 0.27,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -17.6,
-      "cagr_pct": -12.0,
-      "sharpe_ratio": -0.26,
+      "total_return_pct": -18.4,
+      "cagr_pct": -12.6,
+      "sharpe_ratio": -0.28,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 41.0,
@@ -107,8 +107,8 @@
     "target_price": 481.31,
     "entry_price": 385.05,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 18.6,
-    "mos_pct": 18.6,
+    "actual_discount_pct": 19.4,
+    "mos_pct": 19.4,
     "moat": "Narrow",
     "roic_pct": 14.4,
     "wacc_pct": 8.35,
@@ -5483,20 +5483,6 @@
       "v2": 407.82,
       "sma200": 457.44,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 391.5,
-      "high": 395.75,
-      "low": 388.75,
-      "close": 391.9,
-      "volume": 597571.0,
-      "v1": 398.63,
-      "m1": 400.32,
-      "m2": 404.23,
-      "v2": 407.28,
-      "sma200": 456.77,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7052,10 +7038,6 @@
         {
           "time": "2026-11-18",
           "value": 11488.43
-        },
-        {
-          "time": "2026-11-19",
-          "value": 11488.43
         }
       ]
     },
@@ -8594,10 +8576,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10574.77
-        },
-        {
-          "time": "2026-11-19",
           "value": 10574.77
         }
       ]
@@ -10138,10 +10116,6 @@
         {
           "time": "2026-11-18",
           "value": 10498.62
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10498.62
         }
       ]
     },
@@ -11681,10 +11655,6 @@
         {
           "time": "2026-11-18",
           "value": 8164.24
-        },
-        {
-          "time": "2026-11-19",
-          "value": 8244.18
         }
       ]
     }
@@ -11705,14 +11675,14 @@
   ],
   "smart_money": {
     "symbol": "MC.PA",
-    "smart_money_score": 45.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.14, P/C: N/A).",
-    "cmf_20d": -0.136,
-    "up_down_vol_ratio": 1.32,
-    "absorption_5d_pct": 36.0,
-    "vol_shock_ratio": 0.99,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: N/A).",
+    "cmf_20d": -0.099,
+    "up_down_vol_ratio": 1.09,
+    "absorption_5d_pct": 27.1,
+    "vol_shock_ratio": 1.15,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

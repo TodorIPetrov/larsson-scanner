@@ -3,17 +3,17 @@
   "name": "Vulcan Energy Resources Ltd",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:19:18.831661+00:00",
+  "generated_at": "2026-11-19T23:04:38.134059+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
+  "backtest_total_bars": 380,
   "current_price": 0.65,
   "state": "BLUE",
-  "v1": 0.79,
-  "v2": 0.99,
-  "sma200": 1.73,
-  "rsi14": 36.2,
+  "v1": 0.8,
+  "v2": 1.0,
+  "sma200": 1.74,
+  "rsi14": 36.0,
   "atr14": 0.05,
   "empirical_tier": "A",
   "walk_forward_stable": false,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -69.4,
-      "cagr_pct": -54.3,
-      "sharpe_ratio": -0.9,
+      "total_return_pct": -69.5,
+      "cagr_pct": -54.5,
+      "sharpe_ratio": -0.91,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 82.0,
@@ -107,8 +107,8 @@
     "target_price": 0.55,
     "entry_price": 0.38,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -19.1,
-    "mos_pct": -19.1,
+    "actual_discount_pct": -18.8,
+    "mos_pct": -18.8,
     "moat": "None",
     "roic_pct": -18.5,
     "wacc_pct": 12.0,
@@ -5441,20 +5441,6 @@
       "v2": 1.0,
       "sma200": 1.74,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 0.66,
-      "high": 0.66,
-      "low": 0.65,
-      "close": 0.65,
-      "volume": 139738.0,
-      "v1": 0.79,
-      "m1": 0.85,
-      "m2": 0.94,
-      "v2": 0.99,
-      "sma200": 1.73,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7012,10 +6998,6 @@
         {
           "time": "2026-11-18",
           "value": 9067.86
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9067.86
         }
       ]
     },
@@ -8542,10 +8524,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9919.16
-        },
-        {
-          "time": "2026-11-19",
           "value": 9919.16
         }
       ]
@@ -10074,10 +10052,6 @@
         {
           "time": "2026-11-18",
           "value": 9308.84
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9308.84
         }
       ]
     },
@@ -11605,10 +11579,6 @@
         {
           "time": "2026-11-18",
           "value": 3054.67
-        },
-        {
-          "time": "2026-11-19",
-          "value": 3061.68
         }
       ]
     }
@@ -11641,14 +11611,14 @@
   ],
   "smart_money": {
     "symbol": "VUL.DE",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.11).",
-    "cmf_20d": -0.108,
-    "up_down_vol_ratio": 0.87,
-    "absorption_5d_pct": 22.6,
-    "vol_shock_ratio": 0.51,
+    "smart_money_score": 40.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: N/A).",
+    "cmf_20d": -0.027,
+    "up_down_vol_ratio": 0.93,
+    "absorption_5d_pct": 20.4,
+    "vol_shock_ratio": 0.24,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

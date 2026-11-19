@@ -3,29 +3,29 @@
   "name": "SAP SE                        I",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:19:14.194202+00:00",
+  "generated_at": "2026-11-19T23:04:29.393764+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 187.02,
+  "backtest_total_bars": 380,
+  "current_price": 193.92,
   "state": "GOLD",
-  "v1": 204.21,
-  "v2": 196.51,
-  "sma200": 166.38,
-  "rsi14": 31.4,
-  "atr14": 6.21,
+  "v1": 205.22,
+  "v2": 196.74,
+  "sma200": 166.31,
+  "rsi14": 36.5,
+  "atr14": 6.07,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 4.3,
-    "cagr_pct": 2.8,
-    "sharpe_ratio": 0.28,
+    "total_return_pct": 8.2,
+    "cagr_pct": 5.3,
+    "sharpe_ratio": 0.46,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
-    "max_drawdown_pct": 13.3,
+    "max_drawdown_pct": 10.1,
     "total_trades": 1
   },
   "all_strategies": [
@@ -33,36 +33,36 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -2.8,
-      "cagr_pct": -1.9,
-      "sharpe_ratio": 0.01,
+      "total_return_pct": 0.8,
+      "cagr_pct": 0.5,
+      "sharpe_ratio": 0.16,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.59,
-      "max_drawdown_pct": 13.3,
+      "profit_factor": 1.11,
+      "max_drawdown_pct": 11.2,
       "total_trades": 3
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -2.7,
-      "cagr_pct": -1.8,
-      "sharpe_ratio": 0.01,
+      "total_return_pct": 0.9,
+      "cagr_pct": 0.6,
+      "sharpe_ratio": 0.17,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.6,
-      "max_drawdown_pct": 13.3,
+      "profit_factor": 1.14,
+      "max_drawdown_pct": 11.0,
       "total_trades": 3
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -3.2,
-      "cagr_pct": -2.1,
-      "sharpe_ratio": -0.06,
+      "total_return_pct": 0.4,
+      "cagr_pct": 0.2,
+      "sharpe_ratio": 0.12,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.61,
-      "max_drawdown_pct": 13.3,
+      "profit_factor": 1.04,
+      "max_drawdown_pct": 10.2,
       "total_trades": 10
     },
     {
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -13.1,
-      "cagr_pct": -8.8,
+      "cagr_pct": -8.9,
       "sharpe_ratio": -1.16,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -81,21 +81,21 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 4.3,
-      "cagr_pct": 2.8,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 8.2,
+      "cagr_pct": 5.3,
+      "sharpe_ratio": 0.46,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 13.3,
+      "max_drawdown_pct": 10.1,
       "total_trades": 1
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -28.3,
-      "cagr_pct": -19.8,
-      "sharpe_ratio": -0.39,
+      "total_return_pct": -25.7,
+      "cagr_pct": -17.9,
+      "sharpe_ratio": -0.32,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 52.1,
@@ -107,8 +107,8 @@
     "target_price": 142.92,
     "entry_price": 114.33,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -30.9,
-    "mos_pct": -30.9,
+    "actual_discount_pct": -35.7,
+    "mos_pct": -35.7,
     "moat": "Narrow",
     "roic_pct": 15.8,
     "wacc_pct": 8.55,
@@ -5441,20 +5441,6 @@
       "v2": 196.74,
       "sma200": 166.31,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 193.92,
-      "high": 194.1,
-      "low": 186.02,
-      "close": 187.02,
-      "volume": 3419454.0,
-      "v1": 204.21,
-      "m1": 202.12,
-      "m2": 198.74,
-      "v2": 196.51,
-      "sma200": 166.38,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5466,11 +5452,11 @@
       "text": "BUY #1 @ $178.92"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-18",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.32% ($431.4 €)"
+      "text": "EXIT +8.17% ($815.89 €)"
     }
   ],
   "equity_curves": [
@@ -6998,10 +6984,6 @@
         {
           "time": "2026-11-18",
           "value": 10826.71
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10441.83
         }
       ]
     },
@@ -8529,10 +8511,6 @@
         {
           "time": "2026-11-18",
           "value": 10102.35
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9743.22
         }
       ]
     },
@@ -10060,10 +10038,6 @@
         {
           "time": "2026-11-18",
           "value": 10086.08
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9727.54
         }
       ]
     },
@@ -11591,10 +11565,6 @@
         {
           "time": "2026-11-18",
           "value": 7437.3
-        },
-        {
-          "time": "2026-11-19",
-          "value": 7172.67
         }
       ]
     }
@@ -11604,25 +11574,25 @@
       "num": 1,
       "entry_date": "2026-08-10",
       "entry_price": 178.92,
-      "exit_date": "2026-11-19",
-      "exit_price": 187.02,
-      "holding_days": 73,
-      "pnl_pct": 4.32,
-      "pnl_eur": 431.4,
+      "exit_date": "2026-11-18",
+      "exit_price": 193.92,
+      "holding_days": 72,
+      "pnl_pct": 8.17,
+      "pnl_eur": 815.89,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "SAP.DE",
-    "smart_money_score": 15.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.24).",
-    "cmf_20d": -0.237,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 24.9,
-    "vol_shock_ratio": 1.66,
+    "smart_money_score": 42.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.11, P/C: N/A).",
+    "cmf_20d": -0.111,
+    "up_down_vol_ratio": 0.81,
+    "absorption_5d_pct": 40.6,
+    "vol_shock_ratio": 1.81,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,18 +3,18 @@
   "name": "BAYERISCHE MOTOREN WERKE AG   S",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:18:54.917203+00:00",
+  "generated_at": "2026-11-19T23:03:52.428491+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 54.34,
+  "backtest_total_bars": 380,
+  "current_price": 55.0,
   "state": "BLUE",
-  "v1": 57.43,
-  "v2": 58.06,
-  "sma200": 66.34,
-  "rsi14": 35.9,
-  "atr14": 1.5,
+  "v1": 57.62,
+  "v2": 58.19,
+  "sma200": 66.49,
+  "rsi14": 38.2,
+  "atr14": 1.55,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -16.0,
-      "cagr_pct": -10.9,
-      "sharpe_ratio": -1.18,
+      "total_return_pct": -15.5,
+      "cagr_pct": -10.6,
+      "sharpe_ratio": -1.14,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 18.7,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -25.2,
-      "cagr_pct": -17.5,
-      "sharpe_ratio": -0.54,
+      "total_return_pct": -24.3,
+      "cagr_pct": -16.8,
+      "sharpe_ratio": -0.51,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 43.3,
@@ -107,8 +107,8 @@
     "target_price": 22.7,
     "entry_price": 17.02,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -139.4,
-    "mos_pct": -139.4,
+    "actual_discount_pct": -142.3,
+    "mos_pct": -142.3,
     "moat": "None",
     "roic_pct": 4.3,
     "wacc_pct": 8.0,
@@ -5441,20 +5441,6 @@
       "v2": 58.19,
       "sma200": 66.49,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 55.0,
-      "high": 55.1,
-      "low": 54.22,
-      "close": 54.34,
-      "volume": 1030563.0,
-      "v1": 57.43,
-      "m1": 57.54,
-      "m2": 57.82,
-      "v2": 58.06,
-      "sma200": 66.34,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6998,10 +6984,6 @@
         {
           "time": "2026-11-18",
           "value": 10904.77
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10904.77
         }
       ]
     },
@@ -8528,10 +8510,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10112.29
-        },
-        {
-          "time": "2026-11-19",
           "value": 10112.29
         }
       ]
@@ -10060,10 +10038,6 @@
         {
           "time": "2026-11-18",
           "value": 9613.26
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9613.26
         }
       ]
     },
@@ -11591,10 +11565,6 @@
         {
           "time": "2026-11-18",
           "value": 7578.71
-        },
-        {
-          "time": "2026-11-19",
-          "value": 7487.76
         }
       ]
     }
@@ -11615,14 +11585,14 @@
   ],
   "smart_money": {
     "symbol": "BMW.DE",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.27).",
-    "cmf_20d": -0.269,
-    "up_down_vol_ratio": 0.7,
-    "absorption_5d_pct": 22.4,
-    "vol_shock_ratio": 0.78,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.22).",
+    "cmf_20d": -0.221,
+    "up_down_vol_ratio": 0.87,
+    "absorption_5d_pct": 22.8,
+    "vol_shock_ratio": 0.94,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

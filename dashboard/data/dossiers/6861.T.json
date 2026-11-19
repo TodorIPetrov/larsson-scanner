@@ -3,18 +3,18 @@
   "name": "KEYENCE CORP",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:18:50.434157+00:00",
+  "generated_at": "2026-11-19T23:03:42.160090+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
-  "backtest_years": 1.4,
-  "backtest_total_bars": 365,
-  "current_price": 14722.0,
+  "backtest_end_date": "2026-11-19",
+  "backtest_years": 1.5,
+  "backtest_total_bars": 366,
+  "current_price": 14690.0,
   "state": "BLUE",
-  "v1": 15244.38,
-  "v2": 15438.01,
-  "sma200": 14400.52,
-  "rsi14": 43.2,
-  "atr14": 517.2,
+  "v1": 15197.59,
+  "v2": 15407.13,
+  "sma200": 14415.01,
+  "rsi14": 42.8,
+  "atr14": 507.04,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -1.5,
-      "cagr_pct": -1.0,
-      "sharpe_ratio": -0.84,
+      "total_return_pct": -1.6,
+      "cagr_pct": -1.1,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 2.2,
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 4.9,
-      "cagr_pct": 3.4,
+      "total_return_pct": 4.7,
+      "cagr_pct": 3.2,
       "sharpe_ratio": 0.26,
       "win_rate_pct": 25.0,
-      "profit_factor": 1.39,
+      "profit_factor": 1.37,
       "max_drawdown_pct": 20.1,
       "total_trades": 4
     },
@@ -93,33 +93,33 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 21.2,
-      "cagr_pct": 14.2,
-      "sharpe_ratio": 0.55,
+      "total_return_pct": 20.9,
+      "cagr_pct": 14.0,
+      "sharpe_ratio": 0.54,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.05,
+      "profit_factor": 1.04,
       "max_drawdown_pct": 20.1,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 34139.11,
-    "target_price": 34139.11,
-    "entry_price": 29018.25,
+    "fair_value": 7191.0,
+    "target_price": 7191.0,
+    "entry_price": 6112.35,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 56.9,
-    "mos_pct": 56.9,
+    "actual_discount_pct": -104.3,
+    "mos_pct": -104.3,
     "moat": "Wide",
-    "roic_pct": 22.9,
-    "wacc_pct": 9.67,
-    "z_score": 17.77,
-    "m_score": -2.46,
-    "tata": 0.004,
+    "roic_pct": 25.2,
+    "wacc_pct": 9.72,
+    "z_score": 17.76,
+    "m_score": -2.26,
+    "tata": 0.029,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "STRONG BUY",
+    "verdict": "REDUCE / OVERVALUED",
     "model_type": "Corporate FCFF DCF & EVA",
-    "latest_filing_date": "2026-03-31 (10-Q TTM)",
-    "last_fundamental_update": null
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-19"
   },
   "candles": [
     {
@@ -181,7 +181,7 @@
     {
       "time": "2025-05-28",
       "open": 12295.06,
-      "high": 12320.71,
+      "high": 12320.7,
       "low": 12109.64,
       "close": 12109.64,
       "volume": 2574000.0,
@@ -225,7 +225,7 @@
       "open": 11886.74,
       "high": 11912.38,
       "low": 11667.78,
-      "close": 11730.9,
+      "close": 11730.91,
       "volume": 2624000.0,
       "v1": 12119.31,
       "m1": 12089.32,
@@ -239,7 +239,7 @@
       "open": 11815.73,
       "high": 11839.4,
       "low": 11689.48,
-      "close": 11730.9,
+      "close": 11730.91,
       "volume": 2403500.0,
       "v1": 12095.65,
       "m1": 12072.22,
@@ -307,7 +307,7 @@
     {
       "time": "2025-06-10",
       "open": 11655.95,
-      "high": 11999.18,
+      "high": 11999.17,
       "low": 11628.33,
       "close": 11845.31,
       "volume": 4290000.0,
@@ -348,7 +348,7 @@
     },
     {
       "time": "2025-06-13",
-      "open": 11653.97,
+      "open": 11653.98,
       "high": 11699.34,
       "low": 11371.9,
       "close": 11436.99,
@@ -755,7 +755,7 @@
     {
       "time": "2025-07-25",
       "open": 11579.02,
-      "high": 11661.87,
+      "high": 11661.86,
       "low": 11330.47,
       "close": 11373.87,
       "volume": 4755000.0,
@@ -804,7 +804,7 @@
       "v1": 11252.39,
       "m1": 11303.99,
       "m2": 11380.59,
-      "v2": 11428.9,
+      "v2": 11428.91,
       "sma200": null,
       "state": "BLUE"
     },
@@ -840,7 +840,7 @@
       "time": "2025-08-04",
       "open": 11038.53,
       "high": 11257.49,
-      "low": 10957.66,
+      "low": 10957.65,
       "close": 11202.25,
       "volume": 3445500.0,
       "v1": 11217.47,
@@ -869,7 +869,7 @@
       "open": 11018.81,
       "high": 11042.48,
       "low": 10959.63,
-      "close": 11003.02,
+      "close": 11003.03,
       "volume": 2907500.0,
       "v1": 11204.73,
       "m1": 11252.94,
@@ -1063,7 +1063,7 @@
     {
       "time": "2025-08-27",
       "open": 11306.8,
-      "high": 11332.45,
+      "high": 11332.44,
       "low": 11099.68,
       "close": 11158.86,
       "volume": 2577500.0,
@@ -1147,7 +1147,7 @@
     {
       "time": "2025-09-04",
       "open": 11269.32,
-      "high": 11340.34,
+      "high": 11340.33,
       "low": 11135.19,
       "close": 11139.13,
       "volume": 2664000.0,
@@ -5231,6 +5231,20 @@
       "v2": 15438.01,
       "sma200": 14400.52,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 14530.0,
+      "high": 14730.0,
+      "low": 14355.0,
+      "close": 14690.0,
+      "volume": 1795800.0,
+      "v1": 15197.59,
+      "m1": 15293.64,
+      "m2": 15380.0,
+      "v2": 15407.13,
+      "sma200": 14415.01,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6770,6 +6784,10 @@
         {
           "time": "2026-11-18",
           "value": 11515.38
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11515.38
         }
       ]
     },
@@ -8237,6 +8255,10 @@
         {
           "time": "2026-11-18",
           "value": 10499.63
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10476.83
         }
       ]
     },
@@ -9704,6 +9726,10 @@
         {
           "time": "2026-11-18",
           "value": 9401.74
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9401.74
         }
       ]
     },
@@ -9730,7 +9756,7 @@
         },
         {
           "time": "2025-05-28",
-          "value": 9975.38
+          "value": 9975.37
         },
         {
           "time": "2025-05-29",
@@ -11171,6 +11197,10 @@
         {
           "time": "2026-11-18",
           "value": 12127.32
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12100.96
         }
       ]
     }
@@ -11239,14 +11269,14 @@
   ],
   "smart_money": {
     "symbol": "6861.T",
-    "smart_money_score": 25.0,
+    "smart_money_score": 35.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.199,
-    "up_down_vol_ratio": 0.75,
-    "absorption_5d_pct": 34.3,
-    "vol_shock_ratio": 0.79,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
+    "cmf_20d": -0.146,
+    "up_down_vol_ratio": 0.77,
+    "absorption_5d_pct": 47.3,
+    "vol_shock_ratio": 0.46,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

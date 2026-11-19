@@ -3,18 +3,18 @@
   "name": "SIEMENS AG                    N",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:19:14.572544+00:00",
+  "generated_at": "2026-11-19T23:04:30.063919+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 266.9,
-  "state": "NEUTRAL",
-  "v1": 271.19,
-  "v2": 271.25,
-  "sma200": 260.61,
-  "rsi14": 46.4,
-  "atr14": 7.73,
+  "backtest_total_bars": 380,
+  "current_price": 266.0,
+  "state": "GOLD",
+  "v1": 271.31,
+  "v2": 271.3,
+  "sma200": 260.53,
+  "rsi14": 45.6,
+  "atr14": 7.84,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 0.1,
-      "cagr_pct": 0.1,
-      "sharpe_ratio": 0.13,
+      "total_return_pct": -0.2,
+      "cagr_pct": -0.1,
+      "sharpe_ratio": 0.12,
       "win_rate_pct": 28.6,
-      "profit_factor": 1.01,
+      "profit_factor": 0.99,
       "max_drawdown_pct": 15.7,
       "total_trades": 7
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 0.9,
-      "cagr_pct": 0.6,
-      "sharpe_ratio": 0.14,
+      "total_return_pct": 0.5,
+      "cagr_pct": 0.3,
+      "sharpe_ratio": 0.13,
       "win_rate_pct": 37.5,
-      "profit_factor": 1.07,
+      "profit_factor": 1.04,
       "max_drawdown_pct": 15.9,
       "total_trades": 8
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -1.2,
-      "cagr_pct": -0.8,
-      "sharpe_ratio": 0.09,
+      "total_return_pct": -2.3,
+      "cagr_pct": -1.5,
+      "sharpe_ratio": 0.06,
       "win_rate_pct": 33.3,
-      "profit_factor": 1.4,
+      "profit_factor": 1.27,
       "max_drawdown_pct": 14.3,
       "total_trades": 9
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 25.4,
-      "cagr_pct": 16.1,
-      "sharpe_ratio": 0.63,
+      "total_return_pct": 24.9,
+      "cagr_pct": 15.9,
+      "sharpe_ratio": 0.62,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.24,
+      "profit_factor": 1.22,
       "max_drawdown_pct": 20.5,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 108.02,
     "entry_price": 81.01,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -147.1,
-    "mos_pct": -147.1,
+    "actual_discount_pct": -146.3,
+    "mos_pct": -146.3,
     "moat": "None",
     "roic_pct": 7.2,
     "wacc_pct": 9.41,
@@ -5441,20 +5441,6 @@
       "v2": 271.3,
       "sma200": 260.53,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 269.15,
-      "high": 272.35,
-      "low": 266.9,
-      "close": 266.9,
-      "volume": 741991.0,
-      "v1": 271.19,
-      "m1": 271.18,
-      "m2": 271.25,
-      "v2": 271.25,
-      "sma200": 260.61,
-      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -6998,10 +6984,6 @@
         {
           "time": "2026-11-18",
           "value": 11346.16
-        },
-        {
-          "time": "2026-11-19",
-          "value": 11346.16
         }
       ]
     },
@@ -8529,10 +8511,6 @@
         {
           "time": "2026-11-18",
           "value": 10062.29
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10096.3
         }
       ]
     },
@@ -10059,10 +10037,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10041.86
-        },
-        {
-          "time": "2026-11-19",
           "value": 10041.86
         }
       ]
@@ -11591,10 +11565,6 @@
         {
           "time": "2026-11-18",
           "value": 12506.15
-        },
-        {
-          "time": "2026-11-19",
-          "value": 12548.46
         }
       ]
     }
@@ -11615,14 +11585,14 @@
   ],
   "smart_money": {
     "symbol": "SIE.DE",
-    "smart_money_score": 42.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: N/A).",
-    "cmf_20d": -0.067,
-    "up_down_vol_ratio": 1.32,
-    "absorption_5d_pct": 26.9,
-    "vol_shock_ratio": 0.67,
+    "cmf_20d": -0.073,
+    "up_down_vol_ratio": 1.12,
+    "absorption_5d_pct": 30.6,
+    "vol_shock_ratio": 0.97,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

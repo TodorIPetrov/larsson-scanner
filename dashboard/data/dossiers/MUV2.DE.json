@@ -3,18 +3,18 @@
   "name": "MUENCHENER RUECKVERS.-GES. AG N",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:19:07.743854+00:00",
+  "generated_at": "2026-11-19T23:04:16.729461+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 574.8,
+  "backtest_total_bars": 380,
+  "current_price": 582.0,
   "state": "GOLD",
-  "v1": 563.77,
-  "v2": 546.64,
-  "sma200": 512.28,
-  "rsi14": 55.8,
-  "atr14": 10.57,
+  "v1": 562.72,
+  "v2": 545.5,
+  "sma200": 511.94,
+  "rsi14": 60.8,
+  "atr14": 10.68,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -19.2,
-      "cagr_pct": -13.1,
-      "sharpe_ratio": -0.73,
+      "total_return_pct": -18.2,
+      "cagr_pct": -12.5,
+      "sharpe_ratio": -0.68,
       "win_rate_pct": 10.0,
-      "profit_factor": 0.36,
+      "profit_factor": 0.39,
       "max_drawdown_pct": 33.7,
       "total_trades": 10
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -24.6,
-      "cagr_pct": -17.1,
-      "sharpe_ratio": -0.98,
+      "total_return_pct": -23.7,
+      "cagr_pct": -16.4,
+      "sharpe_ratio": -0.93,
       "win_rate_pct": 6.7,
-      "profit_factor": 0.23,
+      "profit_factor": 0.26,
       "max_drawdown_pct": 33.4,
       "total_trades": 15
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -21.2,
-      "cagr_pct": -14.6,
-      "sharpe_ratio": -1.01,
+      "total_return_pct": -20.2,
+      "cagr_pct": -13.9,
+      "sharpe_ratio": -0.95,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.44,
+      "profit_factor": 0.47,
       "max_drawdown_pct": 31.8,
       "total_trades": 30
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -2.5,
-      "cagr_pct": -1.6,
-      "sharpe_ratio": -0.07,
+      "total_return_pct": -1.2,
+      "cagr_pct": -0.8,
+      "sharpe_ratio": -0.0,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.8,
+      "profit_factor": 0.9,
       "max_drawdown_pct": 16.5,
       "total_trades": 5
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 4.5,
-      "cagr_pct": 3.0,
-      "sharpe_ratio": 0.27,
+      "total_return_pct": 5.8,
+      "cagr_pct": 3.8,
+      "sharpe_ratio": 0.31,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.19,
+      "profit_factor": 0.24,
       "max_drawdown_pct": 24.3,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 721.35,
     "entry_price": 613.15,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 20.3,
-    "mos_pct": 20.3,
+    "actual_discount_pct": 19.3,
+    "mos_pct": 19.3,
     "moat": "Wide",
     "roic_pct": 20.5,
     "wacc_pct": 8.11,
@@ -116,7 +116,7 @@
     "m_score": null,
     "tata": 0.0,
     "solvency_type": "Financial TCE Capital Ratio (9.6%)",
-    "verdict": "STRONG BUY",
+    "verdict": "BUY / ACCUMULATE",
     "model_type": "Residual Income (RIM) & Justified P/TBV",
     "latest_filing_date": "2026-06-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-17"
@@ -5441,20 +5441,6 @@
       "v2": 545.5,
       "sma200": 511.94,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 583.0,
-      "high": 583.0,
-      "low": 573.8,
-      "close": 574.8,
-      "volume": 269454.0,
-      "v1": 563.77,
-      "m1": 557.84,
-      "m2": 550.6,
-      "v2": 546.64,
-      "sma200": 512.28,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -6998,10 +6984,6 @@
         {
           "time": "2026-11-18",
           "value": 10327.98
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10327.98
         }
       ]
     },
@@ -8529,10 +8511,6 @@
         {
           "time": "2026-11-18",
           "value": 9885.7
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9763.51
         }
       ]
     },
@@ -10060,10 +10038,6 @@
         {
           "time": "2026-11-18",
           "value": 8190.61
-        },
-        {
-          "time": "2026-11-19",
-          "value": 8089.37
         }
       ]
     },
@@ -11591,10 +11565,6 @@
         {
           "time": "2026-11-18",
           "value": 10594.46
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10463.4
         }
       ]
     }
@@ -11615,14 +11585,14 @@
   ],
   "smart_money": {
     "symbol": "MUV2.DE",
-    "smart_money_score": 42.0,
+    "smart_money_score": 60.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
-    "cmf_20d": -0.057,
-    "up_down_vol_ratio": 1.68,
-    "absorption_5d_pct": 23.4,
-    "vol_shock_ratio": 1.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: N/A).",
+    "cmf_20d": -0.007,
+    "up_down_vol_ratio": 2.09,
+    "absorption_5d_pct": 35.4,
+    "vol_shock_ratio": 0.78,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

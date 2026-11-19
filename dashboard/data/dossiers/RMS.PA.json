@@ -3,18 +3,18 @@
   "name": "HERMES INTL",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T17:19:13.685366+00:00",
+  "generated_at": "2026-11-19T23:04:28.341584+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 384,
-  "current_price": 1272.0,
+  "backtest_total_bars": 383,
+  "current_price": 1278.5,
   "state": "BLUE",
-  "v1": 1329.69,
-  "v2": 1367.39,
-  "sma200": 1596.19,
-  "rsi14": 39.3,
-  "atr14": 41.46,
+  "v1": 1332.51,
+  "v2": 1370.14,
+  "sma200": 1600.08,
+  "rsi14": 40.3,
+  "atr14": 42.38,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -47.2,
-      "cagr_pct": -34.2,
-      "sharpe_ratio": -1.16,
+      "total_return_pct": -46.9,
+      "cagr_pct": -34.1,
+      "sharpe_ratio": -1.15,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 49.4,
@@ -107,8 +107,8 @@
     "target_price": 968.05,
     "entry_price": 822.84,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -31.4,
-    "mos_pct": -31.4,
+    "actual_discount_pct": -32.1,
+    "mos_pct": -32.1,
     "moat": "Wide",
     "roic_pct": 43.4,
     "wacc_pct": 9.79,
@@ -5483,20 +5483,6 @@
       "v2": 1370.14,
       "sma200": 1600.08,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 1291.5,
-      "high": 1305.0,
-      "low": 1275.5,
-      "close": 1272.0,
-      "volume": 96984.0,
-      "v1": 1329.69,
-      "m1": 1338.04,
-      "m2": 1354.84,
-      "v2": 1367.39,
-      "sma200": 1596.19,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7094,10 +7080,6 @@
         {
           "time": "2026-11-18",
           "value": 9730.04
-        },
-        {
-          "time": "2026-11-19",
-          "value": 9730.04
         }
       ]
     },
@@ -8636,10 +8618,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9372.97
-        },
-        {
-          "time": "2026-11-19",
           "value": 9372.97
         }
       ]
@@ -10180,10 +10158,6 @@
         {
           "time": "2026-11-18",
           "value": 8842.49
-        },
-        {
-          "time": "2026-11-19",
-          "value": 8842.49
         }
       ]
     },
@@ -11723,10 +11697,6 @@
         {
           "time": "2026-11-18",
           "value": 5313.39
-        },
-        {
-          "time": "2026-11-19",
-          "value": 5286.38
         }
       ]
     }
@@ -11783,14 +11753,14 @@
   ],
   "smart_money": {
     "symbol": "RMS.PA",
-    "smart_money_score": 15.0,
+    "smart_money_score": 22.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.25).",
-    "cmf_20d": -0.253,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 19.9,
-    "vol_shock_ratio": 0.93,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.08).",
+    "cmf_20d": -0.079,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 22.3,
+    "vol_shock_ratio": 0.87,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
