@@ -3,28 +3,28 @@
   "name": "DIAGEO PLC ORD 28 101/108P",
   "sector": "Consumer Defensive",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T17:13:02.335140+00:00",
+  "generated_at": "2026-11-19T00:16:02.563155+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 380,
-  "current_price": 1897.5,
+  "backtest_total_bars": 379,
+  "current_price": 1916.0,
   "state": "GOLD",
-  "v1": 1808.37,
-  "v2": 1748.71,
-  "sma200": 1611.31,
-  "rsi14": 62.5,
-  "atr14": 42.03,
+  "v1": 1801.97,
+  "v2": 1743.38,
+  "sma200": 1610.69,
+  "rsi14": 66.1,
+  "atr14": 42.69,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
-    "total_return_pct": -0.7,
-    "cagr_pct": -0.5,
-    "sharpe_ratio": 0.05,
+    "total_return_pct": 0.3,
+    "cagr_pct": 0.2,
+    "sharpe_ratio": 0.09,
     "win_rate_pct": 12.5,
-    "profit_factor": 1.0,
+    "profit_factor": 1.06,
     "max_drawdown_pct": 18.3,
     "total_trades": 8
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -17.0,
-      "cagr_pct": -11.6,
-      "sharpe_ratio": -0.5,
+      "total_return_pct": -16.2,
+      "cagr_pct": -11.1,
+      "sharpe_ratio": -0.47,
       "win_rate_pct": 12.5,
-      "profit_factor": 0.48,
+      "profit_factor": 0.51,
       "max_drawdown_pct": 32.4,
       "total_trades": 8
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -15.8,
-      "cagr_pct": -10.7,
-      "sharpe_ratio": -0.48,
+      "total_return_pct": -14.9,
+      "cagr_pct": -10.2,
+      "sharpe_ratio": -0.45,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.42,
+      "profit_factor": 0.45,
       "max_drawdown_pct": 26.2,
       "total_trades": 9
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
-      "total_return_pct": -0.7,
-      "cagr_pct": -0.5,
-      "sharpe_ratio": 0.05,
+      "total_return_pct": 0.3,
+      "cagr_pct": 0.2,
+      "sharpe_ratio": 0.09,
       "win_rate_pct": 12.5,
-      "profit_factor": 1.0,
+      "profit_factor": 1.06,
       "max_drawdown_pct": 18.3,
       "total_trades": 8
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -4.3,
-      "cagr_pct": -2.8,
-      "sharpe_ratio": -0.24,
+      "total_return_pct": -3.3,
+      "cagr_pct": -2.2,
+      "sharpe_ratio": -0.18,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.63,
+      "profit_factor": 0.71,
       "max_drawdown_pct": 14.0,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -10.7,
-      "cagr_pct": -7.2,
-      "sharpe_ratio": -0.04,
+      "total_return_pct": -9.8,
+      "cagr_pct": -6.7,
+      "sharpe_ratio": -0.01,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 35.7,
@@ -107,8 +107,8 @@
     "target_price": 826.5151515151515,
     "entry_price": 619.8863636363636,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -129.6,
-    "mos_pct": -129.6,
+    "actual_discount_pct": -131.8,
+    "mos_pct": -131.8,
     "moat": "None",
     "roic_pct": 9.04,
     "wacc_pct": 7.748593588706775,
@@ -866,7 +866,7 @@
     },
     {
       "time": "2025-08-06",
-      "open": 1910.4,
+      "open": 1910.39,
       "high": 1996.35,
       "low": 1904.9,
       "close": 1982.35,
@@ -909,7 +909,7 @@
     {
       "time": "2025-08-11",
       "open": 2033.82,
-      "high": 2065.8,
+      "high": 2065.81,
       "low": 2032.82,
       "close": 2057.81,
       "volume": 3790432.0,
@@ -5427,20 +5427,6 @@
       "v2": 1743.38,
       "sma200": 1610.69,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 1903.5,
-      "high": 1913.5,
-      "low": 1882.5,
-      "close": 1897.5,
-      "volume": 3417268.0,
-      "v1": 1808.37,
-      "m1": 1787.05,
-      "m2": 1762.18,
-      "v2": 1748.71,
-      "sma200": 1611.31,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5550,11 +5536,11 @@
       "text": "BUY #8 @ $1535.24"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-17",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +23.35% ($1879.29 €)"
+      "text": "EXIT +24.55% ($1976.08 €)"
     }
   ],
   "equity_curves": [
@@ -5881,7 +5867,7 @@
         },
         {
           "time": "2025-09-12",
-          "value": 9362.33
+          "value": 9362.34
         },
         {
           "time": "2025-09-15",
@@ -7078,10 +7064,6 @@
         {
           "time": "2026-11-17",
           "value": 10038.63
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9941.74
         }
       ]
     },
@@ -8560,7 +8542,7 @@
         },
         {
           "time": "2026-11-02",
-          "value": 9120.13
+          "value": 9120.14
         },
         {
           "time": "2026-11-03",
@@ -8605,10 +8587,6 @@
         {
           "time": "2026-11-17",
           "value": 9677.76
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9584.4
         }
       ]
     },
@@ -8927,7 +8905,7 @@
         },
         {
           "time": "2025-09-10",
-          "value": 9176.84
+          "value": 9176.85
         },
         {
           "time": "2025-09-11",
@@ -10075,7 +10053,7 @@
         },
         {
           "time": "2026-10-28",
-          "value": 7722.86
+          "value": 7722.87
         },
         {
           "time": "2026-10-29",
@@ -10131,11 +10109,7 @@
         },
         {
           "time": "2026-11-17",
-          "value": 8515.46
-        },
-        {
-          "time": "2026-11-18",
-          "value": 8433.32
+          "value": 8515.47
         }
       ]
     },
@@ -10398,7 +10372,7 @@
         },
         {
           "time": "2025-08-20",
-          "value": 9975.88
+          "value": 9975.87
         },
         {
           "time": "2025-08-21",
@@ -10542,7 +10516,7 @@
         },
         {
           "time": "2025-10-10",
-          "value": 8476.43
+          "value": 8476.44
         },
         {
           "time": "2025-10-13",
@@ -11659,10 +11633,6 @@
         {
           "time": "2026-11-17",
           "value": 9025.41
-        },
-        {
-          "time": "2026-11-18",
-          "value": 8938.26
         }
       ]
     }
@@ -11756,11 +11726,11 @@
       "num": 8,
       "entry_date": "2026-07-24",
       "entry_price": 1535.24,
-      "exit_date": "2026-11-18",
-      "exit_price": 1897.5,
-      "holding_days": 82,
-      "pnl_pct": 23.35,
-      "pnl_eur": 1879.29,
+      "exit_date": "2026-11-17",
+      "exit_price": 1916.0,
+      "holding_days": 81,
+      "pnl_pct": 24.55,
+      "pnl_eur": 1976.08,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11770,11 +11740,11 @@
     "smart_money_score": 85.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.13, Up/Dn Vol: 1.68x). Силна скрита подкрепа.",
-    "cmf_20d": 0.131,
-    "up_down_vol_ratio": 1.68,
-    "absorption_5d_pct": 57.5,
-    "vol_shock_ratio": 0.78,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 1.69x). Силна скрита подкрепа.",
+    "cmf_20d": 0.12,
+    "up_down_vol_ratio": 1.69,
+    "absorption_5d_pct": 58.6,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

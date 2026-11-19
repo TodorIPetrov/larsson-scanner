@@ -3,28 +3,28 @@
   "name": "^FCHI",
   "sector": "Equities",
   "asset_class": "indices",
-  "generated_at": "2026-11-18T17:13:28.531130+00:00",
+  "generated_at": "2026-11-19T00:16:45.610581+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 384,
-  "current_price": 8146.83,
+  "backtest_total_bars": 383,
+  "current_price": 8216.78,
   "state": "NEUTRAL",
-  "v1": 8119.56,
-  "v2": 8121.06,
-  "sma200": 8207.54,
-  "rsi14": 51.6,
-  "atr14": 95.81,
+  "v1": 8115.01,
+  "v2": 8118.84,
+  "sma200": 8208.18,
+  "rsi14": 56.7,
+  "atr14": 96.04,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.8,
-    "cagr_pct": 0.5,
-    "sharpe_ratio": 0.28,
+    "total_return_pct": 1.2,
+    "cagr_pct": 0.8,
+    "sharpe_ratio": 0.43,
     "win_rate_pct": 50.0,
-    "profit_factor": 1.7,
+    "profit_factor": 2.1,
     "max_drawdown_pct": 1.7,
     "total_trades": 2
   },
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -11.1,
-      "cagr_pct": -7.4,
+      "cagr_pct": -7.5,
       "sharpe_ratio": -0.7,
       "win_rate_pct": 17.6,
       "profit_factor": 0.21,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.8,
-      "cagr_pct": 0.5,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 1.2,
+      "cagr_pct": 0.8,
+      "sharpe_ratio": 0.43,
       "win_rate_pct": 50.0,
-      "profit_factor": 1.7,
+      "profit_factor": 2.1,
       "max_drawdown_pct": 1.7,
       "total_trades": 2
     },
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -8.0,
-      "cagr_pct": -5.3,
+      "cagr_pct": -5.4,
       "sharpe_ratio": -1.41,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 3.3,
-      "cagr_pct": 2.2,
-      "sharpe_ratio": 0.24,
+      "total_return_pct": 4.2,
+      "cagr_pct": 2.7,
+      "sharpe_ratio": 0.28,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.29,
+      "profit_factor": 0.37,
       "max_drawdown_pct": 11.4,
       "total_trades": 1
     }
@@ -5483,20 +5483,6 @@
       "v2": 8118.84,
       "sma200": 8208.18,
       "state": "NEUTRAL"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 8216.08,
-      "high": 8229.59,
-      "low": 8136.8,
-      "close": 8146.83,
-      "volume": 0.0,
-      "v1": 8119.56,
-      "m1": 8110.02,
-      "m2": 8113.8,
-      "v2": 8121.06,
-      "sma200": 8207.54,
-      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -5522,11 +5508,11 @@
       "text": "BUY #2 @ $7826.73"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-17",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.88% ($191.72 €)"
+      "text": "EXIT +4.77% ($235.77 €)"
     }
   ],
   "equity_curves": [
@@ -7066,10 +7052,6 @@
         {
           "time": "2026-11-17",
           "value": 10128.47
-        },
-        {
-          "time": "2026-11-18",
-          "value": 10084.37
         }
       ]
     },
@@ -8608,10 +8590,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9288.34
-        },
-        {
-          "time": "2026-11-18",
           "value": 9288.34
         }
       ]
@@ -10152,10 +10130,6 @@
         {
           "time": "2026-11-17",
           "value": 8889.88
-        },
-        {
-          "time": "2026-11-18",
-          "value": 8889.88
         }
       ]
     },
@@ -11695,10 +11669,6 @@
         {
           "time": "2026-11-17",
           "value": 10429.44
-        },
-        {
-          "time": "2026-11-18",
-          "value": 10340.65
         }
       ]
     }
@@ -11720,25 +11690,25 @@
       "num": 2,
       "entry_date": "2026-10-12",
       "entry_price": 7826.73,
-      "exit_date": "2026-11-18",
-      "exit_price": 8146.83,
-      "holding_days": 27,
-      "pnl_pct": 3.88,
-      "pnl_eur": 191.72,
+      "exit_date": "2026-11-17",
+      "exit_price": 8216.78,
+      "holding_days": 26,
+      "pnl_pct": 4.77,
+      "pnl_eur": 235.77,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "^FCHI",
-    "smart_money_score": 50.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: N/A).",
-    "cmf_20d": 0.017,
-    "up_down_vol_ratio": 1.39,
-    "absorption_5d_pct": 25.5,
-    "vol_shock_ratio": 0.0,
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 0.063,
+    "up_down_vol_ratio": 1.52,
+    "absorption_5d_pct": 37.1,
+    "vol_shock_ratio": 0.85,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

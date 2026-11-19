@@ -3,18 +3,18 @@
   "name": "VOLKSWAGEN AG                 V",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T17:13:26.869510+00:00",
+  "generated_at": "2026-11-19T00:16:43.190472+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 65.28,
+  "backtest_total_bars": 380,
+  "current_price": 66.3,
   "state": "BLUE",
-  "v1": 69.39,
-  "v2": 71.03,
-  "sma200": 78.56,
-  "rsi14": 35.3,
-  "atr14": 1.96,
+  "v1": 69.66,
+  "v2": 71.22,
+  "sma200": 78.7,
+  "rsi14": 38.1,
+  "atr14": 2.01,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -23.8,
       "cagr_pct": -16.5,
-      "sharpe_ratio": -1.16,
+      "sharpe_ratio": -1.17,
       "win_rate_pct": 29.4,
       "profit_factor": 0.16,
       "max_drawdown_pct": 24.4,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -27.7,
-      "cagr_pct": -19.3,
-      "sharpe_ratio": -0.53,
+      "total_return_pct": -26.6,
+      "cagr_pct": -18.5,
+      "sharpe_ratio": -0.5,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 35.9,
+      "max_drawdown_pct": 34.9,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 65.3,
     "entry_price": 48.97,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 0.0,
-    "mos_pct": 0.0,
+    "actual_discount_pct": -1.5,
+    "mos_pct": -1.5,
     "moat": "None",
     "roic_pct": 4.4,
     "wacc_pct": 8.0,
@@ -5441,20 +5441,6 @@
       "v2": 71.22,
       "sma200": 78.7,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 65.92,
-      "high": 66.18,
-      "low": 65.0,
-      "close": 65.28,
-      "volume": 978074.0,
-      "v1": 69.39,
-      "m1": 69.88,
-      "m2": 70.58,
-      "v2": 71.03,
-      "sma200": 78.56,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7012,10 +6998,6 @@
         {
           "time": "2026-11-17",
           "value": 9462.26
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9462.26
         }
       ]
     },
@@ -8542,10 +8524,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 9500.17
-        },
-        {
-          "time": "2026-11-18",
           "value": 9500.17
         }
       ]
@@ -10074,10 +10052,6 @@
         {
           "time": "2026-11-17",
           "value": 8573.2
-        },
-        {
-          "time": "2026-11-18",
-          "value": 8573.2
         }
       ]
     },
@@ -11605,10 +11579,6 @@
         {
           "time": "2026-11-17",
           "value": 7351.99
-        },
-        {
-          "time": "2026-11-18",
-          "value": 7238.88
         }
       ]
     }
@@ -11644,11 +11614,11 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
-    "cmf_20d": -0.183,
-    "up_down_vol_ratio": 0.92,
-    "absorption_5d_pct": 22.9,
-    "vol_shock_ratio": 1.12,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
+    "cmf_20d": -0.15,
+    "up_down_vol_ratio": 0.95,
+    "absorption_5d_pct": 33.4,
+    "vol_shock_ratio": 0.92,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

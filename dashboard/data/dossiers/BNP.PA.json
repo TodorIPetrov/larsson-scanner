@@ -3,26 +3,26 @@
   "name": "BNP PARIBAS ACT.A",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T17:12:57.790026+00:00",
+  "generated_at": "2026-11-19T00:15:57.279010+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 384,
-  "current_price": 92.0,
+  "backtest_total_bars": 383,
+  "current_price": 93.82,
   "state": "BLUE",
-  "v1": 92.25,
-  "v2": 93.42,
-  "sma200": 92.22,
-  "rsi14": 49.7,
-  "atr14": 2.22,
+  "v1": 92.21,
+  "v2": 93.44,
+  "sma200": 92.19,
+  "rsi14": 56.3,
+  "atr14": 2.21,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 36.2,
-    "cagr_pct": 22.5,
-    "sharpe_ratio": 1.07,
+    "total_return_pct": 37.6,
+    "cagr_pct": 23.4,
+    "sharpe_ratio": 1.11,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 18.0,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 36.2,
-      "cagr_pct": 22.5,
-      "sharpe_ratio": 1.07,
+      "total_return_pct": 37.6,
+      "cagr_pct": 23.4,
+      "sharpe_ratio": 1.11,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 18.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 29.8,
-      "cagr_pct": 18.7,
-      "sharpe_ratio": 0.78,
+      "total_return_pct": 32.4,
+      "cagr_pct": 20.3,
+      "sharpe_ratio": 0.83,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.22,
+      "profit_factor": 1.33,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 120.02,
     "entry_price": 96.02,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 23.3,
-    "mos_pct": 23.3,
+    "actual_discount_pct": 21.8,
+    "mos_pct": 21.8,
     "moat": "Narrow",
     "roic_pct": 10.7,
     "wacc_pct": 9.94,
@@ -5483,20 +5483,6 @@
       "v2": 93.44,
       "sma200": 92.19,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 94.0,
-      "high": 94.0,
-      "low": 91.64,
-      "close": 92.0,
-      "volume": 2453274.0,
-      "v1": 92.25,
-      "m1": 92.52,
-      "m2": 93.08,
-      "v2": 93.42,
-      "sma200": 92.22,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5522,11 +5508,11 @@
       "text": "BUY #2 @ $85.18"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-17",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +7.79% ($510.17 €)"
+      "text": "EXIT +9.92% ($649.81 €)"
     }
   ],
   "equity_curves": [
@@ -7066,10 +7052,6 @@
         {
           "time": "2026-11-17",
           "value": 13766.89
-        },
-        {
-          "time": "2026-11-18",
-          "value": 13627.12
         }
       ]
     },
@@ -8609,10 +8591,6 @@
         {
           "time": "2026-11-17",
           "value": 12240.59
-        },
-        {
-          "time": "2026-11-18",
-          "value": 12240.59
         }
       ]
     },
@@ -8739,7 +8717,7 @@
         },
         {
           "time": "2025-07-02",
-          "value": 9836.14
+          "value": 9836.15
         },
         {
           "time": "2025-07-03",
@@ -8783,7 +8761,7 @@
         },
         {
           "time": "2025-07-17",
-          "value": 9902.83
+          "value": 9902.82
         },
         {
           "time": "2025-07-18",
@@ -8939,7 +8917,7 @@
         },
         {
           "time": "2025-09-10",
-          "value": 10032.34
+          "value": 10032.33
         },
         {
           "time": "2025-09-11",
@@ -10152,10 +10130,6 @@
         {
           "time": "2026-11-17",
           "value": 9978.3
-        },
-        {
-          "time": "2026-11-18",
-          "value": 9978.3
         }
       ]
     },
@@ -10258,7 +10232,7 @@
         },
         {
           "time": "2025-06-24",
-          "value": 9675.52
+          "value": 9675.53
         },
         {
           "time": "2025-06-25",
@@ -11695,10 +11669,6 @@
         {
           "time": "2026-11-17",
           "value": 13250.05
-        },
-        {
-          "time": "2026-11-18",
-          "value": 12993.01
         }
       ]
     }
@@ -11720,11 +11690,11 @@
       "num": 2,
       "entry_date": "2026-10-27",
       "entry_price": 85.18,
-      "exit_date": "2026-11-18",
-      "exit_price": 92.0,
-      "holding_days": 16,
-      "pnl_pct": 7.79,
-      "pnl_eur": 510.17,
+      "exit_date": "2026-11-17",
+      "exit_price": 93.82,
+      "holding_days": 15,
+      "pnl_pct": 9.92,
+      "pnl_eur": 649.81,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11734,11 +11704,11 @@
     "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: N/A).",
-    "cmf_20d": -0.095,
-    "up_down_vol_ratio": 1.69,
-    "absorption_5d_pct": 12.6,
-    "vol_shock_ratio": 0.98,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
+    "cmf_20d": -0.064,
+    "up_down_vol_ratio": 1.72,
+    "absorption_5d_pct": 17.7,
+    "vol_shock_ratio": 0.94,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,12 +3,12 @@
   "name": "US Dollar Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-18T17:13:02.888930+00:00",
+  "generated_at": "2026-11-19T00:16:03.898501+00:00",
   "backtest_start_date": "2025-05-21",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
   "backtest_total_bars": 378,
-  "current_price": 103.82,
+  "current_price": 103.81,
   "state": "GOLD",
   "v1": 102.23,
   "v2": 101.63,
@@ -5405,7 +5405,7 @@
       "open": 103.66,
       "high": 103.91,
       "low": 103.59,
-      "close": 103.82,
+      "close": 103.81,
       "volume": 0.0,
       "v1": 102.23,
       "m1": 102.03,
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.67% ($459.63 €)"
+      "text": "EXIT +4.66% ($459.23 €)"
     }
   ],
   "equity_curves": [
@@ -6961,7 +6961,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10323.95
+          "value": 10323.56
         }
       ]
     },
@@ -8480,7 +8480,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9880.74
+          "value": 9880.36
         }
       ]
     },
@@ -9999,7 +9999,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9851.57
+          "value": 9851.19
         }
       ]
     },
@@ -11518,7 +11518,7 @@
         },
         {
           "time": "2026-11-18",
-          "value": 10372.36
+          "value": 10371.96
         }
       ]
     }
@@ -11541,10 +11541,10 @@
       "entry_date": "2026-08-25",
       "entry_price": 98.99,
       "exit_date": "2026-11-18",
-      "exit_price": 103.82,
+      "exit_price": 103.81,
       "holding_days": 60,
-      "pnl_pct": 4.67,
-      "pnl_eur": 459.63,
+      "pnl_pct": 4.66,
+      "pnl_eur": 459.23,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }

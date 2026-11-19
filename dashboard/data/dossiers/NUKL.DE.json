@@ -3,18 +3,18 @@
   "name": "NUKL.DE",
   "sector": "Equities",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-18T17:13:15.510978+00:00",
+  "generated_at": "2026-11-19T00:16:26.162792+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-17",
   "backtest_years": 1.5,
-  "backtest_total_bars": 379,
-  "current_price": 34.4,
+  "backtest_total_bars": 378,
+  "current_price": 34.52,
   "state": "BLUE",
-  "v1": 38.5,
-  "v2": 40.8,
-  "sma200": 47.61,
-  "rsi14": 33.2,
-  "atr14": 1.35,
+  "v1": 38.78,
+  "v2": 41.02,
+  "sma200": 47.7,
+  "rsi14": 33.6,
+  "atr14": 1.38,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 16.3,
-      "cagr_pct": 10.5,
+      "cagr_pct": 10.6,
       "sharpe_ratio": 0.47,
       "win_rate_pct": 40.0,
       "profit_factor": 1.9,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 3.1,
-      "cagr_pct": 2.1,
+      "total_return_pct": 3.5,
+      "cagr_pct": 2.3,
       "sharpe_ratio": 0.24,
       "win_rate_pct": 100.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 42.4,
+      "max_drawdown_pct": 42.2,
       "total_trades": 1
     }
   ],
@@ -5413,20 +5413,6 @@
       "v2": 41.02,
       "sma200": 47.7,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-18",
-      "open": 34.83,
-      "high": 35.08,
-      "low": 34.17,
-      "close": 34.4,
-      "volume": 51670.0,
-      "v1": 38.5,
-      "m1": 39.27,
-      "m2": 40.24,
-      "v2": 40.8,
-      "sma200": 47.61,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6962,10 +6948,6 @@
         {
           "time": "2026-11-17",
           "value": 13915.8
-        },
-        {
-          "time": "2026-11-18",
-          "value": 13915.8
         }
       ]
     },
@@ -8484,10 +8466,6 @@
         },
         {
           "time": "2026-11-17",
-          "value": 12014.97
-        },
-        {
-          "time": "2026-11-18",
           "value": 12014.97
         }
       ]
@@ -10008,10 +9986,6 @@
         {
           "time": "2026-11-17",
           "value": 11626.54
-        },
-        {
-          "time": "2026-11-18",
-          "value": 11626.54
         }
       ]
     },
@@ -11531,10 +11505,6 @@
         {
           "time": "2026-11-17",
           "value": 10357.56
-        },
-        {
-          "time": "2026-11-18",
-          "value": 10321.55
         }
       ]
     }
@@ -11555,14 +11525,14 @@
   ],
   "smart_money": {
     "symbol": "NUKL.DE",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
-    "cmf_20d": -0.142,
-    "up_down_vol_ratio": 0.38,
-    "absorption_5d_pct": 31.2,
-    "vol_shock_ratio": 0.64,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
+    "cmf_20d": -0.147,
+    "up_down_vol_ratio": 0.43,
+    "absorption_5d_pct": 46.0,
+    "vol_shock_ratio": 0.88,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
