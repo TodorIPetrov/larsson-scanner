@@ -3,18 +3,18 @@
   "name": "Mercedes-Benz Group AG        N",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:33.928888+00:00",
+  "generated_at": "2026-11-20T16:57:06.429137+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 37.85,
+  "current_price": 37.62,
   "state": "BLUE",
   "v1": 40.76,
-  "v2": 41.85,
-  "sma200": 46.77,
-  "rsi14": 32.2,
-  "atr14": 1.06,
+  "v2": 41.84,
+  "sma200": 46.76,
+  "rsi14": 31.3,
+  "atr14": 1.07,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -6.2,
-      "cagr_pct": -4.1,
-      "sharpe_ratio": -0.62,
+      "total_return_pct": -6.5,
+      "cagr_pct": -4.3,
+      "sharpe_ratio": -0.64,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 10.2,
+      "max_drawdown_pct": 10.5,
       "total_trades": 2
     },
     {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -21.5,
-      "cagr_pct": -14.8,
-      "sharpe_ratio": -0.49,
+      "total_return_pct": -22.0,
+      "cagr_pct": -15.2,
+      "sharpe_ratio": -0.51,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 34.6,
+      "max_drawdown_pct": 35.0,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 15.88,
     "entry_price": 11.91,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -138.4,
-    "mos_pct": -138.4,
+    "actual_discount_pct": -136.9,
+    "mos_pct": -136.9,
     "moat": "None",
     "roic_pct": 4.5,
     "wacc_pct": 8.0,
@@ -5446,14 +5446,14 @@
       "time": "2026-11-20",
       "open": 38.03,
       "high": 38.4,
-      "low": 37.65,
-      "close": 37.85,
-      "volume": 1196570.0,
+      "low": 37.57,
+      "close": 37.62,
+      "volume": 3087735.0,
       "v1": 40.76,
       "m1": 41.07,
       "m2": 41.54,
-      "v2": 41.85,
-      "sma200": 46.77,
+      "v2": 41.84,
+      "sma200": 46.76,
       "state": "BLUE"
     }
   ],
@@ -10133,7 +10133,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9384.01
+          "value": 9355.87
         }
       ]
     },
@@ -11664,7 +11664,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 7857.18
+          "value": 7808.4
         }
       ]
     }
@@ -11748,11 +11748,11 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.28).",
-    "cmf_20d": -0.276,
-    "up_down_vol_ratio": 0.84,
-    "absorption_5d_pct": 19.0,
-    "vol_shock_ratio": 0.47,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.31).",
+    "cmf_20d": -0.308,
+    "up_down_vol_ratio": 0.78,
+    "absorption_5d_pct": 14.9,
+    "vol_shock_ratio": 1.21,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,18 +3,18 @@
   "name": "BTCX-B.TO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-20T14:38:17.866728+00:00",
+  "generated_at": "2026-11-20T16:56:54.378600+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 377,
-  "current_price": 12.92,
-  "state": "NEUTRAL",
-  "v1": 15.26,
-  "v2": 15.5,
-  "sma200": 14.61,
-  "rsi14": 22.0,
-  "atr14": 0.47,
+  "backtest_total_bars": 378,
+  "current_price": 12.36,
+  "state": "BLUE",
+  "v1": 15.08,
+  "v2": 15.39,
+  "sma200": 14.6,
+  "rsi14": 19.3,
+  "atr14": 0.49,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -18.5,
-      "cagr_pct": -12.8,
+      "cagr_pct": -12.7,
       "sharpe_ratio": -0.42,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -12.1,
-      "cagr_pct": -8.3,
+      "cagr_pct": -8.2,
       "sharpe_ratio": -0.63,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -43.2,
-      "cagr_pct": -31.5,
-      "sharpe_ratio": -0.7,
+      "total_return_pct": -45.7,
+      "cagr_pct": -33.4,
+      "sharpe_ratio": -0.77,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 52.7,
@@ -5399,6 +5399,20 @@
       "v2": 15.5,
       "sma200": 14.61,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 12.88,
+      "high": 12.88,
+      "low": 12.21,
+      "close": 12.36,
+      "volume": 138410.0,
+      "v1": 15.08,
+      "m1": 15.27,
+      "m2": 15.38,
+      "v2": 15.39,
+      "sma200": 14.6,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6972,6 +6986,10 @@
         {
           "time": "2026-11-19",
           "value": 8834.5
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8834.5
         }
       ]
     },
@@ -8486,6 +8504,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 8957.55
+        },
+        {
+          "time": "2026-11-20",
           "value": 8957.55
         }
       ]
@@ -10002,6 +10024,10 @@
         {
           "time": "2026-11-19",
           "value": 8789.68
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8789.68
         }
       ]
     },
@@ -11517,6 +11543,10 @@
         {
           "time": "2026-11-19",
           "value": 5683.43
+        },
+        {
+          "time": "2026-11-20",
+          "value": 5437.09
         }
       ]
     }
@@ -11573,14 +11603,14 @@
   ],
   "smart_money": {
     "symbol": "BTCX-B.TO",
-    "smart_money_score": 25.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
-    "cmf_20d": -0.15,
-    "up_down_vol_ratio": 0.18,
-    "absorption_5d_pct": 39.8,
-    "vol_shock_ratio": 1.29,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
+    "cmf_20d": -0.166,
+    "up_down_vol_ratio": 0.17,
+    "absorption_5d_pct": 31.2,
+    "vol_shock_ratio": 0.96,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

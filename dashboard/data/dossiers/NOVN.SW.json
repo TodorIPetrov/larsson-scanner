@@ -3,17 +3,17 @@
   "name": "NOVARTIS N",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:38.213907+00:00",
+  "generated_at": "2026-11-20T16:57:09.884706+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 127.8,
+  "current_price": 127.76,
   "state": "GOLD",
   "v1": 129.67,
   "v2": 127.04,
   "sma200": 122.27,
-  "rsi14": 44.9,
+  "rsi14": 44.8,
   "atr14": 2.62,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": 6.4,
     "cagr_pct": 4.3,
-    "sharpe_ratio": 0.77,
+    "sharpe_ratio": 0.76,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 6.3,
@@ -37,7 +37,7 @@
       "cagr_pct": 15.3,
       "sharpe_ratio": 0.79,
       "win_rate_pct": 66.7,
-      "profit_factor": 8.93,
+      "profit_factor": 8.92,
       "max_drawdown_pct": 15.0,
       "total_trades": 3
     },
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 4.1,
-      "cagr_pct": 2.8,
+      "cagr_pct": 2.7,
       "sharpe_ratio": 0.24,
       "win_rate_pct": 33.3,
       "profit_factor": 1.33,
@@ -58,10 +58,10 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 6.8,
-      "cagr_pct": 4.6,
+      "cagr_pct": 4.5,
       "sharpe_ratio": 0.33,
       "win_rate_pct": 42.9,
-      "profit_factor": 3.71,
+      "profit_factor": 3.7,
       "max_drawdown_pct": 15.0,
       "total_trades": 14
     },
@@ -71,7 +71,7 @@
       "is_winner": true,
       "total_return_pct": 6.4,
       "cagr_pct": 4.3,
-      "sharpe_ratio": 0.77,
+      "sharpe_ratio": 0.76,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 6.3,
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 19.1,
+      "total_return_pct": 19.0,
       "cagr_pct": 12.4,
       "sharpe_ratio": 0.68,
       "win_rate_pct": 66.7,
-      "profit_factor": 7.4,
+      "profit_factor": 7.39,
       "max_drawdown_pct": 15.0,
       "total_trades": 3
     },
@@ -5362,11 +5362,11 @@
       "time": "2026-11-20",
       "open": 127.88,
       "high": 128.74,
-      "low": 127.4,
-      "close": 127.8,
-      "volume": 2036567.0,
+      "low": 127.28,
+      "close": 127.76,
+      "volume": 4144854.0,
       "v1": 129.67,
-      "m1": 128.72,
+      "m1": 128.71,
       "m2": 127.61,
       "v2": 127.04,
       "sma200": 122.27,
@@ -5386,7 +5386,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +12.08% ($1146.39 €)"
+      "text": "EXIT +12.04% ($1143.06 €)"
     }
   ],
   "equity_curves": [
@@ -6893,7 +6893,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10653.64
+          "value": 10650.3
         }
       ]
     },
@@ -8400,7 +8400,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 12374.01
+          "value": 12370.14
         }
       ]
     },
@@ -9907,7 +9907,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11918.15
+          "value": 11914.42
         }
       ]
     },
@@ -11414,7 +11414,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 14068.76
+          "value": 14064.36
         }
       ]
     }
@@ -11425,24 +11425,24 @@
       "entry_date": "2026-09-15",
       "entry_price": 113.8,
       "exit_date": "2026-11-20",
-      "exit_price": 127.8,
+      "exit_price": 127.76,
       "holding_days": 48,
-      "pnl_pct": 12.08,
-      "pnl_eur": 1146.39,
+      "pnl_pct": 12.04,
+      "pnl_eur": 1143.06,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "NOVN.SW",
-    "smart_money_score": 32.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.117,
-    "up_down_vol_ratio": 0.94,
-    "absorption_5d_pct": 21.2,
-    "vol_shock_ratio": 0.57,
+    "cmf_20d": -0.122,
+    "up_down_vol_ratio": 0.99,
+    "absorption_5d_pct": 21.8,
+    "vol_shock_ratio": 1.17,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

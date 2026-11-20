@@ -3,12 +3,12 @@
   "name": "Brent Crude Oil",
   "sector": "Суровини",
   "asset_class": "commodities",
-  "generated_at": "2026-11-20T14:38:18.602606+00:00",
+  "generated_at": "2026-11-20T16:56:54.885538+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 378,
-  "current_price": 88.84,
+  "current_price": 88.87,
   "state": "NEUTRAL",
   "v1": 99.22,
   "v2": 99.65,
@@ -94,7 +94,7 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": 38.5,
-      "cagr_pct": 24.2,
+      "cagr_pct": 24.3,
       "sharpe_ratio": 0.68,
       "win_rate_pct": 100.0,
       "profit_factor": 0.97,
@@ -5405,8 +5405,8 @@
       "open": 90.02,
       "high": 90.25,
       "low": 87.7,
-      "close": 88.84,
-      "volume": 11723.0,
+      "close": 88.87,
+      "volume": 17314.0,
       "v1": 99.22,
       "m1": 99.79,
       "m2": 99.85,
@@ -11518,7 +11518,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 13863.04
+          "value": 13867.72
         }
       ]
     }
@@ -11555,10 +11555,10 @@
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
-    "cmf_20d": -0.096,
-    "up_down_vol_ratio": 0.74,
-    "absorption_5d_pct": 41.6,
-    "vol_shock_ratio": 0.35,
+    "cmf_20d": -0.095,
+    "up_down_vol_ratio": 0.73,
+    "absorption_5d_pct": 41.8,
+    "vol_shock_ratio": 0.52,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

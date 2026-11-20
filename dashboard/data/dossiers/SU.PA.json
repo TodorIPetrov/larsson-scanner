@@ -3,29 +3,29 @@
   "name": "SCHNEIDER ELECTRIC SE",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:47.101567+00:00",
+  "generated_at": "2026-11-20T16:57:16.858294+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 228.8,
+  "current_price": 226.55,
   "state": "BLUE",
-  "v1": 245.12,
-  "v2": 256.13,
-  "sma200": 267.17,
-  "rsi14": 36.2,
+  "v1": 245.13,
+  "v2": 256.14,
+  "sma200": 267.16,
+  "rsi14": 34.9,
   "atr14": 7.84,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -3.3,
-    "cagr_pct": -2.2,
-    "sharpe_ratio": -0.53,
+    "total_return_pct": -3.7,
+    "cagr_pct": -2.5,
+    "sharpe_ratio": -0.6,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
-    "max_drawdown_pct": 4.0,
+    "max_drawdown_pct": 4.3,
     "total_trades": 1
   },
   "all_strategies": [
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -3.3,
-      "cagr_pct": -2.2,
-      "sharpe_ratio": -0.53,
+      "total_return_pct": -3.7,
+      "cagr_pct": -2.5,
+      "sharpe_ratio": -0.6,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 4.0,
+      "max_drawdown_pct": 4.3,
       "total_trades": 1
     },
     {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 4.6,
-      "cagr_pct": 3.0,
-      "sharpe_ratio": 0.27,
+      "total_return_pct": 3.6,
+      "cagr_pct": 2.3,
+      "sharpe_ratio": 0.25,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.17,
-      "max_drawdown_pct": 26.7,
+      "profit_factor": 0.13,
+      "max_drawdown_pct": 27.2,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 97.18,
     "entry_price": 72.88,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -135.4,
-    "mos_pct": -135.4,
+    "actual_discount_pct": -133.1,
+    "mos_pct": -133.1,
     "moat": "Narrow",
     "roic_pct": 12.3,
     "wacc_pct": 9.56,
@@ -5487,15 +5487,15 @@
     {
       "time": "2026-11-20",
       "open": 229.6,
-      "high": 229.75,
+      "high": 230.2,
       "low": 225.65,
-      "close": 228.8,
-      "volume": 486947.0,
-      "v1": 245.12,
-      "m1": 248.87,
-      "m2": 253.62,
-      "v2": 256.13,
-      "sma200": 267.17,
+      "close": 226.55,
+      "volume": 1412122.0,
+      "v1": 245.13,
+      "m1": 248.89,
+      "m2": 253.63,
+      "v2": 256.14,
+      "sma200": 267.16,
       "state": "BLUE"
     }
   ],
@@ -5512,7 +5512,7 @@
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -6.57% ($-328.17 €)"
+      "text": "EXIT -7.49% ($-374.07 €)"
     }
   ],
   "equity_curves": [
@@ -7055,7 +7055,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9676.5
+          "value": 9630.56
         }
       ]
     },
@@ -11684,7 +11684,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10471.27
+          "value": 10368.29
         }
       ]
     }
@@ -11695,10 +11695,10 @@
       "entry_date": "2026-10-22",
       "entry_price": 244.4,
       "exit_date": "2026-11-20",
-      "exit_price": 228.8,
+      "exit_price": 226.55,
       "holding_days": 21,
-      "pnl_pct": -6.57,
-      "pnl_eur": -328.17,
+      "pnl_pct": -7.49,
+      "pnl_eur": -374.07,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
@@ -11708,11 +11708,11 @@
     "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.07).",
-    "cmf_20d": -0.066,
-    "up_down_vol_ratio": 0.95,
-    "absorption_5d_pct": 30.9,
-    "vol_shock_ratio": 0.4,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.11).",
+    "cmf_20d": -0.11,
+    "up_down_vol_ratio": 0.88,
+    "absorption_5d_pct": 19.5,
+    "vol_shock_ratio": 1.17,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

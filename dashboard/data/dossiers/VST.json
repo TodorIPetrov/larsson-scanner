@@ -3,18 +3,18 @@
   "name": "Vistra Corp.",
   "sector": "Utilities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T14:38:51.508282+00:00",
+  "generated_at": "2026-11-20T16:57:20.259480+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 120.78,
+  "current_price": 117.54,
   "state": "BLUE",
-  "v1": 134.97,
-  "v2": 139.61,
-  "sma200": 150.97,
-  "rsi14": 37.7,
-  "atr14": 7.11,
+  "v1": 134.93,
+  "v2": 139.59,
+  "sma200": 150.96,
+  "rsi14": 35.7,
+  "atr14": 7.34,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -2.9,
-      "cagr_pct": -2.0,
-      "sharpe_ratio": -0.66,
+      "total_return_pct": -4.2,
+      "cagr_pct": -2.8,
+      "sharpe_ratio": -0.81,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 5.2,
+      "max_drawdown_pct": 6.5,
       "total_trades": 1
     },
     {
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -22.4,
-      "cagr_pct": -15.6,
-      "sharpe_ratio": -0.1,
+      "total_return_pct": -24.5,
+      "cagr_pct": -17.1,
+      "sharpe_ratio": -0.13,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 47.9,
@@ -107,8 +107,8 @@
     "target_price": 104.54,
     "entry_price": 83.64,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -15.5,
-    "mos_pct": -15.5,
+    "actual_discount_pct": -12.4,
+    "mos_pct": -12.4,
     "moat": "Narrow",
     "roic_pct": 14.3,
     "wacc_pct": 8.94,
@@ -116,7 +116,7 @@
     "m_score": -2.73,
     "tata": -0.068,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
+    "verdict": "HOLD / FAIRLY VALUED",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-19"
@@ -449,7 +449,7 @@
       "open": 190.69,
       "high": 196.84,
       "low": 187.82,
-      "close": 193.71,
+      "close": 193.7,
       "volume": 8903700.0,
       "v1": 169.25,
       "m1": 164.92,
@@ -5388,16 +5388,16 @@
     },
     {
       "time": "2026-11-20",
-      "open": 127.64,
-      "high": 121.72,
-      "low": 120.0,
-      "close": 120.78,
-      "volume": 431529.0,
-      "v1": 134.97,
-      "m1": 136.67,
-      "m2": 138.59,
-      "v2": 139.61,
-      "sma200": 150.97,
+      "open": 121.72,
+      "high": 123.61,
+      "low": 116.8,
+      "close": 117.54,
+      "volume": 3257188.0,
+      "v1": 134.93,
+      "m1": 136.64,
+      "m2": 138.56,
+      "v2": 139.59,
+      "sma200": 150.96,
       "state": "BLUE"
     }
   ],
@@ -5489,7 +5489,7 @@
         },
         {
           "time": "2025-05-28",
-          "value": 10359.75
+          "value": 10359.74
         },
         {
           "time": "2025-05-29",
@@ -5501,11 +5501,11 @@
         },
         {
           "time": "2025-06-02",
-          "value": 10685.48
+          "value": 10685.49
         },
         {
           "time": "2025-06-03",
-          "value": 11229.23
+          "value": 11229.24
         },
         {
           "time": "2025-06-04",
@@ -5569,7 +5569,7 @@
         },
         {
           "time": "2025-06-26",
-          "value": 12162.55
+          "value": 12162.56
         },
         {
           "time": "2025-06-27",
@@ -5729,7 +5729,7 @@
         },
         {
           "time": "2025-08-22",
-          "value": 12166.39
+          "value": 12166.38
         },
         {
           "time": "2025-08-25",
@@ -5825,7 +5825,7 @@
         },
         {
           "time": "2025-09-26",
-          "value": 13250.36
+          "value": 13250.35
         },
         {
           "time": "2025-09-29",
@@ -7004,7 +7004,7 @@
         },
         {
           "time": "2025-05-28",
-          "value": 10359.75
+          "value": 10359.74
         },
         {
           "time": "2025-05-29",
@@ -7016,11 +7016,11 @@
         },
         {
           "time": "2025-06-02",
-          "value": 10685.48
+          "value": 10685.49
         },
         {
           "time": "2025-06-03",
-          "value": 11229.23
+          "value": 11229.24
         },
         {
           "time": "2025-06-04",
@@ -7084,7 +7084,7 @@
         },
         {
           "time": "2025-06-26",
-          "value": 12162.55
+          "value": 12162.56
         },
         {
           "time": "2025-06-27",
@@ -7244,7 +7244,7 @@
         },
         {
           "time": "2025-08-22",
-          "value": 12166.39
+          "value": 12166.38
         },
         {
           "time": "2025-08-25",
@@ -7340,7 +7340,7 @@
         },
         {
           "time": "2025-09-26",
-          "value": 13250.36
+          "value": 13250.35
         },
         {
           "time": "2025-09-29",
@@ -8575,7 +8575,7 @@
         },
         {
           "time": "2025-06-17",
-          "value": 10670.39
+          "value": 10670.4
         },
         {
           "time": "2025-06-18",
@@ -8591,7 +8591,7 @@
         },
         {
           "time": "2025-06-24",
-          "value": 10946.28
+          "value": 10946.29
         },
         {
           "time": "2025-06-25",
@@ -8603,7 +8603,7 @@
         },
         {
           "time": "2025-06-27",
-          "value": 11229.36
+          "value": 11229.35
         },
         {
           "time": "2025-06-30",
@@ -8691,7 +8691,7 @@
         },
         {
           "time": "2025-07-30",
-          "value": 12160.41
+          "value": 12160.4
         },
         {
           "time": "2025-07-31",
@@ -8703,7 +8703,7 @@
         },
         {
           "time": "2025-08-04",
-          "value": 12571.95
+          "value": 12571.94
         },
         {
           "time": "2025-08-05",
@@ -8891,7 +8891,7 @@
         },
         {
           "time": "2025-10-09",
-          "value": 12346.87
+          "value": 12346.86
         },
         {
           "time": "2025-10-10",
@@ -8931,7 +8931,7 @@
         },
         {
           "time": "2025-10-23",
-          "value": 11251.97
+          "value": 11251.96
         },
         {
           "time": "2025-10-24",
@@ -9683,7 +9683,7 @@
         },
         {
           "time": "2026-07-27",
-          "value": 9292.74
+          "value": 9292.73
         },
         {
           "time": "2026-07-28",
@@ -10042,7 +10042,7 @@
         },
         {
           "time": "2025-05-30",
-          "value": 10245.88
+          "value": 10245.87
         },
         {
           "time": "2025-06-02",
@@ -10054,7 +10054,7 @@
         },
         {
           "time": "2025-06-04",
-          "value": 11019.24
+          "value": 11019.25
         },
         {
           "time": "2025-06-05",
@@ -10370,7 +10370,7 @@
         },
         {
           "time": "2025-09-26",
-          "value": 13253.6
+          "value": 13253.59
         },
         {
           "time": "2025-09-29",
@@ -10418,7 +10418,7 @@
         },
         {
           "time": "2025-10-14",
-          "value": 13144.22
+          "value": 13144.23
         },
         {
           "time": "2025-10-15",
@@ -10662,7 +10662,7 @@
         },
         {
           "time": "2026-01-12",
-          "value": 11053.44
+          "value": 11053.45
         },
         {
           "time": "2026-01-13",
@@ -11530,7 +11530,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 7769.85
+          "value": 7561.1
         }
       ]
     }
@@ -11602,14 +11602,14 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.64, CMF: -0.15).",
-    "cmf_20d": -0.155,
-    "up_down_vol_ratio": 0.51,
-    "absorption_5d_pct": 29.0,
-    "vol_shock_ratio": 0.07,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.64, CMF: -0.17).",
+    "cmf_20d": -0.172,
+    "up_down_vol_ratio": 0.5,
+    "absorption_5d_pct": 22.2,
+    "vol_shock_ratio": 0.5,
     "put_call_ratio": 0.64,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 121.0,
+    "gamma_wall": 115.0,
     "max_pain": 115.0,
     "unusual_call_sweep": false
   }

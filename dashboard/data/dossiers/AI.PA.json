@@ -3,17 +3,17 @@
   "name": "AIR LIQUIDE",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:11.846345+00:00",
+  "generated_at": "2026-11-20T16:56:49.633084+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 187.66,
+  "current_price": 187.58,
   "state": "GOLD",
   "v1": 183.53,
   "v2": 178.53,
-  "sma200": 167.29,
-  "rsi14": 60.2,
+  "sma200": 167.28,
+  "rsi14": 60.0,
   "atr14": 2.77,
   "empirical_tier": "A",
   "walk_forward_stable": false,
@@ -35,7 +35,7 @@
       "is_winner": false,
       "total_return_pct": 0.3,
       "cagr_pct": 0.2,
-      "sharpe_ratio": 0.11,
+      "sharpe_ratio": 0.1,
       "win_rate_pct": 14.3,
       "profit_factor": 1.01,
       "max_drawdown_pct": 20.9,
@@ -49,7 +49,7 @@
       "cagr_pct": -0.3,
       "sharpe_ratio": 0.06,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.98,
+      "profit_factor": 0.97,
       "max_drawdown_pct": 19.0,
       "total_trades": 8
     },
@@ -57,8 +57,8 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 2.3,
-      "cagr_pct": 1.5,
+      "total_return_pct": 2.2,
+      "cagr_pct": 1.4,
       "sharpe_ratio": 0.19,
       "win_rate_pct": 25.0,
       "profit_factor": 1.22,
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -4.4,
+      "total_return_pct": -4.5,
       "cagr_pct": -2.9,
-      "sharpe_ratio": -0.49,
+      "sharpe_ratio": -0.5,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.64,
+      "profit_factor": 0.63,
       "max_drawdown_pct": 12.2,
       "total_trades": 3
     },
@@ -97,7 +97,7 @@
       "cagr_pct": 8.4,
       "sharpe_ratio": 0.59,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.82,
+      "profit_factor": 0.81,
       "max_drawdown_pct": 16.1,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 75.66,
     "entry_price": 56.74,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -148.0,
-    "mos_pct": -148.0,
+    "actual_discount_pct": -147.9,
+    "mos_pct": -147.9,
     "moat": "None",
     "roic_pct": 9.3,
     "wacc_pct": 8.06,
@@ -5489,13 +5489,13 @@
       "open": 189.2,
       "high": 190.21,
       "low": 186.82,
-      "close": 187.66,
-      "volume": 372683.0,
+      "close": 187.58,
+      "volume": 1238318.0,
       "v1": 183.53,
       "m1": 181.67,
       "m2": 179.6,
       "v2": 178.53,
-      "sma200": 167.29,
+      "sma200": 167.28,
       "state": "GOLD"
     }
   ],
@@ -8598,7 +8598,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10235.6
+          "value": 10231.24
         }
       ]
     },
@@ -10141,7 +10141,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9962.64
+          "value": 9958.4
         }
       ]
     },
@@ -11684,7 +11684,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11324.83
+          "value": 11320.0
         }
       ]
     }
@@ -11706,13 +11706,13 @@
   "smart_money": {
     "symbol": "AI.PA",
     "smart_money_score": 62.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.08, Up/Dn Vol: 1.75x). Силна скрита подкрепа.",
-    "cmf_20d": 0.083,
-    "up_down_vol_ratio": 1.75,
-    "absorption_5d_pct": 15.4,
-    "vol_shock_ratio": 0.37,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.06, P/C: N/A).",
+    "cmf_20d": 0.055,
+    "up_down_vol_ratio": 1.57,
+    "absorption_5d_pct": 15.0,
+    "vol_shock_ratio": 1.23,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
