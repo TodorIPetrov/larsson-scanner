@@ -3,18 +3,18 @@
   "name": "Sprott Uranium Miners ETF",
   "sector": "Макро индекси",
   "asset_class": "commodities",
-  "generated_at": "2026-11-20T14:38:50.527952+00:00",
+  "generated_at": "2026-11-20T16:58:49.867884+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 35.1,
+  "current_price": 34.21,
   "state": "BLUE",
   "v1": 41.71,
   "v2": 45.0,
-  "sma200": 56.4,
-  "rsi14": 28.4,
-  "atr14": 1.76,
+  "sma200": 56.39,
+  "rsi14": 26.8,
+  "atr14": 1.78,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -6.6,
-      "cagr_pct": -4.4,
-      "sharpe_ratio": 0.08,
+      "total_return_pct": -8.9,
+      "cagr_pct": -6.1,
+      "sharpe_ratio": 0.05,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 58.2,
+      "max_drawdown_pct": 59.3,
       "total_trades": 1
     }
   ],
@@ -5388,16 +5388,16 @@
     },
     {
       "time": "2026-11-20",
-      "open": 36.99,
-      "high": 35.19,
-      "low": 34.51,
-      "close": 35.1,
-      "volume": 187390.0,
+      "open": 34.92,
+      "high": 35.5,
+      "low": 34.2,
+      "close": 34.21,
+      "volume": 973934.0,
       "v1": 41.71,
       "m1": 42.78,
       "m2": 44.17,
       "v2": 45.0,
-      "sma200": 56.4,
+      "sma200": 56.39,
       "state": "BLUE"
     }
   ],
@@ -11474,7 +11474,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9351.84
+          "value": 9114.72
         }
       ]
     }
@@ -11495,17 +11495,17 @@
   ],
   "smart_money": {
     "symbol": "URNM",
-    "smart_money_score": 58.0,
+    "smart_money_score": 40.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.17) с Gamma стена на $39.00. Залог за рязък отскок.",
-    "cmf_20d": -0.023,
-    "up_down_vol_ratio": 0.52,
-    "absorption_5d_pct": 35.1,
-    "vol_shock_ratio": 0.21,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.17) с Gamma стена на $49.00. Залог за рязък отскок.",
+    "cmf_20d": -0.084,
+    "up_down_vol_ratio": 0.49,
+    "absorption_5d_pct": 17.9,
+    "vol_shock_ratio": 1.11,
     "put_call_ratio": 0.17,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 39.0,
+    "gamma_wall": 49.0,
     "max_pain": 49.0,
     "unusual_call_sweep": false
   }

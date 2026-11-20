@@ -3,25 +3,25 @@
   "name": "6920.T",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T14:38:10.216647+00:00",
+  "generated_at": "2026-11-20T16:57:55.631319+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-20",
-  "backtest_years": 1.5,
-  "backtest_total_bars": 366,
-  "current_price": 30250.0,
+  "backtest_end_date": "2026-11-19",
+  "backtest_years": 1.4,
+  "backtest_total_bars": 365,
+  "current_price": 33320.0,
   "state": "BLUE",
-  "v1": 36433.7,
-  "v2": 37893.3,
-  "sma200": 39113.54,
-  "rsi14": 37.3,
-  "atr14": 2964.15,
+  "v1": 36807.53,
+  "v2": 38132.35,
+  "sma200": 39140.09,
+  "rsi14": 42.5,
+  "atr14": 2941.4,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 59.7,
-    "cagr_pct": 38.1,
+    "cagr_pct": 38.2,
     "sharpe_ratio": 0.82,
     "win_rate_pct": 33.3,
     "profit_factor": 3.34,
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 37.7,
-      "cagr_pct": 24.6,
-      "sharpe_ratio": 0.66,
+      "cagr_pct": 24.7,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 28.6,
       "profit_factor": 1.61,
       "max_drawdown_pct": 57.6,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 24.5,
-      "cagr_pct": 16.3,
+      "cagr_pct": 16.4,
       "sharpe_ratio": 0.55,
       "win_rate_pct": 25.0,
       "profit_factor": 2.46,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 59.7,
-      "cagr_pct": 38.1,
+      "cagr_pct": 38.2,
       "sharpe_ratio": 0.82,
       "win_rate_pct": 33.3,
       "profit_factor": 3.34,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 115.6,
-      "cagr_pct": 69.7,
-      "sharpe_ratio": 1.09,
+      "total_return_pct": 137.5,
+      "cagr_pct": 81.7,
+      "sharpe_ratio": 1.19,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.45,
-      "max_drawdown_pct": 47.2,
+      "profit_factor": 3.0,
+      "max_drawdown_pct": 45.8,
       "total_trades": 1
     }
   ],
@@ -5231,20 +5231,6 @@
       "v2": 38132.35,
       "sma200": 39140.09,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 31510.0,
-      "high": 32340.0,
-      "low": 30060.0,
-      "close": 30250.0,
-      "volume": 5537100.0,
-      "v1": 36433.7,
-      "m1": 37004.04,
-      "m2": 37598.86,
-      "v2": 37893.3,
-      "sma200": 39113.54,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6756,10 +6742,6 @@
         {
           "time": "2026-11-19",
           "value": 15974.92
-        },
-        {
-          "time": "2026-11-20",
-          "value": 15974.92
         }
       ]
     },
@@ -8226,10 +8208,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13769.72
-        },
-        {
-          "time": "2026-11-20",
           "value": 13769.72
         }
       ]
@@ -9698,10 +9676,6 @@
         {
           "time": "2026-11-19",
           "value": 12453.96
-        },
-        {
-          "time": "2026-11-20",
-          "value": 12453.96
         }
       ]
     },
@@ -11169,10 +11143,6 @@
         {
           "time": "2026-11-19",
           "value": 23770.57
-        },
-        {
-          "time": "2026-11-20",
-          "value": 21580.43
         }
       ]
     }
@@ -11220,11 +11190,11 @@
     "smart_money_score": 52.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: N/A).",
-    "cmf_20d": 0.069,
-    "up_down_vol_ratio": 0.83,
-    "absorption_5d_pct": 34.3,
-    "vol_shock_ratio": 1.09,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.08, P/C: N/A).",
+    "cmf_20d": 0.082,
+    "up_down_vol_ratio": 0.86,
+    "absorption_5d_pct": 34.4,
+    "vol_shock_ratio": 1.24,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

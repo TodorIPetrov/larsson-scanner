@@ -3,26 +3,26 @@
   "name": "BNP PARIBAS ACT.A",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:17.570520+00:00",
+  "generated_at": "2026-11-20T16:58:04.590304+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 384,
-  "current_price": 90.22,
+  "current_price": 89.55,
   "state": "BLUE",
   "v1": 92.16,
   "v2": 93.29,
-  "sma200": 92.25,
-  "rsi14": 44.0,
+  "sma200": 92.24,
+  "rsi14": 42.1,
   "atr14": 2.2,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 34.8,
-    "cagr_pct": 21.7,
-    "sharpe_ratio": 1.04,
+    "total_return_pct": 34.3,
+    "cagr_pct": 21.4,
+    "sharpe_ratio": 1.03,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 18.0,
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 34.8,
-      "cagr_pct": 21.7,
-      "sharpe_ratio": 1.04,
+      "total_return_pct": 34.3,
+      "cagr_pct": 21.4,
+      "sharpe_ratio": 1.03,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 18.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 28.8,
-      "cagr_pct": 18.1,
-      "sharpe_ratio": 0.74,
+      "total_return_pct": 27.8,
+      "cagr_pct": 17.5,
+      "sharpe_ratio": 0.73,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.18,
+      "profit_factor": 1.14,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 120.02,
     "entry_price": 96.02,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 24.8,
-    "mos_pct": 24.8,
+    "actual_discount_pct": 25.4,
+    "mos_pct": 25.4,
     "moat": "Narrow",
     "roic_pct": 10.7,
     "wacc_pct": 9.94,
@@ -5489,13 +5489,13 @@
       "open": 91.06,
       "high": 91.32,
       "low": 89.39,
-      "close": 90.22,
-      "volume": 1255883.0,
+      "close": 89.55,
+      "volume": 3058072.0,
       "v1": 92.16,
       "m1": 92.42,
       "m2": 92.96,
       "v2": 93.29,
-      "sma200": 92.25,
+      "sma200": 92.24,
       "state": "BLUE"
     }
   ],
@@ -5526,7 +5526,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +5.71% ($373.6 €)"
+      "text": "EXIT +4.92% ($322.2 €)"
     }
   ],
   "equity_curves": [
@@ -7069,7 +7069,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 13490.41
+          "value": 13438.95
         }
       ]
     },
@@ -8875,7 +8875,7 @@
         },
         {
           "time": "2025-08-21",
-          "value": 10742.55
+          "value": 10742.54
         },
         {
           "time": "2025-08-22",
@@ -10270,7 +10270,7 @@
         },
         {
           "time": "2025-07-01",
-          "value": 9766.61
+          "value": 9766.62
         },
         {
           "time": "2025-07-02",
@@ -10334,7 +10334,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 10192.6
+          "value": 10192.61
         },
         {
           "time": "2025-07-24",
@@ -10350,7 +10350,7 @@
         },
         {
           "time": "2025-07-29",
-          "value": 10192.6
+          "value": 10192.61
         },
         {
           "time": "2025-07-30",
@@ -11698,7 +11698,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 12892.37
+          "value": 12796.62
         }
       ]
     }
@@ -11721,10 +11721,10 @@
       "entry_date": "2026-10-27",
       "entry_price": 85.18,
       "exit_date": "2026-11-20",
-      "exit_price": 90.22,
+      "exit_price": 89.55,
       "holding_days": 18,
-      "pnl_pct": 5.71,
-      "pnl_eur": 373.6,
+      "pnl_pct": 4.92,
+      "pnl_eur": 322.2,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11734,11 +11734,11 @@
     "smart_money_score": 35.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.13).",
-    "cmf_20d": -0.132,
-    "up_down_vol_ratio": 1.91,
-    "absorption_5d_pct": 13.1,
-    "vol_shock_ratio": 0.52,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
+    "cmf_20d": -0.177,
+    "up_down_vol_ratio": 1.72,
+    "absorption_5d_pct": 6.1,
+    "vol_shock_ratio": 1.26,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

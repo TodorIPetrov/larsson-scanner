@@ -3,18 +3,18 @@
   "name": "Atlassian Corporation",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T14:38:47.193771+00:00",
+  "generated_at": "2026-11-20T16:58:45.719189+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 135.06,
+  "current_price": 138.05,
   "state": "NEUTRAL",
-  "v1": 170.83,
-  "v2": 173.27,
-  "sma200": 120.49,
-  "rsi14": 24.5,
-  "atr14": 9.46,
+  "v1": 171.07,
+  "v2": 173.39,
+  "sma200": 120.51,
+  "rsi14": 27.5,
+  "atr14": 9.98,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -33,9 +33,9 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 34.8,
-      "cagr_pct": 22.1,
-      "sharpe_ratio": 0.68,
+      "total_return_pct": 37.7,
+      "cagr_pct": 23.9,
+      "sharpe_ratio": 0.72,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 41.5,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 52.5,
-      "cagr_pct": 32.6,
-      "sharpe_ratio": 0.81,
+      "total_return_pct": 55.9,
+      "cagr_pct": 34.5,
+      "sharpe_ratio": 0.84,
       "win_rate_pct": 20.0,
-      "profit_factor": 6.21,
+      "profit_factor": 6.47,
       "max_drawdown_pct": 41.6,
       "total_trades": 5
     },
@@ -81,9 +81,9 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 34.8,
-      "cagr_pct": 22.1,
-      "sharpe_ratio": 0.68,
+      "total_return_pct": 37.7,
+      "cagr_pct": 23.9,
+      "sharpe_ratio": 0.72,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 41.5,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -33.8,
-      "cagr_pct": -24.1,
-      "sharpe_ratio": -0.07,
+      "total_return_pct": -32.3,
+      "cagr_pct": -23.0,
+      "sharpe_ratio": -0.05,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 74.1,
@@ -107,8 +107,8 @@
     "target_price": 109.66,
     "entry_price": 82.24,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -23.2,
-    "mos_pct": -23.2,
+    "actual_discount_pct": -25.9,
+    "mos_pct": -25.9,
     "moat": "None",
     "roic_pct": 10.2,
     "wacc_pct": 9.91,
@@ -5389,15 +5389,15 @@
     {
       "time": "2026-11-20",
       "open": 131.08,
-      "high": 135.51,
+      "high": 142.82,
       "low": 131.04,
-      "close": 135.06,
-      "volume": 137487.0,
-      "v1": 170.83,
-      "m1": 173.73,
-      "m2": 174.33,
-      "v2": 173.27,
-      "sma200": 120.49,
+      "close": 138.05,
+      "volume": 1434373.0,
+      "v1": 171.07,
+      "m1": 173.93,
+      "m2": 174.48,
+      "v2": 173.39,
+      "sma200": 120.51,
       "state": "NEUTRAL"
     }
   ],
@@ -8444,7 +8444,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 13489.03
+          "value": 13787.42
         }
       ]
     },
@@ -9959,7 +9959,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 13489.03
+          "value": 13787.42
         }
       ]
     },
@@ -11474,7 +11474,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 6626.64
+          "value": 6773.34
         }
       ]
     }
@@ -11498,14 +11498,14 @@
     "smart_money_score": 43.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.19) с Gamma стена на $135.00. Залог за рязък отскок.",
-    "cmf_20d": -0.178,
-    "up_down_vol_ratio": 0.25,
-    "absorption_5d_pct": 42.7,
-    "vol_shock_ratio": 0.04,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.19) с Gamma стена на $140.00. Залог за рязък отскок.",
+    "cmf_20d": -0.172,
+    "up_down_vol_ratio": 0.27,
+    "absorption_5d_pct": 36.7,
+    "vol_shock_ratio": 0.39,
     "put_call_ratio": 0.19,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 135.0,
+    "gamma_wall": 140.0,
     "max_pain": 230.0,
     "unusual_call_sweep": false
   }

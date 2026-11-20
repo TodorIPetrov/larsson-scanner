@@ -3,29 +3,29 @@
   "name": "XIAOMI-W",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:08.467808+00:00",
+  "generated_at": "2026-11-20T16:57:53.647294+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 370,
-  "current_price": 27.64,
+  "backtest_total_bars": 369,
+  "current_price": 28.52,
   "state": "GOLD",
-  "v1": 28.21,
-  "v2": 27.62,
-  "sma200": 29.07,
-  "rsi14": 46.5,
-  "atr14": 1.23,
+  "v1": 28.24,
+  "v2": 27.61,
+  "sma200": 29.11,
+  "rsi14": 51.3,
+  "atr14": 1.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
-    "total_return_pct": -11.6,
-    "cagr_pct": -8.1,
-    "sharpe_ratio": -0.41,
+    "total_return_pct": -9.3,
+    "cagr_pct": -6.4,
+    "sharpe_ratio": -0.31,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
-    "max_drawdown_pct": 25.7,
+    "max_drawdown_pct": 23.7,
     "total_trades": 3
   },
   "all_strategies": [
@@ -33,36 +33,36 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -19.0,
-      "cagr_pct": -13.4,
-      "sharpe_ratio": -0.69,
+      "total_return_pct": -16.4,
+      "cagr_pct": -11.5,
+      "sharpe_ratio": -0.59,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 31.2,
+      "max_drawdown_pct": 29.0,
       "total_trades": 3
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -20.6,
-      "cagr_pct": -14.6,
-      "sharpe_ratio": -0.89,
+      "total_return_pct": -18.1,
+      "cagr_pct": -12.7,
+      "sharpe_ratio": -0.77,
       "win_rate_pct": 16.7,
-      "profit_factor": 0.1,
-      "max_drawdown_pct": 32.6,
+      "profit_factor": 0.11,
+      "max_drawdown_pct": 30.4,
       "total_trades": 6
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
-      "total_return_pct": -11.6,
-      "cagr_pct": -8.1,
-      "sharpe_ratio": -0.41,
+      "total_return_pct": -9.3,
+      "cagr_pct": -6.4,
+      "sharpe_ratio": -0.31,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 25.7,
+      "max_drawdown_pct": 23.7,
       "total_trades": 3
     },
     {
@@ -81,21 +81,21 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -12.1,
-      "cagr_pct": -8.4,
-      "sharpe_ratio": -0.8,
+      "total_return_pct": -9.3,
+      "cagr_pct": -6.5,
+      "sharpe_ratio": -0.61,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 16.3,
+      "max_drawdown_pct": 13.6,
       "total_trades": 2
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -45.9,
-      "cagr_pct": -34.2,
-      "sharpe_ratio": -0.84,
+      "total_return_pct": -44.2,
+      "cagr_pct": -32.9,
+      "sharpe_ratio": -0.79,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 64.4,
@@ -107,8 +107,8 @@
     "target_price": 25.23,
     "entry_price": 20.18,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -9.6,
-    "mos_pct": -9.6,
+    "actual_discount_pct": -13.0,
+    "mos_pct": -13.0,
     "moat": "Narrow",
     "roic_pct": 18.3,
     "wacc_pct": 8.35,
@@ -5287,20 +5287,6 @@
       "v2": 27.61,
       "sma200": 29.11,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 28.2,
-      "high": 28.3,
-      "low": 27.4,
-      "close": 27.64,
-      "volume": 157598808.0,
-      "v1": 28.21,
-      "m1": 27.95,
-      "m2": 27.71,
-      "v2": 27.62,
-      "sma200": 29.07,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5340,11 +5326,11 @@
       "text": "BUY #3 @ $29.96"
     },
     {
-      "time": "2026-11-20",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#ef4444",
       "shape": "arrowDown",
-      "text": "EXIT -7.93% ($-760.44 €)"
+      "text": "EXIT -5.0% ($-232.26 €)"
     }
   ],
   "equity_curves": [
@@ -6828,10 +6814,6 @@
         {
           "time": "2026-11-19",
           "value": 9078.28
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8844.92
         }
       ]
     },
@@ -8315,10 +8297,6 @@
         {
           "time": "2026-11-19",
           "value": 9078.85
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8799.01
         }
       ]
     },
@@ -9802,10 +9780,6 @@
         {
           "time": "2026-11-19",
           "value": 8198.52
-        },
-        {
-          "time": "2026-11-20",
-          "value": 7945.82
         }
       ]
     },
@@ -11289,10 +11263,6 @@
         {
           "time": "2026-11-19",
           "value": 5586.56
-        },
-        {
-          "time": "2026-11-20",
-          "value": 5414.19
         }
       ]
     }
@@ -11326,25 +11296,25 @@
       "num": 3,
       "entry_date": "2026-11-10",
       "entry_price": 29.96,
-      "exit_date": "2026-11-20",
-      "exit_price": 27.64,
-      "holding_days": 8,
-      "pnl_pct": -7.93,
-      "pnl_eur": -760.44,
+      "exit_date": "2026-11-19",
+      "exit_price": 28.52,
+      "holding_days": 7,
+      "pnl_pct": -5.0,
+      "pnl_eur": -232.26,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": false
     }
   ],
   "smart_money": {
     "symbol": "1810.HK",
-    "smart_money_score": 60.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: N/A).",
-    "cmf_20d": 0.024,
-    "up_down_vol_ratio": 1.38,
-    "absorption_5d_pct": 40.3,
-    "vol_shock_ratio": 0.95,
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 0.059,
+    "up_down_vol_ratio": 1.74,
+    "absorption_5d_pct": 36.2,
+    "vol_shock_ratio": 0.81,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

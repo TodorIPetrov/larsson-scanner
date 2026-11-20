@@ -3,28 +3,28 @@
   "name": "DEUTSCHE TELEKOM AG           N",
   "sector": "Communication Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:23.664712+00:00",
+  "generated_at": "2026-11-20T16:58:12.864750+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 26.24,
+  "current_price": 26.34,
   "state": "BLUE",
   "v1": 26.26,
   "v2": 26.52,
   "sma200": 28.15,
-  "rsi14": 50.0,
+  "rsi14": 51.0,
   "atr14": 0.59,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.1,
-    "cagr_pct": 0.1,
-    "sharpe_ratio": 0.06,
+    "total_return_pct": 0.3,
+    "cagr_pct": 0.2,
+    "sharpe_ratio": 0.07,
     "win_rate_pct": 50.0,
-    "profit_factor": 2.49,
+    "profit_factor": 2.53,
     "max_drawdown_pct": 6.8,
     "total_trades": 4
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.1,
-      "cagr_pct": 0.1,
-      "sharpe_ratio": 0.06,
+      "total_return_pct": 0.3,
+      "cagr_pct": 0.2,
+      "sharpe_ratio": 0.07,
       "win_rate_pct": 50.0,
-      "profit_factor": 2.49,
+      "profit_factor": 2.53,
       "max_drawdown_pct": 6.8,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -20.8,
-      "cagr_pct": -14.3,
-      "sharpe_ratio": -0.46,
+      "total_return_pct": -20.5,
+      "cagr_pct": -14.1,
+      "sharpe_ratio": -0.45,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 28.0,
@@ -107,8 +107,8 @@
     "target_price": 59.66,
     "entry_price": 47.73,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 56.0,
-    "mos_pct": 56.0,
+    "actual_discount_pct": 55.8,
+    "mos_pct": 55.8,
     "moat": "Narrow",
     "roic_pct": 10.4,
     "wacc_pct": 7.5,
@@ -5447,8 +5447,8 @@
       "open": 26.15,
       "high": 26.51,
       "low": 26.1,
-      "close": 26.24,
-      "volume": 3279243.0,
+      "close": 26.34,
+      "volume": 8204826.0,
       "v1": 26.26,
       "m1": 26.32,
       "m2": 26.43,
@@ -5512,7 +5512,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.33% ($212.07 €)"
+      "text": "EXIT +4.73% ($231.53 €)"
     }
   ],
   "equity_curves": [
@@ -7043,7 +7043,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10015.66
+          "value": 10035.14
         }
       ]
     },
@@ -11636,7 +11636,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 7929.61
+          "value": 7959.83
         }
       ]
     }
@@ -11683,24 +11683,24 @@
       "entry_date": "2026-10-13",
       "entry_price": 25.1,
       "exit_date": "2026-11-20",
-      "exit_price": 26.24,
+      "exit_price": 26.34,
       "holding_days": 28,
-      "pnl_pct": 4.33,
-      "pnl_eur": 212.07,
+      "pnl_pct": 4.73,
+      "pnl_eur": 231.53,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "DTE.DE",
-    "smart_money_score": 57.0,
+    "smart_money_score": 80.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.09, Up/Dn Vol: 1.17x). Силна скрита подкрепа.",
-    "cmf_20d": 0.089,
-    "up_down_vol_ratio": 1.17,
-    "absorption_5d_pct": 30.9,
-    "vol_shock_ratio": 0.44,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.10, Up/Dn Vol: 1.25x). Силна скрита подкрепа.",
+    "cmf_20d": 0.103,
+    "up_down_vol_ratio": 1.25,
+    "absorption_5d_pct": 35.7,
+    "vol_shock_ratio": 1.11,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

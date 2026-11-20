@@ -3,29 +3,29 @@
   "name": "Atlas Copco AB ser. A",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:15.021033+00:00",
+  "generated_at": "2026-11-20T16:58:01.308288+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 183.4,
+  "current_price": 181.95,
   "state": "BLUE",
-  "v1": 191.33,
-  "v2": 193.87,
-  "sma200": 188.09,
-  "rsi14": 39.8,
-  "atr14": 5.05,
+  "v1": 191.3,
+  "v2": 193.85,
+  "sma200": 188.08,
+  "rsi14": 38.4,
+  "atr14": 5.12,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 0.5,
-    "cagr_pct": 0.3,
-    "sharpe_ratio": 0.13,
+    "total_return_pct": 0.1,
+    "cagr_pct": 0.0,
+    "sharpe_ratio": 0.04,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
-    "max_drawdown_pct": 3.0,
+    "max_drawdown_pct": 3.4,
     "total_trades": 1
   },
   "all_strategies": [
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 0.5,
-      "cagr_pct": 0.3,
-      "sharpe_ratio": 0.13,
+      "total_return_pct": 0.1,
+      "cagr_pct": 0.0,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 3.0,
+      "max_drawdown_pct": 3.4,
       "total_trades": 1
     },
     {
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 19.3,
-      "cagr_pct": 12.6,
-      "sharpe_ratio": 0.56,
+      "total_return_pct": 18.4,
+      "cagr_pct": 12.0,
+      "sharpe_ratio": 0.54,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.99,
+      "profit_factor": 0.94,
       "max_drawdown_pct": 19.5,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 72.54,
     "entry_price": 54.41,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -152.8,
-    "mos_pct": -152.8,
+    "actual_discount_pct": -150.8,
+    "mos_pct": -150.8,
     "moat": "Narrow",
     "roic_pct": 19.0,
     "wacc_pct": 9.67,
@@ -5362,14 +5362,14 @@
       "time": "2026-11-20",
       "open": 184.9,
       "high": 185.4,
-      "low": 182.0,
-      "close": 183.4,
-      "volume": 2713777.0,
-      "v1": 191.33,
-      "m1": 192.35,
-      "m2": 193.43,
-      "v2": 193.87,
-      "sma200": 188.09,
+      "low": 181.05,
+      "close": 181.95,
+      "volume": 8052099.0,
+      "v1": 191.3,
+      "m1": 192.32,
+      "m2": 193.41,
+      "v2": 193.85,
+      "sma200": 188.08,
       "state": "BLUE"
     }
   ],
@@ -5386,7 +5386,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +0.93% ($46.37 €)"
+      "text": "EXIT +0.13% ($6.51 €)"
     }
   ],
   "equity_curves": [
@@ -6893,7 +6893,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10051.42
+          "value": 10011.52
         }
       ]
     },
@@ -11414,7 +11414,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11941.94
+          "value": 11847.53
         }
       ]
     }
@@ -11425,24 +11425,24 @@
       "entry_date": "2026-10-27",
       "entry_price": 181.35,
       "exit_date": "2026-11-20",
-      "exit_price": 183.4,
+      "exit_price": 181.95,
       "holding_days": 18,
-      "pnl_pct": 0.93,
-      "pnl_eur": 46.37,
+      "pnl_pct": 0.13,
+      "pnl_eur": 6.51,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "ATCO-A.ST",
-    "smart_money_score": 57.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.09, Up/Dn Vol: 1.0x). Силна скрита подкрепа.",
-    "cmf_20d": 0.088,
-    "up_down_vol_ratio": 1.0,
-    "absorption_5d_pct": 29.7,
-    "vol_shock_ratio": 0.5,
+    "smart_money_score": 52.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: N/A).",
+    "cmf_20d": 0.044,
+    "up_down_vol_ratio": 0.91,
+    "absorption_5d_pct": 25.6,
+    "vol_shock_ratio": 1.48,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,28 +3,28 @@
   "name": "KONE Corporation",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:32.152167+00:00",
+  "generated_at": "2026-11-20T16:58:23.770424+00:00",
   "backtest_start_date": "2025-05-28",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 56.4,
+  "current_price": 56.64,
   "state": "GOLD",
   "v1": 56.16,
   "v2": 54.66,
   "sma200": 53.41,
-  "rsi14": 50.3,
+  "rsi14": 51.9,
   "atr14": 1.03,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 7.3,
-    "cagr_pct": 4.8,
-    "sharpe_ratio": 0.42,
+    "total_return_pct": 7.8,
+    "cagr_pct": 5.1,
+    "sharpe_ratio": 0.45,
     "win_rate_pct": 50.0,
-    "profit_factor": 20.59,
+    "profit_factor": 21.82,
     "max_drawdown_pct": 12.1,
     "total_trades": 2
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 1.8,
-      "cagr_pct": 1.2,
-      "sharpe_ratio": 0.21,
+      "total_return_pct": 2.2,
+      "cagr_pct": 1.5,
+      "sharpe_ratio": 0.22,
       "win_rate_pct": 33.3,
-      "profit_factor": 1.32,
+      "profit_factor": 1.4,
       "max_drawdown_pct": 26.1,
       "total_trades": 3
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 4.7,
-      "cagr_pct": 3.2,
-      "sharpe_ratio": 0.27,
+      "total_return_pct": 5.2,
+      "cagr_pct": 3.5,
+      "sharpe_ratio": 0.28,
       "win_rate_pct": 66.7,
-      "profit_factor": 2.12,
+      "profit_factor": 2.22,
       "max_drawdown_pct": 25.4,
       "total_trades": 3
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 1.7,
-      "cagr_pct": 1.1,
-      "sharpe_ratio": 0.21,
+      "total_return_pct": 2.1,
+      "cagr_pct": 1.4,
+      "sharpe_ratio": 0.22,
       "win_rate_pct": 33.3,
-      "profit_factor": 1.39,
+      "profit_factor": 1.47,
       "max_drawdown_pct": 25.1,
       "total_trades": 3
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 7.3,
-      "cagr_pct": 4.8,
-      "sharpe_ratio": 0.42,
+      "total_return_pct": 7.8,
+      "cagr_pct": 5.1,
+      "sharpe_ratio": 0.45,
       "win_rate_pct": 50.0,
-      "profit_factor": 20.59,
+      "profit_factor": 21.82,
       "max_drawdown_pct": 12.1,
       "total_trades": 2
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 4.2,
-      "cagr_pct": 2.8,
-      "sharpe_ratio": 0.27,
+      "total_return_pct": 4.7,
+      "cagr_pct": 3.1,
+      "sharpe_ratio": 0.28,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.14,
+      "profit_factor": 0.15,
       "max_drawdown_pct": 31.2,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 39.83,
     "entry_price": 31.87,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -41.6,
-    "mos_pct": -41.6,
+    "actual_discount_pct": -42.2,
+    "mos_pct": -42.2,
     "moat": "Wide",
     "roic_pct": 35.7,
     "wacc_pct": 8.98,
@@ -5363,8 +5363,8 @@
       "open": 56.98,
       "high": 57.14,
       "low": 56.12,
-      "close": 56.4,
-      "volume": 74512.0,
+      "close": 56.64,
+      "volume": 717770.0,
       "v1": 56.16,
       "m1": 55.64,
       "m2": 55.0,
@@ -5400,7 +5400,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +7.71% ($766.99 €)"
+      "text": "EXIT +8.16% ($812.61 €)"
     }
   ],
   "equity_curves": [
@@ -6907,7 +6907,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10740.48
+          "value": 10786.14
         }
       ]
     },
@@ -8414,7 +8414,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10485.47
+          "value": 10530.05
         }
       ]
     },
@@ -9921,7 +9921,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10177.99
+          "value": 10221.28
         }
       ]
     },
@@ -11428,7 +11428,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10435.14
+          "value": 10479.55
         }
       ]
     }
@@ -11451,24 +11451,24 @@
       "entry_date": "2026-10-09",
       "entry_price": 52.26,
       "exit_date": "2026-11-20",
-      "exit_price": 56.4,
+      "exit_price": 56.64,
       "holding_days": 30,
-      "pnl_pct": 7.71,
-      "pnl_eur": 766.99,
+      "pnl_pct": 8.16,
+      "pnl_eur": 812.61,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "KNEBV.HE",
-    "smart_money_score": 65.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.30, Up/Dn Vol: 1.0x). Силна скрита подкрепа.",
-    "cmf_20d": 0.299,
-    "up_down_vol_ratio": 1.0,
-    "absorption_5d_pct": 34.0,
-    "vol_shock_ratio": 0.11,
+    "smart_money_score": 70.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
+    "cmf_20d": 0.287,
+    "up_down_vol_ratio": 0.9,
+    "absorption_5d_pct": 38.7,
+    "vol_shock_ratio": 1.1,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

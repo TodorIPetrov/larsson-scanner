@@ -3,26 +3,26 @@
   "name": "Advanced Micro Devices, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T14:38:12.417875+00:00",
+  "generated_at": "2026-11-20T16:57:58.315236+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 459.37,
+  "current_price": 434.28,
   "state": "NEUTRAL",
-  "v1": 522.67,
-  "v2": 527.25,
-  "sma200": 429.96,
-  "rsi14": 41.8,
-  "atr14": 42.91,
+  "v1": 522.06,
+  "v2": 526.93,
+  "sma200": 429.84,
+  "rsi14": 39.3,
+  "atr14": 44.42,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 290.2,
-    "cagr_pct": 148.4,
-    "sharpe_ratio": 1.66,
+    "total_return_pct": 268.9,
+    "cagr_pct": 139.3,
+    "sharpe_ratio": 1.6,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 37.7,
@@ -33,9 +33,9 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 202.2,
-      "cagr_pct": 109.4,
-      "sharpe_ratio": 1.42,
+      "total_return_pct": 185.7,
+      "cagr_pct": 101.7,
+      "sharpe_ratio": 1.37,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 37.7,
@@ -69,21 +69,21 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -1.6,
-      "cagr_pct": -1.1,
-      "sharpe_ratio": -0.08,
+      "total_return_pct": -4.2,
+      "cagr_pct": -2.8,
+      "sharpe_ratio": -0.26,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 11.9,
+      "max_drawdown_pct": 14.2,
       "total_trades": 1
     },
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 290.2,
-      "cagr_pct": 148.4,
-      "sharpe_ratio": 1.66,
+      "total_return_pct": 268.9,
+      "cagr_pct": 139.3,
+      "sharpe_ratio": 1.6,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 37.7,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 324.1,
-      "cagr_pct": 162.7,
-      "sharpe_ratio": 1.71,
+      "total_return_pct": 301.0,
+      "cagr_pct": 153.0,
+      "sharpe_ratio": 1.66,
       "win_rate_pct": 100.0,
-      "profit_factor": 8.59,
+      "profit_factor": 7.98,
       "max_drawdown_pct": 37.7,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 197.22,
     "entry_price": 147.91,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -132.9,
-    "mos_pct": -132.9,
+    "actual_discount_pct": -120.2,
+    "mos_pct": -120.2,
     "moat": "None",
     "roic_pct": 8.3,
     "wacc_pct": 12.5,
@@ -5389,15 +5389,15 @@
     {
       "time": "2026-11-20",
       "open": 471.94,
-      "high": 471.94,
-      "low": 453.73,
-      "close": 459.37,
-      "volume": 6691455.0,
-      "v1": 522.67,
-      "m1": 526.21,
-      "m2": 527.92,
-      "v2": 527.25,
-      "sma200": 429.96,
+      "high": 474.79,
+      "low": 432.59,
+      "close": 434.28,
+      "volume": 31836633.0,
+      "v1": 522.06,
+      "m1": 525.73,
+      "m2": 527.55,
+      "v2": 526.93,
+      "sma200": 429.84,
       "state": "NEUTRAL"
     }
   ],
@@ -5414,7 +5414,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +290.47% ($29018.07 €)"
+      "text": "EXIT +269.14% ($26887.3 €)"
     }
   ],
   "equity_curves": [
@@ -6929,7 +6929,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 39057.11
+          "value": 36924.21
         }
       ]
     },
@@ -8444,7 +8444,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 30246.63
+          "value": 28595.34
         }
       ]
     },
@@ -11474,7 +11474,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 42456.35
+          "value": 40137.22
         }
       ]
     }
@@ -11485,10 +11485,10 @@
       "entry_date": "2025-06-04",
       "entry_price": 117.41,
       "exit_date": "2026-11-20",
-      "exit_price": 459.37,
+      "exit_price": 434.28,
       "holding_days": 369,
-      "pnl_pct": 290.47,
-      "pnl_eur": 29018.07,
+      "pnl_pct": 269.14,
+      "pnl_eur": 26887.3,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11498,14 +11498,14 @@
     "smart_money_score": 47.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.05, P/C: 0.87).",
-    "cmf_20d": -0.051,
-    "up_down_vol_ratio": 1.17,
-    "absorption_5d_pct": 46.4,
-    "vol_shock_ratio": 0.17,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.08, P/C: 0.87).",
+    "cmf_20d": -0.082,
+    "up_down_vol_ratio": 1.09,
+    "absorption_5d_pct": 41.0,
+    "vol_shock_ratio": 0.8,
     "put_call_ratio": 0.87,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 500.0,
+    "gamma_wall": 430.0,
     "max_pain": 240.0,
     "unusual_call_sweep": false
   }

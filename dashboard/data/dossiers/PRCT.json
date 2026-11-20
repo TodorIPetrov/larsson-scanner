@@ -3,29 +3,29 @@
   "name": "PROCEPT BioRobotics Corporation",
   "sector": "Healthcare",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T14:38:42.311553+00:00",
+  "generated_at": "2026-11-20T16:58:38.836055+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 26.18,
+  "current_price": 25.64,
   "state": "GOLD",
-  "v1": 21.78,
+  "v1": 21.79,
   "v2": 20.94,
   "sma200": 22.81,
-  "rsi14": 75.9,
-  "atr14": 1.35,
+  "rsi14": 73.7,
+  "atr14": 1.37,
   "empirical_tier": "A",
   "walk_forward_stable": false,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
-    "total_return_pct": 11.8,
-    "cagr_pct": 7.8,
-    "sharpe_ratio": 1.4,
+    "total_return_pct": 9.5,
+    "cagr_pct": 6.3,
+    "sharpe_ratio": 1.18,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
-    "max_drawdown_pct": 0.0,
+    "max_drawdown_pct": 0.4,
     "total_trades": 1
   },
   "all_strategies": [
@@ -33,47 +33,47 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
-      "total_return_pct": 11.8,
-      "cagr_pct": 7.8,
-      "sharpe_ratio": 1.4,
+      "total_return_pct": 9.5,
+      "cagr_pct": 6.3,
+      "sharpe_ratio": 1.18,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 0.0,
+      "max_drawdown_pct": 0.4,
       "total_trades": 1
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 11.8,
-      "cagr_pct": 7.8,
-      "sharpe_ratio": 1.4,
+      "total_return_pct": 9.5,
+      "cagr_pct": 6.3,
+      "sharpe_ratio": 1.18,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 0.0,
+      "max_drawdown_pct": 0.4,
       "total_trades": 1
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 5.9,
-      "cagr_pct": 3.9,
-      "sharpe_ratio": 1.41,
+      "total_return_pct": 4.8,
+      "cagr_pct": 3.2,
+      "sharpe_ratio": 1.18,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 0.0,
+      "max_drawdown_pct": 0.2,
       "total_trades": 1
     },
     {
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 2.4,
-      "cagr_pct": 1.6,
-      "sharpe_ratio": 0.19,
+      "total_return_pct": 0.3,
+      "cagr_pct": 0.2,
+      "sharpe_ratio": 0.13,
       "win_rate_pct": 20.0,
-      "profit_factor": 1.57,
+      "profit_factor": 1.47,
       "max_drawdown_pct": 22.7,
       "total_trades": 5
     },
@@ -81,21 +81,21 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 11.8,
-      "cagr_pct": 7.8,
-      "sharpe_ratio": 1.4,
+      "total_return_pct": 9.5,
+      "cagr_pct": 6.3,
+      "sharpe_ratio": 1.18,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 0.0,
+      "max_drawdown_pct": 0.4,
       "total_trades": 1
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -53.5,
-      "cagr_pct": -40.0,
-      "sharpe_ratio": -0.56,
+      "total_return_pct": -54.4,
+      "cagr_pct": -40.9,
+      "sharpe_ratio": -0.58,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 74.3,
@@ -107,8 +107,8 @@
     "target_price": 38.21,
     "entry_price": 27.51,
     "required_mos_pct": 28.0,
-    "actual_discount_pct": 31.5,
-    "mos_pct": 31.5,
+    "actual_discount_pct": 32.9,
+    "mos_pct": 32.9,
     "moat": "Narrow",
     "roic_pct": 64.7,
     "wacc_pct": 9.0,
@@ -116,7 +116,7 @@
     "m_score": -2.53,
     "tata": -0.081,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "STRONG BUY",
+    "verdict": "BUY / ACCUMULATE",
     "model_type": "High-Growth EV/Revenue Multiple Model",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-20"
@@ -5389,13 +5389,13 @@
     {
       "time": "2026-11-20",
       "open": 25.38,
-      "high": 26.18,
+      "high": 26.51,
       "low": 25.1,
-      "close": 26.18,
-      "volume": 67163.0,
-      "v1": 21.78,
+      "close": 25.64,
+      "volume": 294873.0,
+      "v1": 21.79,
       "m1": 21.38,
-      "m2": 21.04,
+      "m2": 21.05,
       "v2": 20.94,
       "sma200": 22.81,
       "state": "GOLD"
@@ -5414,7 +5414,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +11.85% ($1183.61 €)"
+      "text": "EXIT +9.54% ($953.14 €)"
     }
   ],
   "equity_curves": [
@@ -6929,7 +6929,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11194.8
+          "value": 10964.1
         }
       ]
     },
@@ -8444,7 +8444,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11194.8
+          "value": 10964.1
         }
       ]
     },
@@ -9959,7 +9959,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11194.8
+          "value": 10964.1
         }
       ]
     },
@@ -11474,7 +11474,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 4657.02
+          "value": 4560.96
         }
       ]
     }
@@ -11485,27 +11485,27 @@
       "entry_date": "2026-11-17",
       "entry_price": 23.36,
       "exit_date": "2026-11-20",
-      "exit_price": 26.18,
+      "exit_price": 25.64,
       "holding_days": 3,
-      "pnl_pct": 11.85,
-      "pnl_eur": 1183.61,
+      "pnl_pct": 9.54,
+      "pnl_eur": 953.14,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "PRCT",
-    "smart_money_score": 92.0,
+    "smart_money_score": 85.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 3.37x). Силна скрита подкрепа.",
-    "cmf_20d": 0.125,
-    "up_down_vol_ratio": 3.37,
-    "absorption_5d_pct": 64.6,
-    "vol_shock_ratio": 0.05,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.12, Up/Dn Vol: 3.21x). Силна скрита подкрепа.",
+    "cmf_20d": 0.119,
+    "up_down_vol_ratio": 3.21,
+    "absorption_5d_pct": 52.2,
+    "vol_shock_ratio": 0.21,
     "put_call_ratio": 0.73,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 27.5,
+    "gamma_wall": 25.0,
     "max_pain": 25.0,
     "unusual_call_sweep": false
   }

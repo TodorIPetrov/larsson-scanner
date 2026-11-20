@@ -3,28 +3,28 @@
   "name": "Dynatrace, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T14:38:23.402674+00:00",
+  "generated_at": "2026-11-20T16:58:12.397422+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 45.26,
+  "current_price": 44.17,
   "state": "BLUE",
-  "v1": 50.67,
-  "v2": 52.3,
-  "sma200": 45.0,
-  "rsi14": 33.3,
-  "atr14": 2.26,
+  "v1": 50.66,
+  "v2": 52.29,
+  "sma200": 44.99,
+  "rsi14": 31.0,
+  "atr14": 2.3,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 11.3,
-    "cagr_pct": 7.4,
-    "sharpe_ratio": 0.39,
+    "total_return_pct": 9.1,
+    "cagr_pct": 6.0,
+    "sharpe_ratio": 0.35,
     "win_rate_pct": 33.3,
-    "profit_factor": 3.8,
+    "profit_factor": 3.5,
     "max_drawdown_pct": 33.8,
     "total_trades": 3
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -7.4,
-      "cagr_pct": -5.0,
-      "sharpe_ratio": -0.04,
+      "total_return_pct": -9.2,
+      "cagr_pct": -6.2,
+      "sharpe_ratio": -0.08,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.44,
+      "profit_factor": 0.3,
       "max_drawdown_pct": 33.8,
       "total_trades": 3
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -4.3,
-      "cagr_pct": -2.9,
-      "sharpe_ratio": 0.03,
+      "total_return_pct": -6.2,
+      "cagr_pct": -4.2,
+      "sharpe_ratio": -0.02,
       "win_rate_pct": 37.5,
-      "profit_factor": 0.56,
+      "profit_factor": 0.41,
       "max_drawdown_pct": 33.8,
       "total_trades": 8
     },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 11.3,
-      "cagr_pct": 7.4,
-      "sharpe_ratio": 0.39,
+      "total_return_pct": 9.1,
+      "cagr_pct": 6.0,
+      "sharpe_ratio": 0.35,
       "win_rate_pct": 33.3,
-      "profit_factor": 3.8,
+      "profit_factor": 3.5,
       "max_drawdown_pct": 33.8,
       "total_trades": 3
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -1.4,
-      "cagr_pct": -0.9,
-      "sharpe_ratio": 0.11,
+      "total_return_pct": -3.8,
+      "cagr_pct": -2.5,
+      "sharpe_ratio": 0.05,
       "win_rate_pct": 50.0,
-      "profit_factor": 0.78,
+      "profit_factor": 0.41,
       "max_drawdown_pct": 33.8,
       "total_trades": 2
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -15.6,
-      "cagr_pct": -10.7,
-      "sharpe_ratio": -0.06,
+      "total_return_pct": -17.6,
+      "cagr_pct": -12.2,
+      "sharpe_ratio": -0.09,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 42.9,
@@ -107,8 +107,8 @@
     "target_price": 42.93,
     "entry_price": 34.34,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -5.4,
-    "mos_pct": -5.4,
+    "actual_discount_pct": -2.9,
+    "mos_pct": -2.9,
     "moat": "Narrow",
     "roic_pct": 10.3,
     "wacc_pct": 8.69,
@@ -5388,16 +5388,16 @@
     },
     {
       "time": "2026-11-20",
-      "open": 45.82,
+      "open": 44.91,
       "high": 45.36,
-      "low": 44.67,
-      "close": 45.26,
-      "volume": 72669.0,
-      "v1": 50.67,
-      "m1": 51.63,
-      "m2": 52.23,
-      "v2": 52.3,
-      "sma200": 45.0,
+      "low": 44.13,
+      "close": 44.17,
+      "volume": 1106426.0,
+      "v1": 50.66,
+      "m1": 51.61,
+      "m2": 52.22,
+      "v2": 52.29,
+      "sma200": 44.99,
       "state": "BLUE"
     }
   ],
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +33.71% ($2804.98 €)"
+      "text": "EXIT +31.05% ($2584.01 €)"
     }
   ],
   "equity_curves": [
@@ -6957,7 +6957,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11130.78
+          "value": 10909.81
         }
       ]
     },
@@ -8472,7 +8472,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9868.93
+          "value": 9632.57
         }
       ]
     },
@@ -9987,7 +9987,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9572.14
+          "value": 9382.12
         }
       ]
     },
@@ -11502,7 +11502,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 8448.19
+          "value": 8245.67
         }
       ]
     }
@@ -11537,27 +11537,27 @@
       "entry_date": "2026-04-14",
       "entry_price": 34.2,
       "exit_date": "2026-11-20",
-      "exit_price": 45.82,
+      "exit_price": 44.91,
       "holding_days": 154,
-      "pnl_pct": 33.71,
-      "pnl_eur": 2804.98,
+      "pnl_pct": 31.05,
+      "pnl_eur": 2584.01,
       "exit_reason": "Изход след Златен Вход",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "DT",
-    "smart_money_score": 43.0,
+    "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.36) с Gamma стена на $37.50. Залог за рязък отскок.",
-    "cmf_20d": -0.291,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.36) с Gamma стена на $45.00. Залог за рязък отскок.",
+    "cmf_20d": -0.296,
     "up_down_vol_ratio": 0.24,
-    "absorption_5d_pct": 49.6,
-    "vol_shock_ratio": 0.01,
+    "absorption_5d_pct": 33.2,
+    "vol_shock_ratio": 0.13,
     "put_call_ratio": 0.36,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 37.5,
+    "gamma_wall": 45.0,
     "max_pain": 80.0,
     "unusual_call_sweep": false
   }

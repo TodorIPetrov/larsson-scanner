@@ -3,18 +3,18 @@
   "name": "Bank of America Corporation",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T14:38:16.078257+00:00",
+  "generated_at": "2026-11-20T16:58:02.650658+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 48.4,
+  "current_price": 47.9,
   "state": "BLUE",
-  "v1": 51.1,
-  "v2": 53.14,
+  "v1": 51.09,
+  "v2": 53.13,
   "sma200": 54.38,
-  "rsi14": 32.9,
-  "atr14": 1.09,
+  "rsi14": 30.9,
+  "atr14": 1.14,
   "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 17.5,
-      "cagr_pct": 11.4,
-      "sharpe_ratio": 0.56,
+      "total_return_pct": 16.3,
+      "cagr_pct": 10.6,
+      "sharpe_ratio": 0.53,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.7,
-      "max_drawdown_pct": 24.9,
+      "profit_factor": 0.63,
+      "max_drawdown_pct": 25.7,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 33.49,
     "entry_price": 26.79,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -44.5,
-    "mos_pct": -44.5,
+    "actual_discount_pct": -43.0,
+    "mos_pct": -43.0,
     "moat": "Narrow",
     "roic_pct": 11.3,
     "wacc_pct": 10.26,
@@ -5388,15 +5388,15 @@
     },
     {
       "time": "2026-11-20",
-      "open": 49.31,
-      "high": 48.6,
-      "low": 48.24,
-      "close": 48.4,
-      "volume": 2133009.0,
-      "v1": 51.1,
+      "open": 48.45,
+      "high": 48.76,
+      "low": 47.78,
+      "close": 47.9,
+      "volume": 13059018.0,
+      "v1": 51.09,
       "m1": 51.77,
-      "m2": 52.66,
-      "v2": 53.14,
+      "m2": 52.65,
+      "v2": 53.13,
       "sma200": 54.38,
       "state": "BLUE"
     }
@@ -5565,7 +5565,7 @@
         },
         {
           "time": "2025-06-04",
-          "value": 10034.69
+          "value": 10034.7
         },
         {
           "time": "2025-06-05",
@@ -5721,7 +5721,7 @@
         },
         {
           "time": "2025-07-31",
-          "value": 10685.51
+          "value": 10685.52
         },
         {
           "time": "2025-08-01",
@@ -7164,7 +7164,7 @@
         },
         {
           "time": "2025-07-07",
-          "value": 11109.51
+          "value": 11109.52
         },
         {
           "time": "2025-07-08",
@@ -7180,7 +7180,7 @@
         },
         {
           "time": "2025-07-11",
-          "value": 10669.27
+          "value": 10669.28
         },
         {
           "time": "2025-07-14",
@@ -7188,7 +7188,7 @@
         },
         {
           "time": "2025-07-15",
-          "value": 10536.97
+          "value": 10536.98
         },
         {
           "time": "2025-07-16",
@@ -7268,7 +7268,7 @@
         },
         {
           "time": "2025-08-12",
-          "value": 10844.92
+          "value": 10844.91
         },
         {
           "time": "2025-08-13",
@@ -7288,7 +7288,7 @@
         },
         {
           "time": "2025-08-19",
-          "value": 10977.21
+          "value": 10977.22
         },
         {
           "time": "2025-08-20",
@@ -8679,7 +8679,7 @@
         },
         {
           "time": "2025-07-07",
-          "value": 11109.51
+          "value": 11109.52
         },
         {
           "time": "2025-07-08",
@@ -8695,7 +8695,7 @@
         },
         {
           "time": "2025-07-11",
-          "value": 10669.27
+          "value": 10669.28
         },
         {
           "time": "2025-07-14",
@@ -8703,7 +8703,7 @@
         },
         {
           "time": "2025-07-15",
-          "value": 10536.97
+          "value": 10536.98
         },
         {
           "time": "2025-07-16",
@@ -8783,7 +8783,7 @@
         },
         {
           "time": "2025-08-12",
-          "value": 10844.92
+          "value": 10844.91
         },
         {
           "time": "2025-08-13",
@@ -8803,7 +8803,7 @@
         },
         {
           "time": "2025-08-19",
-          "value": 10977.21
+          "value": 10977.22
         },
         {
           "time": "2025-08-20",
@@ -10118,7 +10118,7 @@
         },
         {
           "time": "2025-06-06",
-          "value": 10637.89
+          "value": 10637.9
         },
         {
           "time": "2025-06-09",
@@ -10138,7 +10138,7 @@
         },
         {
           "time": "2025-06-13",
-          "value": 10429.73
+          "value": 10429.72
         },
         {
           "time": "2025-06-16",
@@ -10262,7 +10262,7 @@
         },
         {
           "time": "2025-07-30",
-          "value": 11345.2
+          "value": 11345.19
         },
         {
           "time": "2025-07-31",
@@ -11586,7 +11586,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 11759.59
+          "value": 11638.12
         }
       ]
     }
@@ -11703,17 +11703,17 @@
   ],
   "smart_money": {
     "symbol": "BAC",
-    "smart_money_score": 25.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.89, CMF: -0.34).",
-    "cmf_20d": -0.337,
-    "up_down_vol_ratio": 0.62,
-    "absorption_5d_pct": 35.3,
-    "vol_shock_ratio": 0.06,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.89, CMF: -0.35).",
+    "cmf_20d": -0.346,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 28.6,
+    "vol_shock_ratio": 0.38,
     "put_call_ratio": 0.89,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 49.0,
+    "gamma_wall": 48.0,
     "max_pain": 50.0,
     "unusual_call_sweep": false
   }

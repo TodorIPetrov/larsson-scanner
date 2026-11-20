@@ -3,17 +3,17 @@
   "name": "QS",
   "sector": "Equities",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T14:38:43.026845+00:00",
+  "generated_at": "2026-11-20T16:58:39.907549+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 377,
-  "current_price": 2.97,
+  "current_price": 2.82,
   "state": "BLUE",
   "v1": 3.99,
   "v2": 4.45,
   "sma200": 6.21,
-  "rsi14": 27.6,
+  "rsi14": 25.9,
   "atr14": 0.29,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -23.6,
-      "cagr_pct": -16.5,
-      "sharpe_ratio": 0.24,
+      "total_return_pct": -27.4,
+      "cagr_pct": -19.3,
+      "sharpe_ratio": 0.2,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 83.9,
+      "max_drawdown_pct": 84.7,
       "total_trades": 1
     }
   ],
@@ -5389,10 +5389,10 @@
     {
       "time": "2026-11-20",
       "open": 2.98,
-      "high": 2.99,
-      "low": 2.91,
-      "close": 2.97,
-      "volume": 1329134.0,
+      "high": 3.07,
+      "low": 2.82,
+      "close": 2.82,
+      "volume": 7918462.0,
       "v1": 3.99,
       "m1": 4.12,
       "m2": 4.32,
@@ -11474,7 +11474,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 7646.98
+          "value": 7262.32
         }
       ]
     }
@@ -11498,14 +11498,14 @@
     "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.08) с Gamma стена на $3.50. Залог за рязък отскок.",
-    "cmf_20d": -0.163,
-    "up_down_vol_ratio": 0.37,
-    "absorption_5d_pct": 27.5,
-    "vol_shock_ratio": 0.08,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.08) с Gamma стена на $3.00. Залог за рязък отскок.",
+    "cmf_20d": -0.187,
+    "up_down_vol_ratio": 0.35,
+    "absorption_5d_pct": 12.6,
+    "vol_shock_ratio": 0.51,
     "put_call_ratio": 0.08,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 3.5,
+    "gamma_wall": 3.0,
     "max_pain": 4.0,
     "unusual_call_sweep": false
   }

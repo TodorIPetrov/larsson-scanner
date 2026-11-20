@@ -3,18 +3,18 @@
   "name": "ABB LTD N",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T14:38:11.202231+00:00",
+  "generated_at": "2026-11-20T16:57:56.946388+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 375,
-  "current_price": 65.74,
+  "current_price": 65.34,
   "state": "BLUE",
   "v1": 71.31,
   "v2": 74.02,
   "sma200": 76.54,
-  "rsi14": 33.1,
-  "atr14": 2.03,
+  "rsi14": 32.3,
+  "atr14": 2.04,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 41.0,
-      "cagr_pct": 26.0,
-      "sharpe_ratio": 0.94,
+      "total_return_pct": 40.1,
+      "cagr_pct": 25.5,
+      "sharpe_ratio": 0.92,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.59,
-      "max_drawdown_pct": 25.8,
+      "profit_factor": 1.53,
+      "max_drawdown_pct": 26.2,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 38.96,
     "entry_price": 31.16,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -68.7,
-    "mos_pct": -68.7,
+    "actual_discount_pct": -67.7,
+    "mos_pct": -67.7,
     "moat": "Narrow",
     "roic_pct": 24.1,
     "wacc_pct": 9.55,
@@ -5362,9 +5362,9 @@
       "time": "2026-11-20",
       "open": 66.28,
       "high": 66.38,
-      "low": 65.06,
-      "close": 65.74,
-      "volume": 2218384.0,
+      "low": 64.98,
+      "close": 65.34,
+      "volume": 4217116.0,
       "v1": 71.31,
       "m1": 72.25,
       "m2": 73.41,
@@ -8308,7 +8308,7 @@
         },
         {
           "time": "2026-09-10",
-          "value": 16197.47
+          "value": 16197.46
         },
         {
           "time": "2026-09-11",
@@ -11526,7 +11526,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 14113.96
+          "value": 14028.09
         }
       ]
     }
@@ -11643,14 +11643,14 @@
   ],
   "smart_money": {
     "symbol": "ABBN.SW",
-    "smart_money_score": 25.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
-    "cmf_20d": -0.147,
-    "up_down_vol_ratio": 0.77,
-    "absorption_5d_pct": 27.4,
-    "vol_shock_ratio": 0.68,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
+    "cmf_20d": -0.174,
+    "up_down_vol_ratio": 0.73,
+    "absorption_5d_pct": 22.2,
+    "vol_shock_ratio": 1.29,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
