@@ -3,18 +3,18 @@
   "name": "QUANTA COMPUTER",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T16:57:54.299612+00:00",
+  "generated_at": "2026-11-20T23:57:13.839183+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.4,
-  "backtest_total_bars": 364,
-  "current_price": 262.5,
+  "backtest_total_bars": 365,
+  "current_price": 252.0,
   "state": "BLUE",
-  "v1": 299.86,
-  "v2": 311.94,
-  "sma200": 313.93,
-  "rsi14": 22.8,
-  "atr14": 11.32,
+  "v1": 296.69,
+  "v2": 309.89,
+  "sma200": 313.87,
+  "rsi14": 19.7,
+  "atr14": 11.58,
   "empirical_tier": "S",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -25.3,
-      "cagr_pct": -18.3,
+      "cagr_pct": -18.2,
       "sharpe_ratio": -0.47,
       "win_rate_pct": 16.7,
       "profit_factor": 0.24,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 8.4,
-      "cagr_pct": 5.7,
-      "sharpe_ratio": 0.33,
+      "total_return_pct": 4.1,
+      "cagr_pct": 2.8,
+      "sharpe_ratio": 0.25,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.24,
-      "max_drawdown_pct": 34.4,
+      "profit_factor": 0.11,
+      "max_drawdown_pct": 37.0,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 577.5,
     "entry_price": 462.0,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 54.5,
-    "mos_pct": 54.5,
+    "actual_discount_pct": 56.4,
+    "mos_pct": 56.4,
     "moat": "Wide",
     "roic_pct": 20.8,
     "wacc_pct": 8.0,
@@ -5217,6 +5217,20 @@
       "v2": 311.94,
       "sma200": 313.93,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 255.0,
+      "high": 257.0,
+      "low": 247.5,
+      "close": 252.0,
+      "volume": 17069934.0,
+      "v1": 296.69,
+      "m1": 301.91,
+      "m2": 307.34,
+      "v2": 309.89,
+      "sma200": 313.87,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6724,6 +6738,10 @@
         {
           "time": "2026-11-19",
           "value": 10169.27
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10169.27
         }
       ]
     },
@@ -8186,6 +8204,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 11611.35
+        },
+        {
+          "time": "2026-11-20",
           "value": 11611.35
         }
       ]
@@ -9650,6 +9672,10 @@
         {
           "time": "2026-11-19",
           "value": 9673.7
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9673.7
         }
       ]
     },
@@ -11113,6 +11139,10 @@
         {
           "time": "2026-11-19",
           "value": 10851.43
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10417.37
         }
       ]
     }
@@ -11157,14 +11187,14 @@
   ],
   "smart_money": {
     "symbol": "2382.TW",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.11).",
-    "cmf_20d": -0.112,
-    "up_down_vol_ratio": 0.4,
-    "absorption_5d_pct": 42.5,
-    "vol_shock_ratio": 0.73,
+    "smart_money_score": 37.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.09, P/C: N/A).",
+    "cmf_20d": -0.094,
+    "up_down_vol_ratio": 0.39,
+    "absorption_5d_pct": 51.9,
+    "vol_shock_ratio": 1.12,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

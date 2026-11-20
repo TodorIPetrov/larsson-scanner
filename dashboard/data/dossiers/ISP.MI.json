@@ -3,17 +3,17 @@
   "name": "INTESA SANPAOLO",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T16:58:22.115891+00:00",
+  "generated_at": "2026-11-20T23:57:32.217603+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 380,
-  "current_price": 5.9,
+  "backtest_total_bars": 379,
+  "current_price": 6.05,
   "state": "BLUE",
-  "v1": 6.19,
-  "v2": 6.27,
+  "v1": 6.21,
+  "v2": 6.28,
   "sma200": 6.0,
-  "rsi14": 37.0,
+  "rsi14": 42.6,
   "atr14": 0.14,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 30.2,
-      "cagr_pct": 19.1,
-      "sharpe_ratio": 0.85,
+      "total_return_pct": 33.4,
+      "cagr_pct": 21.1,
+      "sharpe_ratio": 0.93,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.59,
+      "profit_factor": 1.76,
       "max_drawdown_pct": 19.0,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 6.2,
     "entry_price": 4.96,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 4.8,
-    "mos_pct": 4.8,
+    "actual_discount_pct": 2.5,
+    "mos_pct": 2.5,
     "moat": "Narrow",
     "roic_pct": 14.5,
     "wacc_pct": 9.18,
@@ -5427,20 +5427,6 @@
       "v2": 6.28,
       "sma200": 6.0,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 5.97,
-      "high": 6.0,
-      "low": 5.88,
-      "close": 5.9,
-      "volume": 66457619.0,
-      "v1": 6.19,
-      "m1": 6.22,
-      "m2": 6.25,
-      "v2": 6.27,
-      "sma200": 6.0,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6994,10 +6980,6 @@
         {
           "time": "2026-11-19",
           "value": 12386.76
-        },
-        {
-          "time": "2026-11-20",
-          "value": 12386.76
         }
       ]
     },
@@ -8520,10 +8502,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12151.73
-        },
-        {
-          "time": "2026-11-20",
           "value": 12151.73
         }
       ]
@@ -10048,10 +10026,6 @@
         {
           "time": "2026-11-19",
           "value": 12006.49
-        },
-        {
-          "time": "2026-11-20",
-          "value": 12006.49
         }
       ]
     },
@@ -11575,10 +11549,6 @@
         {
           "time": "2026-11-19",
           "value": 13356.44
-        },
-        {
-          "time": "2026-11-20",
-          "value": 13033.96
         }
       ]
     }
@@ -11611,14 +11581,14 @@
   ],
   "smart_money": {
     "symbol": "ISP.MI",
-    "smart_money_score": 25.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.125,
-    "up_down_vol_ratio": 0.88,
-    "absorption_5d_pct": 18.8,
-    "vol_shock_ratio": 1.41,
+    "smart_money_score": 45.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
+    "cmf_20d": -0.04,
+    "up_down_vol_ratio": 1.12,
+    "absorption_5d_pct": 23.9,
+    "vol_shock_ratio": 0.9,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

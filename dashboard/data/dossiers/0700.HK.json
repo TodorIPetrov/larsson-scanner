@@ -3,18 +3,18 @@
   "name": "TENCENT",
   "sector": "Communication Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T16:57:53.596285+00:00",
+  "generated_at": "2026-11-20T23:57:13.231527+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 369,
-  "current_price": 348.4,
+  "backtest_total_bars": 370,
+  "current_price": 344.0,
   "state": "BLUE",
-  "v1": 400.69,
-  "v2": 414.02,
-  "sma200": 462.51,
-  "rsi14": 27.8,
-  "atr14": 13.18,
+  "v1": 396.95,
+  "v2": 411.63,
+  "sma200": 461.16,
+  "rsi14": 26.8,
+  "atr14": 12.95,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 16.8,
-      "cagr_pct": 11.2,
+      "cagr_pct": 11.1,
       "sharpe_ratio": 0.73,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -30.8,
-      "cagr_pct": -22.3,
-      "sharpe_ratio": -0.65,
+      "total_return_pct": -31.7,
+      "cagr_pct": -22.9,
+      "sharpe_ratio": -0.67,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 48.0,
+      "max_drawdown_pct": 48.6,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 545.94,
     "entry_price": 436.75,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 36.2,
-    "mos_pct": 36.2,
+    "actual_discount_pct": 37.0,
+    "mos_pct": 37.0,
     "moat": "Narrow",
     "roic_pct": 16.5,
     "wacc_pct": 8.29,
@@ -5287,6 +5287,20 @@
       "v2": 414.02,
       "sma200": 462.51,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 341.0,
+      "high": 349.6,
+      "low": 339.6,
+      "close": 344.0,
+      "volume": 41094469.0,
+      "v1": 396.95,
+      "m1": 401.77,
+      "m2": 407.96,
+      "v2": 411.63,
+      "sma200": 461.16,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6786,6 +6800,10 @@
         {
           "time": "2026-11-19",
           "value": 12274.03
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12274.03
         }
       ]
     },
@@ -8268,6 +8286,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 11682.61
+        },
+        {
+          "time": "2026-11-20",
           "value": 11682.61
         }
       ]
@@ -9752,6 +9774,10 @@
         {
           "time": "2026-11-19",
           "value": 11676.03
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11676.03
         }
       ]
     },
@@ -11235,6 +11261,10 @@
         {
           "time": "2026-11-19",
           "value": 6924.42
+        },
+        {
+          "time": "2026-11-20",
+          "value": 6836.97
         }
       ]
     }
@@ -11258,11 +11288,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.17).",
-    "cmf_20d": -0.167,
-    "up_down_vol_ratio": 0.73,
-    "absorption_5d_pct": 24.4,
-    "vol_shock_ratio": 2.97,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
+    "cmf_20d": -0.203,
+    "up_down_vol_ratio": 0.55,
+    "absorption_5d_pct": 31.1,
+    "vol_shock_ratio": 1.55,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

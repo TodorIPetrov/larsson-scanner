@@ -3,29 +3,29 @@
   "name": "ASIA VITAL COMPONENTS CO LTD",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T16:57:54.509850+00:00",
+  "generated_at": "2026-11-20T23:57:14.169742+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.4,
-  "backtest_total_bars": 364,
-  "current_price": 2445.0,
+  "backtest_total_bars": 365,
+  "current_price": 2205.0,
   "state": "BLUE",
-  "v1": 2933.58,
-  "v2": 3000.98,
-  "sma200": 2548.81,
-  "rsi14": 40.3,
-  "atr14": 237.6,
+  "v1": 2887.51,
+  "v2": 2974.83,
+  "sma200": 2553.47,
+  "rsi14": 36.6,
+  "atr14": 237.77,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
-    "total_return_pct": 295.9,
-    "cagr_pct": 159.2,
-    "sharpe_ratio": 1.81,
+    "total_return_pct": 262.7,
+    "cagr_pct": 143.4,
+    "sharpe_ratio": 1.71,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
-    "max_drawdown_pct": 37.3,
+    "max_drawdown_pct": 39.3,
     "total_trades": 1
   },
   "all_strategies": [
@@ -33,12 +33,12 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
-      "total_return_pct": 295.9,
-      "cagr_pct": 159.2,
-      "sharpe_ratio": 1.81,
+      "total_return_pct": 262.7,
+      "cagr_pct": 143.4,
+      "sharpe_ratio": 1.71,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 37.3,
+      "max_drawdown_pct": 39.3,
       "total_trades": 1
     },
     {
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 172.2,
-      "cagr_pct": 100.0,
+      "cagr_pct": 99.7,
       "sharpe_ratio": 1.51,
       "win_rate_pct": 50.0,
       "profit_factor": 3.39,
@@ -57,48 +57,48 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 224.2,
-      "cagr_pct": 125.8,
-      "sharpe_ratio": 1.63,
+      "total_return_pct": 197.0,
+      "cagr_pct": 112.0,
+      "sharpe_ratio": 1.52,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 37.3,
+      "max_drawdown_pct": 39.3,
       "total_trades": 1
     },
     {
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -4.8,
-      "cagr_pct": -3.4,
-      "sharpe_ratio": -0.26,
+      "total_return_pct": -8.6,
+      "cagr_pct": -6.0,
+      "sharpe_ratio": -0.5,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 10.4,
+      "max_drawdown_pct": 14.0,
       "total_trades": 1
     },
     {
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 295.9,
-      "cagr_pct": 159.2,
-      "sharpe_ratio": 1.81,
+      "total_return_pct": 262.7,
+      "cagr_pct": 143.4,
+      "sharpe_ratio": 1.71,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 37.3,
+      "max_drawdown_pct": 39.3,
       "total_trades": 1
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 309.9,
-      "cagr_pct": 165.6,
-      "sharpe_ratio": 1.85,
+      "total_return_pct": 269.7,
+      "cagr_pct": 146.6,
+      "sharpe_ratio": 1.73,
       "win_rate_pct": 100.0,
-      "profit_factor": 8.31,
-      "max_drawdown_pct": 37.3,
+      "profit_factor": 6.72,
+      "max_drawdown_pct": 40.2,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 2970.94,
     "entry_price": 2525.3,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 17.7,
-    "mos_pct": 17.7,
+    "actual_discount_pct": 25.8,
+    "mos_pct": 25.8,
     "moat": "Wide",
     "roic_pct": 49.4,
     "wacc_pct": 8.91,
@@ -116,7 +116,7 @@
     "m_score": -2.58,
     "tata": -0.075,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "BUY / ACCUMULATE",
+    "verdict": "STRONG BUY",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-09-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-18"
@@ -5217,6 +5217,20 @@
       "v2": 3000.98,
       "sma200": 2548.81,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 2240.0,
+      "high": 2280.0,
+      "low": 2205.0,
+      "close": 2205.0,
+      "volume": 1318097.0,
+      "v1": 2887.51,
+      "m1": 2936.36,
+      "m2": 2969.9,
+      "v2": 2974.83,
+      "sma200": 2553.47,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5228,11 +5242,11 @@
       "text": "BUY #1 @ $615.92"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-20",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +296.17% ($29587.56 €)"
+      "text": "EXIT +262.95% ($26269.2 €)"
     }
   ],
   "equity_curves": [
@@ -6696,6 +6710,10 @@
         {
           "time": "2026-11-19",
           "value": 39627.18
+        },
+        {
+          "time": "2026-11-20",
+          "value": 36269.2
         }
       ]
     },
@@ -8159,6 +8177,10 @@
         {
           "time": "2026-11-19",
           "value": 39627.18
+        },
+        {
+          "time": "2026-11-20",
+          "value": 36269.2
         }
       ]
     },
@@ -9622,6 +9644,10 @@
         {
           "time": "2026-11-19",
           "value": 32452.71
+        },
+        {
+          "time": "2026-11-20",
+          "value": 29702.42
         }
       ]
     },
@@ -11085,6 +11111,10 @@
         {
           "time": "2026-11-19",
           "value": 41035.59
+        },
+        {
+          "time": "2026-11-20",
+          "value": 37007.56
         }
       ]
     }
@@ -11094,25 +11124,25 @@
       "num": 1,
       "entry_date": "2025-05-28",
       "entry_price": 615.92,
-      "exit_date": "2026-11-19",
-      "exit_price": 2445.0,
-      "holding_days": 361,
-      "pnl_pct": 296.17,
-      "pnl_eur": 29587.56,
-      "exit_reason": "Край на Бектеста (Отворена)",
+      "exit_date": "2026-11-20",
+      "exit_price": 2240.0,
+      "holding_days": 362,
+      "pnl_pct": 262.95,
+      "pnl_eur": 26269.2,
+      "exit_reason": "Обръщане в BLUE",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "3017.TW",
-    "smart_money_score": 32.0,
+    "smart_money_score": 22.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
-    "cmf_20d": -0.097,
-    "up_down_vol_ratio": 0.51,
-    "absorption_5d_pct": 38.8,
-    "vol_shock_ratio": 1.43,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.08).",
+    "cmf_20d": -0.082,
+    "up_down_vol_ratio": 0.53,
+    "absorption_5d_pct": 20.0,
+    "vol_shock_ratio": 0.42,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

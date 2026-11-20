@@ -3,25 +3,25 @@
   "name": "LEGRAND",
   "sector": "Industrials",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T16:58:25.728525+00:00",
+  "generated_at": "2026-11-20T23:57:34.618383+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 384,
-  "current_price": 127.4,
+  "backtest_total_bars": 383,
+  "current_price": 133.6,
   "state": "BLUE",
-  "v1": 133.98,
-  "v2": 135.18,
-  "sma200": 140.19,
-  "rsi14": 40.9,
-  "atr14": 4.81,
+  "v1": 134.37,
+  "v2": 135.41,
+  "sma200": 140.25,
+  "rsi14": 49.4,
+  "atr14": 4.68,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": 19.6,
-    "cagr_pct": 12.4,
+    "cagr_pct": 12.5,
     "sharpe_ratio": 0.62,
     "win_rate_pct": 66.7,
     "profit_factor": 2.78,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": 19.6,
-      "cagr_pct": 12.4,
+      "cagr_pct": 12.5,
       "sharpe_ratio": 0.62,
       "win_rate_pct": 66.7,
       "profit_factor": 2.78,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -5.5,
-      "cagr_pct": -3.6,
+      "cagr_pct": -3.7,
       "sharpe_ratio": -0.04,
       "win_rate_pct": 20.0,
       "profit_factor": 0.8,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 21.4,
-      "cagr_pct": 13.6,
-      "sharpe_ratio": 0.59,
+      "total_return_pct": 27.3,
+      "cagr_pct": 17.2,
+      "sharpe_ratio": 0.69,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.0,
+      "profit_factor": 1.27,
       "max_drawdown_pct": 21.5,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 79.91,
     "entry_price": 63.93,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -59.4,
-    "mos_pct": -59.4,
+    "actual_discount_pct": -67.2,
+    "mos_pct": -67.2,
     "moat": "Narrow",
     "roic_pct": 11.7,
     "wacc_pct": 8.59,
@@ -5483,20 +5483,6 @@
       "v2": 135.41,
       "sma200": 140.25,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 128.95,
-      "high": 129.95,
-      "low": 127.1,
-      "close": 127.4,
-      "volume": 739283.0,
-      "v1": 133.98,
-      "m1": 134.31,
-      "m2": 134.83,
-      "v2": 135.18,
-      "sma200": 140.19,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7080,10 +7066,6 @@
         {
           "time": "2026-11-19",
           "value": 11956.43
-        },
-        {
-          "time": "2026-11-20",
-          "value": 11956.43
         }
       ]
     },
@@ -8622,10 +8604,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10663.84
-        },
-        {
-          "time": "2026-11-20",
           "value": 10663.84
         }
       ]
@@ -10166,10 +10144,6 @@
         {
           "time": "2026-11-19",
           "value": 9450.07
-        },
-        {
-          "time": "2026-11-20",
-          "value": 9450.07
         }
       ]
     },
@@ -11709,10 +11683,6 @@
         {
           "time": "2026-11-19",
           "value": 12746.33
-        },
-        {
-          "time": "2026-11-20",
-          "value": 12154.81
         }
       ]
     }
@@ -11757,14 +11727,14 @@
   ],
   "smart_money": {
     "symbol": "LR.PA",
-    "smart_money_score": 37.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.06, P/C: N/A).",
-    "cmf_20d": -0.063,
-    "up_down_vol_ratio": 1.08,
-    "absorption_5d_pct": 26.3,
-    "vol_shock_ratio": 1.03,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
+    "cmf_20d": -0.017,
+    "up_down_vol_ratio": 1.31,
+    "absorption_5d_pct": 28.6,
+    "vol_shock_ratio": 0.68,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,25 +3,25 @@
   "name": "Mercedes-Benz Group AG        N",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T16:58:26.485102+00:00",
+  "generated_at": "2026-11-20T23:57:34.974174+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 37.62,
+  "backtest_total_bars": 380,
+  "current_price": 38.26,
   "state": "BLUE",
-  "v1": 40.76,
-  "v2": 41.84,
-  "sma200": 46.76,
-  "rsi14": 31.3,
-  "atr14": 1.07,
+  "v1": 40.96,
+  "v2": 41.98,
+  "sma200": 46.85,
+  "rsi14": 33.9,
+  "atr14": 1.08,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": -4.1,
-    "cagr_pct": -2.7,
+    "cagr_pct": -2.8,
     "sharpe_ratio": -0.08,
     "win_rate_pct": 16.7,
     "profit_factor": 0.62,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": -4.1,
-      "cagr_pct": -2.7,
+      "cagr_pct": -2.8,
       "sharpe_ratio": -0.08,
       "win_rate_pct": 16.7,
       "profit_factor": 0.62,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -6.5,
-      "cagr_pct": -4.3,
-      "sharpe_ratio": -0.64,
+      "total_return_pct": -5.7,
+      "cagr_pct": -3.8,
+      "sharpe_ratio": -0.56,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 10.5,
+      "max_drawdown_pct": 9.7,
       "total_trades": 2
     },
     {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -22.0,
-      "cagr_pct": -15.2,
-      "sharpe_ratio": -0.51,
+      "total_return_pct": -20.7,
+      "cagr_pct": -14.2,
+      "sharpe_ratio": -0.47,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 35.0,
+      "max_drawdown_pct": 33.9,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 15.88,
     "entry_price": 11.91,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -136.9,
-    "mos_pct": -136.9,
+    "actual_discount_pct": -141.0,
+    "mos_pct": -141.0,
     "moat": "None",
     "roic_pct": 4.5,
     "wacc_pct": 8.0,
@@ -5441,20 +5441,6 @@
       "v2": 41.98,
       "sma200": 46.85,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 38.03,
-      "high": 38.4,
-      "low": 37.57,
-      "close": 37.62,
-      "volume": 3087735.0,
-      "v1": 40.76,
-      "m1": 41.07,
-      "m2": 41.54,
-      "v2": 41.84,
-      "sma200": 46.76,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7068,10 +7054,6 @@
         {
           "time": "2026-11-19",
           "value": 9587.28
-        },
-        {
-          "time": "2026-11-20",
-          "value": 9587.28
         }
       ]
     },
@@ -8598,10 +8580,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8784.08
-        },
-        {
-          "time": "2026-11-20",
           "value": 8784.08
         }
       ]
@@ -10130,10 +10108,6 @@
         {
           "time": "2026-11-19",
           "value": 9433.1
-        },
-        {
-          "time": "2026-11-20",
-          "value": 9355.87
         }
       ]
     },
@@ -11661,10 +11635,6 @@
         {
           "time": "2026-11-19",
           "value": 7942.28
-        },
-        {
-          "time": "2026-11-20",
-          "value": 7808.4
         }
       ]
     }
@@ -11748,11 +11718,11 @@
     "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.31).",
-    "cmf_20d": -0.308,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.30).",
+    "cmf_20d": -0.299,
     "up_down_vol_ratio": 0.78,
-    "absorption_5d_pct": 14.9,
-    "vol_shock_ratio": 1.21,
+    "absorption_5d_pct": 25.1,
+    "vol_shock_ratio": 0.84,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
