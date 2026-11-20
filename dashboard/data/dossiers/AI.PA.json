@@ -3,7 +3,7 @@
   "name": "AIR LIQUIDE",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T00:37:06.174344+00:00",
+  "generated_at": "2026-11-20T07:02:06.005282+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
@@ -103,15 +103,15 @@
     }
   ],
   "fundamental": {
-    "fair_value": 75.47,
-    "target_price": 75.47,
-    "entry_price": 56.6,
+    "fair_value": 75.66,
+    "target_price": 75.66,
+    "entry_price": 56.74,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -151.4,
-    "mos_pct": -151.4,
+    "actual_discount_pct": -150.8,
+    "mos_pct": -150.8,
     "moat": "None",
     "roic_pct": 9.3,
-    "wacc_pct": 8.0,
+    "wacc_pct": 8.06,
     "z_score": 3.29,
     "m_score": -2.76,
     "tata": -0.058,
@@ -119,7 +119,7 @@
     "verdict": "REDUCE / OVERVALUED",
     "model_type": "Mid-Cycle Normalized DCF",
     "latest_filing_date": "2025-12-31 (10-Q TTM)",
-    "last_fundamental_update": null
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {

@@ -3,7 +3,7 @@
   "name": "CrowdStrike Holdings, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T00:37:28.152627+00:00",
+  "generated_at": "2026-11-20T07:02:23.888443+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 96.4,
-    "target_price": 96.4,
-    "entry_price": 72.3,
+    "fair_value": 97.38,
+    "target_price": 97.38,
+    "entry_price": 73.04,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -152.6,
-    "mos_pct": -152.6,
+    "actual_discount_pct": -150.0,
+    "mos_pct": -150.0,
     "moat": "None",
     "roic_pct": 5.6,
-    "wacc_pct": 9.94,
+    "wacc_pct": 10.1,
     "z_score": 1.75,
     "m_score": -3.27,
     "tata": -0.163,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-07-31 (10-Q TTM)",
-    "last_fundamental_update": null
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5374,11 +5374,11 @@
     },
     {
       "time": "2026-11-19",
-      "open": 246.74,
+      "open": 246.89,
       "high": 256.73,
       "low": 239.7,
       "close": 243.46,
-      "volume": 11554903.0,
+      "volume": 11568700.0,
       "v1": 237.85,
       "m1": 238.06,
       "m2": 236.51,
@@ -11465,18 +11465,18 @@
   ],
   "smart_money": {
     "symbol": "CRWD",
-    "smart_money_score": 47.0,
+    "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.05, P/C: 1.05).",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.05, P/C: 0.67).",
     "cmf_20d": -0.051,
     "up_down_vol_ratio": 0.79,
     "absorption_5d_pct": 55.4,
     "vol_shock_ratio": 1.26,
-    "put_call_ratio": 1.05,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 240.0,
-    "max_pain": 225.0,
-    "unusual_call_sweep": false
+    "put_call_ratio": 0.67,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 370.0,
+    "max_pain": 560.0,
+    "unusual_call_sweep": true
   }
 }

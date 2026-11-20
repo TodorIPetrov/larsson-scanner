@@ -3,18 +3,18 @@
   "name": "BHP GROUP FPO [BHP]",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T00:37:19.350353+00:00",
+  "generated_at": "2026-11-20T07:02:16.642642+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 52.29,
+  "current_price": 51.4,
   "state": "BLUE",
-  "v1": 57.57,
-  "v2": 58.71,
-  "sma200": 57.49,
-  "rsi14": 32.1,
-  "atr14": 1.6,
+  "v1": 57.55,
+  "v2": 58.69,
+  "sma200": 57.48,
+  "rsi14": 30.4,
+  "atr14": 1.66,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 44.0,
-      "cagr_pct": 27.3,
-      "sharpe_ratio": 0.98,
+      "total_return_pct": 41.6,
+      "cagr_pct": 25.8,
+      "sharpe_ratio": 0.94,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.09,
-      "max_drawdown_pct": 21.0,
+      "profit_factor": 1.86,
+      "max_drawdown_pct": 22.4,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 68.82,
     "entry_price": 55.06,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 24.0,
-    "mos_pct": 24.0,
+    "actual_discount_pct": 25.3,
+    "mos_pct": 25.3,
     "moat": "Wide",
     "roic_pct": 28.7,
     "wacc_pct": 8.67,
@@ -5446,14 +5446,14 @@
       "time": "2026-11-20",
       "open": 51.95,
       "high": 52.47,
-      "low": 51.92,
-      "close": 52.29,
-      "volume": 3814316.0,
-      "v1": 57.57,
-      "m1": 58.02,
-      "m2": 58.5,
-      "v2": 58.71,
-      "sma200": 57.49,
+      "low": 51.14,
+      "close": 51.4,
+      "volume": 11665000.0,
+      "v1": 57.55,
+      "m1": 58.0,
+      "m2": 58.48,
+      "v2": 58.69,
+      "sma200": 57.48,
       "state": "BLUE"
     }
   ],
@@ -5685,7 +5685,7 @@
         },
         {
           "time": "2025-08-07",
-          "value": 10026.97
+          "value": 10026.98
         },
         {
           "time": "2025-08-08",
@@ -5721,7 +5721,7 @@
         },
         {
           "time": "2025-08-20",
-          "value": 10499.55
+          "value": 10499.54
         },
         {
           "time": "2025-08-21",
@@ -5745,7 +5745,7 @@
         },
         {
           "time": "2025-08-28",
-          "value": 10816.26
+          "value": 10816.27
         },
         {
           "time": "2025-08-29",
@@ -5905,7 +5905,7 @@
         },
         {
           "time": "2025-10-23",
-          "value": 11056.49
+          "value": 11056.5
         },
         {
           "time": "2025-10-24",
@@ -7172,7 +7172,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 10451.6
+          "value": 10451.59
         },
         {
           "time": "2025-07-24",
@@ -7384,7 +7384,7 @@
         },
         {
           "time": "2025-10-06",
-          "value": 10696.36
+          "value": 10696.37
         },
         {
           "time": "2025-10-07",
@@ -7432,7 +7432,7 @@
         },
         {
           "time": "2025-10-22",
-          "value": 11106.99
+          "value": 11106.98
         },
         {
           "time": "2025-10-23",
@@ -8703,7 +8703,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 10451.6
+          "value": 10451.59
         },
         {
           "time": "2025-07-24",
@@ -8915,7 +8915,7 @@
         },
         {
           "time": "2025-10-06",
-          "value": 10696.36
+          "value": 10696.37
         },
         {
           "time": "2025-10-07",
@@ -8963,7 +8963,7 @@
         },
         {
           "time": "2025-10-22",
-          "value": 11106.99
+          "value": 11106.98
         },
         {
           "time": "2025-10-23",
@@ -10290,7 +10290,7 @@
         },
         {
           "time": "2025-08-12",
-          "value": 10686.73
+          "value": 10686.74
         },
         {
           "time": "2025-08-13",
@@ -10382,7 +10382,7 @@
         },
         {
           "time": "2025-09-12",
-          "value": 10805.06
+          "value": 10805.05
         },
         {
           "time": "2025-09-15",
@@ -10702,7 +10702,7 @@
         },
         {
           "time": "2026-01-07",
-          "value": 12629.28
+          "value": 12629.29
         },
         {
           "time": "2026-01-08",
@@ -11594,7 +11594,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 14415.35
+          "value": 14170.0
         }
       ]
     }
@@ -11615,14 +11615,14 @@
   ],
   "smart_money": {
     "symbol": "BHP.AX",
-    "smart_money_score": 22.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
-    "cmf_20d": -0.096,
-    "up_down_vol_ratio": 0.66,
-    "absorption_5d_pct": 23.8,
-    "vol_shock_ratio": 0.44,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.141,
+    "up_down_vol_ratio": 0.62,
+    "absorption_5d_pct": 14.2,
+    "vol_shock_ratio": 1.33,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

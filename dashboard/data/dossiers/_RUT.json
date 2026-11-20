@@ -3,7 +3,7 @@
   "name": "Russell 2000",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-20T00:38:43.085045+00:00",
+  "generated_at": "2026-11-20T07:03:19.243230+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -5378,7 +5378,7 @@
       "high": 2730.01,
       "low": 2653.92,
       "close": 2655.11,
-      "volume": 0.0,
+      "volume": 5692800000.0,
       "v1": 2790.31,
       "m1": 2800.97,
       "m2": 2815.44,
@@ -11458,7 +11458,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13169.34
+          "value": 13169.37
         }
       ]
     }
@@ -11491,14 +11491,14 @@
   ],
   "smart_money": {
     "symbol": "^RUT",
-    "smart_money_score": 45.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.018,
-    "up_down_vol_ratio": 1.15,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: N/A).",
+    "cmf_20d": -0.067,
+    "up_down_vol_ratio": 1.03,
     "absorption_5d_pct": 27.2,
-    "vol_shock_ratio": 0.0,
+    "vol_shock_ratio": 1.02,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

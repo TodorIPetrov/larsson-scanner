@@ -3,7 +3,7 @@
   "name": "Palo Alto Networks, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T00:38:13.432128+00:00",
+  "generated_at": "2026-11-20T07:02:58.565540+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 139.22,
-    "target_price": 139.22,
-    "entry_price": 104.41,
+    "fair_value": 144.69,
+    "target_price": 144.69,
+    "entry_price": 108.52,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -159.8,
-    "mos_pct": -159.8,
+    "actual_discount_pct": -150.0,
+    "mos_pct": -150.0,
     "moat": "None",
     "roic_pct": 3.2,
-    "wacc_pct": 9.38,
+    "wacc_pct": 9.54,
     "z_score": 1.49,
     "m_score": -2.89,
     "tata": -0.088,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
+    "verdict": "HOLD / SENSITIVITY REVIEW",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-07-31 (10-Q TTM)",
-    "last_fundamental_update": null
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5378,7 +5378,7 @@
       "high": 370.0,
       "low": 350.52,
       "close": 361.73,
-      "volume": 19109488.0,
+      "volume": 19154100.0,
       "v1": 348.52,
       "m1": 351.78,
       "m2": 353.57,
@@ -11543,18 +11543,18 @@
   ],
   "smart_money": {
     "symbol": "PANW",
-    "smart_money_score": 52.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: 1.03).",
+    "smart_money_score": 80.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.02, Up/Dn Vol: 0.74x). Силна скрита подкрепа.",
     "cmf_20d": 0.017,
     "up_down_vol_ratio": 0.74,
     "absorption_5d_pct": 60.4,
-    "vol_shock_ratio": 2.78,
-    "put_call_ratio": 1.03,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 350.0,
-    "max_pain": 300.0,
-    "unusual_call_sweep": false
+    "vol_shock_ratio": 2.79,
+    "put_call_ratio": 0.09,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 155.0,
+    "max_pain": 130.0,
+    "unusual_call_sweep": true
   }
 }

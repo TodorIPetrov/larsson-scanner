@@ -3,18 +3,18 @@
   "name": "CWLTH BANK FPO [CBA]",
   "sector": "Financial Services",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T00:37:24.820664+00:00",
+  "generated_at": "2026-11-20T07:02:20.867250+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 381,
-  "current_price": 170.64,
+  "current_price": 169.92,
   "state": "GOLD",
-  "v1": 164.78,
-  "v2": 162.15,
+  "v1": 164.81,
+  "v2": 162.17,
   "sma200": 164.84,
-  "rsi14": 63.2,
-  "atr14": 3.5,
+  "rsi14": 61.1,
+  "atr14": 3.54,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -30.1,
-      "cagr_pct": -21.1,
-      "sharpe_ratio": -1.12,
+      "total_return_pct": -30.4,
+      "cagr_pct": -21.3,
+      "sharpe_ratio": -1.13,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.18,
+      "profit_factor": 0.17,
       "max_drawdown_pct": 37.6,
       "total_trades": 10
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -34.1,
-      "cagr_pct": -24.1,
-      "sharpe_ratio": -1.39,
+      "total_return_pct": -34.4,
+      "cagr_pct": -24.3,
+      "sharpe_ratio": -1.4,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.1,
+      "profit_factor": 0.09,
       "max_drawdown_pct": 41.1,
       "total_trades": 10
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -23.0,
-      "cagr_pct": -15.9,
-      "sharpe_ratio": -1.24,
+      "total_return_pct": -23.2,
+      "cagr_pct": -16.0,
+      "sharpe_ratio": -1.25,
       "win_rate_pct": 31.6,
-      "profit_factor": 0.24,
+      "profit_factor": 0.23,
       "max_drawdown_pct": 27.3,
       "total_trades": 19
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -13.9,
-      "cagr_pct": -9.4,
-      "sharpe_ratio": -0.79,
+      "total_return_pct": -14.2,
+      "cagr_pct": -9.7,
+      "sharpe_ratio": -0.81,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.09,
+      "profit_factor": 0.07,
       "max_drawdown_pct": 19.2,
       "total_trades": 4
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 2.2,
-      "cagr_pct": 1.4,
-      "sharpe_ratio": 0.17,
+      "total_return_pct": 1.7,
+      "cagr_pct": 1.2,
+      "sharpe_ratio": 0.16,
       "win_rate_pct": 100.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 21.9,
@@ -107,8 +107,8 @@
     "target_price": 74.39,
     "entry_price": 59.52,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -129.4,
-    "mos_pct": -129.4,
+    "actual_discount_pct": -128.4,
+    "mos_pct": -128.4,
     "moat": "Narrow",
     "roic_pct": 13.8,
     "wacc_pct": 8.99,
@@ -129,7 +129,7 @@
       "low": 165.69,
       "close": 167.57,
       "volume": 1236086.0,
-      "v1": 159.37,
+      "v1": 159.36,
       "m1": 157.78,
       "m2": 155.98,
       "v2": 155.08,
@@ -5445,14 +5445,14 @@
     {
       "time": "2026-11-20",
       "open": 168.6,
-      "high": 171.29,
+      "high": 172.17,
       "low": 168.6,
-      "close": 170.64,
-      "volume": 1559747.0,
-      "v1": 164.78,
-      "m1": 163.61,
-      "m2": 162.55,
-      "v2": 162.15,
+      "close": 169.92,
+      "volume": 3247470.0,
+      "v1": 164.81,
+      "m1": 163.63,
+      "m2": 162.57,
+      "v2": 162.17,
       "sma200": 164.84,
       "state": "GOLD"
     }
@@ -6237,7 +6237,7 @@
         },
         {
           "time": "2026-02-12",
-          "value": 10997.04
+          "value": 10997.03
         },
         {
           "time": "2026-02-13",
@@ -6541,7 +6541,7 @@
         },
         {
           "time": "2026-06-02",
-          "value": 9869.3
+          "value": 9869.29
         },
         {
           "time": "2026-06-03",
@@ -6641,7 +6641,7 @@
         },
         {
           "time": "2026-07-08",
-          "value": 10027.34
+          "value": 10027.33
         },
         {
           "time": "2026-07-09",
@@ -6745,7 +6745,7 @@
         },
         {
           "time": "2026-08-13",
-          "value": 9958.06
+          "value": 9958.05
         },
         {
           "time": "2026-08-14",
@@ -6793,7 +6793,7 @@
         },
         {
           "time": "2026-08-31",
-          "value": 9863.62
+          "value": 9863.61
         },
         {
           "time": "2026-09-01",
@@ -7504,11 +7504,11 @@
         },
         {
           "time": "2025-11-06",
-          "value": 10434.87
+          "value": 10434.88
         },
         {
           "time": "2025-11-07",
-          "value": 10279.58
+          "value": 10279.59
         },
         {
           "time": "2025-11-10",
@@ -8560,7 +8560,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 8621.22
+          "value": 8584.88
         }
       ]
     },
@@ -8715,7 +8715,7 @@
         },
         {
           "time": "2025-07-17",
-          "value": 10113.09
+          "value": 10113.08
         },
         {
           "time": "2025-07-18",
@@ -8775,7 +8775,7 @@
         },
         {
           "time": "2025-08-07",
-          "value": 9647.54
+          "value": 9647.53
         },
         {
           "time": "2025-08-08",
@@ -8875,7 +8875,7 @@
         },
         {
           "time": "2025-09-11",
-          "value": 9305.68
+          "value": 9305.67
         },
         {
           "time": "2025-09-12",
@@ -9755,7 +9755,7 @@
         },
         {
           "time": "2026-07-27",
-          "value": 8270.0
+          "value": 8269.99
         },
         {
           "time": "2026-07-28",
@@ -10091,7 +10091,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 7704.15
+          "value": 7687.77
         }
       ]
     },
@@ -10122,7 +10122,7 @@
         },
         {
           "time": "2025-06-03",
-          "value": 10232.87
+          "value": 10232.88
         },
         {
           "time": "2025-06-04",
@@ -10246,7 +10246,7 @@
         },
         {
           "time": "2025-07-17",
-          "value": 10356.61
+          "value": 10356.6
         },
         {
           "time": "2025-07-18",
@@ -10338,7 +10338,7 @@
         },
         {
           "time": "2025-08-19",
-          "value": 9798.11
+          "value": 9798.1
         },
         {
           "time": "2025-08-20",
@@ -10570,7 +10570,7 @@
         },
         {
           "time": "2025-11-07",
-          "value": 10232.02
+          "value": 10232.03
         },
         {
           "time": "2025-11-10",
@@ -10714,7 +10714,7 @@
         },
         {
           "time": "2025-12-31",
-          "value": 9339.75
+          "value": 9339.76
         },
         {
           "time": "2026-01-02",
@@ -10790,7 +10790,7 @@
         },
         {
           "time": "2026-01-29",
-          "value": 8646.99
+          "value": 8647.0
         },
         {
           "time": "2026-01-30",
@@ -11622,7 +11622,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10228.07
+          "value": 10184.91
         }
       ]
     }
@@ -11667,14 +11667,14 @@
   ],
   "smart_money": {
     "symbol": "CBA.AX",
-    "smart_money_score": 85.0,
+    "smart_money_score": 80.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.16, Up/Dn Vol: 1.27x). Силна скрита подкрепа.",
-    "cmf_20d": 0.156,
-    "up_down_vol_ratio": 1.27,
-    "absorption_5d_pct": 58.9,
-    "vol_shock_ratio": 0.7,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.11, Up/Dn Vol: 1.17x). Силна скрита подкрепа.",
+    "cmf_20d": 0.112,
+    "up_down_vol_ratio": 1.17,
+    "absorption_5d_pct": 51.1,
+    "vol_shock_ratio": 1.45,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,7 +3,7 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T00:37:16.271176+00:00",
+  "generated_at": "2026-11-20T07:02:14.353692+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -5375,10 +5375,10 @@
     {
       "time": "2026-11-19",
       "open": 83.4,
-      "high": 88.15,
+      "high": 88.2,
       "low": 83.25,
       "close": 83.31,
-      "volume": 21703066.0,
+      "volume": 22023600.0,
       "v1": 100.19,
       "m1": 101.86,
       "m2": 103.88,
@@ -11595,18 +11595,18 @@
   ],
   "smart_money": {
     "symbol": "BABA",
-    "smart_money_score": 33.0,
+    "smart_money_score": 43.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.28) с Gamma стена на $85.00. Залог за рязък отскок.",
-    "cmf_20d": -0.399,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.06) с Gamma стена на $270.00. Залог за рязък отскок.",
+    "cmf_20d": -0.4,
     "up_down_vol_ratio": 0.51,
     "absorption_5d_pct": 17.5,
-    "vol_shock_ratio": 1.85,
-    "put_call_ratio": 0.28,
+    "vol_shock_ratio": 1.88,
+    "put_call_ratio": 0.06,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 85.0,
-    "max_pain": 160.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 270.0,
+    "max_pain": 280.0,
+    "unusual_call_sweep": true
   }
 }

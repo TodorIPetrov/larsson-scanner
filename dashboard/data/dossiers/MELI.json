@@ -3,7 +3,7 @@
   "name": "MercadoLibre, Inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T00:37:58.239466+00:00",
+  "generated_at": "2026-11-20T07:02:47.542353+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -5374,11 +5374,11 @@
     },
     {
       "time": "2026-11-19",
-      "open": 1429.21,
+      "open": 1424.4,
       "high": 1434.73,
       "low": 1347.78,
       "close": 1355.49,
-      "volume": 929376.0,
+      "volume": 930900.0,
       "v1": 1609.86,
       "m1": 1642.05,
       "m2": 1676.2,
@@ -11491,18 +11491,18 @@
   ],
   "smart_money": {
     "symbol": "MELI",
-    "smart_money_score": 40.0,
+    "smart_money_score": 58.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.42) с Gamma стена на $1420.00. Залог за рязък отскок.",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.14) с Gamma стена на $2320.00. Залог за рязък отскок.",
     "cmf_20d": 0.006,
     "up_down_vol_ratio": 0.36,
     "absorption_5d_pct": 30.7,
     "vol_shock_ratio": 1.25,
-    "put_call_ratio": 0.42,
+    "put_call_ratio": 0.14,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 1420.0,
-    "max_pain": 1420.0,
-    "unusual_call_sweep": false
+    "gamma_wall": 2320.0,
+    "max_pain": 2320.0,
+    "unusual_call_sweep": true
   }
 }
