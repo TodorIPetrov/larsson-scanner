@@ -3,18 +3,18 @@
   "name": "BAE SYSTEMS PLC ORD 2.5P",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T23:03:49.659908+00:00",
+  "generated_at": "2026-11-20T00:37:15.789951+00:00",
   "backtest_start_date": "2025-05-22",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-18",
   "backtest_years": 1.5,
-  "backtest_total_bars": 381,
-  "current_price": 1853.5,
+  "backtest_total_bars": 380,
+  "current_price": 1828.0,
   "state": "BLUE",
-  "v1": 1931.71,
-  "v2": 1953.35,
-  "sma200": 2022.7,
-  "rsi14": 40.6,
-  "atr14": 57.07,
+  "v1": 1937.94,
+  "v2": 1957.23,
+  "sma200": 2022.71,
+  "rsi14": 36.8,
+  "atr14": 57.69,
   "empirical_tier": "S",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -30.7,
-      "cagr_pct": -21.5,
+      "cagr_pct": -21.6,
       "sharpe_ratio": -1.2,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 1.6,
-      "cagr_pct": 1.1,
-      "sharpe_ratio": 0.16,
+      "total_return_pct": 0.2,
+      "cagr_pct": 0.1,
+      "sharpe_ratio": 0.13,
       "win_rate_pct": 100.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 23.1,
@@ -107,8 +107,8 @@
     "target_price": 1595.34,
     "entry_price": 1196.51,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -16.2,
-    "mos_pct": -16.2,
+    "actual_discount_pct": -14.6,
+    "mos_pct": -14.6,
     "moat": "None",
     "roic_pct": 11.9,
     "wacc_pct": 7.61,
@@ -116,7 +116,7 @@
     "m_score": -1.4,
     "tata": -0.034,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
+    "verdict": "HOLD / FAIRLY VALUED",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-06-30 (10-Q TTM)",
     "last_fundamental_update": "2026-11-19"
@@ -130,7 +130,7 @@
       "close": 1841.53,
       "volume": 5598028.0,
       "v1": 1708.41,
-      "m1": 1685.11,
+      "m1": 1685.1,
       "m2": 1650.31,
       "v2": 1628.16,
       "sma200": null,
@@ -1300,7 +1300,7 @@
     },
     {
       "time": "2025-09-19",
-      "open": 1959.5,
+      "open": 1959.49,
       "high": 1978.49,
       "low": 1944.0,
       "close": 1951.0,
@@ -1741,7 +1741,7 @@
       "volume": 8316163.0,
       "v1": 1904.26,
       "m1": 1904.37,
-      "m2": 1899.8,
+      "m2": 1899.79,
       "v2": 1894.99,
       "sma200": 1727.19,
       "state": "NEUTRAL"
@@ -5441,20 +5441,6 @@
       "v2": 1957.23,
       "sma200": 2022.71,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-19",
-      "open": 1820.0,
-      "high": 1869.0,
-      "low": 1820.0,
-      "close": 1853.5,
-      "volume": 5523238.0,
-      "v1": 1931.71,
-      "m1": 1939.45,
-      "m2": 1948.55,
-      "v2": 1953.35,
-      "sma200": 2022.7,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7040,10 +7026,6 @@
         {
           "time": "2026-11-18",
           "value": 8936.07
-        },
-        {
-          "time": "2026-11-19",
-          "value": 8936.07
         }
       ]
     },
@@ -7230,7 +7212,7 @@
         },
         {
           "time": "2025-07-24",
-          "value": 9989.78
+          "value": 9989.77
         },
         {
           "time": "2025-07-25",
@@ -7250,7 +7232,7 @@
         },
         {
           "time": "2025-07-31",
-          "value": 9741.51
+          "value": 9741.5
         },
         {
           "time": "2025-08-01",
@@ -7466,7 +7448,7 @@
         },
         {
           "time": "2025-10-16",
-          "value": 9415.23
+          "value": 9415.24
         },
         {
           "time": "2025-10-17",
@@ -8571,10 +8553,6 @@
         {
           "time": "2026-11-18",
           "value": 7521.7
-        },
-        {
-          "time": "2026-11-19",
-          "value": 7521.7
         }
       ]
     },
@@ -8649,7 +8627,7 @@
         },
         {
           "time": "2025-06-16",
-          "value": 10576.44
+          "value": 10576.43
         },
         {
           "time": "2025-06-17",
@@ -10101,10 +10079,6 @@
         },
         {
           "time": "2026-11-18",
-          "value": 7399.57
-        },
-        {
-          "time": "2026-11-19",
           "value": 7399.57
         }
       ]
@@ -11633,10 +11607,6 @@
         {
           "time": "2026-11-18",
           "value": 10030.99
-        },
-        {
-          "time": "2026-11-19",
-          "value": 10170.92
         }
       ]
     }
@@ -11693,14 +11663,14 @@
   ],
   "smart_money": {
     "symbol": "BA.L",
-    "smart_money_score": 25.0,
+    "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.122,
-    "up_down_vol_ratio": 0.8,
-    "absorption_5d_pct": 33.0,
-    "vol_shock_ratio": 1.06,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.13).",
+    "cmf_20d": -0.134,
+    "up_down_vol_ratio": 0.67,
+    "absorption_5d_pct": 26.7,
+    "vol_shock_ratio": 0.95,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,7 +3,7 @@
   "name": "Natural Gas",
   "sector": "Суровини",
   "asset_class": "commodities",
-  "generated_at": "2026-11-19T23:04:18.817027+00:00",
+  "generated_at": "2026-11-20T00:38:04.978491+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -11,9 +11,9 @@
   "current_price": 3.24,
   "state": "GOLD",
   "v1": 3.08,
-  "v2": 3.03,
+  "v2": 3.02,
   "sma200": 2.97,
-  "rsi14": 56.2,
+  "rsi14": 56.3,
   "atr14": 0.16,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -94,7 +94,7 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "total_return_pct": -3.5,
-      "cagr_pct": -2.4,
+      "cagr_pct": -2.3,
       "sharpe_ratio": 0.44,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -5402,15 +5402,15 @@
     },
     {
       "time": "2026-11-19",
-      "open": 3.38,
-      "high": 3.42,
+      "open": 3.25,
+      "high": 3.26,
       "low": 3.24,
       "close": 3.24,
-      "volume": 175736.0,
+      "volume": 248.0,
       "v1": 3.08,
       "m1": 3.06,
-      "m2": 3.04,
-      "v2": 3.03,
+      "m2": 3.03,
+      "v2": 3.02,
       "sma200": 2.97,
       "state": "GOLD"
     }
@@ -8451,7 +8451,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 5826.59
+          "value": 5827.47
         }
       ]
     },
@@ -9970,7 +9970,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 4780.7
+          "value": 4782.18
         }
       ]
     },
@@ -11489,7 +11489,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9656.6
+          "value": 9659.58
         }
       ]
     }
@@ -11497,14 +11497,14 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "NG=F",
-    "smart_money_score": 72.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.063,
-    "up_down_vol_ratio": 1.39,
-    "absorption_5d_pct": 43.3,
-    "vol_shock_ratio": 0.98,
+    "smart_money_score": 80.0,
+    "flow_verdict": "STEALTH_ACCUMULATION",
+    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.11, Up/Dn Vol: 1.58x). Силна скрита подкрепа.",
+    "cmf_20d": 0.114,
+    "up_down_vol_ratio": 1.58,
+    "absorption_5d_pct": 48.4,
+    "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

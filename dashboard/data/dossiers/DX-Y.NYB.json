@@ -3,26 +3,26 @@
   "name": "US Dollar Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-19T23:04:01.144352+00:00",
+  "generated_at": "2026-11-20T00:37:33.769407+00:00",
   "backtest_start_date": "2025-05-22",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
   "backtest_total_bars": 378,
-  "current_price": 103.93,
+  "current_price": 103.92,
   "state": "GOLD",
   "v1": 102.33,
   "v2": 101.71,
   "sma200": 99.98,
-  "rsi14": 70.4,
+  "rsi14": 70.3,
   "atr14": 0.51,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 3.3,
+    "total_return_pct": 3.2,
     "cagr_pct": 2.2,
-    "sharpe_ratio": 0.9,
+    "sharpe_ratio": 0.89,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 2.4,
@@ -34,10 +34,10 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -3.4,
-      "cagr_pct": -2.2,
+      "cagr_pct": -2.3,
       "sharpe_ratio": -0.61,
       "win_rate_pct": 14.3,
-      "profit_factor": 0.41,
+      "profit_factor": 0.4,
       "max_drawdown_pct": 6.4,
       "total_trades": 7
     },
@@ -69,9 +69,9 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 3.3,
+      "total_return_pct": 3.2,
       "cagr_pct": 2.2,
-      "sharpe_ratio": 0.9,
+      "sharpe_ratio": 0.89,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 2.4,
@@ -5405,7 +5405,7 @@
       "open": 103.81,
       "high": 103.97,
       "low": 103.59,
-      "close": 103.93,
+      "close": 103.92,
       "volume": 0.0,
       "v1": 102.33,
       "m1": 102.12,
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.78% ($471.14 €)"
+      "text": "EXIT +4.77% ($470.25 €)"
     }
   ],
   "equity_curves": [
@@ -6961,7 +6961,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10335.48
+          "value": 10334.59
         }
       ]
     },
@@ -8480,7 +8480,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9891.77
+          "value": 9890.91
         }
       ]
     },
@@ -9999,7 +9999,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9862.57
+          "value": 9861.71
         }
       ]
     },
@@ -11518,7 +11518,7 @@
         },
         {
           "time": "2026-11-19",
-          "value": 10420.42
+          "value": 10419.52
         }
       ]
     }
@@ -11541,10 +11541,10 @@
       "entry_date": "2026-08-25",
       "entry_price": 98.99,
       "exit_date": "2026-11-19",
-      "exit_price": 103.93,
+      "exit_price": 103.92,
       "holding_days": 61,
-      "pnl_pct": 4.78,
-      "pnl_eur": 471.14,
+      "pnl_pct": 4.77,
+      "pnl_eur": 470.25,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
