@@ -3,25 +3,25 @@
   "name": "ARKF",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-20T07:02:09.969982+00:00",
+  "generated_at": "2026-11-20T14:38:14.041802+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 37.88,
+  "backtest_total_bars": 377,
+  "current_price": 37.41,
   "state": "BLUE",
-  "v1": 42.74,
-  "v2": 43.56,
+  "v1": 42.38,
+  "v2": 43.35,
   "sma200": 41.96,
-  "rsi14": 27.8,
-  "atr14": 1.33,
+  "rsi14": 26.6,
+  "atr14": 1.28,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 27.0,
-    "cagr_pct": 17.4,
+    "cagr_pct": 17.3,
     "sharpe_ratio": 0.82,
     "win_rate_pct": 50.0,
     "profit_factor": 6.29,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 27.0,
-      "cagr_pct": 17.4,
+      "cagr_pct": 17.3,
       "sharpe_ratio": 0.82,
       "win_rate_pct": 50.0,
       "profit_factor": 6.29,
@@ -83,7 +83,7 @@
       "is_winner": false,
       "total_return_pct": -5.5,
       "cagr_pct": -3.7,
-      "sharpe_ratio": -0.2,
+      "sharpe_ratio": -0.19,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 14.1,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -5.6,
-      "cagr_pct": -3.8,
-      "sharpe_ratio": 0.03,
+      "total_return_pct": -6.8,
+      "cagr_pct": -4.6,
+      "sharpe_ratio": 0.01,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 38.5,
@@ -5385,6 +5385,20 @@
       "v2": 43.56,
       "sma200": 41.96,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 39.76,
+      "high": 37.52,
+      "low": 37.18,
+      "close": 37.41,
+      "volume": 15770.0,
+      "v1": 42.38,
+      "m1": 42.84,
+      "m2": 43.22,
+      "v2": 43.35,
+      "sma200": 41.96,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 12696.19
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12696.19
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 10874.97
+        },
+        {
+          "time": "2026-11-20",
           "value": 10874.97
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 10169.47
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10169.47
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 9447.55
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9330.35
         }
       ]
     }
@@ -11491,18 +11521,18 @@
   ],
   "smart_money": {
     "symbol": "ARKF",
-    "smart_money_score": 22.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.50, CMF: -0.03).",
-    "cmf_20d": -0.03,
+    "smart_money_score": 48.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.05) с Gamma стена на $37.00. Залог за рязък отскок.",
+    "cmf_20d": -0.027,
     "up_down_vol_ratio": 0.31,
-    "absorption_5d_pct": 32.8,
-    "vol_shock_ratio": 0.88,
-    "put_call_ratio": 2.5,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 35.0,
-    "max_pain": 35.0,
-    "unusual_call_sweep": true
+    "absorption_5d_pct": 32.9,
+    "vol_shock_ratio": 0.07,
+    "put_call_ratio": 0.05,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 37.0,
+    "max_pain": 50.0,
+    "unusual_call_sweep": false
   }
 }

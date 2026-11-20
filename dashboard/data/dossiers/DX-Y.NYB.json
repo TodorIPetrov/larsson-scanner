@@ -3,7 +3,7 @@
   "name": "US Dollar Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-20T07:02:28.365765+00:00",
+  "generated_at": "2026-11-20T14:38:24.008872+00:00",
   "backtest_start_date": "2025-05-23",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
@@ -13,8 +13,8 @@
   "v1": 102.43,
   "v2": 101.78,
   "sma200": 100.01,
-  "rsi14": 66.7,
-  "atr14": 0.49,
+  "rsi14": 66.8,
+  "atr14": 0.5,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -2.8,
-      "cagr_pct": -1.9,
+      "cagr_pct": -1.8,
       "sharpe_ratio": -0.54,
       "win_rate_pct": 25.0,
       "profit_factor": 0.42,
@@ -5404,12 +5404,12 @@
       "time": "2026-11-20",
       "open": 103.89,
       "high": 103.95,
-      "low": 103.71,
+      "low": 103.58,
       "close": 103.72,
       "volume": 0.0,
       "v1": 102.43,
       "m1": 102.21,
-      "m2": 101.94,
+      "m2": 101.93,
       "v2": 101.78,
       "sma200": 100.01,
       "state": "GOLD"
@@ -5442,7 +5442,7 @@
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.57% ($449.7 €)"
+      "text": "EXIT +4.57% ($449.89 €)"
     }
   ],
   "equity_curves": [
@@ -6961,7 +6961,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10314.01
+          "value": 10314.21
         }
       ]
     },
@@ -8480,7 +8480,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9871.23
+          "value": 9871.42
         }
       ]
     },
@@ -9999,7 +9999,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9842.09
+          "value": 9842.28
         }
       ]
     },
@@ -11518,7 +11518,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 10373.78
+          "value": 10373.98
         }
       ]
     }
@@ -11544,7 +11544,7 @@
       "exit_price": 103.72,
       "holding_days": 62,
       "pnl_pct": 4.57,
-      "pnl_eur": 449.7,
+      "pnl_eur": 449.89,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }

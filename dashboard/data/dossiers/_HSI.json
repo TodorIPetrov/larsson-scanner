@@ -3,17 +3,17 @@
   "name": "Hang Seng Index",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-20T07:03:19.153227+00:00",
+  "generated_at": "2026-11-20T14:38:52.973428+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
   "backtest_total_bars": 370,
-  "current_price": 22331.09,
+  "current_price": 22410.8,
   "state": "BLUE",
   "v1": 23771.85,
   "v2": 24103.05,
-  "sma200": 25124.03,
-  "rsi14": 30.3,
+  "sma200": 25124.43,
+  "rsi14": 31.0,
   "atr14": 387.15,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -4.0,
-      "cagr_pct": -2.7,
-      "sharpe_ratio": -0.08,
+      "total_return_pct": -3.7,
+      "cagr_pct": -2.5,
+      "sharpe_ratio": -0.07,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 20.2,
+      "max_drawdown_pct": 19.9,
       "total_trades": 1
     }
   ],
@@ -5293,13 +5293,13 @@
       "open": 22482.39,
       "high": 22593.51,
       "low": 22307.42,
-      "close": 22331.09,
+      "close": 22410.8,
       "volume": 0.0,
       "v1": 23771.85,
       "m1": 23878.85,
       "m2": 24020.7,
       "v2": 24103.05,
-      "sma200": 25124.03,
+      "sma200": 25124.43,
       "state": "BLUE"
     }
   ],
@@ -11264,7 +11264,7 @@
         },
         {
           "time": "2026-11-20",
-          "value": 9608.86
+          "value": 9643.16
         }
       ]
     }
@@ -11285,13 +11285,13 @@
   ],
   "smart_money": {
     "symbol": "^HSI",
-    "smart_money_score": 45.0,
+    "smart_money_score": 55.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
     "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
     "cmf_20d": -0.016,
     "up_down_vol_ratio": 1.02,
-    "absorption_5d_pct": 33.6,
+    "absorption_5d_pct": 39.2,
     "vol_shock_ratio": 0.0,
     "put_call_ratio": null,
     "options_sentiment": "N/A",

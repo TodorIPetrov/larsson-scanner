@@ -3,18 +3,18 @@
   "name": "lululemon athletica inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:45.212573+00:00",
+  "generated_at": "2026-11-20T14:38:33.567835+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 105.53,
+  "backtest_total_bars": 377,
+  "current_price": 106.57,
   "state": "NEUTRAL",
-  "v1": 105.47,
-  "v2": 106.07,
-  "sma200": 128.33,
-  "rsi14": 50.0,
-  "atr14": 4.62,
+  "v1": 105.54,
+  "v2": 106.09,
+  "sma200": 128.02,
+  "rsi14": 51.5,
+  "atr14": 4.43,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": -12.1,
     "cagr_pct": -8.3,
-    "sharpe_ratio": -0.91,
+    "sharpe_ratio": -0.9,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
     "max_drawdown_pct": 14.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -21.6,
-      "cagr_pct": -15.1,
+      "cagr_pct": -15.0,
       "sharpe_ratio": -1.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -83,7 +83,7 @@
       "is_winner": true,
       "total_return_pct": -12.1,
       "cagr_pct": -8.3,
-      "sharpe_ratio": -0.91,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 14.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -66.3,
-      "cagr_pct": -51.8,
-      "sharpe_ratio": -1.26,
+      "total_return_pct": -66.0,
+      "cagr_pct": -51.3,
+      "sharpe_ratio": -1.24,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 72.6,
@@ -107,8 +107,8 @@
     "target_price": 258.27,
     "entry_price": 206.62,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 59.1,
-    "mos_pct": 59.1,
+    "actual_discount_pct": 58.7,
+    "mos_pct": 58.7,
     "moat": "Narrow",
     "roic_pct": 27.1,
     "wacc_pct": 8.71,
@@ -5385,6 +5385,20 @@
       "v2": 106.07,
       "sma200": 128.33,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 106.03,
+      "high": 107.58,
+      "low": 105.54,
+      "close": 106.57,
+      "volume": 174549.0,
+      "v1": 105.54,
+      "m1": 105.3,
+      "m2": 105.59,
+      "v2": 106.09,
+      "sma200": 128.02,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-19",
           "value": 8785.81
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8785.81
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 8643.04
+        },
+        {
+          "time": "2026-11-20",
           "value": 8643.04
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-19",
           "value": 7929.0
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7929.0
         }
       ]
     },
@@ -11445,6 +11471,10 @@
         {
           "time": "2026-11-19",
           "value": 3373.26
+        },
+        {
+          "time": "2026-11-20",
+          "value": 3406.66
         }
       ]
     }
@@ -11465,18 +11495,18 @@
   ],
   "smart_money": {
     "symbol": "LULU",
-    "smart_money_score": 75.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.01, Up/Dn Vol: 1.01x). Силна скрита подкрепа.",
-    "cmf_20d": -0.012,
-    "up_down_vol_ratio": 1.01,
-    "absorption_5d_pct": 37.8,
-    "vol_shock_ratio": 0.8,
-    "put_call_ratio": 0.49,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 65.0,
-    "max_pain": 65.0,
-    "unusual_call_sweep": true
+    "smart_money_score": 67.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.81) с Gamma стена на $107.00. Залог за рязък отскок.",
+    "cmf_20d": 0.034,
+    "up_down_vol_ratio": 1.15,
+    "absorption_5d_pct": 35.2,
+    "vol_shock_ratio": 0.06,
+    "put_call_ratio": 0.81,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 107.0,
+    "max_pain": 105.0,
+    "unusual_call_sweep": false
   }
 }

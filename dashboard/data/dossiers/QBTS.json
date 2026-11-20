@@ -3,25 +3,25 @@
   "name": "D-Wave Quantum Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:03:00.247517+00:00",
+  "generated_at": "2026-11-20T14:38:42.774311+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 7.31,
+  "backtest_total_bars": 377,
+  "current_price": 7.02,
   "state": "BLUE",
-  "v1": 11.06,
-  "v2": 13.17,
-  "sma200": 18.24,
-  "rsi14": 26.6,
-  "atr14": 0.91,
+  "v1": 10.79,
+  "v2": 12.96,
+  "sma200": 18.19,
+  "rsi14": 25.6,
+  "atr14": 0.87,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": -12.2,
-    "cagr_pct": -8.4,
+    "cagr_pct": -8.3,
     "sharpe_ratio": 0.21,
     "win_rate_pct": 22.2,
     "profit_factor": 0.49,
@@ -46,8 +46,8 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -59.4,
-      "cagr_pct": -45.3,
-      "sharpe_ratio": -0.63,
+      "cagr_pct": -45.2,
+      "sharpe_ratio": -0.62,
       "win_rate_pct": 9.1,
       "profit_factor": 0.14,
       "max_drawdown_pct": 80.9,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": -12.2,
-      "cagr_pct": -8.4,
+      "cagr_pct": -8.3,
       "sharpe_ratio": 0.21,
       "win_rate_pct": 22.2,
       "profit_factor": 0.49,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -28.3,
-      "cagr_pct": -20.0,
+      "cagr_pct": -19.9,
       "sharpe_ratio": -0.01,
       "win_rate_pct": 50.0,
       "profit_factor": 0.15,
@@ -93,33 +93,33 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -59.3,
-      "cagr_pct": -45.2,
-      "sharpe_ratio": -0.12,
+      "total_return_pct": -60.9,
+      "cagr_pct": -46.6,
+      "sharpe_ratio": -0.14,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 83.7,
+      "max_drawdown_pct": 84.3,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 4.15,
-    "target_price": 4.15,
-    "entry_price": 3.11,
+    "fair_value": 2.83,
+    "target_price": 2.83,
+    "entry_price": 2.12,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -76.1,
-    "mos_pct": -76.1,
+    "actual_discount_pct": -148.1,
+    "mos_pct": -148.1,
     "moat": "None",
     "roic_pct": 2.0,
     "wacc_pct": 12.5,
-    "z_score": 9.58,
-    "m_score": -2.02,
-    "tata": -0.119,
+    "z_score": 9.03,
+    "m_score": -1.47,
+    "tata": -0.026,
     "solvency_type": "Altman Z''-Score (Universal Model)",
     "verdict": "REDUCE / OVERVALUED",
     "model_type": "Mid-Cycle Normalized DCF",
-    "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-05"
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5385,6 +5385,20 @@
       "v2": 13.17,
       "sma200": 18.24,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 7.14,
+      "high": 7.14,
+      "low": 6.95,
+      "close": 7.02,
+      "volume": 1705489.0,
+      "v1": 10.79,
+      "m1": 11.49,
+      "m2": 12.41,
+      "v2": 12.96,
+      "sma200": 18.19,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7024,6 +7038,10 @@
         {
           "time": "2026-11-19",
           "value": 8779.23
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8779.23
         }
       ]
     },
@@ -8534,6 +8552,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 8221.66
+        },
+        {
+          "time": "2026-11-20",
           "value": 8221.66
         }
       ]
@@ -10046,6 +10068,10 @@
         {
           "time": "2026-11-19",
           "value": 7171.42
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7171.42
         }
       ]
     },
@@ -11557,6 +11583,10 @@
         {
           "time": "2026-11-19",
           "value": 4078.58
+        },
+        {
+          "time": "2026-11-20",
+          "value": 3916.77
         }
       ]
     }
@@ -11676,15 +11706,15 @@
     "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.01) с Gamma стена на $60.00. Залог за рязък отскок.",
-    "cmf_20d": -0.167,
-    "up_down_vol_ratio": 0.51,
-    "absorption_5d_pct": 17.9,
-    "vol_shock_ratio": 1.22,
-    "put_call_ratio": 0.01,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.21) с Gamma стена на $60.00. Залог за рязък отскок.",
+    "cmf_20d": -0.203,
+    "up_down_vol_ratio": 0.45,
+    "absorption_5d_pct": 15.0,
+    "vol_shock_ratio": 0.11,
+    "put_call_ratio": 0.21,
     "options_sentiment": "BULLISH",
     "gamma_wall": 60.0,
-    "max_pain": 60.0,
+    "max_pain": 14.0,
     "unusual_call_sweep": false
   }
 }

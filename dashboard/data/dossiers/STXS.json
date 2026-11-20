@@ -3,18 +3,18 @@
   "name": "Stereotaxis, Inc.",
   "sector": "Healthcare",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:03:09.456454+00:00",
+  "generated_at": "2026-11-20T14:38:46.860438+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 1.01,
+  "backtest_total_bars": 377,
+  "current_price": 0.98,
   "state": "BLUE",
   "v1": 1.0,
   "v2": 1.11,
   "sma200": 1.6,
-  "rsi14": 51.6,
-  "atr14": 0.1,
+  "rsi14": 49.2,
+  "atr14": 0.09,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -17.8,
       "cagr_pct": -12.3,
-      "sharpe_ratio": -0.26,
+      "sharpe_ratio": -0.25,
       "win_rate_pct": 16.7,
       "profit_factor": 0.48,
       "max_drawdown_pct": 31.2,
@@ -71,7 +71,7 @@
       "is_winner": false,
       "total_return_pct": -25.3,
       "cagr_pct": -17.7,
-      "sharpe_ratio": -1.21,
+      "sharpe_ratio": -1.2,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 33.2,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -49.6,
-      "cagr_pct": -36.8,
-      "sharpe_ratio": -0.52,
+      "total_return_pct": -51.3,
+      "cagr_pct": -38.1,
+      "sharpe_ratio": -0.56,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 77.6,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 0.62,
-    "target_price": 0.62,
+    "fair_value": 0.63,
+    "target_price": 0.63,
     "entry_price": 0.44,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -62.9,
-    "mos_pct": -62.9,
+    "actual_discount_pct": -53.8,
+    "mos_pct": -53.8,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 10.54,
-    "z_score": -4.21,
-    "m_score": -2.81,
-    "tata": -0.127,
+    "z_score": -4.4,
+    "m_score": -1.79,
+    "tata": -0.086,
     "solvency_type": "Altman Z''-Score (Universal Model)",
     "verdict": "REDUCE / DISTRESSED CASH BURN",
     "model_type": "Distressed / Negative FCF Model",
-    "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-05"
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5385,6 +5385,20 @@
       "v2": 1.11,
       "sma200": 1.6,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 0.95,
+      "high": 1.01,
+      "low": 0.96,
+      "close": 0.98,
+      "volume": 70853.0,
+      "v1": 1.0,
+      "m1": 1.03,
+      "m2": 1.08,
+      "v2": 1.11,
+      "sma200": 1.6,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 10033.55
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10033.55
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 9483.67
+        },
+        {
+          "time": "2026-11-20",
           "value": 9483.67
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 8215.67
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8215.67
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 5044.95
+        },
+        {
+          "time": "2026-11-20",
+          "value": 4879.12
         }
       ]
     }
@@ -11495,14 +11525,14 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $5.00. Залог за рязък отскок.",
-    "cmf_20d": -0.038,
-    "up_down_vol_ratio": 0.71,
-    "absorption_5d_pct": 50.3,
-    "vol_shock_ratio": 1.38,
+    "cmf_20d": -0.044,
+    "up_down_vol_ratio": 0.68,
+    "absorption_5d_pct": 51.2,
+    "vol_shock_ratio": 0.07,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
     "gamma_wall": 5.0,
-    "max_pain": 5.0,
+    "max_pain": 2.5,
     "unusual_call_sweep": false
   }
 }

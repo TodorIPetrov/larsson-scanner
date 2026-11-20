@@ -3,18 +3,18 @@
   "name": "S&P 500",
   "sector": "Макро индекси",
   "asset_class": "indices",
-  "generated_at": "2026-11-20T07:03:19.123107+00:00",
+  "generated_at": "2026-11-20T14:38:52.948818+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 7175.83,
+  "backtest_total_bars": 377,
+  "current_price": 7153.58,
   "state": "BLUE",
-  "v1": 7561.65,
-  "v2": 7600.21,
-  "sma200": 7348.02,
-  "rsi14": 31.4,
-  "atr14": 120.21,
+  "v1": 7533.86,
+  "v2": 7584.51,
+  "sma200": 7349.8,
+  "rsi14": 30.7,
+  "atr14": 114.65,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 15.9,
-      "cagr_pct": 10.4,
+      "cagr_pct": 10.3,
       "sharpe_ratio": 0.89,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 23.9,
-      "cagr_pct": 15.4,
-      "sharpe_ratio": 1.17,
+      "total_return_pct": 23.5,
+      "cagr_pct": 15.1,
+      "sharpe_ratio": 1.15,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.62,
+      "profit_factor": 2.58,
       "max_drawdown_pct": 9.1,
       "total_trades": 1
     }
@@ -5385,6 +5385,20 @@
       "v2": 7600.21,
       "sma200": 7348.02,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 7150.39,
+      "high": 7156.23,
+      "low": 7133.55,
+      "close": 7153.58,
+      "volume": 309211030.0,
+      "v1": 7533.86,
+      "m1": 7559.09,
+      "m2": 7579.23,
+      "v2": 7584.51,
+      "sma200": 7349.8,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 11873.89
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11873.89
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 11586.47
+        },
+        {
+          "time": "2026-11-20",
           "value": 11586.47
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 11566.21
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11566.21
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 12398.46
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12360.02
         }
       ]
     }
@@ -11491,14 +11521,14 @@
   ],
   "smart_money": {
     "symbol": "^GSPC",
-    "smart_money_score": 15.0,
+    "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
-    "cmf_20d": -0.135,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 30.7,
-    "vol_shock_ratio": 1.02,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.11).",
+    "cmf_20d": -0.114,
+    "up_down_vol_ratio": 0.74,
+    "absorption_5d_pct": 38.2,
+    "vol_shock_ratio": 0.06,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

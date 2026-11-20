@@ -3,25 +3,25 @@
   "name": "Eos Energy Enterprises, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:28.805010+00:00",
+  "generated_at": "2026-11-20T14:38:24.486628+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 1.36,
+  "backtest_total_bars": 377,
+  "current_price": 1.28,
   "state": "BLUE",
-  "v1": 2.02,
-  "v2": 2.57,
-  "sma200": 5.26,
-  "rsi14": 34.3,
-  "atr14": 0.24,
+  "v1": 1.97,
+  "v2": 2.53,
+  "sma200": 5.21,
+  "rsi14": 32.9,
+  "atr14": 0.23,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": 49.7,
-    "cagr_pct": 31.0,
+    "cagr_pct": 30.9,
     "sharpe_ratio": 0.69,
     "win_rate_pct": 33.3,
     "profit_factor": 3.3,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -23.7,
-      "cagr_pct": -16.6,
+      "cagr_pct": -16.5,
       "sharpe_ratio": -0.02,
       "win_rate_pct": 20.0,
       "profit_factor": 0.72,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": 49.7,
-      "cagr_pct": 31.0,
+      "cagr_pct": 30.9,
       "sharpe_ratio": 0.69,
       "win_rate_pct": 33.3,
       "profit_factor": 3.3,
@@ -93,33 +93,33 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -76.8,
-      "cagr_pct": -62.4,
-      "sharpe_ratio": -0.32,
+      "total_return_pct": -78.2,
+      "cagr_pct": -63.9,
+      "sharpe_ratio": -0.35,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 92.9,
+      "max_drawdown_pct": 93.3,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 1.39,
-    "target_price": 1.39,
-    "entry_price": 0.97,
+    "fair_value": 0.84,
+    "target_price": 0.84,
+    "entry_price": 0.59,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": 2.2,
-    "mos_pct": 2.2,
+    "actual_discount_pct": -52.3,
+    "mos_pct": -52.3,
     "moat": "None",
     "roic_pct": 0.0,
-    "wacc_pct": 11.46,
+    "wacc_pct": 9.08,
     "z_score": 0.5,
-    "m_score": -2.03,
-    "tata": -0.243,
+    "m_score": 0.85,
+    "tata": 0.3,
     "solvency_type": "Negative Equity / Excessive Debt",
     "verdict": "REDUCE / DISTRESSED CASH BURN",
     "model_type": "Distressed / Negative FCF Model",
-    "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-05"
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5385,6 +5385,20 @@
       "v2": 2.57,
       "sma200": 5.26,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 1.51,
+      "high": 1.32,
+      "low": 1.26,
+      "close": 1.28,
+      "volume": 3393679.0,
+      "v1": 1.97,
+      "m1": 2.13,
+      "m2": 2.37,
+      "v2": 2.53,
+      "sma200": 5.21,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6982,6 +6996,10 @@
         {
           "time": "2026-11-19",
           "value": 14966.17
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14966.17
         }
       ]
     },
@@ -8492,6 +8510,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 10053.47
+        },
+        {
+          "time": "2026-11-20",
           "value": 10053.47
         }
       ]
@@ -10004,6 +10026,10 @@
         {
           "time": "2026-11-19",
           "value": 11971.45
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11971.45
         }
       ]
     },
@@ -11515,6 +11541,10 @@
         {
           "time": "2026-11-19",
           "value": 2322.46
+        },
+        {
+          "time": "2026-11-20",
+          "value": 2184.14
         }
       ]
     }
@@ -11595,18 +11625,18 @@
   ],
   "smart_money": {
     "symbol": "EOSE",
-    "smart_money_score": 14.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.11).",
-    "cmf_20d": -0.114,
-    "up_down_vol_ratio": 0.98,
-    "absorption_5d_pct": 22.1,
-    "vol_shock_ratio": 0.91,
-    "put_call_ratio": 2.0,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 0.5,
-    "max_pain": 13.0,
+    "smart_money_score": 43.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.25) с Gamma стена на $1.50. Залог за рязък отскок.",
+    "cmf_20d": -0.161,
+    "up_down_vol_ratio": 0.88,
+    "absorption_5d_pct": 9.2,
+    "vol_shock_ratio": 0.15,
+    "put_call_ratio": 0.25,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 1.5,
+    "max_pain": 6.0,
     "unusual_call_sweep": false
   }
 }

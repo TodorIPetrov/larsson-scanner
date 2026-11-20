@@ -3,25 +3,25 @@
   "name": "Credo Technology Group Holding ",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T07:02:23.190623+00:00",
+  "generated_at": "2026-11-20T14:38:20.535022+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 117.76,
+  "backtest_total_bars": 377,
+  "current_price": 111.3,
   "state": "BLUE",
-  "v1": 149.23,
-  "v2": 167.77,
-  "sma200": 181.02,
-  "rsi14": 36.8,
-  "atr14": 14.55,
+  "v1": 146.69,
+  "v2": 165.81,
+  "sma200": 181.09,
+  "rsi14": 34.7,
+  "atr14": 14.16,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 103.6,
-    "cagr_pct": 61.0,
+    "cagr_pct": 60.8,
     "sharpe_ratio": 1.03,
     "win_rate_pct": 50.0,
     "profit_factor": 2.77,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 72.5,
-      "cagr_pct": 44.1,
+      "cagr_pct": 44.0,
       "sharpe_ratio": 0.87,
       "win_rate_pct": 50.0,
       "profit_factor": 2.99,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 103.6,
-      "cagr_pct": 61.0,
+      "cagr_pct": 60.8,
       "sharpe_ratio": 1.03,
       "win_rate_pct": 50.0,
       "profit_factor": 2.77,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 34.7,
-      "cagr_pct": 22.1,
+      "cagr_pct": 22.0,
       "sharpe_ratio": 0.64,
       "win_rate_pct": 66.7,
       "profit_factor": 2.73,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -8.6,
-      "cagr_pct": -5.9,
+      "cagr_pct": -5.8,
       "sharpe_ratio": -0.52,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 41.8,
-      "cagr_pct": 26.4,
+      "cagr_pct": 26.3,
       "sharpe_ratio": 0.69,
       "win_rate_pct": 50.0,
       "profit_factor": 2.39,
@@ -93,33 +93,33 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 98.4,
-      "cagr_pct": 58.3,
-      "sharpe_ratio": 0.93,
+      "total_return_pct": 87.5,
+      "cagr_pct": 52.2,
+      "sharpe_ratio": 0.89,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.56,
-      "max_drawdown_pct": 62.9,
+      "profit_factor": 1.38,
+      "max_drawdown_pct": 63.2,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 42.49736986662212,
-    "target_price": 42.49736986662212,
-    "entry_price": 31.44805370130037,
+    "fair_value": 38.97,
+    "target_price": 38.97,
+    "entry_price": 29.23,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -177.1,
-    "mos_pct": -177.1,
-    "moat": "None",
-    "roic_pct": 6.77,
+    "actual_discount_pct": -185.6,
+    "mos_pct": -185.6,
+    "moat": "Narrow",
+    "roic_pct": 13.3,
     "wacc_pct": 12.5,
-    "z_score": 16.35,
-    "m_score": -1.04,
-    "tata": 0.003,
+    "z_score": 14.53,
+    "m_score": -1.55,
+    "tata": 0.013,
     "solvency_type": "Altman Z''-Score (Universal Model)",
     "verdict": "REDUCE / OVERVALUED",
     "model_type": "Mid-Cycle Normalized DCF",
-    "latest_filing_date": "2026-Q2/Q3 (Cached)",
-    "last_fundamental_update": null
+    "latest_filing_date": "2026-07-31 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5385,6 +5385,20 @@
       "v2": 167.77,
       "sma200": 181.02,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 113.25,
+      "high": 113.61,
+      "low": 108.64,
+      "close": 111.3,
+      "volume": 690782.0,
+      "v1": 146.69,
+      "m1": 153.33,
+      "m2": 161.47,
+      "v2": 165.81,
+      "sma200": 181.09,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6954,6 +6968,10 @@
         {
           "time": "2026-11-19",
           "value": 20358.18
+        },
+        {
+          "time": "2026-11-20",
+          "value": 20358.18
         }
       ]
     },
@@ -8464,6 +8482,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 17251.3
+        },
+        {
+          "time": "2026-11-20",
           "value": 17251.3
         }
       ]
@@ -9976,6 +9998,10 @@
         {
           "time": "2026-11-19",
           "value": 13466.48
+        },
+        {
+          "time": "2026-11-20",
+          "value": 13466.48
         }
       ]
     },
@@ -11487,6 +11513,10 @@
         {
           "time": "2026-11-19",
           "value": 19858.58
+        },
+        {
+          "time": "2026-11-20",
+          "value": 18769.72
         }
       ]
     }
@@ -11546,15 +11576,15 @@
     "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.12, P/C: 0.67).",
-    "cmf_20d": -0.117,
-    "up_down_vol_ratio": 0.59,
-    "absorption_5d_pct": 39.7,
-    "vol_shock_ratio": 0.67,
-    "put_call_ratio": 0.67,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.10, P/C: 0.52).",
+    "cmf_20d": -0.099,
+    "up_down_vol_ratio": 0.67,
+    "absorption_5d_pct": 43.3,
+    "vol_shock_ratio": 0.08,
+    "put_call_ratio": 0.52,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 60.0,
-    "max_pain": 60.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 112.0,
+    "max_pain": 115.0,
+    "unusual_call_sweep": false
   }
 }

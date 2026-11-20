@@ -3,18 +3,18 @@
   "name": "MSTR",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-20T07:02:49.683266+00:00",
+  "generated_at": "2026-11-20T14:38:36.289724+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 86.13,
+  "backtest_total_bars": 377,
+  "current_price": 86.52,
   "state": "BLUE",
-  "v1": 125.35,
-  "v2": 130.08,
-  "sma200": 131.9,
-  "rsi14": 22.7,
-  "atr14": 8.57,
+  "v1": 122.79,
+  "v2": 128.59,
+  "sma200": 131.8,
+  "rsi14": 23.1,
+  "atr14": 8.09,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -40.5,
-      "cagr_pct": -29.4,
+      "cagr_pct": -29.3,
       "sharpe_ratio": -1.13,
       "win_rate_pct": 6.7,
       "profit_factor": 0.02,
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -78.0,
-      "cagr_pct": -63.8,
+      "total_return_pct": -77.9,
+      "cagr_pct": -63.6,
       "sharpe_ratio": -0.94,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
@@ -5385,6 +5385,20 @@
       "v2": 130.08,
       "sma200": 131.9,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 86.45,
+      "high": 87.95,
+      "low": 86.0,
+      "close": 86.52,
+      "volume": 2589683.0,
+      "v1": 122.79,
+      "m1": 125.75,
+      "m2": 127.91,
+      "v2": 128.59,
+      "sma200": 131.8,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6954,6 +6968,10 @@
         {
           "time": "2026-11-19",
           "value": 10225.03
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10225.03
         }
       ]
     },
@@ -8464,6 +8482,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 7141.63
+        },
+        {
+          "time": "2026-11-20",
           "value": 7141.63
         }
       ]
@@ -9976,6 +9998,10 @@
         {
           "time": "2026-11-19",
           "value": 5952.72
+        },
+        {
+          "time": "2026-11-20",
+          "value": 5952.72
         }
       ]
     },
@@ -11487,6 +11513,10 @@
         {
           "time": "2026-11-19",
           "value": 2197.74
+        },
+        {
+          "time": "2026-11-20",
+          "value": 2207.7
         }
       ]
     }
@@ -11543,18 +11573,18 @@
   ],
   "smart_money": {
     "symbol": "MSTR",
-    "smart_money_score": 43.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.09) с Gamma стена на $40.00. Залог за рязък отскок.",
-    "cmf_20d": -0.217,
-    "up_down_vol_ratio": 0.37,
-    "absorption_5d_pct": 21.6,
-    "vol_shock_ratio": 1.31,
-    "put_call_ratio": 0.09,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.45) с Gamma стена на $90.00. Залог за рязък отскок.",
+    "cmf_20d": -0.201,
+    "up_down_vol_ratio": 0.31,
+    "absorption_5d_pct": 13.0,
+    "vol_shock_ratio": 0.14,
+    "put_call_ratio": 0.45,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 40.0,
-    "max_pain": 40.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 90.0,
+    "max_pain": 135.0,
+    "unusual_call_sweep": false
   }
 }

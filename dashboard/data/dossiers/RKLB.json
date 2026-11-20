@@ -3,25 +3,25 @@
   "name": "Rocket Lab Corporation",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:03:03.353746+00:00",
+  "generated_at": "2026-11-20T14:38:44.182889+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 50.99,
+  "backtest_total_bars": 377,
+  "current_price": 48.99,
   "state": "BLUE",
-  "v1": 58.37,
-  "v2": 62.33,
-  "sma200": 77.82,
-  "rsi14": 40.9,
-  "atr14": 4.9,
+  "v1": 57.77,
+  "v2": 61.88,
+  "sma200": 77.73,
+  "rsi14": 38.8,
+  "atr14": 4.71,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 161.2,
-    "cagr_pct": 90.3,
+    "cagr_pct": 90.0,
     "sharpe_ratio": 1.19,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 94.7,
-      "cagr_pct": 56.3,
+      "cagr_pct": 56.1,
       "sharpe_ratio": 0.95,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 97.1,
-      "cagr_pct": 57.6,
+      "cagr_pct": 57.4,
       "sharpe_ratio": 0.98,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 36.6,
-      "cagr_pct": 23.3,
+      "cagr_pct": 23.2,
       "sharpe_ratio": 0.64,
       "win_rate_pct": 33.3,
       "profit_factor": 1.94,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 18.2,
-      "cagr_pct": 11.9,
-      "sharpe_ratio": 0.49,
+      "total_return_pct": 15.9,
+      "cagr_pct": 10.4,
+      "sharpe_ratio": 0.47,
       "win_rate_pct": 33.3,
-      "profit_factor": 3.3,
+      "profit_factor": 2.85,
       "max_drawdown_pct": 62.6,
       "total_trades": 3
     },
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 161.2,
-      "cagr_pct": 90.3,
+      "cagr_pct": 90.0,
       "sharpe_ratio": 1.19,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,33 +93,33 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 100.9,
-      "cagr_pct": 59.6,
-      "sharpe_ratio": 0.96,
+      "total_return_pct": 93.0,
+      "cagr_pct": 55.2,
+      "sharpe_ratio": 0.93,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.45,
+      "profit_factor": 1.34,
       "max_drawdown_pct": 69.4,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 33.85,
-    "target_price": 33.85,
-    "entry_price": 23.69,
+    "fair_value": 31.96,
+    "target_price": 31.96,
+    "entry_price": 22.37,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -50.6,
-    "mos_pct": -50.6,
+    "actual_discount_pct": -53.3,
+    "mos_pct": -53.3,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 12.5,
-    "z_score": 3.83,
-    "m_score": -2.23,
-    "tata": -0.014,
+    "z_score": 11.75,
+    "m_score": -1.67,
+    "tata": -0.005,
     "solvency_type": "Altman Z''-Score (Universal Model)",
     "verdict": "REDUCE / DISTRESSED CASH BURN",
     "model_type": "Distressed / Negative FCF Model",
-    "latest_filing_date": "2026-Q2/Q3 (Cached)",
-    "last_fundamental_update": "2026-11-03"
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5385,6 +5385,20 @@
       "v2": 62.33,
       "sma200": 77.82,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 49.75,
+      "high": 49.76,
+      "low": 48.81,
+      "close": 48.99,
+      "volume": 1799424.0,
+      "v1": 57.77,
+      "m1": 58.89,
+      "m2": 60.68,
+      "v2": 61.88,
+      "sma200": 77.73,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-19",
           "value": 26116.67
+        },
+        {
+          "time": "2026-11-20",
+          "value": 26116.67
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 19713.8
+        },
+        {
+          "time": "2026-11-20",
           "value": 19713.8
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-19",
           "value": 19467.09
+        },
+        {
+          "time": "2026-11-20",
+          "value": 19467.09
         }
       ]
     },
@@ -11445,6 +11471,10 @@
         {
           "time": "2026-11-19",
           "value": 20106.18
+        },
+        {
+          "time": "2026-11-20",
+          "value": 19317.55
         }
       ]
     }
@@ -11468,15 +11498,15 @@
     "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: 1.00).",
-    "cmf_20d": 0.066,
-    "up_down_vol_ratio": 1.14,
-    "absorption_5d_pct": 17.4,
-    "vol_shock_ratio": 0.83,
-    "put_call_ratio": 1.0,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 0.73).",
+    "cmf_20d": 0.034,
+    "up_down_vol_ratio": 1.05,
+    "absorption_5d_pct": 13.7,
+    "vol_shock_ratio": 0.1,
+    "put_call_ratio": 0.73,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 25.0,
-    "max_pain": 25.0,
+    "gamma_wall": 50.0,
+    "max_pain": 70.0,
     "unusual_call_sweep": false
   }
 }

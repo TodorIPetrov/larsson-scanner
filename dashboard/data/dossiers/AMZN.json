@@ -3,18 +3,18 @@
   "name": "Amazon.com, Inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:08.996874+00:00",
+  "generated_at": "2026-11-20T14:38:13.190728+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 257.37,
+  "backtest_total_bars": 377,
+  "current_price": 255.3,
   "state": "GOLD",
-  "v1": 259.46,
-  "v2": 257.27,
-  "sma200": 245.03,
-  "rsi14": 49.0,
-  "atr14": 9.61,
+  "v1": 259.05,
+  "v2": 257.13,
+  "sma200": 245.19,
+  "rsi14": 47.5,
+  "atr14": 9.37,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,36 +33,36 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -34.0,
-      "cagr_pct": -24.3,
-      "sharpe_ratio": -0.86,
+      "total_return_pct": -35.0,
+      "cagr_pct": -25.0,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 14.3,
       "profit_factor": 0.01,
-      "max_drawdown_pct": 43.4,
+      "max_drawdown_pct": 44.3,
       "total_trades": 7
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -46.4,
-      "cagr_pct": -34.2,
-      "sharpe_ratio": -1.67,
+      "total_return_pct": -47.2,
+      "cagr_pct": -34.8,
+      "sharpe_ratio": -1.71,
       "win_rate_pct": 23.5,
       "profit_factor": 0.09,
-      "max_drawdown_pct": 51.0,
+      "max_drawdown_pct": 51.8,
       "total_trades": 17
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -28.8,
-      "cagr_pct": -20.4,
-      "sharpe_ratio": -0.81,
+      "total_return_pct": -29.9,
+      "cagr_pct": -21.1,
+      "sharpe_ratio": -0.85,
       "win_rate_pct": 22.2,
-      "profit_factor": 0.06,
-      "max_drawdown_pct": 40.0,
+      "profit_factor": 0.05,
+      "max_drawdown_pct": 41.0,
       "total_trades": 18
     },
     {
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -33.7,
-      "cagr_pct": -24.1,
+      "cagr_pct": -24.0,
       "sharpe_ratio": -0.91,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 29.1,
-      "cagr_pct": 18.7,
-      "sharpe_ratio": 0.67,
+      "total_return_pct": 28.1,
+      "cagr_pct": 18.0,
+      "sharpe_ratio": 0.65,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.34,
+      "profit_factor": 1.29,
       "max_drawdown_pct": 21.7,
       "total_trades": 1
     }
@@ -107,8 +107,8 @@
     "target_price": 129.7,
     "entry_price": 103.76,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -98.4,
-    "mos_pct": -98.4,
+    "actual_discount_pct": -96.8,
+    "mos_pct": -96.8,
     "moat": "Narrow",
     "roic_pct": 10.1,
     "wacc_pct": 10.64,
@@ -5385,6 +5385,20 @@
       "v2": 257.27,
       "sma200": 245.03,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 253.41,
+      "high": 255.6,
+      "low": 251.12,
+      "close": 255.3,
+      "volume": 8096925.0,
+      "v1": 259.05,
+      "m1": 258.36,
+      "m2": 257.58,
+      "v2": 257.13,
+      "sma200": 245.19,
+      "state": "GOLD"
     }
   ],
   "markers": [],
@@ -6897,6 +6911,10 @@
         {
           "time": "2026-11-19",
           "value": 10000.0
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10000.0
         }
       ]
     },
@@ -8408,6 +8426,10 @@
         {
           "time": "2026-11-19",
           "value": 7126.84
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7010.23
         }
       ]
     },
@@ -9919,6 +9941,10 @@
         {
           "time": "2026-11-19",
           "value": 6610.7
+        },
+        {
+          "time": "2026-11-20",
+          "value": 6502.58
         }
       ]
     },
@@ -11430,6 +11456,10 @@
         {
           "time": "2026-11-19",
           "value": 12926.73
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12823.01
         }
       ]
     }
@@ -11437,18 +11467,18 @@
   "winning_trades_log": [],
   "smart_money": {
     "symbol": "AMZN",
-    "smart_money_score": 35.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.15).",
-    "cmf_20d": -0.146,
-    "up_down_vol_ratio": 0.97,
-    "absorption_5d_pct": 45.0,
-    "vol_shock_ratio": 1.05,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 105.0,
-    "max_pain": 105.0,
+    "smart_money_score": 45.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.14, P/C: 0.61).",
+    "cmf_20d": -0.138,
+    "up_down_vol_ratio": 1.0,
+    "absorption_5d_pct": 54.8,
+    "vol_shock_ratio": 0.16,
+    "put_call_ratio": 0.61,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 255.0,
+    "max_pain": 250.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,25 +3,25 @@
   "name": "Sociedad Quimica y Minera S.A.",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:03:08.691746+00:00",
+  "generated_at": "2026-11-20T14:38:46.469123+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 47.85,
+  "backtest_total_bars": 377,
+  "current_price": 47.06,
   "state": "BLUE",
-  "v1": 56.71,
-  "v2": 61.08,
-  "sma200": 72.37,
-  "rsi14": 25.9,
-  "atr14": 2.06,
+  "v1": 56.07,
+  "v2": 60.6,
+  "sma200": 72.27,
+  "rsi14": 24.7,
+  "atr14": 1.99,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 92.6,
-    "cagr_pct": 55.2,
+    "cagr_pct": 55.0,
     "sharpe_ratio": 1.32,
     "win_rate_pct": 50.0,
     "profit_factor": 11.49,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 85.1,
-      "cagr_pct": 51.1,
+      "cagr_pct": 50.9,
       "sharpe_ratio": 1.21,
       "win_rate_pct": 50.0,
       "profit_factor": 10.64,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 92.6,
-      "cagr_pct": 55.2,
+      "cagr_pct": 55.0,
       "sharpe_ratio": 1.32,
       "win_rate_pct": 50.0,
       "profit_factor": 11.49,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 76.1,
-      "cagr_pct": 46.1,
+      "cagr_pct": 46.0,
       "sharpe_ratio": 1.18,
       "win_rate_pct": 50.0,
       "profit_factor": 11.58,
@@ -83,7 +83,7 @@
       "is_winner": false,
       "total_return_pct": -8.8,
       "cagr_pct": -6.0,
-      "sharpe_ratio": -0.64,
+      "sharpe_ratio": -0.63,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 14.2,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 50.7,
-      "cagr_pct": 31.6,
-      "sharpe_ratio": 0.8,
+      "total_return_pct": 48.2,
+      "cagr_pct": 30.1,
+      "sharpe_ratio": 0.78,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.05,
-      "max_drawdown_pct": 48.5,
+      "profit_factor": 0.98,
+      "max_drawdown_pct": 49.3,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 34.58,
     "entry_price": 25.93,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -38.4,
-    "mos_pct": -38.4,
+    "actual_discount_pct": -36.1,
+    "mos_pct": -36.1,
     "moat": "Narrow",
     "roic_pct": 17.3,
     "wacc_pct": 8.3,
@@ -5385,6 +5385,20 @@
       "v2": 61.08,
       "sma200": 72.37,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 48.08,
+      "high": 47.43,
+      "low": 46.82,
+      "close": 47.06,
+      "volume": 43962.0,
+      "v1": 56.07,
+      "m1": 57.58,
+      "m2": 59.5,
+      "v2": 60.6,
+      "sma200": 72.27,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 19262.25
+        },
+        {
+          "time": "2026-11-20",
+          "value": 19262.25
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 18507.33
+        },
+        {
+          "time": "2026-11-20",
           "value": 18507.33
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 17606.14
+        },
+        {
+          "time": "2026-11-20",
+          "value": 17606.14
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 15081.38
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14832.38
         }
       ]
     }
@@ -11491,18 +11521,18 @@
   ],
   "smart_money": {
     "symbol": "SQM",
-    "smart_money_score": 7.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 7.50, CMF: -0.26).",
-    "cmf_20d": -0.258,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 24.0,
-    "vol_shock_ratio": 1.28,
-    "put_call_ratio": 7.5,
-    "options_sentiment": "NEUTRAL",
+    "smart_money_score": 33.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.15) с Gamma стена на $90.00. Залог за рязък отскок.",
+    "cmf_20d": -0.312,
+    "up_down_vol_ratio": 0.57,
+    "absorption_5d_pct": 22.4,
+    "vol_shock_ratio": 0.05,
+    "put_call_ratio": 0.15,
+    "options_sentiment": "BULLISH",
     "gamma_wall": 90.0,
-    "max_pain": 70.0,
-    "unusual_call_sweep": true
+    "max_pain": 55.0,
+    "unusual_call_sweep": false
   }
 }

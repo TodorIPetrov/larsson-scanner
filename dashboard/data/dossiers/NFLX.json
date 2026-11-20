@@ -3,18 +3,18 @@
   "name": "Netflix, Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:52.214261+00:00",
+  "generated_at": "2026-11-20T14:38:37.626378+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 58.46,
+  "backtest_total_bars": 377,
+  "current_price": 58.97,
   "state": "BLUE",
-  "v1": 64.65,
-  "v2": 67.94,
-  "sma200": 80.06,
-  "rsi14": 30.7,
-  "atr14": 1.91,
+  "v1": 64.25,
+  "v2": 67.62,
+  "sma200": 79.95,
+  "rsi14": 33.0,
+  "atr14": 1.83,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -22,7 +22,7 @@
   "winning_metrics": {
     "total_return_pct": -12.5,
     "cagr_pct": -8.5,
-    "sharpe_ratio": -0.91,
+    "sharpe_ratio": -0.9,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
     "max_drawdown_pct": 13.4,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -26.2,
-      "cagr_pct": -18.5,
+      "cagr_pct": -18.4,
       "sharpe_ratio": -1.21,
       "win_rate_pct": 9.1,
       "profit_factor": 0.03,
@@ -58,8 +58,8 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -26.3,
-      "cagr_pct": -18.5,
-      "sharpe_ratio": -1.61,
+      "cagr_pct": -18.4,
+      "sharpe_ratio": -1.6,
       "win_rate_pct": 19.0,
       "profit_factor": 0.05,
       "max_drawdown_pct": 30.8,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -22.0,
-      "cagr_pct": -15.4,
+      "cagr_pct": -15.3,
       "sharpe_ratio": -0.99,
       "win_rate_pct": 12.5,
       "profit_factor": 0.56,
@@ -83,7 +83,7 @@
       "is_winner": true,
       "total_return_pct": -12.5,
       "cagr_pct": -8.5,
-      "sharpe_ratio": -0.91,
+      "sharpe_ratio": -0.9,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 13.4,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -50.7,
-      "cagr_pct": -37.8,
-      "sharpe_ratio": -1.24,
+      "total_return_pct": -50.3,
+      "cagr_pct": -37.3,
+      "sharpe_ratio": -1.22,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 56.3,
@@ -107,8 +107,8 @@
     "target_price": 43.7,
     "entry_price": 37.14,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -33.8,
-    "mos_pct": -33.8,
+    "actual_discount_pct": -34.9,
+    "mos_pct": -34.9,
     "moat": "Wide",
     "roic_pct": 28.6,
     "wacc_pct": 11.16,
@@ -5385,6 +5385,20 @@
       "v2": 67.94,
       "sma200": 80.06,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 58.34,
+      "high": 59.04,
+      "low": 58.26,
+      "close": 58.97,
+      "volume": 3899234.0,
+      "v1": 64.25,
+      "m1": 65.34,
+      "m2": 66.77,
+      "v2": 67.62,
+      "sma200": 79.95,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 8754.35
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8754.35
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 7805.41
+        },
+        {
+          "time": "2026-11-20",
           "value": 7805.41
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 7797.41
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7797.41
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 4932.56
+        },
+        {
+          "time": "2026-11-20",
+          "value": 4975.59
         }
       ]
     }
@@ -11491,18 +11521,18 @@
   ],
   "smart_money": {
     "symbol": "NFLX",
-    "smart_money_score": 43.0,
+    "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.01) с Gamma стена на $160.00. Залог за рязък отскок.",
-    "cmf_20d": -0.228,
-    "up_down_vol_ratio": 0.67,
-    "absorption_5d_pct": 15.7,
-    "vol_shock_ratio": 0.94,
-    "put_call_ratio": 0.01,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.40) с Gamma стена на $60.00. Залог за рязък отскок.",
+    "cmf_20d": -0.187,
+    "up_down_vol_ratio": 0.74,
+    "absorption_5d_pct": 33.6,
+    "vol_shock_ratio": 0.1,
+    "put_call_ratio": 0.4,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 160.0,
-    "max_pain": 160.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 60.0,
+    "max_pain": 60.0,
+    "unusual_call_sweep": false
   }
 }

@@ -3,28 +3,28 @@
   "name": "Novo Nordisk A/S",
   "sector": "Healthcare",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:55.823243+00:00",
+  "generated_at": "2026-11-20T14:38:39.402405+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 38.87,
+  "backtest_total_bars": 377,
+  "current_price": 38.79,
   "state": "BLUE",
-  "v1": 40.21,
-  "v2": 40.91,
-  "sma200": 42.28,
-  "rsi14": 42.6,
-  "atr14": 1.11,
+  "v1": 40.11,
+  "v2": 40.83,
+  "sma200": 42.27,
+  "rsi14": 42.2,
+  "atr14": 1.06,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": -5.0,
+    "total_return_pct": -5.1,
     "cagr_pct": -3.4,
-    "sharpe_ratio": -0.52,
+    "sharpe_ratio": -0.53,
     "win_rate_pct": 50.0,
-    "profit_factor": 0.2,
+    "profit_factor": 0.18,
     "max_drawdown_pct": 6.9,
     "total_trades": 2
   },
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -28.7,
-      "cagr_pct": -20.3,
+      "cagr_pct": -20.2,
       "sharpe_ratio": -0.61,
       "win_rate_pct": 28.6,
       "profit_factor": 0.22,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -19.3,
-      "cagr_pct": -13.4,
+      "cagr_pct": -13.3,
       "sharpe_ratio": -0.62,
       "win_rate_pct": 22.2,
       "profit_factor": 0.22,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": -5.0,
+      "total_return_pct": -5.1,
       "cagr_pct": -3.4,
-      "sharpe_ratio": -0.52,
+      "sharpe_ratio": -0.53,
       "win_rate_pct": 50.0,
-      "profit_factor": 0.2,
+      "profit_factor": 0.18,
       "max_drawdown_pct": 6.9,
       "total_trades": 2
     },
@@ -93,7 +93,7 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -38.8,
+      "total_return_pct": -38.9,
       "cagr_pct": -28.0,
       "sharpe_ratio": -0.45,
       "win_rate_pct": 0.0,
@@ -107,8 +107,8 @@
     "target_price": 47.65,
     "entry_price": 40.51,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 18.4,
-    "mos_pct": 18.4,
+    "actual_discount_pct": 18.6,
+    "mos_pct": 18.6,
     "moat": "Wide",
     "roic_pct": 27.7,
     "wacc_pct": 7.73,
@@ -5385,6 +5385,20 @@
       "v2": 40.91,
       "sma200": 42.28,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 39.35,
+      "high": 38.83,
+      "low": 38.44,
+      "close": 38.79,
+      "volume": 979967.0,
+      "v1": 40.11,
+      "m1": 40.26,
+      "m2": 40.59,
+      "v2": 40.83,
+      "sma200": 42.27,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5410,11 +5424,11 @@
       "text": "BUY #2 @ $37.8"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-20",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +2.63% ($123.01 €)"
+      "text": "EXIT +2.41% ($113.11 €)"
     }
   ],
   "equity_curves": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 9508.31
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9498.41
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 8072.6
+        },
+        {
+          "time": "2026-11-20",
           "value": 8072.6
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 7404.41
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7404.41
         }
       ]
     },
@@ -10158,7 +10184,7 @@
         },
         {
           "time": "2025-08-06",
-          "value": 6740.21
+          "value": 6740.2
         },
         {
           "time": "2025-08-07",
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 6129.8
+        },
+        {
+          "time": "2026-11-20",
+          "value": 6117.19
         }
       ]
     }
@@ -11480,29 +11510,29 @@
       "num": 2,
       "entry_date": "2026-10-08",
       "entry_price": 37.8,
-      "exit_date": "2026-11-19",
-      "exit_price": 38.87,
-      "holding_days": 30,
-      "pnl_pct": 2.63,
-      "pnl_eur": 123.01,
+      "exit_date": "2026-11-20",
+      "exit_price": 38.79,
+      "holding_days": 31,
+      "pnl_pct": 2.41,
+      "pnl_eur": 113.11,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "NVO",
-    "smart_money_score": 50.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: 1.00).",
-    "cmf_20d": -0.024,
-    "up_down_vol_ratio": 0.77,
-    "absorption_5d_pct": 39.7,
-    "vol_shock_ratio": 1.38,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 25.0,
-    "max_pain": 25.0,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.52, CMF: -0.03).",
+    "cmf_20d": -0.026,
+    "up_down_vol_ratio": 0.82,
+    "absorption_5d_pct": 40.6,
+    "vol_shock_ratio": 0.07,
+    "put_call_ratio": 1.52,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 39.0,
+    "max_pain": 35.0,
     "unusual_call_sweep": false
   }
 }

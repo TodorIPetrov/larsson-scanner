@@ -3,18 +3,18 @@
   "name": "Sprott Uranium Miners ETF",
   "sector": "Макро индекси",
   "asset_class": "commodities",
-  "generated_at": "2026-11-20T07:03:14.553514+00:00",
+  "generated_at": "2026-11-20T14:38:50.527952+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 35.96,
+  "backtest_total_bars": 377,
+  "current_price": 35.1,
   "state": "BLUE",
-  "v1": 42.2,
-  "v2": 45.36,
-  "sma200": 56.55,
-  "rsi14": 30.0,
-  "atr14": 1.78,
+  "v1": 41.71,
+  "v2": 45.0,
+  "sma200": 56.4,
+  "rsi14": 28.4,
+  "atr14": 1.76,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 29.2,
-      "cagr_pct": 18.8,
+      "cagr_pct": 18.7,
       "sharpe_ratio": 0.64,
       "win_rate_pct": 33.3,
       "profit_factor": 2.25,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -4.5,
-      "cagr_pct": -3.1,
+      "cagr_pct": -3.0,
       "sharpe_ratio": -0.7,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -4.3,
-      "cagr_pct": -2.9,
-      "sharpe_ratio": 0.12,
+      "total_return_pct": -6.6,
+      "cagr_pct": -4.4,
+      "sharpe_ratio": 0.08,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 57.2,
+      "max_drawdown_pct": 58.2,
       "total_trades": 1
     }
   ],
@@ -5385,6 +5385,20 @@
       "v2": 45.36,
       "sma200": 56.55,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 36.99,
+      "high": 35.19,
+      "low": 34.51,
+      "close": 35.1,
+      "volume": 187390.0,
+      "v1": 41.71,
+      "m1": 42.78,
+      "m2": 44.17,
+      "v2": 45.0,
+      "sma200": 56.4,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6912,6 +6926,10 @@
         {
           "time": "2026-11-19",
           "value": 14850.6
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14850.6
         }
       ]
     },
@@ -8422,6 +8440,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 14850.6
+        },
+        {
+          "time": "2026-11-20",
           "value": 14850.6
         }
       ]
@@ -9934,6 +9956,10 @@
         {
           "time": "2026-11-19",
           "value": 14107.92
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14107.92
         }
       ]
     },
@@ -11445,6 +11471,10 @@
         {
           "time": "2026-11-19",
           "value": 9580.98
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9351.84
         }
       ]
     }
@@ -11465,18 +11495,18 @@
   ],
   "smart_money": {
     "symbol": "URNM",
-    "smart_money_score": 12.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.01).",
-    "cmf_20d": -0.005,
-    "up_down_vol_ratio": 0.6,
-    "absorption_5d_pct": 28.0,
-    "vol_shock_ratio": 1.52,
-    "put_call_ratio": 2.0,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 51.0,
-    "max_pain": 51.0,
+    "smart_money_score": 58.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.17) с Gamma стена на $39.00. Залог за рязък отскок.",
+    "cmf_20d": -0.023,
+    "up_down_vol_ratio": 0.52,
+    "absorption_5d_pct": 35.1,
+    "vol_shock_ratio": 0.21,
+    "put_call_ratio": 0.17,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 39.0,
+    "max_pain": 49.0,
     "unusual_call_sweep": false
   }
 }

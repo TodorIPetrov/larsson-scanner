@@ -3,25 +3,25 @@
   "name": "AST SpaceMobile, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:11.250537+00:00",
+  "generated_at": "2026-11-20T14:38:14.651947+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 25.55,
+  "backtest_total_bars": 377,
+  "current_price": 24.5,
   "state": "BLUE",
-  "v1": 38.36,
-  "v2": 46.32,
-  "sma200": 71.98,
-  "rsi14": 29.8,
-  "atr14": 3.82,
+  "v1": 37.45,
+  "v2": 45.57,
+  "sma200": 71.63,
+  "rsi14": 28.7,
+  "atr14": 3.64,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 55.7,
-    "cagr_pct": 34.5,
+    "cagr_pct": 34.4,
     "sharpe_ratio": 0.77,
     "win_rate_pct": 50.0,
     "profit_factor": 1.76,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -66.1,
-      "cagr_pct": -51.6,
+      "cagr_pct": -51.5,
       "sharpe_ratio": -0.44,
       "win_rate_pct": 25.0,
       "profit_factor": 0.57,
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -17.4,
       "cagr_pct": -12.0,
-      "sharpe_ratio": 0.16,
+      "sharpe_ratio": 0.15,
       "win_rate_pct": 22.2,
       "profit_factor": 1.38,
       "max_drawdown_pct": 63.8,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 55.7,
-      "cagr_pct": 34.5,
+      "cagr_pct": 34.4,
       "sharpe_ratio": 0.77,
       "win_rate_pct": 50.0,
       "profit_factor": 1.76,
@@ -93,33 +93,33 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 5.6,
-      "cagr_pct": 3.7,
-      "sharpe_ratio": 0.55,
+      "total_return_pct": 1.2,
+      "cagr_pct": 0.8,
+      "sharpe_ratio": 0.53,
       "win_rate_pct": 100.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 80.8,
+      "max_drawdown_pct": 81.6,
       "total_trades": 1
     }
   ],
   "fundamental": {
-    "fair_value": 14.53,
-    "target_price": 14.53,
-    "entry_price": 10.46,
-    "required_mos_pct": 28.0,
-    "actual_discount_pct": -75.8,
-    "mos_pct": -75.8,
+    "fair_value": 16.02,
+    "target_price": 16.02,
+    "entry_price": 11.21,
+    "required_mos_pct": 30.0,
+    "actual_discount_pct": -52.9,
+    "mos_pct": -52.9,
     "moat": "None",
-    "roic_pct": 50.3,
+    "roic_pct": 0.0,
     "wacc_pct": 12.5,
-    "z_score": 2.83,
-    "m_score": 0.79,
-    "tata": -0.054,
+    "z_score": 1.93,
+    "m_score": -1.46,
+    "tata": -0.056,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "REDUCE / OVERVALUED",
-    "model_type": "High-Growth EV/Revenue Multiple Model",
-    "latest_filing_date": "2026-Q2/Q3 (Cached)",
-    "last_fundamental_update": "2026-11-03"
+    "verdict": "REDUCE / DISTRESSED CASH BURN",
+    "model_type": "Distressed / Negative FCF Model",
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-20"
   },
   "candles": [
     {
@@ -5385,6 +5385,20 @@
       "v2": 46.32,
       "sma200": 71.98,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 24.97,
+      "high": 25.0,
+      "low": 24.27,
+      "close": 24.5,
+      "volume": 1873114.0,
+      "v1": 37.45,
+      "m1": 40.07,
+      "m2": 43.52,
+      "v2": 45.57,
+      "sma200": 71.63,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 15565.6
+        },
+        {
+          "time": "2026-11-20",
+          "value": 15565.6
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 9738.22
+        },
+        {
+          "time": "2026-11-20",
           "value": 9738.22
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 8263.05
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8263.05
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 10569.13
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10132.71
         }
       ]
     }
@@ -11491,18 +11521,18 @@
   ],
   "smart_money": {
     "symbol": "ASTS",
-    "smart_money_score": 7.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.17).",
-    "cmf_20d": -0.172,
-    "up_down_vol_ratio": 0.76,
-    "absorption_5d_pct": 18.0,
-    "vol_shock_ratio": 0.96,
-    "put_call_ratio": 2.0,
-    "options_sentiment": "BEARISH",
-    "gamma_wall": 20.0,
-    "max_pain": 190.0,
+    "smart_money_score": 33.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.23) с Gamma стена на $25.00. Залог за рязък отскок.",
+    "cmf_20d": -0.208,
+    "up_down_vol_ratio": 0.69,
+    "absorption_5d_pct": 16.2,
+    "vol_shock_ratio": 0.1,
+    "put_call_ratio": 0.23,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 25.0,
+    "max_pain": 60.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,18 +3,18 @@
   "name": "Fortinet, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T07:02:32.879050+00:00",
+  "generated_at": "2026-11-20T14:38:27.029551+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 131.46,
+  "backtest_total_bars": 377,
+  "current_price": 131.49,
   "state": "BLUE",
-  "v1": 144.06,
-  "v2": 152.38,
-  "sma200": 131.65,
-  "rsi14": 39.7,
-  "atr14": 7.62,
+  "v1": 143.2,
+  "v2": 151.65,
+  "sma200": 131.91,
+  "rsi14": 39.8,
+  "atr14": 7.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 28.4,
-      "cagr_pct": 18.3,
+      "total_return_pct": 28.5,
+      "cagr_pct": 18.2,
       "sharpe_ratio": 0.59,
       "win_rate_pct": 100.0,
       "profit_factor": 0.73,
@@ -5385,6 +5385,20 @@
       "v2": 152.38,
       "sma200": 131.65,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 130.37,
+      "high": 132.38,
+      "low": 129.99,
+      "close": 131.49,
+      "volume": 385517.0,
+      "v1": 143.2,
+      "m1": 146.96,
+      "m2": 150.42,
+      "v2": 151.65,
+      "sma200": 131.91,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5410,11 +5424,11 @@
       "text": "BUY #2 @ $126.95"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-20",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.35% ($166.17 €)"
+      "text": "EXIT +3.37% ($167.35 €)"
     }
   ],
   "equity_curves": [
@@ -6926,6 +6940,10 @@
         {
           "time": "2026-11-19",
           "value": 10114.9
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10116.07
         }
       ]
     },
@@ -8436,6 +8454,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 13690.94
+        },
+        {
+          "time": "2026-11-20",
           "value": 13690.94
         }
       ]
@@ -9948,6 +9970,10 @@
         {
           "time": "2026-11-19",
           "value": 11651.99
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11651.99
         }
       ]
     },
@@ -11459,6 +11485,10 @@
         {
           "time": "2026-11-19",
           "value": 12855.18
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12858.12
         }
       ]
     }
@@ -11480,29 +11510,29 @@
       "num": 2,
       "entry_date": "2026-11-12",
       "entry_price": 126.95,
-      "exit_date": "2026-11-19",
-      "exit_price": 131.46,
-      "holding_days": 5,
-      "pnl_pct": 3.35,
-      "pnl_eur": 166.17,
+      "exit_date": "2026-11-20",
+      "exit_price": 131.49,
+      "holding_days": 6,
+      "pnl_pct": 3.37,
+      "pnl_eur": 167.35,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "FTNT",
-    "smart_money_score": 32.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.06).",
-    "cmf_20d": -0.062,
-    "up_down_vol_ratio": 0.64,
-    "absorption_5d_pct": 44.4,
-    "vol_shock_ratio": 1.11,
-    "put_call_ratio": 1.0,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 95.0,
-    "max_pain": 95.0,
+    "smart_money_score": 55.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.30) с Gamma стена на $130.00. Залог за рязък отскок.",
+    "cmf_20d": -0.087,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 50.6,
+    "vol_shock_ratio": 0.06,
+    "put_call_ratio": 0.3,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 130.0,
+    "max_pain": 140.0,
     "unusual_call_sweep": false
   }
 }
