@@ -3,29 +3,29 @@
   "name": "SAP SE                        I",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T01:25:39.284675+00:00",
+  "generated_at": "2026-11-21T12:28:59.388300+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 380,
-  "current_price": 187.02,
+  "backtest_total_bars": 381,
+  "current_price": 183.68,
   "state": "GOLD",
-  "v1": 204.21,
-  "v2": 196.51,
-  "sma200": 166.38,
-  "rsi14": 31.4,
-  "atr14": 6.21,
+  "v1": 202.85,
+  "v2": 196.07,
+  "sma200": 166.43,
+  "rsi14": 29.3,
+  "atr14": 6.15,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 4.3,
-    "cagr_pct": 2.8,
-    "sharpe_ratio": 0.28,
+    "total_return_pct": 2.5,
+    "cagr_pct": 1.6,
+    "sharpe_ratio": 0.19,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
-    "max_drawdown_pct": 13.3,
+    "max_drawdown_pct": 14.9,
     "total_trades": 1
   },
   "all_strategies": [
@@ -33,36 +33,36 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -3.7,
-      "cagr_pct": -2.5,
-      "sharpe_ratio": -0.13,
+      "total_return_pct": -5.4,
+      "cagr_pct": -3.6,
+      "sharpe_ratio": -0.21,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.52,
-      "max_drawdown_pct": 13.3,
+      "profit_factor": 0.3,
+      "max_drawdown_pct": 14.9,
       "total_trades": 3
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -2.8,
-      "cagr_pct": -1.9,
-      "sharpe_ratio": -0.1,
+      "total_return_pct": -4.5,
+      "cagr_pct": -3.0,
+      "sharpe_ratio": -0.17,
       "win_rate_pct": 33.3,
-      "profit_factor": 0.59,
-      "max_drawdown_pct": 13.3,
+      "profit_factor": 0.34,
+      "max_drawdown_pct": 14.9,
       "total_trades": 3
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -2.9,
-      "cagr_pct": -2.0,
-      "sharpe_ratio": -0.11,
+      "total_return_pct": -4.7,
+      "cagr_pct": -3.1,
+      "sharpe_ratio": -0.2,
       "win_rate_pct": 20.0,
-      "profit_factor": 0.68,
-      "max_drawdown_pct": 13.3,
+      "profit_factor": 0.45,
+      "max_drawdown_pct": 14.9,
       "total_trades": 10
     },
     {
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -13.1,
-      "cagr_pct": -8.9,
+      "cagr_pct": -8.8,
       "sharpe_ratio": -1.16,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -81,21 +81,21 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 4.3,
-      "cagr_pct": 2.8,
-      "sharpe_ratio": 0.28,
+      "total_return_pct": 2.5,
+      "cagr_pct": 1.6,
+      "sharpe_ratio": 0.19,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
-      "max_drawdown_pct": 13.3,
+      "max_drawdown_pct": 14.9,
       "total_trades": 1
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -27.4,
-      "cagr_pct": -19.1,
-      "sharpe_ratio": -0.41,
+      "total_return_pct": -28.7,
+      "cagr_pct": -20.1,
+      "sharpe_ratio": -0.44,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 52.1,
@@ -107,8 +107,8 @@
     "target_price": 142.92,
     "entry_price": 114.33,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -30.9,
-    "mos_pct": -30.9,
+    "actual_discount_pct": -28.5,
+    "mos_pct": -28.5,
     "moat": "Narrow",
     "roic_pct": 15.8,
     "wacc_pct": 8.55,
@@ -5441,6 +5441,20 @@
       "v2": 196.51,
       "sma200": 166.38,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 184.26,
+      "high": 185.94,
+      "low": 181.64,
+      "close": 183.68,
+      "volume": 3536426.0,
+      "v1": 202.85,
+      "m1": 201.16,
+      "m2": 198.14,
+      "v2": 196.07,
+      "sma200": 166.43,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5452,11 +5466,11 @@
       "text": "BUY #1 @ $178.92"
     },
     {
-      "time": "2026-11-19",
+      "time": "2026-11-20",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.32% ($431.4 €)"
+      "text": "EXIT +2.46% ($245.28 €)"
     }
   ],
   "equity_curves": [
@@ -6984,6 +6998,10 @@
         {
           "time": "2026-11-19",
           "value": 10441.83
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10255.53
         }
       ]
     },
@@ -7162,7 +7180,7 @@
         },
         {
           "time": "2025-07-24",
-          "value": 9250.42
+          "value": 9250.43
         },
         {
           "time": "2025-07-25",
@@ -8270,7 +8288,7 @@
         },
         {
           "time": "2026-08-27",
-          "value": 9878.43
+          "value": 9878.44
         },
         {
           "time": "2026-08-28",
@@ -8510,7 +8528,11 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9729.78
+          "value": 9729.79
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9556.19
         }
       ]
     },
@@ -8689,7 +8711,7 @@
         },
         {
           "time": "2025-07-24",
-          "value": 9250.42
+          "value": 9250.43
         },
         {
           "time": "2025-07-25",
@@ -8701,7 +8723,7 @@
         },
         {
           "time": "2025-07-29",
-          "value": 9338.66
+          "value": 9338.67
         },
         {
           "time": "2025-07-30",
@@ -8709,7 +8731,7 @@
         },
         {
           "time": "2025-07-31",
-          "value": 9426.9
+          "value": 9426.91
         },
         {
           "time": "2025-08-01",
@@ -9849,7 +9871,7 @@
         },
         {
           "time": "2026-09-15",
-          "value": 9644.74
+          "value": 9644.75
         },
         {
           "time": "2026-09-16",
@@ -9981,7 +10003,7 @@
         },
         {
           "time": "2026-10-30",
-          "value": 10889.61
+          "value": 10889.62
         },
         {
           "time": "2026-11-02",
@@ -10038,6 +10060,10 @@
         {
           "time": "2026-11-19",
           "value": 9641.65
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9469.63
         }
       ]
     },
@@ -11565,6 +11591,10 @@
         {
           "time": "2026-11-19",
           "value": 7265.93
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7136.16
         }
       ]
     }
@@ -11574,11 +11604,11 @@
       "num": 1,
       "entry_date": "2026-08-10",
       "entry_price": 178.92,
-      "exit_date": "2026-11-19",
-      "exit_price": 187.02,
-      "holding_days": 73,
-      "pnl_pct": 4.32,
-      "pnl_eur": 431.4,
+      "exit_date": "2026-11-20",
+      "exit_price": 183.68,
+      "holding_days": 74,
+      "pnl_pct": 2.46,
+      "pnl_eur": 245.28,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
@@ -11588,11 +11618,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.24).",
-    "cmf_20d": -0.237,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 24.9,
-    "vol_shock_ratio": 1.67,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.26).",
+    "cmf_20d": -0.258,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 23.9,
+    "vol_shock_ratio": 1.72,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

@@ -3,17 +3,17 @@
   "name": "WisdomTree Nickel (LME Nickel ETC)",
   "sector": "Суровини & Индустриални метали",
   "asset_class": "commodities",
-  "generated_at": "2026-11-21T01:25:05.843494+00:00",
+  "generated_at": "2026-11-21T12:28:48.813937+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 380,
-  "current_price": 12.21,
+  "backtest_total_bars": 381,
+  "current_price": 11.91,
   "state": "BLUE",
-  "v1": 12.83,
-  "v2": 13.21,
-  "sma200": 15.6,
-  "rsi14": 43.9,
+  "v1": 12.77,
+  "v2": 13.17,
+  "sma200": 15.58,
+  "rsi14": 41.3,
   "atr14": 0.28,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -16.9,
-      "cagr_pct": -11.6,
+      "cagr_pct": -11.5,
       "sharpe_ratio": -0.43,
       "win_rate_pct": 38.5,
       "profit_factor": 0.97,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -17.5,
-      "cagr_pct": -12.0,
-      "sharpe_ratio": -0.06,
+      "total_return_pct": -19.5,
+      "cagr_pct": -13.4,
+      "sharpe_ratio": -0.1,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 43.2,
@@ -107,8 +107,8 @@
     "target_price": 13.5,
     "entry_price": 10.8,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 9.6,
-    "mos_pct": 9.6,
+    "actual_discount_pct": 11.8,
+    "mos_pct": 11.8,
     "moat": "None",
     "roic_pct": 5.8,
     "wacc_pct": 9.5,
@@ -5441,6 +5441,20 @@
       "v2": 13.21,
       "sma200": 15.6,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 11.91,
+      "high": 11.94,
+      "low": 11.9,
+      "close": 11.91,
+      "volume": 464.0,
+      "v1": 12.77,
+      "m1": 12.86,
+      "m2": 13.04,
+      "v2": 13.17,
+      "sma200": 15.58,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7012,6 +7026,10 @@
         {
           "time": "2026-11-19",
           "value": 8561.41
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8561.41
         }
       ]
     },
@@ -8538,6 +8556,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 9228.61
+        },
+        {
+          "time": "2026-11-20",
           "value": 9228.61
         }
       ]
@@ -10066,6 +10088,10 @@
         {
           "time": "2026-11-19",
           "value": 8307.6
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8307.6
         }
       ]
     },
@@ -11593,6 +11619,10 @@
         {
           "time": "2026-11-19",
           "value": 8261.29
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8056.62
         }
       ]
     }
@@ -11640,11 +11670,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -58.85).",
-    "cmf_20d": -58.849,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -57.96).",
+    "cmf_20d": -57.959,
     "up_down_vol_ratio": 0.06,
-    "absorption_5d_pct": -1673.0,
-    "vol_shock_ratio": 0.0,
+    "absorption_5d_pct": -1665.6,
+    "vol_shock_ratio": 0.43,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

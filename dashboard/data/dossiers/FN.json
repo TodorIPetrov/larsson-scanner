@@ -3,25 +3,25 @@
   "name": "Fabrinet",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-21T01:24:48.629970+00:00",
+  "generated_at": "2026-11-21T12:28:42.053621+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 311.71,
+  "backtest_total_bars": 376,
+  "current_price": 285.04,
   "state": "BLUE",
-  "v1": 353.22,
-  "v2": 385.65,
-  "sma200": 514.14,
-  "rsi14": 42.1,
-  "atr14": 30.22,
+  "v1": 349.28,
+  "v2": 382.49,
+  "sma200": 513.35,
+  "rsi14": 37.9,
+  "atr14": 30.32,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 145.8,
-    "cagr_pct": 83.0,
+    "cagr_pct": 82.7,
     "sharpe_ratio": 1.37,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 105.6,
-      "cagr_pct": 62.3,
-      "sharpe_ratio": 1.14,
+      "cagr_pct": 62.1,
+      "sharpe_ratio": 1.13,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 35.3,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 145.8,
-      "cagr_pct": 83.0,
+      "cagr_pct": 82.7,
       "sharpe_ratio": 1.37,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 80.1,
-      "cagr_pct": 48.5,
+      "cagr_pct": 48.3,
       "sharpe_ratio": 1.0,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 32.7,
-      "cagr_pct": 20.9,
-      "sharpe_ratio": 0.63,
+      "total_return_pct": 21.4,
+      "cagr_pct": 13.9,
+      "sharpe_ratio": 0.55,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.54,
-      "max_drawdown_pct": 60.8,
+      "profit_factor": 0.35,
+      "max_drawdown_pct": 61.8,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 166.17,
     "entry_price": 132.93,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": -87.6,
-    "mos_pct": -87.6,
+    "actual_discount_pct": -71.5,
+    "mos_pct": -71.5,
     "moat": "Narrow",
     "roic_pct": 21.3,
     "wacc_pct": 10.74,
@@ -5371,6 +5371,20 @@
       "v2": 385.65,
       "sma200": 514.14,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 304.88,
+      "high": 308.0,
+      "low": 280.01,
+      "close": 285.04,
+      "volume": 1187000.0,
+      "v1": 349.28,
+      "m1": 359.26,
+      "m2": 373.49,
+      "v2": 382.49,
+      "sma200": 513.35,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6894,6 +6908,10 @@
         {
           "time": "2026-11-19",
           "value": 24582.92
+        },
+        {
+          "time": "2026-11-20",
+          "value": 24582.92
         }
       ]
     },
@@ -8400,6 +8418,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 20564.28
+        },
+        {
+          "time": "2026-11-20",
           "value": 20564.28
         }
       ]
@@ -9908,6 +9930,10 @@
         {
           "time": "2026-11-19",
           "value": 18010.15
+        },
+        {
+          "time": "2026-11-20",
+          "value": 18010.15
         }
       ]
     },
@@ -11415,6 +11441,10 @@
         {
           "time": "2026-11-19",
           "value": 13284.91
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12148.25
         }
       ]
     }
@@ -11438,11 +11468,11 @@
     "smart_money_score": 42.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.03, P/C: 1.22).",
-    "cmf_20d": 0.029,
-    "up_down_vol_ratio": 0.83,
-    "absorption_5d_pct": 39.3,
-    "vol_shock_ratio": 0.6,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 1.22).",
+    "cmf_20d": -0.011,
+    "up_down_vol_ratio": 0.81,
+    "absorption_5d_pct": 37.6,
+    "vol_shock_ratio": 0.99,
     "put_call_ratio": 1.22,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 310.0,

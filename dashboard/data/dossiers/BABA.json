@@ -3,18 +3,18 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T01:24:18.027795+00:00",
+  "generated_at": "2026-11-21T12:28:33.053975+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 83.31,
+  "backtest_total_bars": 376,
+  "current_price": 81.08,
   "state": "BLUE",
-  "v1": 100.19,
-  "v2": 105.03,
-  "sma200": 120.68,
-  "rsi14": 23.7,
-  "atr14": 3.62,
+  "v1": 99.03,
+  "v2": 104.26,
+  "sma200": 120.3,
+  "rsi14": 22.1,
+  "atr14": 3.63,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -5.5,
-      "cagr_pct": -3.8,
+      "cagr_pct": -3.7,
       "sharpe_ratio": 0.02,
       "win_rate_pct": 16.7,
       "profit_factor": 0.79,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -28.8,
-      "cagr_pct": -20.4,
-      "sharpe_ratio": -0.31,
+      "total_return_pct": -30.7,
+      "cagr_pct": -21.8,
+      "sharpe_ratio": -0.36,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 55.6,
+      "max_drawdown_pct": 56.8,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 73.37,
     "entry_price": 55.03,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -13.5,
-    "mos_pct": -13.5,
+    "actual_discount_pct": -10.5,
+    "mos_pct": -10.5,
     "moat": "None",
     "roic_pct": 9.1,
     "wacc_pct": 7.5,
@@ -5371,6 +5371,20 @@
       "v2": 105.03,
       "sma200": 120.68,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 83.53,
+      "high": 84.68,
+      "low": 80.96,
+      "close": 81.08,
+      "volume": 18461800.0,
+      "v1": 99.03,
+      "m1": 100.86,
+      "m2": 103.04,
+      "v2": 104.26,
+      "sma200": 120.3,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6964,6 +6978,10 @@
         {
           "time": "2026-11-19",
           "value": 11185.96
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11185.96
         }
       ]
     },
@@ -8470,6 +8488,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 10226.14
+        },
+        {
+          "time": "2026-11-20",
           "value": 10226.14
         }
       ]
@@ -9978,6 +10000,10 @@
         {
           "time": "2026-11-19",
           "value": 9446.65
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9446.65
         }
       ]
     },
@@ -11485,6 +11511,10 @@
         {
           "time": "2026-11-19",
           "value": 7124.98
+        },
+        {
+          "time": "2026-11-20",
+          "value": 6934.26
         }
       ]
     }
@@ -11568,14 +11598,14 @@
     "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.32) с Gamma стена на $90.00. Залог за рязък отскок.",
-    "cmf_20d": -0.4,
-    "up_down_vol_ratio": 0.51,
-    "absorption_5d_pct": 17.5,
-    "vol_shock_ratio": 1.89,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.32) с Gamma стена на $80.00. Залог за рязък отскок.",
+    "cmf_20d": -0.429,
+    "up_down_vol_ratio": 0.48,
+    "absorption_5d_pct": 3.9,
+    "vol_shock_ratio": 1.51,
     "put_call_ratio": 0.32,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 90.0,
+    "gamma_wall": 80.0,
     "max_pain": 90.0,
     "unusual_call_sweep": false
   }

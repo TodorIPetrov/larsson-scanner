@@ -3,25 +3,25 @@
   "name": "Adobe Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-21T01:24:02.204103+00:00",
+  "generated_at": "2026-11-21T12:28:29.264144+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 221.68,
+  "backtest_total_bars": 376,
+  "current_price": 217.71,
   "state": "BLUE",
-  "v1": 242.92,
-  "v2": 245.63,
-  "sma200": 246.62,
-  "rsi14": 32.9,
-  "atr14": 8.66,
+  "v1": 241.61,
+  "v2": 244.86,
+  "sma200": 246.36,
+  "rsi14": 30.9,
+  "atr14": 8.94,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
     "total_return_pct": -11.2,
-    "cagr_pct": -7.7,
+    "cagr_pct": -7.6,
     "sharpe_ratio": -0.32,
     "win_rate_pct": 20.0,
     "profit_factor": 0.85,
@@ -35,7 +35,7 @@
       "is_winner": false,
       "total_return_pct": -20.2,
       "cagr_pct": -14.1,
-      "sharpe_ratio": -0.88,
+      "sharpe_ratio": -0.87,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 28.7,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -18.8,
       "cagr_pct": -13.0,
-      "sharpe_ratio": -0.84,
+      "sharpe_ratio": -0.83,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 27.9,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "total_return_pct": -11.2,
-      "cagr_pct": -7.7,
+      "cagr_pct": -7.6,
       "sharpe_ratio": -0.32,
       "win_rate_pct": 20.0,
       "profit_factor": 0.85,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -46.4,
-      "cagr_pct": -34.2,
-      "sharpe_ratio": -0.93,
+      "total_return_pct": -47.4,
+      "cagr_pct": -35.0,
+      "sharpe_ratio": -0.96,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 53.6,
@@ -107,8 +107,8 @@
     "target_price": 459.53,
     "entry_price": 390.6,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 51.8,
-    "mos_pct": 51.8,
+    "actual_discount_pct": 52.6,
+    "mos_pct": 52.6,
     "moat": "Wide",
     "roic_pct": 35.6,
     "wacc_pct": 10.49,
@@ -5371,6 +5371,20 @@
       "v2": 245.63,
       "sma200": 246.62,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 221.27,
+      "high": 229.61,
+      "low": 216.95,
+      "close": 217.71,
+      "volume": 5442800.0,
+      "v1": 241.61,
+      "m1": 242.97,
+      "m2": 244.29,
+      "v2": 244.86,
+      "sma200": 246.36,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,6 +6964,10 @@
         {
           "time": "2026-11-19",
           "value": 8882.2
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8882.2
         }
       ]
     },
@@ -8456,6 +8474,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 9037.7
+        },
+        {
+          "time": "2026-11-20",
           "value": 9037.7
         }
       ]
@@ -9964,6 +9986,10 @@
         {
           "time": "2026-11-19",
           "value": 8833.5
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8833.5
         }
       ]
     },
@@ -11471,6 +11497,10 @@
         {
           "time": "2026-11-19",
           "value": 5365.3
+        },
+        {
+          "time": "2026-11-20",
+          "value": 5269.22
         }
       ]
     }
@@ -11542,11 +11572,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.97, CMF: -0.20).",
-    "cmf_20d": -0.198,
-    "up_down_vol_ratio": 0.69,
-    "absorption_5d_pct": 34.7,
-    "vol_shock_ratio": 0.89,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.97, CMF: -0.22).",
+    "cmf_20d": -0.223,
+    "up_down_vol_ratio": 0.65,
+    "absorption_5d_pct": 18.3,
+    "vol_shock_ratio": 1.41,
     "put_call_ratio": 0.97,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 210.0,

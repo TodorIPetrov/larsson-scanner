@@ -3,18 +3,18 @@
   "name": "ServiceNow, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-21T01:25:19.994964+00:00",
+  "generated_at": "2026-11-21T12:28:53.503328+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 88.87,
+  "backtest_total_bars": 376,
+  "current_price": 87.61,
   "state": "BLUE",
-  "v1": 115.03,
-  "v2": 121.66,
-  "sma200": 113.32,
-  "rsi14": 24.7,
-  "atr14": 5.97,
+  "v1": 113.38,
+  "v2": 120.57,
+  "sma200": 113.25,
+  "rsi14": 24.1,
+  "atr14": 5.96,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -18.7,
-      "cagr_pct": -13.0,
+      "cagr_pct": -12.9,
       "sharpe_ratio": -0.28,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -58,8 +58,8 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -23.2,
-      "cagr_pct": -16.3,
-      "sharpe_ratio": -0.56,
+      "cagr_pct": -16.2,
+      "sharpe_ratio": -0.55,
       "win_rate_pct": 27.3,
       "profit_factor": 0.32,
       "max_drawdown_pct": 30.4,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -56.2,
-      "cagr_pct": -42.6,
-      "sharpe_ratio": -0.73,
+      "total_return_pct": -56.9,
+      "cagr_pct": -43.1,
+      "sharpe_ratio": -0.75,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 60.3,
@@ -107,8 +107,8 @@
     "target_price": 84.2,
     "entry_price": 63.15,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -5.5,
-    "mos_pct": -5.5,
+    "actual_discount_pct": -4.0,
+    "mos_pct": -4.0,
     "moat": "None",
     "roic_pct": 7.5,
     "wacc_pct": 9.19,
@@ -5371,6 +5371,20 @@
       "v2": 121.66,
       "sma200": 113.32,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 87.34,
+      "high": 93.16,
+      "low": 87.34,
+      "close": 87.61,
+      "volume": 19612800.0,
+      "v1": 113.38,
+      "m1": 116.72,
+      "m2": 119.58,
+      "v2": 120.57,
+      "sma200": 113.25,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,6 +6964,10 @@
         {
           "time": "2026-11-19",
           "value": 8656.1
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8656.1
         }
       ]
     },
@@ -8456,6 +8474,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 9327.68
+        },
+        {
+          "time": "2026-11-20",
           "value": 9327.68
         }
       ]
@@ -9964,6 +9986,10 @@
         {
           "time": "2026-11-19",
           "value": 7680.26
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7680.26
         }
       ]
     },
@@ -11471,6 +11497,10 @@
         {
           "time": "2026-11-19",
           "value": 4379.45
+        },
+        {
+          "time": "2026-11-20",
+          "value": 4317.36
         }
       ]
     }
@@ -11543,10 +11573,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.41) с Gamma стена на $89.00. Залог за рязък отскок.",
-    "cmf_20d": -0.368,
-    "up_down_vol_ratio": 0.26,
-    "absorption_5d_pct": 30.9,
-    "vol_shock_ratio": 1.01,
+    "cmf_20d": -0.423,
+    "up_down_vol_ratio": 0.21,
+    "absorption_5d_pct": 15.7,
+    "vol_shock_ratio": 0.93,
     "put_call_ratio": 0.41,
     "options_sentiment": "BULLISH",
     "gamma_wall": 89.0,

@@ -3,25 +3,25 @@
   "name": "HANetf Sprott Pure Play Copper Miners UCITS ETF",
   "sector": "Базови ресурси & Енергиен преход",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T01:24:13.984481+00:00",
+  "generated_at": "2026-11-21T12:28:32.259427+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 379,
-  "current_price": 15.42,
+  "backtest_total_bars": 380,
+  "current_price": 14.54,
   "state": "BLUE",
-  "v1": 18.23,
-  "v2": 19.0,
-  "sma200": 19.35,
-  "rsi14": 26.7,
-  "atr14": 0.65,
+  "v1": 18.0,
+  "v2": 18.86,
+  "sma200": 19.33,
+  "rsi14": 23.1,
+  "atr14": 0.67,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": 57.8,
-    "cagr_pct": 35.5,
+    "cagr_pct": 35.4,
     "sharpe_ratio": 0.94,
     "win_rate_pct": 50.0,
     "profit_factor": 5.05,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": 57.8,
-      "cagr_pct": 35.5,
+      "cagr_pct": 35.4,
       "sharpe_ratio": 0.94,
       "win_rate_pct": 50.0,
       "profit_factor": 5.05,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 24.8,
-      "cagr_pct": 15.9,
+      "cagr_pct": 15.8,
       "sharpe_ratio": 0.57,
       "win_rate_pct": 25.0,
       "profit_factor": 1.69,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 50.2,
-      "cagr_pct": 31.1,
+      "cagr_pct": 31.0,
       "sharpe_ratio": 0.86,
       "win_rate_pct": 30.0,
       "profit_factor": 3.09,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 57.8,
-      "cagr_pct": 35.5,
+      "cagr_pct": 35.4,
       "sharpe_ratio": 0.94,
       "win_rate_pct": 50.0,
       "profit_factor": 5.05,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 58.9,
-      "cagr_pct": 36.1,
-      "sharpe_ratio": 0.93,
+      "total_return_pct": 49.8,
+      "cagr_pct": 30.7,
+      "sharpe_ratio": 0.84,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.88,
-      "max_drawdown_pct": 31.3,
+      "profit_factor": 1.44,
+      "max_drawdown_pct": 34.6,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 26.5,
     "entry_price": 21.2,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 41.8,
-    "mos_pct": 41.8,
+    "actual_discount_pct": 45.1,
+    "mos_pct": 45.1,
     "moat": "Wide",
     "roic_pct": 16.5,
     "wacc_pct": 10.2,
@@ -5427,6 +5427,20 @@
       "v2": 19.0,
       "sma200": 19.35,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 14.96,
+      "high": 15.0,
+      "low": 14.48,
+      "close": 14.54,
+      "volume": 14251.0,
+      "v1": 18.0,
+      "m1": 18.34,
+      "m2": 18.69,
+      "v2": 18.86,
+      "sma200": 19.33,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6980,6 +6994,10 @@
         {
           "time": "2026-11-19",
           "value": 15784.97
+        },
+        {
+          "time": "2026-11-20",
+          "value": 15784.97
         }
       ]
     },
@@ -8502,6 +8520,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 15784.97
+        },
+        {
+          "time": "2026-11-20",
           "value": 15784.97
         }
       ]
@@ -10026,6 +10048,10 @@
         {
           "time": "2026-11-19",
           "value": 15024.11
+        },
+        {
+          "time": "2026-11-20",
+          "value": 15024.11
         }
       ]
     },
@@ -11549,6 +11575,10 @@
         {
           "time": "2026-11-19",
           "value": 15904.38
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14992.73
         }
       ]
     }
@@ -11584,11 +11614,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.40).",
-    "cmf_20d": -0.4,
-    "up_down_vol_ratio": 0.45,
-    "absorption_5d_pct": 19.4,
-    "vol_shock_ratio": 0.59,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.46).",
+    "cmf_20d": -0.462,
+    "up_down_vol_ratio": 0.34,
+    "absorption_5d_pct": 18.4,
+    "vol_shock_ratio": 1.38,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

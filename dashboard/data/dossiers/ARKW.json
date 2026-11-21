@@ -3,18 +3,18 @@
   "name": "ARKW",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-21T01:24:11.885042+00:00",
+  "generated_at": "2026-11-21T12:28:31.708079+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 131.62,
+  "backtest_total_bars": 376,
+  "current_price": 123.33,
   "state": "BLUE",
-  "v1": 147.07,
-  "v2": 150.34,
-  "sma200": 142.95,
-  "rsi14": 30.9,
-  "atr14": 4.9,
+  "v1": 145.72,
+  "v2": 149.53,
+  "sma200": 142.97,
+  "rsi14": 25.3,
+  "atr14": 5.19,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 10.1,
-      "cagr_pct": 6.7,
-      "sharpe_ratio": 0.34,
+      "total_return_pct": 3.1,
+      "cagr_pct": 2.1,
+      "sharpe_ratio": 0.21,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.28,
+      "profit_factor": 0.1,
       "max_drawdown_pct": 36.2,
       "total_trades": 1
     }
@@ -5371,6 +5371,20 @@
       "v2": 150.34,
       "sma200": 142.95,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 129.36,
+      "high": 130.94,
+      "low": 122.67,
+      "close": 123.33,
+      "volume": 183100.0,
+      "v1": 145.72,
+      "m1": 147.48,
+      "m2": 149.0,
+      "v2": 149.53,
+      "sma200": 142.97,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6936,6 +6950,10 @@
         {
           "time": "2026-11-19",
           "value": 11257.39
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11257.39
         }
       ]
     },
@@ -8442,6 +8460,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 10618.2
+        },
+        {
+          "time": "2026-11-20",
           "value": 10618.2
         }
       ]
@@ -9950,6 +9972,10 @@
         {
           "time": "2026-11-19",
           "value": 9160.94
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9160.94
         }
       ]
     },
@@ -11457,6 +11483,10 @@
         {
           "time": "2026-11-19",
           "value": 11017.52
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10323.58
         }
       ]
     }
@@ -11513,14 +11543,14 @@
   ],
   "smart_money": {
     "symbol": "ARKW",
-    "smart_money_score": 50.0,
+    "smart_money_score": 37.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 0.76).",
-    "cmf_20d": -0.011,
-    "up_down_vol_ratio": 1.26,
-    "absorption_5d_pct": 31.3,
-    "vol_shock_ratio": 0.86,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.08, P/C: 0.76).",
+    "cmf_20d": -0.079,
+    "up_down_vol_ratio": 1.0,
+    "absorption_5d_pct": 23.1,
+    "vol_shock_ratio": 1.88,
     "put_call_ratio": 0.76,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 160.0,

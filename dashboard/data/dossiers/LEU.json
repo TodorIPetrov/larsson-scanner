@@ -3,25 +3,25 @@
   "name": "Centrus Energy Corp.",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-21T01:25:03.685503+00:00",
+  "generated_at": "2026-11-21T12:28:48.011817+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 89.7,
+  "backtest_total_bars": 376,
+  "current_price": 81.43,
   "state": "BLUE",
-  "v1": 110.27,
-  "v2": 125.68,
-  "sma200": 171.62,
-  "rsi14": 35.9,
-  "atr14": 8.83,
+  "v1": 108.63,
+  "v2": 124.3,
+  "sma200": 170.81,
+  "rsi14": 31.9,
+  "atr14": 8.86,
   "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 88.2,
-    "cagr_pct": 52.9,
+    "cagr_pct": 52.8,
     "sharpe_ratio": 0.92,
     "win_rate_pct": 40.0,
     "profit_factor": 2.73,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 39.4,
-      "cagr_pct": 25.0,
+      "cagr_pct": 24.9,
       "sharpe_ratio": 0.57,
       "win_rate_pct": 20.0,
       "profit_factor": 1.7,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 88.2,
-      "cagr_pct": 52.9,
+      "cagr_pct": 52.8,
       "sharpe_ratio": 0.92,
       "win_rate_pct": 40.0,
       "profit_factor": 2.73,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 26.2,
-      "cagr_pct": 17.0,
+      "cagr_pct": 16.9,
       "sharpe_ratio": 0.5,
       "win_rate_pct": 20.0,
       "profit_factor": 2.94,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -22.7,
-      "cagr_pct": -15.9,
-      "sharpe_ratio": 0.17,
+      "total_return_pct": -29.8,
+      "cagr_pct": -21.1,
+      "sharpe_ratio": 0.1,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 79.6,
+      "max_drawdown_pct": 81.3,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 54.1,
     "entry_price": 37.87,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -65.8,
-    "mos_pct": -65.8,
+    "actual_discount_pct": -50.5,
+    "mos_pct": -50.5,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 8.4,
@@ -5371,6 +5371,20 @@
       "v2": 125.68,
       "sma200": 171.62,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 88.0,
+      "high": 90.25,
+      "low": 80.9,
+      "close": 81.43,
+      "volume": 1071000.0,
+      "v1": 108.63,
+      "m1": 113.53,
+      "m2": 120.27,
+      "v2": 124.3,
+      "sma200": 170.81,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,6 +6964,10 @@
         {
           "time": "2026-11-19",
           "value": 18816.85
+        },
+        {
+          "time": "2026-11-20",
+          "value": 18816.85
         }
       ]
     },
@@ -8456,6 +8474,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 13939.72
+        },
+        {
+          "time": "2026-11-20",
           "value": 13939.72
         }
       ]
@@ -9964,6 +9986,10 @@
         {
           "time": "2026-11-19",
           "value": 12624.14
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12624.14
         }
       ]
     },
@@ -11471,6 +11497,10 @@
         {
           "time": "2026-11-19",
           "value": 7737.7
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7024.31
         }
       ]
     }
@@ -11539,14 +11569,14 @@
   ],
   "smart_money": {
     "symbol": "LEU",
-    "smart_money_score": 40.0,
+    "smart_money_score": 32.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.44) с Gamma стена на $100.00. Залог за рязък отскок.",
-    "cmf_20d": -0.045,
-    "up_down_vol_ratio": 0.53,
-    "absorption_5d_pct": 27.3,
-    "vol_shock_ratio": 0.55,
+    "cmf_20d": -0.12,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 11.6,
+    "vol_shock_ratio": 1.34,
     "put_call_ratio": 0.44,
     "options_sentiment": "BULLISH",
     "gamma_wall": 100.0,

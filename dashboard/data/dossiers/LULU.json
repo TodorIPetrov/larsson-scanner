@@ -3,18 +3,18 @@
   "name": "lululemon athletica inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-21T01:25:06.751642+00:00",
+  "generated_at": "2026-11-21T12:28:48.977205+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 105.53,
+  "backtest_total_bars": 376,
+  "current_price": 102.62,
   "state": "NEUTRAL",
-  "v1": 105.47,
-  "v2": 106.07,
-  "sma200": 128.33,
-  "rsi14": 50.0,
-  "atr14": 4.62,
+  "v1": 105.43,
+  "v2": 106.03,
+  "sma200": 128.0,
+  "rsi14": 46.0,
+  "atr14": 4.67,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -71,7 +71,7 @@
       "is_winner": false,
       "total_return_pct": -20.7,
       "cagr_pct": -14.4,
-      "sharpe_ratio": -0.99,
+      "sharpe_ratio": -0.98,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 22.5,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -66.6,
-      "cagr_pct": -52.1,
-      "sharpe_ratio": -1.31,
+      "total_return_pct": -67.5,
+      "cagr_pct": -52.9,
+      "sharpe_ratio": -1.35,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 72.6,
@@ -107,8 +107,8 @@
     "target_price": 256.01,
     "entry_price": 204.81,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 58.8,
-    "mos_pct": 58.8,
+    "actual_discount_pct": 59.9,
+    "mos_pct": 59.9,
     "moat": "Narrow",
     "roic_pct": 27.1,
     "wacc_pct": 8.77,
@@ -5371,6 +5371,20 @@
       "v2": 106.07,
       "sma200": 128.33,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 106.03,
+      "high": 107.58,
+      "low": 102.2,
+      "close": 102.62,
+      "volume": 4020500.0,
+      "v1": 105.43,
+      "m1": 105.22,
+      "m2": 105.52,
+      "v2": 106.03,
+      "sma200": 128.0,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -6894,6 +6908,10 @@
         {
           "time": "2026-11-19",
           "value": 8785.83
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8785.83
         }
       ]
     },
@@ -8400,6 +8418,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 8643.05
+        },
+        {
+          "time": "2026-11-20",
           "value": 8643.05
         }
       ]
@@ -9908,6 +9930,10 @@
         {
           "time": "2026-11-19",
           "value": 7929.0
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7929.0
         }
       ]
     },
@@ -11415,6 +11441,10 @@
         {
           "time": "2026-11-19",
           "value": 3346.81
+        },
+        {
+          "time": "2026-11-20",
+          "value": 3254.52
         }
       ]
     }
@@ -11435,14 +11465,14 @@
   ],
   "smart_money": {
     "symbol": "LULU",
-    "smart_money_score": 55.0,
+    "smart_money_score": 40.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 0.92).",
-    "cmf_20d": -0.012,
-    "up_down_vol_ratio": 1.01,
-    "absorption_5d_pct": 37.8,
-    "vol_shock_ratio": 0.8,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: 0.92).",
+    "cmf_20d": -0.024,
+    "up_down_vol_ratio": 0.99,
+    "absorption_5d_pct": 26.6,
+    "vol_shock_ratio": 1.35,
     "put_call_ratio": 0.92,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 98.0,

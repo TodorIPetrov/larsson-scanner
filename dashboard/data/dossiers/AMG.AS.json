@@ -3,25 +3,25 @@
   "name": "AMG Critical Materials N.V.",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T01:24:07.141187+00:00",
+  "generated_at": "2026-11-21T12:28:30.481285+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 383,
-  "current_price": 21.74,
+  "backtest_total_bars": 384,
+  "current_price": 20.28,
   "state": "BLUE",
-  "v1": 24.4,
-  "v2": 26.27,
-  "sma200": 32.02,
-  "rsi14": 30.0,
-  "atr14": 0.9,
+  "v1": 24.15,
+  "v2": 26.08,
+  "sma200": 31.94,
+  "rsi14": 24.2,
+  "atr14": 0.95,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": 76.4,
-    "cagr_pct": 45.3,
+    "cagr_pct": 45.1,
     "sharpe_ratio": 1.11,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 76.2,
-      "cagr_pct": 45.1,
+      "cagr_pct": 45.0,
       "sharpe_ratio": 1.1,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 31.1,
-      "cagr_pct": 19.5,
+      "cagr_pct": 19.4,
       "sharpe_ratio": 0.65,
       "win_rate_pct": 33.3,
       "profit_factor": 3.11,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": 76.4,
-      "cagr_pct": 45.3,
+      "cagr_pct": 45.1,
       "sharpe_ratio": 1.11,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 18.0,
-      "cagr_pct": 11.5,
-      "sharpe_ratio": 0.47,
+      "total_return_pct": 10.1,
+      "cagr_pct": 6.5,
+      "sharpe_ratio": 0.37,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.37,
-      "max_drawdown_pct": 48.3,
+      "profit_factor": 0.2,
+      "max_drawdown_pct": 51.5,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 18.9,
     "entry_price": 14.17,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -15.0,
-    "mos_pct": -15.0,
+    "actual_discount_pct": -7.3,
+    "mos_pct": -7.3,
     "moat": "None",
     "roic_pct": 11.1,
     "wacc_pct": 8.0,
@@ -5483,6 +5483,20 @@
       "v2": 26.27,
       "sma200": 32.02,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 21.12,
+      "high": 21.2,
+      "low": 20.24,
+      "close": 20.28,
+      "volume": 388616.0,
+      "v1": 24.15,
+      "m1": 24.77,
+      "m2": 25.59,
+      "v2": 26.08,
+      "sma200": 31.94,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5653,7 +5667,7 @@
         },
         {
           "time": "2025-07-15",
-          "value": 13037.76
+          "value": 13037.75
         },
         {
           "time": "2025-07-16",
@@ -5705,7 +5719,7 @@
         },
         {
           "time": "2025-08-01",
-          "value": 12835.29
+          "value": 12835.28
         },
         {
           "time": "2025-08-04",
@@ -7038,6 +7052,10 @@
         {
           "time": "2026-11-19",
           "value": 17638.63
+        },
+        {
+          "time": "2026-11-20",
+          "value": 17638.63
         }
       ]
     },
@@ -7092,7 +7110,7 @@
         },
         {
           "time": "2025-06-10",
-          "value": 10165.57
+          "value": 10165.58
         },
         {
           "time": "2025-06-11",
@@ -7144,7 +7162,7 @@
         },
         {
           "time": "2025-06-27",
-          "value": 11851.96
+          "value": 11851.97
         },
         {
           "time": "2025-06-30",
@@ -7244,7 +7262,7 @@
         },
         {
           "time": "2025-08-01",
-          "value": 12820.18
+          "value": 12820.17
         },
         {
           "time": "2025-08-04",
@@ -8576,6 +8594,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 17615.99
+        },
+        {
+          "time": "2026-11-20",
           "value": 17615.99
         }
       ]
@@ -10116,6 +10138,10 @@
         {
           "time": "2026-11-19",
           "value": 10861.3
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10861.3
         }
       ]
     },
@@ -10266,7 +10292,7 @@
         },
         {
           "time": "2025-07-14",
-          "value": 13110.55
+          "value": 13110.54
         },
         {
           "time": "2025-07-15",
@@ -10322,7 +10348,7 @@
         },
         {
           "time": "2025-08-01",
-          "value": 12822.99
+          "value": 12822.98
         },
         {
           "time": "2025-08-04",
@@ -11655,6 +11681,10 @@
         {
           "time": "2026-11-19",
           "value": 11816.02
+        },
+        {
+          "time": "2026-11-20",
+          "value": 11022.48
         }
       ]
     }
@@ -11675,14 +11705,14 @@
   ],
   "smart_money": {
     "symbol": "AMG.AS",
-    "smart_money_score": 32.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.07).",
-    "cmf_20d": -0.072,
-    "up_down_vol_ratio": 0.79,
-    "absorption_5d_pct": 32.2,
-    "vol_shock_ratio": 0.6,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.14).",
+    "cmf_20d": -0.142,
+    "up_down_vol_ratio": 0.75,
+    "absorption_5d_pct": 26.0,
+    "vol_shock_ratio": 1.48,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

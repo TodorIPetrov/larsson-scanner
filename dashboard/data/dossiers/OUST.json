@@ -3,18 +3,18 @@
   "name": "Ouster, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-21T01:25:27.432927+00:00",
+  "generated_at": "2026-11-21T12:28:55.675064+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 375,
-  "current_price": 28.16,
+  "backtest_total_bars": 376,
+  "current_price": 23.8,
   "state": "BLUE",
-  "v1": 33.41,
-  "v2": 34.82,
-  "sma200": 33.06,
-  "rsi14": 39.2,
-  "atr14": 3.02,
+  "v1": 32.88,
+  "v2": 34.5,
+  "sma200": 33.09,
+  "rsi14": 33.0,
+  "atr14": 3.13,
   "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 49.6,
-      "cagr_pct": 31.1,
+      "cagr_pct": 31.0,
       "sharpe_ratio": 0.72,
       "win_rate_pct": 25.0,
       "profit_factor": 1.54,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": 35.1,
       "cagr_pct": 22.4,
-      "sharpe_ratio": 0.65,
+      "sharpe_ratio": 0.64,
       "win_rate_pct": 16.7,
       "profit_factor": 1.19,
       "max_drawdown_pct": 74.7,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 165.1,
-      "cagr_pct": 92.6,
-      "sharpe_ratio": 1.13,
+      "total_return_pct": 124.1,
+      "cagr_pct": 71.7,
+      "sharpe_ratio": 1.02,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.99,
-      "max_drawdown_pct": 55.2,
+      "profit_factor": 2.0,
+      "max_drawdown_pct": 61.9,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 17.48,
     "entry_price": 12.23,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -61.1,
-    "mos_pct": -61.1,
+    "actual_discount_pct": -36.2,
+    "mos_pct": -36.2,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 12.5,
@@ -5371,6 +5371,20 @@
       "v2": 34.82,
       "sma200": 33.06,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 27.18,
+      "high": 27.48,
+      "low": 23.6,
+      "close": 23.8,
+      "volume": 4286700.0,
+      "v1": 32.88,
+      "m1": 33.43,
+      "m2": 34.14,
+      "v2": 34.5,
+      "sma200": 33.09,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6894,6 +6908,10 @@
         {
           "time": "2026-11-19",
           "value": 10840.21
+        },
+        {
+          "time": "2026-11-20",
+          "value": 10840.21
         }
       ]
     },
@@ -8400,6 +8418,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 14957.73
+        },
+        {
+          "time": "2026-11-20",
           "value": 14957.73
         }
       ]
@@ -9908,6 +9930,10 @@
         {
           "time": "2026-11-19",
           "value": 13512.77
+        },
+        {
+          "time": "2026-11-20",
+          "value": 13512.77
         }
       ]
     },
@@ -11415,6 +11441,10 @@
         {
           "time": "2026-11-19",
           "value": 26539.47
+        },
+        {
+          "time": "2026-11-20",
+          "value": 22430.38
         }
       ]
     }
@@ -11435,14 +11465,14 @@
   ],
   "smart_money": {
     "symbol": "OUST",
-    "smart_money_score": 78.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.15, Up/Dn Vol: 0.93x). Силна скрита подкрепа.",
-    "cmf_20d": 0.153,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 22.1,
-    "vol_shock_ratio": 0.98,
+    "smart_money_score": 60.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.29) с Gamma стена на $28.00. Залог за рязък отскок.",
+    "cmf_20d": 0.039,
+    "up_down_vol_ratio": 0.72,
+    "absorption_5d_pct": 17.8,
+    "vol_shock_ratio": 1.52,
     "put_call_ratio": 0.29,
     "options_sentiment": "BULLISH",
     "gamma_wall": 28.0,

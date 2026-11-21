@@ -3,18 +3,18 @@
   "name": "ADYEN",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T01:24:03.149733+00:00",
+  "generated_at": "2026-11-21T12:28:29.486915+00:00",
   "backtest_start_date": "2025-05-26",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 383,
-  "current_price": 806.4,
+  "backtest_total_bars": 384,
+  "current_price": 793.5,
   "state": "BLUE",
-  "v1": 876.09,
-  "v2": 893.81,
-  "sma200": 914.24,
-  "rsi14": 34.7,
-  "atr14": 30.73,
+  "v1": 870.76,
+  "v2": 890.44,
+  "sma200": 912.03,
+  "rsi14": 32.8,
+  "atr14": 30.64,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -18.6,
       "cagr_pct": -12.7,
-      "sharpe_ratio": -1.3,
+      "sharpe_ratio": -1.29,
       "win_rate_pct": 33.3,
       "profit_factor": 0.1,
       "max_drawdown_pct": 22.9,
@@ -71,7 +71,7 @@
       "is_winner": false,
       "total_return_pct": -16.3,
       "cagr_pct": -11.0,
-      "sharpe_ratio": -1.03,
+      "sharpe_ratio": -1.02,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 17.4,
@@ -83,7 +83,7 @@
       "is_winner": false,
       "total_return_pct": -14.1,
       "cagr_pct": -9.5,
-      "sharpe_ratio": -1.22,
+      "sharpe_ratio": -1.21,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 17.0,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -50.1,
-      "cagr_pct": -36.7,
-      "sharpe_ratio": -0.82,
+      "total_return_pct": -50.9,
+      "cagr_pct": -37.3,
+      "sharpe_ratio": -0.85,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 55.0,
@@ -107,8 +107,8 @@
     "target_price": 732.79,
     "entry_price": 622.87,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -10.0,
-    "mos_pct": -10.0,
+    "actual_discount_pct": -8.3,
+    "mos_pct": -8.3,
     "moat": "Wide",
     "roic_pct": 18.9,
     "wacc_pct": 12.33,
@@ -5483,6 +5483,20 @@
       "v2": 893.81,
       "sma200": 914.24,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 802.1,
+      "high": 810.8,
+      "low": 781.3,
+      "close": 793.5,
+      "volume": 188888.0,
+      "v1": 870.76,
+      "m1": 877.94,
+      "m2": 886.18,
+      "v2": 890.44,
+      "sma200": 912.03,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -7094,6 +7108,10 @@
         {
           "time": "2026-11-19",
           "value": 7642.23
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7642.23
         }
       ]
     },
@@ -8632,6 +8650,10 @@
         },
         {
           "time": "2026-11-19",
+          "value": 8136.07
+        },
+        {
+          "time": "2026-11-20",
           "value": 8136.07
         }
       ]
@@ -10172,6 +10194,10 @@
         {
           "time": "2026-11-19",
           "value": 8371.88
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8371.88
         }
       ]
     },
@@ -11711,6 +11737,10 @@
         {
           "time": "2026-11-19",
           "value": 4991.29
+        },
+        {
+          "time": "2026-11-20",
+          "value": 4911.44
         }
       ]
     }
@@ -11782,11 +11812,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
-    "cmf_20d": -0.195,
-    "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 23.3,
-    "vol_shock_ratio": 1.2,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.19).",
+    "cmf_20d": -0.193,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 22.8,
+    "vol_shock_ratio": 1.22,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

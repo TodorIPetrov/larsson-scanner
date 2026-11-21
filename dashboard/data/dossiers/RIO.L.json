@@ -3,25 +3,25 @@
   "name": "RIO TINTO PLC ORD 10P",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T01:25:35.145539+00:00",
+  "generated_at": "2026-11-21T12:28:58.450798+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-19",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
-  "backtest_total_bars": 379,
-  "current_price": 5770.0,
+  "backtest_total_bars": 380,
+  "current_price": 5640.0,
   "state": "BLUE",
-  "v1": 6388.47,
-  "v2": 6657.03,
-  "sma200": 7131.18,
-  "rsi14": 26.9,
-  "atr14": 172.86,
+  "v1": 6340.34,
+  "v2": 6622.87,
+  "sma200": 7125.18,
+  "rsi14": 24.4,
+  "atr14": 171.8,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 58.6,
-    "cagr_pct": 35.9,
+    "cagr_pct": 35.8,
     "sharpe_ratio": 1.43,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 37.5,
-      "cagr_pct": 23.6,
-      "sharpe_ratio": 1.08,
+      "cagr_pct": 23.5,
+      "sharpe_ratio": 1.07,
       "win_rate_pct": 33.3,
       "profit_factor": 4.09,
       "max_drawdown_pct": 27.4,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 47.1,
-      "cagr_pct": 29.3,
+      "cagr_pct": 29.2,
       "sharpe_ratio": 1.32,
       "win_rate_pct": 33.3,
       "profit_factor": 4.75,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 37.1,
-      "cagr_pct": 23.4,
+      "cagr_pct": 23.3,
       "sharpe_ratio": 1.08,
       "win_rate_pct": 33.3,
       "profit_factor": 4.53,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 58.6,
-      "cagr_pct": 35.9,
+      "cagr_pct": 35.8,
       "sharpe_ratio": 1.43,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 26.5,
-      "cagr_pct": 16.9,
-      "sharpe_ratio": 0.73,
+      "total_return_pct": 23.7,
+      "cagr_pct": 15.1,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.87,
-      "max_drawdown_pct": 30.5,
+      "profit_factor": 0.74,
+      "max_drawdown_pct": 32.1,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 13323.2,
     "entry_price": 9992.4,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 56.7,
-    "mos_pct": 56.7,
+    "actual_discount_pct": 57.7,
+    "mos_pct": 57.7,
     "moat": "Narrow",
     "roic_pct": 13.3,
     "wacc_pct": 8.0,
@@ -208,7 +208,7 @@
     },
     {
       "time": "2025-06-03",
-      "open": 4301.95,
+      "open": 4301.96,
       "high": 4334.43,
       "low": 4265.98,
       "close": 4334.43,
@@ -251,7 +251,7 @@
     {
       "time": "2025-06-06",
       "open": 4354.42,
-      "high": 4386.89,
+      "high": 4386.9,
       "low": 4337.93,
       "close": 4352.42,
       "volume": 4274560.0,
@@ -418,8 +418,8 @@
     },
     {
       "time": "2025-06-24",
-      "open": 4273.48,
-      "high": 4273.48,
+      "open": 4273.47,
+      "high": 4273.47,
       "low": 4190.53,
       "close": 4190.53,
       "volume": 3332321.0,
@@ -521,7 +521,7 @@
       "low": 4292.96,
       "close": 4292.96,
       "volume": 2866363.0,
-      "v1": 4322.89,
+      "v1": 4322.9,
       "m1": 4351.22,
       "m2": 4391.28,
       "v2": 4416.08,
@@ -546,7 +546,7 @@
       "time": "2025-07-07",
       "open": 4257.99,
       "high": 4275.97,
-      "low": 4245.0,
+      "low": 4244.99,
       "close": 4252.99,
       "volume": 1366280.0,
       "v1": 4315.35,
@@ -572,10 +572,10 @@
     },
     {
       "time": "2025-07-09",
-      "open": 4329.93,
+      "open": 4329.94,
       "high": 4331.43,
       "low": 4270.98,
-      "close": 4273.47,
+      "close": 4273.48,
       "volume": 3290957.0,
       "v1": 4313.18,
       "m1": 4337.83,
@@ -741,7 +741,7 @@
     {
       "time": "2025-07-25",
       "open": 4701.67,
-      "high": 4711.17,
+      "high": 4711.16,
       "low": 4657.75,
       "close": 4676.69,
       "volume": 3553565.0,
@@ -5427,6 +5427,20 @@
       "v2": 6657.03,
       "sma200": 7131.18,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 5640.0,
+      "high": 5721.0,
+      "low": 5612.0,
+      "close": 5640.0,
+      "volume": 2528164.0,
+      "v1": 6340.34,
+      "m1": 6439.73,
+      "m2": 6559.43,
+      "v2": 6622.87,
+      "sma200": 7125.18,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6966,6 +6980,10 @@
         {
           "time": "2026-11-19",
           "value": 15857.46
+        },
+        {
+          "time": "2026-11-20",
+          "value": 15857.46
         }
       ]
     },
@@ -8489,6 +8507,10 @@
         {
           "time": "2026-11-19",
           "value": 14711.96
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14711.96
         }
       ]
     },
@@ -9271,7 +9293,7 @@
         },
         {
           "time": "2026-02-26",
-          "value": 15963.2
+          "value": 15963.19
         },
         {
           "time": "2026-02-27",
@@ -10012,6 +10034,10 @@
         {
           "time": "2026-11-19",
           "value": 13714.91
+        },
+        {
+          "time": "2026-11-20",
+          "value": 13714.91
         }
       ]
     },
@@ -10150,7 +10176,7 @@
         },
         {
           "time": "2025-07-09",
-          "value": 9379.19
+          "value": 9379.2
         },
         {
           "time": "2025-07-10",
@@ -10182,7 +10208,7 @@
         },
         {
           "time": "2025-07-21",
-          "value": 10110.62
+          "value": 10110.63
         },
         {
           "time": "2025-07-22",
@@ -11535,6 +11561,10 @@
         {
           "time": "2026-11-19",
           "value": 12663.69
+        },
+        {
+          "time": "2026-11-20",
+          "value": 12378.37
         }
       ]
     }
@@ -11558,11 +11588,11 @@
     "smart_money_score": 30.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.15).",
-    "cmf_20d": -0.152,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.18).",
+    "cmf_20d": -0.176,
     "up_down_vol_ratio": 1.04,
-    "absorption_5d_pct": 25.4,
-    "vol_shock_ratio": 0.68,
+    "absorption_5d_pct": 20.2,
+    "vol_shock_ratio": 0.81,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,
