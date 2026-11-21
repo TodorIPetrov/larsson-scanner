@@ -3,7 +3,7 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-21T13:56:14.387000+00:00",
+  "generated_at": "2026-11-21T15:55:00.286512+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 73.37,
-    "target_price": 73.37,
-    "entry_price": 55.03,
-    "required_mos_pct": 25.0,
-    "actual_discount_pct": -10.5,
-    "mos_pct": -10.5,
-    "moat": "None",
-    "roic_pct": 9.1,
+    "fair_value": 137.67,
+    "target_price": 137.67,
+    "entry_price": 110.14,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 41.1,
+    "mos_pct": 41.1,
+    "moat": "Narrow",
+    "roic_pct": 13.5,
     "wacc_pct": 7.5,
-    "z_score": 3.26,
-    "m_score": -1.78,
-    "tata": -0.003,
+    "z_score": 3.59,
+    "m_score": -1.42,
+    "tata": 0.015,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "HOLD / FAIRLY VALUED",
+    "verdict": "STRONG BUY",
     "model_type": "Corporate FCFF DCF & EVA",
-    "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-19"
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-21"
   },
   "candles": [
     {
@@ -7364,7 +7364,7 @@
         },
         {
           "time": "2025-10-08",
-          "value": 14185.53
+          "value": 14185.54
         },
         {
           "time": "2025-10-09",
