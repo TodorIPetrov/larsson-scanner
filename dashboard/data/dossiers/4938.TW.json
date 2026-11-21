@@ -3,7 +3,7 @@
   "name": "PEGATRON CORPORATION",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T23:57:14.719814+00:00",
+  "generated_at": "2026-11-21T01:23:58.006384+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.4,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 184.36,
-    "target_price": 184.36,
-    "entry_price": 138.27,
+    "fair_value": 171.82,
+    "target_price": 171.82,
+    "entry_price": 128.86,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 57.6,
-    "mos_pct": 57.6,
+    "actual_discount_pct": 54.5,
+    "mos_pct": 54.5,
     "moat": "Narrow",
     "roic_pct": 18.7,
     "wacc_pct": 8.0,
-    "z_score": 2.01,
-    "m_score": -2.4,
-    "tata": 0.056,
+    "z_score": 1.66,
+    "m_score": -1.67,
+    "tata": 0.164,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "BUY / ACCUMULATE",
+    "verdict": "AVOID / FORENSIC RED FLAG",
     "model_type": "Mid-Cycle Normalized DCF",
-    "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-17"
+    "latest_filing_date": "2026-09-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-21"
   },
   "candles": [
     {
@@ -9682,11 +9682,11 @@
         },
         {
           "time": "2025-06-04",
-          "value": 9966.49
+          "value": 9966.5
         },
         {
           "time": "2025-06-05",
-          "value": 9966.49
+          "value": 9966.5
         },
         {
           "time": "2025-06-06",

@@ -3,25 +3,25 @@
   "name": "GLENCORE PLC ORD USD0.01",
   "sector": "Basic Materials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T23:57:29.845127+00:00",
+  "generated_at": "2026-11-21T01:24:51.300566+00:00",
   "backtest_start_date": "2025-05-23",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 379,
-  "current_price": 449.5,
+  "backtest_total_bars": 378,
+  "current_price": 462.9,
   "state": "BLUE",
-  "v1": 517.33,
-  "v2": 535.51,
-  "sma200": 547.76,
-  "rsi14": 23.2,
-  "atr14": 16.78,
+  "v1": 521.77,
+  "v2": 538.39,
+  "sma200": 547.89,
+  "rsi14": 25.9,
+  "atr14": 17.0,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 57.4,
-    "cagr_pct": 35.2,
+    "cagr_pct": 35.3,
     "sharpe_ratio": 1.23,
     "win_rate_pct": 50.0,
     "profit_factor": 10.36,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 35.6,
-      "cagr_pct": 22.4,
+      "cagr_pct": 22.5,
       "sharpe_ratio": 0.88,
       "win_rate_pct": 37.5,
       "profit_factor": 2.1,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 20.2,
-      "cagr_pct": 13.0,
+      "cagr_pct": 13.1,
       "sharpe_ratio": 0.61,
       "win_rate_pct": 38.9,
       "profit_factor": 1.95,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 57.4,
-      "cagr_pct": 35.2,
+      "cagr_pct": 35.3,
       "sharpe_ratio": 1.23,
       "win_rate_pct": 50.0,
       "profit_factor": 10.36,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 68.5,
-      "cagr_pct": 41.4,
-      "sharpe_ratio": 1.24,
+      "total_return_pct": 73.5,
+      "cagr_pct": 44.4,
+      "sharpe_ratio": 1.31,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.4,
-      "max_drawdown_pct": 28.5,
+      "profit_factor": 2.76,
+      "max_drawdown_pct": 26.6,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 1018.38,
     "entry_price": 763.78,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 55.9,
-    "mos_pct": 55.9,
+    "actual_discount_pct": 54.5,
+    "mos_pct": 54.5,
     "moat": "Narrow",
     "roic_pct": 17.1,
     "wacc_pct": 8.0,
@@ -5413,20 +5413,6 @@
       "v2": 538.39,
       "sma200": 547.89,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 453.55,
-      "high": 461.05,
-      "low": 449.05,
-      "close": 449.5,
-      "volume": 30976053.0,
-      "v1": 517.33,
-      "m1": 524.56,
-      "m2": 532.07,
-      "v2": 535.51,
-      "sma200": 547.76,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6976,10 +6962,6 @@
         {
           "time": "2026-11-19",
           "value": 15736.93
-        },
-        {
-          "time": "2026-11-20",
-          "value": 15736.93
         }
       ]
     },
@@ -8499,10 +8481,6 @@
         {
           "time": "2026-11-19",
           "value": 13558.87
-        },
-        {
-          "time": "2026-11-20",
-          "value": 13558.87
         }
       ]
     },
@@ -9789,7 +9767,7 @@
         },
         {
           "time": "2026-08-28",
-          "value": 14806.77
+          "value": 14806.76
         },
         {
           "time": "2026-09-01",
@@ -10021,10 +9999,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12871.44
-        },
-        {
-          "time": "2026-11-20",
           "value": 12871.44
         }
       ]
@@ -11545,10 +11519,6 @@
         {
           "time": "2026-11-19",
           "value": 17364.69
-        },
-        {
-          "time": "2026-11-20",
-          "value": 16862.02
         }
       ]
     }
@@ -11584,11 +11554,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.29).",
-    "cmf_20d": -0.293,
-    "up_down_vol_ratio": 0.32,
-    "absorption_5d_pct": 14.1,
-    "vol_shock_ratio": 1.11,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.20).",
+    "cmf_20d": -0.197,
+    "up_down_vol_ratio": 0.47,
+    "absorption_5d_pct": 19.8,
+    "vol_shock_ratio": 0.85,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

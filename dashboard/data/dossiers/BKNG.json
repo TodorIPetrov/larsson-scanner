@@ -3,18 +3,18 @@
   "name": "Booking Holdings Inc. Common St",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T23:57:21.406830+00:00",
+  "generated_at": "2026-11-21T01:24:23.509511+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 144.91,
+  "backtest_total_bars": 375,
+  "current_price": 147.32,
   "state": "BLUE",
-  "v1": 158.92,
-  "v2": 164.47,
-  "sma200": 173.15,
-  "rsi14": 34.8,
-  "atr14": 6.01,
+  "v1": 159.73,
+  "v2": 165.07,
+  "sma200": 173.31,
+  "rsi14": 36.7,
+  "atr14": 5.94,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -4.8,
-      "cagr_pct": -3.2,
+      "cagr_pct": -3.3,
       "sharpe_ratio": -0.16,
       "win_rate_pct": 50.0,
       "profit_factor": 0.18,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -14.9,
-      "cagr_pct": -10.2,
+      "cagr_pct": -10.3,
       "sharpe_ratio": -0.55,
       "win_rate_pct": 50.0,
       "profit_factor": 0.13,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -31.7,
-      "cagr_pct": -22.5,
-      "sharpe_ratio": -0.59,
+      "total_return_pct": -30.5,
+      "cagr_pct": -21.7,
+      "sharpe_ratio": -0.56,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 37.0,
+      "max_drawdown_pct": 36.0,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 250.79,
     "entry_price": 213.17,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": 42.2,
-    "mos_pct": 42.2,
+    "actual_discount_pct": 41.3,
+    "mos_pct": 41.3,
     "moat": "Wide",
     "roic_pct": 82.6,
     "wacc_pct": 9.33,
@@ -5371,20 +5371,6 @@
       "v2": 165.07,
       "sma200": 173.31,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 148.29,
-      "high": 151.0,
-      "low": 144.1,
-      "close": 144.91,
-      "volume": 7679027.0,
-      "v1": 158.92,
-      "m1": 160.58,
-      "m2": 163.02,
-      "v2": 164.47,
-      "sma200": 173.15,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -5881,7 +5867,7 @@
         },
         {
           "time": "2025-10-28",
-          "value": 9924.27
+          "value": 9924.26
         },
         {
           "time": "2025-10-29",
@@ -6601,7 +6587,7 @@
         },
         {
           "time": "2026-07-20",
-          "value": 10677.83
+          "value": 10677.84
         },
         {
           "time": "2026-07-21",
@@ -6950,10 +6936,6 @@
         {
           "time": "2026-11-19",
           "value": 9912.73
-        },
-        {
-          "time": "2026-11-20",
-          "value": 9912.73
         }
       ]
     },
@@ -7052,7 +7034,7 @@
         },
         {
           "time": "2025-06-27",
-          "value": 10634.69
+          "value": 10634.7
         },
         {
           "time": "2025-06-30",
@@ -7060,7 +7042,7 @@
         },
         {
           "time": "2025-07-01",
-          "value": 10704.86
+          "value": 10704.87
         },
         {
           "time": "2025-07-02",
@@ -7220,7 +7202,7 @@
         },
         {
           "time": "2025-08-27",
-          "value": 10490.15
+          "value": 10490.16
         },
         {
           "time": "2025-08-28",
@@ -8461,10 +8443,6 @@
         {
           "time": "2026-11-19",
           "value": 9519.24
-        },
-        {
-          "time": "2026-11-20",
-          "value": 9519.24
         }
       ]
     },
@@ -8479,7 +8457,7 @@
         },
         {
           "time": "2025-05-28",
-          "value": 10105.24
+          "value": 10105.25
         },
         {
           "time": "2025-05-29",
@@ -8543,7 +8521,7 @@
         },
         {
           "time": "2025-06-20",
-          "value": 9929.63
+          "value": 9929.62
         },
         {
           "time": "2025-06-23",
@@ -8631,7 +8609,7 @@
         },
         {
           "time": "2025-07-23",
-          "value": 10738.51
+          "value": 10738.5
         },
         {
           "time": "2025-07-24",
@@ -8663,7 +8641,7 @@
         },
         {
           "time": "2025-08-04",
-          "value": 10251.57
+          "value": 10251.58
         },
         {
           "time": "2025-08-05",
@@ -8747,7 +8725,7 @@
         },
         {
           "time": "2025-09-03",
-          "value": 10451.52
+          "value": 10451.53
         },
         {
           "time": "2025-09-04",
@@ -8759,7 +8737,7 @@
         },
         {
           "time": "2025-09-08",
-          "value": 10444.68
+          "value": 10444.67
         },
         {
           "time": "2025-09-09",
@@ -9079,7 +9057,7 @@
         },
         {
           "time": "2025-12-31",
-          "value": 9565.95
+          "value": 9565.94
         },
         {
           "time": "2026-01-02",
@@ -9091,7 +9069,7 @@
         },
         {
           "time": "2026-01-06",
-          "value": 9547.45
+          "value": 9547.44
         },
         {
           "time": "2026-01-07",
@@ -9635,7 +9613,7 @@
         },
         {
           "time": "2026-07-23",
-          "value": 8800.72
+          "value": 8800.71
         },
         {
           "time": "2026-07-24",
@@ -9679,7 +9657,7 @@
         },
         {
           "time": "2026-08-07",
-          "value": 10856.48
+          "value": 10856.47
         },
         {
           "time": "2026-08-10",
@@ -9695,7 +9673,7 @@
         },
         {
           "time": "2026-08-13",
-          "value": 10801.82
+          "value": 10801.81
         },
         {
           "time": "2026-08-14",
@@ -9731,7 +9709,7 @@
         },
         {
           "time": "2026-08-26",
-          "value": 10576.6
+          "value": 10576.59
         },
         {
           "time": "2026-08-27",
@@ -9972,10 +9950,6 @@
         {
           "time": "2026-11-19",
           "value": 8510.07
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8510.07
         }
       ]
     },
@@ -10022,7 +9996,7 @@
         },
         {
           "time": "2025-06-09",
-          "value": 10348.16
+          "value": 10348.15
         },
         {
           "time": "2025-06-10",
@@ -10098,7 +10072,7 @@
         },
         {
           "time": "2025-07-08",
-          "value": 10673.05
+          "value": 10673.06
         },
         {
           "time": "2025-07-09",
@@ -10190,7 +10164,7 @@
         },
         {
           "time": "2025-08-08",
-          "value": 10098.77
+          "value": 10098.76
         },
         {
           "time": "2025-08-11",
@@ -10242,7 +10216,7 @@
         },
         {
           "time": "2025-08-27",
-          "value": 10490.63
+          "value": 10490.64
         },
         {
           "time": "2025-08-28",
@@ -10266,7 +10240,7 @@
         },
         {
           "time": "2025-09-05",
-          "value": 10303.08
+          "value": 10303.07
         },
         {
           "time": "2025-09-08",
@@ -11483,10 +11457,6 @@
         {
           "time": "2026-11-19",
           "value": 6955.14
-        },
-        {
-          "time": "2026-11-20",
-          "value": 6841.36
         }
       ]
     }
@@ -11543,18 +11513,18 @@
   ],
   "smart_money": {
     "symbol": "BKNG",
-    "smart_money_score": 33.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.38) с Gamma стена на $150.00. Залог за рязък отскок.",
-    "cmf_20d": -0.192,
-    "up_down_vol_ratio": 0.65,
-    "absorption_5d_pct": 18.4,
-    "vol_shock_ratio": 1.02,
-    "put_call_ratio": 0.38,
-    "options_sentiment": "BULLISH",
+    "smart_money_score": 7.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.15, CMF: -0.19).",
+    "cmf_20d": -0.19,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 19.1,
+    "vol_shock_ratio": 0.89,
+    "put_call_ratio": 1.15,
+    "options_sentiment": "NEUTRAL",
     "gamma_wall": 150.0,
-    "max_pain": 200.0,
+    "max_pain": 150.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,17 +3,17 @@
   "name": "QS",
   "sector": "Equities",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T23:57:43.143555+00:00",
+  "generated_at": "2026-11-21T01:25:32.576092+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 2.79,
+  "backtest_total_bars": 375,
+  "current_price": 3.05,
   "state": "BLUE",
-  "v1": 3.99,
-  "v2": 4.45,
-  "sma200": 6.21,
-  "rsi14": 25.6,
+  "v1": 4.06,
+  "v2": 4.5,
+  "sma200": 6.24,
+  "rsi14": 28.6,
   "atr14": 0.3,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 58.8,
-    "cagr_pct": 36.4,
+    "cagr_pct": 36.5,
     "sharpe_ratio": 0.8,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 40.1,
-      "cagr_pct": 25.3,
-      "sharpe_ratio": 0.66,
+      "cagr_pct": 25.4,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 47.7,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 58.8,
-      "cagr_pct": 36.4,
+      "cagr_pct": 36.5,
       "sharpe_ratio": 0.8,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 17.7,
-      "cagr_pct": 11.5,
+      "cagr_pct": 11.6,
       "sharpe_ratio": 0.47,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -71,7 +71,7 @@
       "is_winner": false,
       "total_return_pct": -26.9,
       "cagr_pct": -19.0,
-      "sharpe_ratio": -1.32,
+      "sharpe_ratio": -1.33,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 26.9,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 16.6,
-      "cagr_pct": 10.8,
+      "cagr_pct": 10.9,
       "sharpe_ratio": 0.48,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -31.1,
-      "cagr_pct": -22.1,
-      "sharpe_ratio": 0.19,
+      "total_return_pct": -24.7,
+      "cagr_pct": -17.3,
+      "sharpe_ratio": 0.25,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 84.9,
+      "max_drawdown_pct": 83.5,
       "total_trades": 1
     }
   ],
@@ -5371,20 +5371,6 @@
       "v2": 4.5,
       "sma200": 6.24,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 2.98,
-      "high": 3.07,
-      "low": 2.77,
-      "close": 2.79,
-      "volume": 20815661.0,
-      "v1": 3.99,
-      "m1": 4.12,
-      "m2": 4.32,
-      "v2": 4.45,
-      "sma200": 6.21,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,10 +6894,6 @@
         {
           "time": "2026-11-19",
           "value": 15882.83
-        },
-        {
-          "time": "2026-11-20",
-          "value": 15882.83
         }
       ]
     },
@@ -8418,10 +8400,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 14007.67
-        },
-        {
-          "time": "2026-11-20",
           "value": 14007.67
         }
       ]
@@ -9930,10 +9908,6 @@
         {
           "time": "2026-11-19",
           "value": 11769.01
-        },
-        {
-          "time": "2026-11-20",
-          "value": 11769.01
         }
       ]
     },
@@ -11441,10 +11415,6 @@
         {
           "time": "2026-11-19",
           "value": 7541.96
-        },
-        {
-          "time": "2026-11-20",
-          "value": 6899.03
         }
       ]
     }
@@ -11468,15 +11438,15 @@
     "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.08) с Gamma стена на $4.00. Залог за рязък отскок.",
-    "cmf_20d": -0.211,
-    "up_down_vol_ratio": 0.34,
-    "absorption_5d_pct": 13.9,
-    "vol_shock_ratio": 1.33,
-    "put_call_ratio": 0.08,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.09) с Gamma стена на $3.00. Залог за рязък отскок.",
+    "cmf_20d": -0.191,
+    "up_down_vol_ratio": 0.35,
+    "absorption_5d_pct": 17.7,
+    "vol_shock_ratio": 0.87,
+    "put_call_ratio": 0.09,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 4.0,
-    "max_pain": 4.0,
+    "gamma_wall": 3.0,
+    "max_pain": 6.5,
     "unusual_call_sweep": false
   }
 }

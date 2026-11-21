@@ -3,17 +3,17 @@
   "name": "SMR",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T23:57:45.592742+00:00",
+  "generated_at": "2026-11-21T01:25:42.870191+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 3.36,
+  "backtest_total_bars": 375,
+  "current_price": 3.81,
   "state": "BLUE",
-  "v1": 5.35,
-  "v2": 6.42,
-  "sma200": 9.81,
-  "rsi14": 24.4,
+  "v1": 5.48,
+  "v2": 6.52,
+  "sma200": 9.87,
+  "rsi14": 27.7,
   "atr14": 0.47,
   "empirical_tier": "A",
   "walk_forward_stable": false,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -46.5,
-      "cagr_pct": -34.2,
+      "cagr_pct": -34.3,
       "sharpe_ratio": -0.64,
       "win_rate_pct": 16.7,
       "profit_factor": 0.28,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -24.4,
-      "cagr_pct": -17.1,
+      "cagr_pct": -17.2,
       "sharpe_ratio": -0.58,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -89.0,
-      "cagr_pct": -77.2,
-      "sharpe_ratio": -1.1,
+      "total_return_pct": -87.5,
+      "cagr_pct": -75.2,
+      "sharpe_ratio": -1.02,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 93.7,
+      "max_drawdown_pct": 92.9,
       "total_trades": 1
     }
   ],
@@ -5371,20 +5371,6 @@
       "v2": 6.52,
       "sma200": 9.87,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 3.72,
-      "high": 3.78,
-      "low": 3.3,
-      "close": 3.36,
-      "volume": 34396273.0,
-      "v1": 5.35,
-      "m1": 5.69,
-      "m2": 6.14,
-      "v2": 6.42,
-      "sma200": 9.81,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6922,10 +6908,6 @@
         {
           "time": "2026-11-19",
           "value": 8712.83
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8712.83
         }
       ]
     },
@@ -8432,10 +8414,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8404.27
-        },
-        {
-          "time": "2026-11-20",
           "value": 8404.27
         }
       ]
@@ -9944,10 +9922,6 @@
         {
           "time": "2026-11-19",
           "value": 7557.54
-        },
-        {
-          "time": "2026-11-20",
-          "value": 7557.54
         }
       ]
     },
@@ -11455,10 +11429,6 @@
         {
           "time": "2026-11-19",
           "value": 1253.27
-        },
-        {
-          "time": "2026-11-20",
-          "value": 1105.25
         }
       ]
     }
@@ -11494,15 +11464,15 @@
     "smart_money_score": 33.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.21) с Gamma стена на $4.00. Залог за рязък отскок.",
-    "cmf_20d": -0.251,
-    "up_down_vol_ratio": 0.45,
-    "absorption_5d_pct": 12.1,
-    "vol_shock_ratio": 1.09,
-    "put_call_ratio": 0.21,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.20) с Gamma стена на $4.50. Залог за рязък отскок.",
+    "cmf_20d": -0.2,
+    "up_down_vol_ratio": 0.48,
+    "absorption_5d_pct": 17.2,
+    "vol_shock_ratio": 1.31,
+    "put_call_ratio": 0.2,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 4.0,
-    "max_pain": 5.0,
+    "gamma_wall": 4.5,
+    "max_pain": 4.5,
     "unusual_call_sweep": false
   }
 }

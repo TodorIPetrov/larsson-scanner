@@ -3,26 +3,26 @@
   "name": "BHP Group Limited",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T23:57:20.876828+00:00",
+  "generated_at": "2026-11-21T01:24:21.650226+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 67.18,
+  "backtest_total_bars": 375,
+  "current_price": 68.55,
   "state": "BLUE",
-  "v1": 78.86,
-  "v2": 81.31,
+  "v1": 79.61,
+  "v2": 81.78,
   "sma200": 80.71,
-  "rsi14": 25.0,
-  "atr14": 2.46,
+  "rsi14": 26.5,
+  "atr14": 2.44,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 61.1,
-    "cagr_pct": 37.6,
-    "sharpe_ratio": 1.21,
+    "cagr_pct": 37.8,
+    "sharpe_ratio": 1.22,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
     "max_drawdown_pct": 19.8,
@@ -34,8 +34,8 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 52.4,
-      "cagr_pct": 32.6,
-      "sharpe_ratio": 1.06,
+      "cagr_pct": 32.7,
+      "sharpe_ratio": 1.07,
       "win_rate_pct": 25.0,
       "profit_factor": 10.77,
       "max_drawdown_pct": 19.8,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 35.7,
-      "cagr_pct": 22.7,
+      "cagr_pct": 22.8,
       "sharpe_ratio": 0.83,
       "win_rate_pct": 33.3,
       "profit_factor": 2.73,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 52.6,
-      "cagr_pct": 32.7,
+      "cagr_pct": 32.8,
       "sharpe_ratio": 1.08,
       "win_rate_pct": 33.3,
       "profit_factor": 11.05,
@@ -82,8 +82,8 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 61.1,
-      "cagr_pct": 37.6,
-      "sharpe_ratio": 1.21,
+      "cagr_pct": 37.8,
+      "sharpe_ratio": 1.22,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 19.8,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 41.2,
-      "cagr_pct": 26.0,
-      "sharpe_ratio": 0.87,
+      "total_return_pct": 44.1,
+      "cagr_pct": 27.8,
+      "sharpe_ratio": 0.91,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.35,
-      "max_drawdown_pct": 30.4,
+      "profit_factor": 1.52,
+      "max_drawdown_pct": 29.0,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 91.68,
     "entry_price": 73.34,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 26.7,
-    "mos_pct": 26.7,
+    "actual_discount_pct": 25.2,
+    "mos_pct": 25.2,
     "moat": "Wide",
     "roic_pct": 28.7,
     "wacc_pct": 8.73,
@@ -5371,20 +5371,6 @@
       "v2": 81.78,
       "sma200": 80.71,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 68.28,
-      "high": 69.65,
-      "low": 66.96,
-      "close": 67.18,
-      "volume": 7323543.0,
-      "v1": 78.86,
-      "m1": 79.82,
-      "m2": 80.85,
-      "v2": 81.31,
-      "sma200": 80.71,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,10 +6894,6 @@
         {
           "time": "2026-11-19",
           "value": 16107.4
-        },
-        {
-          "time": "2026-11-20",
-          "value": 16107.4
         }
       ]
     },
@@ -8419,10 +8401,6 @@
         {
           "time": "2026-11-19",
           "value": 15255.32
-        },
-        {
-          "time": "2026-11-20",
-          "value": 15255.32
         }
       ]
     },
@@ -9049,7 +9027,7 @@
         },
         {
           "time": "2026-01-06",
-          "value": 12244.57
+          "value": 12244.56
         },
         {
           "time": "2026-01-07",
@@ -9929,10 +9907,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 15243.0
-        },
-        {
-          "time": "2026-11-20",
           "value": 15243.0
         }
       ]
@@ -11441,10 +11415,6 @@
         {
           "time": "2026-11-19",
           "value": 14423.68
-        },
-        {
-          "time": "2026-11-20",
-          "value": 14135.41
         }
       ]
     }
@@ -11465,18 +11435,18 @@
   ],
   "smart_money": {
     "symbol": "BHP",
-    "smart_money_score": 15.0,
+    "smart_money_score": 5.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.93, CMF: -0.24).",
-    "cmf_20d": -0.238,
-    "up_down_vol_ratio": 0.4,
-    "absorption_5d_pct": 10.8,
-    "vol_shock_ratio": 2.1,
-    "put_call_ratio": 0.93,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 77.5,
-    "max_pain": 77.5,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.41, CMF: -0.15).",
+    "cmf_20d": -0.149,
+    "up_down_vol_ratio": 0.52,
+    "absorption_5d_pct": 13.2,
+    "vol_shock_ratio": 1.44,
+    "put_call_ratio": 1.41,
+    "options_sentiment": "BEARISH",
+    "gamma_wall": 72.5,
+    "max_pain": 72.5,
     "unusual_call_sweep": false
   }
 }

@@ -3,25 +3,25 @@
   "name": "Global X Uranium ETF",
   "sector": "Макро индекси",
   "asset_class": "commodities",
-  "generated_at": "2026-11-20T23:57:49.142140+00:00",
+  "generated_at": "2026-11-21T01:25:56.241098+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 26.79,
+  "backtest_total_bars": 375,
+  "current_price": 28.67,
   "state": "BLUE",
-  "v1": 33.54,
-  "v2": 36.44,
-  "sma200": 45.32,
-  "rsi14": 24.8,
-  "atr14": 1.44,
+  "v1": 33.96,
+  "v2": 36.75,
+  "sma200": 45.43,
+  "rsi14": 28.9,
+  "atr14": 1.4,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": 47.5,
-    "cagr_pct": 29.8,
+    "cagr_pct": 29.9,
     "sharpe_ratio": 0.83,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": 47.5,
-      "cagr_pct": 29.8,
+      "cagr_pct": 29.9,
       "sharpe_ratio": 0.83,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": 6.8,
       "cagr_pct": 4.5,
-      "sharpe_ratio": 0.29,
+      "sharpe_ratio": 0.3,
       "win_rate_pct": 40.0,
       "profit_factor": 1.28,
       "max_drawdown_pct": 42.4,
@@ -71,7 +71,7 @@
       "is_winner": false,
       "total_return_pct": -8.2,
       "cagr_pct": -5.6,
-      "sharpe_ratio": -1.16,
+      "sharpe_ratio": -1.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 8.5,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -14.6,
-      "cagr_pct": -10.0,
-      "sharpe_ratio": 0.03,
+      "total_return_pct": -8.6,
+      "cagr_pct": -5.9,
+      "sharpe_ratio": 0.12,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 56.7,
+      "max_drawdown_pct": 53.6,
       "total_trades": 1
     }
   ],
@@ -5371,20 +5371,6 @@
       "v2": 36.75,
       "sma200": 45.43,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 28.11,
-      "high": 28.54,
-      "low": 26.72,
-      "close": 26.79,
-      "volume": 8156135.0,
-      "v1": 33.54,
-      "m1": 34.5,
-      "m2": 35.73,
-      "v2": 36.44,
-      "sma200": 45.32,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,10 +6894,6 @@
         {
           "time": "2026-11-19",
           "value": 14752.21
-        },
-        {
-          "time": "2026-11-20",
-          "value": 14752.21
         }
       ]
     },
@@ -8418,10 +8400,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 12960.11
-        },
-        {
-          "time": "2026-11-20",
           "value": 12960.11
         }
       ]
@@ -9930,10 +9908,6 @@
         {
           "time": "2026-11-19",
           "value": 10675.19
-        },
-        {
-          "time": "2026-11-20",
-          "value": 10675.19
         }
       ]
     },
@@ -11441,10 +11415,6 @@
         {
           "time": "2026-11-19",
           "value": 9148.96
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8549.03
         }
       ]
     }
@@ -11465,18 +11435,18 @@
   ],
   "smart_money": {
     "symbol": "URA",
-    "smart_money_score": 25.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.54, CMF: -0.16).",
-    "cmf_20d": -0.156,
-    "up_down_vol_ratio": 0.49,
-    "absorption_5d_pct": 15.6,
-    "vol_shock_ratio": 1.68,
-    "put_call_ratio": 0.54,
+    "smart_money_score": 32.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.45) с Gamma стена на $26.50. Залог за рязък отскок.",
+    "cmf_20d": -0.069,
+    "up_down_vol_ratio": 0.6,
+    "absorption_5d_pct": 24.3,
+    "vol_shock_ratio": 1.21,
+    "put_call_ratio": 0.45,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 27.5,
-    "max_pain": 40.0,
+    "gamma_wall": 26.5,
+    "max_pain": 31.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,28 +3,28 @@
   "name": "PTC",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T23:57:42.679700+00:00",
+  "generated_at": "2026-11-21T01:25:31.273114+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 195.1,
+  "backtest_total_bars": 375,
+  "current_price": 195.63,
   "state": "GOLD",
-  "v1": 190.26,
-  "v2": 178.64,
-  "sma200": 149.77,
-  "rsi14": 66.8,
-  "atr14": 1.57,
+  "v1": 189.88,
+  "v2": 178.04,
+  "sma200": 149.57,
+  "rsi14": 69.7,
+  "atr14": 1.59,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
-    "total_return_pct": 29.1,
-    "cagr_pct": 18.7,
+    "total_return_pct": 29.4,
+    "cagr_pct": 18.9,
     "sharpe_ratio": 0.64,
     "win_rate_pct": 50.0,
-    "profit_factor": 2.32,
+    "profit_factor": 2.33,
     "max_drawdown_pct": 26.0,
     "total_trades": 6
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 25.1,
-      "cagr_pct": 16.2,
-      "sharpe_ratio": 0.57,
+      "total_return_pct": 25.4,
+      "cagr_pct": 16.5,
+      "sharpe_ratio": 0.58,
       "win_rate_pct": 40.0,
-      "profit_factor": 2.24,
+      "profit_factor": 2.25,
       "max_drawdown_pct": 33.3,
       "total_trades": 5
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
-      "total_return_pct": 29.1,
-      "cagr_pct": 18.7,
+      "total_return_pct": 29.4,
+      "cagr_pct": 18.9,
       "sharpe_ratio": 0.64,
       "win_rate_pct": 50.0,
-      "profit_factor": 2.32,
+      "profit_factor": 2.33,
       "max_drawdown_pct": 26.0,
       "total_trades": 6
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 4.6,
-      "cagr_pct": 3.0,
-      "sharpe_ratio": 0.24,
+      "total_return_pct": 4.7,
+      "cagr_pct": 3.2,
+      "sharpe_ratio": 0.25,
       "win_rate_pct": 44.4,
-      "profit_factor": 1.51,
+      "profit_factor": 1.52,
       "max_drawdown_pct": 28.9,
       "total_trades": 9
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 14.2,
-      "cagr_pct": 9.3,
-      "sharpe_ratio": 0.43,
+      "total_return_pct": 14.5,
+      "cagr_pct": 9.5,
+      "sharpe_ratio": 0.44,
       "win_rate_pct": 33.3,
-      "profit_factor": 2.08,
+      "profit_factor": 2.1,
       "max_drawdown_pct": 17.7,
       "total_trades": 3
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 13.7,
-      "cagr_pct": 9.0,
-      "sharpe_ratio": 0.4,
+      "total_return_pct": 14.0,
+      "cagr_pct": 9.2,
+      "sharpe_ratio": 0.41,
       "win_rate_pct": 100.0,
       "profit_factor": 0.29,
       "max_drawdown_pct": 48.1,
@@ -5371,20 +5371,6 @@
       "v2": 178.04,
       "sma200": 149.57,
       "state": "GOLD"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 195.46,
-      "high": 196.25,
-      "low": 194.93,
-      "close": 195.1,
-      "volume": 2448366.0,
-      "v1": 190.26,
-      "m1": 186.77,
-      "m2": 181.69,
-      "v2": 178.64,
-      "sma200": 149.77,
-      "state": "GOLD"
     }
   ],
   "markers": [
@@ -5466,11 +5452,11 @@
       "text": "BUY #6 @ $148.03"
     },
     {
-      "time": "2026-11-20",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +31.53% ($3092.22 €)"
+      "text": "EXIT +31.89% ($3127.26 €)"
     }
   ],
   "equity_curves": [
@@ -6978,10 +6964,6 @@
         {
           "time": "2026-11-19",
           "value": 12955.92
-        },
-        {
-          "time": "2026-11-20",
-          "value": 12920.85
         }
       ]
     },
@@ -8489,10 +8471,6 @@
         {
           "time": "2026-11-19",
           "value": 12557.2
-        },
-        {
-          "time": "2026-11-20",
-          "value": 12523.2
         }
       ]
     },
@@ -10000,10 +9978,6 @@
         {
           "time": "2026-11-19",
           "value": 11462.69
-        },
-        {
-          "time": "2026-11-20",
-          "value": 11431.66
         }
       ]
     },
@@ -11511,10 +11485,6 @@
         {
           "time": "2026-11-19",
           "value": 11415.56
-        },
-        {
-          "time": "2026-11-20",
-          "value": 11384.63
         }
       ]
     }
@@ -11584,29 +11554,29 @@
       "num": 6,
       "entry_date": "2026-10-02",
       "entry_price": 148.03,
-      "exit_date": "2026-11-20",
-      "exit_price": 195.1,
-      "holding_days": 35,
-      "pnl_pct": 31.53,
-      "pnl_eur": 3092.22,
+      "exit_date": "2026-11-19",
+      "exit_price": 195.63,
+      "holding_days": 34,
+      "pnl_pct": 31.89,
+      "pnl_eur": 3127.26,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "PTC",
-    "smart_money_score": 52.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.08, P/C: 0.89).",
-    "cmf_20d": 0.082,
-    "up_down_vol_ratio": 0.94,
-    "absorption_5d_pct": 33.0,
-    "vol_shock_ratio": 1.44,
-    "put_call_ratio": 0.89,
-    "options_sentiment": "NEUTRAL",
-    "gamma_wall": 190.0,
-    "max_pain": 190.0,
+    "smart_money_score": 72.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.41) с Gamma стена на $200.00. Залог за рязък отскок.",
+    "cmf_20d": 0.097,
+    "up_down_vol_ratio": 0.99,
+    "absorption_5d_pct": 39.3,
+    "vol_shock_ratio": 1.37,
+    "put_call_ratio": 0.41,
+    "options_sentiment": "BULLISH",
+    "gamma_wall": 200.0,
+    "max_pain": 200.0,
     "unusual_call_sweep": false
   }
 }

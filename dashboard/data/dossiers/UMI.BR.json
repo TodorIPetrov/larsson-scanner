@@ -3,7 +3,7 @@
   "name": "UMICORE",
   "sector": "Industrials",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-20T23:57:49.066120+00:00",
+  "generated_at": "2026-11-21T01:25:55.545724+00:00",
   "backtest_start_date": "2025-05-26",
   "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 28.5,
-    "target_price": 28.5,
-    "entry_price": 21.37,
+    "fair_value": 27.84,
+    "target_price": 27.84,
+    "entry_price": 20.88,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": 41.6,
-    "mos_pct": 41.6,
+    "actual_discount_pct": 40.3,
+    "mos_pct": 40.3,
     "moat": "None",
     "roic_pct": 16.3,
     "wacc_pct": 7.5,
-    "z_score": 2.61,
-    "m_score": -2.61,
-    "tata": -0.034,
+    "z_score": 2.7,
+    "m_score": -1.87,
+    "tata": -0.032,
     "solvency_type": "Altman Z''-Score (Universal Model)",
     "verdict": "BUY / ACCUMULATE",
     "model_type": "Corporate FCFF DCF & EVA",
-    "latest_filing_date": "2025-12-31 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-17"
+    "latest_filing_date": "2026-06-30 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-21"
   },
   "candles": [
     {

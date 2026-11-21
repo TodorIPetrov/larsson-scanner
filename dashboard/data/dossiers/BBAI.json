@@ -3,17 +3,17 @@
   "name": "BigBear.ai, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T23:57:20.637481+00:00",
+  "generated_at": "2026-11-21T01:24:20.801920+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 1.58,
+  "backtest_total_bars": 375,
+  "current_price": 1.73,
   "state": "BLUE",
-  "v1": 2.21,
-  "v2": 2.45,
-  "sma200": 3.35,
-  "rsi14": 26.6,
+  "v1": 2.25,
+  "v2": 2.48,
+  "sma200": 3.37,
+  "rsi14": 30.0,
   "atr14": 0.17,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
     "total_return_pct": 48.3,
-    "cagr_pct": 30.2,
+    "cagr_pct": 30.3,
     "sharpe_ratio": 0.72,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
       "total_return_pct": 48.3,
-      "cagr_pct": 30.2,
+      "cagr_pct": 30.3,
       "sharpe_ratio": 0.72,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -13.9,
-      "cagr_pct": -9.5,
+      "cagr_pct": -9.6,
       "sharpe_ratio": -0.04,
       "win_rate_pct": 28.6,
       "profit_factor": 2.15,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -58.3,
-      "cagr_pct": -44.3,
-      "sharpe_ratio": -0.35,
+      "total_return_pct": -54.3,
+      "cagr_pct": -40.9,
+      "sharpe_ratio": -0.29,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 82.3,
+      "max_drawdown_pct": 80.6,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 1.11,
     "entry_price": 0.77,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -42.3,
-    "mos_pct": -42.3,
+    "actual_discount_pct": -55.9,
+    "mos_pct": -55.9,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 12.5,
@@ -5371,20 +5371,6 @@
       "v2": 2.48,
       "sma200": 3.37,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 1.69,
-      "high": 1.76,
-      "low": 1.55,
-      "close": 1.58,
-      "volume": 19009072.0,
-      "v1": 2.21,
-      "m1": 2.28,
-      "m2": 2.39,
-      "v2": 2.45,
-      "sma200": 3.35,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,10 +6894,6 @@
         {
           "time": "2026-11-19",
           "value": 14825.41
-        },
-        {
-          "time": "2026-11-20",
-          "value": 14825.41
         }
       ]
     },
@@ -8418,10 +8400,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 13611.03
-        },
-        {
-          "time": "2026-11-20",
           "value": 13611.03
         }
       ]
@@ -9930,10 +9908,6 @@
         {
           "time": "2026-11-19",
           "value": 10499.67
-        },
-        {
-          "time": "2026-11-20",
-          "value": 10499.67
         }
       ]
     },
@@ -11441,10 +11415,6 @@
         {
           "time": "2026-11-19",
           "value": 4572.14
-        },
-        {
-          "time": "2026-11-20",
-          "value": 4175.71
         }
       ]
     }
@@ -11468,15 +11438,15 @@
     "smart_money_score": 40.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.18) с Gamma стена на $1.50. Залог за рязък отскок.",
-    "cmf_20d": -0.097,
-    "up_down_vol_ratio": 0.54,
-    "absorption_5d_pct": 18.1,
-    "vol_shock_ratio": 0.86,
-    "put_call_ratio": 0.18,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.17) с Gamma стена на $2.00. Залог за рязък отскок.",
+    "cmf_20d": -0.06,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 18.4,
+    "vol_shock_ratio": 0.65,
+    "put_call_ratio": 0.17,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 1.5,
-    "max_pain": 2.0,
+    "gamma_wall": 2.0,
+    "max_pain": 2.5,
     "unusual_call_sweep": false
   }
 }

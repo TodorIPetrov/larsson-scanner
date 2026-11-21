@@ -3,25 +3,25 @@
   "name": "GBTC",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-20T23:57:29.328125+00:00",
+  "generated_at": "2026-11-21T01:24:49.741895+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 44.97,
+  "backtest_total_bars": 375,
+  "current_price": 47.83,
   "state": "BLUE",
-  "v1": 56.62,
-  "v2": 58.07,
-  "sma200": 55.94,
-  "rsi14": 17.4,
-  "atr14": 1.97,
+  "v1": 57.37,
+  "v2": 58.5,
+  "sma200": 55.96,
+  "rsi14": 20.6,
+  "atr14": 1.86,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": -11.0,
-    "cagr_pct": -7.5,
+    "cagr_pct": -7.6,
     "sharpe_ratio": -0.22,
     "win_rate_pct": 0.0,
     "profit_factor": 0.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": -11.0,
-      "cagr_pct": -7.5,
+      "cagr_pct": -7.6,
       "sharpe_ratio": -0.22,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -70,7 +70,7 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -13.6,
-      "cagr_pct": -9.3,
+      "cagr_pct": -9.4,
       "sharpe_ratio": -0.7,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -12.5,
-      "cagr_pct": -8.5,
+      "cagr_pct": -8.6,
       "sharpe_ratio": -0.56,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -48.5,
-      "cagr_pct": -35.9,
-      "sharpe_ratio": -0.83,
+      "total_return_pct": -45.2,
+      "cagr_pct": -33.3,
+      "sharpe_ratio": -0.74,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 54.3,
+      "max_drawdown_pct": 53.8,
       "total_trades": 1
     }
   ],
@@ -5371,20 +5371,6 @@
       "v2": 58.5,
       "sma200": 55.96,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 47.79,
-      "high": 47.86,
-      "low": 44.46,
-      "close": 44.97,
-      "volume": 3786335.0,
-      "v1": 56.62,
-      "m1": 57.42,
-      "m2": 57.95,
-      "v2": 58.07,
-      "sma200": 55.94,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6922,10 +6908,6 @@
         {
           "time": "2026-11-19",
           "value": 8897.25
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8897.25
         }
       ]
     },
@@ -8432,10 +8414,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 8753.0
-        },
-        {
-          "time": "2026-11-20",
           "value": 8753.0
         }
       ]
@@ -9944,10 +9922,6 @@
         {
           "time": "2026-11-19",
           "value": 8347.1
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8347.1
         }
       ]
     },
@@ -11455,10 +11429,6 @@
         {
           "time": "2026-11-19",
           "value": 5483.38
-        },
-        {
-          "time": "2026-11-20",
-          "value": 5155.5
         }
       ]
     }
@@ -11491,18 +11461,18 @@
   ],
   "smart_money": {
     "symbol": "GBTC",
-    "smart_money_score": 33.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.08) с Gamma стена на $45.00. Залог за рязък отскок.",
-    "cmf_20d": -0.141,
-    "up_down_vol_ratio": 0.25,
-    "absorption_5d_pct": 28.7,
-    "vol_shock_ratio": 2.15,
-    "put_call_ratio": 0.08,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.22) с Gamma стена на $45.00. Залог за рязък отскок.",
+    "cmf_20d": -0.092,
+    "up_down_vol_ratio": 0.28,
+    "absorption_5d_pct": 37.1,
+    "vol_shock_ratio": 0.95,
+    "put_call_ratio": 0.22,
     "options_sentiment": "BULLISH",
     "gamma_wall": 45.0,
-    "max_pain": 71.0,
+    "max_pain": 53.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,18 +3,18 @@
   "name": "MSTR",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-20T23:57:36.887562+00:00",
+  "generated_at": "2026-11-21T01:25:13.541429+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 77.8,
+  "backtest_total_bars": 375,
+  "current_price": 86.13,
   "state": "BLUE",
-  "v1": 122.51,
-  "v2": 128.45,
-  "sma200": 131.76,
-  "rsi14": 20.2,
-  "atr14": 8.69,
+  "v1": 125.35,
+  "v2": 130.08,
+  "sma200": 131.9,
+  "rsi14": 22.7,
+  "atr14": 8.57,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": -54.4,
-      "cagr_pct": -40.9,
+      "cagr_pct": -41.0,
       "sharpe_ratio": -1.22,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -79.6,
-      "cagr_pct": -65.6,
-      "sharpe_ratio": -1.03,
+      "total_return_pct": -77.4,
+      "cagr_pct": -63.2,
+      "sharpe_ratio": -0.95,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 82.9,
+      "max_drawdown_pct": 81.9,
       "total_trades": 1
     }
   ],
@@ -5371,20 +5371,6 @@
       "v2": 130.08,
       "sma200": 131.9,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 86.45,
-      "high": 87.95,
-      "low": 77.69,
-      "close": 77.8,
-      "volume": 35771089.0,
-      "v1": 122.51,
-      "m1": 125.53,
-      "m2": 127.74,
-      "v2": 128.45,
-      "sma200": 131.76,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,10 +6936,6 @@
         {
           "time": "2026-11-19",
           "value": 10225.03
-        },
-        {
-          "time": "2026-11-20",
-          "value": 10225.03
         }
       ]
     },
@@ -8460,10 +8442,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 7141.63
-        },
-        {
-          "time": "2026-11-20",
           "value": 7141.63
         }
       ]
@@ -9972,10 +9950,6 @@
         {
           "time": "2026-11-19",
           "value": 6029.36
-        },
-        {
-          "time": "2026-11-20",
-          "value": 6029.36
         }
       ]
     },
@@ -11483,10 +11457,6 @@
         {
           "time": "2026-11-19",
           "value": 2257.66
-        },
-        {
-          "time": "2026-11-20",
-          "value": 2039.31
         }
       ]
     }
@@ -11543,18 +11513,18 @@
   ],
   "smart_money": {
     "symbol": "MSTR",
-    "smart_money_score": 25.0,
-    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
-    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.48) с Gamma стена на $80.00. Залог за рязък отскок.",
-    "cmf_20d": -0.273,
-    "up_down_vol_ratio": 0.27,
-    "absorption_5d_pct": 7.9,
-    "vol_shock_ratio": 1.95,
-    "put_call_ratio": 0.48,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 80.0,
-    "max_pain": 135.0,
+    "smart_money_score": 15.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.81, CMF: -0.22).",
+    "cmf_20d": -0.218,
+    "up_down_vol_ratio": 0.37,
+    "absorption_5d_pct": 21.6,
+    "vol_shock_ratio": 1.32,
+    "put_call_ratio": 0.81,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 90.0,
+    "max_pain": 93.0,
     "unusual_call_sweep": false
   }
 }

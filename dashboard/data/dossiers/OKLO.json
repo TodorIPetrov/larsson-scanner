@@ -3,17 +3,17 @@
   "name": "OKLO",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T23:57:40.728902+00:00",
+  "generated_at": "2026-11-21T01:25:25.790624+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 19.85,
+  "backtest_total_bars": 375,
+  "current_price": 20.84,
   "state": "BLUE",
-  "v1": 26.12,
-  "v2": 30.73,
-  "sma200": 49.31,
-  "rsi14": 32.3,
+  "v1": 26.51,
+  "v2": 31.08,
+  "sma200": 49.52,
+  "rsi14": 34.3,
   "atr14": 2.2,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -21,7 +21,7 @@
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 113.7,
-    "cagr_pct": 66.4,
+    "cagr_pct": 66.6,
     "sharpe_ratio": 1.02,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 62.2,
-      "cagr_pct": 38.3,
+      "cagr_pct": 38.4,
       "sharpe_ratio": 0.72,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 113.7,
-      "cagr_pct": 66.4,
+      "cagr_pct": 66.6,
       "sharpe_ratio": 1.02,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -58,8 +58,8 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 55.7,
-      "cagr_pct": 34.5,
-      "sharpe_ratio": 0.73,
+      "cagr_pct": 34.6,
+      "sharpe_ratio": 0.74,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
       "max_drawdown_pct": 56.4,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -60.0,
-      "cagr_pct": -45.9,
-      "sharpe_ratio": -0.19,
+      "total_return_pct": -58.0,
+      "cagr_pct": -44.2,
+      "sharpe_ratio": -0.16,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 89.0,
@@ -5371,20 +5371,6 @@
       "v2": 31.08,
       "sma200": 49.52,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 20.76,
-      "high": 21.82,
-      "low": 19.63,
-      "close": 19.85,
-      "volume": 13528971.0,
-      "v1": 26.12,
-      "m1": 27.49,
-      "m2": 29.46,
-      "v2": 30.73,
-      "sma200": 49.31,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6908,10 +6894,6 @@
         {
           "time": "2026-11-19",
           "value": 21373.51
-        },
-        {
-          "time": "2026-11-20",
-          "value": 21373.51
         }
       ]
     },
@@ -8418,10 +8400,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 16218.36
-        },
-        {
-          "time": "2026-11-20",
           "value": 16218.36
         }
       ]
@@ -9930,10 +9908,6 @@
         {
           "time": "2026-11-19",
           "value": 15567.1
-        },
-        {
-          "time": "2026-11-20",
-          "value": 15567.1
         }
       ]
     },
@@ -11441,10 +11415,6 @@
         {
           "time": "2026-11-19",
           "value": 4204.19
-        },
-        {
-          "time": "2026-11-20",
-          "value": 4004.47
         }
       ]
     }
@@ -11465,18 +11435,18 @@
   ],
   "smart_money": {
     "symbol": "OKLO",
-    "smart_money_score": 33.0,
+    "smart_money_score": 40.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.28) с Gamma стена на $20.00. Залог за рязък отскок.",
-    "cmf_20d": -0.151,
-    "up_down_vol_ratio": 0.42,
-    "absorption_5d_pct": 17.6,
-    "vol_shock_ratio": 1.32,
-    "put_call_ratio": 0.28,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.34) с Gamma стена на $20.00. Залог за рязък отскок.",
+    "cmf_20d": -0.114,
+    "up_down_vol_ratio": 0.44,
+    "absorption_5d_pct": 27.9,
+    "vol_shock_ratio": 0.74,
+    "put_call_ratio": 0.34,
     "options_sentiment": "BULLISH",
     "gamma_wall": 20.0,
-    "max_pain": 40.0,
+    "max_pain": 31.0,
     "unusual_call_sweep": false
   }
 }

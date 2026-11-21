@@ -3,25 +3,25 @@
   "name": "Credo Technology Group Holding ",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-20T23:57:23.919819+00:00",
+  "generated_at": "2026-11-21T01:24:32.979685+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 99.86,
+  "backtest_total_bars": 375,
+  "current_price": 117.76,
   "state": "BLUE",
-  "v1": 146.33,
-  "v2": 165.63,
-  "sma200": 181.03,
-  "rsi14": 31.6,
-  "atr14": 14.93,
+  "v1": 149.23,
+  "v2": 167.77,
+  "sma200": 181.02,
+  "rsi14": 36.8,
+  "atr14": 14.55,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 103.6,
-    "cagr_pct": 61.0,
+    "cagr_pct": 61.2,
     "sharpe_ratio": 1.03,
     "win_rate_pct": 50.0,
     "profit_factor": 2.77,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 72.5,
-      "cagr_pct": 44.1,
+      "cagr_pct": 44.3,
       "sharpe_ratio": 0.87,
       "win_rate_pct": 50.0,
       "profit_factor": 2.99,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 103.6,
-      "cagr_pct": 61.0,
+      "cagr_pct": 61.2,
       "sharpe_ratio": 1.03,
       "win_rate_pct": 50.0,
       "profit_factor": 2.77,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": 41.8,
-      "cagr_pct": 26.4,
+      "cagr_pct": 26.5,
       "sharpe_ratio": 0.69,
       "win_rate_pct": 50.0,
       "profit_factor": 2.39,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 55.7,
-      "cagr_pct": 34.6,
-      "sharpe_ratio": 0.79,
+      "total_return_pct": 83.6,
+      "cagr_pct": 50.4,
+      "sharpe_ratio": 0.91,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.83,
-      "max_drawdown_pct": 67.0,
+      "profit_factor": 1.33,
+      "max_drawdown_pct": 62.9,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 38.97,
     "entry_price": 29.23,
     "required_mos_pct": 25.0,
-    "actual_discount_pct": -156.2,
-    "mos_pct": -156.2,
+    "actual_discount_pct": -202.2,
+    "mos_pct": -202.2,
     "moat": "Narrow",
     "roic_pct": 13.3,
     "wacc_pct": 12.5,
@@ -5371,20 +5371,6 @@
       "v2": 167.77,
       "sma200": 181.02,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 113.25,
-      "high": 113.61,
-      "low": 97.92,
-      "close": 99.86,
-      "volume": 13115794.0,
-      "v1": 146.33,
-      "m1": 153.05,
-      "m2": 161.25,
-      "v2": 165.63,
-      "sma200": 181.03,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,10 +6936,6 @@
         {
           "time": "2026-11-19",
           "value": 20358.18
-        },
-        {
-          "time": "2026-11-20",
-          "value": 20358.18
         }
       ]
     },
@@ -8460,10 +8442,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 17251.3
-        },
-        {
-          "time": "2026-11-20",
           "value": 17251.3
         }
       ]
@@ -9972,10 +9950,6 @@
         {
           "time": "2026-11-19",
           "value": 13466.48
-        },
-        {
-          "time": "2026-11-20",
-          "value": 13466.48
         }
       ]
     },
@@ -11483,10 +11457,6 @@
         {
           "time": "2026-11-19",
           "value": 18381.6
-        },
-        {
-          "time": "2026-11-20",
-          "value": 15587.52
         }
       ]
     }
@@ -11543,18 +11513,18 @@
   ],
   "smart_money": {
     "symbol": "CRDO",
-    "smart_money_score": 35.0,
+    "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.51, CMF: -0.15).",
-    "cmf_20d": -0.152,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.04, CMF: -0.12).",
+    "cmf_20d": -0.117,
     "up_down_vol_ratio": 0.59,
-    "absorption_5d_pct": 35.0,
-    "vol_shock_ratio": 1.6,
-    "put_call_ratio": 0.51,
-    "options_sentiment": "BULLISH",
-    "gamma_wall": 100.0,
-    "max_pain": 115.0,
+    "absorption_5d_pct": 39.7,
+    "vol_shock_ratio": 0.68,
+    "put_call_ratio": 1.04,
+    "options_sentiment": "NEUTRAL",
+    "gamma_wall": 110.0,
+    "max_pain": 110.0,
     "unusual_call_sweep": false
   }
 }

@@ -3,25 +3,25 @@
   "name": "Rocket Lab Corporation",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T23:57:43.897331+00:00",
+  "generated_at": "2026-11-21T01:25:35.630855+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 45.42,
+  "backtest_total_bars": 375,
+  "current_price": 50.99,
   "state": "BLUE",
-  "v1": 57.67,
-  "v2": 61.83,
-  "sma200": 77.72,
-  "rsi14": 35.6,
-  "atr14": 4.97,
+  "v1": 58.37,
+  "v2": 62.33,
+  "sma200": 77.82,
+  "rsi14": 40.9,
+  "atr14": 4.9,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
   "winning_metrics": {
     "total_return_pct": 87.8,
-    "cagr_pct": 52.5,
+    "cagr_pct": 52.7,
     "sharpe_ratio": 0.87,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 85.4,
-      "cagr_pct": 51.3,
+      "cagr_pct": 51.4,
       "sharpe_ratio": 0.85,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": true,
       "total_return_pct": 87.8,
-      "cagr_pct": 52.5,
+      "cagr_pct": 52.7,
       "sharpe_ratio": 0.87,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 16.8,
-      "cagr_pct": 10.9,
-      "sharpe_ratio": 0.48,
+      "total_return_pct": 18.2,
+      "cagr_pct": 11.9,
+      "sharpe_ratio": 0.5,
       "win_rate_pct": 33.3,
-      "profit_factor": 3.01,
+      "profit_factor": 3.3,
       "max_drawdown_pct": 62.6,
       "total_trades": 3
     },
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 70.4,
-      "cagr_pct": 42.9,
-      "sharpe_ratio": 0.78,
+      "total_return_pct": 91.3,
+      "cagr_pct": 54.6,
+      "sharpe_ratio": 0.87,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.01,
-      "max_drawdown_pct": 69.8,
+      "profit_factor": 1.32,
+      "max_drawdown_pct": 69.4,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 31.96,
     "entry_price": 22.37,
     "required_mos_pct": 30.0,
-    "actual_discount_pct": -42.1,
-    "mos_pct": -42.1,
+    "actual_discount_pct": -59.5,
+    "mos_pct": -59.5,
     "moat": "None",
     "roic_pct": 0.0,
     "wacc_pct": 12.5,
@@ -5371,20 +5371,6 @@
       "v2": 62.33,
       "sma200": 77.82,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 49.75,
-      "high": 50.67,
-      "low": 45.1,
-      "close": 45.42,
-      "volume": 21355911.0,
-      "v1": 57.67,
-      "m1": 58.81,
-      "m2": 60.62,
-      "v2": 61.83,
-      "sma200": 77.72,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6936,10 +6922,6 @@
         {
           "time": "2026-11-19",
           "value": 18776.84
-        },
-        {
-          "time": "2026-11-20",
-          "value": 18776.84
         }
       ]
     },
@@ -8446,10 +8428,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 18541.82
-        },
-        {
-          "time": "2026-11-20",
           "value": 18541.82
         }
       ]
@@ -9958,10 +9936,6 @@
         {
           "time": "2026-11-19",
           "value": 10831.54
-        },
-        {
-          "time": "2026-11-20",
-          "value": 10831.54
         }
       ]
     },
@@ -11469,10 +11443,6 @@
         {
           "time": "2026-11-19",
           "value": 19150.0
-        },
-        {
-          "time": "2026-11-20",
-          "value": 17058.11
         }
       ]
     }
@@ -11517,18 +11487,18 @@
   ],
   "smart_money": {
     "symbol": "RKLB",
-    "smart_money_score": 40.0,
+    "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 0.71).",
-    "cmf_20d": -0.015,
-    "up_down_vol_ratio": 0.95,
-    "absorption_5d_pct": 11.0,
-    "vol_shock_ratio": 1.15,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.07, P/C: 0.71).",
+    "cmf_20d": 0.065,
+    "up_down_vol_ratio": 1.14,
+    "absorption_5d_pct": 17.4,
+    "vol_shock_ratio": 0.83,
     "put_call_ratio": 0.71,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 45.0,
-    "max_pain": 70.0,
+    "gamma_wall": 50.0,
+    "max_pain": 65.0,
     "unusual_call_sweep": false
   }
 }

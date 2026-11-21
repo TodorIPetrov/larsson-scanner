@@ -3,18 +3,18 @@
   "name": "Uber Technologies, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-20T23:57:48.936473+00:00",
+  "generated_at": "2026-11-21T01:25:54.804500+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 376,
-  "current_price": 63.47,
+  "backtest_total_bars": 375,
+  "current_price": 65.6,
   "state": "BLUE",
-  "v1": 68.76,
-  "v2": 69.72,
-  "sma200": 72.4,
-  "rsi14": 34.1,
-  "atr14": 2.42,
+  "v1": 68.97,
+  "v2": 69.86,
+  "sma200": 72.46,
+  "rsi14": 39.1,
+  "atr14": 2.21,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -29.0,
-      "cagr_pct": -20.5,
-      "sharpe_ratio": -0.5,
+      "total_return_pct": -26.6,
+      "cagr_pct": -18.7,
+      "sharpe_ratio": -0.44,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 36.6,
+      "max_drawdown_pct": 34.8,
       "total_trades": 1
     }
   ],
@@ -107,8 +107,8 @@
     "target_price": 85.19,
     "entry_price": 68.15,
     "required_mos_pct": 20.0,
-    "actual_discount_pct": 25.5,
-    "mos_pct": 25.5,
+    "actual_discount_pct": 23.0,
+    "mos_pct": 23.0,
     "moat": "Narrow",
     "roic_pct": 14.1,
     "wacc_pct": 9.95,
@@ -5371,20 +5371,6 @@
       "v2": 69.86,
       "sma200": 72.46,
       "state": "BLUE"
-    },
-    {
-      "time": "2026-11-20",
-      "open": 65.77,
-      "high": 68.36,
-      "low": 63.29,
-      "close": 63.47,
-      "volume": 30059786.0,
-      "v1": 68.76,
-      "m1": 69.03,
-      "m2": 69.45,
-      "v2": 69.72,
-      "sma200": 72.4,
-      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6950,10 +6936,6 @@
         {
           "time": "2026-11-19",
           "value": 8931.55
-        },
-        {
-          "time": "2026-11-20",
-          "value": 8931.55
         }
       ]
     },
@@ -8460,10 +8442,6 @@
         },
         {
           "time": "2026-11-19",
-          "value": 9028.73
-        },
-        {
-          "time": "2026-11-20",
           "value": 9028.73
         }
       ]
@@ -9972,10 +9950,6 @@
         {
           "time": "2026-11-19",
           "value": 9248.96
-        },
-        {
-          "time": "2026-11-20",
-          "value": 9248.96
         }
       ]
     },
@@ -11483,10 +11457,6 @@
         {
           "time": "2026-11-19",
           "value": 7349.38
-        },
-        {
-          "time": "2026-11-20",
-          "value": 7110.75
         }
       ]
     }
@@ -11543,17 +11513,17 @@
   ],
   "smart_money": {
     "symbol": "UBER",
-    "smart_money_score": 15.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 0.61, CMF: -0.13).",
-    "cmf_20d": -0.133,
-    "up_down_vol_ratio": 0.49,
-    "absorption_5d_pct": 28.2,
-    "vol_shock_ratio": 1.55,
-    "put_call_ratio": 0.61,
+    "smart_money_score": 50.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.32) с Gamma стена на $68.00. Залог за рязък отскок.",
+    "cmf_20d": -0.103,
+    "up_down_vol_ratio": 0.51,
+    "absorption_5d_pct": 36.4,
+    "vol_shock_ratio": 1.52,
+    "put_call_ratio": 0.32,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 64.0,
+    "gamma_wall": 68.0,
     "max_pain": 70.0,
     "unusual_call_sweep": false
   }
