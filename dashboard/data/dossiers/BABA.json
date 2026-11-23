@@ -3,20 +3,20 @@
   "name": "Alibaba Group Holding Limited",
   "sector": "Consumer Cyclical",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T09:20:31.454968+00:00",
+  "generated_at": "2026-11-20T09:41:35.179891+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 84.37,
+  "backtest_total_bars": 1161,
+  "current_price": 83.31,
   "state": "BLUE",
-  "v1": 101.22,
-  "v2": 105.72,
-  "sma200": 121.05,
-  "rsi14": 24.5,
-  "atr14": 3.52,
+  "v1": 100.19,
+  "v2": 105.03,
+  "sma200": 120.68,
+  "rsi14": 23.7,
+  "atr14": 3.62,
   "empirical_tier": "C",
-  "walk_forward_stable": false,
+  "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -18.1,
-      "cagr_pct": -4.2,
-      "sharpe_ratio": 0.15,
+      "total_return_pct": -19.1,
+      "cagr_pct": -4.5,
+      "sharpe_ratio": 0.14,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 55.0,
+      "max_drawdown_pct": 55.6,
       "total_trades": 1
     }
   ],
@@ -16354,12 +16354,26 @@
       "high": 86.89,
       "low": 84.22,
       "close": 84.37,
-      "volume": 16578200.0,
+      "volume": 16699800.0,
       "v1": 101.22,
       "m1": 102.75,
       "m2": 104.64,
       "v2": 105.72,
       "sma200": 121.05,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 83.4,
+      "high": 88.2,
+      "low": 83.25,
+      "close": 83.31,
+      "volume": 22023600.0,
+      "v1": 100.19,
+      "m1": 101.86,
+      "m2": 103.88,
+      "v2": 105.03,
+      "sma200": 120.68,
       "state": "BLUE"
     }
   ],
@@ -21122,6 +21136,10 @@
         {
           "time": "2026-11-18",
           "value": 9247.18
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9247.18
         }
       ]
     },
@@ -25768,6 +25786,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 7237.57
+        },
+        {
+          "time": "2026-11-19",
           "value": 7237.57
         }
       ]
@@ -30416,6 +30438,10 @@
         {
           "time": "2026-11-18",
           "value": 7553.64
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7553.64
         }
       ]
     },
@@ -35063,6 +35089,10 @@
         {
           "time": "2026-11-18",
           "value": 8198.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8095.94
         }
       ]
     }
@@ -35171,10 +35201,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.06) с Gamma стена на $270.00. Залог за рязък отскок.",
-    "cmf_20d": -0.332,
-    "up_down_vol_ratio": 0.54,
-    "absorption_5d_pct": 24.8,
-    "vol_shock_ratio": 1.44,
+    "cmf_20d": -0.4,
+    "up_down_vol_ratio": 0.51,
+    "absorption_5d_pct": 17.5,
+    "vol_shock_ratio": 1.88,
     "put_call_ratio": 0.06,
     "options_sentiment": "BULLISH",
     "gamma_wall": 270.0,

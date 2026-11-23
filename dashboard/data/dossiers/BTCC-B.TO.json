@@ -3,19 +3,19 @@
   "name": "BTCC-B.TO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:20:48.097011+00:00",
+  "generated_at": "2026-11-20T09:41:40.875520+00:00",
   "backtest_start_date": "2022-04-07",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 12.36,
+  "backtest_total_bars": 1160,
+  "current_price": 12.31,
   "state": "NEUTRAL",
-  "v1": 14.7,
-  "v2": 14.85,
-  "sma200": 13.96,
-  "rsi14": 22.3,
+  "v1": 14.54,
+  "v2": 14.77,
+  "sma200": 13.95,
+  "rsi14": 22.0,
   "atr14": 0.45,
-  "empirical_tier": "S",
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 53.3,
-      "cagr_pct": 9.7,
+      "total_return_pct": 52.6,
+      "cagr_pct": 9.6,
       "sharpe_ratio": 0.44,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.87,
+      "profit_factor": 0.86,
       "max_drawdown_pct": 61.5,
       "total_trades": 1
     }
@@ -16347,6 +16347,20 @@
       "v2": 14.85,
       "sma200": 13.96,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 12.61,
+      "high": 12.63,
+      "low": 12.23,
+      "close": 12.31,
+      "volume": 160900.0,
+      "v1": 14.54,
+      "m1": 14.7,
+      "m2": 14.77,
+      "v2": 14.77,
+      "sma200": 13.95,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -21062,6 +21076,10 @@
         {
           "time": "2026-11-18",
           "value": 24705.78
+        },
+        {
+          "time": "2026-11-19",
+          "value": 24705.78
         }
       ]
     },
@@ -25704,6 +25722,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 24222.35
+        },
+        {
+          "time": "2026-11-19",
           "value": 24222.35
         }
       ]
@@ -30348,6 +30370,10 @@
         {
           "time": "2026-11-18",
           "value": 20534.31
+        },
+        {
+          "time": "2026-11-19",
+          "value": 20534.31
         }
       ]
     },
@@ -34991,6 +35017,10 @@
         {
           "time": "2026-11-18",
           "value": 15344.89
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15276.63
         }
       ]
     }
@@ -35059,14 +35089,14 @@
   ],
   "smart_money": {
     "symbol": "BTCC-B.TO",
-    "smart_money_score": 30.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.02).",
-    "cmf_20d": -0.022,
-    "up_down_vol_ratio": 0.39,
-    "absorption_5d_pct": 34.8,
-    "vol_shock_ratio": 1.63,
+    "smart_money_score": 40.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
+    "cmf_20d": -0.018,
+    "up_down_vol_ratio": 0.38,
+    "absorption_5d_pct": 37.7,
+    "vol_shock_ratio": 0.96,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

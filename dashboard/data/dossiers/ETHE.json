@@ -3,18 +3,18 @@
   "name": "ETHE",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:21:44.390458+00:00",
+  "generated_at": "2026-11-20T09:41:56.511700+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 14.0,
+  "backtest_total_bars": 1161,
+  "current_price": 14.08,
   "state": "BLUE",
-  "v1": 17.59,
-  "v2": 18.15,
-  "sma200": 17.18,
-  "rsi14": 22.6,
-  "atr14": 0.74,
+  "v1": 17.36,
+  "v2": 18.02,
+  "sma200": 17.17,
+  "rsi14": 23.5,
+  "atr14": 0.73,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -39.5,
-      "cagr_pct": -10.3,
-      "sharpe_ratio": 0.26,
+      "total_return_pct": -39.1,
+      "cagr_pct": -10.2,
+      "sharpe_ratio": 0.27,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 81.0,
@@ -16354,12 +16354,26 @@
       "high": 14.35,
       "low": 13.85,
       "close": 14.0,
-      "volume": 1567600.0,
+      "volume": 1590700.0,
       "v1": 17.59,
       "m1": 17.89,
       "m2": 18.1,
       "v2": 18.15,
       "sma200": 17.18,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 14.45,
+      "high": 14.51,
+      "low": 13.99,
+      "close": 14.08,
+      "volume": 1729800.0,
+      "v1": 17.36,
+      "m1": 17.7,
+      "m2": 17.95,
+      "v2": 18.02,
+      "sma200": 17.17,
       "state": "BLUE"
     }
   ],
@@ -21136,6 +21150,10 @@
         {
           "time": "2026-11-18",
           "value": 26599.32
+        },
+        {
+          "time": "2026-11-19",
+          "value": 26599.32
         }
       ]
     },
@@ -25782,6 +25800,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 12153.22
+        },
+        {
+          "time": "2026-11-19",
           "value": 12153.22
         }
       ]
@@ -30430,6 +30452,10 @@
         {
           "time": "2026-11-18",
           "value": 13889.63
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13889.63
         }
       ]
     },
@@ -35077,6 +35103,10 @@
         {
           "time": "2026-11-18",
           "value": 6057.63
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6092.24
         }
       ]
     }
@@ -35193,14 +35223,14 @@
   ],
   "smart_money": {
     "symbol": "ETHE",
-    "smart_money_score": 73.0,
+    "smart_money_score": 68.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $24.00. Залог за рязък отскок.",
-    "cmf_20d": 0.008,
-    "up_down_vol_ratio": 0.43,
-    "absorption_5d_pct": 51.3,
-    "vol_shock_ratio": 0.81,
+    "cmf_20d": -0.019,
+    "up_down_vol_ratio": 0.53,
+    "absorption_5d_pct": 39.8,
+    "vol_shock_ratio": 0.92,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
     "gamma_wall": 24.0,

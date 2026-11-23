@@ -7,7 +7,7 @@ import json
 import logging
 import os
 from dataclasses import dataclass
-from typing import Dict, Optional
+from typing import Dict, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,11 @@ OPTIMAL_PROFILES_FILE = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
     "data",
     "asset_optimal_profiles.json",
+)
+SETTINGS_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+    "config",
+    "settings.yaml",
 )
 
 _OPTIMAL_PROFILES_CACHE: Optional[Dict[str, dict]] = None
@@ -71,7 +76,7 @@ ASSET_CLASS_PROFILES: Dict[str, AssetClassProfile] = {
         volatility_regime='HIGH',
         typical_hold_days='2-14',
         trading_hours='24/7',
-        allows_short=True,
+        allows_short=False,
         description_bg='Крипто активи — висока волатилност, 24/7 търговия, по-широки стопове',
     ),
     'us_stocks': AssetClassProfile(
@@ -365,6 +370,119 @@ def get_quality_tier(ticker: str) -> str:
         return emp["empirical_tier"]
     return 'B'
 
+
+GOLD_VOL_EXEMPT = {"GC=F", "PAXGUSDT"}
+DEFAULT_EXCLUDED_ASSET_CLASSES = {"indices"}
+DEFAULT_EXCLUDED_SECTORS = {
+    "Utilities",
+    "Real Estate",
+    "Consumer Defensive",
+    "Consumer Staples",
+    "Basic Materials",
+    "Materials",
+    "Базови материали",
+}
+
+
+def get_larsson_trend_tier(ticker: str) -> str:
+    """
+    Returns empirical Larsson trend tier (S/A/B/C) strictly from backtest profiles.
+    Unlike `get_quality_tier` (fundamental brand stature), this measures historical
+    trend-following suitability and falls back conservatively to 'B'.
+    """
+    if not ticker:
+        return "B"
+    clean = ticker.split(":")[-1].strip().upper()
+    emp = get_empirical_asset_profile(clean)
+    if emp and emp.get("empirical_tier") in ("S", "A", "B", "C"):
+        return str(emp["empirical_tier"])
+    return "B"
+
+
+def get_effective_exit_on_neutral(
+    ticker: str,
+    asset_class: Optional[str] = None,
+    default_crypto_fast_exit: bool = True,
+) -> bool:
+    """
+    Returns True if an asset should exit to Cash on NEUTRAL rather than holding to BLUE.
+    Gold proxies stay on Classic Blue Exit; non-gold crypto uses Fast Exit when
+    `default_crypto_fast_exit` is enabled; equities honor their empirical profile flag.
+    """
+    clean = (ticker or "").split(":")[-1].strip().upper()
+    emp = get_empirical_asset_profile(clean)
+    if clean in GOLD_VOL_EXEMPT:
+        return bool(emp.get("exit_on_neutral", False)) if emp else False
+    resolved_cls = (asset_class or get_asset_class_for_ticker(clean) or "").lower()
+    if resolved_cls == "crypto" and default_crypto_fast_exit:
+        return True
+    if emp and "exit_on_neutral" in emp:
+        return bool(emp["exit_on_neutral"])
+    return False
+
+
+def check_larsson_eligibility(
+    ticker: str,
+    asset_class: str = "",
+    sector: str = "",
+    annualized_vol_pct: Optional[float] = None,
+    min_vol_pct: float = 25.0,
+    gold_vol_exempt: Optional[set] = None,
+    excluded_asset_classes: Optional[set] = None,
+    excluded_sectors: Optional[set] = None,
+) -> Tuple[bool, str]:
+    """Evaluates empirical trend, walk-forward, sector, asset-class, and volatility gates."""
+    clean = (ticker or "").split(":")[-1].strip().upper()
+    exempt = GOLD_VOL_EXEMPT if gold_vol_exempt is None else {str(x).upper() for x in gold_vol_exempt}
+    excl_cls = DEFAULT_EXCLUDED_ASSET_CLASSES if excluded_asset_classes is None else {str(x).lower() for x in excluded_asset_classes}
+    excl_sec = DEFAULT_EXCLUDED_SECTORS if excluded_sectors is None else set(excluded_sectors)
+    excl_sec_norm = {str(s).strip().casefold() for s in excl_sec if s}
+
+    resolved_cls = (asset_class or get_asset_class_for_ticker(clean) or "").lower()
+    if resolved_cls in excl_cls:
+        return False, "excluded_asset_class"
+
+    emp = get_empirical_asset_profile(clean)
+    resolved_sector = sector or (emp.get("sector", "") if emp else "")
+    if clean not in exempt and str(resolved_sector).strip().casefold() in excl_sec_norm:
+        return False, "excluded_sector"
+
+    trend_tier = get_larsson_trend_tier(clean)
+    if trend_tier not in ("S", "A"):
+        return False, "tier_below_a"
+
+    if emp and not emp.get("walk_forward_stable", True):
+        return False, "walk_forward_unstable"
+
+    if annualized_vol_pct is not None and clean not in exempt and float(annualized_vol_pct) < float(min_vol_pct):
+        return False, "low_volatility"
+
+    return True, "eligible"
+
+
+def is_larsson_eligible(
+    ticker: str,
+    asset_class: str = "",
+    sector: str = "",
+    annualized_vol_pct: Optional[float] = None,
+    min_vol_pct: float = 25.0,
+    gold_vol_exempt: Optional[set] = None,
+    excluded_asset_classes: Optional[set] = None,
+    excluded_sectors: Optional[set] = None,
+) -> bool:
+    """Boolean wrapper for `check_larsson_eligibility`."""
+    ok, _ = check_larsson_eligibility(
+        ticker=ticker,
+        asset_class=asset_class,
+        sector=sector,
+        annualized_vol_pct=annualized_vol_pct,
+        min_vol_pct=min_vol_pct,
+        gold_vol_exempt=gold_vol_exempt,
+        excluded_asset_classes=excluded_asset_classes,
+        excluded_sectors=excluded_sectors,
+    )
+    return ok
+
 def get_tier_emoji(tier: str) -> str:
     """Returns emoji for quality tier."""
     return {'S': '💎', 'A': '⭐', 'B': '🔵', 'C': '⚪'}.get(tier, '⚪')
@@ -409,6 +527,9 @@ def get_max_allowed_leverage(
     quality_tier = get_quality_tier(ticker)
     if quality_tier == "C" or atr_pct >= 6.5:
         return 1
+    emp = get_empirical_asset_profile(ticker)
+    if emp and emp.get("empirical_tier") == "C":
+        return 1
 
     if quality_tier == "S":
         if score >= 70 and tier in ["A+", "A"] and atr_pct < 6.0:
@@ -430,4 +551,244 @@ def get_max_allowed_leverage(
         return 1
 
     return 1
+
+
+_DEFAULT_ROTATION_SETTINGS: Dict[str, object] = {
+    "target_positions_count": 8,
+    "base_capital_eur": 10000.0,
+    "min_annualized_vol_pct": 25.0,
+    "gold_vol_exempt": ["GC=F", "PAXGUSDT"],
+    "excluded_asset_classes": ["indices"],
+    "excluded_sectors": [
+        "Utilities",
+        "Real Estate",
+        "Consumer Defensive",
+        "Consumer Staples",
+        "Basic Materials",
+        "Materials",
+        "Базови материали",
+    ],
+    "crypto_fast_exit_default": True,
+    "inverse_vol_sizing": True,
+    "min_slot_weight_pct": 7.0,
+    "max_slot_weight_pct": 20.0,
+    "cluster_caps": {
+        "semi_ai_hardware": 2,
+        "mega_software_cloud": 2,
+        "crypto_risk": 2,
+        "gold_commodities": 2,
+        "industrial_defense": 2,
+        "finance_fintech": 2,
+        "consumer_media": 2,
+        "healthcare_biotech": 1,
+        "energy_resources": 2,
+        "other_equity": 2,
+    },
+    "core_focus_bonus": 15.0,
+    "core_focus_tickers": [
+        "NVDA", "AVGO", "TSM", "MU", "ASML", "PLTR", "META", "GOOGL", "NFLX", "APP",
+        "GEV", "RYCEY", "SAP.DE", "ABBN.SW", "CCJ", "HOOD",
+        "BTCUSDT", "SOLUSDT", "BNBUSDT", "PAXGUSDT",
+    ],
+}
+
+
+def load_rotation_settings(settings_path: str = SETTINGS_FILE) -> Dict[str, object]:
+    """Loads rotation portfolio settings from YAML with validated fallbacks."""
+    cfg = {
+        k: (dict(v) if isinstance(v, dict) else (list(v) if isinstance(v, list) else v))
+        for k, v in _DEFAULT_ROTATION_SETTINGS.items()
+    }
+    if settings_path and os.path.exists(settings_path):
+        try:
+            import yaml
+            with open(settings_path, "r", encoding="utf-8") as f:
+                raw = yaml.safe_load(f) or {}
+            rot = raw.get("rotation") or {}
+            if isinstance(rot, dict):
+                for k, v in rot.items():
+                    if k == "cluster_caps" and isinstance(v, dict):
+                        merged_caps = dict(cfg["cluster_caps"])
+                        merged_caps.update(v)
+                        cfg["cluster_caps"] = merged_caps
+                    elif v is not None:
+                        cfg[k] = v
+        except Exception as e:
+            logger.warning(f"Could not load rotation settings from {settings_path}: {e}")
+    return cfg
+
+
+_GOLD_CLUSTER_TICKERS = {
+    "GC=F", "PAXGUSDT", "XAUTUSDT", "GLD", "IAU", "SLV", "SI=F",
+    "GDX", "NEM", "AEM", "GOLD", "WPM", "FNV", "KGC",
+}
+_ENERGY_CLUSTER_TICKERS = {
+    "CCJ", "UEC", "NXE", "URA", "URNM", "XOM", "CVX", "COP", "SLB",
+    "EOG", "OXY", "MPC", "VLO", "PSX", "HAL", "BKR", "CL=F", "BZ=F", "NG=F",
+}
+_CRYPTO_RISK_TICKERS = {
+    "BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT", "ADAUSDT", "DOGEUSDT",
+    "AVAXUSDT", "SUIUSDT", "LINKUSDT", "DOTUSDT", "TONUSDT", "TRXUSDT", "MATICUSDT",
+    "NEARUSDT", "APTUSDT", "INJUSDT", "COIN", "MSTR", "MARA", "RIOT", "CLSK",
+    "HOOD", "GBTC", "IBIT", "FBTC", "BITO", "HUT", "CIFR", "IREN", "CORZ", "WULF",
+}
+_SEMI_AI_HW_TICKERS = {
+    "NVDA", "AVGO", "TSM", "MU", "ASML", "AMD", "SMCI", "ARM", "INTC", "QCOM",
+    "MRVL", "KLAC", "LRCX", "AMAT", "TXN", "ON", "NXPI", "ADI", "MCHP", "MPWR",
+    "TER", "ENTG", "SWKS", "QRVO", "STM", "SNPS", "CDNS", "ANET", "VRT", "CRDO",
+    "ALAB", "CLS", "FN", "COHR", "LITE", "CIEN", "HPE", "DELL", "PSTG", "WDC",
+    "STX", "NTAP", "INFY", "005930.KS", "000660.KS", "2330.TW", "2454.TW",
+    "6857.T", "8035.T", "ASX", "UMC",
+}
+_MEGA_SW_CLOUD_TICKERS = {
+    "MSFT", "AAPL", "GOOGL", "GOOG", "META", "AMZN", "ORCL", "CRM", "ADBE",
+    "NOW", "INTU", "PANW", "CRWD", "SNOW", "DDOG", "ZS", "NET", "FTNT",
+    "PLTR", "APP", "SAP.DE", "TEAM", "WDAY", "HUBS", "MDB", "OKTA", "DT",
+    "TTD", "IBM", "ACN", "Shop".upper(), "DUOL", "SOUN", "BBAI",
+}
+_INDUSTRIAL_DEF_TICKERS = {
+    "GE", "GEV", "RYCEY", "RR.L", "ABBN.SW", "RHM.DE", "BAESY", "LMT", "RTX", "NOC",
+    "GD", "HWM", "TDG", "HEI", "AXON", "CAT", "DE", "HON", "ETN", "PH",
+    "EMR", "ROK", "URI", "PWR", "ITT", "SIE.DE", "SAF.PA", "AIR.PA", "SU.PA",
+    "SAAB-B.ST", "LDO.MI", "PL", "RKLB", "ASTS", "JOBY", "ACHR", "BA",
+}
+_FINANCE_FINTECH_TICKERS = {
+    "V", "MA", "JPM", "BAC", "WFC", "C", "GS", "MS", "BLK", "SCHW", "AXP",
+    "PYPL", "XYZ", "SQ", "SOFI", "NU", "AFRM", "BRK-B", "SPGI", "MCO", "ICE",
+    "CME", "CB", "PGR", "TRV", "ALL", "KKR", "APO", "BX", "ARES",
+}
+_CONSUMER_MEDIA_TICKERS = {
+    "NFLX", "DIS", "SPOT", "RBLX", "UBER", "DASH", "ABNB", "BKNG", "TSLA",
+    "HD", "LOW", "COST", "WMT", "NKE", "SBUX", "MCD", "CMG", "TJX", "LULU",
+    "MELI", "SE", "CELH", "ONON",
+}
+_HEALTHCARE_TICKERS = {
+    "LLY", "NVO", "UNH", "JNJ", "ABBV", "MRK", "PFE", "TMO", "ABT", "DHR",
+    "ISRG", "SYK", "BSX", "VRTX", "REGN", "AMGN", "GILD", "MRNA", "BNTX", "HIMS",
+}
+
+
+def classify_risk_cluster(
+    ticker: str,
+    asset_class: str = "",
+    sector: str = "",
+    name: str = "",
+) -> str:
+    """Assigns a correlation-aware risk cluster for Top-N concentration caps."""
+    clean = (ticker or "").split(":")[-1].strip().upper()
+    cls_l = (asset_class or get_asset_class_for_ticker(clean) or "").lower()
+    sec_l = (sector or "").strip().lower()
+    name_l = (name or "").strip().lower()
+
+    # Explicit curated cluster ticker mappings take precedence over generic asset_class
+    if clean in _GOLD_CLUSTER_TICKERS:
+        return "gold_commodities"
+    if clean in _ENERGY_CLUSTER_TICKERS:
+        return "energy_resources"
+    if clean in _CRYPTO_RISK_TICKERS:
+        return "crypto_risk"
+    if clean in _FINANCE_FINTECH_TICKERS:
+        return "finance_fintech"
+    if clean in _SEMI_AI_HW_TICKERS or any(k in name_l for k in ("semiconductor", "microchip", "hynix", "tsmc")):
+        return "semi_ai_hardware"
+    if clean in _MEGA_SW_CLOUD_TICKERS:
+        return "mega_software_cloud"
+    if clean in _INDUSTRIAL_DEF_TICKERS:
+        return "industrial_defense"
+    if clean in _HEALTHCARE_TICKERS:
+        return "healthcare_biotech"
+    if clean in _CONSUMER_MEDIA_TICKERS:
+        return "consumer_media"
+
+    # Generic fallback by asset class and fundamental sector
+    if sec_l == "energy":
+        return "energy_resources"
+    if cls_l == "commodities":
+        return "gold_commodities"
+    if cls_l in ("crypto", "crypto_stocks"):
+        return "crypto_risk"
+    if sec_l == "industrials":
+        return "industrial_defense"
+    if sec_l == "healthcare":
+        return "healthcare_biotech"
+    if sec_l == "financial services":
+        return "finance_fintech"
+    if sec_l in ("communication services", "consumer cyclical"):
+        return "consumer_media"
+    if sec_l == "technology":
+        return "mega_software_cloud"
+    return "other_equity"
+
+
+def compute_normalized_invvol_weights(
+    vols_by_ticker: Dict[str, Optional[float]],
+    target_slots: int = 8,
+    min_weight_pct: float = 7.0,
+    max_weight_pct: float = 20.0,
+    default_vol_pct: float = 40.0,
+) -> Dict[str, float]:
+    """
+    Computes inverse-volatility weights normalized to deploy `100 * min(1, n / target_slots)`%
+    so cash buffers scale down linearly when few candidates are active while a full book reaches 100%,
+    bounded within `[min_weight_pct, max_weight_pct]` via capped-simplex projection.
+    """
+    if not vols_by_ticker or target_slots <= 0:
+        return {}
+
+    tickers = list(vols_by_ticker.keys())
+    n = len(tickers)
+    deployed_pct = 100.0 * min(1.0, float(n) / float(target_slots))
+    avg_w = deployed_pct / n
+    eff_min = min(float(min_weight_pct), avg_w)
+    eff_max = max(float(max_weight_pct), avg_w)
+
+    raw = {}
+    for tk in tickers:
+        v = vols_by_ticker.get(tk)
+        try:
+            v_num = float(v) if v is not None else float(default_vol_pct)
+        except (TypeError, ValueError):
+            v_num = float(default_vol_pct)
+        if v_num != v_num or v_num <= 0:
+            v_num = float(default_vol_pct)
+        raw[tk] = 1.0 / max(10.0, v_num)
+
+    fixed: Dict[str, float] = {}
+    free = list(tickers)
+    while free:
+        rem = deployed_pct - sum(fixed.values())
+        free_raw_sum = sum(raw[t] for t in free)
+        cand = {
+            t: (rem * (raw[t] / free_raw_sum) if free_raw_sum > 0 else rem / len(free))
+            for t in free
+        }
+        over = [t for t in free if cand[t] > eff_max + 1e-9]
+        under = [t for t in free if cand[t] < eff_min - 1e-9]
+        if not over and not under:
+            fixed.update(cand)
+            free = []
+            break
+        over_excess = sum(cand[t] - eff_max for t in over)
+        under_deficit = sum(eff_min - cand[t] for t in under)
+        if over_excess >= under_deficit and over:
+            for t in over:
+                fixed[t] = eff_max
+            free = [t for t in free if t not in over]
+        elif under:
+            for t in under:
+                fixed[t] = eff_min
+            free = [t for t in free if t not in under]
+        else:
+            fixed.update(cand)
+            free = []
+
+    rounded = {t: round(fixed[t], 2) for t in tickers}
+    diff = round(deployed_pct - sum(rounded.values()), 2)
+    if abs(diff) >= 0.01:
+        for t in sorted(tickers, key=lambda k: rounded[k], reverse=(diff < 0)):
+            adj = round(rounded[t] + diff, 2)
+            if eff_min - 1e-6 <= adj <= eff_max + 1e-6:
+                rounded[t] = adj
+                break
+    return rounded
 

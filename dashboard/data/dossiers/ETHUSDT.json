@@ -3,19 +3,19 @@
   "name": "Ethereum",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-19T09:21:45.737641+00:00",
+  "generated_at": "2026-11-20T09:41:57.249011+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1755,
-  "current_price": 1803.11,
+  "backtest_total_bars": 1757,
+  "current_price": 1746.93,
   "state": "BLUE",
-  "v1": 2127.84,
-  "v2": 2244.78,
-  "sma200": 2136.99,
-  "rsi14": 25.1,
-  "atr14": 100.11,
-  "empirical_tier": "A",
+  "v1": 2078.61,
+  "v2": 2210.93,
+  "sma200": 2131.03,
+  "rsi14": 23.1,
+  "atr14": 99.33,
+  "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -26.1,
-      "cagr_pct": -4.3,
+      "cagr_pct": -4.2,
       "sharpe_ratio": -0.0,
       "win_rate_pct": 17.2,
       "profit_factor": 0.86,
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -29.3,
-      "cagr_pct": -4.9,
-      "sharpe_ratio": 0.19,
+      "total_return_pct": -31.5,
+      "cagr_pct": -5.3,
+      "sharpe_ratio": 0.18,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 71.7,
@@ -24682,14 +24682,42 @@
       "time": "2026-11-18",
       "open": 1824.87,
       "high": 1826.58,
-      "low": 1795.48,
-      "close": 1803.11,
-      "volume": 100237.0,
-      "v1": 2127.84,
-      "m1": 2177.74,
-      "m2": 2225.82,
-      "v2": 2244.78,
-      "sma200": 2136.99,
+      "low": 1732.83,
+      "close": 1777.19,
+      "volume": 293148.0,
+      "v1": 2125.75,
+      "m1": 2176.09,
+      "m2": 2224.57,
+      "v2": 2243.7,
+      "sma200": 2136.86,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1777.19,
+      "high": 1817.57,
+      "low": 1736.28,
+      "close": 1757.32,
+      "volume": 302465.0,
+      "v1": 2102.5,
+      "m1": 2155.09,
+      "m2": 2206.66,
+      "v2": 2227.6,
+      "sma200": 2134.03,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 1757.31,
+      "high": 1770.55,
+      "low": 1717.82,
+      "close": 1746.93,
+      "volume": 144371.0,
+      "v1": 2078.61,
+      "m1": 2133.46,
+      "m2": 2188.16,
+      "v2": 2210.93,
+      "sma200": 2131.03,
       "state": "BLUE"
     }
   ],
@@ -31916,6 +31944,14 @@
         {
           "time": "2026-11-18",
           "value": 22472.18
+        },
+        {
+          "time": "2026-11-19",
+          "value": 22472.18
+        },
+        {
+          "time": "2026-11-20",
+          "value": 22472.18
         }
       ]
     },
@@ -38942,6 +38978,14 @@
         },
         {
           "time": "2026-11-18",
+          "value": 11768.37
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11768.37
+        },
+        {
+          "time": "2026-11-20",
           "value": 11768.37
         }
       ]
@@ -45970,6 +46014,14 @@
         {
           "time": "2026-11-18",
           "value": 8505.98
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8505.98
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8505.98
         }
       ]
     },
@@ -52996,7 +53048,15 @@
         },
         {
           "time": "2026-11-18",
-          "value": 7077.85
+          "value": 6976.11
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6898.11
+        },
+        {
+          "time": "2026-11-20",
+          "value": 6857.33
         }
       ]
     }
@@ -53173,14 +53233,14 @@
   ],
   "smart_money": {
     "symbol": "ETHUSDT",
-    "smart_money_score": 57.0,
+    "smart_money_score": 45.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.04, P/C: N/A).",
-    "cmf_20d": 0.035,
-    "up_down_vol_ratio": 0.72,
-    "absorption_5d_pct": 51.7,
-    "vol_shock_ratio": 0.36,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: N/A).",
+    "cmf_20d": -0.038,
+    "up_down_vol_ratio": 0.66,
+    "absorption_5d_pct": 50.1,
+    "vol_shock_ratio": 0.54,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

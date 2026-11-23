@@ -7,6 +7,7 @@ Fixed & Rigorous Institutional Value Architecture:
 4. Exports current technical indicators (SMA-200, RSI, ATR, Swing Low) for live trigger validation.
 """
 
+import argparse
 import concurrent.futures
 import json
 import logging
@@ -138,6 +139,7 @@ def simulate_quantamental_strategy(
     shares = 0.0
     cash = 10000.0
     entry_price = 0.0
+    cost_basis = 0.0
     stop_loss = 0.0
     position_stage = 0  # 1 = 50%, 2 = 100%
     blue_bars_count = 0
@@ -155,19 +157,20 @@ def simulate_quantamental_strategy(
         prev_state = states[i - 1]
         prev_close = closes[i - 1]
         prev_open = opens[i - 1]
+        prev_low = lows[i - 1]
         prev_v1 = v1[i - 1]
         prev_v2 = v2[i - 1]
         prev_sma = sma200[i - 1]
-        prev_atr = atr[i - 1] if not np.isnan(atr[i - 1]) else (curr_close * 0.02)
+        prev_atr = atr[i - 1] if not np.isnan(atr[i - 1]) else (prev_close * 0.02)
         prev_rsi = rsi[i - 1]
 
-        # Track BLUE duration & swing low
+        # Track BLUE duration & swing low (strictly causal t-1 low)
         if prev_state == -1:
             blue_bars_count += 1
             if blue_bars_count == 1:
-                recent_swing_low = curr_low
+                recent_swing_low = prev_low
             else:
-                recent_swing_low = min(recent_swing_low, curr_low)
+                recent_swing_low = min(recent_swing_low, prev_low)
         else:
             if prev_state == 1:
                 blue_bars_count = 0
@@ -179,9 +182,9 @@ def simulate_quantamental_strategy(
             exited = False
             exit_price = 0.0
 
-            # Emergency Stop Loss check (intra-bar)
+            # Emergency Stop Loss check (intra-bar, gap-down aware)
             if curr_low <= stop_loss and stop_loss > 0:
-                exit_price = stop_loss
+                exit_price = min(curr_open, stop_loss)
                 exited = True
 
             # Strategy Specific Exit Rules
@@ -194,10 +197,12 @@ def simulate_quantamental_strategy(
 
                 elif strategy == "V1_SMA200_BOUNCE":
                     # Scale to 100% on GOLD confirmation
-                    if position_stage == 1 and prev_state == 1:
+                    if position_stage == 1 and prev_state == 1 and curr_open > 0 and cash > 0:
                         add_shares = (cash * 0.999) / (curr_open * (1.0 + COMMISSION_PCT))
+                        add_cost = add_shares * curr_open * (1.0 + COMMISSION_PCT)
                         shares += add_shares
-                        cash -= add_shares * curr_open * (1.0 + COMMISSION_PCT)
+                        cash -= add_cost
+                        cost_basis += add_cost
                         position_stage = 2
                         stop_loss = prev_v2
 
@@ -208,10 +213,12 @@ def simulate_quantamental_strategy(
 
                 elif strategy == "V2_SPRING_REVERSAL":
                     # Scale to 100% on GOLD confirmation
-                    if position_stage == 1 and prev_state == 1:
+                    if position_stage == 1 and prev_state == 1 and curr_open > 0 and cash > 0:
                         add_shares = (cash * 0.999) / (curr_open * (1.0 + COMMISSION_PCT))
+                        add_cost = add_shares * curr_open * (1.0 + COMMISSION_PCT)
                         shares += add_shares
-                        cash -= add_shares * curr_open * (1.0 + COMMISSION_PCT)
+                        cash -= add_cost
+                        cost_basis += add_cost
                         position_stage = 2
                         stop_loss = prev_v2
 
@@ -222,15 +229,17 @@ def simulate_quantamental_strategy(
 
                 elif strategy == "V3_CAPITULATION_S1":
                     # Scale to 100% on GOLD confirmation
-                    if position_stage == 1 and prev_state == 1:
+                    if position_stage == 1 and prev_state == 1 and curr_open > 0 and cash > 0:
                         add_shares = (cash * 0.999) / (curr_open * (1.0 + COMMISSION_PCT))
+                        add_cost = add_shares * curr_open * (1.0 + COMMISSION_PCT)
                         shares += add_shares
-                        cash -= add_shares * curr_open * (1.0 + COMMISSION_PCT)
+                        cash -= add_cost
+                        cost_basis += add_cost
                         position_stage = 2
                         stop_loss = prev_v2
 
-                    # Exit if structural support breaks > 12% below entry
-                    if curr_close < entry_price * 0.88:
+                    # Exit if prior bar close broke structural support > 12% below entry (zero look-ahead)
+                    if prev_close < entry_price * 0.88:
                         exit_price = curr_open
                         exited = True
                     elif position_stage == 2 and prev_state == -1:
@@ -245,10 +254,11 @@ def simulate_quantamental_strategy(
 
             if exited:
                 net_proceeds = shares * exit_price * (1.0 - COMMISSION_PCT)
-                trade_pnl = (net_proceeds - (shares * entry_price * (1.0 + COMMISSION_PCT))) / (shares * entry_price * (1.0 + COMMISSION_PCT))
+                trade_pnl = (net_proceeds - cost_basis) / cost_basis if cost_basis > 0 else 0.0
                 trades_pnl.append(trade_pnl)
                 cash += net_proceeds
                 shares = 0.0
+                cost_basis = 0.0
                 in_position = False
                 position_stage = 0
                 stop_loss = 0.0
@@ -256,7 +266,7 @@ def simulate_quantamental_strategy(
         # ---------------------------------------------------------
         # 2. Check Strategy Entry Triggers (If flat)
         # ---------------------------------------------------------
-        if not in_position and i < n - 1:
+        if not in_position and i < n - 1 and curr_open > 0:
             should_enter = False
             initial_stage = 1
             calc_stop = 0.0
@@ -292,7 +302,7 @@ def simulate_quantamental_strategy(
                 if rsi_reversal and prev_state in [-1, 0]:
                     should_enter = True
                     initial_stage = 1  # 50% tranche
-                    calc_stop = curr_low - (1.5 * prev_atr)
+                    calc_stop = prev_low - (1.5 * prev_atr)
 
             elif strategy == "V4_VALUE_GOLD_HOLD":
                 # Fresh Gold Flip on Quality Stock
@@ -314,7 +324,8 @@ def simulate_quantamental_strategy(
                 allocation = 1.0 if position_stage == 2 else 0.5
                 alloc_cash = cash * allocation
                 shares = (alloc_cash * 0.999) / (curr_open * (1.0 + COMMISSION_PCT))
-                cash -= shares * curr_open * (1.0 + COMMISSION_PCT)
+                cost_basis = shares * curr_open * (1.0 + COMMISSION_PCT)
+                cash -= cost_basis
 
         # Daily Mark to Market
         current_eq = cash + (shares * curr_close)
@@ -323,9 +334,13 @@ def simulate_quantamental_strategy(
     # Close open trade at test end
     if in_position and shares > 0:
         net_proceeds = shares * closes[n - 1] * (1.0 - COMMISSION_PCT)
-        trade_pnl = (net_proceeds - (shares * entry_price * (1.0 + COMMISSION_PCT))) / (shares * entry_price * (1.0 + COMMISSION_PCT))
+        trade_pnl = (net_proceeds - cost_basis) / cost_basis if cost_basis > 0 else 0.0
         trades_pnl.append(trade_pnl)
         cash += net_proceeds
+        shares = 0.0
+        cost_basis = 0.0
+        if equity_curve:
+            equity_curve[-1] = cash
 
     total_trades = len(trades_pnl)
     wins = [p for p in trades_pnl if p > 0]
@@ -497,8 +512,17 @@ def evaluate_asset_value_dna(verdict_item: dict) -> Optional[dict]:
     }
 
 
-def main():
-    logger.info("Initializing Quantamental Value-Dip Lab (Strict Remediated Architecture)...")
+def main(argv: Optional[List[str]] = None):
+    parser = argparse.ArgumentParser(description="Quantamental Value-Dip Lab & Multi-Year Backtester")
+    parser.add_argument(
+        "--write-report",
+        action="store_true",
+        default=False,
+        help="Regenerate research/QUANTAMENTAL_VALUE_REPORT.md (disabled by default to preserve pooled/Wilson report).",
+    )
+    args = parser.parse_args(argv)
+
+    logger.info("Initializing Quantamental Value-Dip Lab (Zero Look-Ahead Remediated Architecture)...")
 
     if not os.path.exists(VERDICTS_PATH):
         logger.error(f"Verdicts file not found: {VERDICTS_PATH}")
@@ -515,7 +539,7 @@ def main():
         futures = {executor.submit(evaluate_asset_value_dna, v): v for v in verdicts}
         for future in concurrent.futures.as_completed(futures):
             res = future.result()
-            if res:
+            if res and res.get("ticker") != "ZNC=F":
                 results.append(res)
 
     logger.info(f"Successfully simulated {len(results)} equities.")
@@ -554,7 +578,7 @@ def main():
     logger.info(f"Value Dip Approved: {len(allowed)} assets ({len(allowed)/len(df_out)*100:.1f}%)")
     logger.info(f"Value Dip Forbidden (Pure Momentum Only): {len(forbidden)} assets ({len(forbidden)/len(df_out)*100:.1f}%)")
 
-    # Update data/asset_optimal_profiles.json
+    # Update data/asset_optimal_profiles.json (skip ZNC=F / stale symbols)
     existing_profiles = {}
     if os.path.exists(PROFILES_PATH):
         with open(PROFILES_PATH, "r", encoding="utf-8") as f:
@@ -562,9 +586,12 @@ def main():
                 existing_profiles = json.load(f)
             except Exception:
                 pass
+    existing_profiles.pop("ZNC=F", None)
 
     for r in results:
         sym = r["ticker"]
+        if sym == "ZNC=F":
+            continue
         prof = existing_profiles.setdefault(sym, {})
         prof["value_dip_allowed"] = r["value_dip_allowed"]
         prof["best_value_strategy"] = r["best_value_strategy"]
@@ -581,6 +608,10 @@ def main():
     with open(PROFILES_PATH, "w", encoding="utf-8") as f:
         json.dump(existing_profiles, f, indent=2, ensure_ascii=False)
     logger.info(f"Updated {PROFILES_PATH} with Value DNA profiles and technical levels.")
+
+    if not args.write_report:
+        logger.info(f"Skipped overwriting {REPORT_MD} (pass --write-report to regenerate).")
+        return
 
     # Generate Markdown Report
     strat_breakdown = allowed["best_value_strategy"].value_counts().to_dict()

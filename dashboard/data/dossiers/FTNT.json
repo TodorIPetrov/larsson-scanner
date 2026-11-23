@@ -2,29 +2,29 @@
   "ticker": "FTNT",
   "name": "Fortinet, Inc.",
   "sector": "Technology",
-  "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:21:52.716124+00:00",
+  "asset_class": "ai_stocks",
+  "generated_at": "2026-11-20T09:41:59.575392+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 131.81,
+  "backtest_total_bars": 1161,
+  "current_price": 131.46,
   "state": "BLUE",
-  "v1": 144.72,
-  "v2": 153.0,
-  "sma200": 131.4,
-  "rsi14": 40.0,
-  "atr14": 7.56,
-  "empirical_tier": "A",
+  "v1": 144.06,
+  "v2": 152.38,
+  "sma200": 131.65,
+  "rsi14": 39.7,
+  "atr14": 7.62,
+  "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 2.0,
+    "total_return_pct": 1.9,
     "cagr_pct": 0.4,
-    "sharpe_ratio": 0.11,
+    "sharpe_ratio": 0.1,
     "win_rate_pct": 80.0,
-    "profit_factor": 4.04,
+    "profit_factor": 4.02,
     "max_drawdown_pct": 22.1,
     "total_trades": 5
   },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 2.0,
+      "total_return_pct": 1.9,
       "cagr_pct": 0.4,
-      "sharpe_ratio": 0.11,
+      "sharpe_ratio": 0.1,
       "win_rate_pct": 80.0,
-      "profit_factor": 4.04,
+      "profit_factor": 4.02,
       "max_drawdown_pct": 22.1,
       "total_trades": 5
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 96.2,
-      "cagr_pct": 15.8,
+      "total_return_pct": 95.6,
+      "cagr_pct": 15.7,
       "sharpe_ratio": 0.56,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.47,
+      "profit_factor": 2.45,
       "max_drawdown_pct": 39.0,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 133.31,
       "low": 124.96,
       "close": 131.81,
-      "volume": 4920600.0,
+      "volume": 4939700.0,
       "v1": 144.72,
       "m1": 148.56,
       "m2": 151.9,
       "v2": 153.0,
       "sma200": 131.4,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 135.76,
+      "high": 139.03,
+      "low": 130.68,
+      "close": 131.46,
+      "volume": 7054700.0,
+      "v1": 144.06,
+      "m1": 147.84,
+      "m2": 151.22,
+      "v2": 152.38,
+      "sma200": 131.65,
       "state": "BLUE"
     }
   ],
@@ -16428,11 +16442,11 @@
       "text": "BUY #5 @ $126.95"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +3.62% ($181.27 €)"
+      "text": "EXIT +3.35% ($167.5 €)"
     }
   ],
   "equity_curves": [
@@ -21080,6 +21094,10 @@
         {
           "time": "2026-11-18",
           "value": 10209.36
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10195.57
         }
       ]
     },
@@ -25726,6 +25744,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 14270.95
+        },
+        {
+          "time": "2026-11-19",
           "value": 14270.95
         }
       ]
@@ -30374,6 +30396,10 @@
         {
           "time": "2026-11-18",
           "value": 13613.83
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13613.83
         }
       ]
     },
@@ -35021,6 +35047,10 @@
         {
           "time": "2026-11-18",
           "value": 19635.29
+        },
+        {
+          "time": "2026-11-19",
+          "value": 19583.15
         }
       ]
     }
@@ -35078,25 +35108,25 @@
       "num": 5,
       "entry_date": "2026-11-12",
       "entry_price": 126.95,
-      "exit_date": "2026-11-18",
-      "exit_price": 131.81,
-      "holding_days": 4,
-      "pnl_pct": 3.62,
-      "pnl_eur": 181.27,
+      "exit_date": "2026-11-19",
+      "exit_price": 131.46,
+      "holding_days": 5,
+      "pnl_pct": 3.35,
+      "pnl_eur": 167.5,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "FTNT",
-    "smart_money_score": 45.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: 1.00).",
-    "cmf_20d": -0.036,
-    "up_down_vol_ratio": 0.67,
-    "absorption_5d_pct": 59.5,
-    "vol_shock_ratio": 0.79,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.06).",
+    "cmf_20d": -0.062,
+    "up_down_vol_ratio": 0.64,
+    "absorption_5d_pct": 44.4,
+    "vol_shock_ratio": 1.11,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 95.0,

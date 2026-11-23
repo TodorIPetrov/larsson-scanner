@@ -3,29 +3,29 @@
   "name": "BITO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:20:41.582063+00:00",
+  "generated_at": "2026-11-20T09:41:38.343498+00:00",
   "backtest_start_date": "2022-05-25",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.5,
-  "backtest_total_bars": 1126,
-  "current_price": 8.31,
-  "state": "BLUE",
-  "v1": 10.01,
-  "v2": 10.17,
-  "sma200": 9.74,
-  "rsi14": 21.2,
-  "atr14": 0.33,
-  "empirical_tier": "S",
+  "backtest_total_bars": 1127,
+  "current_price": 16.48,
+  "state": "GOLD",
+  "v1": 13.29,
+  "v2": 12.04,
+  "sma200": 10.05,
+  "rsi14": 65.6,
+  "atr14": 0.92,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
   "winning_metrics": {
-    "total_return_pct": 74.7,
-    "cagr_pct": 13.3,
-    "sharpe_ratio": 0.52,
-    "win_rate_pct": 80.0,
-    "profit_factor": 4.07,
-    "max_drawdown_pct": 31.9,
+    "total_return_pct": 213.2,
+    "cagr_pct": 29.1,
+    "sharpe_ratio": 0.65,
+    "win_rate_pct": 100.0,
+    "profit_factor": 99.0,
+    "max_drawdown_pct": 27.6,
     "total_trades": 5
   },
   "all_strategies": [
@@ -33,23 +33,23 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": true,
-      "total_return_pct": 74.7,
-      "cagr_pct": 13.3,
-      "sharpe_ratio": 0.52,
-      "win_rate_pct": 80.0,
-      "profit_factor": 4.07,
-      "max_drawdown_pct": 31.9,
+      "total_return_pct": 213.2,
+      "cagr_pct": 29.1,
+      "sharpe_ratio": 0.65,
+      "win_rate_pct": 100.0,
+      "profit_factor": 99.0,
+      "max_drawdown_pct": 27.6,
       "total_trades": 5
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": 63.6,
-      "cagr_pct": 11.6,
-      "sharpe_ratio": 0.49,
-      "win_rate_pct": 50.0,
-      "profit_factor": 2.05,
+      "total_return_pct": 182.5,
+      "cagr_pct": 26.1,
+      "sharpe_ratio": 0.61,
+      "win_rate_pct": 60.0,
+      "profit_factor": 5.07,
       "max_drawdown_pct": 32.3,
       "total_trades": 10
     },
@@ -57,12 +57,12 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 0.9,
-      "cagr_pct": 0.2,
-      "sharpe_ratio": 0.16,
-      "win_rate_pct": 34.8,
-      "profit_factor": 1.5,
-      "max_drawdown_pct": 35.4,
+      "total_return_pct": 39.1,
+      "cagr_pct": 7.7,
+      "sharpe_ratio": 0.37,
+      "win_rate_pct": 39.1,
+      "profit_factor": 2.34,
+      "max_drawdown_pct": 34.8,
       "total_trades": 23
     },
     {
@@ -81,23 +81,23 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": 57.7,
-      "cagr_pct": 10.7,
-      "sharpe_ratio": 0.46,
-      "win_rate_pct": 80.0,
-      "profit_factor": 3.63,
-      "max_drawdown_pct": 35.5,
+      "total_return_pct": 182.7,
+      "cagr_pct": 26.2,
+      "sharpe_ratio": 0.61,
+      "win_rate_pct": 100.0,
+      "profit_factor": 99.0,
+      "max_drawdown_pct": 31.2,
       "total_trades": 5
     },
     {
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 69.5,
-      "cagr_pct": 12.5,
-      "sharpe_ratio": 0.49,
+      "total_return_pct": 236.2,
+      "cagr_pct": 31.1,
+      "sharpe_ratio": 0.67,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.28,
+      "profit_factor": 4.34,
       "max_drawdown_pct": 54.5,
       "total_trades": 1
     }
@@ -15804,87 +15804,101 @@
     },
     {
       "time": "2026-11-11",
-      "open": 9.76,
-      "high": 9.94,
-      "low": 9.74,
-      "close": 9.92,
-      "volume": 56547200.0,
-      "v1": 10.51,
-      "m1": 10.52,
-      "m2": 10.48,
-      "v2": 10.43,
-      "sma200": 9.8,
-      "state": "NEUTRAL"
+      "open": 19.52,
+      "high": 19.88,
+      "low": 19.48,
+      "close": 19.84,
+      "volume": 28273600.0,
+      "v1": 11.17,
+      "m1": 11.04,
+      "m2": 10.87,
+      "v2": 10.77,
+      "sma200": 9.85,
+      "state": "GOLD"
     },
     {
       "time": "2026-11-12",
-      "open": 9.54,
-      "high": 9.6,
-      "low": 9.45,
-      "close": 9.49,
-      "volume": 67234100.0,
-      "v1": 10.45,
-      "m1": 10.47,
-      "m2": 10.44,
-      "v2": 10.4,
-      "sma200": 9.79,
-      "state": "NEUTRAL"
+      "open": 19.08,
+      "high": 19.2,
+      "low": 18.91,
+      "close": 18.98,
+      "volume": 33617050.0,
+      "v1": 11.69,
+      "m1": 11.46,
+      "m2": 11.2,
+      "v2": 11.06,
+      "sma200": 9.89,
+      "state": "GOLD"
     },
     {
       "time": "2026-11-13",
-      "open": 9.19,
-      "high": 9.22,
-      "low": 9.05,
-      "close": 9.15,
-      "volume": 62932600.0,
-      "v1": 10.36,
-      "m1": 10.4,
-      "m2": 10.39,
-      "v2": 10.36,
-      "sma200": 9.78,
-      "state": "NEUTRAL"
+      "open": 18.38,
+      "high": 18.44,
+      "low": 18.09,
+      "close": 18.3,
+      "volume": 31466300.0,
+      "v1": 12.13,
+      "m1": 11.82,
+      "m2": 11.48,
+      "v2": 11.31,
+      "sma200": 9.92,
+      "state": "GOLD"
     },
     {
       "time": "2026-11-16",
-      "open": 8.57,
-      "high": 8.73,
-      "low": 8.52,
-      "close": 8.63,
-      "volume": 95109400.0,
-      "v1": 10.24,
-      "m1": 10.31,
-      "m2": 10.32,
-      "v2": 10.3,
-      "sma200": 9.76,
-      "state": "NEUTRAL"
+      "open": 17.14,
+      "high": 17.46,
+      "low": 17.03,
+      "close": 17.26,
+      "volume": 47554700.0,
+      "v1": 12.47,
+      "m1": 12.11,
+      "m2": 11.71,
+      "v2": 11.51,
+      "sma200": 9.95,
+      "state": "GOLD"
     },
     {
       "time": "2026-11-17",
-      "open": 8.62,
-      "high": 8.69,
-      "low": 8.4,
-      "close": 8.49,
-      "volume": 68189200.0,
-      "v1": 10.13,
-      "m1": 10.21,
-      "m2": 10.25,
-      "v2": 10.24,
-      "sma200": 9.75,
-      "state": "NEUTRAL"
+      "open": 17.24,
+      "high": 17.38,
+      "low": 16.81,
+      "close": 16.98,
+      "volume": 34094600.0,
+      "v1": 12.78,
+      "m1": 12.37,
+      "m2": 11.93,
+      "v2": 11.71,
+      "sma200": 9.98,
+      "state": "GOLD"
     },
     {
       "time": "2026-11-18",
-      "open": 8.48,
-      "high": 8.49,
-      "low": 8.25,
-      "close": 8.31,
-      "volume": 62280900.0,
-      "v1": 10.01,
-      "m1": 10.12,
-      "m2": 10.17,
-      "v2": 10.17,
-      "sma200": 9.74,
-      "state": "BLUE"
+      "open": 16.96,
+      "high": 16.98,
+      "low": 16.5,
+      "close": 16.62,
+      "volume": 31155450.0,
+      "v1": 13.05,
+      "m1": 12.6,
+      "m2": 12.12,
+      "v2": 11.88,
+      "sma200": 10.01,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 16.95,
+      "high": 16.99,
+      "low": 16.4,
+      "close": 16.48,
+      "volume": 11712800.0,
+      "v1": 13.29,
+      "m1": 12.81,
+      "m2": 12.3,
+      "v2": 12.04,
+      "sma200": 10.05,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -15952,11 +15966,11 @@
       "text": "BUY #5 @ $10.45"
     },
     {
-      "time": "2026-11-13",
+      "time": "2026-11-19",
       "position": "aboveBar",
-      "color": "#ef4444",
+      "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT -12.22% ($-2430.17 €)"
+      "text": "EXIT +57.41% ($11414.01 €)"
     }
   ],
   "equity_curves": [
@@ -20447,27 +20461,31 @@
         },
         {
           "time": "2026-11-11",
-          "value": 18877.48
+          "value": 37735.06
         },
         {
           "time": "2026-11-12",
-          "value": 18060.06
+          "value": 36100.23
         },
         {
           "time": "2026-11-13",
-          "value": 17472.3
+          "value": 34807.57
         },
         {
           "time": "2026-11-16",
-          "value": 17472.3
+          "value": 32830.57
         },
         {
           "time": "2026-11-17",
-          "value": 17472.3
+          "value": 32298.3
         },
         {
           "time": "2026-11-18",
-          "value": 17472.3
+          "value": 31613.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 31347.81
         }
       ]
     },
@@ -24958,27 +24976,31 @@
         },
         {
           "time": "2026-11-11",
-          "value": 17043.11
+          "value": 34068.26
         },
         {
           "time": "2026-11-12",
-          "value": 16305.13
+          "value": 32592.28
         },
         {
           "time": "2026-11-13",
-          "value": 15774.48
+          "value": 31425.24
         },
         {
           "time": "2026-11-16",
-          "value": 15774.48
+          "value": 29640.35
         },
         {
           "time": "2026-11-17",
-          "value": 15774.48
+          "value": 29159.8
         },
         {
           "time": "2026-11-18",
-          "value": 15774.48
+          "value": 28541.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 28301.67
         }
       ]
     },
@@ -29469,27 +29491,31 @@
         },
         {
           "time": "2026-11-11",
-          "value": 17026.32
+          "value": 34034.69
         },
         {
           "time": "2026-11-12",
-          "value": 16358.43
+          "value": 32560.17
         },
         {
           "time": "2026-11-13",
-          "value": 16358.43
+          "value": 31394.27
         },
         {
           "time": "2026-11-16",
-          "value": 16358.43
+          "value": 29611.14
         },
         {
           "time": "2026-11-17",
-          "value": 16358.43
+          "value": 29131.06
         },
         {
           "time": "2026-11-18",
-          "value": 16358.43
+          "value": 28513.83
+        },
+        {
+          "time": "2026-11-19",
+          "value": 28273.79
         }
       ]
     },
@@ -33980,27 +34006,31 @@
         },
         {
           "time": "2026-11-11",
-          "value": 20255.45
+          "value": 40510.9
         },
         {
           "time": "2026-11-12",
-          "value": 19377.44
+          "value": 38754.88
         },
         {
           "time": "2026-11-13",
-          "value": 18683.2
+          "value": 37366.4
         },
         {
           "time": "2026-11-16",
-          "value": 17621.42
+          "value": 35242.85
         },
         {
           "time": "2026-11-17",
-          "value": 17335.56
+          "value": 34671.12
         },
         {
           "time": "2026-11-18",
-          "value": 16968.02
+          "value": 33936.05
+        },
+        {
+          "time": "2026-11-19",
+          "value": 33650.18
         }
       ]
     }
@@ -34058,29 +34088,29 @@
       "num": 5,
       "entry_date": "2026-09-01",
       "entry_price": 10.45,
-      "exit_date": "2026-11-13",
-      "exit_price": 9.19,
-      "holding_days": 52,
-      "pnl_pct": -12.22,
-      "pnl_eur": -2430.17,
-      "exit_reason": "Твърд Стоп-Лос",
-      "is_win": false
+      "exit_date": "2026-11-19",
+      "exit_price": 16.48,
+      "holding_days": 56,
+      "pnl_pct": 57.41,
+      "pnl_eur": 11414.01,
+      "exit_reason": "Край на Бектеста (Отворена)",
+      "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "BITO",
-    "smart_money_score": 68.0,
+    "smart_money_score": 58.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $17.00. Залог за рязък отскок.",
-    "cmf_20d": -0.032,
-    "up_down_vol_ratio": 0.3,
-    "absorption_5d_pct": 38.5,
-    "vol_shock_ratio": 1.01,
-    "put_call_ratio": 0.0,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.22) с Gamma стена на $16.50. Залог за рязък отскок.",
+    "cmf_20d": -0.027,
+    "up_down_vol_ratio": 0.35,
+    "absorption_5d_pct": 36.5,
+    "vol_shock_ratio": 0.23,
+    "put_call_ratio": 0.22,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 17.0,
-    "max_pain": 17.0,
-    "unusual_call_sweep": true
+    "gamma_wall": 16.5,
+    "max_pain": 9.0,
+    "unusual_call_sweep": false
   }
 }

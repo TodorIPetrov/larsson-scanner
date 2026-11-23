@@ -3,19 +3,19 @@
   "name": "NVIDIA Corporation",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:23:38.091718+00:00",
+  "generated_at": "2026-11-20T09:42:28.920610+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 150.96,
+  "backtest_total_bars": 1161,
+  "current_price": 145.98,
   "state": "BLUE",
-  "v1": 191.99,
-  "v2": 203.15,
-  "sma200": 203.45,
-  "rsi14": 21.1,
-  "atr14": 9.68,
-  "empirical_tier": "A",
+  "v1": 189.32,
+  "v2": 201.38,
+  "sma200": 203.32,
+  "rsi14": 19.6,
+  "atr14": 9.88,
+  "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 582.5,
-      "cagr_pct": 51.8,
+      "cagr_pct": 51.7,
       "sharpe_ratio": 1.26,
       "win_rate_pct": 37.5,
       "profit_factor": 6.08,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 506.7,
-      "cagr_pct": 47.9,
-      "sharpe_ratio": 1.03,
+      "total_return_pct": 486.7,
+      "cagr_pct": 46.8,
+      "sharpe_ratio": 1.02,
       "win_rate_pct": 100.0,
-      "profit_factor": 9.39,
+      "profit_factor": 9.02,
       "max_drawdown_pct": 54.0,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 159.7,
       "low": 150.4,
       "close": 150.96,
-      "volume": 345169600.0,
+      "volume": 349791400.0,
       "v1": 191.99,
       "m1": 196.74,
       "m2": 201.24,
       "v2": 203.15,
       "sma200": 203.45,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 152.92,
+      "high": 158.13,
+      "low": 145.71,
+      "close": 145.98,
+      "volume": 320588100.0,
+      "v1": 189.32,
+      "m1": 194.38,
+      "m2": 199.27,
+      "v2": 201.38,
+      "sma200": 203.32,
       "state": "BLUE"
     }
   ],
@@ -21080,6 +21094,10 @@
         {
           "time": "2026-11-18",
           "value": 86117.16
+        },
+        {
+          "time": "2026-11-19",
+          "value": 86117.16
         }
       ]
     },
@@ -25726,6 +25744,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 68254.41
+        },
+        {
+          "time": "2026-11-19",
           "value": 68254.41
         }
       ]
@@ -30374,6 +30396,10 @@
         {
           "time": "2026-11-18",
           "value": 38067.44
+        },
+        {
+          "time": "2026-11-19",
+          "value": 38067.44
         }
       ]
     },
@@ -35021,6 +35047,10 @@
         {
           "time": "2026-11-18",
           "value": 60731.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 58728.43
         }
       ]
     }
@@ -35089,14 +35119,14 @@
   ],
   "smart_money": {
     "symbol": "NVDA",
-    "smart_money_score": 14.0,
+    "smart_money_score": 5.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.11).",
-    "cmf_20d": -0.11,
-    "up_down_vol_ratio": 0.19,
-    "absorption_5d_pct": 43.7,
-    "vol_shock_ratio": 1.46,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.15).",
+    "cmf_20d": -0.147,
+    "up_down_vol_ratio": 0.18,
+    "absorption_5d_pct": 25.1,
+    "vol_shock_ratio": 1.28,
     "put_call_ratio": 2.0,
     "options_sentiment": "BEARISH",
     "gamma_wall": 2.5,

@@ -9004,3 +9004,22 @@ h1 {
   color: #ffffff;
   border-color: #58a6ff;
 }
+
+.scanner-chart-sig-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.scanner-chart-sig-pills .scope-btn[data-chart-sig="1D_GOLD_FLIP"].active {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
+.scanner-chart-sig-pills .scope-btn[data-chart-sig="1W_GOLD_FLIP"].active,
+.scanner-chart-sig-pills .scope-btn[data-chart-sig="1W_ALL"].active {
+  background: rgba(168, 85, 247, 0.22);
+  color: #d8b4fe;
+  border-color: rgba(168, 85, 247, 0.55);
+}

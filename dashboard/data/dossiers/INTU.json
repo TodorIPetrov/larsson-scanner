@@ -3,18 +3,18 @@
   "name": "Intuit Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:22:11.322694+00:00",
+  "generated_at": "2026-11-20T09:42:06.506889+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 313.24,
+  "backtest_total_bars": 1161,
+  "current_price": 310.02,
   "state": "GOLD",
-  "v1": 331.97,
-  "v2": 326.49,
-  "sma200": 346.01,
-  "rsi14": 40.0,
-  "atr14": 13.08,
+  "v1": 330.53,
+  "v2": 325.93,
+  "sma200": 345.36,
+  "rsi14": 38.7,
+  "atr14": 13.26,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -33,37 +33,37 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -27.8,
-      "cagr_pct": -6.8,
-      "sharpe_ratio": -0.24,
-      "win_rate_pct": 16.7,
-      "profit_factor": 0.55,
-      "max_drawdown_pct": 40.5,
-      "total_trades": 12
+      "total_return_pct": -29.7,
+      "cagr_pct": -7.4,
+      "sharpe_ratio": -0.26,
+      "win_rate_pct": 15.4,
+      "profit_factor": 0.54,
+      "max_drawdown_pct": 41.9,
+      "total_trades": 13
     },
     {
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -50.5,
-      "cagr_pct": -14.2,
-      "sharpe_ratio": -0.64,
-      "win_rate_pct": 18.2,
-      "profit_factor": 0.35,
-      "max_drawdown_pct": 50.7,
-      "total_trades": 22
+      "total_return_pct": -51.7,
+      "cagr_pct": -14.6,
+      "sharpe_ratio": -0.67,
+      "win_rate_pct": 17.4,
+      "profit_factor": 0.34,
+      "max_drawdown_pct": 51.9,
+      "total_trades": 23
     },
     {
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -33.7,
-      "cagr_pct": -8.5,
-      "sharpe_ratio": -0.4,
-      "win_rate_pct": 26.5,
-      "profit_factor": 0.56,
-      "max_drawdown_pct": 46.0,
-      "total_trades": 49
+      "total_return_pct": -34.5,
+      "cagr_pct": -8.8,
+      "sharpe_ratio": -0.41,
+      "win_rate_pct": 26.0,
+      "profit_factor": 0.55,
+      "max_drawdown_pct": 46.6,
+      "total_trades": 50
     },
     {
       "strategy": "V3_CAPITULATION_S1",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -33.0,
-      "cagr_pct": -8.3,
-      "sharpe_ratio": -0.03,
+      "total_return_pct": -33.7,
+      "cagr_pct": -8.5,
+      "sharpe_ratio": -0.04,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 68.2,
@@ -16361,6 +16361,20 @@
       "v2": 326.49,
       "sma200": 346.01,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 311.51,
+      "high": 318.08,
+      "low": 302.59,
+      "close": 310.02,
+      "volume": 4401800.0,
+      "v1": 330.53,
+      "m1": 328.7,
+      "m2": 326.68,
+      "v2": 325.93,
+      "sma200": 345.36,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -21122,6 +21136,10 @@
         {
           "time": "2026-11-18",
           "value": 8727.03
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8727.03
         }
       ]
     },
@@ -25768,7 +25786,11 @@
         },
         {
           "time": "2026-11-18",
-          "value": 7216.09
+          "value": 7114.5
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7041.44
         }
       ]
     },
@@ -30415,7 +30437,11 @@
         },
         {
           "time": "2026-11-18",
-          "value": 6631.45
+          "value": 6584.77
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6551.2
         }
       ]
     },
@@ -35063,6 +35089,10 @@
         {
           "time": "2026-11-18",
           "value": 6703.17
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6634.26
         }
       ]
     }
@@ -35167,14 +35197,14 @@
   ],
   "smart_money": {
     "symbol": "INTU",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.01, P/C: 1.00).",
-    "cmf_20d": -0.008,
-    "up_down_vol_ratio": 0.93,
-    "absorption_5d_pct": 22.5,
-    "vol_shock_ratio": 0.86,
+    "smart_money_score": 22.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.07).",
+    "cmf_20d": -0.071,
+    "up_down_vol_ratio": 0.67,
+    "absorption_5d_pct": 25.3,
+    "vol_shock_ratio": 1.55,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 200.0,

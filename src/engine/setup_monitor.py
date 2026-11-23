@@ -6,6 +6,89 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+STABLECOIN_TICKERS = {
+    "USDCUSDT", "FDUSDUSDT", "USDEUSDT", "XUSDUSDT", "USD1USDT",
+    "RWUSDUSDT", "RLUSDUSDT", "TUSDUSDT", "DAIUSDT", "BUSDUSDT", "USDPUSDT",
+    "EURUSDT", "AEURUSDT", "PAXGUSDT",
+}
+
+
+def _smma_req_price(lf: float, nf: int, ls: float, ns: int, bars: int) -> Optional[float]:
+    """Closed-form constant hl2 price required over k bars for SMMA(nf) >= SMMA(ns)."""
+    af = ((nf - 1.0) / nf) ** bars
+    as_ = ((ns - 1.0) / ns) ** bars
+    denom = as_ - af
+    if abs(denom) < 1e-12:
+        return None
+    return (as_ * ls - af * lf) / denom
+
+
+def compute_smma_forward_projection(
+    v1: float,
+    m1: float,
+    m2: float,
+    v2: float,
+    price: float,
+    max_bars: int = 10,
+) -> Dict[str, Any]:
+    """
+    Deterministic Wilder SMMA (15/19/25/29) forward projection.
+    Computes exact trigger prices for flipping to GOLD in 1, 2, 3, and 5 bars,
+    plus the exact number of bars needed at current price or +2% momentum.
+    """
+    if None in (v1, m1, m2, v2, price) or price <= 0 or v2 <= 0:
+        return {
+            "p_gold_1bar": None,
+            "p_gold_2bar": None,
+            "p_gold_3bar": None,
+            "p_gold_5bar": None,
+            "bars_at_current_price": None,
+            "bars_at_plus_2pct": None,
+            "bars_at_plus_4pct": None,
+            "dist_1bar_pct": 999.0,
+            "dist_3bar_pct": 999.0,
+        }
+
+    def _p_gold(k: int) -> Optional[float]:
+        reqs = [
+            _smma_req_price(v1, 15, m1, 19, k),
+            _smma_req_price(v1, 15, v2, 29, k),
+            _smma_req_price(m2, 25, v2, 29, k),
+        ]
+        valid = [r for r in reqs if r is not None]
+        return max(valid) if valid else None
+
+    def _bars_at_level(level: float) -> Optional[int]:
+        tv1, tm1, tm2, tv2 = float(v1), float(m1), float(m2), float(v2)
+        for b in range(1, max_bars + 1):
+            tv1 = (14.0 * tv1 + level) / 15.0
+            tm1 = (18.0 * tm1 + level) / 19.0
+            tm2 = (24.0 * tm2 + level) / 25.0
+            tv2 = (28.0 * tv2 + level) / 29.0
+            if tv1 >= tm1 and tv1 >= tv2 and tm2 >= tv2:
+                return b
+        return None
+
+    p1 = _p_gold(1)
+    p2 = _p_gold(2)
+    p3 = _p_gold(3)
+    p5 = _p_gold(5)
+
+    dist1 = ((p1 - price) / price) * 100.0 if (p1 is not None and price > 0) else 999.0
+    dist3 = ((p3 - price) / price) * 100.0 if (p3 is not None and price > 0) else 999.0
+
+    return {
+        "p_gold_1bar": p1,
+        "p_gold_2bar": p2,
+        "p_gold_3bar": p3,
+        "p_gold_5bar": p5,
+        "bars_at_current_price": _bars_at_level(float(price)),
+        "bars_at_plus_2pct": _bars_at_level(float(price) * 1.02),
+        "bars_at_plus_4pct": _bars_at_level(float(price) * 1.04),
+        "dist_1bar_pct": dist1,
+        "dist_3bar_pct": dist3,
+    }
+
 @dataclass
 class PendingSetup:
     symbol: str
@@ -75,6 +158,10 @@ class SetupMonitor:
 
     def detect_imminent_gold(self, asset: Dict[str, Any]) -> Optional[PendingSetup]:
         try:
+            symbol = asset.get('symbol', '')
+            if symbol in STABLECOIN_TICKERS:
+                return None
+
             tier = asset.get('tier', 'B')
             if tier in ['C', 'C-']:
                 return None
@@ -82,44 +169,97 @@ class SetupMonitor:
             state = asset.get('state', 'NEUTRAL')
             if state == 'GOLD':
                 return None
-                
+
             v1, m1, m2, v2 = asset.get('v1'), asset.get('m1'), asset.get('m2'), asset.get('v2')
             atr = asset.get('atr', 0)
-            if None in (v1, m1, m2, v2) or not atr:
+            price = asset.get('price', 0)
+            if None in (v1, m1, m2, v2) or not atr or not price or price <= 0 or v2 <= 0:
                 return None
-                
+
+            # Must have fast line crossing or above medium-fast line (v1 >= m1)
+            v1_m1_diff = v1 - m1
+            if v1_m1_diff < 0:
+                return None
+
             prev_m2 = asset.get('prev_m2', m2)
             prev_v2 = asset.get('prev_v2', v2)
-            
-            # Ribbon is NEUTRAL but v1 is crossing above m1 AND the gap between m2 and v2 is shrinking
-            # Check: (v1 - m1) > 0 AND (v1 - m1) < 0.3 * atr (just crossed) AND (m2 - v2) is narrowing
-            v1_m1_diff = v1 - m1
             current_gap = abs(m2 - v2)
             prev_gap = abs(prev_m2 - prev_v2)
-            
-            # Using a simplified narrowing check if history is missing
             is_narrowing = current_gap < prev_gap if current_gap != prev_gap else current_gap < (0.5 * atr)
-            
-            if 0 < v1_m1_diff < 0.3 * atr and is_narrowing and state == 'NEUTRAL':
+
+            proj = compute_smma_forward_projection(v1, m1, m2, v2, price)
+            bars_cur = proj.get('bars_at_current_price')
+            bars_2p = proj.get('bars_at_plus_2pct')
+            dist_3bar = proj.get('dist_3bar_pct', 999.0)
+
+            path_a = (0 < v1_m1_diff < 0.3 * atr and is_narrowing and state == 'NEUTRAL')
+            path_b = (
+                state == 'NEUTRAL'
+                and price >= v2 * 0.99
+                and (
+                    (bars_cur is not None and bars_cur <= 7)
+                    or dist_3bar <= 4.5
+                    or (m2 < v2 and abs(m2 - v2) <= 0.6 * atr)
+                )
+            )
+
+            if path_a or path_b:
                 weekly_state = asset.get('weekly_state', '')
-                priority = 'HIGH' if weekly_state == 'GOLD' else 'MEDIUM'
-                
+                if path_a:
+                    priority = 'HIGH' if weekly_state == 'GOLD' else 'MEDIUM'
+                    score = 0.85 if priority == 'HIGH' else 0.70
+                else:
+                    priority = 'HIGH' if (weekly_state == 'GOLD' or (tier in ('S', 'A') and dist_3bar <= 3.5)) else 'MEDIUM'
+                    score = 0.85 if weekly_state == 'GOLD' else (0.82 if (tier in ('S', 'A') and dist_3bar <= 3.5) else 0.74)
+
+                p1 = proj.get('p_gold_1bar') or price
+                p3 = proj.get('p_gold_3bar') or price
+                target_entry = round(max(price, p3), 6)
+                key_lvl = round(max(price, p1), 6) if p1 > price else round(max(v1, m1, m2, v2), 6)
+                target_sl = round(min(v2, m2) * 0.99, 6)
+                target_tp1 = round(target_entry + (2.5 * atr), 6) if atr > 0 else round(target_entry * 1.08, 6)
+
+                bars_est = bars_cur or bars_2p
+                if bars_est and bars_est <= 3:
+                    est_str = f"1-{bars_est} бара" if bars_est > 1 else "1 бар"
+                elif bars_est:
+                    est_str = f"~{bars_est} бара"
+                else:
+                    est_str = "1-3 бара при пробив"
+
+                cond_met = ["v1 > m1 (Бърз импулс)", f"Цена > v2 ({round(v2, 2)})" if price > v2 else "Конвергенция на лентата"]
+                if weekly_state == 'GOLD':
+                    cond_met.append("Weekly GOLD")
+                cond_pend = [
+                    "m2 >= v2 (Бавна лента GOLD)" if m2 < v2 else "Затваряне над GOLD праг",
+                    f"Задържане/пробив {round(p3, 2)}",
+                ]
+
                 return PendingSetup(
-                    symbol=asset['symbol'],
+                    symbol=symbol,
                     asset_class=asset['asset_class'],
                     setup_type='IMMINENT_GOLD',
                     direction='LONG',
                     priority=priority,
-                    quality_score=0.85 if priority == 'HIGH' else 0.70,
-                    description_bg=f"{asset['symbol']} е на 1-2 бара от Gold transition — v1 пресича m1, ribbon се подрежда",
-                    description_en=f"{asset['symbol']} is 1-2 bars from Gold transition — v1 crossing m1, ribbon aligning",
-                    conditions_met=["v1 > m1", "m2-v2 gap narrowing"],
-                    conditions_pending=["v1 > v2", "m2 < v2"],
-                    estimated_trigger="1-2 бара",
-                    current_price=asset['price'],
+                    quality_score=score,
+                    description_bg=(
+                        f"{symbol} е на {est_str} от Gold пробив — v1 ({v1:.2f}) > m1 ({m1:.2f}), "
+                        f"3-дневен GOLD тригер ≈ {p3:.2f}"
+                    ),
+                    description_en=(
+                        f"{symbol} is {est_str} from Gold transition — v1 crossing m1, 3-bar trigger ~{p3:.2f}"
+                    ),
+                    conditions_met=cond_met,
+                    conditions_pending=cond_pend,
+                    estimated_trigger=est_str,
+                    current_price=price,
+                    target_entry=target_entry,
+                    target_sl=target_sl,
+                    target_tp1=target_tp1,
+                    key_level=key_lvl,
                     tier=tier,
                     first_detected=self.now_str,
-                    last_updated=self.now_str
+                    last_updated=self.now_str,
                 )
         except Exception as e:
             logger.error(f"Error in detect_imminent_gold for {asset.get('symbol')}: {e}")
@@ -127,43 +267,70 @@ class SetupMonitor:
 
     def detect_quality_dip_buy(self, asset: Dict[str, Any]) -> Optional[PendingSetup]:
         try:
+            symbol = asset.get('symbol', '')
+            if symbol in STABLECOIN_TICKERS:
+                return None
+
             tier = asset.get('tier', 'NONE')
             if tier not in ['S', 'A', 'A+']:
                 return None
-                
+
             weekly_state = asset.get('weekly_state', '')
             if weekly_state != 'GOLD':
                 return None
-                
+
             state = asset.get('state', '')
             if state not in ['NEUTRAL', 'BLUE']:
                 return None
-                
+
             fund_profile = asset.get('fund_profile')
             is_bullish = getattr(fund_profile, "is_bullish", False) if fund_profile else False
-            
+
             if not is_bullish:
-                # We can also check a dict if it's passed as dict
                 if isinstance(fund_profile, dict) and fund_profile.get('is_bullish'):
                     is_bullish = True
-                    
+
             if is_bullish:
+                price = asset.get('price', 0)
+                v1, m1, m2, v2 = asset.get('v1'), asset.get('m1'), asset.get('m2'), asset.get('v2')
+                atr = asset.get('atr', 0)
+                target_entry = None
+                target_sl = None
+                target_tp1 = None
+                key_level = None
+                est_trigger = "При обръщане на 1D тренд"
+
+                if None not in (v1, m1, m2, v2) and price and price > 0 and v2 and v2 > 0:
+                    proj = compute_smma_forward_projection(v1, m1, m2, v2, price)
+                    p1 = proj.get('p_gold_1bar') or price
+                    p3 = proj.get('p_gold_3bar') or price
+                    target_entry = round(max(price, p3), 6)
+                    key_level = round(max(price, p1), 6) if p1 > price else round(max(v1, m1, m2, v2), 6)
+                    target_sl = round(min(v2, m2) * 0.99, 6)
+                    if atr and atr > 0:
+                        target_tp1 = round(target_entry + (2.5 * atr), 6)
+                    est_trigger = f"GOLD reclaim ≈ {round(p3, 2)}"
+
                 return PendingSetup(
-                    symbol=asset['symbol'],
+                    symbol=symbol,
                     asset_class=asset['asset_class'],
                     setup_type='QUALITY_DIP_BUY',
                     direction='LONG',
                     priority='HIGH',
                     quality_score=0.90,
-                    description_bg=f"{asset['symbol']} е в pullback при Weekly Gold — чакайте Daily Gold re-entry за вход",
-                    description_en=f"{asset['symbol']} is in pullback on Weekly Gold — await Daily Gold re-entry",
+                    description_bg=f"{symbol} е в pullback при Weekly Gold — чакайте Daily Gold re-entry за вход",
+                    description_en=f"{symbol} is in pullback on Weekly Gold — await Daily Gold re-entry",
                     conditions_met=["Weekly GOLD", "Fundamental Bullish", "Quality S/A"],
                     conditions_pending=["Daily transition to GOLD"],
-                    estimated_trigger="При обръщане на 1D тренд",
-                    current_price=asset['price'],
+                    estimated_trigger=est_trigger,
+                    current_price=price,
+                    target_entry=target_entry,
+                    target_sl=target_sl,
+                    target_tp1=target_tp1,
+                    key_level=key_level,
                     tier=tier,
                     first_detected=self.now_str,
-                    last_updated=self.now_str
+                    last_updated=self.now_str,
                 )
         except Exception as e:
             logger.error(f"Error in detect_quality_dip_buy for {asset.get('symbol')}: {e}")
@@ -382,6 +549,8 @@ class SetupMonitor:
         seen = set()
         
         for asset in assets:
+            if asset.get('symbol', '') in STABLECOIN_TICKERS:
+                continue
             results = [
                 self.detect_imminent_gold(asset),
                 self.detect_quality_dip_buy(asset),

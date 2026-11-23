@@ -3,20 +3,20 @@
   "name": "AST SpaceMobile, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:19:59.305145+00:00",
+  "generated_at": "2026-11-20T09:41:32.414997+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 25.49,
+  "backtest_total_bars": 1161,
+  "current_price": 25.55,
   "state": "BLUE",
-  "v1": 39.18,
-  "v2": 47.01,
-  "sma200": 72.37,
-  "rsi14": 29.7,
-  "atr14": 3.87,
+  "v1": 38.36,
+  "v2": 46.32,
+  "sma200": 71.98,
+  "rsi14": 29.8,
+  "atr14": 3.82,
   "empirical_tier": "C",
-  "walk_forward_stable": false,
+  "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
@@ -70,8 +70,8 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
       "total_return_pct": -34.1,
-      "cagr_pct": -8.7,
-      "sharpe_ratio": -0.39,
+      "cagr_pct": -8.6,
+      "sharpe_ratio": -0.38,
       "win_rate_pct": 14.3,
       "profit_factor": 0.12,
       "max_drawdown_pct": 49.5,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 153.4,
+      "total_return_pct": 154.0,
       "cagr_pct": 22.4,
       "sharpe_ratio": 0.7,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.79,
+      "profit_factor": 1.8,
       "max_drawdown_pct": 85.6,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 28.1,
       "low": 25.16,
       "close": 25.49,
-      "volume": 22667700.0,
+      "volume": 22968800.0,
       "v1": 39.18,
       "m1": 41.7,
       "m2": 45.03,
       "v2": 47.01,
       "sma200": 72.37,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 27.62,
+      "high": 28.47,
+      "low": 25.39,
+      "close": 25.55,
+      "volume": 17412900.0,
+      "v1": 38.36,
+      "m1": 40.93,
+      "m2": 44.31,
+      "v2": 46.32,
+      "sma200": 71.98,
       "state": "BLUE"
     }
   ],
@@ -21136,6 +21150,10 @@
         {
           "time": "2026-11-18",
           "value": 14824.1
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14824.1
         }
       ]
     },
@@ -25782,6 +25800,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 6593.0
+        },
+        {
+          "time": "2026-11-19",
           "value": 6593.0
         }
       ]
@@ -30430,6 +30452,10 @@
         {
           "time": "2026-11-18",
           "value": 3397.76
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3397.76
         }
       ]
     },
@@ -35077,6 +35103,10 @@
         {
           "time": "2026-11-18",
           "value": 25363.06
+        },
+        {
+          "time": "2026-11-19",
+          "value": 25422.76
         }
       ]
     }
@@ -35193,14 +35223,14 @@
   ],
   "smart_money": {
     "symbol": "ASTS",
-    "smart_money_score": 15.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.14).",
-    "cmf_20d": -0.141,
-    "up_down_vol_ratio": 0.62,
-    "absorption_5d_pct": 17.4,
-    "vol_shock_ratio": 1.29,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.17).",
+    "cmf_20d": -0.172,
+    "up_down_vol_ratio": 0.76,
+    "absorption_5d_pct": 18.0,
+    "vol_shock_ratio": 0.96,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 20.0,

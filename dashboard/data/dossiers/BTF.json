@@ -3,7 +3,7 @@
   "name": "BTF",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:20:51.280222+00:00",
+  "generated_at": "2026-11-20T09:41:42.279437+00:00",
   "backtest_start_date": "2022-05-27",
   "backtest_end_date": "2026-10-20",
   "backtest_years": 4.4,
@@ -15,7 +15,7 @@
   "sma200": 20.22,
   "rsi14": 48.4,
   "atr14": 0.82,
-  "empirical_tier": "S",
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
@@ -33389,7 +33389,7 @@
     "vol_shock_ratio": 1.33,
     "put_call_ratio": 6.5,
     "options_sentiment": "NEUTRAL",
-    "gamma_wall": 21.0,
+    "gamma_wall": 20.0,
     "max_pain": 20.0,
     "unusual_call_sweep": true
   }

@@ -3,28 +3,28 @@
   "name": "JP Morgan Chase & Co.",
   "sector": "Financial Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:22:18.815521+00:00",
+  "generated_at": "2026-11-20T09:42:09.234960+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 324.11,
-  "state": "NEUTRAL",
-  "v1": 339.09,
-  "v2": 339.62,
-  "sma200": 322.82,
-  "rsi14": 38.2,
-  "atr14": 7.38,
-  "empirical_tier": "S",
+  "backtest_total_bars": 1161,
+  "current_price": 320.22,
+  "state": "BLUE",
+  "v1": 338.01,
+  "v2": 339.04,
+  "sma200": 322.86,
+  "rsi14": 35.9,
+  "atr14": 7.63,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 81.0,
-    "cagr_pct": 13.8,
-    "sharpe_ratio": 0.75,
+    "total_return_pct": 78.9,
+    "cagr_pct": 13.5,
+    "sharpe_ratio": 0.73,
     "win_rate_pct": 80.0,
-    "profit_factor": 14.99,
+    "profit_factor": 14.61,
     "max_drawdown_pct": 22.9,
     "total_trades": 5
   },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 81.0,
-      "cagr_pct": 13.8,
-      "sharpe_ratio": 0.75,
+      "total_return_pct": 78.9,
+      "cagr_pct": 13.5,
+      "sharpe_ratio": 0.73,
       "win_rate_pct": 80.0,
-      "profit_factor": 14.99,
+      "profit_factor": 14.61,
       "max_drawdown_pct": 22.9,
       "total_trades": 5
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 174.6,
-      "cagr_pct": 24.5,
-      "sharpe_ratio": 1.04,
+      "total_return_pct": 171.3,
+      "cagr_pct": 24.2,
+      "sharpe_ratio": 1.02,
       "win_rate_pct": 100.0,
-      "profit_factor": 7.15,
+      "profit_factor": 7.01,
       "max_drawdown_pct": 24.4,
       "total_trades": 1
     }
@@ -16354,13 +16354,27 @@
       "high": 330.09,
       "low": 323.71,
       "close": 324.11,
-      "volume": 6765600.0,
+      "volume": 6778200.0,
       "v1": 339.09,
       "m1": 339.38,
       "m2": 339.65,
       "v2": 339.62,
       "sma200": 322.82,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 326.38,
+      "high": 328.27,
+      "low": 317.43,
+      "close": 320.22,
+      "volume": 6968100.0,
+      "v1": 338.01,
+      "m1": 338.51,
+      "m2": 338.98,
+      "v2": 339.04,
+      "sma200": 322.86,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -16428,11 +16442,11 @@
       "text": "BUY #5 @ $310.3"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +4.24% ($736.15 €)"
+      "text": "EXIT +2.99% ($519.07 €)"
     }
   ],
   "equity_curves": [
@@ -21080,6 +21094,10 @@
         {
           "time": "2026-11-18",
           "value": 18122.13
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17904.84
         }
       ]
     },
@@ -25726,6 +25744,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 16702.0
+        },
+        {
+          "time": "2026-11-19",
           "value": 16702.0
         }
       ]
@@ -30374,6 +30396,10 @@
         {
           "time": "2026-11-18",
           "value": 17335.98
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17335.98
         }
       ]
     },
@@ -35021,6 +35047,10 @@
         {
           "time": "2026-11-18",
           "value": 27488.35
+        },
+        {
+          "time": "2026-11-19",
+          "value": 27158.43
         }
       ]
     }
@@ -35078,29 +35108,29 @@
       "num": 5,
       "entry_date": "2026-06-08",
       "entry_price": 310.3,
-      "exit_date": "2026-11-18",
-      "exit_price": 324.11,
-      "holding_days": 114,
-      "pnl_pct": 4.24,
-      "pnl_eur": 736.15,
+      "exit_date": "2026-11-19",
+      "exit_price": 320.22,
+      "holding_days": 115,
+      "pnl_pct": 2.99,
+      "pnl_eur": 519.07,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "JPM",
-    "smart_money_score": 53.0,
+    "smart_money_score": 43.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $255.00. Залог за рязък отскок.",
-    "cmf_20d": -0.219,
-    "up_down_vol_ratio": 0.84,
-    "absorption_5d_pct": 26.2,
-    "vol_shock_ratio": 1.03,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $385.00. Залог за рязък отскок.",
+    "cmf_20d": -0.289,
+    "up_down_vol_ratio": 0.69,
+    "absorption_5d_pct": 29.5,
+    "vol_shock_ratio": 1.06,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 255.0,
-    "max_pain": 255.0,
+    "gamma_wall": 385.0,
+    "max_pain": 385.0,
     "unusual_call_sweep": true
   }
 }

@@ -3,17 +3,17 @@
   "name": "Eos Energy Enterprises, Inc.",
   "sector": "Industrials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:21:41.677713+00:00",
+  "generated_at": "2026-11-20T09:41:55.203966+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 1.48,
+  "backtest_total_bars": 1161,
+  "current_price": 1.36,
   "state": "BLUE",
-  "v1": 2.06,
-  "v2": 2.61,
-  "sma200": 5.31,
-  "rsi14": 36.5,
+  "v1": 2.02,
+  "v2": 2.57,
+  "sma200": 5.26,
+  "rsi14": 34.3,
   "atr14": 0.24,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -63.9,
-      "cagr_pct": -19.8,
-      "sharpe_ratio": 0.43,
+      "total_return_pct": -66.8,
+      "cagr_pct": -21.3,
+      "sharpe_ratio": 0.41,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
-      "max_drawdown_pct": 92.3,
+      "max_drawdown_pct": 92.9,
       "total_trades": 1
     }
   ],
@@ -16354,12 +16354,26 @@
       "high": 1.66,
       "low": 1.47,
       "close": 1.48,
-      "volume": 17683700.0,
+      "volume": 17944800.0,
       "v1": 2.06,
       "m1": 2.22,
       "m2": 2.45,
       "v2": 2.61,
       "sma200": 5.31,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1.51,
+      "high": 1.55,
+      "low": 1.35,
+      "close": 1.36,
+      "volume": 21073500.0,
+      "v1": 2.02,
+      "m1": 2.18,
+      "m2": 2.41,
+      "v2": 2.57,
+      "sma200": 5.26,
       "state": "BLUE"
     }
   ],
@@ -21108,6 +21122,10 @@
         {
           "time": "2026-11-18",
           "value": 25479.9
+        },
+        {
+          "time": "2026-11-19",
+          "value": 25479.9
         }
       ]
     },
@@ -25754,6 +25772,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 22038.89
+        },
+        {
+          "time": "2026-11-19",
           "value": 22038.89
         }
       ]
@@ -30402,6 +30424,10 @@
         {
           "time": "2026-11-18",
           "value": 12203.2
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12203.2
         }
       ]
     },
@@ -35049,6 +35075,10 @@
         {
           "time": "2026-11-18",
           "value": 3614.96
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3321.86
         }
       ]
     }
@@ -35141,14 +35171,14 @@
   ],
   "smart_money": {
     "symbol": "EOSE",
-    "smart_money_score": 27.0,
+    "smart_money_score": 14.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.04).",
-    "cmf_20d": -0.035,
-    "up_down_vol_ratio": 1.2,
-    "absorption_5d_pct": 22.3,
-    "vol_shock_ratio": 0.75,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.11).",
+    "cmf_20d": -0.114,
+    "up_down_vol_ratio": 0.98,
+    "absorption_5d_pct": 22.1,
+    "vol_shock_ratio": 0.91,
     "put_call_ratio": 2.0,
     "options_sentiment": "BEARISH",
     "gamma_wall": 0.5,

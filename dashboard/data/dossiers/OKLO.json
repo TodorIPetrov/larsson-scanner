@@ -3,18 +3,18 @@
   "name": "OKLO",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T09:23:42.242110+00:00",
+  "generated_at": "2026-11-20T09:42:30.890045+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 21.8,
+  "backtest_total_bars": 1161,
+  "current_price": 20.84,
   "state": "BLUE",
-  "v1": 26.84,
-  "v2": 31.42,
-  "sma200": 49.76,
-  "rsi14": 36.3,
-  "atr14": 2.21,
+  "v1": 26.51,
+  "v2": 31.08,
+  "sma200": 49.52,
+  "rsi14": 34.3,
+  "atr14": 2.2,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 82.1,
-      "cagr_pct": 13.9,
+      "total_return_pct": 83.6,
+      "cagr_pct": 14.1,
       "sharpe_ratio": 0.5,
       "win_rate_pct": 16.7,
-      "profit_factor": 2.48,
+      "profit_factor": 2.53,
       "max_drawdown_pct": 73.7,
       "total_trades": 6
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 121.3,
-      "cagr_pct": 18.8,
-      "sharpe_ratio": 0.65,
+      "total_return_pct": 111.6,
+      "cagr_pct": 17.7,
+      "sharpe_ratio": 0.64,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.36,
+      "profit_factor": 1.25,
       "max_drawdown_pct": 89.0,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 23.86,
       "low": 21.67,
       "close": 21.8,
-      "volume": 6480700.0,
+      "volume": 6504600.0,
       "v1": 26.84,
       "m1": 28.2,
       "m2": 30.16,
       "v2": 31.42,
       "sma200": 49.76,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 22.18,
+      "high": 22.89,
+      "low": 20.78,
+      "close": 20.84,
+      "volume": 7574300.0,
+      "v1": 26.51,
+      "m1": 27.87,
+      "m2": 29.83,
+      "v2": 31.08,
+      "sma200": 49.52,
       "state": "BLUE"
     }
   ],
@@ -21052,6 +21066,10 @@
         {
           "time": "2026-11-18",
           "value": 54269.3
+        },
+        {
+          "time": "2026-11-19",
+          "value": 54269.3
         }
       ]
     },
@@ -25698,6 +25716,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 25544.65
+        },
+        {
+          "time": "2026-11-19",
           "value": 25544.65
         }
       ]
@@ -30346,6 +30368,10 @@
         {
           "time": "2026-11-18",
           "value": 15171.9
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15171.9
         }
       ]
     },
@@ -34993,6 +35019,10 @@
         {
           "time": "2026-11-18",
           "value": 22154.83
+        },
+        {
+          "time": "2026-11-19",
+          "value": 21179.21
         }
       ]
     }
@@ -35037,14 +35067,14 @@
   ],
   "smart_money": {
     "symbol": "OKLO",
-    "smart_money_score": 60.0,
+    "smart_money_score": 50.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.03) с Gamma стена на $140.00. Залог за рязък отскок.",
-    "cmf_20d": -0.06,
+    "cmf_20d": -0.114,
     "up_down_vol_ratio": 0.44,
-    "absorption_5d_pct": 35.3,
-    "vol_shock_ratio": 0.63,
+    "absorption_5d_pct": 27.9,
+    "vol_shock_ratio": 0.74,
     "put_call_ratio": 0.03,
     "options_sentiment": "BULLISH",
     "gamma_wall": 140.0,

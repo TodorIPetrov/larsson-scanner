@@ -3,18 +3,18 @@
   "name": "BNB",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-19T09:20:44.618849+00:00",
+  "generated_at": "2026-11-20T09:41:40.066610+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1755,
-  "current_price": 590.46,
+  "backtest_total_bars": 1757,
+  "current_price": 570.43,
   "state": "BLUE",
-  "v1": 672.11,
-  "v2": 693.55,
-  "sma200": 658.13,
-  "rsi14": 27.0,
-  "atr14": 24.4,
+  "v1": 659.8,
+  "v2": 685.61,
+  "sma200": 657.64,
+  "rsi14": 24.1,
+  "atr14": 24.23,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "total_return_pct": -23.9,
-      "cagr_pct": -3.9,
+      "cagr_pct": -3.8,
       "sharpe_ratio": -0.03,
       "win_rate_pct": 9.1,
       "profit_factor": 0.69,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 52.7,
-      "cagr_pct": 6.3,
-      "sharpe_ratio": 0.36,
+      "total_return_pct": 47.5,
+      "cagr_pct": 5.7,
+      "sharpe_ratio": 0.35,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.91,
+      "profit_factor": 0.82,
       "max_drawdown_pct": 58.2,
       "total_trades": 1
     }
@@ -24682,14 +24682,42 @@
       "time": "2026-11-18",
       "open": 597.46,
       "high": 598.0,
-      "low": 588.5,
-      "close": 590.46,
-      "volume": 58725.0,
-      "v1": 672.11,
-      "m1": 682.11,
-      "m2": 690.72,
-      "v2": 693.55,
-      "sma200": 658.13,
+      "low": 575.37,
+      "close": 582.71,
+      "volume": 117979.0,
+      "v1": 671.68,
+      "m1": 681.76,
+      "m2": 690.45,
+      "v2": 693.32,
+      "sma200": 658.09,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 582.71,
+      "high": 594.0,
+      "low": 575.71,
+      "close": 580.25,
+      "volume": 101130.0,
+      "v1": 665.89,
+      "m1": 676.66,
+      "m2": 686.23,
+      "v2": 689.58,
+      "sma200": 657.9,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 580.24,
+      "high": 582.71,
+      "low": 566.44,
+      "close": 570.43,
+      "volume": 54533.0,
+      "v1": 659.8,
+      "m1": 671.29,
+      "m2": 681.76,
+      "v2": 685.61,
+      "sma200": 657.64,
       "state": "BLUE"
     }
   ],
@@ -31860,6 +31888,14 @@
         {
           "time": "2026-11-18",
           "value": 7345.3
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7345.3
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7345.3
         }
       ]
     },
@@ -38886,6 +38922,14 @@
         },
         {
           "time": "2026-11-18",
+          "value": 11800.15
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11800.15
+        },
+        {
+          "time": "2026-11-20",
           "value": 11800.15
         }
       ]
@@ -45914,6 +45958,14 @@
         {
           "time": "2026-11-18",
           "value": 8199.75
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8199.75
+        },
+        {
+          "time": "2026-11-20",
+          "value": 8199.75
         }
       ]
     },
@@ -52940,7 +52992,15 @@
         },
         {
           "time": "2026-11-18",
-          "value": 15285.55
+          "value": 15084.93
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15021.24
+        },
+        {
+          "time": "2026-11-20",
+          "value": 14767.03
         }
       ]
     }
@@ -53069,14 +53129,14 @@
   ],
   "smart_money": {
     "symbol": "BNBUSDT",
-    "smart_money_score": 55.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
-    "cmf_20d": -0.017,
-    "up_down_vol_ratio": 0.78,
-    "absorption_5d_pct": 54.9,
-    "vol_shock_ratio": 0.36,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.07).",
+    "cmf_20d": -0.065,
+    "up_down_vol_ratio": 0.5,
+    "absorption_5d_pct": 44.8,
+    "vol_shock_ratio": 0.43,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

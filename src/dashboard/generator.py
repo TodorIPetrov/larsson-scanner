@@ -12,7 +12,16 @@ import os
 from typing import Dict, List, Optional
 
 from src.storage.database import Database
-from src.engine.asset_profiles import get_quality_tier, get_tier_emoji
+from src.engine.asset_profiles import (
+    check_larsson_eligibility,
+    classify_risk_cluster,
+    compute_normalized_invvol_weights,
+    get_effective_exit_on_neutral,
+    get_larsson_trend_tier,
+    get_quality_tier,
+    get_tier_emoji,
+    load_rotation_settings,
+)
 from src.engine.btc_relative import get_tradingview_ratio_symbol, get_tradingview_ratio_link
 from src.engine.smart_money import analyze_smart_money, compute_sector_smart_money_flow
 from src.engine.ai_company_map import get_ticker_ai_scenarios, build_ai_company_map_payload
@@ -52,22 +61,67 @@ def _load_optimal_profiles() -> dict:
     return {}
 
 
-def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH, db_rows: Optional[List] = None):
+_classify_risk_cluster = classify_risk_cluster
+_compute_normalized_invvol_weights = compute_normalized_invvol_weights
+_load_rotation_settings = load_rotation_settings
+
+
+def _compute_universe_causal_metrics(cache_dir: str = CACHE_DIR_PATH, db_rows: Optional[List] = None):
+    """
+    Computes strictly backward-looking universe metrics from cached OHLCV CSVs:
+    (rs_ratings, mom_60d_pct, annualized_vol_126d_pct, trailing_sharpe_252d).
+    """
     moms = {}
+    vols_126 = {}
+    sharpes_252 = {}
+    row_cls = {}
+    if db_rows:
+        for r in db_rows:
+            try:
+                tk = r["ticker"]
+                ac = r["asset_class"]
+                if tk and ac:
+                    row_cls[tk] = ac
+            except Exception:
+                pass
+
     if os.path.exists(cache_dir):
         import glob
+        import numpy as np
         import pandas as pd
+
         for f in glob.glob(os.path.join(cache_dir, "*_1D.csv")):
             sym = os.path.basename(f).replace("_1D.csv", "")
             clean_sym = sym.replace("_", "=")
             try:
                 df = pd.read_csv(f, usecols=["close"])
-                if len(df) >= 60:
-                    c = df["close"].to_numpy()
-                    if c[-60] > 0:
-                        val = float((c[-1] - c[-60]) / c[-60] * 100.0)
-                        moms[sym] = val
-                        moms[clean_sym] = val
+                c = pd.to_numeric(df["close"], errors="coerce").dropna().to_numpy(dtype=np.float64)
+                if len(c) >= 60 and c[-60] > 0:
+                    val = float((c[-1] - c[-60]) / c[-60] * 100.0)
+                    moms[sym] = val
+                    moms[clean_sym] = val
+
+                if len(c) >= 61:
+                    ac = row_cls.get(clean_sym) or row_cls.get(sym) or ""
+                    ann_days = 365.0 if (ac == "crypto" or "USDT" in sym or "USDC" in sym) else 252.0
+                    prev = c[:-1]
+                    valid_mask = prev > 0
+                    ret1 = np.zeros(len(prev), dtype=np.float64)
+                    ret1[valid_mask] = (c[1:][valid_mask] / prev[valid_mask]) - 1.0
+
+                    v_win = ret1[-126:]
+                    if len(v_win) >= 60:
+                        vol_val = float(np.std(v_win, ddof=1) * math.sqrt(ann_days) * 100.0)
+                        vols_126[sym] = round(vol_val, 2)
+                        vols_126[clean_sym] = round(vol_val, 2)
+
+                    s_win = ret1[-252:]
+                    if len(s_win) >= 126:
+                        s_std = float(np.std(s_win, ddof=1))
+                        s_mean = float(np.mean(s_win))
+                        sh_val = float((s_mean / s_std) * math.sqrt(ann_days)) if s_std > 1e-12 else 0.0
+                        sharpes_252[sym] = round(sh_val, 3)
+                        sharpes_252[clean_sym] = round(sh_val, 3)
             except Exception:
                 pass
 
@@ -87,8 +141,13 @@ def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH, db_rows: Optio
         import pandas as pd
         s = pd.Series(moms)
         rs_dict = (s.rank(pct=True) * 98 + 1).fillna(50).astype(int).to_dict()
-        return rs_dict, moms
-    return {}, {}
+        return rs_dict, moms, vols_126, sharpes_252
+    return {}, {}, vols_126, sharpes_252
+
+
+def _compute_universe_rs_ratings(cache_dir: str = CACHE_DIR_PATH, db_rows: Optional[List] = None):
+    rs_dict, moms, _, _ = _compute_universe_causal_metrics(cache_dir=cache_dir, db_rows=db_rows)
+    return rs_dict, moms
 
 
 NAMES_PATH = os.path.join(
@@ -144,6 +203,533 @@ def _load_names_map() -> Dict[str, str]:
     return {}
 
 
+def _build_live_pending_setups(
+    db: StateDatabase,
+    items: List[Dict[str, Any]],
+    top15: List[Dict[str, Any]],
+    all_mom_60: Dict[str, float],
+    optimal_profiles: Dict[str, Dict[str, Any]],
+    rs_ratings: Dict[str, int],
+    names_map: Dict[str, str],
+    tv_map: Dict[str, str],
+    all_vol_126: Optional[Dict[str, float]] = None,
+    all_sharpe_252: Optional[Dict[str, float]] = None,
+    rot_cfg: Optional[Dict[str, Any]] = None,
+) -> List[Dict[str, Any]]:
+    """
+    Combines live 1-3 bar SMMA forward-projection Pre-Gold candidates with curated DB
+    pending_setups, enriched with Focus Rotation Top-N qualification telemetry.
+    """
+    from src.alerts.formatter import get_tradingview_link
+    from src.engine.setup_monitor import STABLECOIN_TICKERS, compute_smma_forward_projection
+
+    cfg = rot_cfg or _load_rotation_settings()
+    core_focus_set = {str(t).upper() for t in (cfg.get("core_focus_tickers") or [])}
+    core_bonus = float(cfg.get("core_focus_bonus", 15.0))
+    min_vol_pct = float(cfg.get("min_annualized_vol_pct", 25.0))
+    gold_exempt = {str(x).upper() for x in (cfg.get("gold_vol_exempt") or ["GC=F", "PAXGUSDT"])}
+    excl_cls = {str(x).lower() for x in (cfg.get("excluded_asset_classes") or ["indices"])}
+    excl_sec = set(cfg.get("excluded_sectors") or [])
+
+    daily_map: Dict[str, Dict[str, Any]] = {}
+    weekly_map: Dict[str, Dict[str, Any]] = {}
+    weekly_state_map: Dict[str, str] = {}
+    for it in items:
+        tf = it.get("timeframe")
+        tk = it.get("ticker", "")
+        if not tk:
+            continue
+        if tf == "1D":
+            daily_map[tk] = it
+        elif tf == "1W":
+            weekly_map[tk] = it
+            weekly_state_map[tk] = it.get("state", "")
+
+    top15_cutoff = min((float(x.get("rank_score") or 0.0) for x in top15), default=80.0)
+    now_iso = datetime.now(timezone.utc).isoformat()
+
+    def _resolve_name_and_tv(sym: str, tf: str) -> Tuple[str, str, str]:
+        s_name = names_map.get(sym)
+        if not s_name:
+            if sym.endswith("USDT"):
+                s_name = f"{sym[:-4]} / USDT"
+            elif sym.endswith("USDC"):
+                s_name = f"{sym[:-4]} / USDC"
+            else:
+                s_name = sym
+        s_tv_sym = tv_map.get(sym) or (f"BINANCE:{sym}" if (sym.endswith("USDT") or sym.endswith("USDC")) else sym)
+        return s_name, s_tv_sym, get_tradingview_link(s_tv_sym, tf)
+
+    def _enrich_entry(entry: Dict[str, Any]) -> Dict[str, Any]:
+        sym = entry["symbol"]
+        tf = entry.get("timeframe") or "1D"
+        d_item = daily_map.get(sym) or {}
+        src_item = (weekly_map.get(sym) or d_item) if tf == "1W" else d_item
+        v1 = _clean_float(src_item.get("v1"))
+        m1 = _clean_float(src_item.get("m1"))
+        m2 = _clean_float(src_item.get("m2"))
+        v2 = _clean_float(src_item.get("v2"))
+        price = _clean_float(entry.get("current_price")) or _clean_float(src_item.get("price")) or 0.0
+
+        proj = compute_smma_forward_projection(v1, m1, m2, v2, price) if None not in (v1, m1, m2, v2) and price > 0 else {}
+        p1 = _clean_float(proj.get("p_gold_1bar"))
+        p3 = _clean_float(proj.get("p_gold_3bar"))
+        dist3 = _clean_float(proj.get("dist_3bar_pct"))
+        bars_to_gold = entry.get("bars_to_gold") if entry.get("bars_to_gold") is not None else (proj.get("bars_at_current_price") or proj.get("bars_at_plus_2pct"))
+
+        rs_val = int(rs_ratings.get(sym, d_item.get("rs_rating") or src_item.get("rs_rating") or 50))
+        sharpe = float(d_item.get("backtest_sharpe") or optimal_profiles.get(sym, {}).get("sharpe_ratio") or 0.0)
+        mom_60 = float(all_mom_60.get(sym, 0.0))
+        emp_tier = get_larsson_trend_tier(sym)
+        trail_sharpe = float((all_sharpe_252 or {}).get(sym) if (all_sharpe_252 and sym in all_sharpe_252) else 0.0)
+        vol_pct = (all_vol_126 or {}).get(sym)
+        sector_val = (d_item.get("fundamental") or {}).get("sector") or optimal_profiles.get(sym, {}).get("sector", "")
+        eligible, _ = check_larsson_eligibility(
+            ticker=sym,
+            asset_class=d_item.get("asset_class") or entry.get("asset_class") or "",
+            sector=sector_val,
+            annualized_vol_pct=vol_pct,
+            min_vol_pct=min_vol_pct,
+            gold_vol_exempt=gold_exempt,
+            excluded_asset_classes=excl_cls,
+            excluded_sectors=excl_sec,
+        )
+        is_core = sym.upper() in core_focus_set
+        clamped_sh = max(-2.0, min(4.0, trail_sharpe))
+        proj_rank = round((clamped_sh * 25.0) + (rs_val * 0.5) + (mom_60 * 0.5) + (core_bonus if is_core else 0.0), 1)
+        will_top15 = bool(eligible and (proj_rank >= top15_cutoff or (is_core and rs_val >= 65) or rs_val >= 75))
+
+        # Backfill SL/entry/key_level if missing on DB setup rows
+        if entry.get("target_sl") is None and v2:
+            entry["target_sl"] = _clean_float(round(min(v2, m2 or v2) * 0.99, 6))
+        if entry.get("setup_type") in ("IMMINENT_GOLD", "QUALITY_DIP_BUY", "WEEKLY_IMMINENT_GOLD") and p3 and p3 > 0:
+            if entry.get("target_entry") is None:
+                entry["target_entry"] = _clean_float(round(max(price, p3), 6))
+            if entry.get("key_level") is None:
+                entry["key_level"] = _clean_float(round(max(price, p1 or p3), 6))
+
+        st_type = entry.get("setup_type", "")
+        is_already_gold = st_type in ("GOLD_FLIP_1D", "WEEKLY_GOLD_FLIP")
+
+        entry.update({
+            "rs_rating": rs_val,
+            "empirical_tier": emp_tier,
+            "trailing_sharpe_252": _clean_float(trail_sharpe) if sym in (all_sharpe_252 or {}) else None,
+            "is_core_focus": is_core,
+            "backtest_sharpe": _clean_float(sharpe) if sharpe else None,
+            "backtest_cagr": _clean_float(d_item.get("backtest_cagr")),
+            "dna_strategy": d_item.get("dna_strategy", "CLASSIC_BLUE_EXIT"),
+            "exit_rule_bg": d_item.get("exit_rule_bg", "🛡️ Дръж до BLUE"),
+            "v1": v1,
+            "m1": m1,
+            "m2": m2,
+            "v2": v2,
+            "bars_to_gold": 0 if is_already_gold else bars_to_gold,
+            "gold_trigger_1d": _clean_float(price) if is_already_gold else p1,
+            "gold_trigger_3d": _clean_float(price) if is_already_gold else p3,
+            "gold_dist_pct": 0.0 if is_already_gold else (round(dist3, 2) if dist3 is not None and dist3 < 900 else None),
+            "projected_rank_score": proj_rank,
+            "will_enter_top15": will_top15,
+            "daily_state": d_item.get("state", ""),
+            "weekly_state": weekly_state_map.get(sym, ""),
+        })
+        return entry
+
+    merged: Dict[Tuple[str, str], Dict[str, Any]] = {}
+
+    # 1. Live 1D Chart Scan: GOLD_FLIP_1D (Leading Signal #1), IMMINENT_GOLD (#2), QUALITY_DIP_BUY
+    for sym, d_item in daily_map.items():
+        if sym in STABLECOIN_TICKERS:
+            continue
+        tier = d_item.get("empirical_tier") or d_item.get("quality_tier") or "B"
+        if tier in ("C", "C-"):
+            continue
+        st = d_item.get("state", "NEUTRAL")
+        price = float(d_item.get("price") or 0.0)
+        v1 = d_item.get("v1")
+        m1 = d_item.get("m1")
+        m2 = d_item.get("m2")
+        v2 = d_item.get("v2")
+        if price <= 0 or None in (v1, m1, m2, v2) or float(v2) <= 0:
+            continue
+
+        v1_f, m1_f, m2_f, v2_f = float(v1), float(m1), float(m2), float(v2)
+        weekly_st = weekly_state_map.get(sym, "")
+        rs_val = int(rs_ratings.get(sym, d_item.get("rs_rating") or 50))
+        sharpe = float(d_item.get("backtest_sharpe") or 0.0)
+        s_name, s_tv_sym, s_tv_url = _resolve_name_and_tv(sym, "1D")
+        sl_lvl = round(min(v2_f, m2_f) * 0.99, 6)
+
+        # 0. GOLD_FLIP_1D (#1 Leading Signal): Fresh 1D Gold Flip (1-5 bars)
+        if st == "GOLD":
+            bars_flip = d_item.get("bars_since_flip")
+            if bars_flip is None:
+                bars_flip = d_item.get("gold_flip_bars")
+            try:
+                bars_int = int(bars_flip) if bars_flip is not None else 99
+            except Exception:
+                bars_int = 99
+            is_fresh = bool(d_item.get("is_gold_flip")) or bars_int <= 5
+            risk_v2_pct = ((price - v2_f) / price) * 100.0 if price > 0 else 99.0
+            if is_fresh and price > v2_f and 0.0 <= risk_v2_pct <= 18.0:
+                day_num = max(1, (bars_int if bars_int < 99 else 0) + 1)
+                prio = "HIGH" if (tier in ("S", "A") or day_num <= 2 or weekly_st == "GOLD" or rs_val >= 80) else "MEDIUM"
+                q_score = 0.97 if (tier in ("S", "A") and day_num <= 2) else (0.94 if tier in ("S", "A") else 0.87)
+                cond_met = [f"1D GOLD Flip (Ден {day_num})", f"Цена > v2 ({v2_f:.2f})"]
+                if weekly_st == "GOLD":
+                    cond_met.append("1W Weekly GOLD Синхрон")
+                if rs_val >= 75:
+                    cond_met.append(f"Силен RS {rs_val}")
+                cond_pend = [f"Защитен стоп v2 ({v2_f:.2f})", d_item.get("exit_rule_bg", "🛡️ Дръж до BLUE")]
+
+                entry = _enrich_entry({
+                    "symbol": sym,
+                    "name": s_name,
+                    "tv_symbol": s_tv_sym,
+                    "tv_url": s_tv_url,
+                    "asset_class": d_item.get("asset_class"),
+                    "setup_type": "GOLD_FLIP_1D",
+                    "direction": "LONG",
+                    "priority": prio,
+                    "quality_score": q_score,
+                    "description_bg": (
+                        f"Водещ 1D сигнал: {sym} направи пресен GOLD Flip на 1D (Ден {day_num}) — "
+                        f"риск до стоп v2 ({v2_f:.2f}): {risk_v2_pct:.1f}%."
+                    ),
+                    "conditions_met": json.dumps(cond_met),
+                    "conditions_pending": json.dumps(cond_pend),
+                    "estimated_trigger": f"🟢 1D FLIP (Ден {day_num})",
+                    "current_price": _clean_float(price),
+                    "target_entry": _clean_float(price),
+                    "target_sl": _clean_float(sl_lvl),
+                    "target_tp1": _clean_float(round(price * 1.12, 6)),
+                    "key_level": _clean_float(round(v1_f, 6)),
+                    "timeframe": "1D",
+                    "tier": tier,
+                    "first_detected": now_iso,
+                    "last_updated": now_iso,
+                })
+                merged[(sym, "GOLD_FLIP_1D")] = entry
+            continue
+
+        if st != "NEUTRAL":
+            continue
+
+        proj = compute_smma_forward_projection(v1_f, m1_f, m2_f, v2_f, price)
+        bars_cur = proj.get("bars_at_current_price")
+        bars_2p = proj.get("bars_at_plus_2pct")
+        dist3 = proj.get("dist_3bar_pct", 999.0)
+        p1 = proj.get("p_gold_1bar") or price
+        p3 = proj.get("p_gold_3bar") or price
+        fund = d_item.get("fundamental") or {}
+        f_verdict = (fund.get("verdict") or "").upper()
+        is_fund_bullish = any(k in f_verdict for k in ("STRONG BUY", "BUY", "ACCUMULATE")) or "BUY" in (fund.get("action") or "").upper()
+
+        bars_est = bars_cur or bars_2p
+        if bars_est and bars_est <= 3:
+            est_str = f"1-{bars_est} бара" if bars_est > 1 else "1 бар"
+        elif bars_est:
+            est_str = f"~{bars_est} бара"
+        else:
+            est_str = "1-3 бара при пробив"
+
+        # A. IMMINENT_GOLD (#2 Leading Signal): 1D NEUTRAL fast line crossed m1, converging toward GOLD
+        if v1_f >= m1_f and price >= v2_f * 0.99 and (
+            (bars_cur is not None and bars_cur <= 7)
+            or dist3 <= 5.0
+            or (m2_f < v2_f and abs(m2_f - v2_f) / v2_f <= 0.015)
+        ):
+            prio = "HIGH" if (weekly_st == "GOLD" or (tier in ("S", "A") and dist3 <= 4.0) or rs_val >= 80 or (bars_cur is not None and bars_cur <= 2)) else "MEDIUM"
+            q_score = 0.92 if (weekly_st == "GOLD" and dist3 <= 3.0) else (0.86 if (tier in ("S", "A") or rs_val >= 80) else 0.76)
+            trig_px = round(max(price, p3), 6)
+            cond_met = ["v1 > m1 (Бърз импулс)", f"Цена > v2 ({v2_f:.2f})" if price > v2_f else "Лентата се свива"]
+            if weekly_st == "GOLD":
+                cond_met.append("1W Weekly GOLD Синхрон")
+            cond_pend = ["m2 >= v2 (GOLD праг)" if m2_f < v2_f else "Затваряне на бара", f"Тригер {p3:.2f}"]
+
+            entry = _enrich_entry({
+                "symbol": sym,
+                "name": s_name,
+                "tv_symbol": s_tv_sym,
+                "tv_url": s_tv_url,
+                "asset_class": d_item.get("asset_class"),
+                "setup_type": "IMMINENT_GOLD",
+                "direction": "LONG",
+                "priority": prio,
+                "quality_score": q_score,
+                "description_bg": (
+                    f"{sym} е на {est_str} от 1D GOLD пробив — нужен праг за 3 бара: {p3:.2f} "
+                    f"({'вече над прага' if dist3 <= 0 else f'+{dist3:.1f}%'}), стоп v2: {v2_f:.2f}."
+                ),
+                "conditions_met": json.dumps(cond_met),
+                "conditions_pending": json.dumps(cond_pend),
+                "estimated_trigger": est_str,
+                "current_price": _clean_float(price),
+                "target_entry": _clean_float(trig_px),
+                "target_sl": _clean_float(sl_lvl),
+                "target_tp1": _clean_float(round(trig_px * 1.10, 6)),
+                "key_level": _clean_float(round(max(price, p1), 6)),
+                "timeframe": "1D",
+                "tier": tier,
+                "first_detected": now_iso,
+                "last_updated": now_iso,
+            })
+            merged[(sym, "IMMINENT_GOLD")] = entry
+
+        # B. QUALITY_DIP_BUY / Pullback Reclaim: S/A quality asset with slow ribbon bullish (m2 >= v2) or Weekly GOLD
+        elif tier in ("S", "A", "A+") and (
+            (m2_f >= v2_f and v1_f < m1_f and dist3 <= 8.5)
+            or (weekly_st == "GOLD" and dist3 <= 14.0 and (rs_val >= 65 or sharpe >= 1.1 or is_fund_bullish))
+        ):
+            prio = "HIGH" if (dist3 <= 5.0 or (weekly_st == "GOLD" and (rs_val >= 75 or is_fund_bullish))) else "MEDIUM"
+            q_score = 0.90 if (weekly_st == "GOLD" and dist3 <= 4.0) else (0.84 if (weekly_st == "GOLD" or rs_val >= 75) else 0.78)
+            trig_px = round(max(price, p3), 6)
+            cond_met = [f"Quality {tier} (RS {rs_val})"]
+            if m2_f >= v2_f:
+                cond_met.append("m2 >= v2 (Бавна лента бича)")
+            if weekly_st == "GOLD":
+                cond_met.append("1W Weekly GOLD")
+            if is_fund_bullish:
+                cond_met.append("Фундамент BUY")
+            cond_pend = [f"v1 reclaim > m1 ({p3:.2f})", f"Потвърждение GOLD до +{max(0.0, dist3):.1f}%"]
+
+            entry = _enrich_entry({
+                "symbol": sym,
+                "name": s_name,
+                "tv_symbol": s_tv_sym,
+                "tv_url": s_tv_url,
+                "asset_class": d_item.get("asset_class"),
+                "setup_type": "QUALITY_DIP_BUY",
+                "direction": "LONG",
+                "priority": prio,
+                "quality_score": q_score,
+                "description_bg": (
+                    f"{sym} е в качествена корекция (Pullback) — бавната лента/Weekly е бича; "
+                    f"връщане в 1D GOLD при {p3:.2f} (+{max(0.0, dist3):.1f}%)."
+                ),
+                "conditions_met": json.dumps(cond_met),
+                "conditions_pending": json.dumps(cond_pend),
+                "estimated_trigger": f"Пробив {p3:.2f}" if dist3 > 0 else "1-3 бара",
+                "current_price": _clean_float(price),
+                "target_entry": _clean_float(trig_px),
+                "target_sl": _clean_float(sl_lvl),
+                "target_tp1": _clean_float(round(trig_px * 1.10, 6)),
+                "key_level": _clean_float(round(max(price, p1), 6)),
+                "timeframe": "1D",
+                "tier": tier,
+                "first_detected": now_iso,
+                "last_updated": now_iso,
+            })
+            merged[(sym, "QUALITY_DIP_BUY")] = entry
+
+    # 1B. Live Weekly (1W) Chart Signals: WEEKLY_GOLD_FLIP & WEEKLY_IMMINENT_GOLD
+    for sym, w_item in weekly_map.items():
+        if sym in STABLECOIN_TICKERS:
+            continue
+        tier = w_item.get("quality_tier") or "B"
+        if tier in ("C", "C-"):
+            continue
+        st = w_item.get("state", "NEUTRAL")
+        price = float(w_item.get("price") or 0.0)
+        v1 = w_item.get("v1")
+        m1 = w_item.get("m1")
+        m2 = w_item.get("m2")
+        v2 = w_item.get("v2")
+        if price <= 0 or None in (v1, m1, m2, v2) or float(v2) <= 0:
+            continue
+
+        v1_f, m1_f, m2_f, v2_f = float(v1), float(m1), float(m2), float(v2)
+        d_st = (daily_map.get(sym) or {}).get("state", "")
+        rs_val = int(rs_ratings.get(sym, (daily_map.get(sym) or {}).get("rs_rating") or w_item.get("rs_rating") or 50))
+        s_name, s_tv_sym, s_tv_url = _resolve_name_and_tv(sym, "1W")
+        sl_lvl = round(min(v2_f, m2_f) * 0.99, 6)
+
+        if st == "GOLD":
+            bars_w = w_item.get("bars_since_flip")
+            if bars_w is None:
+                bars_w = w_item.get("gold_flip_bars")
+            try:
+                bars_int = int(bars_w) if bars_w is not None else 99
+            except Exception:
+                bars_int = 99
+            is_w_fresh = bool(w_item.get("is_gold_flip")) or bars_int <= 3
+            risk_w_pct = ((price - v2_f) / price) * 100.0 if price > 0 else 99.0
+            if is_w_fresh and price > v2_f and risk_w_pct <= 22.0:
+                wk_num = max(1, (bars_int if bars_int < 99 else 0) + 1)
+                prio = "HIGH" if (tier in ("S", "A") or d_st == "GOLD") else "MEDIUM"
+                q_score = 0.91 if (tier in ("S", "A") and d_st == "GOLD") else (0.87 if tier in ("S", "A") else 0.79)
+                cond_met = [f"1W Weekly GOLD Flip (Седм. {wk_num})", f"1W Цена > v2 ({v2_f:.2f})"]
+                if d_st == "GOLD":
+                    cond_met.append("1D + 1W Пълен Синхрон")
+                cond_pend = ["Следене за 1D pullback вход" if d_st == "GOLD" else "Изчакване 1D GOLD синхрон"]
+                entry = _enrich_entry({
+                    "symbol": sym,
+                    "name": s_name,
+                    "tv_symbol": s_tv_sym,
+                    "tv_url": s_tv_url,
+                    "asset_class": w_item.get("asset_class"),
+                    "setup_type": "WEEKLY_GOLD_FLIP",
+                    "direction": "LONG",
+                    "priority": prio,
+                    "quality_score": q_score,
+                    "description_bg": (
+                        f"Седмичен сигнал (1W): {sym} обърна в Weekly GOLD (Седмица {wk_num}) — "
+                        f"1D статус: {d_st or 'N/A'}, 1W стоп v2: {v2_f:.2f}."
+                    ),
+                    "conditions_met": json.dumps(cond_met),
+                    "conditions_pending": json.dumps(cond_pend),
+                    "estimated_trigger": f"📆 1W GOLD (Седм. {wk_num})",
+                    "current_price": _clean_float(price),
+                    "target_entry": _clean_float(price),
+                    "target_sl": _clean_float(sl_lvl),
+                    "target_tp1": _clean_float(round(price * 1.18, 6)),
+                    "key_level": _clean_float(round(v1_f, 6)),
+                    "timeframe": "1W",
+                    "tier": tier,
+                    "first_detected": now_iso,
+                    "last_updated": now_iso,
+                })
+                merged[(sym, "WEEKLY_GOLD_FLIP")] = entry
+        elif st == "NEUTRAL" and v1_f >= m1_f and price >= v2_f * 0.985:
+            proj_w = compute_smma_forward_projection(v1_f, m1_f, m2_f, v2_f, price)
+            bars_cur = proj_w.get("bars_at_current_price")
+            dist3 = proj_w.get("dist_3bar_pct", 999.0)
+            if (bars_cur is not None and bars_cur <= 5) or dist3 <= 5.5:
+                p1 = proj_w.get("p_gold_1bar") or price
+                p3 = proj_w.get("p_gold_3bar") or price
+                trig_px = round(max(price, p3), 6)
+                bars_est = bars_cur or proj_w.get("bars_at_plus_2pct") or 3
+                prio = "HIGH" if (tier in ("S", "A") and (dist3 <= 3.5 or d_st == "GOLD")) else "MEDIUM"
+                q_score = 0.88 if (tier in ("S", "A") and d_st == "GOLD") else (0.83 if tier in ("S", "A") else 0.75)
+                cond_met = ["1W v1 > m1", f"1W Цена > v2 ({v2_f:.2f})"]
+                if d_st == "GOLD":
+                    cond_met.append("1D вече е GOLD")
+                cond_pend = [f"1W затваряне над {p3:.2f}"]
+                entry = _enrich_entry({
+                    "symbol": sym,
+                    "name": s_name,
+                    "tv_symbol": s_tv_sym,
+                    "tv_url": s_tv_url,
+                    "asset_class": w_item.get("asset_class"),
+                    "setup_type": "WEEKLY_IMMINENT_GOLD",
+                    "direction": "LONG",
+                    "priority": prio,
+                    "quality_score": q_score,
+                    "description_bg": (
+                        f"Предстоящ Weekly (1W) GOLD: {sym} е на ~{bars_est} седм. бара от 1W пробив "
+                        f"(праг {p3:.2f}, {'вече над прага' if dist3 <= 0 else f'+{dist3:.1f}%'})."
+                    ),
+                    "conditions_met": json.dumps(cond_met),
+                    "conditions_pending": json.dumps(cond_pend),
+                    "estimated_trigger": f"📆 ~{bars_est} седм. бара",
+                    "current_price": _clean_float(price),
+                    "target_entry": _clean_float(trig_px),
+                    "target_sl": _clean_float(sl_lvl),
+                    "target_tp1": _clean_float(round(trig_px * 1.18, 6)),
+                    "key_level": _clean_float(round(max(price, p1), 6)),
+                    "timeframe": "1W",
+                    "tier": tier,
+                    "first_detected": now_iso,
+                    "last_updated": now_iso,
+                })
+                merged[(sym, "WEEKLY_IMMINENT_GOLD")] = entry
+
+    # 2. Merge existing DB setups (SR_APPROACH, DIVERGENCE_FORMING, ACCUMULATION_PATTERN, etc.)
+    try:
+        if hasattr(db, "expire_stale_setups"):
+            db.expire_stale_setups(max_age_hours=240, crypto_max_age_hours=72)
+        if hasattr(db, "clear_triggered_setups"):
+            db.clear_triggered_setups()
+        raw_setups = db.get_active_pending_setups(exclude_tier_c=True)
+        for s in raw_setups:
+            sym = s["symbol"]
+            stype = s["setup_type"]
+            if sym in STABLECOIN_TICKERS:
+                continue
+            d_item = daily_map.get(sym)
+            # If the symbol has already flipped to GOLD in 1D, drop stale PRE-GOLD DB rows
+            if d_item and d_item.get("state") == "GOLD" and stype in ("IMMINENT_GOLD", "QUALITY_DIP_BUY"):
+                continue
+            key = (sym, stype)
+            if key in merged:
+                continue
+            s_tf = s["timeframe"] or "1D"
+            s_name, s_tv_sym, s_tv_url = _resolve_name_and_tv(sym, s_tf)
+            row_dict = dict(s) if hasattr(s, "keys") else {}
+            entry = _enrich_entry({
+                "symbol": sym,
+                "name": s_name,
+                "tv_symbol": s_tv_sym,
+                "tv_url": s_tv_url,
+                "asset_class": s["asset_class"],
+                "setup_type": stype,
+                "direction": s["direction"],
+                "priority": s["priority"],
+                "quality_score": _clean_float(s["quality_score"]),
+                "description_bg": s["description_bg"],
+                "conditions_met": s["conditions_met"],
+                "conditions_pending": s["conditions_pending"],
+                "estimated_trigger": s["estimated_trigger"],
+                "current_price": _clean_float(s["current_price"]),
+                "target_entry": _clean_float(s["target_entry"]),
+                "target_sl": _clean_float(row_dict.get("target_sl")),
+                "target_tp1": _clean_float(row_dict.get("target_tp1")),
+                "key_level": _clean_float(s["key_level"]),
+                "timeframe": s_tf,
+                "tier": s["tier"],
+                "first_detected": s["first_detected"],
+                "last_updated": s["last_updated"],
+            })
+            merged[key] = entry
+    except Exception:
+        pass
+
+    # 3. Prioritize 1D Gold Flip as the #1 leading signal, followed by 1D Pre-Gold & Weekly (1W) Signals
+    prio_order = {"HIGH": 3, "MEDIUM": 2, "LOW": 1}
+    tier_order = {"S": 4, "A+": 4, "A": 3, "B": 2, "C": 1}
+    type_order = {
+        "GOLD_FLIP_1D": 6,
+        "IMMINENT_GOLD": 5,
+        "WEEKLY_GOLD_FLIP": 4,
+        "WEEKLY_IMMINENT_GOLD": 4,
+        "QUALITY_DIP_BUY": 3,
+        "ACCUMULATION_PATTERN": 2,
+        "DIVERGENCE_FORMING": 2,
+        "SR_APPROACH": 1,
+    }
+
+    all_merged = list(merged.values())
+    all_merged.sort(
+        key=lambda x: (
+            type_order.get(x.get("setup_type"), 1),
+            prio_order.get(x.get("priority"), 1),
+            1 if x.get("will_enter_top15") else 0,
+            tier_order.get(x.get("tier"), 1),
+            float(x.get("quality_score") or 0.0),
+            int(x.get("rs_rating") or 0),
+        ),
+        reverse=True,
+    )
+
+    crypto_setups = [s for s in all_merged if s.get("asset_class") == "crypto"][:25]
+    equity_setups = [s for s in all_merged if s.get("asset_class") in ("us_stocks", "ai_stocks", "intl_stocks", "crypto_stocks")][:40]
+    macro_setups = [s for s in all_merged if s.get("asset_class") in ("commodities", "indices")][:18]
+    curated = crypto_setups + equity_setups + macro_setups
+
+    curated.sort(
+        key=lambda x: (
+            type_order.get(x.get("setup_type"), 1),
+            prio_order.get(x.get("priority"), 1),
+            1 if x.get("will_enter_top15") else 0,
+            tier_order.get(x.get("tier"), 1),
+            float(x.get("quality_score") or 0.0),
+            int(x.get("rs_rating") or 0),
+        ),
+        reverse=True,
+    )
+    return curated
+
+
 def _load_tv_map() -> Dict[str, str]:
     try:
         if os.path.exists(TV_PATH):
@@ -186,9 +772,14 @@ def export_dashboard_data(
         except Exception as e:
             logger.debug(f"Pre-export lifecycle sync notice: {e}")
 
+    rot_cfg = _load_rotation_settings()
+    core_focus_tickers = [str(t).upper() for t in (rot_cfg.get("core_focus_tickers") or [])]
+    core_focus_set = set(core_focus_tickers)
+    crypto_fast_exit_default = bool(rot_cfg.get("crypto_fast_exit_default", True))
+
     optimal_profiles = _load_optimal_profiles()
     rows = db.get_all_states()
-    rs_ratings, all_mom_60 = _compute_universe_rs_ratings(db_rows=rows)
+    rs_ratings, all_mom_60, all_vol_126, all_sharpe_252 = _compute_universe_causal_metrics(db_rows=rows)
 
     items = []
     gold_count = 0
@@ -646,6 +1237,22 @@ def export_dashboard_data(
         if clean_opt:
             trade_suggestion_dict["options_flow"] = clean_opt
 
+        emp_prof = optimal_profiles.get(ticker, {})
+        emp_tier = get_larsson_trend_tier(ticker)
+        eff_exit_neut = get_effective_exit_on_neutral(
+            ticker,
+            asset_class=r["asset_class"],
+            default_crypto_fast_exit=crypto_fast_exit_default,
+        )
+        dna_strategy = (
+            "FAST_EXIT"
+            if (eff_exit_neut and r["asset_class"] == "crypto")
+            else emp_prof.get("recommended_strategy", "CLASSIC_BLUE_EXIT")
+        )
+        exit_rule_bg = "💰 Прибери при NEUTRAL" if eff_exit_neut else "🛡️ Дръж до BLUE"
+        sector_for_cluster = (fund_data or {}).get("sector") or emp_prof.get("sector", "")
+        risk_cluster = classify_risk_cluster(ticker, r["asset_class"] or "", sector_for_cluster, name)
+
         items.append({
             "ticker": ticker,
             "name": name,
@@ -683,13 +1290,17 @@ def export_dashboard_data(
             "last_change": r["last_state_change"],
             "updated_at": r["updated_at"],
             "rs_rating": rs_ratings.get(ticker, 50),
-            "empirical_tier": optimal_profiles.get(ticker, {}).get("empirical_tier", asset_tier),
-            "dna_strategy": optimal_profiles.get(ticker, {}).get("recommended_strategy", "CLASSIC_BLUE_EXIT"),
-            "exit_rule_bg": ("💰 Прибери при NEUTRAL" if optimal_profiles.get(ticker, {}).get("exit_on_neutral") else "🛡️ Дръж до BLUE"),
-            "exit_on_neutral": bool(optimal_profiles.get(ticker, {}).get("exit_on_neutral", False)),
-            "backtest_cagr": optimal_profiles.get(ticker, {}).get("cagr_pct"),
-            "backtest_sharpe": optimal_profiles.get(ticker, {}).get("sharpe_ratio"),
-            "larsson_suitability": optimal_profiles.get(ticker, {}).get("larsson_suitability", "MODERATE_TREND"),
+            "empirical_tier": emp_tier,
+            "dna_strategy": dna_strategy,
+            "exit_rule_bg": exit_rule_bg,
+            "exit_on_neutral": eff_exit_neut,
+            "annualized_vol_pct": all_vol_126.get(ticker),
+            "trailing_sharpe_252": all_sharpe_252.get(ticker),
+            "risk_cluster": risk_cluster,
+            "is_core_focus": ticker.upper() in core_focus_set,
+            "backtest_cagr": emp_prof.get("cagr_pct"),
+            "backtest_sharpe": emp_prof.get("sharpe_ratio"),
+            "larsson_suitability": emp_prof.get("larsson_suitability", "MODERATE_TREND"),
             "ai_scenarios": get_ticker_ai_scenarios(ticker),
         })
 
@@ -698,64 +1309,9 @@ def export_dashboard_data(
     bearish_pct = round((blue_count / total * 100), 1) if total > 0 else 0.0
     neutral_pct = round((neutral_count / total * 100), 1) if total > 0 else 0.0
 
-    # Pending Setups from queue
+    # Pending Setups will be assembled after rotation_portfolio_data for Top 15 qualification scoring
     pending_setups_data = []
     tv_map = _load_tv_map()
-    try:
-        from src.alerts.formatter import get_tradingview_link
-        if hasattr(db, "expire_stale_setups"):
-            db.expire_stale_setups(max_age_hours=240, crypto_max_age_hours=72)
-        if hasattr(db, "clear_triggered_setups"):
-            db.clear_triggered_setups()
-        raw_setups = db.get_active_pending_setups(exclude_tier_c=True)
-        # Curate a balanced institutional mix across all asset classes (Crypto, Equities, Macro)
-        crypto_setups = [s for s in raw_setups if s["asset_class"] == "crypto"][:15]
-        equity_setups = [s for s in raw_setups if s["asset_class"] in ("us_stocks", "ai_stocks", "intl_stocks", "crypto_stocks")][:15]
-        macro_setups = [s for s in raw_setups if s["asset_class"] in ("commodities", "indices")][:10]
-        curated_setups = crypto_setups + equity_setups + macro_setups
-        
-        prio_order = {"HIGH": 3, "MEDIUM": 2, "LOW": 1}
-        tier_order = {"S": 4, "A": 3, "B": 2, "C": 1}
-        curated_setups.sort(key=lambda s: (prio_order.get(s["priority"], 1), tier_order.get(s["tier"], 1), float(s["quality_score"] or 0)), reverse=True)
-        for s in curated_setups:
-            sym = s["symbol"]
-            s_name = names_map.get(sym)
-            if not s_name:
-                if sym.endswith("USDT"):
-                    s_name = f"{sym[:-4]} / USDT"
-                elif sym.endswith("USDC"):
-                    s_name = f"{sym[:-4]} / USDC"
-                else:
-                    s_name = sym
-
-            s_tf = s["timeframe"] or "1D"
-            s_tv_sym = tv_map.get(sym) or (f"BINANCE:{sym}" if (sym.endswith("USDT") or sym.endswith("USDC")) else sym)
-            s_tv_url = get_tradingview_link(s_tv_sym, s_tf)
-
-            pending_setups_data.append({
-                "symbol": sym,
-                "name": s_name,
-                "tv_symbol": s_tv_sym,
-                "tv_url": s_tv_url,
-                "asset_class": s["asset_class"],
-                "setup_type": s["setup_type"],
-                "direction": s["direction"],
-                "priority": s["priority"],
-                "quality_score": _clean_float(s["quality_score"]),
-                "description_bg": s["description_bg"],
-                "conditions_met": s["conditions_met"],
-                "conditions_pending": s["conditions_pending"],
-                "estimated_trigger": s["estimated_trigger"],
-                "current_price": _clean_float(s["current_price"]),
-                "target_entry": _clean_float(s["target_entry"]),
-                "key_level": _clean_float(s["key_level"]),
-                "timeframe": s_tf,
-                "tier": s["tier"],
-                "first_detected": s["first_detected"],
-                "last_updated": s["last_updated"],
-            })
-    except Exception:
-        pass
 
     # Dual Portfolio Export: Real (Live) & Virtual (Paper)
     portfolio_real_data = {}
@@ -1126,16 +1682,34 @@ def export_dashboard_data(
         "kill_switch_required": len(closed_hist) >= 10 and live_avg_ret < -10.0,
     }
 
-    # Opus CIO Component E: Top 15 Momentum Rotation Portfolio (EUR 10,000 Base Capital)
-    base_capital_eur = 10000.0
-    target_positions_count = 15
-    per_slot_eur = round(base_capital_eur / target_positions_count, 2)
+    # Focused Top-8 Core Momentum Rotation Portfolio (Cluster-Capped & InvVol Sized)
+    base_capital_eur = float(rot_cfg.get("base_capital_eur", 10000.0))
+    target_positions_count = int(rot_cfg.get("target_positions_count", 8))
+    per_slot_eur = round(base_capital_eur / max(1, target_positions_count), 2)
+    min_vol_pct = float(rot_cfg.get("min_annualized_vol_pct", 25.0))
+    gold_vol_exempt = {str(x).upper() for x in (rot_cfg.get("gold_vol_exempt") or ["GC=F", "PAXGUSDT"])}
+    excluded_asset_classes = {str(x).lower() for x in (rot_cfg.get("excluded_asset_classes") or ["indices"])}
+    excluded_sectors = set(rot_cfg.get("excluded_sectors") or [])
+    inverse_vol_sizing = bool(rot_cfg.get("inverse_vol_sizing", True))
+    min_slot_weight_pct = float(rot_cfg.get("min_slot_weight_pct", 7.0))
+    max_slot_weight_pct = float(rot_cfg.get("max_slot_weight_pct", 20.0))
+    cluster_caps = dict(rot_cfg.get("cluster_caps") or {})
+    core_focus_bonus = float(rot_cfg.get("core_focus_bonus", 15.0))
 
     candidates_gold = []
     fresh_flips_pool = []
     pullback_pool = []
     broken_leaders = []
     quant_candidates = []
+    filtered_out_summary: Dict[str, int] = {
+        "excluded_asset_class": 0,
+        "excluded_sector": 0,
+        "tier_below_a": 0,
+        "walk_forward_unstable": 0,
+        "low_volatility": 0,
+        "broken_v2_stop": 0,
+        "cluster_cap": 0,
+    }
 
     for item in items:
         # Gate 1: Strict 1D Timeframe filter for rotation portfolio
@@ -1148,91 +1722,112 @@ def export_dashboard_data(
         prof = optimal_profiles.get(sym, {})
         mom_60 = all_mom_60.get(sym, 0.0)
         sharpe = float(item.get("backtest_sharpe") or 0.0)
+        trail_sharpe = item.get("trailing_sharpe_252")
         rs_score = item.get("rs_rating", 50)
         price = float(item.get("price") or 0.0)
+        vol_pct = item.get("annualized_vol_pct")
+        sector_val_item = (item.get("fundamental") or {}).get("sector") or prof.get("sector", "")
 
-        # 1. GOLD candidates (S/A tier with stability)
-        if st == "GOLD" and tier in ["S", "A"] and prof.get("walk_forward_stable", True):
-            v2_stop = float(item.get("v2") or 0.0)
-            v1_pullback = float(item.get("v1") or v2_stop)
-
-            # Gate 2: Broken Stop-Loss Protection (Price <= v2_stop)
-            # NEVER buy when price is below the stop loss line!
-            if price <= v2_stop or price <= 0 or v2_stop <= 0:
-                broken_leaders.append({
-                    "ticker": sym,
-                    "name": item.get("name", sym),
-                    "price": price,
-                    "v2_stop": v2_stop,
-                    "loss_pct": round(((price - v2_stop) / v2_stop) * 100.0, 1) if v2_stop > 0 else 0.0
-                })
+        # 1. GOLD candidates (Empirical S/A tier + walk-forward + vol + sector gates)
+        if st == "GOLD":
+            eligible, elig_reason = check_larsson_eligibility(
+                ticker=sym,
+                asset_class=item.get("asset_class") or "",
+                sector=sector_val_item,
+                annualized_vol_pct=vol_pct,
+                min_vol_pct=min_vol_pct,
+                gold_vol_exempt=gold_vol_exempt,
+                excluded_asset_classes=excluded_asset_classes,
+                excluded_sectors=excluded_sectors,
+            )
+            if not eligible:
+                filtered_out_summary[elig_reason] = filtered_out_summary.get(elig_reason, 0) + 1
             else:
-    
-                risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1)
-                dist_to_v1_pct = round(((price - v1_pullback) / price) * 100.0, 1)
-                bars = item.get("bars_since_flip")
-                if bars is None:
-                    bars = 999
+                v2_stop = float(item.get("v2") or 0.0)
+                v1_pullback = float(item.get("v1") or v2_stop)
+
+                # Gate 2: Broken Stop-Loss Protection (Price <= v2_stop)
+                if price <= v2_stop or price <= 0 or v2_stop <= 0:
+                    filtered_out_summary["broken_v2_stop"] += 1
+                    broken_leaders.append({
+                        "ticker": sym,
+                        "name": item.get("name", sym),
+                        "price": price,
+                        "v2_stop": v2_stop,
+                        "loss_pct": round(((price - v2_stop) / v2_stop) * 100.0, 1) if v2_stop > 0 else 0.0
+                    })
                 else:
-                    try:
-                        bars = int(bars)
-                    except Exception:
+                    risk_to_v2_pct = round(((price - v2_stop) / price) * 100.0, 1)
+                    dist_to_v1_pct = round(((price - v1_pullback) / price) * 100.0, 1)
+                    bars = item.get("bars_since_flip")
+                    if bars is None:
                         bars = 999
-    
-                # Gate 3: 4 Strict Quantitative Categories
-                if bars <= 5 and price >= v1_pullback * 0.995 and 0.0 < risk_to_v2_pct <= 12.0:
-                    entry_zone_status = "FRESH_FLIP"
-                    entry_zone_label = f"🟢 СВЕЖ ПРОБИВ (Ден {bars + 1})"
-                    rec_action_eur = per_slot_eur
-                elif bars > 5 and v2_stop < price <= (v1_pullback * 1.025) and 0.0 < risk_to_v2_pct <= 6.0:
-                    entry_zone_status = "PULLBACK_V1"
-                    entry_zone_label = f"🔵 ВХОД НА ПОДКРЕПА v1 (Ден {bars + 1})"
-                    rec_action_eur = per_slot_eur
-                elif bars > 5 and price > (v1_pullback * 1.025) and risk_to_v2_pct <= 18.0:
-                    entry_zone_status = "MATURE_HOLD"
-                    entry_zone_label = f"🛡️ В ТРЕНД (Ден {bars + 1}) — Лимит на v1"
-                    rec_action_eur = round(per_slot_eur * 0.5, 2)
-                else:
-                    entry_zone_status = "EXTENDED_WAIT_PULLBACK"
-                    entry_zone_label = f"⏳ ПРЕРАЗТЕГЛЕН (Ден {bars + 1}) — Чакай v1 (${v1_pullback:,.2f})"
-                    rec_action_eur = 0.0
-    
-                rank_score = (sharpe * 50.0) + (rs_score * 0.5) + (mom_60 * 0.5)
-                shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
-                candidate_obj = {
-                    "ticker": sym,
-                    "name": item.get("name", sym),
-                    "asset_class": item.get("asset_class"),
-                    "tier": tier,
-                    "rs_rating": rs_score,
-                    "strategy": item.get("dna_strategy"),
-                    "exit_rule_bg": item.get("exit_rule_bg"),
-                    "exit_on_neutral": item.get("exit_on_neutral"),
-                    "price": price,
-                    "v2_stop": v2_stop,
-                    "v1_pullback": round(v1_pullback, 2),
-                    "risk_to_v2_pct": risk_to_v2_pct,
-                    "dist_to_v1_pct": dist_to_v1_pct,
-                    "bars_since_flip": bars,
-                    "entry_zone_status": entry_zone_status,
-                    "entry_zone_label": entry_zone_label,
-                    "rec_action_eur": rec_action_eur,
-                    "spread_pct": item.get("spread_pct"),
-                    "momentum_60d": round(mom_60, 1),
-                    "backtest_cagr": item.get("backtest_cagr"),
-                    "backtest_sharpe": sharpe,
-                    "target_eur": per_slot_eur,
-                    "target_shares": shares,
-                    "status_tag": f"✨ ПРОБИВ (Ден {bars + 1})" if bars <= 5 else f"🟢 Ден {bars + 1} в GOLD",
-                    "rank_score": round(rank_score, 1),
-                    "tv_symbol": item.get("tv_symbol"),
-                    "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
-                }
-                candidates_gold.append(candidate_obj)
-                if entry_zone_status == "FRESH_FLIP":
-                    fresh_flips_pool.append(candidate_obj)
-                elif entry_zone_status == "PULLBACK_V1":
-                    pullback_pool.append(candidate_obj)
+                    else:
+                        try:
+                            bars = int(bars)
+                        except Exception:
+                            bars = 999
+
+                    # Gate 3: 4 Strict Quantitative Entry Categories
+                    if bars <= 5 and price >= v1_pullback * 0.995 and 0.0 < risk_to_v2_pct <= 12.0:
+                        entry_zone_status = "FRESH_FLIP"
+                        entry_zone_label = f"🟢 СВЕЖ ПРОБИВ (Ден {bars + 1})"
+                        rec_action_eur = per_slot_eur
+                    elif bars > 5 and v2_stop < price <= (v1_pullback * 1.025) and 0.0 < risk_to_v2_pct <= 6.0:
+                        entry_zone_status = "PULLBACK_V1"
+                        entry_zone_label = f"🔵 ВХОД НА ПОДКРЕПА v1 (Ден {bars + 1})"
+                        rec_action_eur = per_slot_eur
+                    elif bars > 5 and price > (v1_pullback * 1.025) and risk_to_v2_pct <= 18.0:
+                        entry_zone_status = "MATURE_HOLD"
+                        entry_zone_label = f"🛡️ В ТРЕНД (Ден {bars + 1}) — Лимит на v1"
+                        rec_action_eur = round(per_slot_eur * 0.5, 2)
+                    else:
+                        entry_zone_status = "EXTENDED_WAIT_PULLBACK"
+                        entry_zone_label = f"⏳ ПРЕРАЗТЕГЛЕН (Ден {bars + 1}) — Чакай v1 (${v1_pullback:,.2f})"
+                        rec_action_eur = 0.0
+
+                    # Causal trailing rank score + Core-20 Focus priority bonus
+                    eff_sh = float(trail_sharpe) if trail_sharpe is not None else 0.0
+                    clamped_sh = max(-2.0, min(4.0, eff_sh))
+                    is_core = sym.upper() in core_focus_set
+                    rank_score = (clamped_sh * 25.0) + (rs_score * 0.5) + (mom_60 * 0.5) + (core_focus_bonus if is_core else 0.0)
+                    shares = round(per_slot_eur / price, 4 if item.get("asset_class") == "crypto" else 2) if price > 0 else 0
+                    risk_cluster = item.get("risk_cluster") or classify_risk_cluster(sym, item.get("asset_class") or "", sector_val_item, item.get("name", ""))
+                    candidate_obj = {
+                        "ticker": sym,
+                        "name": item.get("name", sym),
+                        "asset_class": item.get("asset_class"),
+                        "tier": tier,
+                        "rs_rating": rs_score,
+                        "strategy": item.get("dna_strategy"),
+                        "exit_rule_bg": item.get("exit_rule_bg"),
+                        "exit_on_neutral": item.get("exit_on_neutral"),
+                        "price": price,
+                        "v2_stop": v2_stop,
+                        "v1_pullback": round(v1_pullback, 2),
+                        "risk_to_v2_pct": risk_to_v2_pct,
+                        "dist_to_v1_pct": dist_to_v1_pct,
+                        "bars_since_flip": bars,
+                        "entry_zone_status": entry_zone_status,
+                        "entry_zone_label": entry_zone_label,
+                        "rec_action_eur": rec_action_eur,
+                        "spread_pct": item.get("spread_pct"),
+                        "momentum_60d": round(mom_60, 1),
+                        "annualized_vol_pct": vol_pct,
+                        "trailing_sharpe_252": item.get("trailing_sharpe_252"),
+                        "backtest_cagr": item.get("backtest_cagr"),
+                        "backtest_sharpe": sharpe,
+                        "risk_cluster": risk_cluster,
+                        "is_core_focus": is_core,
+                        "target_weight_pct": round(100.0 / max(1, target_positions_count), 2),
+                        "target_eur": per_slot_eur,
+                        "target_shares": shares,
+                        "status_tag": f"✨ ПРОБИВ (Ден {bars + 1})" if bars <= 5 else f"🟢 Ден {bars + 1} в GOLD",
+                        "rank_score": round(rank_score, 1),
+                        "tv_symbol": item.get("tv_symbol"),
+                        "tv_url": f"https://www.tradingview.com/chart/?symbol={item.get('tv_symbol')}&interval=1D",
+                    }
+                    candidates_gold.append(candidate_obj)
 
         # 2. Institutional Quantamental Value Dips (Empirically Filtered via 10y Value Lab)
         fund = item.get("fundamental") or {}
@@ -1241,13 +1836,22 @@ def export_dashboard_data(
         is_fund_bullish = any(k in f_verdict for k in ["STRONG BUY", "BUY", "ACCUMULATE", "OVERWEIGHT"]) or "BUY" in (fund.get("action") or "").upper()
         value_dip_approved = bool(prof.get("value_dip_allowed", False))
         best_value_strat = prof.get("best_value_strategy", "NONE")
-        is_equity = item.get("asset_class") not in ["commodities", "crypto"]
+        is_equity = item.get("asset_class") not in ["commodities", "crypto", "indices"]
 
-        # Strict Gate 1: Must be corporate equity approved by Value Lab, bullish fundamentals, price > 0
-        # Exclude GOLD (GOLD belongs in momentum rotation, NOT dips!) and exclude losing sectors (Defensive / Materials)
+        # Exclude defensive/bond-proxy/cyclical-materials traps (including Utilities & Real Estate)
         is_dip_state = bool(st in ["BLUE", "NEUTRAL"] or (st == "GOLD" and best_value_strat in ["V1_SMA200_BOUNCE", "V4_VALUE_GOLD_HOLD"]))
-        sector_val = item.get("sector") or prof.get("sector", "")
-        is_safe_sector = sector_val not in ["Consumer Defensive", "Basic Materials", "Базови материали"]
+        sector_val = item.get("sector") or fund.get("sector") or prof.get("sector", "")
+        is_safe_sector = sector_val not in [
+            "Consumer Defensive",
+            "Consumer Staples",
+            "Basic Materials",
+            "Materials",
+            "Базови материали",
+            "Utilities",
+            "Real Estate",
+            "Комунални услуги",
+            "Недвижими имоти",
+        ]
 
         if is_equity and value_dip_approved and is_fund_bullish and price > 0 and is_dip_state and is_safe_sector:
             v1_val = float(item.get("v1") or 0.0)
@@ -1343,8 +1947,103 @@ def export_dashboard_data(
             unique_gold.append(c)
     candidates_gold = unique_gold
 
-    top15 = candidates_gold[:15]
-    reserve_bench = candidates_gold[15:25]
+    # Enforce cluster concentration caps while filling Top-N active focus portfolio
+    top15 = []
+    reserve_overflow = []
+    cluster_distribution: Dict[str, int] = {}
+    for c in candidates_gold:
+        cl = c.get("risk_cluster") or "other_equity"
+        cap = int(cluster_caps.get(cl, 2))
+        if len(top15) < target_positions_count and cluster_distribution.get(cl, 0) < cap:
+            top15.append(c)
+            cluster_distribution[cl] = cluster_distribution.get(cl, 0) + 1
+        else:
+            if len(top15) < target_positions_count and cluster_distribution.get(cl, 0) >= cap:
+                filtered_out_summary["cluster_cap"] += 1
+                c["skipped_reason"] = f"cluster_cap:{cl}"
+            reserve_overflow.append(c)
+
+    reserve_bench = reserve_overflow[:12]
+
+    # Normalized Inverse-Volatility Position Sizing across active Top-N slots
+    if inverse_vol_sizing and top15:
+        vols_map = {x["ticker"]: x.get("annualized_vol_pct") for x in top15}
+        invvol_weights = compute_normalized_invvol_weights(
+            vols_map,
+            target_slots=target_positions_count,
+            min_weight_pct=min_slot_weight_pct,
+            max_weight_pct=max_slot_weight_pct,
+        )
+        for x in top15:
+            w_pct = float(invvol_weights.get(x["ticker"], round(100.0 / target_positions_count, 2)))
+            t_eur = round(base_capital_eur * (w_pct / 100.0), 2)
+            px = float(x.get("price") or 0.0)
+            x["target_weight_pct"] = w_pct
+            x["target_eur"] = t_eur
+            x["target_shares"] = round(t_eur / px, 4 if x.get("asset_class") == "crypto" else 2) if px > 0 else 0
+            if x.get("entry_zone_status") in ("FRESH_FLIP", "PULLBACK_V1"):
+                x["rec_action_eur"] = t_eur
+            elif x.get("entry_zone_status") == "MATURE_HOLD":
+                x["rec_action_eur"] = round(t_eur * 0.5, 2)
+
+    fresh_flips_pool = [c for c in (top15 + reserve_bench[:5]) if c.get("entry_zone_status") == "FRESH_FLIP"]
+    pullback_pool = [c for c in (top15 + reserve_bench[:5]) if c.get("entry_zone_status") == "PULLBACK_V1"]
+
+    # Build dedicated Core-20 Focus Watchlist (always surfaces user's core assets regardless of GOLD/BLUE state)
+    daily_items_by_ticker = {it.get("ticker", "").upper(): it for it in items if it.get("timeframe") == "1D"}
+    top_active_tickers = {x["ticker"].upper() for x in top15}
+    core_watchlist = []
+    for c_tk in core_focus_tickers:
+        live_it = daily_items_by_ticker.get(c_tk)
+        emp_p = optimal_profiles.get(c_tk, {})
+        if live_it:
+            st_val = live_it.get("state") or "UNKNOWN"
+            tv_sym_val = live_it.get("tv_symbol") or tv_map.get(c_tk) or c_tk
+            core_watchlist.append({
+                "ticker": live_it.get("ticker", c_tk),
+                "name": live_it.get("name", c_tk),
+                "asset_class": live_it.get("asset_class"),
+                "state": st_val,
+                "tier": live_it.get("empirical_tier", get_larsson_trend_tier(c_tk)),
+                "price": live_it.get("price"),
+                "v1": live_it.get("v1"),
+                "v2": live_it.get("v2"),
+                "rs_rating": live_it.get("rs_rating", 50),
+                "annualized_vol_pct": live_it.get("annualized_vol_pct"),
+                "exit_on_neutral": live_it.get("exit_on_neutral", False),
+                "exit_rule_bg": live_it.get("exit_rule_bg"),
+                "risk_cluster": live_it.get("risk_cluster"),
+                "in_active_top8": c_tk in top_active_tickers,
+                "tv_symbol": tv_sym_val,
+                "tv_url": f"https://www.tradingview.com/chart/?symbol={tv_sym_val}&interval=1D",
+            })
+        else:
+            tv_sym_val = tv_map.get(c_tk) or (f"BINANCE:{c_tk}" if c_tk.endswith("USDT") else c_tk)
+            eff_en = get_effective_exit_on_neutral(c_tk, default_crypto_fast_exit=crypto_fast_exit_default)
+            core_watchlist.append({
+                "ticker": c_tk,
+                "name": names_map.get(c_tk, c_tk),
+                "asset_class": None,
+                "state": "NO_SCAN",
+                "tier": get_larsson_trend_tier(c_tk),
+                "price": None,
+                "v1": None,
+                "v2": None,
+                "rs_rating": rs_ratings.get(c_tk, 50),
+                "annualized_vol_pct": all_vol_126.get(c_tk),
+                "exit_on_neutral": eff_en,
+                "exit_rule_bg": "💰 Прибери при NEUTRAL" if eff_en else "🛡️ Дръж до BLUE",
+                "risk_cluster": classify_risk_cluster(c_tk, "", emp_p.get("sector", ""), names_map.get(c_tk, c_tk)),
+                "in_active_top8": False,
+                "tv_symbol": tv_sym_val,
+                "tv_url": f"https://www.tradingview.com/chart/?symbol={tv_sym_val}&interval=1D",
+            })
+
+    _state_rank = {"GOLD": 0, "NEUTRAL": 1, "BLUE": 2}
+    core_watchlist.sort(key=lambda w: (not w.get("in_active_top8", False), _state_rank.get(w.get("state", ""), 3), -(w.get("rs_rating") or 0)))
+
+    deployed_capital_pct = round(sum(float(x.get("target_weight_pct") or 0.0) for x in top15), 2)
+    cash_reserve_pct = round(max(0.0, 100.0 - deployed_capital_pct), 2)
 
     seen_quant = set()
     unique_quant = []
@@ -1406,18 +2105,19 @@ def export_dashboard_data(
                     "action": "SELL / CLOSE 100%",
                 })
 
-    try:
-        os.makedirs(os.path.dirname(ROTATION_STATE_PATH), exist_ok=True)
-        with open(ROTATION_STATE_PATH, "w", encoding="utf-8") as f:
-            json.dump({
-                "trading_date": today_str,
-                "baseline_top15_tickers": list(baseline_tickers) if baseline_tickers else [x["ticker"] for x in top15],
-                "current_top15_tickers": [x["ticker"] for x in top15],
-                "top15_tickers": [x["ticker"] for x in top15],
-                "updated_at": datetime.now(timezone.utc).isoformat()
-            }, f, indent=2)
-    except Exception as e:
-        logger.debug(f"Could not persist rotation state: {e}")
+    if output_path == DEFAULT_OUTPUT_PATH:
+        try:
+            os.makedirs(os.path.dirname(ROTATION_STATE_PATH), exist_ok=True)
+            with open(ROTATION_STATE_PATH, "w", encoding="utf-8") as f:
+                json.dump({
+                    "trading_date": today_str,
+                    "baseline_top15_tickers": list(baseline_tickers) if baseline_tickers else [x["ticker"] for x in top15],
+                    "current_top15_tickers": [x["ticker"] for x in top15],
+                    "top15_tickers": [x["ticker"] for x in top15],
+                    "updated_at": datetime.now(timezone.utc).isoformat()
+                }, f, indent=2)
+        except Exception as e:
+            logger.debug(f"Could not persist rotation state: {e}")
 
     rotation_portfolio_data = {
         "trading_date": today_str,
@@ -1425,9 +2125,17 @@ def export_dashboard_data(
         "base_capital_eur": base_capital_eur,
         "target_positions_count": target_positions_count,
         "per_slot_eur": per_slot_eur,
-        "historical_cagr_pct": 49.6,
-        "historical_sharpe": 1.72,
-        "historical_max_dd_pct": -31.2,
+        "sizing_mode": "INVERSE_VOL_CAPPED" if inverse_vol_sizing else "EQUAL_WEIGHT",
+        "deployed_capital_pct": deployed_capital_pct,
+        "cash_reserve_pct": cash_reserve_pct,
+        "historical_cagr_pct": 41.7,
+        "historical_sharpe": 1.55,
+        "historical_max_dd_pct": -31.0,
+        "historical_win_rate_pct": 46.7,
+        "cluster_distribution": cluster_distribution,
+        "filtered_out_summary": filtered_out_summary,
+        "core_focus_tickers": core_focus_tickers,
+        "core_watchlist": core_watchlist,
         "fresh_flips": fresh_flips_pool,
         "pullback_entries": pullback_pool,
         "broken_leaders": broken_leaders,
@@ -1442,13 +2150,31 @@ def export_dashboard_data(
         },
         "summary": {
             "total_active": len(top15),
-            "fresh_breakouts": sum(1 for x in top15 if "ПРЕСЕН" in x.get("status_tag", "")),
+            "fresh_breakouts": sum(1 for x in top15 if x.get("entry_zone_status") == "FRESH_FLIP" or "ПРОБИВ" in x.get("status_tag", "")),
             "classic_blue_exits": sum(1 for x in top15 if not x.get("exit_on_neutral")),
             "fast_neutral_exits": sum(1 for x in top15 if x.get("exit_on_neutral")),
+            "core_in_top8": sum(1 for x in top15 if x.get("is_core_focus")),
         }
     }
 
     ai_company_map_data = build_ai_company_map_payload(items)
+
+    try:
+        pending_setups_data = _build_live_pending_setups(
+            db=db,
+            items=items,
+            top15=top15,
+            all_mom_60=all_mom_60,
+            optimal_profiles=optimal_profiles,
+            rs_ratings=rs_ratings,
+            names_map=names_map,
+            tv_map=tv_map,
+            all_vol_126=all_vol_126,
+            all_sharpe_252=all_sharpe_252,
+            rot_cfg=rot_cfg,
+        )
+    except Exception:
+        pending_setups_data = []
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

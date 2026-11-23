@@ -3,19 +3,19 @@
   "name": "ETHX-B.TO",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:21:46.249868+00:00",
+  "generated_at": "2026-11-20T09:41:57.549836+00:00",
   "backtest_start_date": "2022-04-07",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1159,
-  "current_price": 8.89,
+  "backtest_total_bars": 1160,
+  "current_price": 8.97,
   "state": "BLUE",
-  "v1": 11.02,
-  "v2": 11.32,
-  "sma200": 10.55,
-  "rsi14": 23.2,
-  "atr14": 0.45,
-  "empirical_tier": "A",
+  "v1": 10.88,
+  "v2": 11.24,
+  "sma200": 10.54,
+  "rsi14": 24.7,
+  "atr14": 0.43,
+  "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -40.0,
-      "cagr_pct": -10.5,
-      "sharpe_ratio": 0.16,
+      "total_return_pct": -39.5,
+      "cagr_pct": -10.3,
+      "sharpe_ratio": 0.17,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 68.1,
@@ -16347,6 +16347,20 @@
       "v2": 11.32,
       "sma200": 10.55,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 9.1,
+      "high": 9.18,
+      "low": 8.9,
+      "close": 8.97,
+      "volume": 517000.0,
+      "v1": 10.88,
+      "m1": 11.08,
+      "m2": 11.21,
+      "v2": 11.24,
+      "sma200": 10.54,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21090,6 +21104,10 @@
         {
           "time": "2026-11-18",
           "value": 10943.81
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10943.81
         }
       ]
     },
@@ -25732,6 +25750,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 13934.02
+        },
+        {
+          "time": "2026-11-19",
           "value": 13934.02
         }
       ]
@@ -30376,6 +30398,10 @@
         {
           "time": "2026-11-18",
           "value": 7829.28
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7829.28
         }
       ]
     },
@@ -35019,6 +35045,10 @@
         {
           "time": "2026-11-18",
           "value": 6004.81
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6055.47
         }
       ]
     }
@@ -35111,14 +35141,14 @@
   ],
   "smart_money": {
     "symbol": "ETHX-B.TO",
-    "smart_money_score": 57.0,
+    "smart_money_score": 40.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.09, P/C: N/A).",
-    "cmf_20d": 0.09,
-    "up_down_vol_ratio": 0.36,
-    "absorption_5d_pct": 53.3,
-    "vol_shock_ratio": 0.45,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: N/A).",
+    "cmf_20d": 0.017,
+    "up_down_vol_ratio": 0.64,
+    "absorption_5d_pct": 41.2,
+    "vol_shock_ratio": 3.07,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

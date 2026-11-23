@@ -3,18 +3,18 @@
   "name": "Pax Gold",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-19T09:23:51.109654+00:00",
+  "generated_at": "2026-11-20T09:42:34.603876+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-18",
-  "backtest_years": 6.9,
-  "backtest_total_bars": 1751,
-  "current_price": 3763.12,
+  "backtest_end_date": "2026-11-20",
+  "backtest_years": 7.0,
+  "backtest_total_bars": 1753,
+  "current_price": 3570.23,
   "state": "BLUE",
-  "v1": 3995.61,
-  "v2": 4082.65,
-  "sma200": 4265.36,
-  "rsi14": 31.2,
-  "atr14": 75.65,
+  "v1": 3945.53,
+  "v2": 4050.44,
+  "sma200": 4255.2,
+  "rsi14": 23.5,
+  "atr14": 86.33,
   "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 109.8,
-      "cagr_pct": 11.3,
+      "cagr_pct": 11.2,
       "sharpe_ratio": 0.87,
       "win_rate_pct": 61.5,
       "profit_factor": 5.52,
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 128.6,
-      "cagr_pct": 12.6,
+      "total_return_pct": 127.0,
+      "cagr_pct": 12.5,
       "sharpe_ratio": 0.95,
       "win_rate_pct": 20.0,
-      "profit_factor": 5.9,
-      "max_drawdown_pct": 26.9,
+      "profit_factor": 5.57,
+      "max_drawdown_pct": 27.4,
       "total_trades": 10
     },
     {
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 109.1,
-      "cagr_pct": 11.2,
-      "sharpe_ratio": 0.74,
+      "total_return_pct": 98.4,
+      "cagr_pct": 10.3,
+      "sharpe_ratio": 0.69,
       "win_rate_pct": 100.0,
-      "profit_factor": 3.4,
-      "max_drawdown_pct": 32.1,
+      "profit_factor": 2.77,
+      "max_drawdown_pct": 35.6,
       "total_trades": 1
     }
   ],
@@ -24626,14 +24626,42 @@
       "time": "2026-11-18",
       "open": 3841.07,
       "high": 3842.02,
-      "low": 3754.26,
-      "close": 3763.12,
-      "volume": 2943.0,
-      "v1": 3995.61,
-      "m1": 4025.55,
-      "m2": 4062.44,
-      "v2": 4082.65,
-      "sma200": 4265.36,
+      "low": 3716.58,
+      "close": 3736.31,
+      "volume": 5230.0,
+      "v1": 3994.35,
+      "m1": 4024.56,
+      "m2": 4061.69,
+      "v2": 4082.0,
+      "sma200": 4265.22,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 3736.31,
+      "high": 3752.54,
+      "low": 3584.45,
+      "close": 3600.49,
+      "volume": 7313.0,
+      "v1": 3972.63,
+      "m1": 4005.82,
+      "m2": 4045.96,
+      "v2": 4067.74,
+      "sma200": 4260.44,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 3600.72,
+      "high": 3619.55,
+      "low": 3512.73,
+      "close": 3570.23,
+      "volume": 5186.0,
+      "v1": 3945.53,
+      "m1": 3982.68,
+      "m2": 4026.77,
+      "v2": 4050.44,
+      "sma200": 4255.2,
       "state": "BLUE"
     }
   ],
@@ -31690,6 +31718,14 @@
         {
           "time": "2026-11-18",
           "value": 23226.87
+        },
+        {
+          "time": "2026-11-19",
+          "value": 23226.87
+        },
+        {
+          "time": "2026-11-20",
+          "value": 23226.87
         }
       ]
     },
@@ -38700,6 +38736,14 @@
         },
         {
           "time": "2026-11-18",
+          "value": 23001.43
+        },
+        {
+          "time": "2026-11-19",
+          "value": 23001.43
+        },
+        {
+          "time": "2026-11-20",
           "value": 23001.43
         }
       ]
@@ -45712,6 +45756,14 @@
         {
           "time": "2026-11-18",
           "value": 20979.16
+        },
+        {
+          "time": "2026-11-19",
+          "value": 20979.16
+        },
+        {
+          "time": "2026-11-20",
+          "value": 20979.16
         }
       ]
     },
@@ -52722,7 +52774,15 @@
         },
         {
           "time": "2026-11-18",
-          "value": 20931.83
+          "value": 20782.7
+        },
+        {
+          "time": "2026-11-19",
+          "value": 20027.22
+        },
+        {
+          "time": "2026-11-20",
+          "value": 19858.91
         }
       ]
     }
@@ -52767,14 +52827,14 @@
   ],
   "smart_money": {
     "symbol": "PAXGUSDT",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: N/A).",
-    "cmf_20d": -0.031,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 41.7,
-    "vol_shock_ratio": 1.13,
+    "smart_money_score": 15.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.16).",
+    "cmf_20d": -0.158,
+    "up_down_vol_ratio": 0.33,
+    "absorption_5d_pct": 29.2,
+    "vol_shock_ratio": 1.68,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

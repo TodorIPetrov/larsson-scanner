@@ -3,19 +3,19 @@
   "name": "Monolithic Power Systems, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:23:07.906294+00:00",
+  "generated_at": "2026-11-20T09:42:19.382300+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 1310.91,
+  "backtest_total_bars": 1161,
+  "current_price": 1295.86,
   "state": "NEUTRAL",
-  "v1": 1297.88,
-  "v2": 1299.58,
-  "sma200": 1327.65,
-  "rsi14": 50.6,
-  "atr14": 87.15,
-  "empirical_tier": "S",
+  "v1": 1300.23,
+  "v2": 1300.74,
+  "sma200": 1328.47,
+  "rsi14": 49.5,
+  "atr14": 87.36,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 212.6,
-      "cagr_pct": 28.1,
+      "total_return_pct": 209.0,
+      "cagr_pct": 27.7,
       "sharpe_ratio": 0.72,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.12,
+      "profit_factor": 4.05,
       "max_drawdown_pct": 51.6,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 1299.58,
       "sma200": 1327.65,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1368.3,
+      "high": 1378.06,
+      "low": 1288.08,
+      "close": 1295.86,
+      "volume": 758600.0,
+      "v1": 1300.23,
+      "m1": 1298.12,
+      "m2": 1298.91,
+      "v2": 1300.74,
+      "sma200": 1328.47,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -21192,6 +21206,10 @@
         {
           "time": "2026-11-18",
           "value": 16514.3
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16514.3
         }
       ]
     },
@@ -25838,6 +25856,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 19256.91
+        },
+        {
+          "time": "2026-11-19",
           "value": 19256.91
         }
       ]
@@ -30486,6 +30508,10 @@
         {
           "time": "2026-11-18",
           "value": 15399.81
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15399.81
         }
       ]
     },
@@ -35133,6 +35159,10 @@
         {
           "time": "2026-11-18",
           "value": 31292.58
+        },
+        {
+          "time": "2026-11-19",
+          "value": 30933.32
         }
       ]
     }
@@ -35300,11 +35330,11 @@
     "smart_money_score": 75.0,
     "flow_verdict": "STEALTH_ACCUMULATION",
     "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.01, Up/Dn Vol: 0.98x). Силна скрита подкрепа.",
-    "cmf_20d": -0.006,
-    "up_down_vol_ratio": 0.98,
-    "absorption_5d_pct": 51.4,
-    "vol_shock_ratio": 0.54,
+    "flow_desc_bg": "Институциите тихомълком купуват (CMF: -0.00, Up/Dn Vol: 1.05x). Силна скрита подкрепа.",
+    "cmf_20d": -0.001,
+    "up_down_vol_ratio": 1.05,
+    "absorption_5d_pct": 38.8,
+    "vol_shock_ratio": 0.66,
     "put_call_ratio": 0.43,
     "options_sentiment": "BULLISH",
     "gamma_wall": 2180.0,

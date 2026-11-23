@@ -3,20 +3,20 @@
   "name": "BHP Group Limited",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:20:38.567231+00:00",
+  "generated_at": "2026-11-20T09:41:37.455323+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 70.33,
+  "backtest_total_bars": 1161,
+  "current_price": 68.55,
   "state": "BLUE",
-  "v1": 80.32,
-  "v2": 82.21,
+  "v1": 79.61,
+  "v2": 81.78,
   "sma200": 80.71,
-  "rsi14": 28.6,
+  "rsi14": 26.5,
   "atr14": 2.44,
-  "empirical_tier": "A",
-  "walk_forward_stable": true,
+  "empirical_tier": "B",
+  "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 28.2,
-      "cagr_pct": 5.5,
-      "sharpe_ratio": 0.33,
+      "total_return_pct": 24.9,
+      "cagr_pct": 4.9,
+      "sharpe_ratio": 0.32,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.76,
+      "profit_factor": 0.67,
       "max_drawdown_pct": 37.2,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 82.21,
       "sma200": 80.71,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 70.82,
+      "high": 70.93,
+      "low": 68.51,
+      "close": 68.55,
+      "volume": 4957500.0,
+      "v1": 79.61,
+      "m1": 80.46,
+      "m2": 81.37,
+      "v2": 81.78,
+      "sma200": 80.71,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21038,6 +21052,10 @@
         {
           "time": "2026-11-18",
           "value": 10215.09
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10215.09
         }
       ]
     },
@@ -25684,6 +25702,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 11648.08
+        },
+        {
+          "time": "2026-11-19",
           "value": 11648.08
         }
       ]
@@ -30332,6 +30354,10 @@
         {
           "time": "2026-11-18",
           "value": 9750.21
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9750.21
         }
       ]
     },
@@ -34979,6 +35005,10 @@
         {
           "time": "2026-11-18",
           "value": 12829.31
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12504.61
         }
       ]
     }
@@ -35014,11 +35044,11 @@
     "smart_money_score": 7.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.77, CMF: -0.13).",
-    "cmf_20d": -0.128,
-    "up_down_vol_ratio": 0.53,
-    "absorption_5d_pct": 20.9,
-    "vol_shock_ratio": 1.77,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.77, CMF: -0.15).",
+    "cmf_20d": -0.149,
+    "up_down_vol_ratio": 0.52,
+    "absorption_5d_pct": 13.2,
+    "vol_shock_ratio": 1.44,
     "put_call_ratio": 1.77,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 55.0,

@@ -150,6 +150,14 @@
           </button>
         </div>
 
+        <div class="cluster-scope-pills scanner-chart-sig-pills" id="scannerChartSignalPills">
+          <button type="button" class="scope-btn active" data-chart-sig="ALL" title="Всички графики (1D Gold Flip е водещ)">🌐 Всички</button>
+          <button type="button" class="scope-btn" data-chart-sig="1D_GOLD_FLIP" title="Водещ сигнал: Пресен Gold Flip на 1D дневната графика">🥇 1D Gold Flip (Водещ)</button>
+          <button type="button" class="scope-btn" data-chart-sig="1D_ALL" title="Всички сигнали на 1D дневната графика">📅 1D Сигнали</button>
+          <button type="button" class="scope-btn" data-chart-sig="1W_GOLD_FLIP" title="Пресен Gold Flip на 1W седмичната графика (Weekly Chart)">📆 1W Weekly Gold Flip</button>
+          <button type="button" class="scope-btn" data-chart-sig="1W_ALL" title="Всички сигнали на 1W седмичната графика">📆 1W Weekly Сигнали</button>
+        </div>
+
         <div class="command-actions-group">
           <details class="filter-dropdown-menu" id="advancedFiltersMenu">
             <summary class="btn-filter-trigger">
@@ -381,7 +389,7 @@
             <span class="badge badge-gold" id="cockpitActionDateBadge">Днес</span>
           </div>
           <div class="cockpit-hero-stats" id="cockpitHeroStats">
-            <span class="cockpit-stat-pill" id="cockpitSlotsSummary">Слотове: 0/15 заети</span>
+            <span class="cockpit-stat-pill" id="cockpitSlotsSummary">Слотове: 0/8 заети</span>
             <span class="cockpit-stat-pill" id="cockpitCurrencyInfo">Валута: EUR € (1€ ≈ 1.08$)</span>
             <button type="button" class="btn btn-sm btn-outline-secondary" id="btnToggleClusterMatrix" onclick="toggleCockpitMacroDetails()">
               🏛️ Пълна Клъстерна Матрица &amp; Риск ▾
@@ -389,7 +397,7 @@
           </div>
         </div>
         <p class="cockpit-hero-subtitle">
-          Приоритизираните действия за днешната сесия: <strong>🔴 Задължителни Изходи</strong> по реални позиции, <strong>🟢 Топ 15 Моментум Входове</strong> и <strong>💎 Активни Quantamental Dips</strong> — оразмерени в избраната валута.
+          Приоритизираните действия за днешната сесия: <strong>🔴 Задължителни Изходи</strong> по реални позиции, <strong>🟢 Топ 8 Фокус Моментум Входове</strong> и <strong>💎 Активни Quantamental Dips</strong> — оразмерени в избраната валута.
         </p>
         <div id="cockpitDailyActionsGrid" class="rot-actions-grid">
           <div class="rot-action-loading">Зареждане на дневните сигнали...</div>
@@ -441,13 +449,23 @@
         </div>
 
         <div class="queue-filter-bar">
+          <div class="filter-group" id="queueTfFilters">
+            <span class="filter-badge-lbl">Графика (ТФ):</span>
+            <button type="button" class="filter-btn active" data-queue-tf="ALL">Всички (1D Водещ + 1W)</button>
+            <button type="button" class="filter-btn filter-gold" data-queue-tf="1D">📅 1D Дневна (Водеща)</button>
+            <button type="button" class="filter-btn filter-purple" data-queue-tf="1W">📆 1W Седмична (Weekly)</button>
+            <button type="button" class="filter-btn filter-cyan" data-queue-tf="1D_1W_SYNC">⚡ 1D + 1W Синхрон</button>
+          </div>
           <div class="filter-group" id="queueTypeFilters">
-            <span class="filter-badge-lbl">Тип Сетъп:</span>
-            <button class="filter-btn active" data-queue-type="ALL">Всички</button>
-            <button class="filter-btn filter-gold" data-queue-type="PRE_GOLD">🔥 Предстоящ GOLD (1-3 дни)</button>
-            <button class="filter-btn filter-purple" data-queue-type="TOP15_CANDIDATE">🏆 За Топ 15 Ротация</button>
-            <button class="filter-btn filter-cyan" data-queue-type="QUALITY_DIP_BUY">💎 Dip Buy (Weekly GOLD)</button>
-            <button class="filter-btn" data-queue-type="SR_APPROACH">🎯 S/R &amp; Дивергенции</button>
+            <span class="filter-badge-lbl">Тип Сигнал:</span>
+            <button type="button" class="filter-btn active" data-queue-type="ALL">Всички (1D Gold Flip Водещ)</button>
+            <button type="button" class="filter-btn filter-gold" data-queue-type="GOLD_FLIP_1D">🥇 1D Gold Flip (Пресен &amp; Предстоящ)</button>
+            <button type="button" class="filter-btn filter-gold-flip" data-queue-type="FRESH_1D_FLIP">🟢 Пресен 1D Flip (Ден 1-5)</button>
+            <button type="button" class="filter-btn filter-amber" data-queue-type="PRE_GOLD">🔥 Предстоящ 1D GOLD (1-3д)</button>
+            <button type="button" class="filter-btn filter-purple" data-queue-type="WEEKLY_SIGNALS">📆 Weekly (1W) Сигнали</button>
+            <button type="button" class="filter-btn filter-cyan" data-queue-type="QUALITY_DIP_BUY">💎 Dip Buy (Weekly GOLD)</button>
+            <button type="button" class="filter-btn" data-queue-type="TOP15_CANDIDATE">🏆 За Топ 8 Фокус Ротация</button>
+            <button type="button" class="filter-btn" data-queue-type="SR_APPROACH">🎯 S/R &amp; Дивергенции</button>
           </div>
           <div class="filter-group" id="queuePriorityFilters">
             <span class="filter-badge-lbl">Приоритет:</span>
@@ -611,12 +629,12 @@
           <div class="port-mode-toggle-group">
             <button class="port-mode-btn port-btn-combined active" id="portModeCombinedBtn" data-port-mode="COMBINED">
               <span class="port-mode-indicator dot-combined"></span>
-              <span class="port-mode-title">🔀 ОБЕДИНЕН ИЗГЛЕД (РЕАЛНИ + ТОП 15)</span>
+              <span class="port-mode-title">🔀 ОБЕДИНЕН ИЗГЛЕД (РЕАЛНИ + ТОП 8 ФОКУС)</span>
               <span class="port-mode-badge-tag">SYNCED</span>
             </button>
             <button class="port-mode-btn port-btn-rotation" id="portModeRotationBtn" data-port-mode="ROTATION">
               <span class="port-mode-indicator dot-gold"></span>
-              <span class="port-mode-title" id="portModeRotationTitle">🏆 ТОП 15 МОМЕНТУМ РОТАЦИЯ</span>
+              <span class="port-mode-title" id="portModeRotationTitle">🏆 ТОП 8 ФОКУС МОМЕНТУМ РОТАЦИЯ</span>
               <span class="port-mode-badge-tag">QUANT STRATEGY</span>
             </button>
             <button class="port-mode-btn port-btn-real" id="portModeRealBtn" data-port-mode="REAL">
@@ -645,16 +663,16 @@
               </div>
             </div>
             <div class="rotation-sizing-summary">
-              <span>Целеви размер на позиция (1/15):</span>
-              <strong id="rotSlotAmount" class="text-gold">666.67 €</strong>
-              <span class="sizing-note">(~6.67% на позиция | 333.33 € при Quantamental спад)</span>
+              <span>Базов размер на слот (1/8 InvVol):</span>
+              <strong id="rotSlotAmount" class="text-gold">1,250.00 €</strong>
+              <span class="sizing-note">(~12.5% базов слот | 7%–20% според волатилност)</span>
             </div>
           </div>
           <div class="rotation-kpis-right">
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Бектест CAGR:</span> <strong class="text-success">+49.6%</strong></div>
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Sharpe:</span> <strong class="text-gold">1.72</strong></div>
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Max Drawdown:</span> <strong class="text-info">-31.2%</strong></div>
-            <div class="rot-kpi-pill"><span class="kpi-lbl">Win Rate:</span> <strong>35.2%</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Walk-Forward CAGR:</span> <strong id="rotKpiCagr" class="text-success">+41.7%</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Sharpe:</span> <strong id="rotKpiSharpe" class="text-gold">1.55</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Max Drawdown:</span> <strong id="rotKpiMaxDd" class="text-info">-31.0%</strong></div>
+            <div class="rot-kpi-pill"><span class="kpi-lbl">Win Rate:</span> <strong id="rotKpiWinRate">46.7%</strong></div>
           </div>
         </section>
 
@@ -672,14 +690,14 @@
           </div>
         </section>
 
-        <!-- Top 15 Holdings Table -->
+        <!-- Top 8 Focus Holdings Table -->
         <section class="portfolio-positions-section" style="margin-top: 18px;">
           <div class="section-title-bar">
             <div class="section-title-left">
               <span class="title-accent-dot dot-success"></span>
-              <h3>🏆 Топ 15 Активни Позиции за Портфейла (S/A-Tier Лидери в GOLD)</h3>
+              <h3>🏆 Топ 8 Фокус Активни Позиции (S/A-Лидери в GOLD • Клъстерен лимит &amp; InvVol)</h3>
             </div>
-            <span class="badge" id="rotTop15Count">15 Активни</span>
+            <span class="badge" id="rotTop15Count">8 Активни</span>
           </div>
           <div class="table-container">
             <table class="assets-table">
@@ -700,9 +718,23 @@
                 </tr>
               </thead>
               <tbody id="rotTop15Body">
-                <tr><td colspan="12" class="loading-state">Зареждане на Топ 15 ротацията...</td></tr>
+                <tr><td colspan="12" class="loading-state">Зареждане на Топ 8 фокус ротацията...</td></tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <!-- Dedicated Core-20 Focus Watchlist Grid -->
+        <section class="portfolio-positions-section" id="rotCoreWatchlistSection" style="margin-top: 16px;">
+          <div class="section-title-bar">
+            <div class="section-title-left">
+              <span class="title-accent-dot dot-gold"></span>
+              <h3>🎯 Core-20 Фокус Списък (Концентрирани Лидери — Live Състояние)</h3>
+            </div>
+            <span class="badge" id="rotCoreCount">0 / 20 GOLD</span>
+          </div>
+          <div id="rotCoreWatchlistGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 8px; padding: 10px 0;">
+            <div style="color:#8b949e; font-size:0.82rem;">Зареждане на Core-20 лидерите...</div>
           </div>
         </section>
 

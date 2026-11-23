@@ -3,25 +3,25 @@
   "name": "GE Vernova Inc.",
   "sector": "Industrials",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T09:21:56.370367+00:00",
+  "generated_at": "2026-11-20T09:42:01.227790+00:00",
   "backtest_start_date": "2024-10-30",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 2.0,
-  "backtest_total_bars": 515,
-  "current_price": 772.22,
+  "backtest_total_bars": 516,
+  "current_price": 756.28,
   "state": "BLUE",
-  "v1": 852.54,
-  "v2": 893.58,
-  "sma200": 951.26,
-  "rsi14": 39.2,
-  "atr14": 53.66,
-  "empirical_tier": "A",
+  "v1": 847.73,
+  "v2": 889.67,
+  "sma200": 951.31,
+  "rsi14": 37.5,
+  "atr14": 53.56,
+  "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 147.1,
-    "cagr_pct": 55.7,
+    "cagr_pct": 55.6,
     "sharpe_ratio": 1.29,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 141.6,
-      "cagr_pct": 54.0,
+      "cagr_pct": 53.9,
       "sharpe_ratio": 1.15,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 100.5,
-      "cagr_pct": 40.6,
+      "cagr_pct": 40.5,
       "sharpe_ratio": 1.0,
       "win_rate_pct": 50.0,
       "profit_factor": 2.45,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 51.0,
-      "cagr_pct": 22.4,
+      "cagr_pct": 22.3,
       "sharpe_ratio": 0.7,
       "win_rate_pct": 33.3,
       "profit_factor": 8.41,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 147.1,
-      "cagr_pct": 55.7,
+      "cagr_pct": 55.6,
       "sharpe_ratio": 1.29,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 158.1,
-      "cagr_pct": 59.0,
-      "sharpe_ratio": 1.13,
+      "total_return_pct": 152.8,
+      "cagr_pct": 57.3,
+      "sharpe_ratio": 1.11,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.13,
+      "profit_factor": 3.99,
       "max_drawdown_pct": 38.3,
       "total_trades": 1
     }
@@ -7331,6 +7331,20 @@
       "v2": 893.58,
       "sma200": 951.26,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 796.11,
+      "high": 806.49,
+      "low": 754.29,
+      "close": 756.28,
+      "volume": 3180700.0,
+      "v1": 847.73,
+      "m1": 862.53,
+      "m2": 880.24,
+      "v2": 889.67,
+      "sma200": 951.31,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -9414,6 +9428,10 @@
         {
           "time": "2026-11-18",
           "value": 24712.36
+        },
+        {
+          "time": "2026-11-19",
+          "value": 24712.36
         }
       ]
     },
@@ -11480,6 +11498,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 24160.8
+        },
+        {
+          "time": "2026-11-19",
           "value": 24160.8
         }
       ]
@@ -13548,6 +13570,10 @@
         {
           "time": "2026-11-18",
           "value": 20053.02
+        },
+        {
+          "time": "2026-11-19",
+          "value": 20053.02
         }
       ]
     },
@@ -15615,6 +15641,10 @@
         {
           "time": "2026-11-18",
           "value": 25838.7
+        },
+        {
+          "time": "2026-11-19",
+          "value": 25305.34
         }
       ]
     }
@@ -15639,10 +15669,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $1360.00. Залог за рязък отскок.",
-    "cmf_20d": -0.066,
-    "up_down_vol_ratio": 0.79,
-    "absorption_5d_pct": 33.3,
-    "vol_shock_ratio": 0.7,
+    "cmf_20d": -0.056,
+    "up_down_vol_ratio": 0.83,
+    "absorption_5d_pct": 22.1,
+    "vol_shock_ratio": 0.71,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
     "gamma_wall": 1360.0,

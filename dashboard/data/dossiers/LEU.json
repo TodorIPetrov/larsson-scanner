@@ -3,20 +3,20 @@
   "name": "Centrus Energy Corp.",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:22:26.523291+00:00",
+  "generated_at": "2026-11-20T09:42:11.964275+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 91.76,
+  "backtest_total_bars": 1161,
+  "current_price": 89.7,
   "state": "BLUE",
-  "v1": 111.53,
-  "v2": 126.86,
-  "sma200": 172.42,
-  "rsi14": 37.0,
-  "atr14": 8.89,
-  "empirical_tier": "B",
-  "walk_forward_stable": false,
+  "v1": 110.27,
+  "v2": 125.68,
+  "sma200": 171.62,
+  "rsi14": 35.9,
+  "atr14": 8.83,
+  "empirical_tier": "A",
+  "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 175.3,
-      "cagr_pct": 24.6,
-      "sharpe_ratio": 0.69,
+      "total_return_pct": 169.1,
+      "cagr_pct": 24.0,
+      "sharpe_ratio": 0.68,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.2,
+      "profit_factor": 2.12,
       "max_drawdown_pct": 79.6,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 126.86,
       "sma200": 172.42,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 94.93,
+      "high": 96.61,
+      "low": 88.68,
+      "close": 89.7,
+      "volume": 448100.0,
+      "v1": 110.27,
+      "m1": 115.08,
+      "m2": 121.71,
+      "v2": 125.68,
+      "sma200": 171.62,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21080,6 +21094,10 @@
         {
           "time": "2026-11-18",
           "value": 32767.21
+        },
+        {
+          "time": "2026-11-19",
+          "value": 32767.21
         }
       ]
     },
@@ -25726,6 +25744,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 18312.44
+        },
+        {
+          "time": "2026-11-19",
           "value": 18312.44
         }
       ]
@@ -30374,6 +30396,10 @@
         {
           "time": "2026-11-18",
           "value": 12822.68
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12822.68
         }
       ]
     },
@@ -35021,6 +35047,10 @@
         {
           "time": "2026-11-18",
           "value": 27552.82
+        },
+        {
+          "time": "2026-11-19",
+          "value": 26934.26
         }
       ]
     }
@@ -35093,10 +35123,10 @@
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
     "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.04).",
-    "cmf_20d": -0.035,
-    "up_down_vol_ratio": 0.52,
-    "absorption_5d_pct": 24.7,
-    "vol_shock_ratio": 0.6,
+    "cmf_20d": -0.045,
+    "up_down_vol_ratio": 0.53,
+    "absorption_5d_pct": 27.3,
+    "vol_shock_ratio": 0.55,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 70.0,

@@ -3,19 +3,19 @@
   "name": "Zinc Futures (COMEX)",
   "sector": "Суровини & Базови метали",
   "asset_class": "commodities",
-  "generated_at": "2026-11-19T09:24:58.878487+00:00",
+  "generated_at": "2026-11-20T09:43:01.146736+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1161,
+  "backtest_total_bars": 1162,
   "current_price": 4193.5,
   "state": "GOLD",
-  "v1": 4117.59,
-  "v2": 4037.45,
-  "sma200": 3219.9,
+  "v1": 4122.65,
+  "v2": 4042.83,
+  "sma200": 3229.38,
   "rsi14": 84.4,
-  "atr14": 7.93,
-  "empirical_tier": "S",
+  "atr14": 7.36,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "CLASSIC_BLUE_EXIT",
   "winning_strategy_name": "Класически Larsson (Изход на BLUE)",
@@ -16375,6 +16375,20 @@
       "v2": 4037.45,
       "sma200": 3219.9,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 4193.5,
+      "high": 4193.5,
+      "low": 4193.5,
+      "close": 4193.5,
+      "volume": 0.0,
+      "v1": 4122.65,
+      "m1": 4103.1,
+      "m2": 4069.79,
+      "v2": 4042.83,
+      "sma200": 3229.38,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -16386,7 +16400,7 @@
       "text": "BUY #1 @ $2297.0"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
@@ -21042,6 +21056,10 @@
         {
           "time": "2026-11-18",
           "value": 18229.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 18229.95
         }
       ]
     },
@@ -25692,6 +25710,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 18229.95
+        },
+        {
+          "time": "2026-11-19",
           "value": 18229.95
         }
       ]
@@ -30344,6 +30366,10 @@
         {
           "time": "2026-11-18",
           "value": 10000.0
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10000.0
         }
       ]
     },
@@ -34995,6 +35021,10 @@
         {
           "time": "2026-11-18",
           "value": 18238.16
+        },
+        {
+          "time": "2026-11-19",
+          "value": 18238.16
         }
       ]
     }
@@ -35004,9 +35034,9 @@
       "num": 1,
       "entry_date": "2022-04-06",
       "entry_price": 2297.0,
-      "exit_date": "2026-11-18",
+      "exit_date": "2026-11-19",
       "exit_price": 4193.5,
-      "holding_days": 1160,
+      "holding_days": 1161,
       "pnl_pct": 82.2,
       "pnl_eur": 8211.73,
       "exit_reason": "Край на Бектеста (Отворена)",

@@ -3,19 +3,19 @@
   "name": "ARKW",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:19:56.861641+00:00",
+  "generated_at": "2026-11-20T09:41:31.508182+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 135.46,
+  "backtest_total_bars": 1161,
+  "current_price": 131.62,
   "state": "BLUE",
-  "v1": 147.86,
-  "v2": 150.85,
-  "sma200": 142.91,
-  "rsi14": 34.1,
-  "atr14": 4.61,
-  "empirical_tier": "S",
+  "v1": 147.07,
+  "v2": 150.34,
+  "sma200": 142.95,
+  "rsi14": 30.9,
+  "atr14": 4.9,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -21.3,
-      "cagr_pct": -5.1,
-      "sharpe_ratio": -0.44,
+      "total_return_pct": -22.3,
+      "cagr_pct": -5.3,
+      "sharpe_ratio": -0.47,
       "win_rate_pct": 25.0,
-      "profit_factor": 0.58,
+      "profit_factor": 0.56,
       "max_drawdown_pct": 25.5,
       "total_trades": 8
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 59.6,
-      "cagr_pct": 10.7,
-      "sharpe_ratio": 0.47,
+      "total_return_pct": 55.1,
+      "cagr_pct": 10.0,
+      "sharpe_ratio": 0.45,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.06,
+      "profit_factor": 0.98,
       "max_drawdown_pct": 56.4,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 150.85,
       "sma200": 142.91,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 138.56,
+      "high": 140.28,
+      "low": 131.62,
+      "close": 131.62,
+      "volume": 81800.0,
+      "v1": 147.07,
+      "m1": 148.63,
+      "m2": 149.92,
+      "v2": 150.34,
+      "sma200": 142.95,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21108,6 +21122,10 @@
         {
           "time": "2026-11-18",
           "value": 14258.03
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14258.03
         }
       ]
     },
@@ -25754,6 +25772,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 14938.12
+        },
+        {
+          "time": "2026-11-19",
           "value": 14938.12
         }
       ]
@@ -30402,6 +30424,10 @@
         {
           "time": "2026-11-18",
           "value": 13760.0
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13760.0
         }
       ]
     },
@@ -35049,6 +35075,10 @@
         {
           "time": "2026-11-18",
           "value": 15976.83
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15523.92
         }
       ]
     }
@@ -35141,14 +35171,14 @@
   ],
   "smart_money": {
     "symbol": "ARKW",
-    "smart_money_score": 42.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.02, P/C: 2.00).",
-    "cmf_20d": 0.019,
-    "up_down_vol_ratio": 1.32,
-    "absorption_5d_pct": 41.9,
-    "vol_shock_ratio": 3.14,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.01).",
+    "cmf_20d": -0.011,
+    "up_down_vol_ratio": 1.26,
+    "absorption_5d_pct": 31.3,
+    "vol_shock_ratio": 0.86,
     "put_call_ratio": 2.0,
     "options_sentiment": "BEARISH",
     "gamma_wall": 135.0,

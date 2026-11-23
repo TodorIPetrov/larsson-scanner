@@ -2,21 +2,21 @@
   "ticker": "NNE",
   "name": "NNE",
   "sector": "Equities",
-  "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:23:29.397795+00:00",
+  "asset_class": "ai_stocks",
+  "generated_at": "2026-11-20T09:42:25.384945+00:00",
   "backtest_start_date": "2025-05-21",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 1.5,
-  "backtest_total_bars": 377,
-  "current_price": 10.35,
+  "backtest_total_bars": 378,
+  "current_price": 9.97,
   "state": "BLUE",
-  "v1": 12.3,
-  "v2": 14.0,
-  "sma200": 20.28,
-  "rsi14": 36.7,
-  "atr14": 0.99,
-  "empirical_tier": "A",
-  "walk_forward_stable": true,
+  "v1": 12.17,
+  "v2": 13.87,
+  "sma200": 20.19,
+  "rsi14": 34.7,
+  "atr14": 0.98,
+  "empirical_tier": "C",
+  "walk_forward_stable": false,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
@@ -69,12 +69,12 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -24.5,
-      "cagr_pct": -17.1,
-      "sharpe_ratio": -0.55,
+      "total_return_pct": -25.8,
+      "cagr_pct": -18.1,
+      "sharpe_ratio": -0.59,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
-      "max_drawdown_pct": 39.1,
+      "max_drawdown_pct": 40.2,
       "total_trades": 5
     },
     {
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -59.7,
-      "cagr_pct": -45.5,
-      "sharpe_ratio": -0.15,
+      "total_return_pct": -61.2,
+      "cagr_pct": -46.8,
+      "sharpe_ratio": -0.18,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 83.0,
@@ -5399,6 +5399,20 @@
       "v2": 14.0,
       "sma200": 20.28,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 10.63,
+      "high": 10.86,
+      "low": 9.93,
+      "close": 9.97,
+      "volume": 1789800.0,
+      "v1": 12.17,
+      "m1": 12.69,
+      "m2": 13.42,
+      "v2": 13.87,
+      "sma200": 20.19,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -6930,6 +6944,10 @@
         {
           "time": "2026-11-18",
           "value": 10102.37
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10102.37
         }
       ]
     },
@@ -8444,6 +8462,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 9471.5
+        },
+        {
+          "time": "2026-11-19",
           "value": 9471.5
         }
       ]
@@ -9960,6 +9982,10 @@
         {
           "time": "2026-11-18",
           "value": 9471.5
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9471.5
         }
       ]
     },
@@ -11475,6 +11501,10 @@
         {
           "time": "2026-11-18",
           "value": 4034.2
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3886.08
         }
       ]
     }
@@ -11495,14 +11525,14 @@
   ],
   "smart_money": {
     "symbol": "NNE",
-    "smart_money_score": 60.0,
+    "smart_money_score": 53.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $30.00. Залог за рязък отскок.",
-    "cmf_20d": -0.115,
+    "cmf_20d": -0.138,
     "up_down_vol_ratio": 0.57,
-    "absorption_5d_pct": 47.6,
-    "vol_shock_ratio": 0.82,
+    "absorption_5d_pct": 43.2,
+    "vol_shock_ratio": 0.89,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
     "gamma_wall": 30.0,

@@ -3,17 +3,17 @@
   "name": "The Kraft Heinz Company",
   "sector": "Consumer Defensive",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:22:22.184286+00:00",
+  "generated_at": "2026-11-20T09:42:10.273076+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 25.44,
+  "backtest_total_bars": 1161,
+  "current_price": 24.92,
   "state": "GOLD",
-  "v1": 24.39,
-  "v2": 24.23,
-  "sma200": 23.48,
-  "rsi14": 61.7,
+  "v1": 24.43,
+  "v2": 24.25,
+  "sma200": 23.49,
+  "rsi14": 55.0,
   "atr14": 0.71,
   "empirical_tier": "C",
   "walk_forward_stable": false,
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -26.3,
-      "cagr_pct": -6.4,
-      "sharpe_ratio": -0.39,
+      "total_return_pct": -27.8,
+      "cagr_pct": -6.8,
+      "sharpe_ratio": -0.42,
       "win_rate_pct": 13.3,
-      "profit_factor": 0.21,
+      "profit_factor": 0.16,
       "max_drawdown_pct": 37.0,
       "total_trades": 15
     },
@@ -45,11 +45,11 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -16.8,
-      "cagr_pct": -3.9,
-      "sharpe_ratio": -0.23,
+      "total_return_pct": -18.5,
+      "cagr_pct": -4.3,
+      "sharpe_ratio": -0.26,
       "win_rate_pct": 29.4,
-      "profit_factor": 0.54,
+      "profit_factor": 0.49,
       "max_drawdown_pct": 34.0,
       "total_trades": 17
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -29.7,
-      "cagr_pct": -7.4,
-      "sharpe_ratio": -0.49,
+      "total_return_pct": -31.1,
+      "cagr_pct": -7.8,
+      "sharpe_ratio": -0.52,
       "win_rate_pct": 29.4,
-      "profit_factor": 0.3,
+      "profit_factor": 0.26,
       "max_drawdown_pct": 38.0,
       "total_trades": 34
     },
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -19.2,
-      "cagr_pct": -4.5,
-      "sharpe_ratio": -0.09,
+      "total_return_pct": -20.9,
+      "cagr_pct": -5.0,
+      "sharpe_ratio": -0.11,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 41.7,
@@ -16354,12 +16354,26 @@
       "high": 25.61,
       "low": 24.83,
       "close": 25.44,
-      "volume": 15194500.0,
+      "volume": 15205600.0,
       "v1": 24.39,
       "m1": 24.31,
       "m2": 24.25,
       "v2": 24.23,
       "sma200": 23.48,
+      "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 25.04,
+      "high": 25.11,
+      "low": 24.73,
+      "close": 24.92,
+      "volume": 19841800.0,
+      "v1": 24.43,
+      "m1": 24.34,
+      "m2": 24.28,
+      "v2": 24.25,
+      "sma200": 23.49,
       "state": "GOLD"
     }
   ],
@@ -21136,6 +21150,10 @@
         {
           "time": "2026-11-18",
           "value": 10115.82
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10115.82
         }
       ]
     },
@@ -25783,6 +25801,10 @@
         {
           "time": "2026-11-18",
           "value": 8328.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8158.84
         }
       ]
     },
@@ -30430,6 +30452,10 @@
         {
           "time": "2026-11-18",
           "value": 7036.59
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6892.83
         }
       ]
     },
@@ -35077,6 +35103,10 @@
         {
           "time": "2026-11-18",
           "value": 8084.9
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7919.64
         }
       ]
     }
@@ -35193,14 +35223,14 @@
   ],
   "smart_money": {
     "symbol": "KHC",
-    "smart_money_score": 77.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 1.26x). Силна скрита подкрепа.",
-    "cmf_20d": 0.04,
-    "up_down_vol_ratio": 1.26,
-    "absorption_5d_pct": 54.7,
-    "vol_shock_ratio": 1.08,
+    "smart_money_score": 55.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.03, P/C: 1.00).",
+    "cmf_20d": -0.026,
+    "up_down_vol_ratio": 0.95,
+    "absorption_5d_pct": 53.8,
+    "vol_shock_ratio": 1.38,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 12.5,

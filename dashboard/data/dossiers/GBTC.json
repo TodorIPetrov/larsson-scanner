@@ -3,17 +3,17 @@
   "name": "GBTC",
   "sector": "Equities",
   "asset_class": "crypto_stocks",
-  "generated_at": "2026-11-19T09:21:54.162445+00:00",
+  "generated_at": "2026-11-20T09:42:00.207769+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 48.19,
-  "state": "NEUTRAL",
-  "v1": 58.0,
-  "v2": 58.86,
-  "sma200": 56.01,
-  "rsi14": 21.0,
+  "backtest_total_bars": 1161,
+  "current_price": 47.83,
+  "state": "BLUE",
+  "v1": 57.37,
+  "v2": 58.5,
+  "sma200": 55.96,
+  "rsi14": 20.6,
   "atr14": 1.86,
   "empirical_tier": "A",
   "walk_forward_stable": true,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 257.3,
-      "cagr_pct": 31.9,
+      "cagr_pct": 31.8,
       "sharpe_ratio": 0.91,
       "win_rate_pct": 50.0,
       "profit_factor": 2.83,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 70.6,
-      "cagr_pct": 12.3,
+      "total_return_pct": 69.3,
+      "cagr_pct": 12.1,
       "sharpe_ratio": 0.5,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.95,
+      "profit_factor": 0.93,
       "max_drawdown_pct": 74.3,
       "total_trades": 1
     }
@@ -16354,13 +16354,27 @@
       "high": 49.31,
       "low": 47.91,
       "close": 48.19,
-      "volume": 1141100.0,
+      "volume": 1173800.0,
       "v1": 58.0,
       "m1": 58.58,
       "m2": 58.86,
       "v2": 58.86,
       "sma200": 56.01,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 49.2,
+      "high": 49.31,
+      "low": 47.54,
+      "close": 47.83,
+      "volume": 1637700.0,
+      "v1": 57.37,
+      "m1": 58.04,
+      "m2": 58.44,
+      "v2": 58.5,
+      "sma200": 55.96,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21080,6 +21094,10 @@
         {
           "time": "2026-11-18",
           "value": 45110.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 45110.95
         }
       ]
     },
@@ -25726,6 +25744,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 46183.2
+        },
+        {
+          "time": "2026-11-19",
           "value": 46183.2
         }
       ]
@@ -30374,6 +30396,10 @@
         {
           "time": "2026-11-18",
           "value": 35727.47
+        },
+        {
+          "time": "2026-11-19",
+          "value": 35727.47
         }
       ]
     },
@@ -35021,6 +35047,10 @@
         {
           "time": "2026-11-18",
           "value": 17075.61
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16948.05
         }
       ]
     }
@@ -35092,11 +35122,11 @@
     "smart_money_score": 32.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.06).",
-    "cmf_20d": -0.061,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.09).",
+    "cmf_20d": -0.092,
     "up_down_vol_ratio": 0.28,
-    "absorption_5d_pct": 37.6,
-    "vol_shock_ratio": 0.63,
+    "absorption_5d_pct": 37.1,
+    "vol_shock_ratio": 0.93,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 40.0,

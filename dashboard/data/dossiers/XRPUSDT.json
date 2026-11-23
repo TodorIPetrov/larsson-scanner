@@ -3,17 +3,17 @@
   "name": "Ripple",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-19T09:24:58.273215+00:00",
+  "generated_at": "2026-11-20T09:43:00.814777+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1755,
-  "current_price": 0.98,
+  "backtest_total_bars": 1757,
+  "current_price": 0.96,
   "state": "BLUE",
-  "v1": 1.14,
-  "v2": 1.22,
-  "sma200": 1.25,
-  "rsi14": 30.8,
+  "v1": 1.12,
+  "v2": 1.21,
+  "sma200": 1.24,
+  "rsi14": 28.7,
   "atr14": 0.06,
   "empirical_tier": "C",
   "walk_forward_stable": true,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": -76.3,
-      "cagr_pct": -18.7,
+      "cagr_pct": -18.6,
       "sharpe_ratio": -0.35,
       "win_rate_pct": 20.8,
       "profit_factor": 0.48,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 60.8,
-      "cagr_pct": 7.1,
-      "sharpe_ratio": 0.42,
+      "total_return_pct": 56.4,
+      "cagr_pct": 6.6,
+      "sharpe_ratio": 0.41,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.82,
+      "profit_factor": 0.76,
       "max_drawdown_pct": 74.2,
       "total_trades": 1
     }
@@ -24682,14 +24682,42 @@
       "time": "2026-11-18",
       "open": 0.98,
       "high": 1.01,
-      "low": 0.97,
-      "close": 0.98,
-      "volume": 55238443.0,
+      "low": 0.96,
+      "close": 0.97,
+      "volume": 102161358.0,
       "v1": 1.14,
       "m1": 1.18,
       "m2": 1.21,
       "v2": 1.22,
       "sma200": 1.25,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 0.97,
+      "high": 1.0,
+      "low": 0.95,
+      "close": 0.96,
+      "volume": 116559669.0,
+      "v1": 1.13,
+      "m1": 1.17,
+      "m2": 1.2,
+      "v2": 1.22,
+      "sma200": 1.25,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 0.96,
+      "high": 0.97,
+      "low": 0.95,
+      "close": 0.96,
+      "volume": 38325400.0,
+      "v1": 1.12,
+      "m1": 1.16,
+      "m2": 1.19,
+      "v2": 1.21,
+      "sma200": 1.24,
       "state": "BLUE"
     }
   ],
@@ -31860,6 +31888,14 @@
         {
           "time": "2026-11-18",
           "value": 6665.99
+        },
+        {
+          "time": "2026-11-19",
+          "value": 6665.99
+        },
+        {
+          "time": "2026-11-20",
+          "value": 6665.99
         }
       ]
     },
@@ -38886,6 +38922,14 @@
         },
         {
           "time": "2026-11-18",
+          "value": 7792.76
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7792.76
+        },
+        {
+          "time": "2026-11-20",
           "value": 7792.76
         }
       ]
@@ -45914,6 +45958,14 @@
         {
           "time": "2026-11-18",
           "value": 3863.32
+        },
+        {
+          "time": "2026-11-19",
+          "value": 3863.32
+        },
+        {
+          "time": "2026-11-20",
+          "value": 3863.32
         }
       ]
     },
@@ -52940,7 +52992,15 @@
         },
         {
           "time": "2026-11-18",
-          "value": 16096.45
+          "value": 15816.96
+        },
+        {
+          "time": "2026-11-19",
+          "value": 15697.64
+        },
+        {
+          "time": "2026-11-20",
+          "value": 15651.87
         }
       ]
     }
@@ -53069,14 +53129,14 @@
   ],
   "smart_money": {
     "symbol": "XRPUSDT",
-    "smart_money_score": 30.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.12).",
-    "cmf_20d": -0.122,
-    "up_down_vol_ratio": 0.42,
-    "absorption_5d_pct": 54.0,
-    "vol_shock_ratio": 0.5,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.21).",
+    "cmf_20d": -0.206,
+    "up_down_vol_ratio": 0.26,
+    "absorption_5d_pct": 39.8,
+    "vol_shock_ratio": 0.36,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

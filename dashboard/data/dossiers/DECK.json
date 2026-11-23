@@ -3,25 +3,25 @@
   "name": "Deckers Outdoor Corporation",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:21:29.600300+00:00",
+  "generated_at": "2026-11-20T09:41:50.932905+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 83.6,
+  "backtest_total_bars": 1161,
+  "current_price": 78.95,
   "state": "BLUE",
-  "v1": 84.73,
-  "v2": 85.73,
-  "sma200": 98.1,
-  "rsi14": 47.8,
-  "atr14": 3.33,
-  "empirical_tier": "A",
-  "walk_forward_stable": false,
+  "v1": 84.49,
+  "v2": 85.57,
+  "sma200": 97.94,
+  "rsi14": 40.3,
+  "atr14": 3.44,
+  "empirical_tier": "B",
+  "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 137.4,
-    "cagr_pct": 20.7,
+    "cagr_pct": 20.6,
     "sharpe_ratio": 0.79,
     "win_rate_pct": 16.7,
     "profit_factor": 3.49,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": -6.9,
-      "cagr_pct": -1.5,
-      "sharpe_ratio": -0.07,
-      "win_rate_pct": 42.9,
-      "profit_factor": 1.44,
+      "total_return_pct": -9.5,
+      "cagr_pct": -2.1,
+      "sharpe_ratio": -0.12,
+      "win_rate_pct": 28.6,
+      "profit_factor": 1.27,
       "max_drawdown_pct": 19.8,
       "total_trades": 7
     },
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 137.4,
-      "cagr_pct": 20.7,
+      "cagr_pct": 20.6,
       "sharpe_ratio": 0.79,
       "win_rate_pct": 16.7,
       "profit_factor": 3.49,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 85.0,
-      "cagr_pct": 14.3,
-      "sharpe_ratio": 0.53,
+      "total_return_pct": 74.7,
+      "cagr_pct": 12.9,
+      "sharpe_ratio": 0.5,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.3,
+      "profit_factor": 1.14,
       "max_drawdown_pct": 65.3,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 85.73,
       "sma200": 98.1,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 82.92,
+      "high": 83.32,
+      "low": 78.76,
+      "close": 78.95,
+      "volume": 3820600.0,
+      "v1": 84.49,
+      "m1": 84.58,
+      "m2": 85.08,
+      "v2": 85.57,
+      "sma200": 97.94,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21094,6 +21108,10 @@
         {
           "time": "2026-11-18",
           "value": 23735.12
+        },
+        {
+          "time": "2026-11-19",
+          "value": 23735.12
         }
       ]
     },
@@ -25741,6 +25759,10 @@
         {
           "time": "2026-11-18",
           "value": 9316.32
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9052.25
         }
       ]
     },
@@ -30387,6 +30409,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 12384.45
+        },
+        {
+          "time": "2026-11-19",
           "value": 12384.45
         }
       ]
@@ -35035,6 +35061,10 @@
         {
           "time": "2026-11-18",
           "value": 18518.05
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17488.04
         }
       ]
     }
@@ -35115,18 +35145,18 @@
   ],
   "smart_money": {
     "symbol": "DECK",
-    "smart_money_score": 80.0,
-    "flow_verdict": "STEALTH_ACCUMULATION",
-    "flow_label_bg": "🐋 СКРИТА АКУМУЛАЦИЯ",
-    "flow_desc_bg": "Институциите тихомълком купуват (CMF: +0.04, Up/Dn Vol: 0.56x). Силна скрита подкрепа.",
-    "cmf_20d": 0.035,
-    "up_down_vol_ratio": 0.56,
-    "absorption_5d_pct": 37.0,
-    "vol_shock_ratio": 0.88,
+    "smart_money_score": 70.0,
+    "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
+    "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.16) с Gamma стена на $130.00. Залог за рязък отскок.",
+    "cmf_20d": 0.036,
+    "up_down_vol_ratio": 0.61,
+    "absorption_5d_pct": 37.6,
+    "vol_shock_ratio": 1.0,
     "put_call_ratio": 0.16,
     "options_sentiment": "BULLISH",
     "gamma_wall": 130.0,
     "max_pain": 130.0,
-    "unusual_call_sweep": true
+    "unusual_call_sweep": false
   }
 }

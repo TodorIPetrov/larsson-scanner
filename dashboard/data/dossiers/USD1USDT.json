@@ -3,11 +3,11 @@
   "name": "USD1USDT",
   "sector": "Equities",
   "asset_class": "crypto",
-  "generated_at": "2026-11-19T09:24:47.761097+00:00",
-  "backtest_start_date": "2025-10-05",
-  "backtest_end_date": "2026-11-18",
+  "generated_at": "2026-11-20T09:42:56.707678+00:00",
+  "backtest_start_date": "2025-10-06",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 1.6,
-  "backtest_total_bars": 410,
+  "backtest_total_bars": 411,
   "current_price": 1.0,
   "state": "BLUE",
   "v1": 1.0,
@@ -47,7 +47,7 @@
       "is_winner": false,
       "total_return_pct": -6.3,
       "cagr_pct": -3.9,
-      "sharpe_ratio": -4.43,
+      "sharpe_ratio": -4.42,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 6.3,
@@ -59,7 +59,7 @@
       "is_winner": false,
       "total_return_pct": -10.5,
       "cagr_pct": -6.6,
-      "sharpe_ratio": -7.45,
+      "sharpe_ratio": -7.44,
       "win_rate_pct": 0.0,
       "profit_factor": 0.0,
       "max_drawdown_pct": 10.5,
@@ -95,7 +95,7 @@
       "is_winner": false,
       "total_return_pct": -0.1,
       "cagr_pct": -0.1,
-      "sharpe_ratio": 0.08,
+      "sharpe_ratio": 0.04,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 0.4,
@@ -122,20 +122,6 @@
     "last_fundamental_update": null
   },
   "candles": [
-    {
-      "time": "2025-10-05",
-      "open": 1.0,
-      "high": 1.0,
-      "low": 1.0,
-      "close": 1.0,
-      "volume": 2002783.0,
-      "v1": 1.0,
-      "m1": 1.0,
-      "m2": 1.0,
-      "v2": 1.0,
-      "sma200": null,
-      "state": "BLUE"
-    },
     {
       "time": "2025-10-06",
       "open": 1.0,
@@ -5854,7 +5840,35 @@
       "high": 1.0,
       "low": 1.0,
       "close": 1.0,
-      "volume": 80964025.0,
+      "volume": 162598205.0,
+      "v1": 1.0,
+      "m1": 1.0,
+      "m2": 1.0,
+      "v2": 1.0,
+      "sma200": 1.0,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1.0,
+      "high": 1.0,
+      "low": 1.0,
+      "close": 1.0,
+      "volume": 206763826.0,
+      "v1": 1.0,
+      "m1": 1.0,
+      "m2": 1.0,
+      "v2": 1.0,
+      "sma200": 1.0,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 1.0,
+      "high": 1.0,
+      "low": 1.0,
+      "close": 1.0,
+      "volume": 61480780.0,
       "v1": 1.0,
       "m1": 1.0,
       "m2": 1.0,
@@ -5885,10 +5899,6 @@
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
       "curve": [
-        {
-          "time": "2025-10-05",
-          "value": 10000.0
-        },
         {
           "time": "2025-10-06",
           "value": 10000.0
@@ -7524,6 +7534,14 @@
         {
           "time": "2026-11-18",
           "value": 9981.74
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9981.74
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9981.74
         }
       ]
     },
@@ -7532,10 +7550,6 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
       "curve": [
-        {
-          "time": "2025-10-05",
-          "value": 10000.0
-        },
         {
           "time": "2025-10-06",
           "value": 10000.0
@@ -9171,6 +9185,14 @@
         {
           "time": "2026-11-18",
           "value": 9790.28
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9790.28
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9790.28
         }
       ]
     },
@@ -9179,10 +9201,6 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "curve": [
-        {
-          "time": "2025-10-05",
-          "value": 10000.0
-        },
         {
           "time": "2025-10-06",
           "value": 10000.0
@@ -10818,6 +10836,14 @@
         {
           "time": "2026-11-18",
           "value": 9509.02
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9509.02
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9509.02
         }
       ]
     },
@@ -10826,10 +10852,6 @@
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
       "curve": [
-        {
-          "time": "2025-10-05",
-          "value": 9990.0
-        },
         {
           "time": "2025-10-06",
           "value": 9994.0
@@ -12464,7 +12486,15 @@
         },
         {
           "time": "2026-11-18",
-          "value": 9996.4
+          "value": 9995.8
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9998.5
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9997.1
         }
       ]
     }
@@ -12485,14 +12515,14 @@
   ],
   "smart_money": {
     "symbol": "USD1USDT",
-    "smart_money_score": 72.0,
+    "smart_money_score": 65.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: N/A) с Gamma стена на N/A. Залог за рязък отскок.",
-    "cmf_20d": 0.208,
-    "up_down_vol_ratio": 0.71,
-    "absorption_5d_pct": 64.3,
-    "vol_shock_ratio": 0.53,
+    "cmf_20d": 0.193,
+    "up_down_vol_ratio": 0.72,
+    "absorption_5d_pct": 56.1,
+    "vol_shock_ratio": 0.4,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

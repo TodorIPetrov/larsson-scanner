@@ -3,20 +3,20 @@
   "name": "Uber Technologies, Inc.",
   "sector": "Technology",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:24:44.398770+00:00",
+  "generated_at": "2026-11-20T09:42:55.468760+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 68.76,
+  "backtest_total_bars": 1161,
+  "current_price": 65.6,
   "state": "BLUE",
-  "v1": 69.09,
-  "v2": 69.95,
-  "sma200": 72.5,
-  "rsi14": 48.9,
-  "atr14": 2.08,
+  "v1": 68.97,
+  "v2": 69.86,
+  "sma200": 72.46,
+  "rsi14": 39.1,
+  "atr14": 2.21,
   "empirical_tier": "A",
-  "walk_forward_stable": true,
+  "walk_forward_stable": false,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 102.7,
-      "cagr_pct": 16.6,
-      "sharpe_ratio": 0.58,
+      "total_return_pct": 93.4,
+      "cagr_pct": 15.4,
+      "sharpe_ratio": 0.55,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.6,
+      "profit_factor": 2.37,
       "max_drawdown_pct": 39.5,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 70.11,
       "low": 68.02,
       "close": 68.76,
-      "volume": 12235800.0,
+      "volume": 12254200.0,
       "v1": 69.09,
       "m1": 69.32,
       "m2": 69.7,
       "v2": 69.95,
       "sma200": 72.5,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 69.19,
+      "high": 69.26,
+      "low": 65.33,
+      "close": 65.6,
+      "volume": 28749900.0,
+      "v1": 68.97,
+      "m1": 69.21,
+      "m2": 69.6,
+      "v2": 69.86,
+      "sma200": 72.46,
       "state": "BLUE"
     }
   ],
@@ -21108,6 +21122,10 @@
         {
           "time": "2026-11-18",
           "value": 13798.56
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13798.56
         }
       ]
     },
@@ -25754,6 +25772,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 12143.45
+        },
+        {
+          "time": "2026-11-19",
           "value": 12143.45
         }
       ]
@@ -30402,6 +30424,10 @@
         {
           "time": "2026-11-18",
           "value": 13929.81
+        },
+        {
+          "time": "2026-11-19",
+          "value": 13929.81
         }
       ]
     },
@@ -35049,6 +35075,10 @@
         {
           "time": "2026-11-18",
           "value": 20289.84
+        },
+        {
+          "time": "2026-11-19",
+          "value": 19357.38
         }
       ]
     }
@@ -35141,14 +35171,14 @@
   ],
   "smart_money": {
     "symbol": "UBER",
-    "smart_money_score": 40.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: +0.01, P/C: 1.00).",
-    "cmf_20d": 0.006,
-    "up_down_vol_ratio": 0.66,
-    "absorption_5d_pct": 37.2,
-    "vol_shock_ratio": 0.64,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.10).",
+    "cmf_20d": -0.103,
+    "up_down_vol_ratio": 0.51,
+    "absorption_5d_pct": 36.4,
+    "vol_shock_ratio": 1.52,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 35.0,

@@ -3,28 +3,28 @@
   "name": "Chevron Corporation",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:21:26.444252+00:00",
+  "generated_at": "2026-11-20T09:41:49.642427+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 205.88,
+  "backtest_total_bars": 1161,
+  "current_price": 206.5,
   "state": "GOLD",
-  "v1": 216.98,
-  "v2": 213.23,
-  "sma200": 194.51,
-  "rsi14": 36.7,
-  "atr14": 5.15,
-  "empirical_tier": "A",
+  "v1": 216.3,
+  "v2": 213.01,
+  "sma200": 194.66,
+  "rsi14": 37.7,
+  "atr14": 4.96,
+  "empirical_tier": "B",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
-    "total_return_pct": 25.3,
-    "cagr_pct": 5.0,
-    "sharpe_ratio": 0.45,
+    "total_return_pct": 25.7,
+    "cagr_pct": 5.1,
+    "sharpe_ratio": 0.46,
     "win_rate_pct": 83.3,
-    "profit_factor": 21.55,
+    "profit_factor": 21.71,
     "max_drawdown_pct": 20.1,
     "total_trades": 6
   },
@@ -33,7 +33,7 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": -55.0,
+      "total_return_pct": -54.9,
       "cagr_pct": -15.9,
       "sharpe_ratio": -0.66,
       "win_rate_pct": 14.3,
@@ -45,8 +45,8 @@
       "strategy": "FAST_EXIT_NEUTRAL",
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
-      "total_return_pct": -58.7,
-      "cagr_pct": -17.5,
+      "total_return_pct": -58.5,
+      "cagr_pct": -17.4,
       "sharpe_ratio": -0.79,
       "win_rate_pct": 16.3,
       "profit_factor": 0.26,
@@ -57,9 +57,9 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -43.8,
-      "cagr_pct": -11.8,
-      "sharpe_ratio": -0.58,
+      "total_return_pct": -43.6,
+      "cagr_pct": -11.7,
+      "sharpe_ratio": -0.57,
       "win_rate_pct": 22.6,
       "profit_factor": 0.36,
       "max_drawdown_pct": 56.7,
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": true,
-      "total_return_pct": 25.3,
-      "cagr_pct": 5.0,
-      "sharpe_ratio": 0.45,
+      "total_return_pct": 25.7,
+      "cagr_pct": 5.1,
+      "sharpe_ratio": 0.46,
       "win_rate_pct": 83.3,
-      "profit_factor": 21.55,
+      "profit_factor": 21.71,
       "max_drawdown_pct": 20.1,
       "total_trades": 6
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": false,
-      "total_return_pct": -15.1,
-      "cagr_pct": -3.5,
-      "sharpe_ratio": -0.16,
+      "total_return_pct": -14.8,
+      "cagr_pct": -3.4,
+      "sharpe_ratio": -0.15,
       "win_rate_pct": 27.3,
-      "profit_factor": 0.48,
+      "profit_factor": 0.49,
       "max_drawdown_pct": 37.8,
       "total_trades": 11
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 49.0,
+      "total_return_pct": 49.5,
       "cagr_pct": 9.1,
-      "sharpe_ratio": 0.47,
+      "sharpe_ratio": 0.48,
       "win_rate_pct": 100.0,
-      "profit_factor": 1.96,
+      "profit_factor": 1.98,
       "max_drawdown_pct": 24.9,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 213.23,
       "sma200": 194.51,
       "state": "GOLD"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 207.48,
+      "high": 208.11,
+      "low": 205.57,
+      "close": 206.5,
+      "volume": 8582400.0,
+      "v1": 216.3,
+      "m1": 215.71,
+      "m2": 214.2,
+      "v2": 213.01,
+      "sma200": 194.66,
+      "state": "GOLD"
     }
   ],
   "markers": [
@@ -16442,11 +16456,11 @@
       "text": "BUY #6 @ $167.4"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +22.74% ($2321.19 €)"
+      "text": "EXIT +23.11% ($2358.91 €)"
     }
   ],
   "equity_curves": [
@@ -21094,6 +21108,10 @@
         {
           "time": "2026-11-18",
           "value": 12545.86
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12583.62
         }
       ]
     },
@@ -25741,6 +25759,10 @@
         {
           "time": "2026-11-18",
           "value": 8499.64
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8525.21
         }
       ]
     },
@@ -30388,6 +30410,10 @@
         {
           "time": "2026-11-18",
           "value": 5623.88
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5640.81
         }
       ]
     },
@@ -35035,6 +35061,10 @@
         {
           "time": "2026-11-18",
           "value": 14916.7
+        },
+        {
+          "time": "2026-11-19",
+          "value": 14961.62
         }
       ]
     }
@@ -35104,25 +35134,25 @@
       "num": 6,
       "entry_date": "2026-07-06",
       "entry_price": 167.4,
-      "exit_date": "2026-11-18",
-      "exit_price": 205.88,
-      "holding_days": 96,
-      "pnl_pct": 22.74,
-      "pnl_eur": 2321.19,
+      "exit_date": "2026-11-19",
+      "exit_price": 206.5,
+      "holding_days": 97,
+      "pnl_pct": 23.11,
+      "pnl_eur": 2358.91,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "CVX",
-    "smart_money_score": 32.0,
+    "smart_money_score": 25.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.10).",
-    "cmf_20d": -0.105,
-    "up_down_vol_ratio": 0.49,
-    "absorption_5d_pct": 39.0,
-    "vol_shock_ratio": 1.25,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.13).",
+    "cmf_20d": -0.127,
+    "up_down_vol_ratio": 0.6,
+    "absorption_5d_pct": 35.1,
+    "vol_shock_ratio": 1.04,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 95.0,

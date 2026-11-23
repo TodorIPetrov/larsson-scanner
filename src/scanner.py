@@ -467,6 +467,9 @@ class LarssonScanner:
         sr_data: Optional[dict] = None,
         closes: Optional[list] = None,
         fund_profile: Optional[object] = None,
+        prev_m2: Optional[float] = None,
+        prev_v2: Optional[float] = None,
+        recent_states: Optional[list] = None,
     ):
         """
         Evaluates potential pending setups 1-3 bars away and persists them to the pending_setups table.
@@ -487,6 +490,9 @@ class LarssonScanner:
                 self.db.mark_setup_triggered(ticker, "QUALITY_DIP_BUY", timeframe)
                 self.db.mark_setup_triggered(ticker, "DIVERGENCE_FORMING", timeframe)
 
+            sr_atr = sr_data.get("atr", 0.0) if sr_data else 0.0
+            est_atr = float(sr_atr) if sr_atr and float(sr_atr) > 0 else max(abs(v1 - v2) * 1.5, current_price * 0.025)
+
             asset_data = {
                 "symbol": ticker,
                 "asset_class": asset_class,
@@ -497,11 +503,14 @@ class LarssonScanner:
                 "m1": m1,
                 "m2": m2,
                 "v2": v2,
-                "atr": sr_data.get("atr", current_price * 0.01) if sr_data else current_price * 0.01,
+                "prev_m2": prev_m2 if prev_m2 is not None else m2,
+                "prev_v2": prev_v2 if prev_v2 is not None else v2,
+                "atr": est_atr,
                 "sr_analysis": sr_data,
                 "fund_profile": fund_profile,
                 "weekly_state": weekly_state or macro_1d_state,
                 "tier": tier,
+                "recent_states": recent_states or [],
                 "recent_prices": closes[-30:] if closes is not None and len(closes) >= 20 else [],
             }
 
@@ -690,6 +699,9 @@ class LarssonScanner:
                     v2=float(v2[-1]),
                     sr_data=sr_data,
                     closes=list(closes),
+                    prev_m2=float(m2[-2]) if len(m2) >= 2 else float(m2[-1]),
+                    prev_v2=float(v2[-2]) if len(v2) >= 2 else float(v2[-1]),
+                    recent_states=[s.value for s in states[-15:]] if states else [],
                 )
 
                 # Evaluate open paper positions for this ticker (SL/TP/Trailing/SMMA15/Blue exit)
@@ -949,6 +961,9 @@ class LarssonScanner:
                     v2=float(v2[-1]),
                     sr_data=sr_data,
                     closes=list(closes),
+                    prev_m2=float(m2[-2]) if len(m2) >= 2 else float(m2[-1]),
+                    prev_v2=float(v2[-2]) if len(v2) >= 2 else float(v2[-1]),
+                    recent_states=[s.value for s in states[-15:]] if states else [],
                 )
 
                 # Evaluate open paper positions for this symbol (SL/TP/Trailing/SMMA15/Blue exit)

@@ -3,18 +3,18 @@
   "name": "Solana",
   "sector": "Крипто активи",
   "asset_class": "crypto",
-  "generated_at": "2026-11-19T09:24:27.829466+00:00",
+  "generated_at": "2026-11-20T09:42:49.386249+00:00",
   "backtest_start_date": "2022-01-29",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 7.0,
-  "backtest_total_bars": 1755,
-  "current_price": 74.62,
+  "backtest_total_bars": 1757,
+  "current_price": 72.2,
   "state": "BLUE",
-  "v1": 88.09,
-  "v2": 94.11,
-  "sma200": 88.7,
-  "rsi14": 28.6,
-  "atr14": 4.53,
+  "v1": 86.12,
+  "v2": 92.66,
+  "sma200": 88.58,
+  "rsi14": 26.4,
+  "atr14": 4.39,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
@@ -93,9 +93,9 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": -18.5,
-      "cagr_pct": -2.9,
-      "sharpe_ratio": 0.34,
+      "total_return_pct": -21.1,
+      "cagr_pct": -3.3,
+      "sharpe_ratio": 0.33,
       "win_rate_pct": 0.0,
       "profit_factor": 0.1,
       "max_drawdown_pct": 93.0,
@@ -24682,14 +24682,42 @@
       "time": "2026-11-18",
       "open": 75.18,
       "high": 75.66,
-      "low": 74.06,
-      "close": 74.62,
-      "volume": 911934.0,
-      "v1": 88.09,
-      "m1": 90.69,
-      "m2": 93.15,
-      "v2": 94.11,
+      "low": 72.22,
+      "close": 73.64,
+      "volume": 2195108.0,
+      "v1": 88.03,
+      "m1": 90.64,
+      "m2": 93.12,
+      "v2": 94.07,
       "sma200": 88.7,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 73.63,
+      "high": 75.65,
+      "low": 72.1,
+      "close": 73.15,
+      "volume": 2154708.0,
+      "v1": 87.09,
+      "m1": 89.76,
+      "m2": 92.35,
+      "v2": 93.38,
+      "sma200": 88.64,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 73.15,
+      "high": 73.56,
+      "low": 71.59,
+      "close": 72.2,
+      "volume": 959936.0,
+      "v1": 86.12,
+      "m1": 88.85,
+      "m2": 91.55,
+      "v2": 92.66,
+      "sma200": 88.58,
       "state": "BLUE"
     }
   ],
@@ -32294,6 +32322,14 @@
         {
           "time": "2026-11-18",
           "value": 24778.96
+        },
+        {
+          "time": "2026-11-19",
+          "value": 24778.96
+        },
+        {
+          "time": "2026-11-20",
+          "value": 24778.96
         }
       ]
     },
@@ -39320,6 +39356,14 @@
         },
         {
           "time": "2026-11-18",
+          "value": 17452.79
+        },
+        {
+          "time": "2026-11-19",
+          "value": 17452.79
+        },
+        {
+          "time": "2026-11-20",
           "value": 17452.79
         }
       ]
@@ -46348,6 +46392,14 @@
         {
           "time": "2026-11-18",
           "value": 9427.67
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9427.67
+        },
+        {
+          "time": "2026-11-20",
+          "value": 9427.67
         }
       ]
     },
@@ -53374,7 +53426,15 @@
         },
         {
           "time": "2026-11-18",
-          "value": 8160.41
+          "value": 8053.24
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7999.66
+        },
+        {
+          "time": "2026-11-20",
+          "value": 7895.76
         }
       ]
     }
@@ -53875,14 +53935,14 @@
   ],
   "smart_money": {
     "symbol": "SOLUSDT",
-    "smart_money_score": 37.0,
-    "flow_verdict": "NEUTRAL_FLOW",
-    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.07, P/C: N/A).",
-    "cmf_20d": -0.065,
-    "up_down_vol_ratio": 0.73,
-    "absorption_5d_pct": 57.2,
-    "vol_shock_ratio": 0.38,
+    "smart_money_score": 32.0,
+    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
+    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.10).",
+    "cmf_20d": -0.103,
+    "up_down_vol_ratio": 0.54,
+    "absorption_5d_pct": 48.9,
+    "vol_shock_ratio": 0.42,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

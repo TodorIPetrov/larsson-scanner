@@ -3,25 +3,25 @@
   "name": "TOKYO ELECTRON",
   "sector": "Technology",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-19T09:19:36.735153+00:00",
+  "generated_at": "2026-11-20T09:41:22.311718+00:00",
   "backtest_start_date": "2022-04-13",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-20",
   "backtest_years": 4.5,
-  "backtest_total_bars": 1124,
-  "current_price": 8699.0,
+  "backtest_total_bars": 1126,
+  "current_price": 8309.0,
   "state": "BLUE",
-  "v1": 9702.5,
-  "v2": 10285.75,
-  "sma200": 10380.27,
-  "rsi14": 39.4,
-  "atr14": 607.05,
+  "v1": 9560.95,
+  "v2": 10172.06,
+  "sma200": 10385.08,
+  "rsi14": 37.0,
+  "atr14": 602.49,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
     "total_return_pct": 195.5,
-    "cagr_pct": 27.5,
+    "cagr_pct": 27.4,
     "sharpe_ratio": 0.83,
     "win_rate_pct": 33.3,
     "profit_factor": 6.7,
@@ -82,7 +82,7 @@
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
       "total_return_pct": 195.5,
-      "cagr_pct": 27.5,
+      "cagr_pct": 27.4,
       "sharpe_ratio": 0.83,
       "win_rate_pct": 33.3,
       "profit_factor": 6.7,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 175.4,
-      "cagr_pct": 25.5,
-      "sharpe_ratio": 0.7,
+      "total_return_pct": 163.1,
+      "cagr_pct": 24.2,
+      "sharpe_ratio": 0.68,
       "win_rate_pct": 100.0,
-      "profit_factor": 3.21,
+      "profit_factor": 2.99,
       "max_drawdown_pct": 54.6,
       "total_trades": 1
     }
@@ -15857,6 +15857,34 @@
       "v2": 10285.75,
       "sma200": 10380.27,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 8829.0,
+      "high": 9033.0,
+      "low": 8668.0,
+      "close": 8940.0,
+      "volume": 20001400.0,
+      "v1": 9645.7,
+      "m1": 9854.51,
+      "m2": 10106.11,
+      "v2": 10236.26,
+      "sma200": 10383.95,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-20",
+      "open": 8500.0,
+      "high": 8577.0,
+      "low": 8172.0,
+      "close": 8309.0,
+      "volume": 23196300.0,
+      "v1": 9560.95,
+      "m1": 9776.62,
+      "m2": 10036.85,
+      "v2": 10172.06,
+      "sma200": 10385.08,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -20446,6 +20474,14 @@
         {
           "time": "2026-11-18",
           "value": 29550.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 29550.95
+        },
+        {
+          "time": "2026-11-20",
+          "value": 29550.95
         }
       ]
     },
@@ -24948,6 +24984,14 @@
         },
         {
           "time": "2026-11-18",
+          "value": 22465.76
+        },
+        {
+          "time": "2026-11-19",
+          "value": 22465.76
+        },
+        {
+          "time": "2026-11-20",
           "value": 22465.76
         }
       ]
@@ -29452,6 +29496,14 @@
         {
           "time": "2026-11-18",
           "value": 19839.74
+        },
+        {
+          "time": "2026-11-19",
+          "value": 19839.74
+        },
+        {
+          "time": "2026-11-20",
+          "value": 19839.74
         }
       ]
     },
@@ -33955,6 +34007,14 @@
         {
           "time": "2026-11-18",
           "value": 27568.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 28332.7
+        },
+        {
+          "time": "2026-11-20",
+          "value": 26332.93
         }
       ]
     }
@@ -34035,14 +34095,14 @@
   ],
   "smart_money": {
     "symbol": "8035.T",
-    "smart_money_score": 37.0,
+    "smart_money_score": 55.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.09, P/C: N/A).",
-    "cmf_20d": -0.085,
-    "up_down_vol_ratio": 1.17,
-    "absorption_5d_pct": 26.6,
-    "vol_shock_ratio": 1.16,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.02, P/C: N/A).",
+    "cmf_20d": -0.017,
+    "up_down_vol_ratio": 1.2,
+    "absorption_5d_pct": 39.2,
+    "vol_shock_ratio": 1.1,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

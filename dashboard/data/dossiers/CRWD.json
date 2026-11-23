@@ -3,28 +3,28 @@
   "name": "CrowdStrike Holdings, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T09:21:24.847283+00:00",
+  "generated_at": "2026-11-20T09:41:48.942716+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 237.03,
+  "backtest_total_bars": 1161,
+  "current_price": 243.46,
   "state": "NEUTRAL",
-  "v1": 237.11,
-  "v2": 234.19,
-  "sma200": 174.82,
-  "rsi14": 50.0,
-  "atr14": 14.19,
+  "v1": 237.85,
+  "v2": 234.68,
+  "sma200": 175.52,
+  "rsi14": 53.4,
+  "atr14": 14.59,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
   "winning_metrics": {
-    "total_return_pct": 229.9,
-    "cagr_pct": 29.6,
-    "sharpe_ratio": 0.86,
+    "total_return_pct": 238.8,
+    "cagr_pct": 30.3,
+    "sharpe_ratio": 0.87,
     "win_rate_pct": 66.7,
-    "profit_factor": 12.34,
+    "profit_factor": 12.78,
     "max_drawdown_pct": 41.1,
     "total_trades": 6
   },
@@ -33,11 +33,11 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 55.1,
-      "cagr_pct": 10.0,
-      "sharpe_ratio": 0.44,
+      "total_return_pct": 59.3,
+      "cagr_pct": 10.6,
+      "sharpe_ratio": 0.46,
       "win_rate_pct": 20.0,
-      "profit_factor": 1.85,
+      "profit_factor": 1.92,
       "max_drawdown_pct": 66.4,
       "total_trades": 15
     },
@@ -57,11 +57,11 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": 75.9,
-      "cagr_pct": 13.0,
-      "sharpe_ratio": 0.52,
+      "total_return_pct": 80.6,
+      "cagr_pct": 13.7,
+      "sharpe_ratio": 0.53,
       "win_rate_pct": 26.1,
-      "profit_factor": 2.67,
+      "profit_factor": 2.75,
       "max_drawdown_pct": 44.3,
       "total_trades": 23
     },
@@ -69,11 +69,11 @@
       "strategy": "V3_CAPITULATION_S1",
       "name_bg": "Value Капитулация на S1 Подкрепа",
       "is_winner": false,
-      "total_return_pct": 85.3,
-      "cagr_pct": 14.3,
-      "sharpe_ratio": 0.64,
+      "total_return_pct": 90.3,
+      "cagr_pct": 15.0,
+      "sharpe_ratio": 0.66,
       "win_rate_pct": 50.0,
-      "profit_factor": 6.94,
+      "profit_factor": 7.2,
       "max_drawdown_pct": 28.2,
       "total_trades": 6
     },
@@ -81,11 +81,11 @@
       "strategy": "V4_VALUE_GOLD_HOLD",
       "name_bg": "Value Тренд (Държане над 200-SMA)",
       "is_winner": true,
-      "total_return_pct": 229.9,
-      "cagr_pct": 29.6,
-      "sharpe_ratio": 0.86,
+      "total_return_pct": 238.8,
+      "cagr_pct": 30.3,
+      "sharpe_ratio": 0.87,
       "win_rate_pct": 66.7,
-      "profit_factor": 12.34,
+      "profit_factor": 12.78,
       "max_drawdown_pct": 41.1,
       "total_trades": 6
     },
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 345.2,
-      "cagr_pct": 38.3,
-      "sharpe_ratio": 0.89,
+      "total_return_pct": 357.3,
+      "cagr_pct": 39.1,
+      "sharpe_ratio": 0.9,
       "win_rate_pct": 100.0,
-      "profit_factor": 5.7,
+      "profit_factor": 5.9,
       "max_drawdown_pct": 60.5,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 240.18,
       "low": 218.51,
       "close": 237.03,
-      "volume": 11941300.0,
+      "volume": 12055800.0,
       "v1": 237.11,
       "m1": 237.5,
       "m2": 236.02,
       "v2": 234.19,
       "sma200": 174.82,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 246.89,
+      "high": 256.73,
+      "low": 239.7,
+      "close": 243.46,
+      "volume": 11568700.0,
+      "v1": 237.85,
+      "m1": 238.06,
+      "m2": 236.51,
+      "v2": 234.68,
+      "sma200": 175.52,
       "state": "NEUTRAL"
     }
   ],
@@ -16442,11 +16456,11 @@
       "text": "BUY #6 @ $124.79"
     },
     {
-      "time": "2026-11-18",
+      "time": "2026-11-19",
       "position": "aboveBar",
       "color": "#10b981",
       "shape": "arrowDown",
-      "text": "EXIT +89.56% ($15576.03 €)"
+      "text": "EXIT +94.7% ($16470.37 €)"
     }
   ],
   "equity_curves": [
@@ -21094,6 +21108,10 @@
         {
           "time": "2026-11-18",
           "value": 33018.57
+        },
+        {
+          "time": "2026-11-19",
+          "value": 33913.81
         }
       ]
     },
@@ -25741,6 +25759,10 @@
         {
           "time": "2026-11-18",
           "value": 18550.02
+        },
+        {
+          "time": "2026-11-19",
+          "value": 19053.12
         }
       ]
     },
@@ -30388,6 +30410,10 @@
         {
           "time": "2026-11-18",
           "value": 17604.46
+        },
+        {
+          "time": "2026-11-19",
+          "value": 18081.87
         }
       ]
     },
@@ -35035,6 +35061,10 @@
         {
           "time": "2026-11-18",
           "value": 44565.45
+        },
+        {
+          "time": "2026-11-19",
+          "value": 45774.4
         }
       ]
     }
@@ -35104,26 +35134,26 @@
       "num": 6,
       "entry_date": "2026-05-08",
       "entry_price": 124.79,
-      "exit_date": "2026-11-18",
-      "exit_price": 237.03,
-      "holding_days": 134,
-      "pnl_pct": 89.56,
-      "pnl_eur": 15576.03,
+      "exit_date": "2026-11-19",
+      "exit_price": 243.46,
+      "holding_days": 135,
+      "pnl_pct": 94.7,
+      "pnl_eur": 16470.37,
       "exit_reason": "Край на Бектеста (Отворена)",
       "is_win": true
     }
   ],
   "smart_money": {
     "symbol": "CRWD",
-    "smart_money_score": 62.0,
+    "smart_money_score": 57.0,
     "flow_verdict": "NEUTRAL_FLOW",
     "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
-    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.04, P/C: 0.65).",
-    "cmf_20d": -0.045,
-    "up_down_vol_ratio": 0.61,
-    "absorption_5d_pct": 69.8,
-    "vol_shock_ratio": 1.32,
-    "put_call_ratio": 0.65,
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.05, P/C: 0.67).",
+    "cmf_20d": -0.051,
+    "up_down_vol_ratio": 0.79,
+    "absorption_5d_pct": 55.4,
+    "vol_shock_ratio": 1.26,
+    "put_call_ratio": 0.67,
     "options_sentiment": "BULLISH",
     "gamma_wall": 370.0,
     "max_pain": 560.0,

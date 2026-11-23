@@ -9,7 +9,13 @@ import math
 from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 import numpy as np
 
-from src.engine.asset_profiles import get_max_allowed_leverage, get_empirical_asset_profile
+from src.engine.asset_profiles import (
+    get_asset_profile,
+    get_effective_exit_on_neutral,
+    get_empirical_asset_profile,
+    get_larsson_trend_tier,
+    get_max_allowed_leverage,
+)
 from src.engine.consistency_guard import (
     is_pure_crypto,
     normalize_moat,
@@ -444,13 +450,16 @@ def _enrich_trade_suggestion(
             s.tech_label_bg = "🔴 EXIT / STOP (Мечи тренд)"
             s.tech_thesis_bg = f"Мечи низходящ тренд (Blue, spread {spread_pct:+.1f}%) и/или загуба на ключова подкрепа S1."
     else:  # NEUTRAL
-        emp_p = get_empirical_asset_profile(ticker)
-        if emp_p and emp_p.get("exit_on_neutral", False):
+        emp_p = get_empirical_asset_profile(ticker) if ticker else None
+        eff_exit_neutral = get_effective_exit_on_neutral(ticker, asset_class=asset_class) if ticker else False
+        emp_trend_tier = get_larsson_trend_tier(ticker) if ticker else "B"
+        if eff_exit_neutral:
             s.tech_action = "TAKE_PROFIT"
             s.tech_label_bg = "💰 TAKE PROFIT (Fast Exit ДНК)"
-            tot_ret = emp_p.get("total_return_pct", 0)
-            s.tech_thesis_bg = f"Панделката е в Neutral. 5-годишният бектест на {ticker} (+{tot_ret:.0f}%) показва максимална печалба при бързо прибиране веднага след Gold!"
-        elif emp_p and not emp_p.get("exit_on_neutral", False) and emp_p.get("empirical_tier") in ["S", "A"]:
+            tot_ret = emp_p.get("total_return_pct", 0) if emp_p else 0
+            ret_hint = f"5-годишният бектест на {ticker} (+{tot_ret:.0f}%)" if emp_p else f"Рисковият профил на {ticker}"
+            s.tech_thesis_bg = f"Панделката е в Neutral. {ret_hint} показва максимална печалба при бързо прибиране веднага след Gold!"
+        elif emp_p and not eff_exit_neutral and emp_trend_tier in ["S", "A"]:
             s.tech_action = "HOLD"
             s.tech_label_bg = "🛡️ HOLD THROUGH NEUTRAL"
             tot_ret = emp_p.get("total_return_pct", 0)
@@ -1265,7 +1274,8 @@ def _raw_generate_trade_suggestion(
     # -------------------------------------------------------------------------
     # 5. HEDGE SHORT 2X (Optional Light Futures Short on Breakdown)
     # -------------------------------------------------------------------------
-    if state == "BLUE":
+    profile = get_asset_profile(asset_class)
+    if state == "BLUE" and profile.allows_short:
         overhead_res = r1 if (r1 is not None and r1 > current_price) else v2
         if current_price < overhead_res:
             # Bearish trend retesting overhead resistance/ribbon (v1 lower, v2 upper)

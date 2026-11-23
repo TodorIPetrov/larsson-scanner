@@ -14,6 +14,7 @@ let currentSetupFilter = 'ALL';
 let currentAiScenarioFilter = 'ALL';
 let currentQueuePriority = 'ALL';
 let currentQueueTier = 'ALL';
+let currentQueueTf = 'ALL';
 let currentQueueType = 'ALL';
 let currentQueueSearch = '';
 let currentSearch = '';
@@ -302,15 +303,17 @@ const CLASS_LABELS = {
 };
 
 function formatShortPrice(val) {
-  if (val === null || val === undefined || isNaN(val)) return 'N/A';
-  if (val >= 10000) {
-    return (val / 1000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'k';
-  } else if (val >= 1000) {
-    return val.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  } else if (val >= 1) {
-    return val.toFixed(2);
+  if (val === null || val === undefined || val === '') return 'N/A';
+  const num = Number(val);
+  if (!Number.isFinite(num)) return 'N/A';
+  if (num >= 10000) {
+    return (num / 1000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'k';
+  } else if (num >= 1000) {
+    return num.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  } else if (num >= 1) {
+    return num.toFixed(2);
   } else {
-    return val.toFixed(5);
+    return num.toFixed(5);
   }
 }
 
@@ -369,12 +372,13 @@ function getQuantamentalSetupRank(item) {
     base = 0;
   }
 
-  // Bonus for fresh Gold Flip
+  // Bonus for fresh Gold Flip — 1D Gold Flip is the #1 leading signal
   let flipBonus = 0;
   if (isFlip) {
-    if (flipBars <= 2) flipBonus = 1500;
-    else if (flipBars <= 5) flipBonus = 800;
-    else flipBonus = 400;
+    const tfLeadBonus = (item.timeframe || '1D') === '1D' ? 6000 : 1500;
+    if (flipBars <= 2) flipBonus = tfLeadBonus + 1500;
+    else if (flipBars <= 5) flipBonus = tfLeadBonus + 800;
+    else flipBonus = tfLeadBonus + 400;
   }
 
   // Quality Tier bonus
@@ -1453,15 +1457,19 @@ function getFilteredSymbols() {
     // Rank by relevance score when searching
     scoredItems.sort((a, b) => b.score - a.score);
   } else {
-    // Default sorting in main view: Rank assets by best trade setups from combined quantamental analysis!
+    // Default sorting in main view: 1D Gold Flip leads first, then best quantamental setups
     scoredItems.sort((aObj, bObj) => {
       const a = aObj.item;
       const b = bObj.item;
+      const dFlipA = (a.timeframe === '1D' && isRecentGoldFlip(a)) ? 1 : 0;
+      const dFlipB = (b.timeframe === '1D' && isRecentGoldFlip(b)) ? 1 : 0;
+      if (dFlipB !== dFlipA) return dFlipB - dFlipA;
+
       const rankA = getQuantamentalSetupRank(a);
       const rankB = getQuantamentalSetupRank(b);
       if (rankB !== rankA) return rankB - rankA;
 
-      // Secondary sort: Fresh Gold Flip priority
+      // Secondary sort: Fresh Gold Flip priority (Weekly / 4H)
       const flipA = isRecentGoldFlip(a) ? 1 : 0;
       const flipB = isRecentGoldFlip(b) ? 1 : 0;
       if (flipB !== flipA) return flipB - flipA;
@@ -3696,12 +3704,54 @@ document.querySelectorAll('#stateFilters .filter-btn').forEach(btn => {
   });
 });
 
+function syncScannerChartSignalPills() {
+  let targetSig = 'ALL';
+  if (currentTfFilter === '1D' && currentTechFilter === 'RECENT_GOLD_FLIP') targetSig = '1D_GOLD_FLIP';
+  else if (currentTfFilter === '1D' && currentTechFilter === 'ALL') targetSig = '1D_ALL';
+  else if (currentTfFilter === '1W' && currentTechFilter === 'RECENT_GOLD_FLIP') targetSig = '1W_GOLD_FLIP';
+  else if (currentTfFilter === '1W' && currentTechFilter === 'ALL') targetSig = '1W_ALL';
+
+  document.querySelectorAll('#scannerChartSignalPills .scope-btn').forEach(b => {
+    b.classList.toggle('active', (b.dataset.chartSig || 'ALL') === targetSig && (
+      targetSig !== 'ALL' || (currentTfFilter === 'ALL' && currentTechFilter === 'ALL')
+    ));
+  });
+}
+
+document.querySelectorAll('#scannerChartSignalPills .scope-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const sig = e.currentTarget.dataset.chartSig || 'ALL';
+    if (sig === '1D_GOLD_FLIP') {
+      currentTfFilter = '1D';
+      currentTechFilter = 'RECENT_GOLD_FLIP';
+    } else if (sig === '1D_ALL') {
+      currentTfFilter = '1D';
+      currentTechFilter = 'ALL';
+    } else if (sig === '1W_GOLD_FLIP') {
+      currentTfFilter = '1W';
+      currentTechFilter = 'RECENT_GOLD_FLIP';
+    } else if (sig === '1W_ALL') {
+      currentTfFilter = '1W';
+      currentTechFilter = 'ALL';
+    } else {
+      currentTfFilter = 'ALL';
+      currentTechFilter = 'ALL';
+    }
+    document.querySelectorAll('#tfFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tf === currentTfFilter));
+    document.querySelectorAll('#techFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.tech === currentTechFilter));
+    syncScannerChartSignalPills();
+    renderOverview();
+    renderAllViews();
+  });
+});
+
 document.querySelectorAll('#tfFilters .filter-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     document.querySelectorAll('#tfFilters .filter-btn').forEach(b => b.classList.remove('active'));
     const b = e.currentTarget;
     b.classList.add('active');
     currentTfFilter = b.dataset.tf;
+    syncScannerChartSignalPills();
     renderOverview();
     renderAllViews();
   });
@@ -3713,6 +3763,7 @@ document.querySelectorAll('#techFilters .filter-btn').forEach(btn => {
     const b = e.currentTarget;
     b.classList.add('active');
     currentTechFilter = b.dataset.tech;
+    syncScannerChartSignalPills();
     renderAllViews();
   });
 });
@@ -3780,6 +3831,7 @@ function resetAllFilters() {
   document.querySelectorAll('#fundFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.fund === 'ALL'));
   document.querySelectorAll('#setupFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.setup === 'ALL'));
   document.querySelectorAll('#aiScenarioFilters .filter-btn').forEach(b => b.classList.toggle('active', b.dataset.aiScenario === 'ALL'));
+  syncScannerChartSignalPills();
 
   const input = document.getElementById('searchInput');
   if (input) input.value = '';
@@ -4215,9 +4267,26 @@ function renderQueueView() {
     if (currentQueueTier === 'ALL' && (s.tier === 'C' || s.tier === 'C-')) return false;
     const matchesPrio = (currentQueuePriority === 'ALL') || (s.priority === currentQueuePriority);
     const matchesTier = (currentQueueTier === 'ALL') || (s.tier === currentQueueTier);
+    const sTf = s.timeframe || '1D';
+
+    let matchesTf = true;
+    if (currentQueueTf === '1D') {
+      matchesTf = (sTf === '1D');
+    } else if (currentQueueTf === '1W') {
+      matchesTf = (sTf === '1W' || s.setup_type === 'WEEKLY_GOLD_FLIP' || s.setup_type === 'WEEKLY_IMMINENT_GOLD');
+    } else if (currentQueueTf === '1D_1W_SYNC') {
+      matchesTf = (sTf === '1D' && s.weekly_state === 'GOLD') || (sTf === '1W' && s.daily_state === 'GOLD');
+    }
+
     let matchesType = true;
-    if (currentQueueType === 'PRE_GOLD') {
+    if (currentQueueType === 'GOLD_FLIP_1D') {
+      matchesType = (s.setup_type === 'GOLD_FLIP_1D' || s.setup_type === 'IMMINENT_GOLD');
+    } else if (currentQueueType === 'FRESH_1D_FLIP') {
+      matchesType = (s.setup_type === 'GOLD_FLIP_1D');
+    } else if (currentQueueType === 'PRE_GOLD') {
       matchesType = (s.setup_type === 'IMMINENT_GOLD' || s.setup_type === 'QUALITY_DIP_BUY');
+    } else if (currentQueueType === 'WEEKLY_SIGNALS') {
+      matchesType = (sTf === '1W' || s.setup_type === 'WEEKLY_GOLD_FLIP' || s.setup_type === 'WEEKLY_IMMINENT_GOLD');
     } else if (currentQueueType === 'TOP15_CANDIDATE') {
       matchesType = Boolean(s.will_enter_top15);
     } else if (currentQueueType === 'QUALITY_DIP_BUY') {
@@ -4232,20 +4301,29 @@ function renderQueueView() {
       const sym = (s.symbol || '').toLowerCase();
       const normSym = normalizeSearchStr(s.symbol || '');
       const setupType = (s.setup_type || '').toLowerCase();
-      matchesSearch = sym.includes(q) || normSym.includes(normQ) || setupType.includes(q);
+      matchesSearch = sym.includes(q) || normSym.includes(normQ) || setupType.includes(q) || sTf.toLowerCase().includes(q);
     }
-    return matchesPrio && matchesTier && matchesType && matchesSearch;
+    return matchesPrio && matchesTier && matchesTf && matchesType && matchesSearch;
   });
 
-  // Sort queue items: Pre-Gold & Top 15 Momentum candidates prioritized within Priority & Tier
+  // Sort queue items: 1D Gold Flip leads #1, then Pre-Gold 1D, then Weekly (1W) signals, then Priority/Top15/Tier
   const prioOrder = { 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
-  const typeOrder = { 'IMMINENT_GOLD': 4, 'QUALITY_DIP_BUY': 3, 'ACCUMULATION_PATTERN': 2, 'DIVERGENCE_FORMING': 2, 'SR_APPROACH': 1 };
+  const typeOrder = {
+    'GOLD_FLIP_1D': 6,
+    'IMMINENT_GOLD': 5,
+    'WEEKLY_GOLD_FLIP': 4,
+    'WEEKLY_IMMINENT_GOLD': 4,
+    'QUALITY_DIP_BUY': 3,
+    'ACCUMULATION_PATTERN': 2,
+    'DIVERGENCE_FORMING': 2,
+    'SR_APPROACH': 1
+  };
   const tierOrder = { 'S': 4, 'A+': 4, 'A': 3, 'B': 2, 'C': 1 };
   filtered.sort((a, b) => {
-    const pDiff = (prioOrder[b.priority] || 0) - (prioOrder[a.priority] || 0);
-    if (pDiff !== 0) return pDiff;
     const stDiff = (typeOrder[b.setup_type] || 0) - (typeOrder[a.setup_type] || 0);
     if (stDiff !== 0) return stDiff;
+    const pDiff = (prioOrder[b.priority] || 0) - (prioOrder[a.priority] || 0);
+    if (pDiff !== 0) return pDiff;
     const t15Diff = (b.will_enter_top15 ? 1 : 0) - (a.will_enter_top15 ? 1 : 0);
     if (t15Diff !== 0) return t15Diff;
     const tDiff = (tierOrder[b.tier] || 0) - (tierOrder[a.tier] || 0);
@@ -4283,7 +4361,10 @@ function renderQueueView() {
   }
 
   const typeLabels = {
-    'IMMINENT_GOLD': { emoji: '🔥', title: 'Imminent Gold Ribbon' },
+    'GOLD_FLIP_1D': { emoji: '🥇', title: '1D Gold Flip (Водещ Моментум)' },
+    'IMMINENT_GOLD': { emoji: '🔥', title: 'Предстоящ 1D Gold (1-3 бара)' },
+    'WEEKLY_GOLD_FLIP': { emoji: '📆', title: '1W Weekly Gold Flip' },
+    'WEEKLY_IMMINENT_GOLD': { emoji: '📆', title: 'Предстоящ 1W Weekly Gold' },
     'QUALITY_DIP_BUY': { emoji: '💎', title: 'Quality Dip Buy (Weekly Gold)' },
     'SR_APPROACH': { emoji: '🎯', title: 'S/R Approach (Подкрепа / Съпротива)' },
     'ACCUMULATION_PATTERN': { emoji: '📦', title: 'Quiet Consolidation Squeeze' },
@@ -4300,6 +4381,7 @@ function renderQueueView() {
     const prioBadgeClass = s.priority === 'HIGH' ? 'queue-prio-high' : (s.priority === 'MEDIUM' ? 'queue-prio-med' : 'queue-prio-low');
     const typeInfo = typeLabels[s.setup_type] || { emoji: '⚡', title: s.setup_type };
     const tEmoji = tierEmoji[s.tier] || s.tier;
+    const sTf = s.timeframe || '1D';
 
     let metTags = [];
     try {
@@ -4313,25 +4395,36 @@ function renderQueueView() {
 
     const trigVal = s.gold_trigger_3d || s.target_entry || s.current_price;
     const slVal = s.target_sl || s.v2 || s.key_level;
-    const isPreGold = (s.setup_type === 'IMMINENT_GOLD' || s.setup_type === 'QUALITY_DIP_BUY');
+    const isActiveFlip = (s.setup_type === 'GOLD_FLIP_1D' || s.setup_type === 'WEEKLY_GOLD_FLIP');
+    const isPreGold = (s.setup_type === 'IMMINENT_GOLD' || s.setup_type === 'WEEKLY_IMMINENT_GOLD' || s.setup_type === 'QUALITY_DIP_BUY');
     const curPriceStr = s.current_price ? formatAssetPrice(s.current_price, s.symbol, s.asset_class) : 'N/A';
     const entryStr = trigVal ? formatAssetPrice(trigVal, s.symbol, s.asset_class) : 'N/A';
     const keyLvlStr = slVal ? formatAssetPrice(slVal, s.symbol, s.asset_class) : 'N/A';
     const triggerStr = s.estimated_trigger || (s.bars_to_gold ? `~${s.bars_to_gold} бара` : '1-3 бара');
-    const entryLbl = isPreGold ? 'Тригер за GOLD (3д)' : 'Входна Зона';
+    const entryLbl = isActiveFlip ? 'Текущ Вход (GOLD)' : (isPreGold ? (sTf === '1W' ? 'Тригер за 1W GOLD' : 'Тригер за GOLD (3д)') : 'Входна Зона');
     const slLbl = (s.target_sl || s.v2) ? 'Защитен Стоп (v2)' : 'Ключово Ниво';
 
+    const tfBadge = sTf === '1W'
+      ? `<span class="class-badge" style="background: rgba(168, 85, 247, 0.18); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.4);">📆 1W WEEKLY</span>`
+      : `<span class="class-badge" style="background: rgba(245, 158, 11, 0.18); color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">📅 1D ГРАФИКА</span>`;
+    const syncBadge = (sTf === '1D' && s.weekly_state === 'GOLD')
+      ? `<span class="class-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.35);">⚡ 1W GOLD</span>`
+      : ((sTf === '1W' && s.daily_state === 'GOLD') ? `<span class="class-badge" style="background: rgba(245, 158, 11, 0.15); color: #fcd34d; border-color: rgba(245, 158, 11, 0.35);">⚡ 1D GOLD</span>` : '');
     const rsBadge = s.rs_rating ? `<span class="class-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">RS ${s.rs_rating}</span>` : '';
-    const top15Badge = s.will_enter_top15 ? `<span class="class-badge" style="background: rgba(63, 185, 80, 0.18); color: #3fb950; border-color: rgba(63, 185, 80, 0.4);">🏆 Топ 15 Кандидат</span>` : '';
+    const rotSlots = getTargetRotationSlots();
+    const top15Badge = s.will_enter_top15 ? `<span class="class-badge" style="background: rgba(63, 185, 80, 0.18); color: #3fb950; border-color: rgba(63, 185, 80, 0.4);">🏆 Топ ${rotSlots} Кандидат</span>` : '';
 
     let projHtml = '';
-    if (s.gold_trigger_3d && isPreGold) {
+    if (isActiveFlip) {
+      const riskPct = (s.current_price && slVal && s.current_price > 0) ? (((s.current_price - slVal) / s.current_price) * 100).toFixed(1) : null;
+      projHtml = `<div class="queue-pregold-callout is-ready">${sTf === '1W' ? '📆 1W Weekly GOLD Flip активен!' : '🥇 Водещ 1D GOLD Flip активен!'}${riskPct ? ` Риск до стоп v2: <strong>${riskPct}%</strong>.` : ''} ${s.exit_rule_bg || ''}</div>`;
+    } else if (s.gold_trigger_3d && isPreGold) {
       if (s.gold_dist_pct !== null && s.gold_dist_pct !== undefined && s.gold_dist_pct <= 0) {
-        projHtml = `<div class="queue-pregold-callout is-ready">🟢 Вече над GOLD прага! Автоматичен GOLD след ~<strong>${s.bars_to_gold || 1} бара</strong> при задържане над ${formatAssetPrice(s.gold_trigger_3d, s.symbol, s.asset_class)}.</div>`;
+        projHtml = `<div class="queue-pregold-callout is-ready">🟢 Вече над ${sTf} GOLD прага! Автоматичен GOLD след ~<strong>${s.bars_to_gold || 1} бара</strong> при задържане над ${formatAssetPrice(s.gold_trigger_3d, s.symbol, s.asset_class)}.</div>`;
       } else {
         const distTxt = (s.gold_dist_pct !== null && s.gold_dist_pct !== undefined) ? `+${Number(s.gold_dist_pct).toFixed(1)}%` : '';
         const p1Txt = s.gold_trigger_1d ? ` • 1-бар тригер: ${formatAssetPrice(s.gold_trigger_1d, s.symbol, s.asset_class)}` : '';
-        projHtml = `<div class="queue-pregold-callout">🎯 Пробив за GOLD (до 3 бара): <strong>${formatAssetPrice(s.gold_trigger_3d, s.symbol, s.asset_class)}</strong> (${distTxt})${p1Txt}</div>`;
+        projHtml = `<div class="queue-pregold-callout">🎯 Пробив за ${sTf} GOLD (до 3 бара): <strong>${formatAssetPrice(s.gold_trigger_3d, s.symbol, s.asset_class)}</strong> (${distTxt})${p1Txt}</div>`;
       }
     }
 
@@ -4343,7 +4436,7 @@ function renderQueueView() {
         <div class="queue-card-header">
           <div class="queue-card-title-group">
             <span class="queue-card-ticker">
-              ${s.symbol} <span class="class-badge">${CLASS_LABELS[s.asset_class] || s.asset_class}</span> ${top15Badge}
+              ${s.symbol} <span class="class-badge">${CLASS_LABELS[s.asset_class] || s.asset_class}</span> ${tfBadge} ${syncBadge} ${top15Badge}
             </span>
             ${assetDesc ? `<div style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 2px; font-weight: 500;">${escapeHtml(assetDesc)}</div>` : ''}
             <div class="queue-card-setup-title" style="margin-top: 4px;">
@@ -4450,6 +4543,15 @@ document.querySelectorAll('#queueTypeFilters .filter-btn').forEach(btn => {
     document.querySelectorAll('#queueTypeFilters .filter-btn').forEach(b => b.classList.remove('active'));
     e.currentTarget.classList.add('active');
     currentQueueType = e.currentTarget.dataset.queueType || 'ALL';
+    renderQueueView();
+  });
+});
+
+document.querySelectorAll('#queueTfFilters .filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('#queueTfFilters .filter-btn').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    currentQueueTf = e.currentTarget.dataset.queueTf || 'ALL';
     renderQueueView();
   });
 });
@@ -5152,7 +5254,7 @@ function synthesizeClientProposals() {
   // Read live capital and unowned positions
   const capInput = document.getElementById('rotationCapitalInput');
   const totalCap = capInput ? (parseFloat(capInput.value) || 10000.0) : 10000.0;
-  const slotAmount = totalCap / 15.0;
+  const slotAmount = totalCap / getTargetRotationSlots();
 
   const realHeldPositions = (portfolioRealData && portfolioRealData.positions) || [];
   const realHeldTickers = new Set(realHeldPositions.map(p => (p.symbol || p.ticker || '').toUpperCase()));
@@ -5921,7 +6023,8 @@ function switchPortfolioMode(mode) {
   }
 
   if (mode === 'REAL' || mode === 'COMBINED') {
-    if (bannerBadge) bannerBadge.innerHTML = mode === 'COMBINED' ? '🔀 СИНХРОНИЗИРАН КАПИТАЛ &amp; ТОП 15 РОТАЦИЯ' : '🟢 РЕАЛНИ СРЕДСТВА &amp; БРОКЕРИ';
+    const rotSlots = getTargetRotationSlots();
+    if (bannerBadge) bannerBadge.innerHTML = mode === 'COMBINED' ? `🔀 СИНХРОНИЗИРАН КАПИТАЛ &amp; ТОП ${rotSlots} ФОКУС` : '🟢 РЕАЛНИ СРЕДСТВА &amp; БРОКЕРИ';
     if (bannerDesc) bannerDesc.textContent = 'Управление на действителни сделки от брокери (Binance, Interactive Brokers, Revolut) в пълен синхрон с ротационния двигател и глобалната валута.';
     if (bannerActions) bannerActions.style.display = 'flex';
     if (posHeading) posHeading.textContent = '📈 Отворени Реални Позиции (Live Mark-to-Market)';
@@ -8304,13 +8407,36 @@ function updateCockpitMasterBadge() {
   badge.title = `${actionCount} сигнала за днес | ${setupCount} очаквани структури`;
 }
 
+function getActiveRotationData() {
+  return (window.lastLoadedDashboardData && window.lastLoadedDashboardData.rotation_portfolio)
+    || (window.dashboardData && window.dashboardData.rotation_portfolio)
+    || window.rotationPortfolio
+    || null;
+}
+
+function getTargetRotationSlots(rotData) {
+  const r = rotData || getActiveRotationData();
+  const n = Number(r && r.target_positions_count);
+  return (Number.isFinite(n) && n > 0) ? n : 8;
+}
+
+function getItemRotationAllocation(item, totalCap, rotData) {
+  const targetSlots = getTargetRotationSlots(rotData);
+  const wPct = Number(item && item.target_weight_pct);
+  if (Number.isFinite(wPct) && wPct > 0) {
+    return totalCap * (wPct / 100.0);
+  }
+  return totalCap / targetSlots;
+}
+
 function renderCockpitDailyActionPlan() {
   const grid = document.getElementById('cockpitDailyActionsGrid');
   if (!grid) return;
 
-  const rotData = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.rotation_portfolio) || (window.dashboardData && window.dashboardData.rotation_portfolio) || window.rotationPortfolio || null;
+  const rotData = getActiveRotationData();
+  const targetSlots = getTargetRotationSlots(rotData);
   const totalCap = getGlobalCapital();
-  const slotAmount = totalCap / 15.0;
+  const slotAmount = totalCap / targetSlots;
   const trancheAmount = slotAmount * 0.5;
 
   const realHeldPositions = (portfolioRealData && portfolioRealData.positions) || [];
@@ -8319,11 +8445,11 @@ function renderCockpitDailyActionPlan() {
   const quantTickerSet = new Set(((rotData && rotData.quantamental_dips) || []).map(q => (q.ticker || '').toUpperCase()));
   const momentumOwnedCount = [...realHeldTickers].filter(t => !quantTickerSet.has(t)).length;
   const valueDipOwnedCount = [...realHeldTickers].filter(t => quantTickerSet.has(t)).length;
-  const freeSlots = Math.max(0, 15 - momentumOwnedCount);
+  const freeSlots = Math.max(0, targetSlots - momentumOwnedCount);
 
   const slotsSummary = document.getElementById('cockpitSlotsSummary');
   if (slotsSummary) {
-    slotsSummary.innerHTML = `Моментум слотове: <strong>${momentumOwnedCount}/15</strong>${valueDipOwnedCount > 0 ? ` | Value Dips: <strong>${valueDipOwnedCount}</strong>` : ''} | Свободни: <strong style="color:#3fb950;">${freeSlots}</strong> (${formatBaseMoney(freeSlots * slotAmount, 0)})`;
+    slotsSummary.innerHTML = `Моментум слотове: <strong>${momentumOwnedCount}/${targetSlots}</strong>${valueDipOwnedCount > 0 ? ` | Value Dips: <strong>${valueDipOwnedCount}</strong>` : ''} | Свободни: <strong style="color:#3fb950;">${freeSlots}</strong> (${formatBaseMoney(freeSlots * slotAmount, 0)})`;
   }
 
   const dateBadge = document.getElementById('cockpitActionDateBadge');
@@ -8390,22 +8516,25 @@ function renderCockpitDailyActionPlan() {
 
     primeBuys.forEach(b => {
       signalCount++;
-      const slotInQuote = convertBaseToAssetQuote(slotAmount, b.ticker, b.asset_class);
+      const allocEur = getItemRotationAllocation(b, totalCap, rotData);
+      const slotInQuote = convertBaseToAssetQuote(allocEur, b.ticker, b.asset_class);
       const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotInQuote / b.price).toFixed(4) : (slotInQuote / b.price).toFixed(2)) : '0';
       const dayNum = Number(b.bars_since_flip !== undefined ? b.bars_since_flip : 0) + 1;
+      const weightHint = b.target_weight_pct ? ` (${Number(b.target_weight_pct).toFixed(1)}%)` : '';
+      const coreTag = b.is_core_focus ? ' 🎯 CORE' : '';
       html += `
         <div class="rot-action-card action-buy">
           <div class="rot-action-hdr">
-            <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ (ТОП 15): ${b.ticker}</span>
+            <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ (ТОП ${targetSlots}): ${b.ticker}${coreTag}</span>
             <span class="rot-action-tag tag-buy">ДЕН ${dayNum} FLIP</span>
           </div>
           <p class="rot-action-desc">${escapeHtml(b.name || b.ticker)} • Риск до стопа ${b.risk_to_v2_pct}% (Стоп v2: ${formatAssetPrice(b.v2_stop, b.ticker, b.asset_class)}).</p>
           <div class="rot-action-meta">
-            <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+            <span>Слот${weightHint}: ${formatBaseMoney(allocEur, 0)} (~${shares} бр.)</span>
             <span>RS ${b.rs_rating || '—'}</span>
           </div>
           <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
-            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${slotAmount.toFixed(0)}, ${b.v2_stop || 0})">
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${allocEur.toFixed(0)}, ${b.v2_stop || 0})">
               ➕ Изпълни
             </button>
             <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${b.ticker}', 'FRESH_FLIP')">
@@ -8423,22 +8552,25 @@ function renderCockpitDailyActionPlan() {
     const pullbacks = (pullPool.length > 0 ? pullPool : unowned.filter(c => c.entry_zone_status === 'PULLBACK_V1')).slice(0, 2);
     pullbacks.forEach(s => {
       signalCount++;
-      const slotInQuote = convertBaseToAssetQuote(slotAmount, s.ticker, s.asset_class);
+      const allocEur = getItemRotationAllocation(s, totalCap, rotData);
+      const slotInQuote = convertBaseToAssetQuote(allocEur, s.ticker, s.asset_class);
       const shares = s.price > 0 ? (s.asset_class === 'crypto' ? (slotInQuote / s.price).toFixed(4) : (slotInQuote / s.price).toFixed(2)) : '0';
       const dayNum = Number(s.bars_since_flip !== undefined ? s.bars_since_flip : 0) + 1;
+      const weightHint = s.target_weight_pct ? ` (${Number(s.target_weight_pct).toFixed(1)}%)` : '';
+      const coreTag = s.is_core_focus ? ' 🎯 CORE' : '';
       html += `
         <div class="rot-action-card action-buy" style="border-left-color: #58a6ff;">
           <div class="rot-action-hdr">
-            <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА v1 (ТОП 15): ${s.ticker}</span>
+            <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА v1 (ТОП ${targetSlots}): ${s.ticker}${coreTag}</span>
             <span class="rot-action-tag tag-hold" style="background: rgba(88,166,255,0.2); color: #58a6ff;">ТЕСТ v1 (ДЕН ${dayNum})</span>
           </div>
           <p class="rot-action-desc">${escapeHtml(s.name || s.ticker)} • Плътен стоп ${formatAssetPrice(s.v2_stop, s.ticker, s.asset_class)} (Риск ${s.risk_to_v2_pct}%).</p>
           <div class="rot-action-meta">
-            <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+            <span>Слот${weightHint}: ${formatBaseMoney(allocEur, 0)} (~${shares} бр.)</span>
             <span>RS ${s.rs_rating || '—'}</span>
           </div>
           <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
-            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${slotAmount.toFixed(0)}, ${s.v2_stop || 0})">
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${allocEur.toFixed(0)}, ${s.v2_stop || 0})">
               ➕ Изпълни
             </button>
             <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${s.ticker}', 'PULLBACK_V1')">
@@ -8508,7 +8640,7 @@ function renderCockpitDailyActionPlan() {
     const distLabel = (s.gold_dist_pct !== null && s.gold_dist_pct !== undefined)
       ? (s.gold_dist_pct <= 0 ? 'Над GOLD прага' : `+${Number(s.gold_dist_pct).toFixed(1)}% до GOLD`)
       : (s.estimated_trigger || '1-3 бара');
-    const tagTxt = s.will_enter_top15 ? '🏆 ТОП 15 КАНДИДАТ' : (s.setup_type === 'QUALITY_DIP_BUY' ? '💎 DIP RECLAIM' : '🔥 PRE-GOLD');
+    const tagTxt = s.will_enter_top15 ? `🏆 ТОП ${targetSlots} КАНДИДАТ` : (s.setup_type === 'QUALITY_DIP_BUY' ? '💎 DIP RECLAIM' : '🔥 PRE-GOLD');
     html += `
       <div class="rot-action-card action-buy" style="border-left-color: #f59e0b;">
         <div class="rot-action-hdr">
@@ -8553,10 +8685,11 @@ function renderCockpitDailyActionPlan() {
 }
 
 function renderRotationPortfolio() {
-  const rotData = (window.lastLoadedDashboardData && window.lastLoadedDashboardData.rotation_portfolio) || (window.dashboardData && window.dashboardData.rotation_portfolio) || window.rotationPortfolio || null;
+  const rotData = getActiveRotationData();
+  const targetSlots = getTargetRotationSlots(rotData);
   const capInput = document.getElementById('rotationCapitalInput');
   const totalCap = (capInput && parseFloat(capInput.value) > 0) ? parseFloat(capInput.value) : getGlobalCapital();
-  const slotAmount = totalCap / 15.0;
+  const slotAmount = totalCap / targetSlots;
   const trancheAmount = slotAmount * 0.5;
 
   const slotEl = document.getElementById('rotSlotAmount');
@@ -8571,12 +8704,27 @@ function renderRotationPortfolio() {
   const momentumOccupied = [...realHeldTickers].filter(t => !quantTickerSet.has(t)).length;
   const valueDipOccupied = [...realHeldTickers].filter(t => quantTickerSet.has(t)).length;
   const occupiedSlots = momentumOccupied;
-  const freeSlots = Math.max(0, 15 - occupiedSlots);
+  const freeSlots = Math.max(0, targetSlots - occupiedSlots);
 
   // Update sizing note with live slot availability
   const noteEl = document.querySelector('.sizing-note');
   if (noteEl) {
-    noteEl.innerHTML = `(Моментум слотове: <strong style="color:#ffd700;">${occupiedSlots} / 15</strong>${valueDipOccupied > 0 ? ` | Value Dips: <strong style="color:#d2a8ff;">${valueDipOccupied}</strong>` : ''} | Свободни: <strong style="color:#3fb950;">${freeSlots}</strong> — <strong>${formatBaseMoney(freeSlots * slotAmount, 0)}</strong> свободен капитал)`;
+    noteEl.innerHTML = `(Моментум слотове: <strong style="color:#ffd700;">${occupiedSlots} / ${targetSlots}</strong>${valueDipOccupied > 0 ? ` | Value Dips: <strong style="color:#d2a8ff;">${valueDipOccupied}</strong>` : ''} | Свободни: <strong style="color:#3fb950;">${freeSlots}</strong> — <strong>${formatBaseMoney(freeSlots * slotAmount, 0)}</strong> свободен капитал)`;
+  }
+
+  const rotCountBadge = document.getElementById('rotTop15Count');
+  if (rotCountBadge && rotData && Array.isArray(rotData.top15)) {
+    rotCountBadge.textContent = `${rotData.top15.length} / ${targetSlots} Активни`;
+  }
+  if (rotData) {
+    const cagrEl = document.getElementById('rotKpiCagr');
+    if (cagrEl && rotData.historical_cagr_pct !== undefined) cagrEl.textContent = `+${Number(rotData.historical_cagr_pct).toFixed(1)}%`;
+    const sharpeEl = document.getElementById('rotKpiSharpe');
+    if (sharpeEl && rotData.historical_sharpe !== undefined) sharpeEl.textContent = Number(rotData.historical_sharpe).toFixed(2);
+    const ddEl = document.getElementById('rotKpiMaxDd');
+    if (ddEl && rotData.historical_max_dd_pct !== undefined) ddEl.textContent = `${Number(rotData.historical_max_dd_pct).toFixed(1)}%`;
+    const wrEl = document.getElementById('rotKpiWinRate');
+    if (wrEl && rotData.historical_win_rate_pct !== undefined) wrEl.textContent = `${Number(rotData.historical_win_rate_pct).toFixed(1)}%`;
   }
 
   if (!rotData) {
@@ -8674,22 +8822,25 @@ function renderRotationPortfolio() {
       const primeBuys = (freshPool.length > 0 ? freshPool : unownedCandidates.filter(c => c.entry_zone_status === 'FRESH_FLIP')).slice(0, Math.min(3, freeSlots));
 
       primeBuys.forEach(b => {
-        const slotInQuote = convertBaseToAssetQuote(slotAmount, b.ticker, b.asset_class);
+        const allocEur = getItemRotationAllocation(b, totalCap, rotData);
+        const slotInQuote = convertBaseToAssetQuote(allocEur, b.ticker, b.asset_class);
         const shares = b.price > 0 ? (b.asset_class === 'crypto' ? (slotInQuote / b.price).toFixed(4) : (slotInQuote / b.price).toFixed(2)) : '0';
         const dayNum = Number(b.bars_since_flip !== undefined ? b.bars_since_flip : 0) + 1;
+        const weightHint = b.target_weight_pct ? ` (${Number(b.target_weight_pct).toFixed(1)}%)` : '';
+        const coreTag = b.is_core_focus ? ' 🎯 CORE' : '';
         actHtml += `
           <div class="rot-action-card action-buy">
             <div class="rot-action-hdr">
-              <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ (КУПИ 100%): ${b.ticker} (${b.name || ''})</span>
+              <span class="rot-action-ticker" style="color: #3fb950;">🟢 СВЕЖ ПРОБИВ: ${b.ticker}${coreTag} (${b.name || ''})</span>
               <span class="rot-action-tag tag-buy">ДЕН ${dayNum} FLIP</span>
             </div>
             <p class="rot-action-desc">Нов Gold Flip от Ден ${dayNum}. Нисък риск до стопа (${b.risk_to_v2_pct}% до $v2 = ${formatAssetPrice(b.v2_stop, b.ticker, b.asset_class)}). ДНК изход: ${b.exit_rule_bg || 'По ДНК'}.</p>
             <div class="rot-action-meta">
-              <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+              <span>Слот${weightHint}: ${formatBaseMoney(allocEur, 0)} (~${shares} бр.)</span>
               <span>Стоп v2: ${formatAssetPrice(b.v2_stop, b.ticker, b.asset_class)}</span>
             </div>
             <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${slotAmount.toFixed(0)}, ${b.v2_stop || 0})">
+              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${b.ticker}', '${b.asset_class}', ${b.price}, ${shares}, ${allocEur.toFixed(0)}, ${b.v2_stop || 0})">
                 ➕ Изпълни Свеж Вход
               </button>
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${b.ticker}', 'FRESH_FLIP')">
@@ -8708,22 +8859,25 @@ function renderRotationPortfolio() {
       const pullbacks = (pullbackPool.length > 0 ? pullbackPool : unownedCandidates.filter(c => c.entry_zone_status === 'PULLBACK_V1')).slice(0, 2);
 
       pullbacks.forEach(s => {
-        const slotInQuote = convertBaseToAssetQuote(slotAmount, s.ticker, s.asset_class);
+        const allocEur = getItemRotationAllocation(s, totalCap, rotData);
+        const slotInQuote = convertBaseToAssetQuote(allocEur, s.ticker, s.asset_class);
         const shares = s.price > 0 ? (s.asset_class === 'crypto' ? (slotInQuote / s.price).toFixed(4) : (slotInQuote / s.price).toFixed(2)) : '0';
         const dayNum = Number(s.bars_since_flip !== undefined ? s.bars_since_flip : 0) + 1;
+        const weightHint = s.target_weight_pct ? ` (${Number(s.target_weight_pct).toFixed(1)}%)` : '';
+        const coreTag = s.is_core_focus ? ' 🎯 CORE' : '';
         actHtml += `
           <div class="rot-action-card action-buy" style="border-left-color: #58a6ff;">
             <div class="rot-action-hdr">
-              <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА ПОДКРЕПА v1: ${s.ticker} (${s.name || ''})</span>
+              <span class="rot-action-ticker" style="color: #58a6ff;">🔵 ВХОД НА ПОДКРЕПА v1: ${s.ticker}${coreTag} (${s.name || ''})</span>
               <span class="rot-action-tag tag-hold" style="background: rgba(88,166,255,0.2); color: #58a6ff;">ТЕСТ v1 (ДЕН ${dayNum})</span>
             </div>
             <p class="rot-action-desc">Зрял лидер (Ден ${dayNum} в тренд), тестващ лентата на подкрепа ($v1/$v2). Ултра-плътен стоп $v2 (${formatAssetPrice(s.v2_stop, s.ticker, s.asset_class)}) с риск само ${s.risk_to_v2_pct}%.</p>
             <div class="rot-action-meta">
-              <span>Слот: ${formatBaseMoney(slotAmount, 0)} (~${shares} бр.)</span>
+              <span>Слот${weightHint}: ${formatBaseMoney(allocEur, 0)} (~${shares} бр.)</span>
               <span>Стоп v2: ${formatAssetPrice(s.v2_stop, s.ticker, s.asset_class)}</span>
             </div>
             <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${slotAmount.toFixed(0)}, ${s.v2_stop || 0})">
+              <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${s.ticker}', '${s.asset_class}', ${s.price}, ${shares}, ${allocEur.toFixed(0)}, ${s.v2_stop || 0})">
                 ➕ Влез на Подкрепа
               </button>
               <button type="button" class="btn-add-real-inline" style="background: #1f6feb;" onclick="event.stopPropagation(); openProposalDossier('${s.ticker}', 'PULLBACK_V1')">
@@ -8783,7 +8937,7 @@ function renderRotationPortfolio() {
       actHtml = `
         <div class="rot-action-card action-hold" style="grid-column: 1 / -1;">
           <div class="rot-action-hdr">
-            <span class="rot-action-ticker" style="color: #3fb950;">🛡️ ВСИЧКИ 15 СЛОТА СА ЗАЕТИ В ПОРТФЕЙЛА ТИ</span>
+            <span class="rot-action-ticker" style="color: #3fb950;">🛡️ ВСИЧКИ ${targetSlots} СЛОТА СА ЗАЕТИ В ПОРТФЕЙЛА ТИ</span>
             <span class="rot-action-tag tag-hold">HOLD</span>
           </div>
           <p class="rot-action-desc">Всички притежавани активи остават в бичи тренд над своите стопове. Няма наложителни продажби днес.</p>
@@ -8793,15 +8947,20 @@ function renderRotationPortfolio() {
     actionsList.innerHTML = actHtml;
   }
 
-  // 3. Render Top 15 Holdings Table with Owned vs Candidate Status
+  // 3. Render Top-N Focus Holdings Table with Owned vs Candidate Status
   const top15Body = document.getElementById('rotTop15Body');
   if (top15Body && rotData.top15) {
     let rowsHtml = '';
     rotData.top15.forEach((item, idx) => {
       const isOwned = realHeldTickers.has(item.ticker.toUpperCase());
-      const slotInQuote = convertBaseToAssetQuote(slotAmount, item.ticker, item.asset_class);
+      const rowSlotAmount = getItemRotationAllocation(item, totalCap, rotData);
+      const slotInQuote = convertBaseToAssetQuote(rowSlotAmount, item.ticker, item.asset_class);
       const shares = item.price > 0 ? (item.asset_class === 'crypto' ? (slotInQuote / item.price).toFixed(4) : (slotInQuote / item.price).toFixed(2)) : '0';
       const rsClass = item.rs_rating >= 90 ? 'rs-elite' : (item.rs_rating >= 75 ? 'rs-strong' : '');
+      const rowWeightPct = Number(item.target_weight_pct || (100.0 / targetSlots)).toFixed(1);
+      const coreBadgeHtml = item.is_core_focus
+        ? `<span class="badge" style="background: rgba(255,215,0,0.16); color: #ffd700; border: 1px solid rgba(255,215,0,0.4); font-size: 0.68rem;">🎯 CORE</span>`
+        : '';
 
       let statusBadge = '';
       let actionBtn = '';
@@ -8814,28 +8973,28 @@ function renderRotationPortfolio() {
         if (item.entry_zone_status === 'FRESH_FLIP') {
           statusBadge = `<span class="text-success" style="font-weight:700; font-size:0.8rem;">🟢 Свеж Пробив (Ден ${dayNum})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Купи пълен слот">
-              ➕ Купи (${formatBaseMoney(slotAmount, 0)})
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${rowSlotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Купи InvVol слот">
+              ➕ Купи (${formatBaseMoney(rowSlotAmount, 0)})
             </button>
           `;
         } else if (item.entry_zone_status === 'PULLBACK_V1') {
           statusBadge = `<span class="text-info" style="font-weight:700; font-size:0.8rem;">🔵 Вход на v1 (Ден ${dayNum})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Влез на подкрепа v1">
+            <button type="button" class="btn-add-real-inline" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.price}, ${shares}, ${rowSlotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Влез на подкрепа v1">
               ➕ Влез на v1
             </button>
           `;
         } else if (item.entry_zone_status === 'MATURE_HOLD') {
           statusBadge = `<span style="color:#58a6ff; font-weight:600; font-size:0.8rem;">🛡️ В Тренд (Лимит v1)</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Лимит поръчка на v1">
+            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${rowSlotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Лимит поръчка на v1">
               📝 Лимит на v1
             </button>
           `;
         } else {
           statusBadge = `<span style="color:#8b949e; font-size:0.8rem;" title="Спред над v2: ${item.risk_to_v2_pct}%">⏳ Чакай v1 (${formatAssetPrice(item.v1_pullback, item.ticker, item.asset_class)})</span>`;
           actionBtn = `
-            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${slotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Лимит поръчка на v1">
+            <button type="button" class="btn-add-real-inline" style="background:#30363d;" onclick="event.stopPropagation(); openAddRealFromRotation('${item.ticker}', '${item.asset_class}', ${item.v1_pullback}, ${shares}, ${rowSlotAmount.toFixed(0)}, ${item.v2_stop || 0})" title="Лимит поръчка на v1">
               📝 Лимит на v1
             </button>
           `;
@@ -8847,22 +9006,23 @@ function renderRotationPortfolio() {
           <td class="tabular-nums" style="font-weight: 700;">${idx + 1}</td>
           <td>
             <div style="display: flex; flex-direction: column;">
-              <div style="display: flex; align-items: center; gap: 6px;">
+              <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                 <a href="${item.tv_url}" target="_blank" rel="noopener" class="ticker-link" title="TradingView">
                   <strong>${item.ticker}</strong> ↗
                 </a>
+                ${coreBadgeHtml}
                 <span class="badge-days-gold" title="Възраст на тренда">Ден ${Number(item.bars_since_flip !== undefined ? item.bars_since_flip : 0) + 1}</span>
               </div>
               <span style="font-size: 0.76rem; color: #8b949e;">${item.name || ''}</span>
             </div>
           </td>
-          <td><span class="cluster-sub-badge">${item.asset_class || ''}</span> <span class="tier-badge tier-${item.tier}">${item.tier}</span></td>
+          <td><span class="cluster-sub-badge" title="${item.risk_cluster || ''}">${item.asset_class || ''}</span> <span class="tier-badge tier-${item.tier}">${item.tier}</span></td>
           <td><span class="rs-pill ${rsClass}">RS ${item.rs_rating}</span></td>
           <td><span style="font-size: 0.8rem; font-weight: 600;">${item.strategy || ''}</span></td>
           <td><span class="dna-exit-tag">${item.exit_rule_bg || ''}</span></td>
           <td class="tabular-nums" style="font-weight: 700;">${formatAssetPrice(item.price || 0, item.ticker, item.asset_class)}</td>
           <td class="tabular-nums" style="color: #f85149;">${formatAssetPrice(item.v2_stop || 0, item.ticker, item.asset_class)}</td>
-          <td class="tabular-nums" style="color: #ffd700; font-weight: 700;">${formatBaseMoney(slotAmount, 0)}</td>
+          <td class="tabular-nums" style="color: #ffd700; font-weight: 700;">${formatBaseMoney(rowSlotAmount, 0)} <span style="font-size: 0.72rem; color: #8b949e; font-weight: 400;">(${rowWeightPct}%)</span></td>
           <td class="tabular-nums" style="font-weight: 700; color: #58a6ff;">${shares}</td>
           <td>${statusBadge}</td>
           <td>
@@ -8880,6 +9040,37 @@ function renderRotationPortfolio() {
       `;
     });
     top15Body.innerHTML = rowsHtml;
+  }
+
+  // 3b. Render Core-20 Focus Watchlist Cards
+  const coreGrid = document.getElementById('rotCoreWatchlistGrid');
+  const coreCountEl = document.getElementById('rotCoreCount');
+  if (coreGrid && Array.isArray(rotData.core_watchlist)) {
+    const coreList = rotData.core_watchlist;
+    const goldCnt = coreList.filter(w => w.state === 'GOLD').length;
+    if (coreCountEl) coreCountEl.textContent = `${goldCnt} / ${coreList.length} GOLD`;
+    let cHtml = '';
+    coreList.forEach(w => {
+      const st = w.state || 'UNKNOWN';
+      const stColor = st === 'GOLD' ? '#ffd700' : (st === 'NEUTRAL' ? '#d29922' : '#58a6ff');
+      const stBg = st === 'GOLD' ? 'rgba(255,215,0,0.14)' : (st === 'NEUTRAL' ? 'rgba(210,153,34,0.12)' : 'rgba(88,166,255,0.1)');
+      const exitIcon = w.exit_on_neutral ? '💰' : '🛡️';
+      const volTxt = (w.annualized_vol_pct !== null && w.annualized_vol_pct !== undefined) ? `${Number(w.annualized_vol_pct).toFixed(0)}% vol` : '—';
+      const topTag = w.in_active_top8 ? `<span style="color:#3fb950; font-size:0.68rem; font-weight:700;">★ TOP8</span>` : '';
+      cHtml += `
+        <div style="background:#161b22; border:1px solid ${st === 'GOLD' ? 'rgba(255,215,0,0.45)' : '#30363d'}; border-radius:8px; padding:8px 10px; cursor:pointer;" onclick="openProposalDossier('${w.ticker}', 'CORE')">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+            <strong style="color:#f0f6fc; font-size:0.86rem;">${w.ticker} ${topTag}</strong>
+            <span style="background:${stBg}; color:${stColor}; padding:1px 6px; border-radius:4px; font-size:0.7rem; font-weight:700;">${st}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; font-size:0.74rem; color:#8b949e;">
+            <span>RS ${w.rs_rating || '—'} • ${w.tier || 'B'}</span>
+            <span title="${w.exit_rule_bg || ''}">${exitIcon} ${volTxt}</span>
+          </div>
+        </div>
+      `;
+    });
+    coreGrid.innerHTML = cHtml || '<div style="color:#8b949e; font-size:0.82rem;">Няма конфигурирани Core активи.</div>';
   }
 
   // 4. Render Reserve Bench
@@ -9165,8 +9356,10 @@ function renderProposalDossier(d, ctx) {
   const sigBadge = document.getElementById('dossierSignalTypeBadge');
   const narrEl = document.getElementById('dossierNarrative');
   const totalCap = getGlobalCapital();
-  const slotBase = totalCap / 15.0;
-  const trancheBase = totalCap / 30.0;
+  const rotData = getActiveRotationData();
+  const topMatch = rotData && Array.isArray(rotData.top15) ? rotData.top15.find(x => x.ticker === d.ticker) : null;
+  const slotBase = getItemRotationAllocation(topMatch, totalCap, rotData);
+  const trancheBase = slotBase * 0.5;
   const slotLabel = formatBaseMoney(slotBase, 0);
   const trancheLabel = formatBaseMoney(trancheBase, 0);
 
@@ -9673,7 +9866,9 @@ function switchDossierChartView(mode) {
 function executeFromDossier() {
   if (!currentDossierData) return;
   const totalCap = getGlobalCapital();
-  const slotBase = totalCap / 15.0;
+  const rotData = getActiveRotationData();
+  const topMatch = rotData && Array.isArray(rotData.top15) ? rotData.top15.find(x => x.ticker === currentDossierData.ticker) : null;
+  const slotBase = getItemRotationAllocation(topMatch, totalCap, rotData);
   const slotInQuote = convertBaseToAssetQuote(slotBase, currentDossierData.ticker, currentDossierData.asset_class);
   const shares = currentDossierData.current_price > 0
     ? (slotInQuote / currentDossierData.current_price).toFixed(currentDossierData.current_price >= 1 ? 2 : 4)

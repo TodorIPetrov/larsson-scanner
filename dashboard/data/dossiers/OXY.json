@@ -3,19 +3,19 @@
   "name": "Occidental Petroleum Corporatio",
   "sector": "Energy",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:23:48.207393+00:00",
+  "generated_at": "2026-11-20T09:42:33.116601+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 53.76,
+  "backtest_total_bars": 1161,
+  "current_price": 53.81,
   "state": "NEUTRAL",
-  "v1": 58.94,
-  "v2": 58.98,
-  "sma200": 56.61,
-  "rsi14": 31.4,
-  "atr14": 1.81,
-  "empirical_tier": "S",
+  "v1": 58.6,
+  "v2": 58.8,
+  "sma200": 56.64,
+  "rsi14": 31.6,
+  "atr14": 1.78,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
@@ -33,7 +33,7 @@
       "strategy": "CLASSIC_BLUE_EXIT",
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
-      "total_return_pct": 2.1,
+      "total_return_pct": 2.2,
       "cagr_pct": 0.5,
       "sharpe_ratio": 0.17,
       "win_rate_pct": 37.5,
@@ -57,7 +57,7 @@
       "strategy": "PULLBACK_V1_ACCUMULATOR",
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
-      "total_return_pct": -2.5,
+      "total_return_pct": -2.4,
       "cagr_pct": -0.5,
       "sharpe_ratio": 0.12,
       "win_rate_pct": 30.0,
@@ -93,7 +93,7 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 0.3,
+      "total_return_pct": 0.4,
       "cagr_pct": 0.1,
       "sharpe_ratio": 0.19,
       "win_rate_pct": 100.0,
@@ -16361,6 +16361,20 @@
       "v2": 58.98,
       "sma200": 56.61,
       "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 54.17,
+      "high": 54.65,
+      "low": 53.26,
+      "close": 53.81,
+      "volume": 9311500.0,
+      "v1": 58.6,
+      "m1": 58.8,
+      "m2": 58.85,
+      "v2": 58.8,
+      "sma200": 56.64,
+      "state": "NEUTRAL"
     }
   ],
   "markers": [
@@ -21178,6 +21192,10 @@
         {
           "time": "2026-11-18",
           "value": 10898.31
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10898.31
         }
       ]
     },
@@ -25825,6 +25843,10 @@
         {
           "time": "2026-11-18",
           "value": 10223.69
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10233.19
         }
       ]
     },
@@ -30472,6 +30494,10 @@
         {
           "time": "2026-11-18",
           "value": 9759.45
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9763.92
         }
       ]
     },
@@ -35119,6 +35145,10 @@
         {
           "time": "2026-11-18",
           "value": 10039.2
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10048.54
         }
       ]
     }
@@ -35271,17 +35301,17 @@
   ],
   "smart_money": {
     "symbol": "OXY",
-    "smart_money_score": 14.0,
+    "smart_money_score": 19.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.08).",
-    "cmf_20d": -0.081,
-    "up_down_vol_ratio": 0.97,
-    "absorption_5d_pct": 29.6,
-    "vol_shock_ratio": 1.22,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.09).",
+    "cmf_20d": -0.092,
+    "up_down_vol_ratio": 1.14,
+    "absorption_5d_pct": 24.9,
+    "vol_shock_ratio": 0.85,
     "put_call_ratio": 2.0,
     "options_sentiment": "BEARISH",
-    "gamma_wall": 70.0,
+    "gamma_wall": 32.5,
     "max_pain": 35.0,
     "unusual_call_sweep": false
   }

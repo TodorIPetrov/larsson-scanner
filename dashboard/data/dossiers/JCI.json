@@ -3,19 +3,19 @@
   "name": "JCI",
   "sector": "Equities",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T09:22:17.535549+00:00",
+  "generated_at": "2026-11-20T09:42:08.597061+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 138.42,
+  "backtest_total_bars": 1161,
+  "current_price": 136.0,
   "state": "BLUE",
-  "v1": 144.3,
-  "v2": 145.44,
-  "sma200": 142.09,
-  "rsi14": 43.7,
-  "atr14": 5.35,
-  "empirical_tier": "S",
+  "v1": 143.88,
+  "v2": 145.18,
+  "sma200": 142.12,
+  "rsi14": 41.4,
+  "atr14": 5.39,
+  "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 129.8,
-      "cagr_pct": 19.8,
-      "sharpe_ratio": 0.75,
+      "total_return_pct": 125.7,
+      "cagr_pct": 19.3,
+      "sharpe_ratio": 0.74,
       "win_rate_pct": 100.0,
-      "profit_factor": 4.21,
+      "profit_factor": 4.08,
       "max_drawdown_pct": 30.9,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 145.44,
       "sma200": 142.09,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 139.91,
+      "high": 140.95,
+      "low": 135.07,
+      "close": 136.0,
+      "volume": 3533000.0,
+      "v1": 143.88,
+      "m1": 144.56,
+      "m2": 145.06,
+      "v2": 145.18,
+      "sma200": 142.12,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21234,6 +21248,10 @@
         {
           "time": "2026-11-18",
           "value": 16127.13
+        },
+        {
+          "time": "2026-11-19",
+          "value": 16127.13
         }
       ]
     },
@@ -25880,6 +25898,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 15746.72
+        },
+        {
+          "time": "2026-11-19",
           "value": 15746.72
         }
       ]
@@ -30528,6 +30550,10 @@
         {
           "time": "2026-11-18",
           "value": 12457.89
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12457.89
         }
       ]
     },
@@ -35175,6 +35201,10 @@
         {
           "time": "2026-11-18",
           "value": 22999.15
+        },
+        {
+          "time": "2026-11-19",
+          "value": 22597.05
         }
       ]
     }
@@ -35378,11 +35408,11 @@
     "smart_money_score": 17.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.13).",
-    "cmf_20d": -0.133,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 2.00, CMF: -0.14).",
+    "cmf_20d": -0.138,
     "up_down_vol_ratio": 0.85,
-    "absorption_5d_pct": 40.3,
-    "vol_shock_ratio": 0.91,
+    "absorption_5d_pct": 42.0,
+    "vol_shock_ratio": 0.69,
     "put_call_ratio": 2.0,
     "options_sentiment": "BEARISH",
     "gamma_wall": 95.0,

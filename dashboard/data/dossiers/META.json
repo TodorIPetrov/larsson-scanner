@@ -3,19 +3,19 @@
   "name": "Meta Platforms, Inc.",
   "sector": "Communication Services",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:23:05.902568+00:00",
+  "generated_at": "2026-11-20T09:42:17.973419+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 616.38,
+  "backtest_total_bars": 1161,
+  "current_price": 596.22,
   "state": "NEUTRAL",
-  "v1": 646.44,
-  "v2": 651.26,
-  "sma200": 628.79,
-  "rsi14": 41.4,
-  "atr14": 21.24,
-  "empirical_tier": "A",
+  "v1": 644.21,
+  "v2": 649.93,
+  "sma200": 628.43,
+  "rsi14": 36.7,
+  "atr14": 22.18,
+  "empirical_tier": "S",
   "walk_forward_stable": true,
   "winning_strategy": "FAST_EXIT_NEUTRAL",
   "winning_strategy_name": "Бърз Изход (Прибиране при NEUTRAL)",
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": false,
       "total_return_pct": 175.7,
-      "cagr_pct": 24.7,
+      "cagr_pct": 24.6,
       "sharpe_ratio": 0.98,
       "win_rate_pct": 33.3,
       "profit_factor": 5.79,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 173.7,
-      "cagr_pct": 24.4,
-      "sharpe_ratio": 0.72,
+      "total_return_pct": 164.7,
+      "cagr_pct": 23.5,
+      "sharpe_ratio": 0.71,
       "win_rate_pct": 100.0,
-      "profit_factor": 2.89,
+      "profit_factor": 2.74,
       "max_drawdown_pct": 60.2,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 620.81,
       "low": 610.3,
       "close": 616.38,
-      "volume": 10358800.0,
+      "volume": 10428700.0,
       "v1": 646.44,
       "m1": 650.09,
       "m2": 651.63,
       "v2": 651.26,
       "sma200": 628.79,
+      "state": "NEUTRAL"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 624.66,
+      "high": 630.06,
+      "low": 595.78,
+      "close": 596.22,
+      "volume": 15285100.0,
+      "v1": 644.21,
+      "m1": 648.13,
+      "m2": 650.08,
+      "v2": 649.93,
+      "sma200": 628.43,
       "state": "NEUTRAL"
     }
   ],
@@ -21122,6 +21136,10 @@
         {
           "time": "2026-11-18",
           "value": 31838.34
+        },
+        {
+          "time": "2026-11-19",
+          "value": 31838.34
         }
       ]
     },
@@ -25768,6 +25786,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 33819.16
+        },
+        {
+          "time": "2026-11-19",
           "value": 33819.16
         }
       ]
@@ -30416,6 +30438,10 @@
         {
           "time": "2026-11-18",
           "value": 27574.29
+        },
+        {
+          "time": "2026-11-19",
+          "value": 27574.29
         }
       ]
     },
@@ -35063,6 +35089,10 @@
         {
           "time": "2026-11-18",
           "value": 27396.82
+        },
+        {
+          "time": "2026-11-19",
+          "value": 26500.75
         }
       ]
     }
@@ -35167,17 +35197,17 @@
   ],
   "smart_money": {
     "symbol": "META",
-    "smart_money_score": 58.0,
+    "smart_money_score": 53.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
-    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.10) с Gamma стена на $35.00. Залог за рязък отскок.",
-    "cmf_20d": -0.357,
-    "up_down_vol_ratio": 0.46,
-    "absorption_5d_pct": 51.2,
-    "vol_shock_ratio": 0.44,
-    "put_call_ratio": 0.1,
+    "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $45.00. Залог за рязък отскок.",
+    "cmf_20d": -0.36,
+    "up_down_vol_ratio": 0.5,
+    "absorption_5d_pct": 43.3,
+    "vol_shock_ratio": 0.68,
+    "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
-    "gamma_wall": 35.0,
+    "gamma_wall": 45.0,
     "max_pain": 45.0,
     "unusual_call_sweep": true
   }

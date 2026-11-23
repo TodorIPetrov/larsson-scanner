@@ -3,20 +3,20 @@
   "name": "Rio Tinto Plc",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:24:06.819575+00:00",
+  "generated_at": "2026-11-20T09:42:41.384194+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 75.9,
+  "backtest_total_bars": 1161,
+  "current_price": 74.7,
   "state": "BLUE",
-  "v1": 85.5,
-  "v2": 89.06,
-  "sma200": 94.24,
-  "rsi14": 26.6,
-  "atr14": 2.18,
-  "empirical_tier": "B",
-  "walk_forward_stable": true,
+  "v1": 84.85,
+  "v2": 88.59,
+  "sma200": 94.15,
+  "rsi14": 25.1,
+  "atr14": 2.17,
+  "empirical_tier": "C",
+  "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
   "winning_metrics": {
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 24.7,
-      "cagr_pct": 4.9,
-      "sharpe_ratio": 0.31,
+      "total_return_pct": 22.7,
+      "cagr_pct": 4.5,
+      "sharpe_ratio": 0.3,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.7,
+      "profit_factor": 0.65,
       "max_drawdown_pct": 35.0,
       "total_trades": 1
     }
@@ -16361,6 +16361,20 @@
       "v2": 89.06,
       "sma200": 94.24,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 76.58,
+      "high": 76.65,
+      "low": 74.59,
+      "close": 74.7,
+      "volume": 3156400.0,
+      "v1": 84.85,
+      "m1": 86.18,
+      "m2": 87.77,
+      "v2": 88.59,
+      "sma200": 94.15,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21094,6 +21108,10 @@
         {
           "time": "2026-11-18",
           "value": 9211.43
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9211.43
         }
       ]
     },
@@ -25740,6 +25758,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 7817.36
+        },
+        {
+          "time": "2026-11-19",
           "value": 7817.36
         }
       ]
@@ -30388,6 +30410,10 @@
         {
           "time": "2026-11-18",
           "value": 7237.47
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7237.47
         }
       ]
     },
@@ -35035,6 +35061,10 @@
         {
           "time": "2026-11-18",
           "value": 12481.74
+        },
+        {
+          "time": "2026-11-19",
+          "value": 12284.4
         }
       ]
     }
@@ -35118,11 +35148,11 @@
     "smart_money_score": 15.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.16).",
-    "cmf_20d": -0.162,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 1.00, CMF: -0.19).",
+    "cmf_20d": -0.192,
     "up_down_vol_ratio": 0.46,
-    "absorption_5d_pct": 12.0,
-    "vol_shock_ratio": 1.2,
+    "absorption_5d_pct": 10.0,
+    "vol_shock_ratio": 1.01,
     "put_call_ratio": 1.0,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 70.0,

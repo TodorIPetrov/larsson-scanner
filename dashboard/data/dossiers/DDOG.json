@@ -3,19 +3,19 @@
   "name": "Datadog, Inc.",
   "sector": "Technology",
   "asset_class": "ai_stocks",
-  "generated_at": "2026-11-19T09:21:28.107760+00:00",
+  "generated_at": "2026-11-20T09:41:50.319676+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 167.11,
+  "backtest_total_bars": 1161,
+  "current_price": 166.46,
   "state": "BLUE",
-  "v1": 215.75,
-  "v2": 229.74,
-  "sma200": 202.0,
-  "rsi14": 27.9,
-  "atr14": 13.62,
-  "empirical_tier": "A",
+  "v1": 212.97,
+  "v2": 227.81,
+  "sma200": 202.25,
+  "rsi14": 27.7,
+  "atr14": 13.83,
+  "empirical_tier": "C",
   "walk_forward_stable": true,
   "winning_strategy": "V4_VALUE_GOLD_HOLD",
   "winning_strategy_name": "Value Тренд (Държане над 200-SMA)",
@@ -93,8 +93,8 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 17.1,
-      "cagr_pct": 3.5,
+      "total_return_pct": 16.6,
+      "cagr_pct": 3.4,
       "sharpe_ratio": 0.36,
       "win_rate_pct": 100.0,
       "profit_factor": 0.3,
@@ -16361,6 +16361,20 @@
       "v2": 229.74,
       "sma200": 202.0,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 174.8,
+      "high": 182.39,
+      "low": 165.71,
+      "close": 166.46,
+      "volume": 5086800.0,
+      "v1": 212.97,
+      "m1": 219.56,
+      "m2": 225.55,
+      "v2": 227.81,
+      "sma200": 202.25,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21094,6 +21108,10 @@
         {
           "time": "2026-11-18",
           "value": 8951.6
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8951.6
         }
       ]
     },
@@ -25740,6 +25758,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 7916.28
+        },
+        {
+          "time": "2026-11-19",
           "value": 7916.28
         }
       ]
@@ -30388,6 +30410,10 @@
         {
           "time": "2026-11-18",
           "value": 9194.18
+        },
+        {
+          "time": "2026-11-19",
+          "value": 9194.18
         }
       ]
     },
@@ -35035,6 +35061,10 @@
         {
           "time": "2026-11-18",
           "value": 11721.05
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11675.46
         }
       ]
     }
@@ -35115,14 +35145,14 @@
   ],
   "smart_money": {
     "symbol": "DDOG",
-    "smart_money_score": 17.0,
+    "smart_money_score": 7.0,
     "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
     "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 18.10, CMF: -0.24).",
-    "cmf_20d": -0.243,
-    "up_down_vol_ratio": 0.58,
-    "absorption_5d_pct": 46.1,
-    "vol_shock_ratio": 0.82,
+    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: 18.10, CMF: -0.25).",
+    "cmf_20d": -0.254,
+    "up_down_vol_ratio": 0.57,
+    "absorption_5d_pct": 31.1,
+    "vol_shock_ratio": 1.06,
     "put_call_ratio": 18.1,
     "options_sentiment": "NEUTRAL",
     "gamma_wall": 100.0,

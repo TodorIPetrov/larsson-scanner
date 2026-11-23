@@ -3,19 +3,19 @@
   "name": "Freeport-McMoRan, Inc.",
   "sector": "Basic Materials",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:21:51.187198+00:00",
+  "generated_at": "2026-11-20T09:41:59.009502+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 51.45,
+  "backtest_total_bars": 1161,
+  "current_price": 49.12,
   "state": "BLUE",
-  "v1": 62.9,
-  "v2": 65.42,
-  "sma200": 64.84,
-  "rsi14": 26.2,
-  "atr14": 2.97,
-  "empirical_tier": "A",
+  "v1": 62.09,
+  "v2": 64.91,
+  "sma200": 64.78,
+  "rsi14": 23.8,
+  "atr14": 3.02,
+  "empirical_tier": "B",
   "walk_forward_stable": true,
   "winning_strategy": "V3_CAPITULATION_S1",
   "winning_strategy_name": "Value Капитулация на S1 Подкрепа",
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": -51.5,
-      "cagr_pct": -14.6,
+      "cagr_pct": -14.5,
       "sharpe_ratio": -0.35,
       "win_rate_pct": 20.0,
       "profit_factor": 0.4,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 12.1,
-      "cagr_pct": 2.5,
-      "sharpe_ratio": 0.29,
+      "total_return_pct": 7.0,
+      "cagr_pct": 1.5,
+      "sharpe_ratio": 0.27,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.24,
+      "profit_factor": 0.14,
       "max_drawdown_pct": 50.3,
       "total_trades": 1
     }
@@ -16354,12 +16354,26 @@
       "high": 52.63,
       "low": 50.46,
       "close": 51.45,
-      "volume": 28462000.0,
+      "volume": 28477300.0,
       "v1": 62.9,
       "m1": 63.97,
       "m2": 65.0,
       "v2": 65.42,
       "sma200": 64.84,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 52.2,
+      "high": 52.57,
+      "low": 48.92,
+      "close": 49.12,
+      "volume": 26741000.0,
+      "v1": 62.09,
+      "m1": 63.28,
+      "m2": 64.43,
+      "v2": 64.91,
+      "sma200": 64.78,
       "state": "BLUE"
     }
   ],
@@ -21136,6 +21150,10 @@
         {
           "time": "2026-11-18",
           "value": 7938.16
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7938.16
         }
       ]
     },
@@ -25782,6 +25800,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 9265.85
+        },
+        {
+          "time": "2026-11-19",
           "value": 9265.85
         }
       ]
@@ -30430,6 +30452,10 @@
         {
           "time": "2026-11-18",
           "value": 7683.1
+        },
+        {
+          "time": "2026-11-19",
+          "value": 7683.1
         }
       ]
     },
@@ -35077,6 +35103,10 @@
         {
           "time": "2026-11-18",
           "value": 11222.92
+        },
+        {
+          "time": "2026-11-19",
+          "value": 10714.67
         }
       ]
     }
@@ -35197,10 +35227,10 @@
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.00) с Gamma стена на $120.00. Залог за рязък отскок.",
-    "cmf_20d": -0.188,
-    "up_down_vol_ratio": 0.64,
-    "absorption_5d_pct": 25.5,
-    "vol_shock_ratio": 2.22,
+    "cmf_20d": -0.232,
+    "up_down_vol_ratio": 0.59,
+    "absorption_5d_pct": 21.1,
+    "vol_shock_ratio": 1.94,
     "put_call_ratio": 0.0,
     "options_sentiment": "BULLISH",
     "gamma_wall": 120.0,

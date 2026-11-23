@@ -3,18 +3,18 @@
   "name": "MercadoLibre, Inc.",
   "sector": "Consumer Cyclical",
   "asset_class": "us_stocks",
-  "generated_at": "2026-11-19T09:23:04.453626+00:00",
+  "generated_at": "2026-11-20T09:42:17.327299+00:00",
   "backtest_start_date": "2022-04-06",
-  "backtest_end_date": "2026-11-18",
+  "backtest_end_date": "2026-11-19",
   "backtest_years": 4.6,
-  "backtest_total_bars": 1160,
-  "current_price": 1423.11,
+  "backtest_total_bars": 1161,
+  "current_price": 1355.49,
   "state": "BLUE",
-  "v1": 1625.47,
-  "v2": 1703.25,
-  "sma200": 1773.3,
-  "rsi14": 29.4,
-  "atr14": 60.99,
+  "v1": 1609.86,
+  "v2": 1692.49,
+  "sma200": 1769.82,
+  "rsi14": 25.7,
+  "atr14": 62.84,
   "empirical_tier": "C",
   "walk_forward_stable": false,
   "winning_strategy": "V3_CAPITULATION_S1",
@@ -93,12 +93,12 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 19.4,
-      "cagr_pct": 3.9,
-      "sharpe_ratio": 0.33,
+      "total_return_pct": 13.7,
+      "cagr_pct": 2.8,
+      "sharpe_ratio": 0.31,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.41,
-      "max_drawdown_pct": 47.8,
+      "profit_factor": 0.28,
+      "max_drawdown_pct": 48.1,
       "total_trades": 1
     }
   ],
@@ -16361,6 +16361,20 @@
       "v2": 1703.25,
       "sma200": 1773.3,
       "state": "BLUE"
+    },
+    {
+      "time": "2026-11-19",
+      "open": 1424.4,
+      "high": 1434.73,
+      "low": 1347.78,
+      "close": 1355.49,
+      "volume": 930900.0,
+      "v1": 1609.86,
+      "m1": 1642.05,
+      "m2": 1676.2,
+      "v2": 1692.49,
+      "sma200": 1769.82,
+      "state": "BLUE"
     }
   ],
   "markers": [
@@ -21080,6 +21094,10 @@
         {
           "time": "2026-11-18",
           "value": 8891.47
+        },
+        {
+          "time": "2026-11-19",
+          "value": 8891.47
         }
       ]
     },
@@ -25726,6 +25744,10 @@
         },
         {
           "time": "2026-11-18",
+          "value": 6242.19
+        },
+        {
+          "time": "2026-11-19",
           "value": 6242.19
         }
       ]
@@ -30374,6 +30396,10 @@
         {
           "time": "2026-11-18",
           "value": 5315.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 5315.95
         }
       ]
     },
@@ -35021,6 +35047,10 @@
         {
           "time": "2026-11-18",
           "value": 11946.95
+        },
+        {
+          "time": "2026-11-19",
+          "value": 11379.28
         }
       ]
     }
@@ -35089,14 +35119,14 @@
   ],
   "smart_money": {
     "symbol": "MELI",
-    "smart_money_score": 70.0,
+    "smart_money_score": 58.0,
     "flow_verdict": "OPTIONS_WHALE_ACCUMULATION",
     "flow_label_bg": "🟢 ОПЦИОННИ КИТОВЕ (Call Buying)",
     "flow_desc_bg": "Агресивни покупки на Call опции (P/C: 0.14) с Gamma стена на $2320.00. Залог за рязък отскок.",
-    "cmf_20d": 0.052,
-    "up_down_vol_ratio": 0.38,
-    "absorption_5d_pct": 31.4,
-    "vol_shock_ratio": 0.49,
+    "cmf_20d": 0.006,
+    "up_down_vol_ratio": 0.36,
+    "absorption_5d_pct": 30.7,
+    "vol_shock_ratio": 1.25,
     "put_call_ratio": 0.14,
     "options_sentiment": "BULLISH",
     "gamma_wall": 2320.0,
