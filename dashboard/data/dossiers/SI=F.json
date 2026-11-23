@@ -3,25 +3,25 @@
   "name": "Silver Futures",
   "sector": "Суровини",
   "asset_class": "commodities",
-  "generated_at": "2026-11-22T16:15:15.159978+00:00",
+  "generated_at": "2026-11-23T00:48:26.399729+00:00",
   "backtest_start_date": "2025-05-27",
-  "backtest_end_date": "2026-11-20",
+  "backtest_end_date": "2026-11-22",
   "backtest_years": 1.5,
-  "backtest_total_bars": 377,
-  "current_price": 41.07,
+  "backtest_total_bars": 378,
+  "current_price": 41.94,
   "state": "BLUE",
-  "v1": 51.69,
-  "v2": 55.58,
-  "sma200": 67.51,
-  "rsi14": 21.5,
-  "atr14": 1.67,
+  "v1": 51.03,
+  "v2": 55.1,
+  "sma200": 67.34,
+  "rsi14": 25.3,
+  "atr14": 1.62,
   "empirical_tier": "A",
   "walk_forward_stable": true,
   "winning_strategy": "PULLBACK_V1_ACCUMULATOR",
   "winning_strategy_name": "Вход на Подкрепа v1 (Двустепенен)",
   "winning_metrics": {
     "total_return_pct": 102.8,
-    "cagr_pct": 60.4,
+    "cagr_pct": 60.2,
     "sharpe_ratio": 1.19,
     "win_rate_pct": 100.0,
     "profit_factor": 99.0,
@@ -34,7 +34,7 @@
       "name_bg": "Класически Larsson (Изход на BLUE)",
       "is_winner": false,
       "total_return_pct": 102.5,
-      "cagr_pct": 60.2,
+      "cagr_pct": 60.0,
       "sharpe_ratio": 1.19,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -46,7 +46,7 @@
       "name_bg": "Бърз Изход (Прибиране при NEUTRAL)",
       "is_winner": false,
       "total_return_pct": 67.5,
-      "cagr_pct": 41.2,
+      "cagr_pct": 41.0,
       "sharpe_ratio": 0.97,
       "win_rate_pct": 25.0,
       "profit_factor": 2.69,
@@ -58,7 +58,7 @@
       "name_bg": "Вход на Подкрепа v1 (Двустепенен)",
       "is_winner": true,
       "total_return_pct": 102.8,
-      "cagr_pct": 60.4,
+      "cagr_pct": 60.2,
       "sharpe_ratio": 1.19,
       "win_rate_pct": 100.0,
       "profit_factor": 99.0,
@@ -93,11 +93,11 @@
       "strategy": "BUY_AND_HOLD",
       "name_bg": "Купи и Дръж (Бенчмарк)",
       "is_winner": false,
-      "total_return_pct": 23.3,
-      "cagr_pct": 15.1,
-      "sharpe_ratio": 0.55,
+      "total_return_pct": 25.9,
+      "cagr_pct": 16.6,
+      "sharpe_ratio": 0.58,
       "win_rate_pct": 100.0,
-      "profit_factor": 0.36,
+      "profit_factor": 0.4,
       "max_drawdown_pct": 64.3,
       "total_trades": 1
     }
@@ -5388,16 +5388,30 @@
     },
     {
       "time": "2026-11-20",
-      "open": 42.86,
-      "high": 43.18,
-      "low": 40.62,
-      "close": 41.07,
-      "volume": 110375.0,
-      "v1": 51.69,
-      "m1": 53.04,
-      "m2": 54.67,
-      "v2": 55.58,
+      "open": 42.22,
+      "high": 42.44,
+      "low": 40.93,
+      "close": 41.03,
+      "volume": 30.0,
+      "v1": 51.68,
+      "m1": 53.02,
+      "m2": 54.66,
+      "v2": 55.57,
       "sma200": 67.51,
+      "state": "BLUE"
+    },
+    {
+      "time": "2026-11-22",
+      "open": 41.6,
+      "high": 42.35,
+      "low": 41.53,
+      "close": 41.94,
+      "volume": 4760.0,
+      "v1": 51.03,
+      "m1": 52.44,
+      "m2": 54.15,
+      "v2": 55.1,
+      "sma200": 67.34,
       "state": "BLUE"
     }
   ],
@@ -6930,6 +6944,10 @@
         {
           "time": "2026-11-20",
           "value": 20278.21
+        },
+        {
+          "time": "2026-11-22",
+          "value": 20278.21
         }
       ]
     },
@@ -8444,6 +8462,10 @@
         },
         {
           "time": "2026-11-20",
+          "value": 20247.11
+        },
+        {
+          "time": "2026-11-22",
           "value": 20247.11
         }
       ]
@@ -9960,6 +9982,10 @@
         {
           "time": "2026-11-20",
           "value": 16748.35
+        },
+        {
+          "time": "2026-11-22",
+          "value": 16748.35
         }
       ]
     },
@@ -11474,7 +11500,11 @@
         },
         {
           "time": "2026-11-20",
-          "value": 12346.95
+          "value": 12336.43
+        },
+        {
+          "time": "2026-11-22",
+          "value": 12607.0
         }
       ]
     }
@@ -11495,14 +11525,14 @@
   ],
   "smart_money": {
     "symbol": "SI=F",
-    "smart_money_score": 15.0,
-    "flow_verdict": "INSTITUTIONAL_DISTRIBUTION",
-    "flow_label_bg": "🔴 ИНСТИТУЦИОНАЛЕН НАТИСК / ХЕДЖ",
-    "flow_desc_bg": "Оток на капитал или застраховане с Put опции (P/C: N/A, CMF: -0.64).",
-    "cmf_20d": -0.637,
-    "up_down_vol_ratio": 0.01,
-    "absorption_5d_pct": 22.0,
-    "vol_shock_ratio": 1306.99,
+    "smart_money_score": 50.0,
+    "flow_verdict": "NEUTRAL_FLOW",
+    "flow_label_bg": "⚪ НЕУТРАЛЕН / СМЕСЕН ПОТОК",
+    "flow_desc_bg": "Балансирани двупосочни обеми (CMF: -0.05, P/C: N/A).",
+    "cmf_20d": -0.046,
+    "up_down_vol_ratio": 5.94,
+    "absorption_5d_pct": 25.0,
+    "vol_shock_ratio": 55.87,
     "put_call_ratio": null,
     "options_sentiment": "N/A",
     "gamma_wall": null,

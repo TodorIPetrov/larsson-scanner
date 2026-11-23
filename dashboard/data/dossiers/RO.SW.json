@@ -3,7 +3,7 @@
   "name": "ROCHE I",
   "sector": "Healthcare",
   "asset_class": "intl_stocks",
-  "generated_at": "2026-11-22T16:15:10.301340+00:00",
+  "generated_at": "2026-11-23T00:48:23.078728+00:00",
   "backtest_start_date": "2025-05-27",
   "backtest_end_date": "2026-11-20",
   "backtest_years": 1.5,
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": 337.41,
-    "target_price": 337.41,
-    "entry_price": 286.8,
+    "fair_value": 349.07,
+    "target_price": 349.07,
+    "entry_price": 296.71,
     "required_mos_pct": 15.0,
-    "actual_discount_pct": -19.3,
-    "mos_pct": -19.3,
+    "actual_discount_pct": -15.3,
+    "mos_pct": -15.3,
     "moat": "Wide",
     "roic_pct": 20.3,
-    "wacc_pct": 7.8,
+    "wacc_pct": 7.58,
     "z_score": 3.84,
     "m_score": -2.71,
     "tata": -0.061,
     "solvency_type": "Altman Z''-Score (Universal Model)",
-    "verdict": "HOLD / SENSITIVITY REVIEW",
+    "verdict": "REDUCE / OVERVALUED",
     "model_type": "Corporate FCFF DCF & EVA",
     "latest_filing_date": "2026-06-30 (10-Q TTM)",
-    "last_fundamental_update": "2026-11-16"
+    "last_fundamental_update": "2026-11-23"
   },
   "candles": [
     {
