@@ -1,7 +1,7 @@
 {
   "ticker": "NVD.DE",
-  "name": "NVD.DE",
-  "sector": "Equities",
+  "name": "NVIDIA CORP.                  R",
+  "sector": "Technology",
   "asset_class": "intl_stocks",
   "generated_at": "2026-11-20T09:42:28.482152+00:00",
   "backtest_start_date": "2010-08-04",
@@ -103,23 +103,23 @@
     }
   ],
   "fundamental": {
-    "fair_value": null,
-    "target_price": null,
-    "entry_price": null,
-    "required_mos_pct": null,
-    "actual_discount_pct": null,
-    "mos_pct": null,
-    "moat": "None",
-    "roic_pct": null,
-    "wacc_pct": null,
-    "z_score": null,
-    "m_score": null,
-    "tata": null,
-    "solvency_type": null,
-    "verdict": "FAIRLY VALUED",
-    "model_type": null,
-    "latest_filing_date": null,
-    "last_fundamental_update": null
+    "fair_value": 138.86,
+    "target_price": 138.86,
+    "entry_price": 111.09,
+    "required_mos_pct": 20.0,
+    "actual_discount_pct": 10.5,
+    "mos_pct": 10.5,
+    "moat": "Wide",
+    "roic_pct": 68.1,
+    "wacc_pct": 10.5,
+    "z_score": 12.06,
+    "m_score": -0.83,
+    "tata": 0.251,
+    "solvency_type": "Altman Z''-Score (Universal Model)",
+    "verdict": "BUY / ACCUMULATE",
+    "model_type": "Mid-Cycle Normalized DCF",
+    "latest_filing_date": "2026-07-31 (10-Q TTM)",
+    "last_fundamental_update": "2026-11-22"
   },
   "candles": [
     {
@@ -123749,6 +123749,54 @@
         {
           "time": "2026-01-26",
           "value": 229473.26
+        },
+        {
+          "time": "2026-01-09",
+          "value": 13458.51
+        },
+        {
+          "time": "2026-01-12",
+          "value": 13377.43
+        },
+        {
+          "time": "2026-01-13",
+          "value": 13472.03
+        },
+        {
+          "time": "2026-01-14",
+          "value": 13169.64
+        },
+        {
+          "time": "2026-01-15",
+          "value": 13639.26
+        },
+        {
+          "time": "2026-01-16",
+          "value": 13678.12
+        },
+        {
+          "time": "2026-01-19",
+          "value": 13201.74
+        },
+        {
+          "time": "2026-01-20",
+          "value": 12988.89
+        },
+        {
+          "time": "2026-01-21",
+          "value": 13154.44
+        },
+        {
+          "time": "2026-01-22",
+          "value": 13358.84
+        },
+        {
+          "time": "2026-01-23",
+          "value": 13463.58
+        },
+        {
+          "time": "2026-01-26",
+          "value": 13287.9
         },
         {
           "time": "2026-01-27",
